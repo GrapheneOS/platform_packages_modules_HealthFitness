@@ -35,4 +35,18 @@ apex {
     min_sdk_version: "UpsideDownCake",
     certificate: ":com.android.healthconnect.certificate",
     updatable: true,
+    bootclasspath_fragments: ["com.android.healthconnect-bootclasspath-fragment"],
+}
+
+// Encapsulate the contributions made by com.android.healthconnect to the bootclasspath.
+bootclasspath_fragment {
+    name: "com.android.healthconnect-bootclasspath-fragment",
+    contents: ["framework-healthconnect"],
+    apex_available: ["com.android.healthconnect"],
+    hidden_api: {
+        split_packages: ["*"],
+    },
+    additional_stubs: [
+        "android-non-updatable",
+    ],
 }
