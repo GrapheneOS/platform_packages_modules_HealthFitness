@@ -31,9 +31,6 @@ apex {
     name: "com.android.healthconnect",
     manifest: "manifest.json",
     file_contexts: ":com.android.healthconnect-file_contexts",
-    apps: [
-        "HealthConnectController",
-    ],
     key: "com.android.healthconnect.key",
     min_sdk_version: "UpsideDownCake",
     certificate: ":com.android.healthconnect.certificate",
