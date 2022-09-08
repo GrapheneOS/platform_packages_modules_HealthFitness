@@ -14,5 +14,15 @@
   limitations under the License.
 -->
 <resources>
-  <string name="app_label">Health Connect</string>
+  <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health Connect</string>
+
+  <!--  Home -->
+  <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
+  <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Review and manage the health and fitness data on your phone, and control which apps can access it</string>
+  <string name="data_title" description="Label for a button that takes the user to the data management screens. [CHAR_LIMIT=40]">Data and access</string>
+  <string name="data_subtitle" description="Description for a button that takes the user to the data management screens. [CHAR_LIMIT=NONE]">See your data and recent app activity</string>
+  <string name="connected_apps_title" description="Label for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=40]">Connected apps</string>
+  <string name="connected_apps_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]">Manage your apps and permissions</string>
+
+
 </resources>
