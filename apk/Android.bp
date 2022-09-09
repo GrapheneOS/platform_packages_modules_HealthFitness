@@ -41,7 +41,15 @@ android_app {
 
     static_libs: [
         "com.google.android.material_material",
+        "SettingsLibSettingsTheme",
         "kotlin-stdlib",
+        "kotlinx-coroutines-android",
+        "androidx.navigation_navigation-common-ktx",
+        "androidx.navigation_navigation-fragment-ktx",
+        "androidx.navigation_navigation-runtime-ktx",
+        "androidx.navigation_navigation-ui-ktx",
+        "SettingsLibCollapsingToolbarBaseActivity",
+        "SettingsLibTopIntroPreference"
     ],
 
     kotlincflags: ["-Xjvm-default=enable"],
