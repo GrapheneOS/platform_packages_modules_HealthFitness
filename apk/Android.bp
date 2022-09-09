@@ -25,13 +25,18 @@ filegroup {
     ],
 }
 
+android_app_certificate {
+    name: "com.android.healthconnect.controller.certificate",
+    certificate: "com.android.healthconnect.controller",
+}
+
 android_app {
     name: "HealthConnectController",
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
     rename_resources_package: false,
     updatable: true,
-    certificate: "platform", //TODO(b/244700252) create an app certificate
+    certificate: ":com.android.healthconnect.controller.certificate",
 
     srcs: [":healthConnectController-sources"],
 
