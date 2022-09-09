@@ -16,7 +16,6 @@
 package com.android.healthconnect.controller
 
 import android.os.Bundle
-import androidx.navigation.Navigation
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 
 /** Entry point activity for Health Connect. */
@@ -25,15 +24,6 @@ class MainActivity : CollapsingToolbarBaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        setupNavigationGraph()
-    }
-
-    private fun setupNavigationGraph() {
-        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        navController.setGraph(R.navigation.nav_graph)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            setTitle(destination.label)
-        }
+        setTitle(R.string.app_label)
     }
 }
