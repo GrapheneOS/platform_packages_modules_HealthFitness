@@ -39,6 +39,7 @@ apex {
     certificate: ":com.android.healthconnect.certificate",
     updatable: true,
     bootclasspath_fragments: ["com.android.healthconnect-bootclasspath-fragment"],
+    systemserverclasspath_fragments: ["com.android.healthconnect-systemserverclasspath-fragment"],
 }
 
 // Encapsulate the contributions made by com.android.healthconnect to the bootclasspath.
@@ -52,4 +53,10 @@ bootclasspath_fragment {
     additional_stubs: [
         "android-non-updatable",
     ],
+}
+
+systemserverclasspath_fragment {
+    name: "com.android.healthconnect-systemserverclasspath-fragment",
+    contents: ["service-healthconnect"],
+    apex_available: ["com.android.healthconnect"],
 }
