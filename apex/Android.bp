@@ -42,6 +42,15 @@ apex {
     systemserverclasspath_fragments: ["com.android.healthconnect-systemserverclasspath-fragment"],
 }
 
+sdk {
+    name: "healthconnect-module-sdk",
+    apexes: [
+        // Adds exportable dependencies of the APEX to the sdk,
+        // e.g. *classpath_fragments.
+        "com.android.healthconnect",
+    ],
+}
+
 // Encapsulate the contributions made by com.android.healthconnect to the bootclasspath.
 bootclasspath_fragment {
     name: "com.android.healthconnect-bootclasspath-fragment",
