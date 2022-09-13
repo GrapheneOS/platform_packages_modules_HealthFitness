@@ -13,14 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect;
 
-/** @hide Example class to check HealthConnect bootclasspath **/
-public class HealthApiVersion {
-    private static int API_VERSION = 0;
+package android.healthconnect.cts;
 
-    /** @hide **/
-    public static int getApiVersion() {
-        return API_VERSION;
+import static com.google.common.truth.Truth.assertThat;
+
+import android.healthconnect.HealthApiVersion;
+
+import androidx.test.runner.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+/**
+ * CTS test for API provided by HealthApiVersion.
+ */
+@RunWith(AndroidJUnit4.class)
+public class HCApiVersionDeviceTest {
+    @Test
+    public void testApiVersion() {
+        assertThat(HealthApiVersion.getApiVersion()).isAtLeast(0);
     }
 }
