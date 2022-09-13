@@ -24,5 +24,17 @@
   <string name="connected_apps_title" description="Label for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=40]">Connected apps</string>
   <string name="connected_apps_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]">Manage your apps and permissions</string>
 
+  <!-- data categories  -->
+  <string name="activity_category" description="Title for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
+  <string name="body_measurements_category" description="Title for body measurements category, displaying user data related to body measurements (such as height, weight, etc.) [CHAR LIMIT=30]">Body measurements</string>
+  <string name="sleep_category" description="Title for sleep category, displaying user data related to sleep (such as sleep duration, bedtime schedule, etc.) [CHAR LIMIT=30]">Sleep</string>
+  <string name="vitals_category" description="Title for vitals category, displaying user data related to vitals (such as heart rate, blood pressure, etc.) [CHAR LIMIT=30]">Vitals</string>
+  <string name="cycle_tracking_category" description="Title for cycle tracking category, displaying user data related to cycle tracking (such as cervical mucus, menstrual flow, etc.) [CHAR LIMIT=30]">Cycle tracking</string>
+  <string name="nutrition_category" description="Title for nutrition category, displaying user data related to nutrition (such as calories consumed, hydration, etc.) [CHAR LIMIT=30]">Nutrition</string>
+  <string name="browse_data_category" description="Label for a section that contains user data grouped by categories. [CHAR_LIMIT=50]">Browse data</string>
+  <string name="manage_data_section" description="Label for a section that has different user actions like deleting data. [CHAR_LIMIT=50]">Manage data</string>
+  <string name="export_data_button" description="Label for a button that allows a user to export their data. [CHAR_LIMIT=50]">Export data</string>
+  <string name="delete_all_data_button" description="Label for a button that allows deleting all data points. [CHAR_LIMIT=50]">Delete all data</string>
+  <string name="no_categories" description="Label that shows when health connect does not have data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">You don\'t have any data in Health&#160;Connect</string>
 
 </resources>

@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller
 
-import android.os.Bundle
+package com.android.healthconnect.controller.utils
+
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
-import dagger.hilt.android.AndroidEntryPoint
 
-/** Entry point activity for Health Connect. */
-@AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
-class MainActivity : Hilt_MainActivity() {
-
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setTitle(R.string.app_label)
-    }
+/** Sets fragment title on the collapsing layout, delegating to host if needed. */
+fun Fragment.setTitle(@StringRes title: Int) {
+  (requireActivity() as CollapsingToolbarBaseActivity).setTitle(title)
 }

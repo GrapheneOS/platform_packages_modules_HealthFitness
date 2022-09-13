@@ -15,17 +15,11 @@
  */
 package com.android.healthconnect.controller
 
-import android.os.Bundle
-import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
-import dagger.hilt.android.AndroidEntryPoint
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-/** Entry point activity for Health Connect. */
-@AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
-class MainActivity : Hilt_MainActivity() {
+/** A base {@link Application} for Health Connect settings app. */
+@HiltAndroidApp(Application::class)
+class HealthConnectApplication : Hilt_HealthConnectApplication() {
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setTitle(R.string.app_label)
-    }
 }
