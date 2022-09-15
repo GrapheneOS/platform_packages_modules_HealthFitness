@@ -16,13 +16,13 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.android.healthconnect.controller">
 
   <application
       android:icon="@drawable/health_connect_logo"
       android:label="@string/app_label"
       android:supportsRtl="true"
+      android:name=".HealthConnectApplication"
       android:theme="@style/Theme.HealthConnect">
     <activity
         android:name=".MainActivity"

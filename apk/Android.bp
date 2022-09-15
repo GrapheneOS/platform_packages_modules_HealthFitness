@@ -53,8 +53,10 @@ android_app {
         "androidx.navigation_navigation-fragment-ktx",
         "androidx.navigation_navigation-runtime-ktx",
         "androidx.navigation_navigation-ui-ktx",
+        "androidx.annotation_annotation",
         "SettingsLibCollapsingToolbarBaseActivity",
-        "SettingsLibTopIntroPreference"
+        "SettingsLibTopIntroPreference",
+        "hilt_android",
     ],
 
     kotlincflags: ["-Xjvm-default=enable"],

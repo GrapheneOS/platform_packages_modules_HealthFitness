@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller
+package com.android.healthconnect.controller.categories
 
-import android.os.Bundle
-import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
-import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Singleton
 
-/** Entry point activity for Health Connect. */
-@AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
-class MainActivity : Hilt_MainActivity() {
-
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setTitle(R.string.app_label)
-    }
+@Singleton
+class LoadCategoriesUseCase @Inject constructor() {
+  /** returns list of available data categories. */
+  suspend operator fun invoke() : List<HealthDataCategory> = HEALTH_DATA_CATEGORIES
 }

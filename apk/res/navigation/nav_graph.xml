@@ -23,6 +23,14 @@
   <fragment
       android:id="@+id/homeFragment"
       android:name="com.android.healthconnect.controller.home.HomeFragment"
-      android:label="@string/app_label" />
+      android:label="@string/app_label">
+    <action
+        android:id="@+id/action_homeFragment_to_healthDataCategoriesFragment"
+        app:destination="@id/healthDataCategoriesFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/healthDataCategoriesFragment"
+      android:name="com.android.healthconnect.controller.categories.HealthDataCategoriesFragment"
+      android:label="@string/data_title" />
 
 </navigation>

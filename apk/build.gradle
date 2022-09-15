@@ -27,11 +27,14 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'com.android.healthconnect.controller'
@@ -66,6 +69,9 @@ android {
             java.srcDirs = [
                     'tests/src',
             ]
+            res.srcDirs = [
+                    'tests/res'
+            ]
         }
     }
     buildToolsVersion '30.0.3'
@@ -80,12 +86,23 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation "androidx.fragment:fragment-ktx:1.5.2"
+    implementation "androidx.activity:activity-ktx:1.5.1"
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
     // test dependencies
     testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation "com.google.truth:truth:1.1.3"
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
     androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
+    androidTestImplementation "androidx.navigation:navigation-testing:2.5.1"
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.38.1'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.38.1'
 }
