@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.healthconnect.controller.tests
 
-package com.android.healthconnect.controller.utils
+import android.app.Application
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
-import android.app.Activity
-import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
-
-/** Sets fragment title on the collapsing layout, delegating to host if needed. */
-fun Fragment.setTitle(@StringRes title: Int) {
-  (requireActivity() as Activity).setTitle(title)
+class HiltTestRunner : AndroidJUnitRunner() {
+  override fun newApplication(
+    cl: ClassLoader?,
+    className: String?,
+    context: Context?
+  ): Application {
+    return super.newApplication(cl, HiltTestApplication::class.java.name, context)
+  }
 }

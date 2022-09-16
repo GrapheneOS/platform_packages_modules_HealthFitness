@@ -17,13 +17,12 @@
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.android.healthconnect.controller.tests">
 
   <application android:debuggable="true">
     <uses-library android:name="android.test.runner" />
     <activity
-        android:name="com.android.healthconnect.controller.MainActivity"
+        android:name=".TestActivity"
         android:exported="true"
         android:theme="@style/Theme.HealthConnect">
       <intent-filter>
@@ -34,7 +33,7 @@
   </application>
 
   <instrumentation
-      android:name="androidx.test.runner.AndroidJUnitRunner"
+      android:name="com.android.healthconnect.controller.tests.HiltTestRunner"
       android:label="Health Connect UI Test Cases"
       android:targetPackage="com.android.healthconnect.controller.tests" />
 </manifest>

@@ -25,6 +25,7 @@
     <option name="test-file-name" value="HealthConnectControllerUITests.apk"/>
   </target_preparer>
   <test class="com.android.tradefed.testtype.AndroidJUnitTest">
+    <option name="runner" value="com.android.healthconnect.controller.tests.HiltTestRunner"/>
     <option name="package" value="com.android.healthconnect.controller.tests"/>
   </test>
   <object

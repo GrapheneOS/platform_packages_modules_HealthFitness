@@ -36,6 +36,7 @@ android_test {
         "androidx.navigation_navigation-ui-ktx",
         "SettingsLibCollapsingToolbarBaseActivity",
         "SettingsLibTopIntroPreference",
+        "hilt_android_testing",
         // test dependencies
         "androidx.test.espresso.contrib",
         "androidx.test.ext.junit",

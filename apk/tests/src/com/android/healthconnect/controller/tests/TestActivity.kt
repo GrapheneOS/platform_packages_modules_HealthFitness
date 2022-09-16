@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.healthconnect.controller.tests
 
-package com.android.healthconnect.controller.utils
+import androidx.fragment.app.FragmentActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-import android.app.Activity
-import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 
-/** Sets fragment title on the collapsing layout, delegating to host if needed. */
-fun Fragment.setTitle(@StringRes title: Int) {
-  (requireActivity() as Activity).setTitle(title)
-}
+@AndroidEntryPoint(FragmentActivity::class)
+class TestActivity : Hilt_TestActivity()

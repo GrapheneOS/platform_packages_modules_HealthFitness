@@ -19,9 +19,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
+@HiltViewModel
 class HealthDataCategoryViewModel @Inject constructor(
   private val loadCategoriesUseCase: LoadCategoriesUseCase
 ) : ViewModel() {

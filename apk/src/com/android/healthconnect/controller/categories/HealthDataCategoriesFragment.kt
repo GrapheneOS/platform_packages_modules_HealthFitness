@@ -23,7 +23,7 @@ import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import androidx.fragment.app.viewModels
 
 /** Fragment for health data categories. */
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
@@ -34,7 +34,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment(){
     private const val DELETE_ALL_DATA_BUTTON = "delete_all_data"
   }
 
-  @Inject lateinit var viewModel: HealthDataCategoryViewModel
+  private val viewModel: HealthDataCategoryViewModel by viewModels()
 
   private val mBrowseDataCategory: PreferenceGroup? by lazy {
     preferenceScreen.findPreference(BROWSE_DATA_CATEGORY)
