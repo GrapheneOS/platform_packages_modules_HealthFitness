@@ -1,1 +1,8 @@
 // Signature format: 2.0
+package android.healthconnect {
+
+  public class HealthConnectManager {
+  }
+
+}
+

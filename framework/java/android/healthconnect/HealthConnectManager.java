@@ -14,27 +14,21 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect;
+package android.healthconnect;
 
+import android.annotation.NonNull;
+import android.annotation.SystemService;
 import android.content.Context;
 import android.healthconnect.aidl.IHealthConnectService;
 
-import com.android.server.SystemService;
+@SystemService(Context.HEALTHCONNECT_SERVICE)
+public class HealthConnectManager {
+    private Context mContext;
+    private IHealthConnectService mService;
 
-/**
- * @hide HealthConnect system service scaffold. *
- */
-public class HealthConnectManagerService extends SystemService {
-    private static final String TAG = "HealthConnectManagerService";
-
-    public HealthConnectManagerService(Context context) {
-        super(context);
+    /** @hide */
+    HealthConnectManager(@NonNull Context context, @NonNull IHealthConnectService service) {
+        mContext = context;
+        mService = service;
     }
-
-    @Override
-    public void onStart() {
-        publishBinderService(Context.HEALTHCONNECT_SERVICE, new HealthConnectServiceImpl());
-    }
-
-    private final class HealthConnectServiceImpl extends IHealthConnectService.Stub {}
 }
