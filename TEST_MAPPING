@@ -2,6 +2,9 @@
   "mainline-presubmit" : [
     {
       "name" : "HealthConnectControllerUITests[com.google.android.healthconnect.apex]"
+    },
+    {
+       "name": "CtsHealthConnectDeviceTestCases[com.google.android.healthconnect.apex]"
     }
   ]
 }
