@@ -40,4 +40,9 @@
   <!-- Health data permissions labels and descriptions -->
   <string name="permgrouplab_health" description="Title of an application permission group, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Health</string>
   <string name="permgroupdesc_health" description="Description of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=100]">access your health data</string>
+
+  <!-- Health data permissions labels and descriptions -->
+  <!-- TODO(b/249531235): update the labels and descriptions once UX writing is finalised -->
+  <string name="permlab_readCaloriesBurned" description="itle of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Read calories burned</string>
+  <string name="permdesc_readCaloriesBurned" description="Description of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=100]">Allows the app to read the calories burned</string>
 </resources>
