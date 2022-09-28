@@ -37,4 +37,7 @@
   <string name="delete_all_data_button" description="Label for a button that allows deleting all data points. [CHAR_LIMIT=50]">Delete all data</string>
   <string name="no_categories" description="Label that shows when health connect does not have data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">You don\'t have any data in Health&#160;Connect</string>
 
+  <!-- Health data permissions labels and descriptions -->
+  <string name="permgrouplab_health" description="Title of an application permission group, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Health</string>
+  <string name="permgroupdesc_health" description="Description of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=100]">access your health data</string>
 </resources>

@@ -17,9 +17,15 @@
 package android.healthconnect;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
+import android.annotation.RequiresPermission;
 import android.annotation.SystemService;
+import android.annotation.UserHandleAware;
 import android.content.Context;
 import android.healthconnect.aidl.IHealthConnectService;
+import android.os.RemoteException;
+
+import java.util.List;
 
 @SystemService(Context.HEALTHCONNECT_SERVICE)
 public class HealthConnectManager {
@@ -30,5 +36,77 @@ public class HealthConnectManager {
     HealthConnectManager(@NonNull Context context, @NonNull IHealthConnectService service) {
         mContext = context;
         mService = service;
+    }
+
+    /**
+     * Grant a runtime permission to an application which the application does not already have. The
+     * permission must have been requested by the application. If the application is not allowed to
+     * hold the permission, a {@link java.lang.SecurityException} is thrown. If the package or
+     * permission is invalid, a {@link java.lang.IllegalArgumentException} is thrown.
+     *
+     * @hide
+     */
+    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @UserHandleAware
+    public void grantHealthPermission(@NonNull String packageName, @NonNull String permissionName) {
+        try {
+            mService.grantHealthPermission(packageName, permissionName, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Revoke a health permission that was previously granted by {@link
+     * #grantHealthPermission(String, String)} The permission must have been requested by the
+     * application. If the application is not allowed to hold the permission, a {@link
+     * java.lang.SecurityException} is thrown. If the package or permission is invalid, a {@link
+     * java.lang.IllegalArgumentException} is thrown.
+     *
+     * @hide
+     */
+    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @UserHandleAware
+    public void revokeHealthPermission(
+            @NonNull String packageName, @NonNull String permissionName, @Nullable String reason) {
+        try {
+            mService.revokeHealthPermission(
+                    packageName, permissionName, reason, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Revokes all health permissions that were previously granted by {@link
+     * #grantHealthPermission(String, String)} If the package is invalid, a {@link
+     * java.lang.IllegalArgumentException} is thrown.
+     *
+     * @hide
+     */
+    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @UserHandleAware
+    public void revokeAllHealthPermissions(@NonNull String packageName, @Nullable String reason) {
+        try {
+            mService.revokeAllHealthPermissions(packageName, reason, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns a list of health permissions that were previously granted by {@link
+     * #grantHealthPermission(String, String)}.
+     *
+     * @hide
+     */
+    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @UserHandleAware
+    public List<String> getGrantedHealthPermissions(@NonNull String packageName) {
+        try {
+            return mService.getGrantedHealthPermissions(packageName, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
     }
 }

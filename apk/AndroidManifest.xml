@@ -18,6 +18,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.healthconnect.controller">
 
+  <permission
+      android:name="android.permission.MANAGE_HEALTH_PERMISSIONS"
+      android:protectionLevel="signature" />
+
+  <!-- TODO(b/249531235): Modify permission labels once finalized. -->
+  <permission-group android:name="android.permission-group.HEALTH"
+                    android:priority="100"
+                    android:label="@string/permgrouplab_health"
+                    android:description="@string/permgroupdesc_health"/>
+
+  <uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" />
+
   <application
       android:icon="@drawable/health_connect_logo"
       android:label="@string/app_label"
