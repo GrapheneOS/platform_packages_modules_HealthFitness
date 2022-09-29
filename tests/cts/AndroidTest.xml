@@ -24,8 +24,19 @@
         <option name="cleanup-apks" value="true" />
         <option name="test-file-name" value="CtsHealthConnectDeviceTestCases.apk" />
     </target_preparer>
+
+    <option
+        name="config-descriptor:metadata"
+        key="mainline-param"
+        value="com.google.android.healthconnect.apex" />
+
     <test class="com.android.tradefed.testtype.AndroidJUnitTest" >
         <option name="package" value="android.healthconnect.cts" />
         <option name="hidden-api-checks" value="false" />
     </test>
-</configuration>
+
+    <object type="module_controller" class="com.android.tradefed.testtype.suite.module.MainlineTestModuleController">
+        <option name="mainline-module-package-name" value="com.google.android.healthconnect" />
+    </object>
+
+  </configuration>
