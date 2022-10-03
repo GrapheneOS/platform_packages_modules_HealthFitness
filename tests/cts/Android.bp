@@ -28,6 +28,7 @@ android_test {
     // Tag this module as a cts test artifact
     test_suites: [
         "cts",
+        "general-tests",
     ],
     static_libs: [
         "androidx.test.rules",
