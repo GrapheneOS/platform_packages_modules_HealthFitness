@@ -22,6 +22,7 @@ android_test {
     libs: [
         "android.test.runner",
         "android.test.base",
+        "framework-healthconnect",
     ],
     srcs: ["src/**/*.java"],
     // Tag this module as a cts test artifact
@@ -34,8 +35,6 @@ android_test {
         "compatibility-device-util-axt",
         "ctstestrunner-axt",
         "cts-wm-util",
-        // TODO(b/246550077): Remove once not hidden apis are submitted.
-        "framework-healthconnect.impl",
         "testng",
     ],
     min_sdk_version: "UpsideDownCake",
