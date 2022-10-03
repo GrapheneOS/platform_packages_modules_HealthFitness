@@ -120,9 +120,8 @@ public class HealthConnectManagerService extends SystemService {
     }
 
     /**
-     * Returns a list of permissions defined in the health permission controller APK,
-     *
-     * @code null} if it could not be retrieved.
+     * Returns a list of permissions defined in the health permission controller APK, {@code null}
+     * if it could not be retrieved.
      */
     @Nullable
     private static PermissionInfo[] getHealthPermissionControllerPermissionInfos(
@@ -132,7 +131,8 @@ public class HealthConnectManagerService extends SystemService {
         try {
             healthConnectControllerPackageName =
                     packageManager.getPermissionInfo(
-                            Constants.MANAGE_HEALTH_PERMISSIONS_NAME, /* flags= */ 0).packageName;
+                                    Constants.MANAGE_HEALTH_PERMISSIONS_NAME, /* flags= */ 0)
+                            .packageName;
             packageInfo =
                     packageManager.getPackageInfo(
                             healthConnectControllerPackageName,
