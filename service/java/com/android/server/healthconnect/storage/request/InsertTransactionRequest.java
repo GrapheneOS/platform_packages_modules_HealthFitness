@@ -17,15 +17,15 @@
 package com.android.server.healthconnect.storage.request;
 
 import android.annotation.NonNull;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 /**
  * Refines a request from what the user sent to a format that makes the most sense for the
@@ -38,9 +38,7 @@ import java.util.Map;
  * @hide
  */
 public class InsertTransactionRequest {
-    @NonNull
-    private final Map<Integer, List<RecordInternal<?>>> mInsertRequestsMap = new ArrayMap<>();
-
+    @NonNull private final List<UpsertTableRequest> mInsertRequests = new ArrayList<>();
     @NonNull private final List<String> mUUIDsInOrder = new ArrayList<>();
     @NonNull private final String mPackageName;
 
@@ -53,13 +51,13 @@ public class InsertTransactionRequest {
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
             StorageUtils.addNameBasedUUIDTo(recordInternal);
             mUUIDsInOrder.add(recordInternal.getUuid());
-            addRequest(recordInternal.getRecordType(), recordInternal);
+            addRequest(recordInternal);
         }
     }
 
     @NonNull
-    public Map<Integer, List<RecordInternal<?>>> getInsertRequestsMap() {
-        return mInsertRequestsMap;
+    public List<UpsertTableRequest> getUpsertRequests() {
+        return mInsertRequests;
     }
 
     @NonNull
@@ -72,9 +70,11 @@ public class InsertTransactionRequest {
         return mUUIDsInOrder;
     }
 
-    private void addRequest(
-            @RecordTypeIdentifier.RecordType int dataTypeName,
-            @NonNull RecordInternal<?> recordInternal) {
-        mInsertRequestsMap.getOrDefault(dataTypeName, new ArrayList<>()).add(recordInternal);
+    private void addRequest(@NonNull RecordInternal<?> recordInternal) {
+        RecordHelper<?> recordHelper =
+                RecordHelperProvider.getInstance().getRecordHelper(recordInternal.getRecordType());
+        Objects.requireNonNull(recordHelper);
+
+        mInsertRequests.add(recordHelper.getUpsertTableRequest(recordInternal));
     }
 }

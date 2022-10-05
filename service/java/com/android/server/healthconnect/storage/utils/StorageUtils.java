@@ -16,9 +16,13 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 import android.annotation.NonNull;
+import android.annotation.StringDef;
 import android.healthconnect.internal.datatypes.RecordInternal;
 
+import java.lang.annotation.Retention;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
@@ -28,6 +32,12 @@ import java.util.UUID;
  * @hide
  */
 public final class StorageUtils {
+    public static final String TEXT_NOT_NULL = "TEXT NOT NULL";
+    public static final String TEXT_NOT_NULL_UNIQUE = "TEXT NOT NULL UNIQUE";
+    public static final String TEXT_NULL = "TEXT";
+    public static final String INTEGER = "INTEGER";
+    public static final String PRIMARY_AUTOINCREMENT = "INTEGER PRIMARY KEY AUTOINCREMENT";
+
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
         byte[] clientIDBlob;
         if (recordInternal.getClientRecordId() == null
@@ -52,4 +62,8 @@ public final class StorageUtils {
             @NonNull RecordInternal<?> recordInternal, @NonNull String packageName) {
         recordInternal.setPackageName(packageName);
     }
+
+    @Retention(SOURCE)
+    @StringDef({TEXT_NOT_NULL, TEXT_NOT_NULL_UNIQUE, TEXT_NULL, INTEGER, PRIMARY_AUTOINCREMENT})
+    public @interface SQLiteType {}
 }

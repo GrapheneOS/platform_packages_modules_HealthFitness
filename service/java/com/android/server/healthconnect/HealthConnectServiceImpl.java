@@ -64,7 +64,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     Math.max(
                             MIN_BACKGROUND_EXECUTOR_THREADS,
                             Runtime.getRuntime().availableProcessors()),
-                    Runtime.getRuntime().availableProcessors(),
+                    Math.max(
+                            MIN_BACKGROUND_EXECUTOR_THREADS,
+                            Runtime.getRuntime().availableProcessors()),
                     KEEP_ALIVE_TIME,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());

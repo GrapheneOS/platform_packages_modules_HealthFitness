@@ -16,13 +16,24 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +43,7 @@ import java.util.Objects;
  * @hide
  */
 public abstract class RecordHelper<T extends RecordInternal<?>> {
-    private static final String PRIMARY_COLUMN_NAME = "row_id";
+    static final String PRIMARY_COLUMN_NAME = "row_id";
     private static final String UUID_COLUMN_NAME = "uuid";
     private static final String PACKAGE_NAME_COLUMN_NAME = "package_name";
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
@@ -41,8 +52,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
     private static final String MODEL_COLUMN_NAME = "model";
     private static final String DEVICE_TYPE_COLUMN_NAME = "device_type_column_name";
-    private static final String CREATE_TABLE_COMMAND = "CREATE TABLE IF NOT EXISTS ";
-    private final int mRecordIdentifier;
+    @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
     RecordHelper() {
         HelperFor annotation = this.getClass().getAnnotation(HelperFor.class);
@@ -50,27 +60,71 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         mRecordIdentifier = annotation.recordIdentifier();
     }
 
-    @NonNull
-    public final String getCreateTableCommand() {
-        final StringBuilder builder = new StringBuilder(CREATE_TABLE_COMMAND);
-        builder.append(getTableName());
-        builder.append(" (");
-        getColumnInfo()
-                .forEach(
-                        columnInfo -> {
-                            builder.append(columnInfo.first)
-                                    .append(" ")
-                                    .append(columnInfo.second)
-                                    .append(", ");
-                        });
-        builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
-        builder.append(")");
+    @RecordTypeIdentifier.RecordType
+    public int getRecordIdentifier() {
+        return mRecordIdentifier;
+    }
 
-        return builder.toString();
+    // Called on DB update. Inheriting classes should implement this if they need to add new
+    // columns.
+    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
+        // empty by default
+    }
+
+    /**
+     * Returns a requests representing the tables that should be created corresponding to this
+     * helper
+     */
+    @NonNull
+    public final CreateTableRequest getCreateTableRequest() {
+        return new CreateTableRequest(getMainTableName(), getColumnInfo())
+                .setChildTableRequests(getChildTableCreateRequests());
     }
 
     @NonNull
-    public final ContentValues getContentValuesFor(@NonNull T recordInternal) {
+    @SuppressWarnings("unchecked")
+    public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
+        return new UpsertTableRequest(getMainTableName(), getContentValues((T) recordInternal))
+                .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
+    }
+
+    /**
+     * Child classes should implement this if it wants to create additional tables, apart from the
+     * main table.
+     */
+    @NonNull
+    List<CreateTableRequest> getChildTableCreateRequests() {
+        return Collections.emptyList();
+    }
+
+    /** Returns the table name to be created corresponding to this helper */
+    @NonNull
+    abstract String getMainTableName();
+
+    /**
+     * This implementation should return the column names with which the table should be created.
+     *
+     * <p>NOTE: New columns can only be added via onUpgrade. Why? Consider what happens if a table
+     * already exists on the device
+     *
+     * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
+     */
+    @NonNull
+    abstract List<Pair<String, String>> getSpecificColumnInfo();
+
+    /**
+     * Child classes implementation should add the values of {@code recordInternal} that needs to be
+     * populated in the DB to {@code contentValues}.
+     */
+    abstract void populateContentValues(
+            @NonNull ContentValues contentValues, @NonNull T recordInternal);
+
+    List<UpsertTableRequest> getChildTableUpsertRequests(T record) {
+        return Collections.emptyList();
+    }
+
+    @NonNull
+    private ContentValues getContentValues(@NonNull T recordInternal) {
         ContentValues recordContentValues = new ContentValues();
 
         recordContentValues.put(UUID_COLUMN_NAME, recordInternal.getUuid());
@@ -89,20 +143,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return recordContentValues;
     }
 
-    public int getRecordIdentifier() {
-        return mRecordIdentifier;
-    }
-
-    // Called on DB update. Inheriting classes should implement this if they need to add new
-    // columns.
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
-        // empty by default
-    }
-
-    /** Returns the table name to be created corresponding to this helper */
-    @NonNull
-    public abstract String getTableName();
-
     /**
      * This implementation should return the column names with which the table should be created.
      *
@@ -112,54 +152,20 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
      */
     @NonNull
-    abstract List<Pair<String, SQLiteType>> getSpecificColumnInfo();
-
-    abstract void populateContentValues(
-            @NonNull ContentValues contentValues, @NonNull T recordInternal);
-
-    /**
-     * This implementation should return the column names with which the table should be created.
-     *
-     * <p>NOTE: New columns can only be added via onUpgrade. Why? Consider what happens if a table
-     * already exists on the device
-     *
-     * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
-     */
-    @NonNull
-    private List<Pair<String, SQLiteType>> getColumnInfo() {
-        ArrayList<Pair<String, SQLiteType>> columnInfo = new ArrayList<>();
-        columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, SQLiteType.PRIMARY_AUTOINCREMENT));
-        columnInfo.add(new Pair<>(UUID_COLUMN_NAME, SQLiteType.TEXT_NOT_NULL_UNIQUE));
-        columnInfo.add(new Pair<>(PACKAGE_NAME_COLUMN_NAME, SQLiteType.TEXT_NOT_NULL));
-        columnInfo.add(new Pair<>(LAST_MODIFIED_TIME_COLUMN_NAME, SQLiteType.INTEGER));
-        columnInfo.add(new Pair<>(CLIENT_RECORD_ID_COLUMN_NAME, SQLiteType.TEXT_NULL));
-        columnInfo.add(new Pair<>(CLIENT_RECORD_VERSION_COLUMN_NAME, SQLiteType.TEXT_NULL));
-        columnInfo.add(new Pair<>(MANUFACTURER_COLUMN_NAME, SQLiteType.TEXT_NULL));
-        columnInfo.add(new Pair<>(MODEL_COLUMN_NAME, SQLiteType.TEXT_NULL));
-        columnInfo.add(new Pair<>(DEVICE_TYPE_COLUMN_NAME, SQLiteType.INTEGER));
+    private List<Pair<String, String>> getColumnInfo() {
+        ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT));
+        columnInfo.add(new Pair<>(UUID_COLUMN_NAME, TEXT_NOT_NULL_UNIQUE));
+        columnInfo.add(new Pair<>(PACKAGE_NAME_COLUMN_NAME, TEXT_NOT_NULL));
+        columnInfo.add(new Pair<>(LAST_MODIFIED_TIME_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(CLIENT_RECORD_ID_COLUMN_NAME, TEXT_NULL));
+        columnInfo.add(new Pair<>(CLIENT_RECORD_VERSION_COLUMN_NAME, TEXT_NULL));
+        columnInfo.add(new Pair<>(MANUFACTURER_COLUMN_NAME, TEXT_NULL));
+        columnInfo.add(new Pair<>(MODEL_COLUMN_NAME, TEXT_NULL));
+        columnInfo.add(new Pair<>(DEVICE_TYPE_COLUMN_NAME, INTEGER));
 
         columnInfo.addAll(getSpecificColumnInfo());
 
         return columnInfo;
-    }
-
-    public enum SQLiteType {
-        TEXT_NOT_NULL("TEXT NOT NULL"),
-        TEXT_NOT_NULL_UNIQUE("TEXT NOT NULL UNIQUE"),
-        TEXT_NULL("TEXT"),
-        INTEGER("INTEGER"),
-        // Note: This is meant to be only used by this class
-        PRIMARY_AUTOINCREMENT("INTEGER PRIMARY KEY AUTOINCREMENT");
-
-        private final String text;
-
-        SQLiteType(final String text) {
-            this.text = text;
-        }
-
-        @Override
-        public String toString() {
-            return text;
-        }
     }
 }

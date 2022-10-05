@@ -22,7 +22,10 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.StepsRecord;
 import android.os.Parcel;
 
-/** @hide */
+/**
+ * @see StepsRecord
+ * @hide
+ */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
 public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecord> {
     private long mCount = INT_DEFAULT;

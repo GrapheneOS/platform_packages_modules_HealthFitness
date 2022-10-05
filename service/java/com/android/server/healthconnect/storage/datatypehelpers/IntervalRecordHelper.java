@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.healthconnect.internal.datatypes.IntervalRecordInternal;
@@ -49,12 +51,12 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
      */
     @Override
     @NonNull
-    final List<Pair<String, SQLiteType>> getSpecificColumnInfo() {
-        ArrayList<Pair<String, SQLiteType>> columnInfo = new ArrayList<>();
-        columnInfo.add(new Pair<>(START_TIME_COLUMN_NAME, SQLiteType.INTEGER));
-        columnInfo.add(new Pair<>(START_ZONE_OFFSET_COLUMN_NAME, SQLiteType.INTEGER));
-        columnInfo.add(new Pair<>(END_TIME_COLUMN_NAME, SQLiteType.INTEGER));
-        columnInfo.add(new Pair<>(END_ZONE_OFFSET_COLUMN_NAME, SQLiteType.INTEGER));
+    final List<Pair<String, String>> getSpecificColumnInfo() {
+        ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(START_TIME_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(START_ZONE_OFFSET_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(END_TIME_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(END_ZONE_OFFSET_COLUMN_NAME, INTEGER));
 
         columnInfo.addAll(getIntervalRecordColumnInfo());
 
@@ -85,5 +87,5 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
      * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
      */
     @NonNull
-    abstract List<Pair<String, SQLiteType>> getIntervalRecordColumnInfo();
+    abstract List<Pair<String, String>> getIntervalRecordColumnInfo();
 }

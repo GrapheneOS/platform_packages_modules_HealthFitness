@@ -59,6 +59,23 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.Device.Builder setType(int);
   }
 
+  public class HeartRateRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample> getSamples();
+  }
+
+  public static final class HeartRateRecord.Builder {
+    ctor public HeartRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample>);
+    method @NonNull public android.healthconnect.datatypes.HeartRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class HeartRateRecord.HeartRateSample {
+    ctor public HeartRateRecord.HeartRateSample(long, @NonNull java.time.Instant);
+    method public long getBeatsPerMinute();
+    method @NonNull public java.time.Instant getTime();
+  }
+
   public abstract class IntervalRecord extends android.healthconnect.datatypes.Record {
     method @NonNull public java.time.Instant getEndTime();
     method @NonNull public java.time.ZoneOffset getEndZoneOffset();

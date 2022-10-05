@@ -20,19 +20,12 @@ import android.annotation.NonNull;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper;
 import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
+import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * A class to handle all the DB transaction request from the clients. {@link TransactionManager}
@@ -42,18 +35,19 @@ import java.util.Objects;
  * @hide
  */
 public class TransactionManager {
-    private static TransactionManager sTransactionManager = null;
-
-    @NonNull private final HealthConnectDatabase mHealthConnectDatabase;
-    @NonNull private final Map<Integer, RecordHelper<?>> mRecordIDToHelperMap;
+    private static TransactionManager sTransactionManager;
+    private final HealthConnectDatabase mHealthConnectDatabase;
 
     private TransactionManager(@NonNull Context context) {
-        Map<Integer, RecordHelper<?>> recordIDToHelperMap = new ArrayMap<>();
-        recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_STEPS, new StepsRecordHelper());
+        mHealthConnectDatabase = new HealthConnectDatabase(context);
+    }
 
-        mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
-        mHealthConnectDatabase =
-                new HealthConnectDatabase(context, new ArrayList<>(mRecordIDToHelperMap.values()));
+    public static TransactionManager getInstance(@NonNull Context context) {
+        if (sTransactionManager == null) {
+            sTransactionManager = new TransactionManager(context);
+        }
+
+        return sTransactionManager;
     }
 
     /**
@@ -63,39 +57,25 @@ public class TransactionManager {
      * @return List of uids of the inserted {@link RecordInternal}, in the same order as they
      *     presented to {@code request}.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public List<String> insertAll(@NonNull InsertTransactionRequest request)
             throws SQLiteException {
-        SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase();
-        db.beginTransaction();
-        try {
-            request.getInsertRequestsMap()
-                    .forEach(
-                            ((recordIdentifier, records) -> {
-                                RecordHelper recordHelper =
-                                        mRecordIDToHelperMap.get(recordIdentifier);
-                                Objects.requireNonNull(recordHelper);
-                                records.forEach(
-                                        (record) -> {
-                                            db.insertOrThrow(
-                                                    recordHelper.getTableName(),
-                                                    null,
-                                                    recordHelper.getContentValuesFor(record));
-                                        });
-                            }));
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.beginTransaction();
+            try {
+                request.getUpsertRequests()
+                        .forEach((upsertTableRequest) -> insertRecord(db, upsertTableRequest));
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
 
-        return request.getUUIdsInOrder();
+            return request.getUUIdsInOrder();
+        }
     }
 
-    public static TransactionManager getInstance(@NonNull Context context) {
-        if (sTransactionManager == null) {
-            sTransactionManager = new TransactionManager(context);
-        }
-
-        return sTransactionManager;
+    private void insertRecord(SQLiteDatabase db, UpsertTableRequest request) {
+        long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
+        request.getChildTableRequests()
+                .forEach(childRequest -> insertRecord(db, request.withParentKey(rowId)));
     }
 }

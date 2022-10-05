@@ -17,9 +17,11 @@
 package android.healthconnect.internal.datatypes.utils;
 
 import android.annotation.NonNull;
+import android.healthconnect.datatypes.HeartRateRecord;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.StepsRecord;
+import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.StepsRecordInternal;
 import android.util.ArrayMap;
@@ -28,7 +30,7 @@ import java.util.Map;
 
 /** @hide */
 public final class RecordMapper {
-    private static final int NUM_ENTRIES = 1;
+    private static final int NUM_ENTRIES = 2;
     private static RecordMapper sRecordMapper;
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
@@ -38,10 +40,14 @@ public final class RecordMapper {
         mRecordIdToInternalRecordClassMap = new ArrayMap<>(NUM_ENTRIES);
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS, StepsRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE, HeartRateRecordInternal.class);
 
         mRecordIdToExternalRecordClassMap = new ArrayMap<>(NUM_ENTRIES);
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS, StepsRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE, HeartRateRecord.class);
     }
 
     @NonNull
