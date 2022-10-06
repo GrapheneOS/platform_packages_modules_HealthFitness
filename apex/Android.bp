@@ -62,6 +62,13 @@ bootclasspath_fragment {
     additional_stubs: [
         "android-non-updatable",
     ],
+    // The bootclasspath_fragments that provide APIs on which this depends.
+    fragments: [
+        {
+            apex: "com.android.art",
+            module: "art-bootclasspath-fragment",
+        },
+    ],
 }
 
 systemserverclasspath_fragment {
