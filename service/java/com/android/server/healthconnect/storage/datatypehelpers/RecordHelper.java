@@ -29,6 +29,8 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.AppInfoHelper;
+import com.android.server.healthconnect.storage.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
@@ -43,15 +45,14 @@ import java.util.Objects;
  * @hide
  */
 public abstract class RecordHelper<T extends RecordInternal<?>> {
-    static final String PRIMARY_COLUMN_NAME = "row_id";
+    public static final String PRIMARY_COLUMN_NAME = "row_id";
     private static final String UUID_COLUMN_NAME = "uuid";
     private static final String PACKAGE_NAME_COLUMN_NAME = "package_name";
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
-    private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
-    private static final String MODEL_COLUMN_NAME = "model";
-    private static final String DEVICE_TYPE_COLUMN_NAME = "device_type_column_name";
+    private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
+    private static final String APP_INFO_ID_COLUMN_NAME = "app_info_id";
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
     RecordHelper() {
@@ -78,6 +79,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     @NonNull
     public final CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(getMainTableName(), getColumnInfo())
+                .addForeignKey(
+                        DeviceInfoHelper.getInstance().getTableName(),
+                        Collections.singletonList(DEVICE_INFO_ID_COLUMN_NAME),
+                        Collections.singletonList(PRIMARY_COLUMN_NAME))
+                .addForeignKey(
+                        AppInfoHelper.getInstance().getTableName(),
+                        Collections.singletonList(APP_INFO_ID_COLUMN_NAME),
+                        Collections.singletonList(PRIMARY_COLUMN_NAME))
                 .setChildTableRequests(getChildTableCreateRequests());
     }
 
@@ -134,9 +143,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         recordContentValues.put(CLIENT_RECORD_ID_COLUMN_NAME, recordInternal.getClientRecordId());
         recordContentValues.put(
                 CLIENT_RECORD_VERSION_COLUMN_NAME, recordInternal.getClientRecordVersion());
-        recordContentValues.put(MANUFACTURER_COLUMN_NAME, recordInternal.getManufacturer());
-        recordContentValues.put(MODEL_COLUMN_NAME, recordInternal.getModel());
-        recordContentValues.put(DEVICE_TYPE_COLUMN_NAME, recordInternal.getDeviceType());
+        recordContentValues.put(DEVICE_INFO_ID_COLUMN_NAME, recordInternal.getDeviceInfoId());
+        recordContentValues.put(APP_INFO_ID_COLUMN_NAME, recordInternal.getAppInfoId());
 
         populateContentValues(recordContentValues, recordInternal);
 
@@ -160,9 +168,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         columnInfo.add(new Pair<>(LAST_MODIFIED_TIME_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(CLIENT_RECORD_ID_COLUMN_NAME, TEXT_NULL));
         columnInfo.add(new Pair<>(CLIENT_RECORD_VERSION_COLUMN_NAME, TEXT_NULL));
-        columnInfo.add(new Pair<>(MANUFACTURER_COLUMN_NAME, TEXT_NULL));
-        columnInfo.add(new Pair<>(MODEL_COLUMN_NAME, TEXT_NULL));
-        columnInfo.add(new Pair<>(DEVICE_TYPE_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(DEVICE_INFO_ID_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(APP_INFO_ID_COLUMN_NAME, INTEGER));
 
         columnInfo.addAll(getSpecificColumnInfo());
 

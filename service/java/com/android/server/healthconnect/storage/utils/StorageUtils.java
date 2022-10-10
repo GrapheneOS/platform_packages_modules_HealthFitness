@@ -37,6 +37,8 @@ public final class StorageUtils {
     public static final String TEXT_NULL = "TEXT";
     public static final String INTEGER = "INTEGER";
     public static final String PRIMARY_AUTOINCREMENT = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    public static final String PRIMARY = "INTEGER PRIMARY KEY";
+    public static final String BLOB = "BLOB";
 
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
         byte[] clientIDBlob;
@@ -64,6 +66,13 @@ public final class StorageUtils {
     }
 
     @Retention(SOURCE)
-    @StringDef({TEXT_NOT_NULL, TEXT_NOT_NULL_UNIQUE, TEXT_NULL, INTEGER, PRIMARY_AUTOINCREMENT})
+    @StringDef({
+        TEXT_NOT_NULL,
+        TEXT_NOT_NULL_UNIQUE,
+        TEXT_NULL,
+        INTEGER,
+        PRIMARY_AUTOINCREMENT,
+        BLOB
+    })
     public @interface SQLiteType {}
 }

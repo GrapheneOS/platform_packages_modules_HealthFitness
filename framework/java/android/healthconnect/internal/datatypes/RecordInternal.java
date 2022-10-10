@@ -45,6 +45,8 @@ public abstract class RecordInternal<T extends Record> {
     private String mManufacturer;
     private String mModel;
     private int mDeviceType;
+    private long mDeviceInfoId = INT_DEFAULT;
+    private long mAppInfoId = INT_DEFAULT;
 
     RecordInternal() {
         android.healthconnect.datatypes.Identifier annotation =
@@ -181,6 +183,26 @@ public abstract class RecordInternal<T extends Record> {
     @NonNull
     public RecordInternal<T> setDeviceType(@Device.DeviceType int deviceType) {
         this.mDeviceType = deviceType;
+        return this;
+    }
+
+    public long getDeviceInfoId() {
+        return mDeviceInfoId;
+    }
+
+    @NonNull
+    public RecordInternal<T> setDeviceInfoId(long deviceInfoId) {
+        this.mDeviceInfoId = deviceInfoId;
+        return this;
+    }
+
+    public long getAppInfoId() {
+        return mAppInfoId;
+    }
+
+    @NonNull
+    public RecordInternal<T> setAppInfoId(long appInfoId) {
+        this.mAppInfoId = appInfoId;
         return this;
     }
 

@@ -18,11 +18,13 @@ package com.android.server.healthconnect.storage;
 
 import android.annotation.NonNull;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.internal.datatypes.RecordInternal;
 
 import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
 import java.util.List;
@@ -36,18 +38,30 @@ import java.util.List;
  */
 public class TransactionManager {
     private static TransactionManager sTransactionManager;
+    private Context mContext;
     private final HealthConnectDatabase mHealthConnectDatabase;
 
     private TransactionManager(@NonNull Context context) {
         mHealthConnectDatabase = new HealthConnectDatabase(context);
+        mContext = context;
     }
 
     public static TransactionManager getInstance(@NonNull Context context) {
         if (sTransactionManager == null) {
             sTransactionManager = new TransactionManager(context);
+            DeviceInfoHelper.getInstance().populateDeviceInfoMap();
+            AppInfoHelper.getInstance().populateAppInfoMap();
         }
 
         return sTransactionManager;
+    }
+
+    public static TransactionManager getInitializedInstance() {
+        return sTransactionManager;
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     /**
@@ -71,6 +85,34 @@ public class TransactionManager {
 
             return request.getUUIdsInOrder();
         }
+    }
+
+    /**
+     * Inserts record into the table in {@code request} into the HealthConnect database.
+     *
+     * @param request an insert request.
+     * @return rowId of the inserted record.
+     */
+    public long insert(@NonNull UpsertTableRequest request) {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            return db.insertOrThrow(request.getTable(), null, request.getContentValues());
+        }
+    }
+
+    /**
+     * Queries the table in {@code request} from the HealthConnect database.
+     *
+     * @param request read request.
+     * @return cursor of the query for the columns in request It is calling method's responsibility
+     *     to close the cursor.
+     */
+    public Cursor readTable(SQLiteDatabase db, @NonNull ReadTableRequest request) {
+        return db.query(request.getTable(), request.getColumns(), null, null, null, null, null);
+    }
+
+    /** Note: it is the responsibility of the requester to manage and close {@code db} */
+    public SQLiteDatabase getReadableDb() {
+        return mHealthConnectDatabase.getReadableDatabase();
     }
 
     private void insertRecord(SQLiteDatabase db, UpsertTableRequest request) {

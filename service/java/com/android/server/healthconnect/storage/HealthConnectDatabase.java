@@ -46,6 +46,8 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(@NonNull SQLiteDatabase db) {
+        createTable(db, DeviceInfoHelper.getInstance().getCreateTableRequest());
+        createTable(db, AppInfoHelper.getInstance().getCreateTableRequest());
         mRecordHelpers.forEach(
                 recordHelper -> {
                     createTable(db, recordHelper.getCreateTableRequest());
@@ -58,6 +60,8 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
                 recordHelper -> {
                     recordHelper.onUpgrade(newVersion, db);
                 });
+        DeviceInfoHelper.getInstance().onUpgrade(newVersion, db);
+        AppInfoHelper.getInstance().onUpgrade(newVersion, db);
     }
 
     @Override

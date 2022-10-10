@@ -19,6 +19,8 @@ package com.android.server.healthconnect.storage.request;
 import android.annotation.NonNull;
 import android.healthconnect.internal.datatypes.RecordInternal;
 
+import com.android.server.healthconnect.storage.AppInfoHelper;
+import com.android.server.healthconnect.storage.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -51,6 +53,8 @@ public class InsertTransactionRequest {
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
             StorageUtils.addNameBasedUUIDTo(recordInternal);
             mUUIDsInOrder.add(recordInternal.getUuid());
+            DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);
+            AppInfoHelper.getInstance().populateAppInfoId(recordInternal);
             addRequest(recordInternal);
         }
     }
