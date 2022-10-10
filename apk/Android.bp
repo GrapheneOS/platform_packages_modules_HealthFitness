@@ -37,7 +37,7 @@ android_app {
     rename_resources_package: false,
     updatable: true,
     certificate: ":com.android.healthconnect.controller.certificate",
-
+    additional_manifests: ["HealthPermissionsManifest.xml"],
     srcs: [":healthConnectController-sources"],
 
     libs: [

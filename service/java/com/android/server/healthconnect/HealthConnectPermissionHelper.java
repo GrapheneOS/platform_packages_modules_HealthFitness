@@ -36,9 +36,9 @@ import java.util.ArrayList;
 /** A handler for HealthConnect permission-related logic. */
 final class HealthConnectPermissionHelper {
 
-    private Context mContext;
-    private PackageManager mPackageManager;
-    private Set<String> mHealthPermissions;
+    private final Context mContext;
+    private final PackageManager mPackageManager;
+    private final Set<String> mHealthPermissions;
 
     /**
      * Constructs a {@link HealthConnectPermissionHelper}.
