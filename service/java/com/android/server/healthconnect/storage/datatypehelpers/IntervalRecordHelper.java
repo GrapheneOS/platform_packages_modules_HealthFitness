@@ -35,7 +35,7 @@ import java.util.List;
  * @hide
  */
 abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends RecordHelper<T> {
-    private static final String START_TIME_COLUMN_NAME = "start_time";
+    protected static final String START_TIME_COLUMN_NAME = "start_time";
     private static final String START_ZONE_OFFSET_COLUMN_NAME = "start_zone_offset";
     private static final String END_TIME_COLUMN_NAME = "end_time";
     private static final String END_ZONE_OFFSET_COLUMN_NAME = "end_zone_offset";

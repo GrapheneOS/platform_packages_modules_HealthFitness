@@ -1,5 +1,7 @@
 package android.healthconnect.aidl;
 
+import android.healthconnect.aidl.AggregateDataRequestParcel;
+import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
@@ -9,6 +11,7 @@ import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
+import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
@@ -42,6 +45,19 @@ interface IHealthConnectService {
         String packageName,
         in RecordsParcel recordsParcel,
         in IInsertRecordsResponseCallback callback);
+
+    /**
+     * Returns aggregation results based on the {@code request} into the HealthConnect database.
+     *
+     * @param packageName name of the package querying aggregate.
+     * @param request represents the request using which the aggregation is to be performed.
+     * @param callback Callback to receive result of performing this operation.
+     * {@hide}
+     */
+    void aggregateRecords(
+        String packageName,
+        in AggregateDataRequestParcel request,
+        in IAggregateRecordsResponseCallback callback);
 
     /**
      * Reads from the HealthConnect database.

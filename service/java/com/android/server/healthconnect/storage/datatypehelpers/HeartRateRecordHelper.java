@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
@@ -23,11 +26,16 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.utils.SqlJoin;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,12 +54,46 @@ public class HeartRateRecordHelper
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     @Override
-    String getMainTableName() {
+    public final AggregateRecordsResponse.AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case HEART_RATE_RECORD_BPM_MAX:
+            case HEART_RATE_RECORD_BPM_MIN:
+                return new AggregateRecordsResponse.AggregateResult<>(
+                        results.getLong(results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME)));
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    final String getMainTableName() {
         return TABLE_NAME;
     }
 
     @Override
-    List<Pair<String, String>> getSeriesRecordColumnInfo() {
+    final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case HEART_RATE_RECORD_BPM_MAX:
+            case HEART_RATE_RECORD_BPM_MIN:
+                return new AggregateParams(
+                                SERIES_TABLE_NAME,
+                                Collections.singletonList(BEATS_PER_MINUTE_COLUMN_NAME),
+                                START_TIME_COLUMN_NAME)
+                        .setJoin(
+                                new SqlJoin(
+                                        SERIES_TABLE_NAME,
+                                        TABLE_NAME,
+                                        PARENT_KEY_COLUMN_NAME,
+                                        PRIMARY_COLUMN_NAME));
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    final List<Pair<String, String>> getSeriesRecordColumnInfo() {
         List<Pair<String, String>> columnInfo = new ArrayList<>(NUM_LOCAL_COLUMNS);
         columnInfo.add(new Pair<>(BEATS_PER_MINUTE_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(EPOCH_MILLIS_COLUMN_NAME, INTEGER));
@@ -59,7 +101,7 @@ public class HeartRateRecordHelper
     }
 
     @Override
-    String getSeriesDataTableName() {
+    final String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
     }
 
@@ -79,7 +121,7 @@ public class HeartRateRecordHelper
     }
 
     @Override
-    void populateSampleTo(
+    final void populateSampleTo(
             ContentValues contentValues, HeartRateRecordInternal.HeartRateSample heartRateSample) {
         contentValues.put(BEATS_PER_MINUTE_COLUMN_NAME, heartRateSample.getBeatsPerMinute());
         contentValues.put(EPOCH_MILLIS_COLUMN_NAME, heartRateSample.getEpochMillis());

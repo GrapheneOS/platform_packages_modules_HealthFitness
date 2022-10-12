@@ -17,11 +17,15 @@ package android.healthconnect.cts;
 
 import static android.Manifest.permission.CAMERA;
 import static android.healthconnect.HealthConnectManager.isHealthPermission;
+import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
+import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
@@ -176,6 +180,94 @@ public class HealthConnectManagerTest {
         String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
         TestUtils.verifyDeleteRecords(StepsRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, StepsRecord.class);
+    }
+
+    @Test
+    public void testBpmAggregation_timeRange_all() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        getHeartRateRecord(71), getHeartRateRecord(72), getHeartRateRecord(73));
+        AggregateRecordsResponse<Long> response =
+                getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                .build())
+                                .addAggregationType(BPM_MAX)
+                                .addAggregationType(BPM_MIN)
+                                .build(),
+                        records);
+        assertThat(response.get(BPM_MAX)).isNotNull();
+        assertThat(response.get(BPM_MAX)).isEqualTo(73);
+        assertThat(response.get(BPM_MIN)).isNotNull();
+        assertThat(response.get(BPM_MIN)).isEqualTo(71);
+    }
+
+    @Test
+    public void testBpmAggregation_timeRange_not_present() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        getHeartRateRecord(71), getHeartRateRecord(72), getHeartRateRecord(73));
+        AggregateRecordsResponse<Long> response =
+                getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.now().plusMillis(1000),
+                                                        Instant.now().plusMillis(2000))
+                                                .build())
+                                .addAggregationType(BPM_MAX)
+                                .addAggregationType(BPM_MIN)
+                                .build(),
+                        records);
+        assertThat(response.get(BPM_MAX)).isEqualTo(0);
+        assertThat(response.get(BPM_MIN)).isEqualTo(0);
+    }
+
+    @Test
+    public void testBpmAggregation_withDataOrigin_correct() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<Record> records =
+                Arrays.asList(
+                        getHeartRateRecord(71), getHeartRateRecord(72), getHeartRateRecord(73));
+        AggregateRecordsResponse<Long> response =
+                getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                .build())
+                                .addAggregationType(BPM_MAX)
+                                .addAggregationType(BPM_MIN)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        records);
+        assertThat(response.get(BPM_MAX)).isNotNull();
+        assertThat(response.get(BPM_MAX)).isEqualTo(73);
+        assertThat(response.get(BPM_MIN)).isNotNull();
+        assertThat(response.get(BPM_MIN)).isEqualTo(71);
+    }
+
+    @Test
+    public void testBpmAggregation_withDataOrigin_incorrect() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        getHeartRateRecord(71), getHeartRateRecord(72), getHeartRateRecord(73));
+        AggregateRecordsResponse<Long> response =
+                getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                .build())
+                                .addAggregationType(BPM_MAX)
+                                .addAggregationType(BPM_MIN)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder().setPackageName("abc").build())
+                                .build(),
+                        records);
+        assertThat(response.get(BPM_MAX)).isEqualTo(0);
+        assertThat(response.get(BPM_MIN)).isEqualTo(0);
     }
 
     @Test
@@ -575,6 +667,30 @@ public class HealthConnectManagerTest {
         assertThat(responseException.get().getClass()).isEqualTo(IllegalArgumentException.class);
     }
 
+    // TODO(b/257796081): Move read tests to respective record type classes, verify that the correct
+    // details are being fetched, and add tests for all record type
+
+    private <T> AggregateRecordsResponse<T> getAggregateResponse(
+            AggregateRecordsRequest<T> request, List<Record> recordsToInsert)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        TestUtils.insertRecords(recordsToInsert);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<AggregateRecordsResponse<T>> response = new AtomicReference<>();
+        service.aggregate(
+                request,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    response.set(result);
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+
+        return response.get();
+    }
+
     private void testRead_StepsRecordIds() throws InterruptedException {
         List<Record> recordList =
                 Arrays.asList(TestUtils.getStepsRecord(), TestUtils.getStepsRecord());
@@ -755,6 +871,21 @@ public class HealthConnectManagerTest {
         }
         return new HeartRateRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Instant.now(), heartRateSamples)
+                .build();
+    }
+
+    private HeartRateRecord getHeartRateRecord(int heartRate) {
+        HeartRateRecord.HeartRateSample heartRateSample =
+                new HeartRateRecord.HeartRateSample(heartRate, Instant.now());
+        ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
+        heartRateSamples.add(heartRateSample);
+        heartRateSamples.add(heartRateSample);
+
+        return new HeartRateRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        heartRateSamples)
                 .build();
     }
 

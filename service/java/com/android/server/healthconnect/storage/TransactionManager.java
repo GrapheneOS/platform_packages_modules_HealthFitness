@@ -25,14 +25,21 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.Constants;
+import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.Slog;
+import android.util.ArrayMap;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.request.AggregateTableRequest;
+import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -41,6 +48,7 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -145,6 +153,37 @@ public class TransactionManager {
                 db.endTransaction();
             }
         }
+    }
+
+    /**
+     * Handles the aggregation requests in {@code request}
+     *
+     * @param request an aggregate request.
+     * @return A map of {@link AggregationType.AggregationTypeIdentifier} -> {@link
+     *     AggregateRecordsResponse.AggregateResult}.
+     */
+    public Map<Integer, AggregateRecordsResponse.AggregateResult> getAggregations(
+            AggregateTransactionRequest request) {
+        SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
+        List<AggregateTableRequest> aggregateTableRequests = request.getAggregateTableRequests();
+        Map<Integer, AggregateRecordsResponse.AggregateResult> result =
+                new ArrayMap<>(aggregateTableRequests.size());
+        aggregateTableRequests.forEach(
+                (aggregateTableRequest) -> {
+                    try (Cursor cursor =
+                            db.rawQuery(aggregateTableRequest.getAggregationCommand(), null)) {
+
+                        if (cursor.moveToFirst()) {
+                            result.put(
+                                    aggregateTableRequest
+                                            .getDataAggregation()
+                                            .getAggregationTypeIdentifier(),
+                                    aggregateTableRequest.getAggregateResult(cursor));
+                        }
+                    }
+                });
+
+        return result;
     }
 
     /**
