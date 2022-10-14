@@ -58,7 +58,7 @@ import java.util.List;
  * Additionally, this test can run as a presubmit on the main (master) branch where modules are
  * always built from source.
  *
- * <p><b>Build/Install/Run:</b> atest HealthConnectPermissionWithManagePermissionsIntegrationTests
+ * <p><b>Build/Install/Run:</b> {@code atest HealthConnectWithManagePermissionsIntegrationTests}.
  */
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectWithManagePermissionsTest {

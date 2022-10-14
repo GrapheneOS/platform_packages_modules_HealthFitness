@@ -38,8 +38,7 @@ import org.junit.runner.RunWith;
  * behaves as expected for holders of the permission, please see {@link
  * android.healthconnect.tests.withmanagepermissions.HealthConnectWithManagePermissionsTest}.
  *
- * <p><b>Build/Install/Run:</b> atest
- * HealthConnectPermissionWithoutManagePermissionsIntegrationTests
+ * <p><b>Build/Install/Run:</b> {@code atest HealthConnectWithoutManagePermissionsIntegrationTests}.
  */
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectWithoutManagePermissionsTest {
