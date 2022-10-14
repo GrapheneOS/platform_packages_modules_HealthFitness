@@ -19,11 +19,10 @@ package android.healthconnect.tests.withoutmanagepermissions;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
+import android.healthconnect.HealthConnectManager;
+import android.healthconnect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
-
-import android.healthconnect.HealthConnectManager;
-
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
@@ -43,8 +42,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectWithoutManagePermissionsTest {
     private static final String DEFAULT_APP_PACKAGE = "android.healthconnect.test.app";
-    // TODO(b/251787336): Modify these to actual health permissions once they have been defined.
-    private static final String DEFAULT_PERM = "android.permission.health.TEST_PERM";
+    private static final String DEFAULT_PERM = HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
 
     private Context mContext;
     private HealthConnectManager mHealthConnectManager;

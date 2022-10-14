@@ -17,26 +17,13 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.android.healthconnect.controller">
-    <!-- TODO(b/251787336): Remove these once we have actual permissions defined. Be sure to also
-           replace the references to these in tests. -->
-    <permission
-        android:name="android.permission.health.TEST_PERM"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <permission
-        android:name="android.permission.health.TEST_PERM_2"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <permission
-        android:name="android.permission.health.TEST_PERM_3"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <!-- TODO(b/249531235): update the labels and descriptions once UX writing is finalised -->
+    <!-- TODO(b/249531235): update labels and descriptions once UX writing is finalised -->
+    <!-- TODO(b/255341635): add documentation comments -->
 
     <!-- Read permissions for activities -->
+    <!-- Allows an application to read calories burnt.
+         <p>Protection level: dangerous
+     -->
     <permission
         android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"
         android:label="@string/permlab_readCaloriesBurned"

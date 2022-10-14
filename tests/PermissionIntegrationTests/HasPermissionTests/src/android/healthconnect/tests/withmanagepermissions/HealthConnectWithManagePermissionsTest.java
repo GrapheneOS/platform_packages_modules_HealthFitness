@@ -16,24 +16,21 @@
 
 package android.healthconnect.tests.withmanagepermissions;
 
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
 
-import android.content.Context;
 import android.Manifest;
-import android.os.Build;
-
-import androidx.test.InstrumentationRegistry;
-
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.healthconnect.Constants;
 import android.healthconnect.HealthConnectManager;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageInfo;
+import android.healthconnect.HealthPermissions;
 
+import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
@@ -64,10 +61,9 @@ import java.util.List;
 public class HealthConnectWithManagePermissionsTest {
     private static final String DEFAULT_APP_PACKAGE = "android.healthconnect.test.app";
     private static final String INEXISTENT_APP_PACKAGE = "my.invalid.package.name";
-    // TODO(b/251787336): Modify these to actual health permissions once they have been defined.
-    private static final String DEFAULT_PERM = "android.permission.health.TEST_PERM";
-    private static final String DEFAULT_PERM_2 = "android.permission.health.TEST_PERM_2";
-    private static final String UNDECLARED_PERM = "android.permission.health.TEST_PERM_3";
+    private static final String DEFAULT_PERM = HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
+    private static final String DEFAULT_PERM_2 = HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
+    private static final String UNDECLARED_PERM = HealthPermissions.READ_DISTANCE;
     private static final String INVALID_PERM = "android.permission.health.MY_INVALID_PERM";
     private static final String NON_HEALTH_PERM = Manifest.permission.ACCESS_COARSE_LOCATION;
 
