@@ -20,11 +20,13 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.healthconnect.internal.datatypes.SeriesRecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,10 +65,26 @@ abstract class SeriesRecordHelper<
         return requests;
     }
 
+    /** Returns the INNER JOIN clause for querying from the table for series datatype */
+    @Override
+    final SqlJoin getInnerJoinFoReadRequest() {
+        return new SqlJoin(
+                getMainTableName(),
+                getSeriesDataTableName(),
+                PRIMARY_COLUMN_NAME,
+                PARENT_KEY_COLUMN_NAME);
+    }
+
     @Override
     final void populateSpecificContentValues(
             @NonNull ContentValues contentValues, @NonNull T record) {
         // Empty as we don't want to populate any additional in the main table
+    }
+
+    /** Populates record with datatype specific details */
+    @Override
+    final void populateSpecificRecordValue(@NonNull Cursor cursor, @NonNull T record) {
+        populateSpecificValues(cursor, record);
     }
 
     /**
@@ -89,6 +107,9 @@ abstract class SeriesRecordHelper<
     /** Returns the table name required to store the series data */
     @NonNull
     abstract String getSeriesDataTableName();
+
+    /** Populates the {@code record} with values specific to dataytpe */
+    abstract void populateSpecificValues(@NonNull Cursor cursor, T record);
 
     /** Puts the {@code sample} to the {@code contentValues} */
     abstract void populateSampleTo(@NonNull ContentValues contentValues, @NonNull U sample);

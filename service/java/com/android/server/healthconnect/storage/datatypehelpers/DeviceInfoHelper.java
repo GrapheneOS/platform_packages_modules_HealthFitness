@@ -21,6 +21,9 @@ import static android.healthconnect.Constants.DEFAULT_LONG;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -98,6 +101,8 @@ public class DeviceInfoHelper {
     private static DeviceInfoHelper sDeviceInfoHelper;
     /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
     private Map<DeviceInfo, Long> mDeviceInfoMap;
+    /** Map to store deviceInfoId -> DeviceInfo mapping for populating record for read */
+    private final Map<Long, DeviceInfo> mIdDeviceInfoMap = new ArrayMap<>();
 
     public static DeviceInfoHelper getInstance() {
         if (sDeviceInfoHelper == null) {
@@ -133,26 +138,40 @@ public class DeviceInfoHelper {
         if (rowId == DEFAULT_LONG) {
             rowId = insertDeviceInfoAndGetRowId(manufacturer, model, deviceType);
             mDeviceInfoMap.put(deviceInfo, rowId);
+            mIdDeviceInfoMap.put(rowId, deviceInfo);
         }
         recordInternal.setDeviceInfoId(rowId);
     }
 
     public void populateDeviceInfoMap() {
         mDeviceInfoMap = new ArrayMap<>();
-        try (SQLiteDatabase db = TransactionManager.getInitializedInstance().getReadableDb();
-                Cursor cursor =
-                        TransactionManager.getInitializedInstance()
-                                .read(db, new ReadTableRequest(TABLE_NAME))) {
+        final TransactionManager transactionManager = TransactionManager.getInitializedInstance();
+        try (SQLiteDatabase db = transactionManager.getReadableDb();
+                Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
-                long rowId =
-                        cursor.getLong(cursor.getColumnIndex(RecordHelper.PRIMARY_COLUMN_NAME));
-                String manufacturer =
-                        cursor.getString(cursor.getColumnIndex(MANUFACTURER_COLUMN_NAME));
-                String model = cursor.getString(cursor.getColumnIndex(MODEL_COLUMN_NAME));
-                int deviceType = cursor.getInt(cursor.getColumnIndex(DEVICE_TYPE_COLUMN_NAME));
+                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                String manufacturer = getCursorString(cursor, MANUFACTURER_COLUMN_NAME);
+                String model = getCursorString(cursor, MODEL_COLUMN_NAME);
+                int deviceType = getCursorInt(cursor, DEVICE_TYPE_COLUMN_NAME);
                 DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
                 mDeviceInfoMap.put(deviceInfo, rowId);
+                mIdDeviceInfoMap.put(rowId, deviceInfo);
             }
+        }
+    }
+
+    /**
+     * Populates record with manufacturer, model and deviceType values
+     *
+     * @param deviceInfoId rowId from {@code device_info_table }
+     * @param record The record to be populated with values
+     */
+    public void populateRecordWithValue(long deviceInfoId, @NonNull RecordInternal<?> record) {
+        DeviceInfo deviceInfo = mIdDeviceInfoMap.get(deviceInfoId);
+        if (deviceInfo != null) {
+            record.setDeviceType(deviceInfo.mDeviceType);
+            record.setManufacturer(deviceInfo.mManufacturer);
+            record.setModel(deviceInfo.mModel);
         }
     }
 

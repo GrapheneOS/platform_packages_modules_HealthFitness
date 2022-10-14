@@ -27,6 +27,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
 import java.util.List;
@@ -80,6 +81,20 @@ public class TransactionManager {
             }
 
             return request.getUUIdsInOrder();
+        }
+    }
+
+    /**
+     * Reads the records {@link RecordInternal} stored in the HealthConnect database.
+     *
+     * @param request a read request.
+     * @return List of records read {@link RecordInternal} from table based on ids.
+     */
+    public List<RecordInternal<?>> readRecords(@NonNull ReadTransactionRequest request)
+            throws SQLiteException {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
+                Cursor cursor = read(db, request.getReadRequest())) {
+            return request.getInternalRecords(cursor);
         }
     }
 

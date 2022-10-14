@@ -30,8 +30,12 @@ import android.healthconnect.HealthPermissions;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
+import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
+import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.internal.datatypes.RecordInternal;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.Log;
@@ -39,6 +43,7 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
+import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 
 import java.util.HashSet;
 import java.util.List;
@@ -147,6 +152,38 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
+     * Read records {@code recordsParcel} from HealthConnect database.
+     *
+     * @param packageName packageName of calling app.
+     * @param request ReadRecordsRequestParcel is parcel for the request object containing {@link
+     *     RecordIdFiltersParcel}.
+     * @param callback Callback to receive result of performing this operation. The records are
+     *     returned in {@link RecordsParcel} . In case of an error or a permission failure the
+     *     HealthConnect service, {@link IReadRecordsResponseCallback#onError} will be invoked with
+     *     a {@link HealthConnectExceptionParcel}.
+     */
+    @Override
+    public void readRecords(
+            @NonNull String packageName,
+            @NonNull ReadRecordsRequestParcel request,
+            @NonNull IReadRecordsResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        List<RecordInternal<?>> recordInternalList =
+                                mTransactionManager.readRecords(
+                                        new ReadTransactionRequest(packageName, request));
+                        callback.onResult(new RecordsParcel(recordInternalList));
+                    } catch (SQLiteException sqLiteException) {
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception e) {
+                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
      * Returns a set of health permissions defined within the module and belonging to {@link
      * HealthPermissions.HEALTH_PERMISSION_GROUP}.
      *
@@ -229,7 +266,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.toString())));
+                            new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IReadRecordsResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.getMessage())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }

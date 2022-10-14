@@ -22,6 +22,9 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -99,6 +102,9 @@ public class AppInfoHelper {
      */
     private Map<String, AppInfo> mAppInfoMap;
 
+    /** Map to store appInfoId -> packageName mapping for populating record for read */
+    private final Map<Long, String> mIdPackageNameMap = new ArrayMap<>();
+
     private AppInfoHelper() {}
 
     public static AppInfoHelper getInstance() {
@@ -139,17 +145,27 @@ public class AppInfoHelper {
     public void populateAppInfoMap() {
         mAppInfoMap = new ArrayMap<>();
         final TransactionManager transactionManager = TransactionManager.getInitializedInstance();
-        try (SQLiteDatabase db = TransactionManager.getInitializedInstance().getReadableDb();
+        try (SQLiteDatabase db = transactionManager.getReadableDb();
                 Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
-                long rowId =
-                        cursor.getLong(cursor.getColumnIndex(RecordHelper.PRIMARY_COLUMN_NAME));
-                String packageName = cursor.getString(cursor.getColumnIndex(PACKAGE_COLUMN_NAME));
-                String appName = cursor.getString(cursor.getColumnIndex(APPLICATION_COLUMN_NAME));
-                byte[] icon = cursor.getBlob(cursor.getColumnIndex(APP_ICON_COLUMN_NAME));
+                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
+                String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
+                byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
                 mAppInfoMap.put(packageName, new AppInfo(rowId, appName, icon));
+                mIdPackageNameMap.put(rowId, packageName);
             }
         }
+    }
+
+    /**
+     * Populates record with package name
+     *
+     * @param appInfoId rowId from {@code application_info_table }
+     * @param record The record to be populated with package name
+     */
+    public void populateRecordWithValue(long appInfoId, @NonNull RecordInternal<?> record) {
+        record.setPackageName(mIdPackageNameMap.get(appInfoId));
     }
 
     // Called on DB update.
@@ -201,6 +217,7 @@ public class AppInfoHelper {
                                         TABLE_NAME, getContentValues(packageName, appInfo)));
         appInfo.setId(rowId);
         mAppInfoMap.put(packageName, appInfo);
+        mIdPackageNameMap.put(rowId, packageName);
         return appInfo;
     }
 

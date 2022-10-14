@@ -16,9 +16,11 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.StepsRecordInternal;
 import android.util.Pair;
@@ -43,6 +45,12 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
     }
 
     @Override
+    void populateSpecificRecordValue(
+            @NonNull Cursor cursor, @NonNull StepsRecordInternal recordInternal) {
+        recordInternal.setCount(getCursorLong(cursor, COUNT_COLUMN_NAME));
+    }
+
+    @Override
     void populateSpecificContentValues(
             @NonNull ContentValues contentValues, @NonNull StepsRecordInternal stepsRecord) {
         contentValues.put(COUNT_COLUMN_NAME, stepsRecord.getCount());
@@ -50,7 +58,7 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
 
     @Override
     @NonNull
-    protected List<Pair<String, String>> getIntervalRecordColumnInfo() {
+    List<Pair<String, String>> getIntervalRecordColumnInfo() {
         return Collections.singletonList(new Pair<>(COUNT_COLUMN_NAME, INTEGER));
     }
 }

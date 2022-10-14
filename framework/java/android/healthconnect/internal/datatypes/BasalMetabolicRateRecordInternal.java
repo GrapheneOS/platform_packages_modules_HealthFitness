@@ -49,6 +49,10 @@ public final class BasalMetabolicRateRecordInternal
         return mBasalMetabolicRate;
     }
 
+    public void setBasalMetabolicRate(double basalMetabolicRate) {
+        mBasalMetabolicRate = basalMetabolicRate;
+    }
+
     @NonNull
     @Override
     public BasalMetabolicRateRecord toExternalRecord() {

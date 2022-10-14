@@ -15,6 +15,7 @@ package android.healthconnect {
 
   public class HealthConnectManager {
     method public void insertRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.InsertRecordsResponse,android.healthconnect.HealthConnectException>);
+    method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequestUsingIds<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
     field public static final String CATEGORY_HEALTH_PERMISSIONS = "android.intent.category.HEALTH_PERMISSIONS";
   }
 
@@ -96,6 +97,36 @@ package android.healthconnect {
   public class InsertRecordsResponse {
     ctor public InsertRecordsResponse(@NonNull java.util.List<android.healthconnect.datatypes.Record>);
     method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getRecords();
+  }
+
+  public class ReadRecordsRequestUsingIds<T extends android.healthconnect.datatypes.Record> {
+    method @NonNull public java.util.List<android.healthconnect.RecordIdFilter> getRecordIdFilters();
+    method @NonNull public Class<T> getRecordType();
+  }
+
+  public static final class ReadRecordsRequestUsingIds.Builder<T extends android.healthconnect.datatypes.Record> {
+    ctor public ReadRecordsRequestUsingIds.Builder(@NonNull Class<T>);
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingIds.Builder<T> addClientRecordId(@NonNull String);
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingIds.Builder<T> addId(@NonNull String);
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingIds<T> build();
+  }
+
+  public class ReadRecordsResponse<T extends android.healthconnect.datatypes.Record> {
+    ctor public ReadRecordsResponse(@NonNull java.util.List<T>);
+    method @NonNull public java.util.List<T> getRecords();
+  }
+
+  public class RecordIdFilter {
+    method @Nullable public String getClientRecordId();
+    method @Nullable public String getId();
+    method @NonNull public Class<? extends android.healthconnect.datatypes.Record> getRecordType();
+  }
+
+  public static final class RecordIdFilter.Builder {
+    ctor public RecordIdFilter.Builder(@NonNull Class<? extends android.healthconnect.datatypes.Record>);
+    method @NonNull public android.healthconnect.RecordIdFilter build();
+    method @NonNull public android.healthconnect.RecordIdFilter.Builder setClientRecordId(@Nullable String);
+    method @NonNull public android.healthconnect.RecordIdFilter.Builder setId(@Nullable String);
   }
 
 }

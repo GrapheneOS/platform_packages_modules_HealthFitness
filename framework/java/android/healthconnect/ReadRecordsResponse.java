@@ -14,28 +14,31 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.healthconnect;
 
 import android.annotation.NonNull;
-import android.healthconnect.datatypes.IntervalRecord;
+import android.healthconnect.datatypes.Record;
 
 import java.util.List;
 
 /**
- * Parent class for all the Series type records.
+ * Response containing list of Records for {@link
+ * android.healthconnect.HealthConnectManager#readRecords}.
  *
- * <p>U -> Sample type for series record
- *
- * @hide
+ * @param <T> the type of the Record for Read record Response
  */
-public abstract class SeriesRecordInternal<T extends IntervalRecord, U>
-        extends IntervalRecordInternal<T> {
-    @NonNull
-    public abstract List<? extends Sample> getSamples();
+public class ReadRecordsResponse<T extends Record> {
+    private final List<T> mRecords;
+
+    /**
+     * @param records List of records of type T
+     */
+    public ReadRecordsResponse(@NonNull List<T> records) {
+        mRecords = records;
+    }
 
     @NonNull
-    public abstract SeriesRecordInternal setSamples(List<? extends Sample> samples);
-
-    /** Base class for the series data stored in {@link SeriesRecordInternal} types */
-    public interface Sample {}
+    public List<T> getRecords() {
+        return mRecords;
+    }
 }

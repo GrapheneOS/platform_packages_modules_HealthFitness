@@ -17,8 +17,12 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
 import android.util.Pair;
@@ -57,6 +61,21 @@ public class HeartRateRecordHelper
     @Override
     String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
+    }
+
+    @Override
+    void populateSpecificValues(Cursor seriesTableCursor, HeartRateRecordInternal record) {
+        List<HeartRateRecordInternal.HeartRateSample> heartRateSamplesList = new ArrayList<>();
+        String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
+        do {
+            heartRateSamplesList.add(
+                    new HeartRateRecordInternal.HeartRateSample(
+                            getCursorInt(seriesTableCursor, BEATS_PER_MINUTE_COLUMN_NAME),
+                            getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
+        } while (seriesTableCursor.moveToNext()
+                && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
+        seriesTableCursor.moveToPrevious();
+        record.setSamples(heartRateSamplesList);
     }
 
     @Override

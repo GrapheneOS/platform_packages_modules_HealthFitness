@@ -21,6 +21,7 @@ import android.healthconnect.Constants;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class ReadTableRequest {
 
     private final String mTableName;
     private List<String> mColumnNames;
+    private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses();
 
     public ReadTableRequest(@NonNull String tableName) {
@@ -56,12 +58,25 @@ public class ReadTableRequest {
         return this;
     }
 
-    /** Returns SQL statement to perform aggregation operation */
+    /** Used to set Inner Join Clause for the read query */
+    @NonNull
+    public ReadTableRequest setInnerJoinClause(SqlJoin joinClause) {
+        mJoinClause = joinClause;
+        return this;
+    }
+
+    /** Returns SQL statement to perform read operation */
     @NonNull
     public String getReadCommand() {
         final StringBuilder builder = new StringBuilder("SELECT * FROM " + mTableName + " ");
 
-        builder.append(mWhereClauses.get());
+        if (mJoinClause != null) {
+            builder.append(mJoinClause.getInnerJoinClause());
+            builder.append(mWhereClauses.get());
+            builder.append(mJoinClause.getOrderByClause());
+        } else {
+            builder.append(mWhereClauses.get());
+        }
 
         if (Constants.DEBUG) {
             Slog.d(TAG, "read query: " + builder);

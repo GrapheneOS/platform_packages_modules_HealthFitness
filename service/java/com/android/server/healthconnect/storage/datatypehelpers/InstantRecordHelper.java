@@ -17,9 +17,12 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.healthconnect.internal.datatypes.InstantRecordInternal;
 import android.util.Pair;
 
@@ -66,6 +69,16 @@ abstract class InstantRecordHelper<T extends InstantRecordInternal<?>> extends R
 
     abstract void populateSpecificContentValues(
             @NonNull ContentValues contentValues, @NonNull T instantRecordInternal);
+
+    @Override
+    final void populateRecordValue(@NonNull Cursor cursor, @NonNull T instantRecordInternal) {
+        instantRecordInternal.setZoneOffset(getCursorInt(cursor, ZONE_OFFSET_COLUMN_NAME));
+        instantRecordInternal.setTime(getCursorLong(cursor, TIME_COLUMN_NAME));
+
+        populateSpecificRecordValue(cursor, instantRecordInternal);
+    }
+
+    abstract void populateSpecificRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
 
     /**
      * This implementation should return the column names with which the table should be created.

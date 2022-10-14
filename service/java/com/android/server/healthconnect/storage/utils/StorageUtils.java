@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 import android.annotation.NonNull;
 import android.annotation.StringDef;
 import android.database.Cursor;
-import android.healthconnect.RecordId;
+import android.healthconnect.RecordIdFilter;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 
@@ -67,18 +67,19 @@ public final class StorageUtils {
         recordInternal.setUuid(UUID.nameUUIDFromBytes(nameBasedUidBytes).toString());
     }
 
-    public static String getUUIDFor(RecordId recordId, String packageName) {
+    public static String getUUIDFor(RecordIdFilter recordIdFilter, String packageName) {
         byte[] clientIDBlob;
-        if (recordId.getClientRecordId() == null || recordId.getClientRecordId().isEmpty()) {
-            return recordId.getId();
+        if (recordIdFilter.getClientRecordId() == null
+                || recordIdFilter.getClientRecordId().isEmpty()) {
+            return recordIdFilter.getId();
         }
-        clientIDBlob = recordId.getClientRecordId().getBytes();
+        clientIDBlob = recordIdFilter.getClientRecordId().getBytes();
 
         byte[] nameBasedUidBytes =
                 getUUIDByteBuffer(
                         AppInfoHelper.getInstance().getAppInfoId(packageName),
                         clientIDBlob,
-                        RecordMapper.getInstance().getRecordType(recordId.getRecordType()));
+                        RecordMapper.getInstance().getRecordType(recordIdFilter.getRecordType()));
 
         return UUID.nameUUIDFromBytes(nameBasedUidBytes).toString();
     }
@@ -93,7 +94,19 @@ public final class StorageUtils {
     }
 
     public static int getCursorInt(Cursor cursor, String columnName) {
-        return Integer.parseInt(cursor.getString(cursor.getColumnIndex(columnName)));
+        return cursor.getInt(cursor.getColumnIndex(columnName));
+    }
+
+    public static long getCursorLong(Cursor cursor, String columnName) {
+        return cursor.getLong(cursor.getColumnIndex(columnName));
+    }
+
+    public static double getCursorDouble(Cursor cursor, String columnName) {
+        return cursor.getDouble(cursor.getColumnIndex(columnName));
+    }
+
+    public static byte[] getCursorBlob(Cursor cursor, String columnName) {
+        return cursor.getBlob(cursor.getColumnIndex(columnName));
     }
 
     public static List<String> getCursorStringList(
