@@ -16,13 +16,13 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-// File to be included for mocking tests
 filegroup {
     name: "healthConnectController-sources",
     srcs: [
         "src/**/*.java",
         "src/**/*.kt",
     ],
+    exclude_srcs: ["src/**/HealthConnectApplication.kt"]
 }
 
 android_app_certificate {
@@ -30,20 +30,12 @@ android_app_certificate {
     certificate: "com.android.healthconnect.controller",
 }
 
-android_app {
-    name: "HealthConnectController",
+android_library {
+    name: "HealthConnectLibrary",
+    srcs: [":healthConnectController-sources"],
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
-    rename_resources_package: false,
-    updatable: true,
-    certificate: ":com.android.healthconnect.controller.certificate",
-    additional_manifests: ["HealthPermissionsManifest.xml"],
-    srcs: [":healthConnectController-sources"],
-
-    libs: [
-        "kotlin-annotations",
-    ],
-
+    libs: ["kotlin-annotations"],
     static_libs: [
         "com.google.android.material_material",
         "SettingsLibSettingsTheme",
@@ -56,12 +48,27 @@ android_app {
         "androidx.annotation_annotation",
         "SettingsLibCollapsingToolbarBaseActivity",
         "SettingsLibTopIntroPreference",
-        "hilt_android",
+        "hilt_android"
     ],
+    kotlincflags: ["-Xjvm-default=all"],
+    apex_available: ["com.android.healthconnect"],
+}
 
-    kotlincflags: ["-Xjvm-default=enable"],
-
-    apex_available: [
-        "com.android.healthconnect",
+android_app {
+    name: "HealthConnectController",
+    srcs: ["src/**/HealthConnectApplication.kt"],
+    sdk_version: "module_current",
+    min_sdk_version: "UpsideDownCake",
+    rename_resources_package: false,
+    updatable: true,
+    additional_manifests: [
+      "HealthPermissionsManifest.xml",
+      "ManageHealthPermissionsManifest.xml"
     ],
+    certificate: ":com.android.healthconnect.controller.certificate",
+    static_libs: [
+        "HealthConnectLibrary",
+        "hilt_android"
+    ],
+    apex_available: ["com.android.healthconnect"],
 }

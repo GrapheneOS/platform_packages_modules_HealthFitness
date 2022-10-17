@@ -20,13 +20,13 @@ android_test {
     srcs: [
         "src/**/*.java",
         "src/**/*.kt",
-        ":healthConnectController-sources"
     ],
     certificate: "platform",
     defaults: ["modules-utils-testable-device-config-defaults"],
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
     static_libs: [
+        "HealthConnectLibrary",
         "SettingsLibSettingsTheme",
         "kotlin-stdlib",
         "kotlinx-coroutines-android",
@@ -36,6 +36,7 @@ android_test {
         "androidx.navigation_navigation-ui-ktx",
         "SettingsLibCollapsingToolbarBaseActivity",
         "SettingsLibTopIntroPreference",
+        "androidx.annotation_annotation",
         "hilt_android_testing",
         // test dependencies
         "androidx.test.espresso.contrib",
@@ -45,12 +46,13 @@ android_test {
     ],
     resource_dirs: ["main_res"],
     libs: [
+        "kotlin-annotations",
         "android.test.base",
         "android.test.mock.stubs",
     ],
+    kotlincflags: ["-Xjvm-default=all"],
     test_suites: [
       "general-tests",
     ],
-    test_mainline_modules: ["com.google.android.healthconnect.apex"],
-    instrumentation_for: "HealthConnectController",
+    test_mainline_modules: ["com.google.android.healthconnect.apex"]
 }
