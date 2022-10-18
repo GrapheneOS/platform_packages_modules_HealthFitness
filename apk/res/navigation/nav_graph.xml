@@ -27,10 +27,17 @@
     <action
         android:id="@+id/action_homeFragment_to_healthDataCategoriesFragment"
         app:destination="@id/healthDataCategoriesFragment" />
+    <action
+        android:id="@+id/action_homeFragment_to_recentAccessFragment"
+        app:destination="@id/recentAccessFragment" />
   </fragment>
   <fragment
       android:id="@+id/healthDataCategoriesFragment"
       android:name="com.android.healthconnect.controller.categories.HealthDataCategoriesFragment"
       android:label="@string/data_title" />
+  <fragment
+      android:id="@+id/recentAccessFragment"
+      android:name="com.android.healthconnect.controller.recentaccess.RecentAccessFragment"
+      android:label="@string/recent_access_header" />
 
 </navigation>

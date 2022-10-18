@@ -48,6 +48,7 @@ android_library {
         "androidx.annotation_annotation",
         "SettingsLibCollapsingToolbarBaseActivity",
         "SettingsLibTopIntroPreference",
+        "guava",
         "hilt_android"
     ],
     kotlincflags: ["-Xjvm-default=all"],
