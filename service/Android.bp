@@ -33,6 +33,7 @@ java_sdk_library {
     apex_available: ["com.android.healthconnect"],
     libs: [
         "framework-healthconnect.impl",
+        "androidx.annotation_annotation",
     ],
     installable: true,
 }

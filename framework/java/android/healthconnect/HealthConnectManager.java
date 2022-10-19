@@ -16,26 +16,56 @@
 
 package android.healthconnect;
 
+import android.annotation.CallbackExecutor;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.RequiresPermission;
 import android.annotation.SystemService;
 import android.annotation.UserHandleAware;
 import android.content.Context;
+import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IHealthConnectService;
+import android.healthconnect.aidl.IInsertRecordsResponseCallback;
+import android.healthconnect.aidl.InsertRecordsResponseParcel;
+import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.datatypes.Record;
+import android.healthconnect.internal.datatypes.RecordInternal;
+import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
+import android.os.Binder;
+import android.os.OutcomeReceiver;
 import android.os.RemoteException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Executor;
 
+/**
+ * This class provides APIs to interact with the centralized HealthConnect storage maintained by the
+ * system.
+ *
+ * <p>HealthConnect is an offline, on-device storage that unifies data from multiple devices and
+ * apps into an ecosystem featuring.
+ *
+ * <ul>
+ *   <li>APIs to insert data of various types into the system.
+ * </ul>
+ *
+ * <p>The basic unit of data in HealthConnect is represented as a {@link Record} object, which is
+ * the base class for all the other data types such as {@link
+ * android.healthconnect.datatypes.StepsRecord}.
+ */
 @SystemService(Context.HEALTHCONNECT_SERVICE)
 public class HealthConnectManager {
-    private Context mContext;
-    private IHealthConnectService mService;
+    private final Context mContext;
+    private final IHealthConnectService mService;
+    private final InternalExternalRecordConverter mInternalExternalRecordConverter;
 
     /** @hide */
     HealthConnectManager(@NonNull Context context, @NonNull IHealthConnectService service) {
         mContext = context;
         mService = service;
+        mInternalExternalRecordConverter = InternalExternalRecordConverter.getInstance();
     }
 
     /**
@@ -108,5 +138,75 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    /**
+     * Inserts {@code records} into the HealthConnect database. The records returned in {@link
+     * InsertRecordsResponse} contains the unique IDs of the input records. The values are in same
+     * order as {@code records}. In case of an error or a permission failure the HealthConnect
+     * service, {@link OutcomeReceiver#onError} will be invoked with a {@link
+     * HealthConnectException}.
+     *
+     * @param records list of records to be inserted.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    public void insertRecords(
+            @NonNull List<Record> records,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback) {
+        Objects.requireNonNull(records);
+        /*
+         TODO(b/251454017): Use executor to return results after "Hidden API flags are
+         inconsistent" error is fixed
+        */
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            List<RecordInternal<?>> recordInternals =
+                    mInternalExternalRecordConverter.getInternalRecords(records);
+            mService.insertRecords(
+                    mContext.getPackageName(),
+                    new RecordsParcel(recordInternals),
+                    new IInsertRecordsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(InsertRecordsResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            callback.onResult(
+                                    new InsertRecordsResponse(
+                                            getRecordsWithUids(records, parcel.getUids())));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            callback.onError(exception.getHealthConnectException());
+                        }
+                    });
+        } catch (ArithmeticException | ClassCastException invalidArgumentException) {
+            callback.onError(
+                    new HealthConnectException(
+                            HealthConnectException.ERROR_INVALID_ARGUMENT,
+                            invalidArgumentException.getMessage()));
+        } catch (IllegalAccessException
+                | InstantiationException
+                | InvocationTargetException
+                | NoSuchMethodException exception) {
+            callback.onError(
+                    new HealthConnectException(
+                            HealthConnectException.ERROR_INTERNAL, exception.getMessage()));
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {
+        int i = 0;
+        for (Record record : records) {
+            record.getMetadata().setId(uids.get(i++));
+        }
+
+        return records;
     }
 }
