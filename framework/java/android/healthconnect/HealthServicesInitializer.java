@@ -28,6 +28,7 @@ import android.healthconnect.aidl.IHealthConnectService;
  */
 @SystemApi(client = SystemApi.Client.MODULE_LIBRARIES)
 public class HealthServicesInitializer {
+
     private HealthServicesInitializer() {}
 
     /**
