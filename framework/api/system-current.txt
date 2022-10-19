@@ -1,15 +1,1 @@
 // Signature format: 2.0
-package android.healthconnect.datatypes {
-
-  public abstract class Record {
-    method public int getRecordType();
-  }
-
-  public final class RecordTypeIdentifier {
-    field public static final int RECORD_TYPE_EXERCISE_SESSION = 2; // 0x2
-    field public static final int RECORD_TYPE_HEART_RATE = 1; // 0x1
-    field public static final int RECORD_TYPE_STEPS = 0; // 0x0
-  }
-
-}
-
