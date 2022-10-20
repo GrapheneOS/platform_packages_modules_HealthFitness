@@ -1,7 +1,105 @@
 // Signature format: 2.0
 package android.healthconnect {
 
+  public class HealthConnectException extends java.lang.RuntimeException {
+    ctor public HealthConnectException(int, @Nullable String);
+    ctor public HealthConnectException(int);
+    method public int getErrorCode();
+    field public static final int ERROR_INTERNAL = 2; // 0x2
+    field public static final int ERROR_INVALID_ARGUMENT = 3; // 0x3
+    field public static final int ERROR_IO = 4; // 0x4
+    field public static final int ERROR_REMOTE = 6; // 0x6
+    field public static final int ERROR_SECURITY = 5; // 0x5
+    field public static final int ERROR_UNKNOWN = 1; // 0x1
+  }
+
   public class HealthConnectManager {
+    method public void insertRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.InsertRecordsResponse,android.healthconnect.HealthConnectException>);
+  }
+
+  public class InsertRecordsResponse {
+    ctor public InsertRecordsResponse(@NonNull java.util.List<android.healthconnect.datatypes.Record>);
+    method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getRecords();
+  }
+
+}
+
+package android.healthconnect.datatypes {
+
+  public final class DataOrigin {
+    method @Nullable public String getPackageName();
+  }
+
+  public static final class DataOrigin.Builder {
+    ctor public DataOrigin.Builder();
+    method @NonNull public android.healthconnect.datatypes.DataOrigin build();
+    method @NonNull public android.healthconnect.datatypes.DataOrigin.Builder setPackageName(@Nullable String);
+  }
+
+  public final class Device {
+    method @Nullable public String getManufacturer();
+    method @Nullable public String getModel();
+    method public int getType();
+    field public static final int DEVICE_TYPE_CHEST_STRAP = 7; // 0x7
+    field public static final int DEVICE_TYPE_FITNESS_BAND = 6; // 0x6
+    field public static final int DEVICE_TYPE_HEAD_MOUNTED = 5; // 0x5
+    field public static final int DEVICE_TYPE_PHONE = 2; // 0x2
+    field public static final int DEVICE_TYPE_RING = 4; // 0x4
+    field public static final int DEVICE_TYPE_SCALE = 3; // 0x3
+    field public static final int DEVICE_TYPE_SMART_DISPLAY = 8; // 0x8
+    field public static final int DEVICE_TYPE_UNKNOWN = 0; // 0x0
+    field public static final int DEVICE_TYPE_WATCH = 1; // 0x1
+  }
+
+  public static final class Device.Builder {
+    ctor public Device.Builder();
+    method @NonNull public android.healthconnect.datatypes.Device build();
+    method @NonNull public android.healthconnect.datatypes.Device.Builder setManufacturer(@Nullable String);
+    method @NonNull public android.healthconnect.datatypes.Device.Builder setModel(@Nullable String);
+    method @NonNull public android.healthconnect.datatypes.Device.Builder setType(int);
+  }
+
+  public abstract class IntervalRecord extends android.healthconnect.datatypes.Record {
+    method @NonNull public java.time.Instant getEndTime();
+    method @NonNull public java.time.ZoneOffset getEndZoneOffset();
+    method @NonNull public java.time.Instant getStartTime();
+    method @NonNull public java.time.ZoneOffset getStartZoneOffset();
+  }
+
+  public final class Metadata {
+    method @Nullable public String getClientRecordId();
+    method public long getClientRecordVersion();
+    method @NonNull public android.healthconnect.datatypes.DataOrigin getDataOrigin();
+    method @NonNull public android.healthconnect.datatypes.Device getDevice();
+    method @NonNull public String getId();
+    method @NonNull public java.time.Instant getLastModifiedTime();
+    method public void setId(@NonNull String);
+  }
+
+  public static final class Metadata.Builder {
+    ctor public Metadata.Builder();
+    method @NonNull public android.healthconnect.datatypes.Metadata build();
+    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setClientRecordId(@Nullable String);
+    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setClientRecordVersion(long);
+    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setDataOrigin(@NonNull android.healthconnect.datatypes.DataOrigin);
+    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setDevice(@NonNull android.healthconnect.datatypes.Device);
+    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setId(@Nullable String);
+    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
+  }
+
+  public abstract class Record {
+    method @NonNull public android.healthconnect.datatypes.Metadata getMetadata();
+  }
+
+  public final class StepsRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method public long getCount();
+  }
+
+  public static final class StepsRecord.Builder {
+    ctor public StepsRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, long);
+    method @NonNull public android.healthconnect.datatypes.StepsRecord build();
+    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
 }

@@ -35,6 +35,9 @@ java_sdk_library {
     defaults: ["framework-module-defaults"],
     sdk_version: "module_current",
     apex_available: ["com.android.healthconnect"],
+    libs: [
+        "androidx.annotation_annotation",
+    ],
     impl_library_visibility: [
         "//packages/modules/HealthConnect:__subpackages__"
     ],
