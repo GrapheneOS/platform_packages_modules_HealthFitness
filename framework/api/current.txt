@@ -1,6 +1,18 @@
 // Signature format: 2.0
 package android.healthconnect {
 
+  public final class ChangeLogTokenRequest {
+    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOriginFilters();
+    method @NonNull public java.util.Set<java.lang.Class<? extends android.healthconnect.datatypes.Record>> getRecordTypes();
+  }
+
+  public static final class ChangeLogTokenRequest.Builder {
+    ctor public ChangeLogTokenRequest.Builder();
+    method @NonNull public android.healthconnect.ChangeLogTokenRequest.Builder addDataOriginFilter(@NonNull android.healthconnect.datatypes.DataOrigin);
+    method @NonNull public android.healthconnect.ChangeLogTokenRequest.Builder addRecordType(@NonNull Class<? extends android.healthconnect.datatypes.Record>);
+    method @NonNull public android.healthconnect.ChangeLogTokenRequest build();
+  }
+
   public class HealthConnectException extends java.lang.RuntimeException {
     ctor public HealthConnectException(int, @Nullable String);
     ctor public HealthConnectException(int);
@@ -14,6 +26,7 @@ package android.healthconnect {
   }
 
   public class HealthConnectManager {
+    method public void getChangeLogToken(@NonNull android.healthconnect.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Long,android.healthconnect.HealthConnectException>);
     method public void insertRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.InsertRecordsResponse,android.healthconnect.HealthConnectException>);
     method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequestUsingIds<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
     method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequestUsingFilters<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);

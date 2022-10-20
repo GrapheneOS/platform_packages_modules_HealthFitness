@@ -71,7 +71,7 @@ public class ReadTransactionRequest {
         mRecordHelper = RecordHelperProvider.getInstance().getRecordHelper(request.getRecordType());
         mReadTableRequest = mRecordHelper.getReadTableRequest();
         mReadTableRequest.setWhereClause(
-                new WhereClauses().addWhereInClause(ids, UUID_COLUMN_NAME));
+                new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, ids));
     }
 
     @NonNull

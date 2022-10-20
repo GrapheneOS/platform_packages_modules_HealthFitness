@@ -21,7 +21,11 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.HealthConnectException;
+import android.healthconnect.HealthConnectManager;
+import android.healthconnect.HealthPermissions;
+import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -38,6 +42,7 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogRequestHelper;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
@@ -84,6 +89,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mPermissionHelper = permissionHelper;
         mContext = context;
     }
+
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
@@ -192,6 +198,31 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
+     * @see HealthConnectManager#getChangeLogToken
+     * @hide
+     */
+    @Override
+    public void getChangeLogToken(
+            @NonNull String packageName,
+            @NonNull ChangeLogTokenRequestParcel request,
+            @NonNull IGetChangeLogTokenCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        callback.onResult(
+                                ChangeLogRequestHelper.getInstance()
+                                        .getToken(request, packageName));
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception e) {
+                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
      * Updates {@code recordsParcel} into the HealthConnect database.
      *
      * @param recordsParcel parcel for list of records to be updated.
@@ -246,6 +277,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private static void tryAndThrowException(
             @NonNull IReadRecordsResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IGetChangeLogTokenCallback callback,
             @NonNull Exception exception,
             @HealthConnectException.ErrorCode int errorCode) {
         try {

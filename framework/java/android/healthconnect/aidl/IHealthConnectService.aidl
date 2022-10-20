@@ -1,5 +1,7 @@
 package android.healthconnect.aidl;
 
+import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -24,7 +26,7 @@ interface IHealthConnectService {
     /* @hide */
     List<String> getGrantedHealthPermissions(String packageName, in UserHandle user);
     /**
-     * Inserts {@param records} into the HealthConnect database.
+     * Inserts {@code records} into the HealthConnect database.
      *
      * @param packageName name of the package inserting the record.
      * @param recordsParcel represents records to be inserted.
@@ -61,4 +63,15 @@ interface IHealthConnectService {
             String packageName,
             in RecordsParcel recordsParcel,
             in IEmptyResponseCallback callback);
+
+    /**
+     * @param packageName calling package name
+     * @param request token request
+     * @return a token that can be used with {@code getChanges(token)} to fetch the upsert and
+     *     delete changes corresponding to {@code request}
+     */
+    void getChangeLogToken(
+        String packageName,
+        in ChangeLogTokenRequestParcel request,
+        in IGetChangeLogTokenCallback callback);
 }

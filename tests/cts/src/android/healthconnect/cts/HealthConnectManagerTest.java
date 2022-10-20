@@ -24,6 +24,7 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_S
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.ChangeLogTokenRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
@@ -469,7 +470,7 @@ public class HealthConnectManagerTest {
                         Log.e(TAG, exception.getMessage());
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
         assertThat(response.get()).hasSize(records.size());
         return response.get();
     }

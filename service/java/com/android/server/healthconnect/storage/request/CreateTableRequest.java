@@ -65,12 +65,12 @@ public final class CreateTableRequest {
         return mChildTableRequests;
     }
 
+    @NonNull
     public CreateTableRequest setChildTableRequests(
             @NonNull List<CreateTableRequest> childCreateTableRequests) {
         Objects.requireNonNull(childCreateTableRequests);
 
         mChildTableRequests = childCreateTableRequests;
-
         return this;
     }
 

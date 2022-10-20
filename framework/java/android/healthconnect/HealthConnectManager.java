@@ -29,8 +29,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
+import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IEmptyResponseCallback;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -314,6 +316,40 @@ public class HealthConnectManager {
     }
 
     /**
+     * Returns a changelog token that can be used to see changes for all items that match the given
+     * filters.
+     *
+     * @param request A request to get changelog token
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    public void getChangeLogToken(
+            @NonNull ChangeLogTokenRequest request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Long, HealthConnectException> callback) {
+        try {
+            mService.getChangeLogToken(
+                    mContext.getPackageName(),
+                    new ChangeLogTokenRequestParcel(request),
+                    new IGetChangeLogTokenCallback.Stub() {
+                        @Override
+                        public void onResult(long token) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(token));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
      * API to read records based on {@link RecordIdFilter}.
      *
      * @param request ReadRecordsRequestUsingIds request containing a list of {@link RecordIdFilter}
@@ -364,40 +400,6 @@ public class HealthConnectManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
-            @NonNull Executor executor,
-            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
-        return new IReadRecordsResponseCallback.Stub() {
-            @Override
-            public void onResult(RecordsParcel parcel) {
-                Binder.clearCallingIdentity();
-                try {
-                    List<T> externalRecords =
-                            (List<T>)
-                                    mInternalExternalRecordConverter.getExternalRecords(
-                                            parcel.getRecords());
-                    executor.execute(
-                            () -> callback.onResult(new ReadRecordsResponse<>(externalRecords)));
-                } catch (ClassCastException castException) {
-                    HealthConnectException healthConnectException =
-                            new HealthConnectException(
-                                    HealthConnectException.ERROR_INTERNAL,
-                                    castException.getMessage());
-                    returnError(
-                            executor,
-                            new HealthConnectExceptionParcel(healthConnectException),
-                            callback);
-                }
-            }
-
-            @Override
-            public void onError(HealthConnectExceptionParcel exception) {
-                returnError(executor, exception, callback);
-            }
-        };
-    }
-
     /**
      * Updates {@code records} into the HealthConnect database. In case of an error or a permission
      * failure the HealthConnect service, {@link OutcomeReceiver#onError} will be invoked with a
@@ -426,10 +428,10 @@ public class HealthConnectManager {
             // verify that the package requesting the change is same as the packageName in the
             // records.
             String contextPackageName = mContext.getPackageName();
-            for (int itr = 0; itr < records.size(); itr++) {
+            for (Record record : records) {
                 if (!Objects.equals(
                         contextPackageName,
-                        records.get(itr).getMetadata().getDataOrigin().getPackageName())) {
+                        record.getMetadata().getDataOrigin().getPackageName())) {
                     throw new IllegalArgumentException(
                             "The package requesting the change does not match "
                                     + "the packageName in input records");
@@ -440,8 +442,7 @@ public class HealthConnectManager {
                     mInternalExternalRecordConverter.getInternalRecords(records);
 
             // Verify if the input record has clientRecordId or UUID.
-            for (int itr = 0; itr < recordInternals.size(); itr++) {
-                RecordInternal<?> recordInternal = recordInternals.get(itr);
+            for (RecordInternal<?> recordInternal : recordInternals) {
                 if ((recordInternal.getClientRecordId() == null
                                 || recordInternal.getClientRecordId().isEmpty())
                         && (recordInternal.getUuid() == null
@@ -476,6 +477,40 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+        return new IReadRecordsResponseCallback.Stub() {
+            @Override
+            public void onResult(RecordsParcel parcel) {
+                Binder.clearCallingIdentity();
+                try {
+                    List<T> externalRecords =
+                            (List<T>)
+                                    mInternalExternalRecordConverter.getExternalRecords(
+                                            parcel.getRecords());
+                    executor.execute(
+                            () -> callback.onResult(new ReadRecordsResponse<>(externalRecords)));
+                } catch (ClassCastException castException) {
+                    HealthConnectException healthConnectException =
+                            new HealthConnectException(
+                                    HealthConnectException.ERROR_INTERNAL,
+                                    castException.getMessage());
+                    returnError(
+                            executor,
+                            new HealthConnectExceptionParcel(healthConnectException),
+                            callback);
+                }
+            }
+
+            @Override
+            public void onError(HealthConnectExceptionParcel exception) {
+                returnError(executor, exception, callback);
+            }
+        };
     }
 
     private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {

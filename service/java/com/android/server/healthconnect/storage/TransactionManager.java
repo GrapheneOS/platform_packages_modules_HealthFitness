@@ -32,6 +32,7 @@ import com.android.server.healthconnect.storage.request.UpsertTransactionRequest
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class to handle all the DB transaction request from the clients. {@link TransactionManager}
@@ -48,6 +49,7 @@ public class TransactionManager {
         mHealthConnectDatabase = new HealthConnectDatabase(context);
     }
 
+    @NonNull
     public static TransactionManager getInstance(@NonNull Context context) {
         if (sTransactionManager == null) {
             sTransactionManager = new TransactionManager(context);
@@ -58,7 +60,10 @@ public class TransactionManager {
         return sTransactionManager;
     }
 
-    public static TransactionManager getInitializedInstance() {
+    @NonNull
+    public static TransactionManager getInitialisedInstance() {
+        Objects.requireNonNull(sTransactionManager);
+
         return sTransactionManager;
     }
 
@@ -102,12 +107,17 @@ public class TransactionManager {
     /**
      * Inserts record into the table in {@code request} into the HealthConnect database.
      *
+     * <p>NOTE: PLEASE ONLY USE THIS FUNCTION IF YOU WANT TO INSERT A SINGLE RECORD. PLEASE DON'T
+     * USE THIS FUNCTION INSIDE A FOR LOOP OR REPEATEDLY: The reason is that this function tries to
+     * insert a record out of a transaction and if you are trying to insert a record before or after
+     * opening up a transaction please rethink if you really want to use this function.
+     *
      * @param request an insert request.
      * @return rowId of the inserted record.
      */
     public long insert(@NonNull UpsertTableRequest request) {
         try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            return db.insertOrThrow(request.getTable(), null, request.getContentValues());
+            return insertRecord(db, request);
         }
     }
 
@@ -120,12 +130,6 @@ public class TransactionManager {
     /** Note: it is the responsibility of the requester to manage and close {@code db} */
     public SQLiteDatabase getReadableDb() {
         return mHealthConnectDatabase.getReadableDatabase();
-    }
-
-    private void insertRecord(SQLiteDatabase db, UpsertTableRequest request) {
-        long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
-        request.getChildTableRequests()
-                .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
     }
 
     /**
@@ -146,6 +150,15 @@ public class TransactionManager {
         }
     }
 
+    /** Assumes that caller will be closing {@code db} and handling the transaction if required */
+    private long insertRecord(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
+        long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
+        request.getChildTableRequests()
+                .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+
+        return rowId;
+    }
+
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
         // perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.
@@ -163,8 +176,8 @@ public class TransactionManager {
             if (numberOfRowsUpdated == 0) {
                 throw new IllegalArgumentException(
                         "No record found for the following input : "
-                                + new StorageUtils.RecordIdentifierData(request.getContentValues())
-                                        .toString());
+                                + new StorageUtils.RecordIdentifierData(
+                                        request.getContentValues()));
             }
             return;
         }
@@ -185,8 +198,7 @@ public class TransactionManager {
         if (numberOfRowsDeleted == 0) {
             throw new IllegalArgumentException(
                     "No record found for the following input : "
-                            + new StorageUtils.RecordIdentifierData(request.getContentValues())
-                                    .toString());
+                            + new StorageUtils.RecordIdentifierData(request.getContentValues()));
         } else {
             // If the record was deleted successfully then re-insert the record with the
             // updated contents.

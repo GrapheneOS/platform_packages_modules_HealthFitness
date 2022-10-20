@@ -136,12 +136,12 @@ public final class StorageUtils {
 
     public static List<String> getCursorStringList(
             Cursor cursor, String columnName, String delimiter) {
-        final String stringList = cursor.getString(cursor.getColumnIndex(columnName));
-        if (stringList == null || stringList.isEmpty()) {
+        final String values = cursor.getString(cursor.getColumnIndex(columnName));
+        if (values == null || values.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return Arrays.asList(stringList.split(delimiter));
+        return Arrays.asList(values.split(delimiter));
     }
 
     public static List<Integer> getCursorIntegerList(
@@ -181,7 +181,7 @@ public final class StorageUtils {
     public static class RecordIdentifierData {
         private String mClientRecordId = "";
         private String mUuid = "";
-        private String mAppInfoId = "";
+        private final String mAppInfoId = "";
 
         public RecordIdentifierData(ContentValues contentValues) {
             mClientRecordId = contentValues.getAsString(CLIENT_RECORD_ID_COLUMN_NAME);
@@ -200,7 +200,7 @@ public final class StorageUtils {
 
         @Override
         public String toString() {
-            final StringBuilder builder = new StringBuilder("");
+            final StringBuilder builder = new StringBuilder();
             if (mClientRecordId != null && !mClientRecordId.isEmpty()) {
                 builder.append("clientRecordID : ").append(mClientRecordId).append(" , ");
             }

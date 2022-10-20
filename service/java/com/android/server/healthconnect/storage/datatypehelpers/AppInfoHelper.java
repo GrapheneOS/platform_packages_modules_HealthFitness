@@ -143,7 +143,7 @@ public class AppInfoHelper {
 
     public void populateAppInfoMap() {
         mAppInfoMap = new ArrayMap<>();
-        final TransactionManager transactionManager = TransactionManager.getInitializedInstance();
+        final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         try (SQLiteDatabase db = transactionManager.getReadableDb();
                 Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
@@ -233,7 +233,7 @@ public class AppInfoHelper {
     private AppInfo insertAndGetAppInfo(String packageName, Context context) {
         AppInfo appInfo = getAppInfo(packageName, context);
         long rowId =
-                TransactionManager.getInitializedInstance()
+                TransactionManager.getInitialisedInstance()
                         .insert(
                                 new UpsertTableRequest(
                                         TABLE_NAME, getContentValues(packageName, appInfo)));
