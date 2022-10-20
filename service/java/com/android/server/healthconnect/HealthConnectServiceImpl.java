@@ -22,11 +22,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
-import android.healthconnect.HealthPermissions;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
-import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -42,12 +41,14 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogRequestHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -210,8 +211,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         callback.onResult(
-                                ChangeLogRequestHelper.getInstance()
-                                        .getToken(request, packageName));
+                                ChangeLogsRequestHelper.getInstance()
+                                        .getToken(packageName, request));
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
@@ -259,6 +260,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         Slog.e(TAG, "Exception: ", e);
                         tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
                     }
+                });
+    }
+
+    public void getChanges(@NonNull String packageName, @NonNull long token) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
+                            ChangeLogsRequestHelper.getRequest(token);
+                    Map<Integer, ChangeLogsHelper.ChangeLogs> operationTypeToUUIds =
+                            ChangeLogsHelper.getInstance().getChangeLogs(changeLogsTokenRequest);
+                    // TODO(257638493): Read entries as per operationTypeToUUIds and return changes
                 });
     }
 

@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.request;
 
+import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
+
 import android.annotation.NonNull;
 import android.healthconnect.Constants;
 import android.util.Pair;
@@ -37,11 +39,11 @@ import java.util.Objects;
 public final class CreateTableRequest {
     public static final String TAG = "HealthConnectCreate";
     public static final String FOREIGN_KEY_COMMAND = " FOREIGN KEY (";
-    public static final String DELIMITER_COLUMN_LIST = ",";
     private static final String CREATE_INDEX_COMMAND = "CREATE INDEX  idx_";
     private static final String CREATE_TABLE_COMMAND = "CREATE TABLE IF NOT EXISTS ";
     private final String mTableName;
     private final List<Pair<String, String>> mColumnInfo;
+    private final List<String> mColumnsToIndex = new ArrayList<>();
 
     private List<ForeignKey> mForeignKeys;
     private List<CreateTableRequest> mChildTableRequests = Collections.emptyList();
@@ -57,6 +59,14 @@ public final class CreateTableRequest {
         mForeignKeys = mForeignKeys == null ? new ArrayList<>() : mForeignKeys;
         mForeignKeys.add(new ForeignKey(referencedTable, columnNames, referencedColumnNames));
 
+        return this;
+    }
+
+    @NonNull
+    public CreateTableRequest createIndexOn(@NonNull String columnName) {
+        Objects.requireNonNull(columnName);
+
+        mColumnsToIndex.add(columnName);
         return this;
     }
 
@@ -103,17 +113,48 @@ public final class CreateTableRequest {
 
     @NonNull
     public List<String> getCreateIndexStatements() {
+        List<String> result = new ArrayList<>(mForeignKeys.size());
         if (mForeignKeys != null) {
-            List<String> result = new ArrayList<>(mForeignKeys.size());
             int index = 0;
             for (ForeignKey foreignKey : mForeignKeys) {
                 result.add(foreignKey.getFkIndexStatement(index++));
             }
-
-            return result;
         }
 
-        return Collections.emptyList();
+        if (!mColumnsToIndex.isEmpty()) {
+            for (String columnToIndex : mColumnsToIndex) {
+                result.add(getCreateIndexCommand(columnToIndex));
+            }
+        }
+
+        return result;
+    }
+
+    private String getCreateIndexCommand(String indexName, List<String> columnNames) {
+        Objects.requireNonNull(columnNames);
+        Objects.requireNonNull(indexName);
+
+        return CREATE_INDEX_COMMAND
+                + indexName
+                + " ON "
+                + mTableName
+                + "("
+                + String.join(DELIMITER, columnNames)
+                + ")";
+    }
+
+    private String getCreateIndexCommand(String columnName) {
+        Objects.requireNonNull(columnName);
+
+        return CREATE_INDEX_COMMAND
+                + mTableName
+                + "_"
+                + columnName
+                + " ON "
+                + mTableName
+                + "("
+                + columnName
+                + ")";
     }
 
     private final class ForeignKey {
@@ -132,25 +173,17 @@ public final class CreateTableRequest {
 
         String getFkConstraint() {
             return FOREIGN_KEY_COMMAND
-                    + String.join(DELIMITER_COLUMN_LIST, mColumnNames)
+                    + String.join(DELIMITER, mColumnNames)
                     + ")"
                     + " REFERENCES "
                     + mReferencedTableName
                     + "("
-                    + String.join(DELIMITER_COLUMN_LIST, mReferencedColumnNames)
+                    + String.join(DELIMITER, mReferencedColumnNames)
                     + ") ON DELETE CASCADE";
         }
 
         String getFkIndexStatement(int fkNumber) {
-            return CREATE_INDEX_COMMAND
-                    + mTableName
-                    + "_"
-                    + fkNumber
-                    + " ON "
-                    + mTableName
-                    + "("
-                    + String.join(DELIMITER_COLUMN_LIST, mColumnNames)
-                    + ")";
+            return getCreateIndexCommand(mTableName + "_" + fkNumber, mColumnNames);
         }
     }
 }

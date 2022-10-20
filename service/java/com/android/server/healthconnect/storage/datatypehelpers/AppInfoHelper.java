@@ -172,6 +172,22 @@ public class AppInfoHelper {
         // empty by default
     }
 
+    /**
+     * @return id of {@code packageName} or {@link DEFAULT_LONG} if the id is not found
+     */
+    public long getAppInfoId(String packageName) {
+        if (Objects.isNull(mAppInfoMap)) {
+            populateAppInfoMap();
+        }
+
+        AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
+        if (appInfo == null) {
+            return DEFAULT_LONG;
+        }
+
+        return appInfo.getId();
+    }
+
     public List<Long> getAppInfoIds(List<String> packageNames) {
         if (packageNames == null || packageNames.isEmpty()) {
             return Collections.emptyList();
@@ -193,19 +209,6 @@ public class AppInfoHelper {
                 });
 
         return result;
-    }
-
-    public long getAppInfoId(String packageName) {
-        if (Objects.isNull(mAppInfoMap)) {
-            populateAppInfoMap();
-        }
-
-        AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
-        if (appInfo == null) {
-            return DEFAULT_LONG;
-        }
-
-        return appInfo.getId();
     }
 
     private AppInfo getAppInfo(String packageName, Context context) {

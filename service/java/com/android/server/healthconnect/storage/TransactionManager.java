@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
+
 import android.annotation.NonNull;
 import android.content.Context;
 import android.database.Cursor;
@@ -107,10 +109,12 @@ public class TransactionManager {
     /**
      * Inserts record into the table in {@code request} into the HealthConnect database.
      *
-     * <p>NOTE: PLEASE ONLY USE THIS FUNCTION IF YOU WANT TO INSERT A SINGLE RECORD. PLEASE DON'T
-     * USE THIS FUNCTION INSIDE A FOR LOOP OR REPEATEDLY: The reason is that this function tries to
-     * insert a record out of a transaction and if you are trying to insert a record before or after
-     * opening up a transaction please rethink if you really want to use this function.
+     * <p>NOTE: PLEASE ONLY USE THIS FUNCTION IF YOU WANT TO INSERT A SINGLE RECORD PER API. PLEASE
+     * DON'T USE THIS FUNCTION INSIDE A FOR LOOP OR REPEATEDLY: The reason is that this function
+     * tries to insert a record inside its own transaction and if you are trying to insert multiple
+     * things using this method in the same api call, they will all get inserted in their separate
+     * transactions and will be less performant. If at all, the requirement is to insert them in
+     * different transactions, as they are not related to each, then this method can be used.
      *
      * @param request an insert request.
      * @return rowId of the inserted record.
@@ -124,7 +128,15 @@ public class TransactionManager {
     /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
     @NonNull
     public Cursor read(@NonNull SQLiteDatabase db, @NonNull ReadTableRequest request) {
-        return db.rawQuery(request.getReadCommand(), request.getSelectionArgs());
+        return db.rawQuery(request.getReadCommand(), null);
+    }
+
+    public long getLastRowIdFor(String tableName) {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
+                Cursor cursor = db.rawQuery(StorageUtils.getMaxPrimaryKeyQuery(tableName), null)) {
+            cursor.moveToFirst();
+            return cursor.getLong(cursor.getColumnIndex(PRIMARY_COLUMN_NAME));
+        }
     }
 
     /** Note: it is the responsibility of the requester to manage and close {@code db} */

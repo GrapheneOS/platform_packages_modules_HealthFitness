@@ -16,20 +16,21 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.annotation.StringDef;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.healthconnect.RecordIdFilter;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
-
-import androidx.annotation.Nullable;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 
@@ -53,6 +54,7 @@ public final class StorageUtils {
     public static final String REAL = "REAL";
     public static final String PRIMARY_AUTOINCREMENT = "INTEGER PRIMARY KEY AUTOINCREMENT";
     public static final String PRIMARY = "INTEGER PRIMARY KEY";
+    public static final String DELIMITER = ",";
     public static final String BLOB = "BLOB";
 
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
@@ -155,6 +157,16 @@ public final class StorageUtils {
                 .mapToInt(Integer::valueOf)
                 .boxed()
                 .toList();
+    }
+
+    @Nullable
+    public static String getMaxPrimaryKeyQuery(@NonNull String tableName) {
+        return "SELECT MAX("
+                + PRIMARY_COLUMN_NAME
+                + ") as "
+                + PRIMARY_COLUMN_NAME
+                + " FROM "
+                + tableName;
     }
 
     private static byte[] getUUIDByteBuffer(long appId, byte[] clientIDBlob, int recordId) {
