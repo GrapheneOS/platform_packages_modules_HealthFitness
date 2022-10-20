@@ -127,8 +127,11 @@ public final class ChangeLogsRequestHelper {
                                                 PRIMARY_COLUMN_NAME, String.valueOf(token)));
         TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, readTableRequest)) {
-            cursor.moveToFirst();
+             Cursor cursor = transactionManager.read(db, readTableRequest)) {
+            if (!cursor.moveToFirst()) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+
             return new TokenRequest(
                     getCursorStringList(cursor, PACKAGES_TO_FILTERS_COLUMN_NAME, DELIMITER),
                     getCursorIntegerList(cursor, RECORD_TYPES_COLUMN_NAME, DELIMITER),

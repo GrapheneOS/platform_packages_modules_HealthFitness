@@ -113,7 +113,7 @@ public final class CreateTableRequest {
 
     @NonNull
     public List<String> getCreateIndexStatements() {
-        List<String> result = new ArrayList<>(mForeignKeys.size());
+        List<String> result = new ArrayList<>();
         if (mForeignKeys != null) {
             int index = 0;
             for (ForeignKey foreignKey : mForeignKeys) {

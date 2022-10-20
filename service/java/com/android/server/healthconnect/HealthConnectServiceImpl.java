@@ -23,7 +23,10 @@ import android.database.sqlite.SQLiteException;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IChangeLogsResponseCallback;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
@@ -263,14 +266,45 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
-    public void getChanges(@NonNull String packageName, @NonNull long token) {
+    /** @hide */
+    @Override
+    public void getChangeLogs(
+            @NonNull String packageName,
+            @NonNull long token,
+            IChangeLogsResponseCallback callback) {
         SHARED_EXECUTOR.execute(
                 () -> {
-                    ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
-                            ChangeLogsRequestHelper.getRequest(token);
-                    Map<Integer, ChangeLogsHelper.ChangeLogs> operationTypeToUUIds =
-                            ChangeLogsHelper.getInstance().getChangeLogs(changeLogsTokenRequest);
-                    // TODO(257638493): Read entries as per operationTypeToUUIds and return changes
+                    try {
+                        ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
+                                ChangeLogsRequestHelper.getRequest(token);
+                        final Map<Integer, ChangeLogsHelper.ChangeLogs> operationTypeToUUIds =
+                                ChangeLogsHelper.getInstance()
+                                        .getChangeLogs(changeLogsTokenRequest);
+
+                        /*
+                         TODO(b/249530105): Read entries for
+                         ChangeLogHelper.getUpsertedIds(operationTypeToUUIds) and then populate
+                         them in RecordsParcel
+                        */
+                        callback.onResult(
+                                new ChangeLogsResponseParcel(
+                                        new RecordsParcel(new ArrayList<>()),
+                                        ChangeLogsHelper.getDeletedIds(operationTypeToUUIds)));
+                    } catch (IllegalArgumentException illegalArgumentException) {
+                        Slog.e(TAG, "IllegalArgumentException: ", illegalArgumentException);
+                        tryAndThrowException(
+                                callback,
+                                illegalArgumentException,
+                                HealthConnectException.ERROR_INVALID_ARGUMENT);
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
                 });
     }
 
@@ -315,6 +349,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private static void tryAndThrowException(
             @NonNull IEmptyResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.toString())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IChangeLogsResponseCallback callback,
             @NonNull Exception exception,
             @HealthConnectException.ErrorCode int errorCode) {
         try {

@@ -55,8 +55,6 @@ public class TransactionManager {
     public static TransactionManager getInstance(@NonNull Context context) {
         if (sTransactionManager == null) {
             sTransactionManager = new TransactionManager(context);
-            DeviceInfoHelper.getInstance().populateDeviceInfoMap();
-            AppInfoHelper.getInstance().populateAppInfoMap();
         }
 
         return sTransactionManager;
