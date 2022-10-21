@@ -17,40 +17,43 @@
 package android.healthconnect.datatypes;
 
 import android.annotation.NonNull;
-import android.annotation.SystemApi;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
-public abstract class Record {
-    private final Metadata mMetadata;
-    @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
+/** A record that contains a measurement recorded as an instance . */
+public abstract class InstantRecord extends Record {
+    private final Instant mTime;
+    private final ZoneOffset mZoneOffset;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}
+     * @param time Time of this activity
+     * @param zoneOffset Zone offset of the user when the activity happened
      */
-    Record(@NonNull Metadata metadata) {
-        Identifier annotation = this.getClass().getAnnotation(Identifier.class);
-        Objects.requireNonNull(annotation);
-        mRecordIdentifier = annotation.recordIdentifier();
-        mMetadata = metadata;
+    InstantRecord(
+            @NonNull Metadata metadata, @NonNull Instant time, @NonNull ZoneOffset zoneOffset) {
+        super(metadata);
+        Objects.requireNonNull(time);
+        Objects.requireNonNull(zoneOffset);
+        mTime = time;
+        mZoneOffset = zoneOffset;
     }
 
     /**
-     * @return {@link Metadata} for this record
+     * @return Time of the activity
      */
     @NonNull
-    public Metadata getMetadata() {
-        return mMetadata;
+    public Instant getTime() {
+        return mTime;
     }
 
     /**
-     * TODO(b/249583483): Add permission so that only UI APK can access this
-     *
-     * @hide
+     * @return Zone offset of the user when the activity happened
      */
-    @SystemApi
-    @RecordTypeIdentifier.RecordType
-    public int getRecordType() {
-        return mRecordIdentifier;
+    @NonNull
+    public ZoneOffset getZoneOffset() {
+        return mZoneOffset;
     }
 }

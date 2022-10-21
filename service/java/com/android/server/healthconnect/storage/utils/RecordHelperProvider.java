@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 
+import com.android.server.healthconnect.storage.datatypehelpers.BasalMetabolicRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper;
@@ -42,6 +43,9 @@ public final class RecordHelperProvider {
         recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_STEPS, new StepsRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_HEART_RATE, new HeartRateRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE,
+                new BasalMetabolicRateRecordHelper());
 
         mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
     }
