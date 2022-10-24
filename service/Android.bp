@@ -38,6 +38,9 @@ java_sdk_library {
         "framework-healthconnect.impl",
         "androidx.annotation_annotation",
     ],
+    static_libs: [
+        "modules-utils-backgroundthread",
+    ],
     installable: true,
     optimize: {
         proguard_flags_files: ["proguard.flags"],

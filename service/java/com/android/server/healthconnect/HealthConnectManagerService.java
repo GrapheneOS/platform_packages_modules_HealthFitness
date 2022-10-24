@@ -17,10 +17,12 @@
 package com.android.server.healthconnect;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.healthconnect.HealthConnectManager;
 
 import com.android.server.SystemService;
+import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
+import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.permission.PackagePermissionChangesMonitor;
 import com.android.server.healthconnect.storage.TransactionManager;
 
 /**
@@ -29,24 +31,29 @@ import com.android.server.healthconnect.storage.TransactionManager;
  * @hide
  */
 public class HealthConnectManagerService extends SystemService {
+    private final Context mContext;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final TransactionManager mTransactionManager;
-    private final Context mContext;
+    private final HealthPermissionIntentAppsTracker mPermissionIntentTracker;
+    private final PackagePermissionChangesMonitor mPackageMonitor;
 
     public HealthConnectManagerService(Context context) {
         super(context);
-        PackageManager packageManager = context.getPackageManager();
+        mPermissionIntentTracker = new HealthPermissionIntentAppsTracker(context);
         mPermissionHelper =
                 new HealthConnectPermissionHelper(
                         context,
-                        packageManager,
-                        HealthConnectManager.getHealthPermissions(context));
+                        context.getPackageManager(),
+                        HealthConnectManager.getHealthPermissions(context),
+                        mPermissionIntentTracker);
+        mPackageMonitor = new PackagePermissionChangesMonitor(mPermissionIntentTracker);
         mTransactionManager = TransactionManager.getInstance(getContext());
         mContext = context;
     }
 
     @Override
     public void onStart() {
+        mPackageMonitor.registerBroadcastReceiver(mContext);
         publishBinderService(
                 Context.HEALTHCONNECT_SERVICE,
                 new HealthConnectServiceImpl(mTransactionManager, mPermissionHelper, mContext));

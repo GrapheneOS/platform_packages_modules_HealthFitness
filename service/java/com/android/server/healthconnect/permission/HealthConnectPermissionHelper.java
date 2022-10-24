@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect;
+package com.android.server.healthconnect.permission;
 
 import static android.Manifest.permission.INTERACT_ACROSS_USERS_FULL;
 
@@ -33,12 +33,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/** A handler for HealthConnect permission-related logic. */
-final class HealthConnectPermissionHelper {
+/**
+ * A handler for HealthConnect permission-related logic.
+ *
+ * @hide
+ */
+public final class HealthConnectPermissionHelper {
 
     private final Context mContext;
     private final PackageManager mPackageManager;
     private final Set<String> mHealthPermissions;
+    private final HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     /**
      * Constructs a {@link HealthConnectPermissionHelper}.
@@ -47,25 +52,31 @@ final class HealthConnectPermissionHelper {
      * @param packageManager a {@link PackageManager} instance.
      * @param healthPermissions a {@link Set} of permissions that are recognized as
      *     HealthConnect-defined permissions.
+     * @param permissionIntentTracker a {@link
+     *     com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker} instance
+     *     that tracks apps allowed to request health permissions.
      */
-    HealthConnectPermissionHelper(
-            Context context, PackageManager packageManager, Set<String> healthPermissions) {
+    public HealthConnectPermissionHelper(
+            Context context,
+            PackageManager packageManager,
+            Set<String> healthPermissions,
+            HealthPermissionIntentAppsTracker permissionIntentTracker) {
         mContext = context;
         mPackageManager = packageManager;
         mHealthPermissions = healthPermissions;
+        mPermissionIntentAppsTracker = permissionIntentTracker;
     }
 
     /** See {@link android.healthconnect.HealthConnectManager#grantHealthPermission}. */
-    void grantHealthPermission(
+    public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
         Objects.requireNonNull(packageName);
         Objects.requireNonNull(permissionName);
-        // TODO(b/249527134): Add a check to ensure the SHOW_HEALTH_PERMISSION_RATIONALE
-        //   intent-filter is listed in the target app's manifest before granting permissions.
         enforceManageHealthPermissions(/* message= */ "grantHealthPermission");
         enforceValidPermission(permissionName);
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
         enforceValidPackage(packageName);
+        enforceSupportPermissionsUsageIntent(packageName, checkedUser);
         final long token = Binder.clearCallingIdentity();
         try {
             mPackageManager.grantRuntimePermission(packageName, permissionName, checkedUser);
@@ -75,7 +86,7 @@ final class HealthConnectPermissionHelper {
     }
 
     /** See {@link android.healthconnect.HealthConnectManager#revokeHealthPermission}. */
-    void revokeHealthPermission(
+    public void revokeHealthPermission(
             @NonNull String packageName,
             @NonNull String permissionName,
             @Nullable String reason,
@@ -96,7 +107,7 @@ final class HealthConnectPermissionHelper {
     }
 
     /** See {@link android.healthconnect.HealthConnectManager#revokeAllHealthPermissions}. */
-    void revokeAllHealthPermissions(
+    public void revokeAllHealthPermissions(
             @NonNull String packageName, @Nullable String reason, @NonNull UserHandle user) {
         Objects.requireNonNull(packageName);
         enforceManageHealthPermissions(/* message= */ "revokeAllHealthPermissions");
@@ -111,7 +122,7 @@ final class HealthConnectPermissionHelper {
     }
 
     /** See {@link android.healthconnect.HealthConnectManager#getGrantedHealthPermissions}. */
-    List<String> getGrantedHealthPermissions(
+    public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
         Objects.requireNonNull(packageName);
         enforceManageHealthPermissions(/* message= */ "getGrantedHealthPermissions");
@@ -176,6 +187,17 @@ final class HealthConnectPermissionHelper {
     private void enforceManageHealthPermissions(String message) {
         mContext.enforceCallingOrSelfPermission(
                 HealthPermissions.MANAGE_HEALTH_PERMISSIONS, message);
+    }
+
+    private void enforceSupportPermissionsUsageIntent(String packageName, UserHandle userHandle) {
+        if (!mPermissionIntentAppsTracker.supportsPermissionUsageIntent(packageName, userHandle)) {
+            throw new SecurityException(
+                    "Package "
+                            + packageName
+                            + " for "
+                            + userHandle.toString()
+                            + " doesn't support health permissions usage intent.");
+        }
     }
 
     /**

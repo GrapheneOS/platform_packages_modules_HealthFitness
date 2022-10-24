@@ -35,6 +35,7 @@ import android.os.UserHandle;
 import android.util.Log;
 import android.util.Slog;
 
+import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
