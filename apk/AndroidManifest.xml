@@ -39,6 +39,15 @@
         <category android:name="android.intent.category.INFO"/>
       </intent-filter>
     </activity>
+    <activity android:name="com.android.healthconnect.controller.permissions.PermissionsActivity"
+        android:excludeFromRecents="true"
+        android:exported="true"
+        android:noHistory="true">
+      <intent-filter android:priority="1">
+        <action android:name="android.intent.action.MANAGE_HEALTH_PERMISSIONS" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
   </application>
 
 </manifest>
