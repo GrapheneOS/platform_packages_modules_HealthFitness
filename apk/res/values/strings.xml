@@ -21,8 +21,17 @@
   <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Review and manage the health and fitness data on your phone, and control which apps can access it</string>
   <string name="data_title" description="Label for a button that takes the user to the data management screens. [CHAR_LIMIT=40]">Data and access</string>
   <string name="data_subtitle" description="Description for a button that takes the user to the data management screens. [CHAR_LIMIT=NONE]">See your data and recent app activity</string>
-  <string name="connected_apps_title" description="Label for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=40]">Connected apps</string>
+  <string name="connected_apps_title" description="Label for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=40]">App permissions</string>
   <string name="connected_apps_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]">Manage your apps and permissions</string>
+
+  <!--  Recent access -->
+  <string name="recent_access_header" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">Recent access</string>
+  <string name="no_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">No apps recently accessed Health Connect</string>
+  <string name="see_all_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">See all</string>
+  <string name="recent_access_screen_description" description="Description of Recent access screen, placed at the top. [CHAR LIMIT=NONE]">See which apps have accessed your data in the past 24 hours</string>
+  <string name="today_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Today</string>
+  <string name="yesterday_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Yesterday</string>
+
 
   <!-- data categories  -->
   <string name="activity_category" description="Title for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
@@ -43,6 +52,10 @@
 
   <!-- Health data permissions labels and descriptions -->
   <!-- TODO(b/249531235): update the labels and descriptions once UX writing is finalised -->
-  <string name="permlab_readCaloriesBurned" description="itle of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Read calories burned</string>
+  <string name="permlab_readCaloriesBurned" description="Title of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Read calories burned</string>
   <string name="permdesc_readCaloriesBurned" description="Description of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=100]">Allows the app to read the calories burned</string>
+
+  <!-- Placeholder recent apps -->
+  <string name="recent_app_1" translatable="false">Recent app 1</string>
+  <string name="recent_app_2" translatable="false">Recent app 2</string>
 </resources>

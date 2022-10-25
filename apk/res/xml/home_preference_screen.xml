@@ -16,21 +16,25 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-  <com.android.settingslib.widget.TopIntroPreference
-      android:key="health_connect_top_intro"
-      android:title="@string/home_subtitle"/>
-  <PreferenceCategory
-      android:key="permissions_and_data_category"
-      android:title="@string/permissions_and_data_header">
-      <Preference
-          android:key="connected_apps"
-          android:icon="@drawable/quantum_gm_ic_link_vd_theme_24"
-          android:title="@string/connected_apps_title"
-          android:summary="@string/connected_apps_subtitle" />
-      <Preference
-          android:key="data_and_access"
-          android:icon="@drawable/ic_health_data"
-          android:title="@string/data_title"
-          android:summary="@string/data_subtitle" />
-  </PreferenceCategory>
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="health_connect_top_intro"
+        android:title="@string/home_subtitle"/>
+    <PreferenceCategory
+        android:key="recent_access"
+        android:title="@string/recent_access_header">
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="permissions_and_data_category"
+        android:title="@string/permissions_and_data_header">
+        <Preference
+            android:key="connected_apps"
+            android:icon="@drawable/quantum_gm_ic_link_vd_theme_24"
+            android:title="@string/connected_apps_title"
+            android:summary="@string/connected_apps_subtitle" />
+        <Preference
+            android:key="data_and_access"
+            android:icon="@drawable/ic_health_data"
+            android:title="@string/data_title"
+            android:summary="@string/data_subtitle" />
+    </PreferenceCategory>
 </PreferenceScreen>
