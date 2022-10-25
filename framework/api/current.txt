@@ -15,6 +15,7 @@ package android.healthconnect {
 
   public class HealthConnectManager {
     method public void insertRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.InsertRecordsResponse,android.healthconnect.HealthConnectException>);
+    field public static final String CATEGORY_HEALTH_PERMISSIONS = "android.intent.category.HEALTH_PERMISSIONS";
   }
 
   public final class HealthPermissions {
