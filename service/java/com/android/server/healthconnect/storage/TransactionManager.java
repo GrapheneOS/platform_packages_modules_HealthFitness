@@ -27,6 +27,7 @@ import android.healthconnect.internal.datatypes.RecordInternal;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -87,6 +88,63 @@ public class TransactionManager {
             }
 
             return request.getUUIdsInOrder();
+        }
+    }
+
+    /**
+     * Deletes all the {@link RecordInternal} in {@code request} into the HealthConnect database.
+     *
+     * <p>NOTE: Please don't add logic to explicitly delete child table entries here as they should
+     * be deleted via cascade
+     *
+     * @param request a delete request.
+     */
+    public void deleteAll(@NonNull DeleteTransactionRequest request) throws SQLiteException {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.beginTransaction();
+            try {
+                request.getDeleteTableRequests()
+                        .forEach(
+                                (deleteTableRequest) -> {
+                                    if (deleteTableRequest.requiresUuId()) {
+                                        /*
+                                        Delete request needs UUID before the entry can be
+                                        deleted, fetch and set it in {@code request}
+                                        */
+                                        try (Cursor cursor =
+                                                db.query(
+                                                        deleteTableRequest.getTableName(),
+                                                        new String[] {
+                                                            deleteTableRequest.getIdColumnName()
+                                                        },
+                                                        deleteTableRequest.getDeleteWhereCommand(),
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null)) {
+                                            while (cursor.moveToNext()) {
+                                                request.onUuidFetched(
+                                                        deleteTableRequest.getRecordType(),
+                                                        StorageUtils.getCursorString(
+                                                                cursor,
+                                                                deleteTableRequest
+                                                                        .getIdColumnName()));
+                                            }
+                                        }
+                                    }
+
+                                    db.delete(
+                                            deleteTableRequest.getTableName(),
+                                            deleteTableRequest.getDeleteWhereCommand(),
+                                            null);
+                                });
+                request.getChangeLogUpsertRequests()
+                        .forEach((insertRequest) -> insertRecord(db, insertRequest));
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
         }
     }
 

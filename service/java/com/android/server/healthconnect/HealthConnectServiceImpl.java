@@ -24,9 +24,9 @@ import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
+import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
-import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
@@ -46,6 +46,7 @@ import com.android.server.healthconnect.permission.HealthConnectPermissionHelper
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
@@ -203,7 +204,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     /**
      * @see HealthConnectManager#getChangeLogToken
-     * @hide
      */
     @Override
     public void getChangeLogToken(
@@ -266,7 +266,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
-    /** @hide */
+    /**
+     * @see HealthConnectManager#getChangeLogs
+     * @hide
+     */
     @Override
     public void getChangeLogs(
             @NonNull String packageName,
@@ -296,6 +299,35 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback,
                                 illegalArgumentException,
                                 HealthConnectException.ERROR_INVALID_ARGUMENT);
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
+     * API to delete records based on {@code request}
+     *
+     * <p>NOTE: Internally we only need a single API to handle deletes as SDK code transform all its
+     * delete requests to {@link DeleteUsingFiltersRequestParcel}
+     */
+    @Override
+    public void deleteUsingFilters(
+            @NonNull String packageName,
+            @NonNull DeleteUsingFiltersRequestParcel request,
+            @NonNull IEmptyResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        mTransactionManager.deleteAll(
+                                new DeleteTransactionRequest(packageName, request));
+                        callback.onResult();
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(

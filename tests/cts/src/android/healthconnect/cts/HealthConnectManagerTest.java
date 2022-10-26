@@ -26,6 +26,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.healthconnect.ChangeLogTokenRequest;
 import android.healthconnect.HealthConnectException;
+import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.ReadRecordsRequestUsingFilters;

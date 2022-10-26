@@ -1,8 +1,10 @@
 package android.healthconnect.aidl;
 
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
-import android.healthconnect.aidl.IGetChangeLogTokenCallback;
+import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
+import android.healthconnect.aidl.IEmptyResponseCallback;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -84,4 +86,14 @@ interface IHealthConnectService {
         String packageName,
         long token,
         in IChangeLogsResponseCallback callback);
+
+    /**
+     * @param packageName Calling package's name
+     * @param request Delete request using the mentioned filters
+     * @param callback Callback to receive result of performing this operation
+     */
+    void deleteUsingFilters(
+        String packageName,
+        in DeleteUsingFiltersRequestParcel request,
+        in IEmptyResponseCallback callback);
 }

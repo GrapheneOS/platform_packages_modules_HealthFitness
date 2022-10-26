@@ -3,6 +3,7 @@ package android.healthconnect.aidl;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 
 /**
+ * Callback to for {@link HealthConnect} APIs with no result object
  * {@hide}
  */
 interface IEmptyResponseCallback {

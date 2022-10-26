@@ -33,6 +33,7 @@ import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -140,6 +141,16 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return recordInternalList;
     }
 
+    public DeleteTableRequest getDeleteTableRequest(
+            List<String> packageFilters, long startTime, long endTime) {
+        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
+                .setTimeFilter(getStartTimeColumnName(), startTime, endTime)
+                .setPackageFilter(
+                        APP_INFO_ID_COLUMN_NAME,
+                        AppInfoHelper.getInstance().getAppInfoIds(packageFilters))
+                .setRequiresUuId(UUID_COLUMN_NAME);
+    }
+
     public abstract String getStartTimeColumnName();
 
     /**
@@ -172,6 +183,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      */
     abstract void populateContentValues(
             @NonNull ContentValues contentValues, @NonNull T recordInternal);
+
+    /**
+     * Child classes implementation should populate the values to the {@code record} using the
+     * cursor {@code cursor} queried from the DB .
+     */
+    abstract void populateRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
 
     List<UpsertTableRequest> getChildTableUpsertRequests(T record) {
         return Collections.emptyList();
@@ -222,10 +239,4 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
         return columnInfo;
     }
-
-    /**
-     * Child classes implementation should populate the values to the {@code record} using the
-     * cursor {@code cursor} queried from the DB .
-     */
-    abstract void populateRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
 }

@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.healthconnect.ChangeLogTokenRequest;
+import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
@@ -240,6 +241,21 @@ public class TestUtils {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         return response.get();
+    }
+
+    public static void verifyDeleteRecords(DeleteUsingFiltersRequest request)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        service.deleteRecordsUsingFilters(
+                request,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
     }
 
     static final class RecordAndIdentifier {

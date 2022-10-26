@@ -31,9 +31,9 @@ import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
+import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
-import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
@@ -309,12 +309,46 @@ public class HealthConnectManager {
 
                         @Override
                         public void onError(HealthConnectExceptionParcel exception) {
-                            Binder.clearCallingIdentity();
-                            callback.onError(exception.getHealthConnectException());
+                            returnError(executor, exception, callback);
                         }
                     });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * API to delete records based on {@link DeleteUsingFiltersRequest}. This is only to be used by
+     * HC controller APK(s)
+     *
+     * @param request Request based on which to perform delete operation
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     * @hide
+     */
+    @SystemApi
+    public void deleteRecordsUsingFilters(
+            @NonNull DeleteUsingFiltersRequest request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        try {
+            mService.deleteUsingFilters(
+                    mContext.getPackageName(),
+                    new DeleteUsingFiltersRequestParcel(request),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
         }
     }
 
