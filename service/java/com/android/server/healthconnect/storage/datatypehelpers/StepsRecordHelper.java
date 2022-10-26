@@ -15,7 +15,7 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.SQLiteType.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -33,12 +33,12 @@ import java.util.List;
  */
 @HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
 public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInternal> {
-    private static final String STEPS_TABLE_NAME = "StepsRecordTable";
+    private static final String STEPS_TABLE_NAME = "steps_record_table";
     private static final String COUNT_COLUMN_NAME = "count";
 
     @Override
     @NonNull
-    public String getTableName() {
+    String getMainTableName() {
         return STEPS_TABLE_NAME;
     }
 
@@ -50,7 +50,7 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
 
     @Override
     @NonNull
-    protected List<Pair<String, SQLiteType>> getIntervalRecordColumnInfo() {
+    protected List<Pair<String, String>> getIntervalRecordColumnInfo() {
         return Collections.singletonList(new Pair<>(COUNT_COLUMN_NAME, INTEGER));
     }
 }

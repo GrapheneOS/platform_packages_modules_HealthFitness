@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package android.healthconnect;
+package android.healthconnect.internal.datatypes;
+
+import android.annotation.NonNull;
+import android.healthconnect.datatypes.IntervalRecord;
+
+import java.util.List;
 
 /**
- * Internal constants for health-connect.
+ * Parent class for all the Series type records.
+ *
+ * <p>U -> Sample type for series record
  *
  * @hide
  */
-public final class Constants {
-    public static final String MANAGE_HEALTH_PERMISSIONS_NAME =
-            "android.permission.MANAGE_HEALTH_PERMISSIONS";
+public abstract class SeriesRecordInternal<T extends IntervalRecord, U>
+        extends IntervalRecordInternal<T> {
+    @NonNull
+    public abstract List<? extends Sample> getSamples();
 
-    public static final String HEALTH_PERMISSION_GROUP_NAME = "android.permission-group.HEALTH";
-
-    public static final boolean DEBUG = false;
+    /** Base class for the series data stored in {@link SeriesRecordInternal} types */
+    public interface Sample {}
 }

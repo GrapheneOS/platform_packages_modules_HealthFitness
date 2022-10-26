@@ -22,8 +22,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Class to maintain the health connect DB. Actual operations are performed by {@link
@@ -35,19 +37,18 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "healthconnect.db";
 
-    @NonNull private final List<RecordHelper<?>> mRecordHelpers;
+    @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;
 
-    public HealthConnectDatabase(
-            @NonNull Context context, @NonNull List<RecordHelper<?>> recordHelpers) {
+    public HealthConnectDatabase(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mRecordHelpers = recordHelpers;
+        mRecordHelpers = RecordHelperProvider.getInstance().getRecordHelpers().values();
     }
 
     @Override
     public void onCreate(@NonNull SQLiteDatabase db) {
         mRecordHelpers.forEach(
                 recordHelper -> {
-                    db.execSQL(recordHelper.getCreateTableCommand());
+                    createTable(db, recordHelper.getCreateTableRequest());
                 });
     }
 
@@ -62,5 +63,16 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
+    }
+
+    private void createTable(SQLiteDatabase db, CreateTableRequest createTableRequest) {
+        db.execSQL(createTableRequest.getCreateCommand());
+        createTableRequest
+                .getChildTableRequests()
+                .forEach(
+                        (childTableRequest) -> {
+                            createTable(db, childTableRequest);
+                        });
+        createTableRequest.getCreateIndexStatements().forEach(db::execSQL);
     }
 }

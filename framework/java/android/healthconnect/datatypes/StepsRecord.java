@@ -29,6 +29,7 @@ import java.util.Objects;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
 public final class StepsRecord extends IntervalRecord {
+    /** Builder class for {@link StepsRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
         private final Instant mStartTime;
@@ -40,7 +41,10 @@ public final class StepsRecord extends IntervalRecord {
                 ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
 
         /**
-         * @see StepsRecord
+         * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+         * @param startTime Start time of this activity
+         * @param endTime End time of this activity
+         * @param count Number of steps recorded for this activity
          */
         public Builder(
                 @NonNull Metadata metadata,
@@ -83,14 +87,6 @@ public final class StepsRecord extends IntervalRecord {
 
     private final long mCount;
 
-    /**
-     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
-     * @param startTime Start time of this activity
-     * @param startZoneOffset Zone offset of the user when the activity started
-     * @param endTime End time of this activity
-     * @param endZoneOffset Zone offset of the user when the activity finished
-     * @param count Number of steps recorded for this activity
-     */
     private StepsRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,

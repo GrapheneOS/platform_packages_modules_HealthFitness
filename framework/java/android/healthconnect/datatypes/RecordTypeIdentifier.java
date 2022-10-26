@@ -33,7 +33,6 @@ import java.lang.annotation.RetentionPolicy;
 public final class RecordTypeIdentifier {
     // Interval Records
     public static final int RECORD_TYPE_STEPS = 0;
-    public static final int RECORD_TYPE_EXERCISE_SESSION = 2;
     // Series Records
     public static final int RECORD_TYPE_HEART_RATE = 1;
     // Instant records
@@ -41,7 +40,7 @@ public final class RecordTypeIdentifier {
     private RecordTypeIdentifier() {}
 
     /** @hide */
-    @IntDef({RECORD_TYPE_STEPS, RECORD_TYPE_HEART_RATE, RECORD_TYPE_EXERCISE_SESSION})
+    @IntDef({RECORD_TYPE_STEPS, RECORD_TYPE_HEART_RATE})
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}
 }

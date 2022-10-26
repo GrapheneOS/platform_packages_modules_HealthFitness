@@ -25,7 +25,6 @@ import android.os.Parcelable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A wrapper to carry a list of entries of type {@link RecordInternal} from and to {@link
@@ -48,20 +47,26 @@ public class RecordsParcel implements Parcelable {
                 }
             };
 
-    private List<RecordInternal<?>> mRecordInternals;
-    private byte[] mDataBlob;
+    private final List<RecordInternal<?>> mRecordInternals;
 
     public RecordsParcel(@NonNull List<RecordInternal<?>> recordInternals) {
         mRecordInternals = recordInternals;
     }
 
     private RecordsParcel(@NonNull Parcel in) {
-        this(Objects.requireNonNull(in.readBlob()));
-    }
-
-    private RecordsParcel(@NonNull byte[] dataBlob) {
-        // Avoid unmarshall here to avoid doing this on a binder thread as much as possible
-        mDataBlob = dataBlob;
+        int size = in.readInt();
+        mRecordInternals = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            int identifier = in.readInt();
+            try {
+                mRecordInternals.add(ParcelRecordConverter.getInstance().getRecord(in, identifier));
+            } catch (InstantiationException
+                    | IllegalAccessException
+                    | NoSuchMethodException
+                    | InvocationTargetException e) {
+                throw new IllegalArgumentException();
+            }
+        }
     }
 
     @Override
@@ -71,64 +76,15 @@ public class RecordsParcel implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeBlob(serializeToByteArray());
+        dest.writeInt(mRecordInternals.size());
+        for (RecordInternal<?> recordInternal : mRecordInternals) {
+            dest.writeInt(recordInternal.getRecordType());
+            recordInternal.writeToParcel(dest);
+        }
     }
 
     @NonNull
-    public List<RecordInternal<?>> getRecords()
-            throws InvocationTargetException, InstantiationException, IllegalAccessException,
-                    NoSuchMethodException {
-        if (mDataBlob != null) {
-            createRecordsFromParcel();
-            mDataBlob = null;
-        }
+    public List<RecordInternal<?>> getRecords() {
         return mRecordInternals;
-    }
-
-    @NonNull
-    private byte[] serializeToByteArray() {
-        Parcel recordsParcel = Parcel.obtain();
-        try {
-            // Save the number documents to the temporary Parcel object.
-            recordsParcel.writeInt(mRecordInternals.size());
-            // Save all document's bundle to the temporary Parcel object.
-            for (RecordInternal<?> recordInternal : mRecordInternals) {
-                Parcel recordParcel = Parcel.obtain();
-                recordInternal.writeToParcel(recordParcel);
-                byte[] parcelByte = recordParcel.marshall();
-                recordsParcel.writeInt(recordInternal.getRecordType());
-                recordsParcel.writeInt(parcelByte.length);
-                recordsParcel.writeByteArray(parcelByte);
-            }
-            return recordsParcel.marshall();
-        } finally {
-            recordsParcel.recycle();
-        }
-    }
-
-    private void createRecordsFromParcel()
-            throws InvocationTargetException, InstantiationException, IllegalAccessException,
-                    NoSuchMethodException {
-        Parcel unmarshallParcel = Parcel.obtain();
-        try {
-            unmarshallParcel.unmarshall(mDataBlob, 0, mDataBlob.length);
-            unmarshallParcel.setDataPosition(0);
-            // read the number of document that stored in here.
-            int size = unmarshallParcel.readInt();
-            mRecordInternals = new ArrayList<>(size);
-            for (int i = 0; i < size; i++) {
-                int identifier = unmarshallParcel.readInt();
-                int parcelSize = unmarshallParcel.readInt();
-                Parcel unmarshallParcelRecord = Parcel.obtain();
-                byte[] parcel = new byte[parcelSize];
-                unmarshallParcel.readByteArray(parcel);
-                unmarshallParcelRecord.unmarshall(parcel, 0, parcelSize);
-                mRecordInternals.add(
-                        ParcelRecordConverter.getInstance()
-                                .getRecord(unmarshallParcelRecord, identifier));
-            }
-        } finally {
-            unmarshallParcel.recycle();
-        }
     }
 }
