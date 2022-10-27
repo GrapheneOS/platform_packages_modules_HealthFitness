@@ -18,27 +18,27 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of temperature. Supported units: Celsius */
+public class Temperature implements Comparable<Temperature> {
+    private final double mInCelsius;
 
-    private Power(double value) {
-        mInWatts = value;
+    private Temperature(double value) {
+        mInCelsius = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a Temperature object with the specified value in Celsius degrees.
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as celsius.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public static Temperature fromCelsius(double value) {
+        return new Temperature(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns temperature in celsius */
+    public double getInCelsius() {
+        return mInCelsius;
     }
 
     /**
@@ -54,8 +54,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Temperature other) {
+        return Double.compare(this.mInCelsius, other.mInCelsius);
     }
 
     /**
@@ -63,6 +63,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInCelsius + " celsius";
     }
 }

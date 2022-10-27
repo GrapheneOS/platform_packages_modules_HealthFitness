@@ -18,27 +18,28 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of energy. Supported units: joules */
+public class Energy implements Comparable<Energy> {
 
-    private Power(double value) {
-        mInWatts = value;
+    private final double mInJoules;
+
+    private Energy(double value) {
+        mInJoules = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates an Energy object with the specified value in joules.
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as joules.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public static Energy fromJoules(double value) {
+        return new Energy(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns energy in joules */
+    public double getInJoules() {
+        return mInJoules;
     }
 
     /**
@@ -54,8 +55,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Energy other) {
+        return Double.compare(this.mInJoules, other.mInJoules);
     }
 
     /**
@@ -63,6 +64,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInJoules + " J";
     }
 }

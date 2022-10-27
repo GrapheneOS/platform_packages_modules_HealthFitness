@@ -18,27 +18,27 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of blood glucose level (glycaemia). Supported units: mmol/L */
+public class BloodGlucose implements Comparable<BloodGlucose> {
+    private final double mInMillimolesPerLiter;
 
-    private Power(double value) {
-        mInWatts = value;
+    private BloodGlucose(double value) {
+        mInMillimolesPerLiter = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a BloodGlucose object with the specified value in mmol/L
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as millimoles per liter
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public static BloodGlucose fromMillimolesPerLiter(double value) {
+        return new BloodGlucose(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns blood glucose in millimoles per liter */
+    public double getInMillimolesPerLiter() {
+        return mInMillimolesPerLiter;
     }
 
     /**
@@ -54,8 +54,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull BloodGlucose other) {
+        return Double.compare(this.mInMillimolesPerLiter, other.mInMillimolesPerLiter);
     }
 
     /**
@@ -63,6 +63,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInMillimolesPerLiter + " mmol/L";
     }
 }

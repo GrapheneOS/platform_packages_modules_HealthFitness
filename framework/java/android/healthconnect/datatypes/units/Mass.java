@@ -18,27 +18,28 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of mass. Supported units: kilograms */
+public class Mass implements Comparable<Mass> {
 
-    private Power(double value) {
-        mInWatts = value;
+    private final double mInKilograms;
+
+    private Mass(double value) {
+        mInKilograms = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a Mass object with the specified value in kilograms.
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as kilograms.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public Mass fromKilograms(double value) {
+        return new Mass(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns mass in kilograms */
+    public double getInKilograms() {
+        return mInKilograms;
     }
 
     /**
@@ -54,8 +55,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Mass other) {
+        return Double.compare(this.mInKilograms, other.mInKilograms);
     }
 
     /**
@@ -63,6 +64,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInKilograms + " kilograms";
     }
 }

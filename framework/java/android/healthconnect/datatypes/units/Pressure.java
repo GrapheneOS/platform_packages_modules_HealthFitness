@@ -18,27 +18,27 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of pressure. Supported units: millimeters of Mercury (mmHg) */
+public class Pressure implements Comparable<Pressure> {
+    private final double mInMillimetersOfMercury;
 
-    private Power(double value) {
-        mInWatts = value;
+    private Pressure(double value) {
+        mInMillimetersOfMercury = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a Pressure object with the specified value in millimeters of Mercury (mmHg).
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as millimeters of Mercury.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public static Pressure fromMillimetersOfMercury(double value) {
+        return new Pressure(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns pressure in millimeters of mercury */
+    public double getInMillimetersOfMercury() {
+        return mInMillimetersOfMercury;
     }
 
     /**
@@ -54,8 +54,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Pressure other) {
+        return Double.compare(this.mInMillimetersOfMercury, other.mInMillimetersOfMercury);
     }
 
     /**
@@ -63,6 +63,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInMillimetersOfMercury + " mmHg";
     }
 }
