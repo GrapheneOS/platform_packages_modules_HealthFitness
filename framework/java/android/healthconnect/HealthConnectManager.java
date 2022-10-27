@@ -41,7 +41,9 @@ import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
@@ -318,8 +320,10 @@ public class HealthConnectManager {
     }
 
     /**
-     * API to delete records based on {@link DeleteUsingFiltersRequest}. This is only to be used by
-     * HC controller APK(s)
+     * Deletes records based on the {@link DeleteUsingFiltersRequest}. This is only to be used by
+     * health connect controller APK(s). Ids that don't exist will be ignored.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none
      *
      * @param request Request based on which to perform delete operation
      * @param executor Executor on which to invoke the callback.
@@ -328,14 +332,111 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi
-    public void deleteRecordsUsingFilters(
+    public void deleteRecords(
             @NonNull DeleteUsingFiltersRequest request,
             @NonNull Executor executor,
             @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
         try {
             mService.deleteUsingFilters(
                     mContext.getPackageName(),
                     new DeleteUsingFiltersRequestParcel(request),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Deletes records based on {@link RecordIdFilter}.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none
+     *
+     * @param recordIds recordIds on which to perform delete operation.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     * @throws IllegalArgumentException if {@code recordIds is empty}
+     */
+    public void deleteRecords(
+            @NonNull List<RecordIdFilter> recordIds,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(recordIds);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        if (recordIds.isEmpty()) {
+            throw new IllegalArgumentException("record ids can't be empty");
+        }
+
+        try {
+            mService.deleteUsingFilters(
+                    mContext.getPackageName(),
+                    new DeleteUsingFiltersRequestParcel(
+                            new RecordIdFiltersParcel(recordIds), mContext.getPackageName()),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Deletes records based on the {@link TimeRangeFilter}.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none
+     *
+     * @param recordType recordType to perform delete operation on.
+     * @param timeRangeFilter time filter based on which to delete the records.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    public void deleteRecords(
+            @NonNull Class<? extends Record> recordType,
+            @NonNull TimeRangeFilter timeRangeFilter,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(recordType);
+        Objects.requireNonNull(timeRangeFilter);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.deleteUsingFilters(
+                    mContext.getPackageName(),
+                    new DeleteUsingFiltersRequestParcel(
+                            new DeleteUsingFiltersRequest.Builder()
+                                    .addDataOrigin(
+                                            new DataOrigin.Builder()
+                                                    .setPackageName(mContext.getPackageName())
+                                                    .build())
+                                    .addRecordType(recordType)
+                                    .setTimeRangeFilter(timeRangeFilter)
+                                    .build()),
                     new IEmptyResponseCallback.Stub() {
                         @Override
                         public void onResult() {

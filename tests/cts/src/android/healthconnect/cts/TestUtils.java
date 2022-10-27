@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.healthconnect.ChangeLogTokenRequest;
+import android.healthconnect.ChangeLogsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
@@ -31,6 +32,8 @@ import android.healthconnect.InsertRecordsResponse;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.ReadRecordsResponse;
+import android.healthconnect.RecordIdFilter;
+import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -47,6 +50,7 @@ import androidx.test.core.app.ApplicationProvider;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -72,6 +76,10 @@ public class TestUtils {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
         return response.get();
+    }
+
+    public static String insertRecordAndGetId(Record record) throws InterruptedException {
+        return insertRecords(Collections.singletonList(record)).get(0).getMetadata().getId();
     }
 
     public static List<Record> insertRecords(List<Record> records) throws InterruptedException {
@@ -101,23 +109,23 @@ public class TestUtils {
         return response.get();
     }
 
-    //    public static ChangeLogsResponse getChangeLogs(long token) throws InterruptedException {
-    //        Context context = ApplicationProvider.getApplicationContext();
-    //        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-    //        assertThat(service).isNotNull();
-    //
-    //        CountDownLatch latch = new CountDownLatch(1);
-    //        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
-    //        service.getChangeLogs(
-    //                token,
-    //                Executors.newSingleThreadExecutor(),
-    //                result -> {
-    //                    response.set(result);
-    //                    latch.countDown();
-    //                });
-    //        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-    //        return response.get();
-    //    }
+    public static ChangeLogsResponse getChangeLogs(long token) throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
+        service.getChangeLogs(
+                token,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    response.set(result);
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        return response.get();
+    }
 
     public static List<Record> getTestRecords() {
         return Arrays.asList(getStepsRecord(), getHeartRateRecord(), getBasalMetabolicRateRecord());
@@ -217,6 +225,26 @@ public class TestUtils {
         return response.get();
     }
 
+    public static <T extends Record> void assertRecordNotFound(String uuid, Class<T> recordType)
+            throws InterruptedException {
+        assertThat(
+                        readRecords(
+                                new ReadRecordsRequestUsingIds.Builder<>(recordType)
+                                        .addId(uuid)
+                                        .build()))
+                .isEmpty();
+    }
+
+    public static <T extends Record> void assertRecordFound(String uuid, Class<T> recordType)
+            throws InterruptedException {
+        assertThat(
+                        readRecords(
+                                new ReadRecordsRequestUsingIds.Builder<>(recordType)
+                                        .addId(uuid)
+                                        .build()))
+                .isNotEmpty();
+    }
+
     public static <T extends Record> List<T> readRecords(ReadRecordsRequestUsingFilters<T> request)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -249,8 +277,40 @@ public class TestUtils {
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(service).isNotNull();
-        service.deleteRecordsUsingFilters(
+        service.deleteRecords(
                 request,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+    }
+
+    public static void verifyDeleteRecords(List<RecordIdFilter> request)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        service.deleteRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+    }
+
+    public static void verifyDeleteRecords(
+            Class<? extends Record> recordType, TimeRangeFilter timeRangeFilter)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        service.deleteRecords(
+                recordType,
+                timeRangeFilter,
                 Executors.newSingleThreadExecutor(),
                 result -> {
                     latch.countDown();

@@ -15,6 +15,8 @@
  */
 package android.healthconnect.internal.datatypes;
 
+import static android.healthconnect.Constants.DEFAULT_LONG;
+
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
@@ -27,7 +29,7 @@ import android.os.Parcel;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
 public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecord> {
-    private long mCount;
+    private long mCount = DEFAULT_LONG;
 
     public long getCount() {
         return mCount;

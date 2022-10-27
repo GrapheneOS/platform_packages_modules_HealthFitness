@@ -112,15 +112,8 @@ public class TransactionManager {
                                         deleted, fetch and set it in {@code request}
                                         */
                                         try (Cursor cursor =
-                                                db.query(
-                                                        deleteTableRequest.getTableName(),
-                                                        new String[] {
-                                                            deleteTableRequest.getIdColumnName()
-                                                        },
-                                                        deleteTableRequest.getDeleteWhereCommand(),
-                                                        null,
-                                                        null,
-                                                        null,
+                                                db.rawQuery(
+                                                        deleteTableRequest.getReadCommand(),
                                                         null)) {
                                             while (cursor.moveToNext()) {
                                                 request.onUuidFetched(
@@ -133,10 +126,7 @@ public class TransactionManager {
                                         }
                                     }
 
-                                    db.delete(
-                                            deleteTableRequest.getTableName(),
-                                            deleteTableRequest.getDeleteWhereCommand(),
-                                            null);
+                                    db.execSQL(deleteTableRequest.getDeleteCommand());
                                 });
                 request.getChangeLogUpsertRequests()
                         .forEach((insertRequest) -> insertRecord(db, insertRequest));

@@ -18,13 +18,22 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.content.Context;
 import android.healthconnect.ChangeLogTokenRequest;
+import android.healthconnect.ChangeLogsResponse;
+import android.healthconnect.datatypes.DataOrigin;
+import android.healthconnect.datatypes.Record;
+import android.healthconnect.datatypes.StepsRecord;
 import android.platform.test.annotations.AppModeFull;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Collections;
+import java.util.List;
 
 /** CTS test for API provided by HealthConnectManager. */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -38,98 +47,86 @@ public class HealthConnectChangeLogsTests {
 
     // UNCOMMENT THESE TESTS WHEN THE API IS MADE VISIBLE
 
-    //    @Test
-    //    public void testChangeLogs_insert_default() throws InterruptedException {
-    //        long token = TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build());
-    //        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
-    //        int logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(0);
-    //
-    //        List<Record> testRecord = TestUtils.getTestRecords();
-    //        TestUtils.insertRecords(testRecord);
-    //        response = TestUtils.getChangeLogs(token);
-    //        logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(testRecord.size());
-    //    }
-    //
-    //    @Test
-    //    public void testChangeLogs_insert_dataOrigin_filter_incorrect() throws
-    // InterruptedException {
-    //        long token =
-    //                TestUtils.getChangeLogToken(
-    //                        new ChangeLogTokenRequest.Builder()
-    //                                .addDataOriginFilter(
-    //                                        new
-    // DataOrigin.Builder().setPackageName("random").build())
-    //                                .build());
-    //        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
-    //        int logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(0);
-    //
-    //        List<Record> testRecord = TestUtils.getTestRecords();
-    //        TestUtils.insertRecords(testRecord);
-    //        response = TestUtils.getChangeLogs(token);
-    //        logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(0);
-    //    }
-    //
-    //    @Test
-    //    public void testChangeLogs_insert_dataOrigin_filter_correct() throws InterruptedException
-    // {
-    //        Context context = ApplicationProvider.getApplicationContext();
-    //        long token =
-    //                TestUtils.getChangeLogToken(
-    //                        new ChangeLogTokenRequest.Builder()
-    //                                .addDataOriginFilter(
-    //                                        new DataOrigin.Builder()
-    //                                                .setPackageName(context.getPackageName())
-    //                                                .build())
-    //                                .build());
-    //        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
-    //        int logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(0);
-    //
-    //        List<Record> testRecord = TestUtils.getTestRecords();
-    //        TestUtils.insertRecords(testRecord);
-    //        response = TestUtils.getChangeLogs(token);
-    //        logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(testRecord.size());
-    //    }
-    //
-    //    @Test
-    //    public void testChangeLogs_insert_record_filter() throws InterruptedException {
-    //        Context context = ApplicationProvider.getApplicationContext();
-    //        long token =
-    //                TestUtils.getChangeLogToken(
-    //                        new ChangeLogTokenRequest.Builder()
-    //                                .addDataOriginFilter(
-    //                                        new DataOrigin.Builder()
-    //                                                .setPackageName(context.getPackageName())
-    //                                                .build())
-    //                                .addRecordType(StepsRecord.class)
-    //                                .build());
-    //        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
-    //        int logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(0);
-    //
-    //        List<Record> testRecord = Collections.singletonList(TestUtils.getStepsRecord());
-    //        TestUtils.insertRecords(testRecord);
-    //        response = TestUtils.getChangeLogs(token);
-    //        logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(1);
-    //        testRecord = Collections.singletonList(TestUtils.getHeartRateRecord());
-    //        TestUtils.insertRecords(testRecord);
-    //        response = TestUtils.getChangeLogs(token);
-    //        logCount = response.getUpsertedRecords().size() +
-    // response.getDeletedRecordIds().size();
-    //        assertThat(logCount).isEqualTo(1);
-    //    }
+    @Test
+    public void testChangeLogs_insert_default() throws InterruptedException {
+        long token = TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build());
+        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
+        int logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(0);
+
+        List<Record> testRecord = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(token);
+        logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(testRecord.size());
+    }
+
+    @Test
+    public void testChangeLogs_insert_dataOrigin_filter_incorrect() throws InterruptedException {
+        long token =
+                TestUtils.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder().setPackageName("random").build())
+                                .build());
+        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
+        int logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(0);
+
+        List<Record> testRecord = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(token);
+        logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(0);
+    }
+
+    @Test
+    public void testChangeLogs_insert_dataOrigin_filter_correct() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        long token =
+                TestUtils.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
+        int logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(0);
+
+        List<Record> testRecord = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(token);
+        logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(testRecord.size());
+    }
+
+    @Test
+    public void testChangeLogs_insert_record_filter() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        long token =
+                TestUtils.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .addRecordType(StepsRecord.class)
+                                .build());
+        ChangeLogsResponse response = TestUtils.getChangeLogs(token);
+        int logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(0);
+
+        List<Record> testRecord = Collections.singletonList(TestUtils.getStepsRecord());
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(token);
+        logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(1);
+        testRecord = Collections.singletonList(TestUtils.getHeartRateRecord());
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(token);
+        logCount = response.getUpsertedRecords().size() + response.getDeletedRecordIds().size();
+        assertThat(logCount).isEqualTo(1);
+    }
 }

@@ -31,6 +31,7 @@ import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
+import android.healthconnect.RecordIdFilter;
 import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.DataOrigin;
@@ -93,6 +94,91 @@ public class HealthConnectManagerTest {
     @Test
     public void testInsertRecords() throws Exception {
         TestUtils.insertRecords(TestUtils.getTestRecords());
+    }
+
+    @Test
+    public void testDeleteRecord_no_filters() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
+        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        TestUtils.assertRecordNotFound(id, StepsRecord.class);
+    }
+
+    @Test
+    public void testDeleteRecord_time_filters() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id, StepsRecord.class);
+    }
+
+    @Test
+    public void testDeleteRecord_recordId_filters() throws InterruptedException {
+        List<Record> records = TestUtils.getTestRecords();
+        TestUtils.insertRecords(records);
+
+        for (Record record : records) {
+            TestUtils.verifyDeleteRecords(
+                    new DeleteUsingFiltersRequest.Builder()
+                            .addRecordType(record.getClass())
+                            .build());
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteRecord_dataOrigin_filters() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build())
+                        .build());
+        TestUtils.assertRecordNotFound(id, StepsRecord.class);
+    }
+
+    @Test
+    public void testDeleteRecord_dataOrigin_filter_incorrect() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(new DataOrigin.Builder().setPackageName("abc").build())
+                        .build());
+        TestUtils.assertRecordFound(id, StepsRecord.class);
+    }
+
+    @Test
+    public void testDeleteRecord_usingIds() throws InterruptedException {
+        List<Record> records = TestUtils.getTestRecords();
+        List<Record> insertedRecord = TestUtils.insertRecords(records);
+        List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
+        for (Record record : insertedRecord) {
+            recordIds.add(
+                    new RecordIdFilter.Builder(record.getClass())
+                            .setId(record.getMetadata().getId())
+                            .build());
+        }
+
+        TestUtils.verifyDeleteRecords(recordIds);
+        for (Record record : records) {
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteRecord_time_range() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
+        TestUtils.verifyDeleteRecords(StepsRecord.class, timeRangeFilter);
+        TestUtils.assertRecordNotFound(id, StepsRecord.class);
     }
 
     @Test

@@ -27,6 +27,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,12 +52,16 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
     private final int[] mRecordTypeFilters;
     private final long mStartTime;
     private final long mEndTime;
+    private final RecordIdFiltersParcel mRecordIdFiltersParcel;
 
     protected DeleteUsingFiltersRequestParcel(Parcel in) {
         mPackageNameFilters = in.createStringArrayList();
         mRecordTypeFilters = in.createIntArray();
         mStartTime = in.readLong();
         mEndTime = in.readLong();
+        mRecordIdFiltersParcel =
+                in.readParcelable(
+                        RecordIdFiltersParcel.class.getClassLoader(), RecordIdFiltersParcel.class);
     }
 
     public DeleteUsingFiltersRequestParcel(DeleteUsingFiltersRequest request) {
@@ -78,6 +83,21 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
             mStartTime = request.getTimeRangeFilter().getStartTime().toEpochMilli();
             mEndTime = request.getTimeRangeFilter().getEndTime().toEpochMilli();
         }
+        mRecordIdFiltersParcel = new RecordIdFiltersParcel(Collections.emptyList());
+    }
+
+    public DeleteUsingFiltersRequestParcel(
+            RecordIdFiltersParcel recordIdFiltersParcel, String packageName) {
+        mPackageNameFilters = Collections.singletonList(packageName);
+        // Not required with ids
+        mRecordTypeFilters = new int[0];
+        mStartTime = DEFAULT_LONG;
+        mEndTime = DEFAULT_LONG;
+        mRecordIdFiltersParcel = recordIdFiltersParcel;
+    }
+
+    public RecordIdFiltersParcel getRecordIdFiltersParcel() {
+        return mRecordIdFiltersParcel;
     }
 
     public List<String> getPackageNameFilters() {
@@ -107,5 +127,6 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
         dest.writeIntArray(mRecordTypeFilters);
         dest.writeLong(mStartTime);
         dest.writeLong(mEndTime);
+        dest.writeParcelable(mRecordIdFiltersParcel, 0);
     }
 }

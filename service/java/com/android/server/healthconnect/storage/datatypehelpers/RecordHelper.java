@@ -151,6 +151,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setRequiresUuId(UUID_COLUMN_NAME);
     }
 
+    public DeleteTableRequest getDeleteTableRequest(List<String> ids) {
+        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
+                .setIds(UUID_COLUMN_NAME, ids);
+    }
+
     public abstract String getStartTimeColumnName();
 
     /**

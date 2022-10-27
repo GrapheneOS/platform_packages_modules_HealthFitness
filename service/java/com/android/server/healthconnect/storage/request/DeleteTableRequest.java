@@ -48,7 +48,7 @@ public class DeleteTableRequest {
     private long mStartTime = DEFAULT_LONG;
     private long mEndTime = DEFAULT_LONG;
     private boolean mRequiresUuId;
-    private String mId;
+    private List<String> mIds;
 
     public DeleteTableRequest(
             @NonNull String tableName, @RecordTypeIdentifier.RecordType int recordType) {
@@ -58,11 +58,11 @@ public class DeleteTableRequest {
         mRecordType = recordType;
     }
 
-    public DeleteTableRequest setId(@NonNull String id, String idColumnName) {
-        Objects.requireNonNull(id);
+    public DeleteTableRequest setIds(@NonNull String idColumnName, @NonNull List<String> ids) {
+        Objects.requireNonNull(ids);
         Objects.requireNonNull(idColumnName);
 
-        mId = id;
+        mIds = ids;
         mIdColumnName = idColumnName;
         return this;
     }
@@ -111,11 +111,19 @@ public class DeleteTableRequest {
     }
 
     @NonNull
-    public String getDeleteWhereCommand() {
+    public String getDeleteCommand() {
+        return "DELETE FROM " + mTableName + getWhereCommand();
+    }
+
+    public String getReadCommand() {
+        return "SELECT " + mIdColumnName + " FROM " + mTableName + getWhereCommand();
+    }
+
+    public String getWhereCommand() {
         WhereClauses whereClauses = new WhereClauses();
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
         whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
-        whereClauses.addWhereEqualsClause(mIdColumnName, mId);
+        whereClauses.addWhereInClause(mIdColumnName, mIds);
 
         if (Constants.DEBUG) {
             Slog.d(
