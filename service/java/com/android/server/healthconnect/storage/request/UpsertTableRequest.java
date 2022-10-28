@@ -22,6 +22,8 @@ import android.content.ContentValues;
 import android.healthconnect.Constants;
 import android.util.Slog;
 
+import com.android.server.healthconnect.storage.utils.WhereClauses;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +38,7 @@ public class UpsertTableRequest {
     private List<UpsertTableRequest> mChildTableRequests = Collections.emptyList();
     private String mParentCol;
     private long mRowId = INVALID_ROW_ID;
+    private WhereClauses mWhereClausesForUpdate;
 
     public UpsertTableRequest(@NonNull String table, @NonNull ContentValues contentValues) {
         mTable = table;
@@ -79,6 +82,15 @@ public class UpsertTableRequest {
     @NonNull
     public List<UpsertTableRequest> getChildTableRequests() {
         return mChildTableRequests;
+    }
+
+    public void setWhereClauses(WhereClauses whereClauses) {
+        mWhereClausesForUpdate = whereClauses;
+    }
+
+    @NonNull
+    public WhereClauses getWhereClauses() {
+        return mWhereClausesForUpdate;
     }
 
     @NonNull

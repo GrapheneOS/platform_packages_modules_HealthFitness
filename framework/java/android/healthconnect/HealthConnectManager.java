@@ -30,6 +30,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -406,6 +407,91 @@ public class HealthConnectManager {
                 returnError(executor, exception, callback);
             }
         };
+    }
+
+    /**
+     * Updates {@code records} into the HealthConnect database. In case of an error or a permission
+     * failure the HealthConnect service, {@link OutcomeReceiver#onError} will be invoked with a
+     * {@link HealthConnectException}.
+     *
+     * <p>In case the input record to be updated does not exist in the database or the caller is not
+     * the owner of the record then {@link HealthConnectException#ERROR_INVALID_ARGUMENT} will be
+     * thrown.
+     *
+     * @param records list of records to be updated.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @throws IllegalArgumentException if at least one of the records is missing both
+     *     ClientRecordID and UUID.
+     */
+    // TODO(b/251194265): User permission checks once available.
+    public void updateRecords(
+            @NonNull List<Record> records,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(records);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+
+            // verify that the package requesting the change is same as the packageName in the
+            // records.
+            String contextPackageName = mContext.getPackageName();
+            for (int itr = 0; itr < records.size(); itr++) {
+                if (!Objects.equals(
+                        contextPackageName,
+                        records.get(itr).getMetadata().getDataOrigin().getPackageName())) {
+                    throw new IllegalArgumentException(
+                            "The package requesting the change does not match "
+                                    + "the packageName in input records");
+                }
+            }
+
+            List<RecordInternal<?>> recordInternals =
+                    mInternalExternalRecordConverter.getInternalRecords(records);
+
+            // Verify if the input record has clientRecordId or UUID.
+            for (int itr = 0; itr < recordInternals.size(); itr++) {
+                RecordInternal<?> recordInternal = recordInternals.get(itr);
+                if ((recordInternal.getClientRecordId() == null
+                                || recordInternal.getClientRecordId().isEmpty())
+                        && (recordInternal.getUuid() == null
+                                || recordInternal.getUuid().isEmpty())) {
+                    throw new IllegalArgumentException(
+                            "At least one of the records is missing both ClientRecordID"
+                                    + " and UUID. RecordType of the input: "
+                                    + recordInternal.getRecordType());
+                }
+            }
+
+            mService.updateRecords(
+                    mContext.getPackageName(),
+                    new RecordsParcel(recordInternals),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            callback.onError(exception.getHealthConnectException());
+                        }
+                    });
+        } catch (ArithmeticException
+                | ClassCastException
+                | IllegalArgumentException invalidArgumentException) {
+            throw new IllegalArgumentException(invalidArgumentException.getMessage());
+        } catch (IllegalAccessException
+                | InstantiationException
+                | InvocationTargetException
+                | NoSuchMethodException exception) {
+            throw new RuntimeException(exception.getMessage());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
     }
 
     private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {
