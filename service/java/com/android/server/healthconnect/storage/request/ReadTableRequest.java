@@ -17,24 +17,65 @@
 package com.android.server.healthconnect.storage.request;
 
 import android.annotation.NonNull;
+import android.healthconnect.Constants;
+import android.util.Slog;
 
-/** @hide */
+import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
+
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * A request for {@link TransactionManager} to read the DB
+ *
+ * @hide
+ */
 public class ReadTableRequest {
-    private final String mTable;
-    private final String[] mColumns;
+    private static final String TAG = "HealthConnectRead";
 
-    public ReadTableRequest(@NonNull String table, @NonNull String[] columns) {
-        mTable = table;
-        mColumns = columns;
+    private final String mTableName;
+    private List<String> mColumnNames;
+    private WhereClauses mWhereClauses = new WhereClauses();
+
+    public ReadTableRequest(@NonNull String tableName) {
+        Objects.requireNonNull(tableName);
+
+        mTableName = tableName;
+    }
+
+    public ReadTableRequest setColumnNames(@NonNull List<String> columnNames) {
+        Objects.requireNonNull(columnNames);
+
+        mColumnNames = columnNames;
+        return this;
+    }
+
+    public ReadTableRequest setWhereClause(WhereClauses whereClauses) {
+        mWhereClauses = whereClauses;
+        return this;
+    }
+
+    /** Returns SQL statement to perform aggregation operation */
+    @NonNull
+    public String getReadCommand() {
+        final StringBuilder builder = new StringBuilder("SELECT * FROM " + mTableName + " ");
+
+        builder.append(mWhereClauses.get());
+
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "read query: " + builder);
+        }
+
+        return builder.toString();
     }
 
     @NonNull
-    public String getTable() {
-        return mTable;
-    }
+    public String[] getSelectionArgs() {
+        if (mColumnNames != null) {
+            return mColumnNames.toArray(new String[0]);
+        }
 
-    @NonNull
-    public String[] getColumns() {
-        return mColumns;
+        return new String[0];
     }
 }

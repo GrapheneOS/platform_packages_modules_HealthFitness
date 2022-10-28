@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage;
+package com.android.server.healthconnect.storage.datatypehelpers;
+
+import static android.healthconnect.Constants.DEFAULT_LONG;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -29,7 +31,7 @@ import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 import android.util.Pair;
 
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -37,6 +39,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A class to help with the DB transaction for storing Device Info. {@link DeviceInfoHelper} acts as
@@ -46,47 +49,15 @@ import java.util.Map;
  * @hide
  */
 public class DeviceInfoHelper {
-    private static DeviceInfoHelper sDeviceInfoHelper = null;
-
-    /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
-    private final Map<DeviceInfo, Long> mDeviceInfoMap = new ArrayMap<>();
-
-    private static final String TABLE_NAME = "device_info_table";
-    private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
-    private static final String MODEL_COLUMN_NAME = "model";
-    private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
-    private static final long INVALID_ID = -1;
-
-    private class DeviceInfo {
+    private static final class DeviceInfo {
         private final String mManufacturer;
         private final String mModel;
         @DeviceType private final int mDeviceType;
 
         DeviceInfo(String manufacturer, String model, @DeviceType int deviceType) {
-            this.mManufacturer = manufacturer;
-            this.mModel = model;
-            this.mDeviceType = deviceType;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            DeviceInfo deviceInfo = (DeviceInfo) o;
-            if (!mManufacturer.equals(deviceInfo.mManufacturer)) {
-                return false;
-            }
-            if (!mModel.equals(deviceInfo.mModel)) {
-                return false;
-            }
-            if (mDeviceType != deviceInfo.mDeviceType) {
-                return false;
-            }
-            return true;
+            mManufacturer = manufacturer;
+            mModel = model;
+            mDeviceType = deviceType;
         }
 
         @Override
@@ -95,7 +66,38 @@ public class DeviceInfoHelper {
             result = 31 * result + (mModel != null ? mModel.hashCode() : 0) + mDeviceType;
             return result;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (Objects.isNull(o)) {
+                return false;
+            }
+            if (this == o) {
+                return true;
+            }
+            if (getClass() != o.getClass()) {
+                return false;
+            }
+
+            DeviceInfo deviceInfo = (DeviceInfo) o;
+            if (!Objects.equals(mManufacturer, deviceInfo.mManufacturer)) {
+                return false;
+            }
+            if (!Objects.equals(mModel, deviceInfo.mModel)) {
+                return false;
+            }
+
+            return mDeviceType == deviceInfo.mDeviceType;
+        }
     }
+
+    private static final String TABLE_NAME = "device_info_table";
+    private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
+    private static final String MODEL_COLUMN_NAME = "model";
+    private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
+    private static DeviceInfoHelper sDeviceInfoHelper;
+    /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
+    private Map<DeviceInfo, Long> mDeviceInfoMap;
 
     public static DeviceInfoHelper getInstance() {
         if (sDeviceInfoHelper == null) {
@@ -119,12 +121,16 @@ public class DeviceInfoHelper {
 
     /** Populates record with deviceInfoId */
     public void populateDeviceInfoId(@NonNull RecordInternal<?> recordInternal) {
+        if (Objects.isNull(mDeviceInfoMap)) {
+            populateDeviceInfoMap();
+        }
+
         String manufacturer = recordInternal.getManufacturer();
         String model = recordInternal.getModel();
         int deviceType = recordInternal.getDeviceType();
         DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
-        long rowId = mDeviceInfoMap.getOrDefault(deviceInfo, INVALID_ID);
-        if (rowId == INVALID_ID) {
+        long rowId = mDeviceInfoMap.getOrDefault(deviceInfo, DEFAULT_LONG);
+        if (rowId == DEFAULT_LONG) {
             rowId = insertDeviceInfoAndGetRowId(manufacturer, model, deviceType);
             mDeviceInfoMap.put(deviceInfo, rowId);
         }
@@ -132,23 +138,20 @@ public class DeviceInfoHelper {
     }
 
     public void populateDeviceInfoMap() {
-        try (SQLiteDatabase db = TransactionManager.getInitializedInstance().getReadableDb()) {
-            try (Cursor cursor =
-                    TransactionManager.getInitializedInstance()
-                            .readTable(
-                                    db,
-                                    new ReadTableRequest(
-                                            TABLE_NAME, getColumns(getColumnInfo())))) {
-                while (cursor.moveToNext()) {
-                    long rowId =
-                            cursor.getLong(cursor.getColumnIndex(RecordHelper.PRIMARY_COLUMN_NAME));
-                    String manufacturer =
-                            cursor.getString(cursor.getColumnIndex(MANUFACTURER_COLUMN_NAME));
-                    String model = cursor.getString(cursor.getColumnIndex(MODEL_COLUMN_NAME));
-                    int deviceType = cursor.getInt(cursor.getColumnIndex(DEVICE_TYPE_COLUMN_NAME));
-                    DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
-                    mDeviceInfoMap.put(deviceInfo, rowId);
-                }
+        mDeviceInfoMap = new ArrayMap<>();
+        try (SQLiteDatabase db = TransactionManager.getInitializedInstance().getReadableDb();
+                Cursor cursor =
+                        TransactionManager.getInitializedInstance()
+                                .read(db, new ReadTableRequest(TABLE_NAME))) {
+            while (cursor.moveToNext()) {
+                long rowId =
+                        cursor.getLong(cursor.getColumnIndex(RecordHelper.PRIMARY_COLUMN_NAME));
+                String manufacturer =
+                        cursor.getString(cursor.getColumnIndex(MANUFACTURER_COLUMN_NAME));
+                String model = cursor.getString(cursor.getColumnIndex(MODEL_COLUMN_NAME));
+                int deviceType = cursor.getInt(cursor.getColumnIndex(DEVICE_TYPE_COLUMN_NAME));
+                DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
+                mDeviceInfoMap.put(deviceInfo, rowId);
             }
         }
     }
@@ -159,13 +162,10 @@ public class DeviceInfoHelper {
     }
 
     private long insertDeviceInfoAndGetRowId(String manufacturer, String model, int deviceType) {
-        long rowId =
-                TransactionManager.getInitializedInstance()
-                        .insert(
-                                new UpsertTableRequest(
-                                        TABLE_NAME,
-                                        getContentValues(manufacturer, model, deviceType)));
-        return rowId;
+        return TransactionManager.getInitializedInstance()
+                .insert(
+                        new UpsertTableRequest(
+                                TABLE_NAME, getContentValues(manufacturer, model, deviceType)));
     }
 
     @NonNull
@@ -196,13 +196,5 @@ public class DeviceInfoHelper {
         columnInfo.add(new Pair<>(DEVICE_TYPE_COLUMN_NAME, INTEGER));
 
         return columnInfo;
-    }
-
-    private String[] getColumns(List<Pair<String, String>> columnInfo) {
-        List<String> columns = new ArrayList<String>();
-        for (Pair<String, String> pair : columnInfo) {
-            columns.add(pair.first);
-        }
-        return columns.toArray(new String[columns.size()]);
     }
 }

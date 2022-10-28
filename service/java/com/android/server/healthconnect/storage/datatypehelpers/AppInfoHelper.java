@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage;
+package com.android.server.healthconnect.storage.datatypehelpers;
+
+import static android.healthconnect.Constants.DEFAULT_LONG;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -23,19 +25,20 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 import android.util.Pair;
 
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -45,6 +48,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A class to help with the DB transaction for storing Application Info. {@link AppInfoHelper} acts
@@ -54,22 +58,7 @@ import java.util.Map;
  * @hide
  */
 public class AppInfoHelper {
-    private static AppInfoHelper sAppInfoHelper = null;
-
-    /**
-     * Map to store application package-name -> AppInfo mapping (such as packageName -> appName,
-     * icon, rowId in the DB etc.)
-     */
-    private final Map<String, AppInfo> mAppInfoMap = new ArrayMap<>();
-
-    private static final String TABLE_NAME = "application_info_table";
-    private static final String APPLICATION_COLUMN_NAME = "app_name";
-    private static final String PACKAGE_COLUMN_NAME = "package_name";
-    private static final String APP_ICON_COLUMN_NAME = "app_icon";
-    private static final int INVALID_ID = -1;
-    private static final int COMPRESS_FACTOR = 100;
-
-    private class AppInfo {
+    private static final class AppInfo {
         private final String mAppName;
         private final byte[] mIcon;
         private long mId;
@@ -97,10 +86,26 @@ public class AppInfoHelper {
         }
     }
 
+    private static final String TABLE_NAME = "application_info_table";
+    private static final String APPLICATION_COLUMN_NAME = "app_name";
+    private static final String PACKAGE_COLUMN_NAME = "package_name";
+    private static final String APP_ICON_COLUMN_NAME = "app_icon";
+    private static final int COMPRESS_FACTOR = 100;
+    private static AppInfoHelper sAppInfoHelper;
+
+    /**
+     * Map to store application package-name -> AppInfo mapping (such as packageName -> appName,
+     * icon, rowId in the DB etc.)
+     */
+    private Map<String, AppInfo> mAppInfoMap;
+
+    private AppInfoHelper() {}
+
     public static AppInfoHelper getInstance() {
         if (sAppInfoHelper == null) {
             sAppInfoHelper = new AppInfoHelper();
         }
+
         return sAppInfoHelper;
     }
 
@@ -118,33 +123,31 @@ public class AppInfoHelper {
     }
 
     /** Populates record with appInfoId */
-    public void populateAppInfoId(@NonNull RecordInternal<?> recordInternal) {
+    public void populateAppInfoId(@NonNull RecordInternal<?> recordInternal, Context context) {
+        if (Objects.isNull(mAppInfoMap)) {
+            populateAppInfoMap();
+        }
+
         String packageName = recordInternal.getPackageName();
         AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
         if (appInfo == null) {
-            appInfo = insertAndGetAppInfo(packageName);
+            appInfo = insertAndGetAppInfo(packageName, context);
         }
         recordInternal.setAppInfoId(appInfo.getId());
     }
 
     public void populateAppInfoMap() {
-        try (SQLiteDatabase db = TransactionManager.getInitializedInstance().getReadableDb()) {
-            try (Cursor cursor =
-                    TransactionManager.getInitializedInstance()
-                            .readTable(
-                                    db,
-                                    new ReadTableRequest(
-                                            TABLE_NAME, getColumns(getColumnInfo())))) {
-                while (cursor.moveToNext()) {
-                    long rowId =
-                            cursor.getLong(cursor.getColumnIndex(RecordHelper.PRIMARY_COLUMN_NAME));
-                    String packageName =
-                            cursor.getString(cursor.getColumnIndex(PACKAGE_COLUMN_NAME));
-                    String appName =
-                            cursor.getString(cursor.getColumnIndex(APPLICATION_COLUMN_NAME));
-                    byte[] icon = cursor.getBlob(cursor.getColumnIndex(APP_ICON_COLUMN_NAME));
-                    mAppInfoMap.put(packageName, new AppInfo(rowId, appName, icon));
-                }
+        mAppInfoMap = new ArrayMap<>();
+        final TransactionManager transactionManager = TransactionManager.getInitializedInstance();
+        try (SQLiteDatabase db = TransactionManager.getInitializedInstance().getReadableDb();
+                Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
+            while (cursor.moveToNext()) {
+                long rowId =
+                        cursor.getLong(cursor.getColumnIndex(RecordHelper.PRIMARY_COLUMN_NAME));
+                String packageName = cursor.getString(cursor.getColumnIndex(PACKAGE_COLUMN_NAME));
+                String appName = cursor.getString(cursor.getColumnIndex(APPLICATION_COLUMN_NAME));
+                byte[] icon = cursor.getBlob(cursor.getColumnIndex(APP_ICON_COLUMN_NAME));
+                mAppInfoMap.put(packageName, new AppInfo(rowId, appName, icon));
             }
         }
     }
@@ -154,20 +157,32 @@ public class AppInfoHelper {
         // empty by default
     }
 
-    private AppInfo getAppInfo(String packageName) {
-        AppInfo appInfo = null;
+    public long getAppInfoId(String packageName) {
+        if (Objects.isNull(mAppInfoMap)) {
+            populateAppInfoMap();
+        }
+
+        AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
+        if (appInfo == null) {
+            return DEFAULT_LONG;
+        }
+
+        return appInfo.getId();
+    }
+
+    private AppInfo getAppInfo(String packageName, Context context) {
         try {
-            PackageManager packageManager =
-                    TransactionManager.getInitializedInstance().getContext().getPackageManager();
+            PackageManager packageManager = context.getPackageManager();
             ApplicationInfo info =
-                    packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+                    packageManager.getApplicationInfo(
+                            packageName, PackageManager.ApplicationInfoFlags.of(0));
             String appName = packageManager.getApplicationLabel(info).toString();
             Drawable icon = packageManager.getApplicationIcon(info);
-            Bitmap bitmap = ((BitmapDrawable) icon).getBitmap();
+            Bitmap bitmap = getBitmapFromDrawable(icon);
             try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESS_FACTOR, stream);
-                byte[] bitmapdata = stream.toByteArray();
-                appInfo = new AppInfo(INVALID_ID, appName, bitmapdata);
+                byte[] bitmapData = stream.toByteArray();
+                return new AppInfo(DEFAULT_LONG, appName, bitmapData);
             } catch (IOException exception) {
                 throw new IllegalArgumentException(exception);
             }
@@ -175,17 +190,17 @@ public class AppInfoHelper {
             throw new IllegalArgumentException(
                     "Could not find package info for package", exception);
         }
-        return appInfo;
     }
 
-    private AppInfo insertAndGetAppInfo(String packageName) {
-        AppInfo appInfo = getAppInfo(packageName);
+    private AppInfo insertAndGetAppInfo(String packageName, Context context) {
+        AppInfo appInfo = getAppInfo(packageName, context);
         long rowId =
                 TransactionManager.getInitializedInstance()
                         .insert(
                                 new UpsertTableRequest(
                                         TABLE_NAME, getContentValues(packageName, appInfo)));
         appInfo.setId(rowId);
+        mAppInfoMap.put(packageName, appInfo);
         return appInfo;
     }
 
@@ -217,11 +232,16 @@ public class AppInfoHelper {
         return columnInfo;
     }
 
-    private String[] getColumns(List<Pair<String, String>> columnInfo) {
-        List<String> columns = new ArrayList<String>();
-        for (Pair<String, String> pair : columnInfo) {
-            columns.add(pair.first);
-        }
-        return columns.toArray(new String[columns.size()]);
+    @NonNull
+    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp =
+                Bitmap.createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
     }
 }

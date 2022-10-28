@@ -18,7 +18,6 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 
@@ -29,8 +28,6 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
-import com.android.server.healthconnect.storage.AppInfoHelper;
-import com.android.server.healthconnect.storage.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
@@ -47,7 +44,6 @@ import java.util.Objects;
 public abstract class RecordHelper<T extends RecordInternal<?>> {
     public static final String PRIMARY_COLUMN_NAME = "row_id";
     private static final String UUID_COLUMN_NAME = "uuid";
-    private static final String PACKAGE_NAME_COLUMN_NAME = "package_name";
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
@@ -137,7 +133,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         ContentValues recordContentValues = new ContentValues();
 
         recordContentValues.put(UUID_COLUMN_NAME, recordInternal.getUuid());
-        recordContentValues.put(PACKAGE_NAME_COLUMN_NAME, recordInternal.getPackageName());
         recordContentValues.put(
                 LAST_MODIFIED_TIME_COLUMN_NAME, recordInternal.getLastModifiedTime());
         recordContentValues.put(CLIENT_RECORD_ID_COLUMN_NAME, recordInternal.getClientRecordId());
@@ -164,7 +159,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT));
         columnInfo.add(new Pair<>(UUID_COLUMN_NAME, TEXT_NOT_NULL_UNIQUE));
-        columnInfo.add(new Pair<>(PACKAGE_NAME_COLUMN_NAME, TEXT_NOT_NULL));
         columnInfo.add(new Pair<>(LAST_MODIFIED_TIME_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(CLIENT_RECORD_ID_COLUMN_NAME, TEXT_NULL));
         columnInfo.add(new Pair<>(CLIENT_RECORD_VERSION_COLUMN_NAME, TEXT_NULL));

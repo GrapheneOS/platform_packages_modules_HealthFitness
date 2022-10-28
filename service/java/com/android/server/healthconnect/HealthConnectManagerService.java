@@ -30,6 +30,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
 public class HealthConnectManagerService extends SystemService {
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final TransactionManager mTransactionManager;
+    private final Context mContext;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -40,12 +41,13 @@ public class HealthConnectManagerService extends SystemService {
                         packageManager,
                         HealthConnectServiceImpl.getDefinedHealthPerms(packageManager));
         mTransactionManager = TransactionManager.getInstance(getContext());
+        mContext = context;
     }
 
     @Override
     public void onStart() {
         publishBinderService(
                 Context.HEALTHCONNECT_SERVICE,
-                new HealthConnectServiceImpl(mTransactionManager, mPermissionHelper));
+                new HealthConnectServiceImpl(mTransactionManager, mPermissionHelper, mContext));
     }
 }

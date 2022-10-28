@@ -28,4 +28,6 @@ public final class Constants {
     public static final String HEALTH_PERMISSION_GROUP_NAME = "android.permission-group.HEALTH";
 
     public static final boolean DEBUG = false;
+    public static final int DEFAULT_INT = -1;
+    public static final long DEFAULT_LONG = -1;
 }
