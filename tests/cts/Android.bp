@@ -29,6 +29,7 @@ android_test {
     test_suites: [
         "cts",
         "general-tests",
+        "mts-healthconnect",
     ],
     static_libs: [
         "androidx.test.rules",
