@@ -23,6 +23,10 @@
         <uses-library android:name="android.test.runner"/>
     </application>
 
+    <!-- To get visibility of the app with health permissions definitions,
+         required for testing defined permissions. -->
+    <uses-permission android:name="android.permission.health.READ_STEPS"/>
+
     <!--  self-instrumenting test package. -->
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
                      android:label="CTS HealthConnect tests"
