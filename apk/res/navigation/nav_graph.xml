@@ -34,10 +34,19 @@
   <fragment
       android:id="@+id/healthDataCategoriesFragment"
       android:name="com.android.healthconnect.controller.categories.HealthDataCategoriesFragment"
-      android:label="@string/data_title" />
+      android:label="@string/data_title" >
+    <action
+        android:id="@+id/action_healthDataCategories_to_healthDataAllCategories"
+        app:destination="@id/healthDataAllCategoriesFragment" />
+  </fragment>
   <fragment
       android:id="@+id/recentAccessFragment"
       android:name="com.android.healthconnect.controller.recentaccess.RecentAccessFragment"
       android:label="@string/recent_access_header" />
+  <fragment
+      android:id="@+id/healthDataAllCategoriesFragment"
+      android:name="com.android.healthconnect.controller.categories.HealthDataAllCategoriesFragment"
+      android:label="@string/see_all_categories">
+  </fragment>
 
 </navigation>
