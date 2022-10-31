@@ -36,11 +36,12 @@ public final class RecordTypeIdentifier {
     // Series Records
     public static final int RECORD_TYPE_HEART_RATE = 1;
     // Instant records
+    public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 2;
 
     private RecordTypeIdentifier() {}
 
     /** @hide */
-    @IntDef({RECORD_TYPE_STEPS, RECORD_TYPE_HEART_RATE})
+    @IntDef({RECORD_TYPE_STEPS, RECORD_TYPE_HEART_RATE, RECORD_TYPE_BASAL_METABOLIC_RATE})
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}
 }

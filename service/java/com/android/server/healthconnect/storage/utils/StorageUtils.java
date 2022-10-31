@@ -36,6 +36,7 @@ public final class StorageUtils {
     public static final String TEXT_NOT_NULL_UNIQUE = "TEXT NOT NULL UNIQUE";
     public static final String TEXT_NULL = "TEXT";
     public static final String INTEGER = "INTEGER";
+    public static final String REAL = "REAL";
     public static final String PRIMARY_AUTOINCREMENT = "INTEGER PRIMARY KEY AUTOINCREMENT";
     public static final String PRIMARY = "INTEGER PRIMARY KEY";
     public static final String BLOB = "BLOB";

@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
@@ -25,11 +26,13 @@ import android.content.Context;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.HeartRateRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.StepsRecord;
+import android.healthconnect.datatypes.units.Power;
 import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
 import android.util.ArraySet;
@@ -141,13 +144,15 @@ public class HealthConnectManagerTest {
     }
 
     private List<Record> getTestRecords() {
-        return Arrays.asList(getStepsRecord(), getHeartRateRecord());
+        return Arrays.asList(getStepsRecord(), getHeartRateRecord(), getBasalMetabolicRateRecord());
     }
 
     private List<RecordAndIdentifier> getRecordsAndIdentifiers() {
         return Arrays.asList(
                 new RecordAndIdentifier(RECORD_TYPE_STEPS, getStepsRecord()),
-                new RecordAndIdentifier(RECORD_TYPE_HEART_RATE, getHeartRateRecord()));
+                new RecordAndIdentifier(RECORD_TYPE_HEART_RATE, getHeartRateRecord()),
+                new RecordAndIdentifier(
+                        RECORD_TYPE_BASAL_METABOLIC_RATE, getBasalMetabolicRateRecord()));
     }
 
     private StepsRecord getStepsRecord() {
@@ -168,6 +173,12 @@ public class HealthConnectManagerTest {
                         Instant.now(),
                         Instant.now(),
                         heartRateSamples)
+                .build();
+    }
+
+    private BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
+        return new BasalMetabolicRateRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Power.watts(100.0))
                 .build();
     }
 }

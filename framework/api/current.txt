@@ -101,6 +101,17 @@ package android.healthconnect {
 
 package android.healthconnect.datatypes {
 
+  public class BasalMetabolicRateRecord extends android.healthconnect.datatypes.InstantRecord {
+    ctor public BasalMetabolicRateRecord(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.ZoneOffset, @NonNull android.healthconnect.datatypes.units.Power);
+    method @NonNull public android.healthconnect.datatypes.units.Power getBasalMetabolicRate();
+  }
+
+  public static final class BasalMetabolicRateRecord.Builder {
+    ctor public BasalMetabolicRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Power);
+    method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
   public final class DataOrigin {
     method @Nullable public String getPackageName();
   }
@@ -151,6 +162,11 @@ package android.healthconnect.datatypes {
     method @NonNull public java.time.Instant getTime();
   }
 
+  public abstract class InstantRecord extends android.healthconnect.datatypes.Record {
+    method @NonNull public java.time.Instant getTime();
+    method @NonNull public java.time.ZoneOffset getZoneOffset();
+  }
+
   public abstract class IntervalRecord extends android.healthconnect.datatypes.Record {
     method @NonNull public java.time.Instant getEndTime();
     method @NonNull public java.time.ZoneOffset getEndZoneOffset();
@@ -192,6 +208,16 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.StepsRecord build();
     method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+}
+
+package android.healthconnect.datatypes.units {
+
+  public class Power implements java.lang.Comparable<android.healthconnect.datatypes.units.Power> {
+    method @NonNull public int compareTo(@NonNull android.healthconnect.datatypes.units.Power);
+    method @NonNull public static android.healthconnect.datatypes.units.Power watts(@NonNull double);
+    field public final double inWatts;
   }
 
 }
