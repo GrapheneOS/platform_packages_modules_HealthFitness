@@ -178,7 +178,7 @@ public class HealthConnectManagerTest {
 
     private BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
         return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.watts(100.0))
+                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(100.0))
                 .build();
     }
 }

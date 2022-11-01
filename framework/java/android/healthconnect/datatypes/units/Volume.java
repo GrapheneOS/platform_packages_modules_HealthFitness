@@ -18,27 +18,27 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of volume. Supported units: milliliters */
+public class Volume implements Comparable<Volume> {
+    private final double mInMilliliters;
 
-    private Power(double value) {
-        mInWatts = value;
+    private Volume(double value) {
+        mInMilliliters = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a Volume object with the specified value in milliliters.
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as milliliters.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public static Volume fromMilliliters(double value) {
+        return new Volume(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns volume in milliliters */
+    public double getInMilliliters() {
+        return mInMilliliters;
     }
 
     /**
@@ -54,8 +54,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Volume other) {
+        return Double.compare(this.mInMilliliters, other.mInMilliliters);
     }
 
     /**
@@ -63,6 +63,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInMilliliters + " mL";
     }
 }

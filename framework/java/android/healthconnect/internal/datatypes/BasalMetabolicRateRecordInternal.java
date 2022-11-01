@@ -37,7 +37,7 @@ public final class BasalMetabolicRateRecordInternal
 
     @Override
     void populateInstantRecordFrom(@NonNull BasalMetabolicRateRecord basalMetabolicRateRecord) {
-        mBasalMetabolicRate = basalMetabolicRateRecord.getBasalMetabolicRate().inWatts;
+        mBasalMetabolicRate = basalMetabolicRateRecord.getBasalMetabolicRate().getInWatts();
     }
 
     @Override
@@ -53,7 +53,7 @@ public final class BasalMetabolicRateRecordInternal
     @Override
     public BasalMetabolicRateRecord toExternalRecord() {
         return new BasalMetabolicRateRecord.Builder(
-                        buildMetaData(), getTime(), Power.watts(getBasalMetabolicRate()))
+                        buildMetaData(), getTime(), Power.fromWatts(getBasalMetabolicRate()))
                 .setZoneOffset(getZoneOffset())
                 .build();
     }

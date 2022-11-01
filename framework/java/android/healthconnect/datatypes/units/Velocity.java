@@ -18,27 +18,27 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of speed. Supported units: metersPerSecond */
+public class Velocity implements Comparable<Velocity> {
+    private final double mInMetersPerSecond;
 
-    private Power(double value) {
-        mInWatts = value;
+    private Velocity(double value) {
+        mInMetersPerSecond = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a Velocity object with the specified value in meters per second.
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as meters per second.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public static Velocity fromMetersPerSecond(double value) {
+        return new Velocity(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns velocity in meters per second */
+    public double getInMetersPerSecond() {
+        return mInMetersPerSecond;
     }
 
     /**
@@ -54,8 +54,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Velocity other) {
+        return Double.compare(this.mInMetersPerSecond, other.mInMetersPerSecond);
     }
 
     /**
@@ -63,6 +63,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInMetersPerSecond + " meters/sec";
     }
 }

@@ -18,27 +18,27 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a unit of length. Supported units: meters */
+public class Length implements Comparable<Length> {
+    private final double mInMeters;
 
-    private Power(double value) {
-        mInWatts = value;
+    private Length(double value) {
+        mInMeters = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a Length object with the specified value in meters.
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as meters.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public Length fromMeters(double value) {
+        return new Length(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns length in meters */
+    public double getInMeters() {
+        return mInMeters;
     }
 
     /**
@@ -54,8 +54,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Length other) {
+        return Double.compare(this.mInMeters, other.mInMeters);
     }
 
     /**
@@ -63,6 +63,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mInMeters + " meters";
     }
 }

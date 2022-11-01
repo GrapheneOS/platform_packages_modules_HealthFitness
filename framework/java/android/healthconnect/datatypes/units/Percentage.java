@@ -18,27 +18,27 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
-/** Represents a unit of power. Supported units: watts */
-public class Power implements Comparable<Power> {
-    private final double mInWatts;
+/** Represents a value as a percentage, not a fraction - for example 100%, 89.62%, etc. */
+public class Percentage implements Comparable<Percentage> {
+    private final double mValue;
 
-    private Power(double value) {
-        mInWatts = value;
+    private Percentage(double value) {
+        this.mValue = value;
     }
 
     /**
-     * Creates a Power object with the specified value in Watts.
+     * Creates a Percentage object with the specified value
      *
-     * @param value value to be set as watts.
+     * @param value value to be set as percentage. The value must be between 0 and 100.
      */
     @NonNull
-    public static Power fromWatts(double value) {
-        return new Power(value);
+    public static Percentage fromValue(double value) {
+        return new Percentage(value);
     }
 
-    /** Returns power in watts */
-    public double getInWatts() {
-        return mInWatts;
+    /** Returns the percentage. The value is between 0 and 100. */
+    public double getValue() {
+        return mValue;
     }
 
     /**
@@ -54,8 +54,8 @@ public class Power implements Comparable<Power> {
      *     this object.
      */
     @Override
-    public int compareTo(@NonNull Power other) {
-        return Double.compare(this.mInWatts, other.mInWatts);
+    public int compareTo(@NonNull Percentage other) {
+        return Double.compare(this.mValue, other.mValue);
     }
 
     /**
@@ -63,6 +63,6 @@ public class Power implements Comparable<Power> {
      */
     @Override
     public String toString() {
-        return mInWatts + " watts";
+        return mValue + "%";
     }
 }
