@@ -76,7 +76,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void grantHealthPermission(@NonNull String packageName, @NonNull String permissionName) {
         try {
@@ -95,7 +95,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void revokeHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @Nullable String reason) {
@@ -114,7 +114,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void revokeAllHealthPermissions(@NonNull String packageName, @Nullable String reason) {
         try {
@@ -130,7 +130,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public List<String> getGrantedHealthPermissions(@NonNull String packageName) {
         try {

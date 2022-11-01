@@ -1,4 +1,13 @@
 // Signature format: 2.0
+package android.healthconnect {
+
+  public final class HealthPermissions {
+    field public static final String HEALTH_PERMISSION_GROUP = "android.permission-group.HEALTH";
+    field public static final String MANAGE_HEALTH_PERMISSIONS = "android.permission.MANAGE_HEALTH_PERMISSIONS";
+  }
+
+}
+
 package android.healthconnect.datatypes {
 
   public abstract class Record {

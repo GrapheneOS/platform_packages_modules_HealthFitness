@@ -25,8 +25,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
 import android.database.sqlite.SQLiteException;
-import android.healthconnect.Constants;
 import android.healthconnect.HealthConnectException;
+import android.healthconnect.HealthPermissions;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -148,7 +148,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     /**
      * Returns a set of health permissions defined within the module and belonging to {@link
-     * Constants#HEALTH_PERMISSION_GROUP_NAME}.
+     * HealthPermissions.HEALTH_PERMISSION_GROUP}.
      *
      * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
      * than crashing the device. This means the health permissions infra will be inactive.
@@ -164,7 +164,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         Set<String> definedHealthPerms = new HashSet<>(permissionInfos.length);
         for (PermissionInfo permInfo : permissionInfos) {
-            if (Constants.HEALTH_PERMISSION_GROUP_NAME.equals(permInfo.group)) {
+            if (HealthPermissions.HEALTH_PERMISSION_GROUP.equals(permInfo.group)) {
                 definedHealthPerms.add(permInfo.name);
             }
         }
@@ -185,7 +185,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             healthConnectControllerPackageName =
                     packageManager.getPermissionInfo(
-                                    Constants.MANAGE_HEALTH_PERMISSIONS_NAME, /* flags= */ 0)
+                                    HealthPermissions.MANAGE_HEALTH_PERMISSIONS, /* flags= */ 0)
                             .packageName;
             packageInfo =
                     packageManager.getPackageInfo(
@@ -198,7 +198,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Slog.e(
                         TAG,
                         "HealthConnect permission"
-                                + Constants.MANAGE_HEALTH_PERMISSIONS_NAME
+                                + HealthPermissions.MANAGE_HEALTH_PERMISSIONS
                                 + ") not found");
             } else {
                 // we couldn't find the package

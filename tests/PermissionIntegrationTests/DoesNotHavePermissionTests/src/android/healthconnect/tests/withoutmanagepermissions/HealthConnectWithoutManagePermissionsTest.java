@@ -33,8 +33,8 @@ import org.junit.runner.RunWith;
  * Integration tests for {@link android.healthconnect.HealthConnectManager} Permission-related APIs.
  *
  * <p><b>Note:</b> These tests operate while <b>not</b> holding {@link
- * android.healthconnect.Constants.MANAGE_HEALTH_PERMISSIONS_NAME}. For tests asserting that the API
- * behaves as expected for holders of the permission, please see {@link
+ * android.healthconnect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS}. For tests asserting that the
+ * API behaves as expected for holders of the permission, please see {@link
  * android.healthconnect.tests.withmanagepermissions.HealthConnectWithManagePermissionsTest}.
  *
  * <p><b>Build/Install/Run:</b> {@code atest HealthConnectWithoutManagePermissionsIntegrationTests}.

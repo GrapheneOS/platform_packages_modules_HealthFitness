@@ -124,7 +124,7 @@ public class HealthPermissionsPresenceTest {
     public void testHealthPermissionGroup_isDefined() throws Exception {
         PermissionGroupInfo info =
                 mPackageManager.getPermissionGroupInfo(
-                        "android.permission-group.HEALTH", /* flags= */ 0);
+                        HealthPermissions.HEALTH_PERMISSION_GROUP, /* flags= */ 0);
 
         assertThat(info).isNotNull();
     }

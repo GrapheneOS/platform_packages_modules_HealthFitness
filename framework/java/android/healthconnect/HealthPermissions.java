@@ -16,10 +16,31 @@
 
 package android.healthconnect;
 
+import android.annotation.SystemApi;
+
 // TODO(b/255340973): consider generate this class.
 /** Permissions for accessing the HealthConnect APIs. */
 public final class HealthPermissions {
     private HealthPermissions() {}
+
+    /**
+     * Allows an application to grant/revoke health-related permissions.
+     *
+     * <p>Protection level: signature.
+     *
+     * @hide
+     */
+    @SystemApi
+    public static final String MANAGE_HEALTH_PERMISSIONS =
+            "android.permission.MANAGE_HEALTH_PERMISSIONS";
+
+    /**
+     * Used for runtime permissions which grant access to Health Connect data.
+     *
+     * @hide
+     */
+    @SystemApi
+    public static final String HEALTH_PERMISSION_GROUP = "android.permission-group.HEALTH";
 
     /*
      * Allows an application to read the user's active calories burned data.
