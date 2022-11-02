@@ -72,7 +72,7 @@ class HealthDataAllCategoriesFragmentTest {
                 listOf(
                     AllCategoriesScreenHealthDataCategory.ACTIVITY,
                     AllCategoriesScreenHealthDataCategory.BODY_MEASUREMENTS,
-                    AllCategoriesScreenHealthDataCategory.NUTRITION))
+                    AllCategoriesScreenHealthDataCategory.SLEEP))
         }
         launchFragment<HealthDataAllCategoriesFragment>(Bundle())
 

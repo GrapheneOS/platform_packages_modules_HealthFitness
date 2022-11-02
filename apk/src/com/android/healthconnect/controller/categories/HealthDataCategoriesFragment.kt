@@ -63,12 +63,13 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     }
 
     private fun updateDataList(categoriesList: List<HealthDataCategory>) {
+        val sortedCategoriesList: List<HealthDataCategory> = categoriesList.sortedBy { getString(it.title) }
         mBrowseDataCategory?.removeAll()
-        if (categoriesList.isEmpty()) {
+        if (sortedCategoriesList.isEmpty()) {
             mBrowseDataCategory?.addPreference(
                 Preference(requireContext()).also { it.setSummary(R.string.no_categories) })
         } else {
-            categoriesList.forEach { category ->
+            sortedCategoriesList.forEach { category ->
                 mBrowseDataCategory?.addPreference(
                     Preference(requireContext()).also {
                         it.setTitle(category.title)
@@ -78,7 +79,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
         }
 
         viewModel.allCategoriesData.observe(viewLifecycleOwner) { allCategoriesList ->
-            if (categoriesList.size < allCategoriesList.size) {
+            if (sortedCategoriesList.size < allCategoriesList.size) {
                 mBrowseDataCategory?.addPreference(
                     Preference(requireContext()).also {
                         it.setTitle(R.string.see_all_categories)

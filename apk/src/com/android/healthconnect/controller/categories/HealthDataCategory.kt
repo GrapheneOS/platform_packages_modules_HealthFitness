@@ -40,10 +40,10 @@ enum class AllCategoriesScreenHealthDataCategory(
         R.string.body_measurements_category,
         R.drawable.quantum_gm_ic_straighten_vd_theme_24,
         false),
-    SLEEP(R.string.sleep_category, R.drawable.ic_sleep, false),
-    VITALS(R.string.vitals_category, R.drawable.ic_vitals, false),
-    CYCLE_TRACKING(R.string.cycle_tracking_category, R.drawable.ic_cycle_tracking, true),
-    NUTRITION(R.string.nutrition_category, R.drawable.quantum_gm_ic_grocery_vd_theme_24, true),
+    SLEEP(R.string.sleep_category, R.drawable.ic_sleep, true),
+    VITALS(R.string.vitals_category, R.drawable.ic_vitals, true),
+    CYCLE_TRACKING(R.string.cycle_tracking_category, R.drawable.ic_cycle_tracking, false),
+    NUTRITION(R.string.nutrition_category, R.drawable.quantum_gm_ic_grocery_vd_theme_24, false),
 }
 
 /** List of available Health data categories. */
@@ -51,8 +51,8 @@ val HEALTH_DATA_CATEGORIES =
     listOf(
         HealthDataCategory.ACTIVITY,
         HealthDataCategory.BODY_MEASUREMENTS,
-        HealthDataCategory.SLEEP,
-        HealthDataCategory.VITALS,
+        HealthDataCategory.NUTRITION,
+        HealthDataCategory.CYCLE_TRACKING,
     )
 
 /** List of all Health data categories. */
