@@ -24,8 +24,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.AllCategoriesScreenHealthDataCategory
-import com.android.healthconnect.controller.categories.HEALTH_DATA_ALL_CATEGORIES
 import com.android.healthconnect.controller.categories.HealthDataAllCategoriesFragment
+import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
@@ -44,6 +44,23 @@ class HealthDataAllCategoriesFragmentTest {
     @BindValue
     val viewModel: HealthDataCategoryViewModel =
         Mockito.mock(HealthDataCategoryViewModel::class.java)
+
+    /** List of all Health data categories. */
+    val HEALTH_DATA_ALL_CATEGORIES =
+        listOf(
+            AllCategoriesScreenHealthDataCategory(
+                category = HealthDataCategory.ACTIVITY, noData = false),
+            AllCategoriesScreenHealthDataCategory(
+                category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
+            AllCategoriesScreenHealthDataCategory(
+                category = HealthDataCategory.SLEEP, noData = false),
+            AllCategoriesScreenHealthDataCategory(
+                category = HealthDataCategory.VITALS, noData = false),
+            AllCategoriesScreenHealthDataCategory(
+                category = HealthDataCategory.CYCLE_TRACKING, noData = false),
+            AllCategoriesScreenHealthDataCategory(
+                category = HealthDataCategory.NUTRITION, noData = true),
+        )
 
     @Before
     fun setup() {
@@ -68,11 +85,7 @@ class HealthDataAllCategoriesFragmentTest {
     @Test
     fun allCategoriesFragment_noDataForSomeCategories_isDisplayedNoDataLabel() {
         Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(
-                listOf(
-                    AllCategoriesScreenHealthDataCategory.ACTIVITY,
-                    AllCategoriesScreenHealthDataCategory.BODY_MEASUREMENTS,
-                    AllCategoriesScreenHealthDataCategory.SLEEP))
+            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
         }
         launchFragment<HealthDataAllCategoriesFragment>(Bundle())
 

@@ -19,12 +19,19 @@ import javax.inject.Singleton
 @Singleton
 class LoadCategoriesUseCase @Inject constructor() {
     /** Returns list of available data categories. */
-    suspend operator fun invoke(): List<HealthDataCategory> = HEALTH_DATA_CATEGORIES
+    suspend operator fun invoke(): List<HealthDataCategory> =
+        listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.CYCLE_TRACKING)
 }
 
 @Singleton
-class LoadAllCategoriesUseCase @Inject constructor() {
+class LoadAllCategoriesUseCase
+@Inject
+constructor(private val categoriesUseCase: LoadCategoriesUseCase) {
     /** Returns list of all available data categories. */
-    suspend operator fun invoke(): List<AllCategoriesScreenHealthDataCategory> =
-        HEALTH_DATA_ALL_CATEGORIES
+    suspend operator fun invoke(): List<AllCategoriesScreenHealthDataCategory> {
+        val categoriesWithData = categoriesUseCase()
+        return HEALTH_DATA_CATEGORIES.map { category ->
+            AllCategoriesScreenHealthDataCategory(category, category !in categoriesWithData)
+        }
+    }
 }

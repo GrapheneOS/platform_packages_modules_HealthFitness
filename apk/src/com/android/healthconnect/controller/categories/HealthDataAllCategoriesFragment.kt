@@ -54,17 +54,17 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
     }
 
     private fun updateAllDataList(categoriesList: List<AllCategoriesScreenHealthDataCategory>) {
-        val sortedAllCategoriesList: List<AllCategoriesScreenHealthDataCategory> = categoriesList.sortedBy { getString(it.title) }
+        val sortedAllCategoriesList: List<AllCategoriesScreenHealthDataCategory> = categoriesList.sortedBy { getString(it.category.title) }
         if (sortedAllCategoriesList.isEmpty()) {
             mAllDataCategories?.addPreference(
                 Preference(requireContext()).also { it.setSummary(R.string.no_categories) })
         } else {
-            sortedAllCategoriesList.forEach { category ->
+            sortedAllCategoriesList.forEach { categoryInfo ->
                 mAllDataCategories?.addPreference(
                     Preference(requireContext()).also {
-                        it.setTitle(category.title)
-                        it.setIcon(category.icon)
-                        if (category.noData) {
+                        it.setTitle(categoryInfo.category.title)
+                        it.setIcon(categoryInfo.category.icon)
+                        if (categoryInfo.noData) {
                             it.setSummary(R.string.no_data)
                             it.setEnabled(false)
                         }
