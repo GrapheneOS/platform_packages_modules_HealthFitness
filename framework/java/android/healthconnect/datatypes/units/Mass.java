@@ -18,8 +18,10 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
+import java.util.Objects;
+
 /** Represents a unit of mass. Supported units: kilograms */
-public class Mass implements Comparable<Mass> {
+public final class Mass implements Comparable<Mass> {
 
     private final double mInKilograms;
 
@@ -57,6 +59,33 @@ public class Mass implements Comparable<Mass> {
     @Override
     public int compareTo(@NonNull Mass other) {
         return Double.compare(this.mInKilograms, other.mInKilograms);
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the object argument; {@code false}
+     *     otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object instanceof Mass) {
+            Mass other = (Mass) object;
+            return this.getInKilograms() == other.getInKilograms();
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getInKilograms());
     }
 
     /**

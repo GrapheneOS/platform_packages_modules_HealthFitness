@@ -18,8 +18,10 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
+import java.util.Objects;
+
 /** Represents a unit of energy. Supported units: joules */
-public class Energy implements Comparable<Energy> {
+public final class Energy implements Comparable<Energy> {
 
     private final double mInJoules;
 
@@ -57,6 +59,33 @@ public class Energy implements Comparable<Energy> {
     @Override
     public int compareTo(@NonNull Energy other) {
         return Double.compare(this.mInJoules, other.mInJoules);
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the object argument; {@code false}
+     *     otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object instanceof Energy) {
+            Energy other = (Energy) object;
+            return this.getInJoules() == other.getInJoules();
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getInJoules());
     }
 
     /**

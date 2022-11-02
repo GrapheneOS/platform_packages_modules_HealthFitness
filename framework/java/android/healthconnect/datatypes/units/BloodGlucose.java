@@ -18,8 +18,10 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
+import java.util.Objects;
+
 /** Represents a unit of blood glucose level (glycaemia). Supported units: mmol/L */
-public class BloodGlucose implements Comparable<BloodGlucose> {
+public final class BloodGlucose implements Comparable<BloodGlucose> {
     private final double mInMillimolesPerLiter;
 
     private BloodGlucose(double value) {
@@ -56,6 +58,33 @@ public class BloodGlucose implements Comparable<BloodGlucose> {
     @Override
     public int compareTo(@NonNull BloodGlucose other) {
         return Double.compare(this.mInMillimolesPerLiter, other.mInMillimolesPerLiter);
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the object argument; {@code false}
+     *     otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object instanceof BloodGlucose) {
+            BloodGlucose other = (BloodGlucose) object;
+            return this.getInMillimolesPerLiter() == other.getInMillimolesPerLiter();
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getInMillimolesPerLiter());
     }
 
     /**
