@@ -20,10 +20,18 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 import android.annotation.NonNull;
 import android.annotation.StringDef;
+import android.database.Cursor;
+import android.healthconnect.RecordId;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.healthconnect.internal.datatypes.utils.RecordMapper;
+
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 
 import java.lang.annotation.Retention;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -49,21 +57,74 @@ public final class StorageUtils {
         } else {
             clientIDBlob = recordInternal.getClientRecordId().getBytes();
         }
-        // TODO(b/249527913): Update with app ID once available
-        byte[] appIdBlob = recordInternal.getPackageName().getBytes();
 
-        ByteBuffer nameBasedUidBytes =
-                ByteBuffer.allocate(appIdBlob.length + 4 + clientIDBlob.length)
-                        .put(appIdBlob)
-                        .putInt(recordInternal.getRecordType())
-                        .put(clientIDBlob);
+        byte[] nameBasedUidBytes =
+                getUUIDByteBuffer(
+                        recordInternal.getAppInfoId(),
+                        clientIDBlob,
+                        recordInternal.getRecordType());
 
-        recordInternal.setUuid(UUID.nameUUIDFromBytes(nameBasedUidBytes.array()).toString());
+        recordInternal.setUuid(UUID.nameUUIDFromBytes(nameBasedUidBytes).toString());
+    }
+
+    public static String getUUIDFor(RecordId recordId, String packageName) {
+        byte[] clientIDBlob;
+        if (recordId.getClientRecordId() == null || recordId.getClientRecordId().isEmpty()) {
+            return recordId.getId();
+        }
+        clientIDBlob = recordId.getClientRecordId().getBytes();
+
+        byte[] nameBasedUidBytes =
+                getUUIDByteBuffer(
+                        AppInfoHelper.getInstance().getAppInfoId(packageName),
+                        clientIDBlob,
+                        RecordMapper.getInstance().getRecordType(recordId.getRecordType()));
+
+        return UUID.nameUUIDFromBytes(nameBasedUidBytes).toString();
     }
 
     public static void addPackageNameTo(
             @NonNull RecordInternal<?> recordInternal, @NonNull String packageName) {
         recordInternal.setPackageName(packageName);
+    }
+
+    public static String getCursorString(Cursor cursor, String columnName) {
+        return cursor.getString(cursor.getColumnIndex(columnName));
+    }
+
+    public static int getCursorInt(Cursor cursor, String columnName) {
+        return Integer.parseInt(cursor.getString(cursor.getColumnIndex(columnName)));
+    }
+
+    public static List<String> getCursorStringList(
+            Cursor cursor, String columnName, String delimiter) {
+        final String stringList = cursor.getString(cursor.getColumnIndex(columnName));
+        if (stringList == null || stringList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return Arrays.asList(stringList.split(delimiter));
+    }
+
+    public static List<Integer> getCursorIntegerList(
+            Cursor cursor, String columnName, String delimiter) {
+        final String stringList = cursor.getString(cursor.getColumnIndex(columnName));
+        if (stringList == null || stringList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return Arrays.stream(stringList.split(delimiter))
+                .mapToInt(Integer::valueOf)
+                .boxed()
+                .toList();
+    }
+
+    private static byte[] getUUIDByteBuffer(long appId, byte[] clientIDBlob, int recordId) {
+        return ByteBuffer.allocate(Long.BYTES + Integer.BYTES + clientIDBlob.length)
+                .putLong(appId)
+                .putInt(recordId)
+                .put(clientIDBlob)
+                .array();
     }
 
     @Retention(SOURCE)
@@ -73,6 +134,7 @@ public final class StorageUtils {
         TEXT_NULL,
         INTEGER,
         PRIMARY_AUTOINCREMENT,
+        PRIMARY,
         BLOB
     })
     public @interface SQLiteType {}

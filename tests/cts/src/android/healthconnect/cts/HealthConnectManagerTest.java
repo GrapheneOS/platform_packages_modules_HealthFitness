@@ -52,6 +52,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /** CTS test for API provided by HealthConnectManager. */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -120,18 +121,22 @@ public class HealthConnectManagerTest {
 
     @Test
     public void testInsertRecords() throws Exception {
+        insertRecords(getTestRecords());
+    }
+
+    private List<Record> insertRecords(List<Record> records) throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
-        List<Record> records = getTestRecords();
         CountDownLatch latch = new CountDownLatch(1);
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
+        AtomicReference<List<Record>> response = new AtomicReference<>();
         service.insertRecords(
                 records,
                 Executors.newSingleThreadExecutor(),
                 new OutcomeReceiver<InsertRecordsResponse, HealthConnectException>() {
                     @Override
                     public void onResult(InsertRecordsResponse result) {
-                        assertThat(result.getRecords()).hasSize(records.size());
+                        response.set(result.getRecords());
                         latch.countDown();
                     }
 
@@ -141,6 +146,9 @@ public class HealthConnectManagerTest {
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(response.get()).hasSize(records.size());
+
+        return response.get();
     }
 
     private List<Record> getTestRecords() {

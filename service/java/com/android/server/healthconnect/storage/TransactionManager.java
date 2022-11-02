@@ -23,6 +23,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.internal.datatypes.RecordInternal;
 
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -38,12 +40,10 @@ import java.util.List;
  */
 public class TransactionManager {
     private static TransactionManager sTransactionManager;
-    private Context mContext;
     private final HealthConnectDatabase mHealthConnectDatabase;
 
     private TransactionManager(@NonNull Context context) {
         mHealthConnectDatabase = new HealthConnectDatabase(context);
-        mContext = context;
     }
 
     public static TransactionManager getInstance(@NonNull Context context) {
@@ -58,10 +58,6 @@ public class TransactionManager {
 
     public static TransactionManager getInitializedInstance() {
         return sTransactionManager;
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 
     /**
@@ -99,15 +95,10 @@ public class TransactionManager {
         }
     }
 
-    /**
-     * Queries the table in {@code request} from the HealthConnect database.
-     *
-     * @param request read request.
-     * @return cursor of the query for the columns in request It is calling method's responsibility
-     *     to close the cursor.
-     */
-    public Cursor readTable(SQLiteDatabase db, @NonNull ReadTableRequest request) {
-        return db.query(request.getTable(), request.getColumns(), null, null, null, null, null);
+    /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
+    @NonNull
+    public Cursor read(@NonNull SQLiteDatabase db, @NonNull ReadTableRequest request) {
+        return db.rawQuery(request.getReadCommand(), request.getSelectionArgs());
     }
 
     /** Note: it is the responsibility of the requester to manage and close {@code db} */
@@ -118,6 +109,6 @@ public class TransactionManager {
     private void insertRecord(SQLiteDatabase db, UpsertTableRequest request) {
         long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
         request.getChildTableRequests()
-                .forEach(childRequest -> insertRecord(db, request.withParentKey(rowId)));
+                .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
     }
 }

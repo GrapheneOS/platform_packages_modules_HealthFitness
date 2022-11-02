@@ -20,6 +20,7 @@ import static java.util.Collections.emptySet;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
@@ -73,11 +74,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private final TransactionManager mTransactionManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
+    private final Context mContext;
 
     HealthConnectServiceImpl(
-            TransactionManager transactionManager, HealthConnectPermissionHelper permissionHelper) {
+            TransactionManager transactionManager,
+            HealthConnectPermissionHelper permissionHelper,
+            Context context) {
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
+        mContext = context;
     }
 
     @Override
@@ -128,12 +133,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         List<String> uuids =
                                 mTransactionManager.insertAll(
                                         new InsertTransactionRequest(
-                                                packageName, recordsParcel.getRecords()));
+                                                packageName, recordsParcel.getRecords(), mContext));
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                     } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SqlException: ", sqLiteException);
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
                         tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
                     }
                 });
@@ -141,7 +148,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     /**
      * Returns a set of health permissions defined within the module and belonging to {@link
-     * Constants.HEALTH_PERMISSION_GROUP_NAME}.
+     * Constants#HEALTH_PERMISSION_GROUP_NAME}.
      *
      * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
      * than crashing the device. This means the health permissions infra will be inactive.

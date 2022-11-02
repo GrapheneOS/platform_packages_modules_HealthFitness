@@ -37,6 +37,7 @@ public final class RecordMapper {
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
     private final Map<Integer, Class<? extends Record>> mRecordIdToExternalRecordClassMap;
+    private final Map<Class<? extends Record>, Integer> mExternalRecordClassToRecordIdMap;
 
     private RecordMapper() {
         mRecordIdToInternalRecordClassMap = new ArrayMap<>(NUM_ENTRIES);
@@ -56,6 +57,11 @@ public final class RecordMapper {
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE,
                 BasalMetabolicRateRecord.class);
+
+        mExternalRecordClassToRecordIdMap =
+                new ArrayMap<>(mRecordIdToExternalRecordClassMap.size());
+        mRecordIdToExternalRecordClassMap.forEach(
+                (id, recordClass) -> mExternalRecordClassToRecordIdMap.put(recordClass, id));
     }
 
     @NonNull
@@ -75,5 +81,10 @@ public final class RecordMapper {
     @NonNull
     public Map<Integer, Class<? extends Record>> getRecordIdToExternalRecordClassMap() {
         return mRecordIdToExternalRecordClassMap;
+    }
+
+    @RecordTypeIdentifier.RecordType
+    public int getRecordType(Class<? extends Record> recordClass) {
+        return mExternalRecordClassToRecordIdMap.get(recordClass);
     }
 }
