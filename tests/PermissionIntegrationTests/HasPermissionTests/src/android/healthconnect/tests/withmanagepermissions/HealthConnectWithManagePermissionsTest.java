@@ -26,7 +26,6 @@ import static org.junit.Assume.assumeTrue;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.healthconnect.Constants;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 
@@ -44,16 +43,16 @@ import java.util.List;
  * Integration tests for {@link android.healthconnect.HealthConnectManager} Permission-related APIs.
  *
  * <p><b>Note:</b> These tests operate while holding {@link
- * Constants.MANAGE_HEALTH_PERMISSIONS_NAME}. For tests asserting that non-holders of the permission
- * cannot call the APIs, please see {@link
+ * HealthPermissions.MANAGE_HEALTH_PERMISSIONS}. For tests asserting that non-holders of the
+ * permission cannot call the APIs, please see {@link
  * android.healthconnect.tests.withoutmanagepermissions.HealthConnectWithoutManagePermissionsTest}.
  *
  * <p><b>Note:</b> Since we need to hold the aforementioned permission, this test needs to be signed
  * with the same certificate as the HealthConnect module. Therefore, <b>we skip this test when it
- * cannot hold {@link Constants.MANAGE_HEALTH_PERMISSIONS_NAME}. The primary use of these tests is
- * therefore during development, when we are building from source rather than using prebuilts</b>.
- * Additionally, this test can run as a presubmit on the main (master) branch where modules are
- * always built from source.
+ * cannot hold {@link HealthPermissions.MANAGE_HEALTH_PERMISSIONS}. The primary use of these tests
+ * is therefore during development, when we are building from source rather than using
+ * prebuilts</b>. Additionally, this test can run as a presubmit on the main (master) branch where
+ * modules are always built from source.
  *
  * <p><b>Build/Install/Run:</b> {@code atest HealthConnectWithManagePermissionsIntegrationTests}.
  */
@@ -75,7 +74,7 @@ public class HealthConnectWithManagePermissionsTest {
         mContext = InstrumentationRegistry.getTargetContext();
         assumeTrue(
                 "Skipping test - test cannot hold "
-                        + Constants.MANAGE_HEALTH_PERMISSIONS_NAME
+                        + HealthPermissions.MANAGE_HEALTH_PERMISSIONS
                         + " for the build-under-test. This is likely because the build uses "
                         + "mainline prebuilts and therefore does not have a compatible signature "
                         + "with this test app. See the test class Javadoc for more info.",
@@ -316,7 +315,8 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     /**
-     * Returns {@code true} if the test can hold {@link Constants.MANAGE_HEALTH_PERMISSIONS_NAME}.
+     * Returns {@code true} if the test can hold {@link
+     * HealthPermissions.MANAGE_HEALTH_PERMISSIONS}.
      *
      * <p>The permission is protected at signature level, and should be granted automatically if
      * it's possible to hold. So effectively this method can simply check if this test's package
@@ -324,7 +324,7 @@ public class HealthConnectWithManagePermissionsTest {
      */
     private static boolean canHoldManageHealthPermsPermission() {
         return InstrumentationRegistry.getContext()
-                        .checkSelfPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME)
+                        .checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
                 == PackageManager.PERMISSION_GRANTED;
     }
 }

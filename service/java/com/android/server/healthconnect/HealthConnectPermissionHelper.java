@@ -22,16 +22,16 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.pm.PackageInfo;
-import android.healthconnect.Constants;
+import android.content.pm.PackageManager;
+import android.healthconnect.HealthPermissions;
 import android.os.Binder;
 import android.os.UserHandle;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
 
 /** A handler for HealthConnect permission-related logic. */
 final class HealthConnectPermissionHelper {
@@ -174,7 +174,8 @@ final class HealthConnectPermissionHelper {
     }
 
     private void enforceManageHealthPermissions(String message) {
-        mContext.enforceCallingOrSelfPermission(Constants.MANAGE_HEALTH_PERMISSIONS_NAME, message);
+        mContext.enforceCallingOrSelfPermission(
+                HealthPermissions.MANAGE_HEALTH_PERMISSIONS, message);
     }
 
     /**
