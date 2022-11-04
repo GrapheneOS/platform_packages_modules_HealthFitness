@@ -18,8 +18,10 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
+import java.util.Objects;
+
 /** Represents a unit of temperature. Supported units: Celsius */
-public class Temperature implements Comparable<Temperature> {
+public final class Temperature implements Comparable<Temperature> {
     private final double mInCelsius;
 
     private Temperature(double value) {
@@ -56,6 +58,33 @@ public class Temperature implements Comparable<Temperature> {
     @Override
     public int compareTo(@NonNull Temperature other) {
         return Double.compare(this.mInCelsius, other.mInCelsius);
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the object argument; {@code false}
+     *     otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object instanceof Temperature) {
+            Temperature other = (Temperature) object;
+            return this.getInCelsius() == other.getInCelsius();
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getInCelsius());
     }
 
     /**

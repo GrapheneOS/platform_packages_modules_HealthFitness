@@ -214,61 +214,61 @@ package android.healthconnect.datatypes {
 
 package android.healthconnect.datatypes.units {
 
-  public class BloodGlucose implements java.lang.Comparable<android.healthconnect.datatypes.units.BloodGlucose> {
+  public final class BloodGlucose implements java.lang.Comparable<android.healthconnect.datatypes.units.BloodGlucose> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.BloodGlucose);
     method @NonNull public static android.healthconnect.datatypes.units.BloodGlucose fromMillimolesPerLiter(double);
     method public double getInMillimolesPerLiter();
   }
 
-  public class Energy implements java.lang.Comparable<android.healthconnect.datatypes.units.Energy> {
+  public final class Energy implements java.lang.Comparable<android.healthconnect.datatypes.units.Energy> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Energy);
     method @NonNull public static android.healthconnect.datatypes.units.Energy fromJoules(double);
     method public double getInJoules();
   }
 
-  public class Length implements java.lang.Comparable<android.healthconnect.datatypes.units.Length> {
+  public final class Length implements java.lang.Comparable<android.healthconnect.datatypes.units.Length> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Length);
     method @NonNull public android.healthconnect.datatypes.units.Length fromMeters(double);
     method public double getInMeters();
   }
 
-  public class Mass implements java.lang.Comparable<android.healthconnect.datatypes.units.Mass> {
+  public final class Mass implements java.lang.Comparable<android.healthconnect.datatypes.units.Mass> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Mass);
     method @NonNull public android.healthconnect.datatypes.units.Mass fromKilograms(double);
     method public double getInKilograms();
   }
 
-  public class Percentage implements java.lang.Comparable<android.healthconnect.datatypes.units.Percentage> {
+  public final class Percentage implements java.lang.Comparable<android.healthconnect.datatypes.units.Percentage> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Percentage);
     method @NonNull public static android.healthconnect.datatypes.units.Percentage fromValue(double);
     method public double getValue();
   }
 
-  public class Power implements java.lang.Comparable<android.healthconnect.datatypes.units.Power> {
+  public final class Power implements java.lang.Comparable<android.healthconnect.datatypes.units.Power> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Power);
     method @NonNull public static android.healthconnect.datatypes.units.Power fromWatts(double);
     method public double getInWatts();
   }
 
-  public class Pressure implements java.lang.Comparable<android.healthconnect.datatypes.units.Pressure> {
+  public final class Pressure implements java.lang.Comparable<android.healthconnect.datatypes.units.Pressure> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Pressure);
     method @NonNull public static android.healthconnect.datatypes.units.Pressure fromMillimetersOfMercury(double);
     method public double getInMillimetersOfMercury();
   }
 
-  public class Temperature implements java.lang.Comparable<android.healthconnect.datatypes.units.Temperature> {
+  public final class Temperature implements java.lang.Comparable<android.healthconnect.datatypes.units.Temperature> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Temperature);
     method @NonNull public static android.healthconnect.datatypes.units.Temperature fromCelsius(double);
     method public double getInCelsius();
   }
 
-  public class Velocity implements java.lang.Comparable<android.healthconnect.datatypes.units.Velocity> {
+  public final class Velocity implements java.lang.Comparable<android.healthconnect.datatypes.units.Velocity> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Velocity);
     method @NonNull public static android.healthconnect.datatypes.units.Velocity fromMetersPerSecond(double);
     method public double getInMetersPerSecond();
   }
 
-  public class Volume implements java.lang.Comparable<android.healthconnect.datatypes.units.Volume> {
+  public final class Volume implements java.lang.Comparable<android.healthconnect.datatypes.units.Volume> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Volume);
     method @NonNull public static android.healthconnect.datatypes.units.Volume fromMilliliters(double);
     method public double getInMilliliters();

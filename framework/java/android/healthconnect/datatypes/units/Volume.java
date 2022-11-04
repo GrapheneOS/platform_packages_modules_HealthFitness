@@ -18,8 +18,10 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
+import java.util.Objects;
+
 /** Represents a unit of volume. Supported units: milliliters */
-public class Volume implements Comparable<Volume> {
+public final class Volume implements Comparable<Volume> {
     private final double mInMilliliters;
 
     private Volume(double value) {
@@ -56,6 +58,33 @@ public class Volume implements Comparable<Volume> {
     @Override
     public int compareTo(@NonNull Volume other) {
         return Double.compare(this.mInMilliliters, other.mInMilliliters);
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the object argument; {@code false}
+     *     otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object instanceof Volume) {
+            Volume other = (Volume) object;
+            return this.getInMilliliters() == other.getInMilliliters();
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getInMilliliters());
     }
 
     /**

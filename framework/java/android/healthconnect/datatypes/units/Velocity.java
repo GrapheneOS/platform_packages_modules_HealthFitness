@@ -18,8 +18,10 @@ package android.healthconnect.datatypes.units;
 
 import android.annotation.NonNull;
 
+import java.util.Objects;
+
 /** Represents a unit of speed. Supported units: metersPerSecond */
-public class Velocity implements Comparable<Velocity> {
+public final class Velocity implements Comparable<Velocity> {
     private final double mInMetersPerSecond;
 
     private Velocity(double value) {
@@ -56,6 +58,33 @@ public class Velocity implements Comparable<Velocity> {
     @Override
     public int compareTo(@NonNull Velocity other) {
         return Double.compare(this.mInMetersPerSecond, other.mInMetersPerSecond);
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the object argument; {@code false}
+     *     otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object instanceof Velocity) {
+            Velocity other = (Velocity) object;
+            return this.getInMetersPerSecond() == other.getInMetersPerSecond();
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getInMetersPerSecond());
     }
 
     /**
