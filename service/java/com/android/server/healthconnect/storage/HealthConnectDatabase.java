@@ -25,6 +25,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
@@ -50,14 +51,15 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(@NonNull SQLiteDatabase db) {
-        createTable(db, DeviceInfoHelper.getInstance().getCreateTableRequest());
-        createTable(db, AppInfoHelper.getInstance().getCreateTableRequest());
         mRecordHelpers.forEach(
                 recordHelper -> {
                     createTable(db, recordHelper.getCreateTableRequest());
                 });
+        createTable(db, DeviceInfoHelper.getInstance().getCreateTableRequest());
+        createTable(db, AppInfoHelper.getInstance().getCreateTableRequest());
         createTable(db, ChangeLogsHelper.getInstance().getCreateTableRequest());
         createTable(db, ChangeLogsRequestHelper.getInstance().getCreateTableRequest());
+        createTable(db, HealthDataCategoryPriorityHelper.getInstance().getCreateTableRequest());
     }
 
     @Override
@@ -68,6 +70,9 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
                 });
         DeviceInfoHelper.getInstance().onUpgrade(newVersion, db);
         AppInfoHelper.getInstance().onUpgrade(newVersion, db);
+        ChangeLogsHelper.getInstance().onUpgrade(newVersion, db);
+        ChangeLogsRequestHelper.getInstance().onUpgrade(newVersion, db);
+        HealthDataCategoryPriorityHelper.getInstance().onUpgrade(newVersion, db);
     }
 
     @Override

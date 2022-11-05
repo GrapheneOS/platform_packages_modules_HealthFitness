@@ -51,6 +51,7 @@ public final class StorageUtils {
     public static final String TEXT_NOT_NULL_UNIQUE = "TEXT NOT NULL UNIQUE";
     public static final String TEXT_NULL = "TEXT";
     public static final String INTEGER = "INTEGER";
+    public static final String INTEGER_UNIQUE = "INTEGER UNIQUE";
     public static final String REAL = "REAL";
     public static final String PRIMARY_AUTOINCREMENT = "INTEGER PRIMARY KEY AUTOINCREMENT";
     public static final String PRIMARY = "INTEGER PRIMARY KEY";
@@ -159,8 +160,27 @@ public final class StorageUtils {
                 .toList();
     }
 
+    public static List<Long> getCursorLongList(Cursor cursor, String columnName, String delimiter) {
+        final String stringList = cursor.getString(cursor.getColumnIndex(columnName));
+        if (stringList == null || stringList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return Arrays.stream(stringList.split(delimiter)).mapToLong(Long::valueOf).boxed().toList();
+    }
+
     public static String flattenIntList(List<Integer> values) {
         return values.stream().map(String::valueOf).collect(Collectors.joining(DELIMITER));
+    }
+
+    public static String flattenLongList(List<Long> values) {
+        return values.stream().map(String::valueOf).collect(Collectors.joining(DELIMITER));
+    }
+
+    public static String flattenIntArray(int[] values) {
+        return Arrays.stream(values)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining(DELIMITER));
     }
 
     @Nullable

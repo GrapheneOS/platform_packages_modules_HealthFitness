@@ -21,21 +21,25 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.GetPriorityResponse;
 import android.healthconnect.HealthConnectException;
+import android.healthconnect.HealthConnectManager;
+import android.healthconnect.HealthDataCategory;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.AggregateDataResponseParcel;
-import android.healthconnect.HealthConnectManager;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
+import android.healthconnect.aidl.GetPriorityResponseParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
+import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -45,6 +49,7 @@ import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.aidl.UpdatePriorityRequestParcel;
 import android.healthconnect.datatypes.AppInfo;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
@@ -61,9 +66,10 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
-import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
+import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
@@ -76,6 +82,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * IHealthConnectService's implementation
@@ -316,8 +323,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @hide
      * @see HealthConnectManager#getChangeLogs
+     * @hide
      */
     @Override
     public void getChangeLogs(
@@ -390,6 +397,64 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback,
                                 illegalArgumentException,
                                 HealthConnectException.ERROR_SECURITY);
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /** API to get Priority for {@code dataCategory} */
+    public void getCurrentPriority(
+            @NonNull String packageName,
+            @HealthDataCategory.Type int dataCategory,
+            @NonNull IGetPriorityResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        List<DataOrigin> dataOriginInPriorityOrder =
+                                HealthDataCategoryPriorityHelper.getInstance()
+                                        .getPriorityOrder(dataCategory)
+                                        .stream()
+                                        .map(
+                                                (name) ->
+                                                        new DataOrigin.Builder()
+                                                                .setPackageName(packageName)
+                                                                .build())
+                                        .collect(Collectors.toList());
+                        callback.onResult(
+                                new GetPriorityResponseParcel(
+                                        new GetPriorityResponse(dataOriginInPriorityOrder)));
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /** API to update priority for permission category(ies) */
+    public void updatePriority(
+            @NonNull String packageName,
+            @NonNull UpdatePriorityRequestParcel updatePriorityRequest,
+            @NonNull IEmptyResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        HealthDataCategoryPriorityHelper.getInstance()
+                                .setPriorityOrder(
+                                        updatePriorityRequest.getDataCategory(),
+                                        updatePriorityRequest.getPackagePriorityOrder());
+                        callback.onResult();
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
                         tryAndThrowException(
@@ -567,6 +632,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             callback.onError(
                     new HealthConnectExceptionParcel(
                             new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IGetPriorityResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }

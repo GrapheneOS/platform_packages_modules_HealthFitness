@@ -28,6 +28,8 @@ import android.healthconnect.HealthPermissions;
 import android.os.Binder;
 import android.os.UserHandle;
 
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +69,13 @@ public final class HealthConnectPermissionHelper {
         mPermissionIntentAppsTracker = permissionIntentTracker;
     }
 
-    /** See {@link android.healthconnect.HealthConnectManager#grantHealthPermission}. */
+    /**
+     * See {@link android.healthconnect.HealthConnectManager#grantHealthPermission}.
+     *
+     * <p>NOTE: Once permission grant is successful, the package name will also be appended to the
+     * end of the priority list corresponding to {@code permissionName}'s health permission
+     * category.
+     */
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
         Objects.requireNonNull(packageName);
@@ -80,6 +88,8 @@ public final class HealthConnectPermissionHelper {
         final long token = Binder.clearCallingIdentity();
         try {
             mPackageManager.grantRuntimePermission(packageName, permissionName, checkedUser);
+            addToPriorityListIfRequired(packageName, permissionName);
+
         } finally {
             Binder.restoreCallingIdentity(token);
         }
@@ -101,6 +111,7 @@ public final class HealthConnectPermissionHelper {
         try {
             mPackageManager.revokeRuntimePermission(
                     packageName, permissionName, checkedUser, reason);
+            removeFromPriorityListIfRequired(packageName, permissionName);
         } finally {
             Binder.restoreCallingIdentity(token);
         }
@@ -136,6 +147,25 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
+    private void addToPriorityListIfRequired(String packageName, String permissionName) {
+        if (HealthPermissions.isWritePermission(permissionName)) {
+            HealthDataCategoryPriorityHelper.getInstance()
+                    .appendToPriorityList(
+                            packageName, HealthPermissions.getHealthDataCategory(permissionName));
+        }
+    }
+
+    private void removeFromPriorityListIfRequired(String packageName, String permissionName) {
+        if (HealthPermissions.isWritePermission(permissionName)) {
+            HealthDataCategoryPriorityHelper.getInstance()
+                    .removeFromPriorityList(
+                            packageName,
+                            HealthPermissions.getHealthDataCategory(permissionName),
+                            this,
+                            mContext.getUser());
+        }
+    }
+
     private List<String> getGrantedHealthPermissionsUnchecked(String packageName, UserHandle user) {
         PackageInfo packageInfo;
         try {
@@ -167,6 +197,7 @@ public final class HealthConnectPermissionHelper {
                 getGrantedHealthPermissionsUnchecked(packageName, user);
         for (String perm : grantedHealthPermissions) {
             mPackageManager.revokeRuntimePermission(packageName, perm, user, reason);
+            removeFromPriorityListIfRequired(packageName, perm);
         }
     }
 

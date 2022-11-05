@@ -26,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
  * Represents DataCategory for a {@link Record}. A record can only belong to one and only one {@link
  * HealthDataCategory}.
  *
- * <p>@hide
+ * @hide
  */
 public class HealthDataCategory {
     public static final int UNKNOWN = 0;
