@@ -17,6 +17,7 @@
 package android.healthconnect;
 
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.healthconnect.datatypes.DataOrigin;
 
 import java.util.List;
@@ -27,15 +28,16 @@ import java.util.Objects;
  *
  * @hide
  */
-public final class UpdatePriorityRequest {
+@SystemApi
+public final class UpdateDataOriginPriorityOrderRequest {
     private final List<DataOrigin> mDataOriginInOrder;
     @HealthDataCategory.Type private final int mDataCategory;
 
     /**
      * @param dataOriginInOrder new priority order of the apps
-     * @param dataCategory {@link HealthPermissionCategory} for the priority order
+     * @param dataCategory {@link HealthDataCategory} for the priority order
      */
-    public UpdatePriorityRequest(
+    public UpdateDataOriginPriorityOrderRequest(
             @NonNull List<DataOrigin> dataOriginInOrder,
             @HealthDataCategory.Type int dataCategory) {
         Objects.requireNonNull(dataOriginInOrder);
@@ -44,11 +46,18 @@ public final class UpdatePriorityRequest {
         mDataCategory = dataCategory;
     }
 
+    /**
+     * @return List of {@link DataOrigin} in priority order
+     */
     @NonNull
     public List<DataOrigin> getDataOriginInOrder() {
         return mDataOriginInOrder;
     }
 
+    /**
+     * @return {@link HealthDataCategory} for which to get the priority
+     */
+    @HealthDataCategory.Type
     public int getDataCategory() {
         return mDataCategory;
     }

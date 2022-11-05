@@ -8,11 +8,13 @@ import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
+import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.aidl.UpdatePriorityRequestParcel;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
@@ -26,13 +28,9 @@ import java.util.List;
  * {@hide}
  */
 interface IHealthConnectService {
-    /* @hide */
     void grantHealthPermission(String packageName, String permissionName, in UserHandle user);
-    /* @hide */
     void revokeHealthPermission(String packageName, String permissionName, String reason, in UserHandle user);
-    /* @hide */
     void revokeAllHealthPermissions(String packageName, String reason, in UserHandle user);
-    /* @hide */
     List<String> getGrantedHealthPermissions(String packageName, in UserHandle user);
     /**
      * Inserts {@code records} into the HealthConnect database.
@@ -40,7 +38,6 @@ interface IHealthConnectService {
      * @param packageName name of the package inserting the record.
      * @param recordsParcel represents records to be inserted.
      * @param callback Callback to receive result of performing this operation.
-     * {@hide}
      */
     void insertRecords(
         String packageName,
@@ -53,7 +50,6 @@ interface IHealthConnectService {
      * @param packageName name of the package querying aggregate.
      * @param request represents the request using which the aggregation is to be performed.
      * @param callback Callback to receive result of performing this operation.
-     * {@hide}
      */
     void aggregateRecords(
         String packageName,
@@ -66,7 +62,6 @@ interface IHealthConnectService {
      * @param packageName name of the package reading the record.
      * @param request represents the request to be read.
      * @param callback Callback to receive result of performing this operation.
-     * {@hide}
      */
     void readRecords(
         in String packageName,
@@ -79,7 +74,6 @@ interface IHealthConnectService {
      * @param packageName name of the package updating the record.
      * @param recordsParcel represents records to be updated.
      * @param callback Callback to receive result of performing this operation.
-     * {@hide}
      */
     void updateRecords(
             String packageName,
@@ -117,6 +111,26 @@ interface IHealthConnectService {
         in IEmptyResponseCallback callback);
 
     /**
+     * @param packageName Calling package's name
+     * @param permissionCategory PermissionCategory corresponding to which priority is requested
+     * @param callback Callback to receive result of performing this operation
+     */
+    void getCurrentPriority(
+        String packageName,
+        int permissionCategory,
+        in IGetPriorityResponseCallback callback);
+
+    /**
+     * @param packageName Calling package's name
+     * @param request Delete request using the mentioned filters
+     * @param callback Callback to receive result of performing this operation
+     */
+    void updatePriority(
+        String packageName,
+        in UpdatePriorityRequestParcel request,
+        in IEmptyResponseCallback callback);
+
+    /**
      * Returns information, represented by {@code ApplicationInfoResponse}, for all the
      * packages that have contributed to the health connect DB.
      *
@@ -127,7 +141,6 @@ interface IHealthConnectService {
     /** Returns information for each RecordType like health permission category, record category and
      * contributing packages.
      * @param callback Callback to receive result of performing this operation.
-     * {@hide}
      */
     void queryAllRecordTypesInfo(in IRecordTypeInfoResponseCallback callback);
 }

@@ -16,12 +16,14 @@
 
 package com.android.server.healthconnect;
 
+import static android.Manifest.permission.QUERY_ALL_PACKAGES;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.AggregateRecordsResponse;
-import android.healthconnect.GetPriorityResponse;
+import android.healthconnect.GetDataOriginPriorityOrderResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthDataCategory;
@@ -55,6 +57,7 @@ import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
+import android.os.Binder;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.ArrayMap;
@@ -406,13 +409,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /** API to get Priority for {@code dataCategory} */
+    @Override
     public void getCurrentPriority(
             @NonNull String packageName,
             @HealthDataCategory.Type int dataCategory,
             @NonNull IGetPriorityResponseCallback callback) {
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
+
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
+                        mContext.enforcePermission(QUERY_ALL_PACKAGES, pid, uid, null);
                         List<DataOrigin> dataOriginInPriorityOrder =
                                 HealthDataCategoryPriorityHelper.getInstance()
                                         .getPriorityOrder(dataCategory)
@@ -425,7 +433,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         .collect(Collectors.toList());
                         callback.onResult(
                                 new GetPriorityResponseParcel(
-                                        new GetPriorityResponse(dataOriginInPriorityOrder)));
+                                        new GetDataOriginPriorityOrderResponse(
+                                                dataOriginInPriorityOrder)));
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
@@ -439,6 +448,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /** API to update priority for permission category(ies) */
+    @Override
     public void updatePriority(
             @NonNull String packageName,
             @NonNull UpdatePriorityRequestParcel updatePriorityRequest,

@@ -17,29 +17,32 @@
 package android.healthconnect;
 
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.healthconnect.datatypes.DataOrigin;
 
 import java.util.List;
 import java.util.Objects;
 
 /** @hide */
-public final class GetPriorityResponse {
-    private final List<DataOrigin> mDataOriginInPriority;
+@SystemApi
+public final class GetDataOriginPriorityOrderResponse {
+    private final List<DataOrigin> mDataOriginInPriorityOrder;
 
     /**
-     * @param dataOriginInPriority dataOrigin in priority order
+     * @param dataOriginInPriorityOrder dataOrigin in priority order
+     * @hide
      */
-    public GetPriorityResponse(@NonNull List<DataOrigin> dataOriginInPriority) {
-        Objects.requireNonNull(dataOriginInPriority);
+    public GetDataOriginPriorityOrderResponse(@NonNull List<DataOrigin> dataOriginInPriorityOrder) {
+        Objects.requireNonNull(dataOriginInPriorityOrder);
 
-        mDataOriginInPriority = dataOriginInPriority;
+        mDataOriginInPriorityOrder = dataOriginInPriorityOrder;
     }
 
     /**
      * @return dataOrigin in priority order
      */
     @NonNull
-    public List<DataOrigin> getDataOriginInPriority() {
-        return mDataOriginInPriority;
+    public List<DataOrigin> getDataOriginInPriorityOrder() {
+        return mDataOriginInPriorityOrder;
     }
 }

@@ -619,7 +619,7 @@ public final class HealthPermissions {
     }
 
     private static synchronized void populateWriteHealthPermissionToHealthDataCategoryMap() {
-        if (!sDataCategoryToWritePermissionsMap.isEmpty()) {
+        if (!sWriteHealthPermissionToHealthDataCategoryMap.isEmpty()) {
             return;
         }
 

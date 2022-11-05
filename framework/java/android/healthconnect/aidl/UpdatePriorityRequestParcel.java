@@ -17,7 +17,7 @@
 package android.healthconnect.aidl;
 
 import android.healthconnect.HealthDataCategory;
-import android.healthconnect.UpdatePriorityRequest;
+import android.healthconnect.UpdateDataOriginPriorityOrderRequest;
 import android.healthconnect.datatypes.DataOrigin;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -49,12 +49,13 @@ public final class UpdatePriorityRequestParcel implements Parcelable {
         mDataCategory = in.readInt();
     }
 
-    public UpdatePriorityRequestParcel(UpdatePriorityRequest updatePriorityRequest) {
+    public UpdatePriorityRequestParcel(
+            UpdateDataOriginPriorityOrderRequest updateDataOriginPriorityOrderRequest) {
         mPackagePriorityOrder =
-                updatePriorityRequest.getDataOriginInOrder().stream()
+                updateDataOriginPriorityOrderRequest.getDataOriginInOrder().stream()
                         .map(DataOrigin::getPackageName)
                         .collect(Collectors.toList());
-        mDataCategory = updatePriorityRequest.getDataCategory();
+        mDataCategory = updateDataOriginPriorityOrderRequest.getDataCategory();
     }
 
     @NonNull
