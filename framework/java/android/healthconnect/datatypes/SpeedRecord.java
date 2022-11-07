@@ -13,42 +13,78 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.healthconnect.datatypes;
 
 import android.annotation.NonNull;
+import android.healthconnect.datatypes.units.Velocity;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 
-/** Captures the user's heart rate. Each record represents a series of measurements. */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
-public class HeartRateRecord extends IntervalRecord {
-    /** A class to represent heart rate samples */
-    public static final class HeartRateSample {
-        private final long mBeatsPerMinute;
+/** Captures the user's speed, e.g. during running or cycling. */
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
+public final class SpeedRecord extends IntervalRecord {
+    private final List<SpeedRecordSample> mSpeedRecordSamples;
+
+    /**
+     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+     * @param startTime Start time of this activity
+     * @param startZoneOffset Zone offset of the user when the activity started
+     * @param endTime End time of this activity
+     * @param endZoneOffset Zone offset of the user when the activity finished
+     * @param speedRecordSamples Samples of recorded SpeedRecord
+     */
+    private SpeedRecord(
+            @NonNull Metadata metadata,
+            @NonNull Instant startTime,
+            @NonNull ZoneOffset startZoneOffset,
+            @NonNull Instant endTime,
+            @NonNull ZoneOffset endZoneOffset,
+            @NonNull List<SpeedRecordSample> speedRecordSamples) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+        Objects.requireNonNull(metadata);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(startZoneOffset);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(endZoneOffset);
+        Objects.requireNonNull(speedRecordSamples);
+        mSpeedRecordSamples = speedRecordSamples;
+    }
+
+    /**
+     * @return SpeedRecord samples corresponding to this record
+     */
+    @NonNull
+    public List<SpeedRecordSample> getSamples() {
+        return mSpeedRecordSamples;
+    }
+
+    /** Represents a single measurement of the speed, a scalar magnitude. */
+    public static final class SpeedRecordSample {
+        private final Velocity mSpeed;
         private final Instant mTime;
 
         /**
-         * Heart rate sample for entries of {@link HeartRateRecord}
+         * SpeedRecord sample for entries of {@link SpeedRecord}
          *
-         * @param beatsPerMinute Heart beats per minute.
+         * @param speed Speed in {@link Velocity} unit.
          * @param time The point in time when the measurement was taken.
          */
-        public HeartRateSample(long beatsPerMinute, @NonNull Instant time) {
+        public SpeedRecordSample(@NonNull Velocity speed, @NonNull Instant time) {
             Objects.requireNonNull(time);
-
-            mBeatsPerMinute = beatsPerMinute;
+            Objects.requireNonNull(speed);
             mTime = time;
+            mSpeed = speed;
         }
 
         /**
-         * @return beats per minute for this sample
+         * @return Speed for this sample
          */
-        public long getBeatsPerMinute() {
-            return mBeatsPerMinute;
+        @NonNull
+        public Velocity getSpeed() {
+            return mSpeed;
         }
 
         /**
@@ -67,9 +103,9 @@ public class HeartRateRecord extends IntervalRecord {
          */
         @Override
         public boolean equals(@NonNull Object object) {
-            if (super.equals(object) && object instanceof HeartRateSample) {
-                HeartRateSample other = (HeartRateSample) object;
-                return this.getBeatsPerMinute() == other.getBeatsPerMinute()
+            if (super.equals(object) && object instanceof SpeedRecordSample) {
+                SpeedRecordSample other = (SpeedRecordSample) object;
+                return this.getSpeed().equals(other.getSpeed())
                         && this.getTime().equals(other.getTime());
             }
             return false;
@@ -82,115 +118,71 @@ public class HeartRateRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), this.getBeatsPerMinute(), this.getTime());
+            return Objects.hash(super.hashCode(), this.getSpeed(), this.getTime());
         }
     }
 
-    /**
-     * Builder class for {@link HeartRateRecord}
-     *
-     * @see HeartRateRecord
-     */
+    /** Builder class for {@link SpeedRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final List<HeartRateSample> mHeartRateSamples;
-        private ZoneOffset mStartZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-        private ZoneOffset mEndZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        private final List<SpeedRecordSample> mSpeedRecordSamples;
+        private ZoneOffset mStartZoneOffset;
+        private ZoneOffset mEndZoneOffset;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
-         * @param heartRateSamples Samples of recorded heart rate
-         * @throws IllegalArgumentException if {@code heartRateSamples} is empty
+         * @param speedRecordSamples Samples of recorded SpeedRecord
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                @NonNull List<HeartRateSample> heartRateSamples) {
+                @NonNull List<SpeedRecordSample> speedRecordSamples) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
-            Objects.requireNonNull(heartRateSamples);
-            if (heartRateSamples.isEmpty()) {
-                throw new IllegalArgumentException("record samples should not be empty");
-            }
-
+            Objects.requireNonNull(speedRecordSamples);
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mHeartRateSamples = heartRateSamples;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mSpeedRecordSamples = speedRecordSamples;
         }
 
-        /**
-         * Sets the zone offset of the user when the activity started. By default, the starting zone
-         * offset is set the current zone offset.
-         */
+        /** Sets the zone offset of the user when the activity started */
         @NonNull
         public Builder setStartZoneOffset(@NonNull ZoneOffset startZoneOffset) {
             Objects.requireNonNull(startZoneOffset);
-
             mStartZoneOffset = startZoneOffset;
             return this;
         }
 
-        /**
-         * Sets the zone offset of the user when the activity ended. By default, the end zone offset
-         * is set the current zone offset.
-         */
+        /** Sets the zone offset of the user when the activity ended */
         @NonNull
         public Builder setEndZoneOffset(@NonNull ZoneOffset endZoneOffset) {
             Objects.requireNonNull(endZoneOffset);
-
             mEndZoneOffset = endZoneOffset;
             return this;
         }
 
         /**
-         * @return Object of {@link HeartRateRecord}
+         * @return Object of {@link SpeedRecord}
          */
         @NonNull
-        public HeartRateRecord build() {
-            return new HeartRateRecord(
+        public SpeedRecord build() {
+            return new SpeedRecord(
                     mMetadata,
                     mStartTime,
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mHeartRateSamples);
+                    mSpeedRecordSamples);
         }
-    }
-
-    private final List<HeartRateSample> mHeartRateSamples;
-
-    private HeartRateRecord(
-            @NonNull Metadata metadata,
-            @NonNull Instant startTime,
-            @NonNull ZoneOffset startZoneOffset,
-            @NonNull Instant endTime,
-            @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<HeartRateSample> heartRateSamples) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
-        Objects.requireNonNull(heartRateSamples);
-        mHeartRateSamples = heartRateSamples;
-    }
-
-    /**
-     * @return heart rate samples corresponding to this record
-     */
-    @NonNull
-    public List<HeartRateSample> getSamples() {
-        return mHeartRateSamples;
     }
 
     /**
@@ -201,8 +193,8 @@ public class HeartRateRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof HeartRateRecord) {
-            HeartRateRecord other = (HeartRateRecord) object;
+        if (super.equals(object) && object instanceof SpeedRecord) {
+            SpeedRecord other = (SpeedRecord) object;
             return this.getSamples().equals(other.getSamples());
         }
         return false;

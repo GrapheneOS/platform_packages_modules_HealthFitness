@@ -21,6 +21,7 @@ import android.annotation.SystemApi;
 
 import java.util.Objects;
 
+/** A base class for all record classes */
 public abstract class Record {
     private final Metadata mMetadata;
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
@@ -52,5 +53,32 @@ public abstract class Record {
     @RecordTypeIdentifier.RecordType
     public int getRecordType() {
         return mRecordIdentifier;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(@NonNull Object object) {
+        if (this == object) return true;
+        if (object instanceof Record) {
+            Record other = (Record) object;
+            return this.getMetadata().equals(other.getMetadata())
+                    && this.getRecordType() == other.getRecordType();
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getMetadata(), this.getRecordType());
     }
 }

@@ -144,6 +144,23 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
+  public final class CyclingPedalingCadenceRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.healthconnect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> getSamples();
+  }
+
+  public static final class CyclingPedalingCadenceRecord.Builder {
+    ctor public CyclingPedalingCadenceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>);
+    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord build();
+    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample {
+    ctor public CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(double, @NonNull java.time.Instant);
+    method public double getRevolutionsPerMinute();
+    method @NonNull public java.time.Instant getTime();
+  }
+
   public final class DataOrigin {
     method @Nullable public String getPackageName();
   }
@@ -227,8 +244,59 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
   }
 
+  public final class PowerRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.healthconnect.datatypes.PowerRecord.PowerRecordSample> getSamples();
+  }
+
+  public static final class PowerRecord.Builder {
+    ctor public PowerRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.PowerRecord.PowerRecordSample>);
+    method @NonNull public android.healthconnect.datatypes.PowerRecord build();
+    method @NonNull public android.healthconnect.datatypes.PowerRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.PowerRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class PowerRecord.PowerRecordSample {
+    ctor public PowerRecord.PowerRecordSample(@NonNull android.healthconnect.datatypes.units.Power, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.datatypes.units.Power getPower();
+    method @NonNull public java.time.Instant getTime();
+  }
+
   public abstract class Record {
     method @NonNull public android.healthconnect.datatypes.Metadata getMetadata();
+  }
+
+  public final class SpeedRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.healthconnect.datatypes.SpeedRecord.SpeedRecordSample> getSamples();
+  }
+
+  public static final class SpeedRecord.Builder {
+    ctor public SpeedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.SpeedRecord.SpeedRecordSample>);
+    method @NonNull public android.healthconnect.datatypes.SpeedRecord build();
+    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class SpeedRecord.SpeedRecordSample {
+    ctor public SpeedRecord.SpeedRecordSample(@NonNull android.healthconnect.datatypes.units.Velocity, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.datatypes.units.Velocity getSpeed();
+    method @NonNull public java.time.Instant getTime();
+  }
+
+  public final class StepsCadenceRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.healthconnect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample> getSamples();
+  }
+
+  public static final class StepsCadenceRecord.Builder {
+    ctor public StepsCadenceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample>);
+    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord build();
+    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class StepsCadenceRecord.StepsCadenceRecordSample {
+    ctor public StepsCadenceRecord.StepsCadenceRecordSample(double, @NonNull java.time.Instant);
+    method public double getRate();
+    method @NonNull public java.time.Instant getTime();
   }
 
   public final class StepsRecord extends android.healthconnect.datatypes.IntervalRecord {

@@ -31,17 +31,32 @@ import java.lang.annotation.RetentionPolicy;
  */
 @SystemApi
 public final class RecordTypeIdentifier {
+    public static final int RECORD_TYPE_UNKNOWN = 0;
+
     // Interval Records
-    public static final int RECORD_TYPE_STEPS = 0;
+    public static final int RECORD_TYPE_STEPS = 1;
     // Series Records
-    public static final int RECORD_TYPE_HEART_RATE = 1;
+    public static final int RECORD_TYPE_HEART_RATE = 17;
+    public static final int RECORD_TYPE_CYCLING_PEDALING_CADENCE = 18;
+    public static final int RECORD_TYPE_POWER = 19;
+    public static final int RECORD_TYPE_SPEED = 20;
+    public static final int RECORD_TYPE_STEPS_CADENCE = 21;
     // Instant records
-    public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 2;
+    public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 22;
 
     private RecordTypeIdentifier() {}
 
     /** @hide */
-    @IntDef({RECORD_TYPE_STEPS, RECORD_TYPE_HEART_RATE, RECORD_TYPE_BASAL_METABOLIC_RATE})
+    @IntDef({
+        RECORD_TYPE_UNKNOWN,
+        RECORD_TYPE_STEPS,
+        RECORD_TYPE_HEART_RATE,
+        RECORD_TYPE_BASAL_METABOLIC_RATE,
+        RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+        RECORD_TYPE_POWER,
+        RECORD_TYPE_SPEED,
+        RECORD_TYPE_STEPS_CADENCE
+    })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}
 }

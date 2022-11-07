@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.healthconnect.datatypes;
 
 import android.annotation.NonNull;
@@ -23,32 +22,66 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 
-/** Captures the user's heart rate. Each record represents a series of measurements. */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
-public class HeartRateRecord extends IntervalRecord {
-    /** A class to represent heart rate samples */
-    public static final class HeartRateSample {
-        private final long mBeatsPerMinute;
+/** Captures the user's steps cadence. */
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE)
+public final class StepsCadenceRecord extends IntervalRecord {
+    private final List<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
+
+    /**
+     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+     * @param startTime Start time of this activity
+     * @param startZoneOffset Zone offset of the user when the activity started
+     * @param endTime End time of this activity
+     * @param endZoneOffset Zone offset of the user when the activity finished
+     * @param stepsCadenceRecordSamples Samples of recorded StepsCadenceRecord
+     */
+    private StepsCadenceRecord(
+            @NonNull Metadata metadata,
+            @NonNull Instant startTime,
+            @NonNull ZoneOffset startZoneOffset,
+            @NonNull Instant endTime,
+            @NonNull ZoneOffset endZoneOffset,
+            @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+        Objects.requireNonNull(metadata);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(startZoneOffset);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(endZoneOffset);
+        Objects.requireNonNull(stepsCadenceRecordSamples);
+        mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
+    }
+
+    /**
+     * @return StepsCadenceRecord samples corresponding to this record
+     */
+    @NonNull
+    public List<StepsCadenceRecordSample> getSamples() {
+        return mStepsCadenceRecordSamples;
+    }
+
+    /** Represents a single measurement of the steps cadence. */
+    public static final class StepsCadenceRecordSample {
+        private final double mRate;
         private final Instant mTime;
 
         /**
-         * Heart rate sample for entries of {@link HeartRateRecord}
+         * StepsCadenceRecord sample for entries of {@link StepsCadenceRecord}
          *
-         * @param beatsPerMinute Heart beats per minute.
+         * @param rate Rate in steps per minute.
          * @param time The point in time when the measurement was taken.
          */
-        public HeartRateSample(long beatsPerMinute, @NonNull Instant time) {
+        public StepsCadenceRecordSample(double rate, @NonNull Instant time) {
             Objects.requireNonNull(time);
-
-            mBeatsPerMinute = beatsPerMinute;
             mTime = time;
+            mRate = rate;
         }
 
         /**
-         * @return beats per minute for this sample
+         * @return Rate for this sample
          */
-        public long getBeatsPerMinute() {
-            return mBeatsPerMinute;
+        public double getRate() {
+            return mRate;
         }
 
         /**
@@ -67,10 +100,9 @@ public class HeartRateRecord extends IntervalRecord {
          */
         @Override
         public boolean equals(@NonNull Object object) {
-            if (super.equals(object) && object instanceof HeartRateSample) {
-                HeartRateSample other = (HeartRateSample) object;
-                return this.getBeatsPerMinute() == other.getBeatsPerMinute()
-                        && this.getTime().equals(other.getTime());
+            if (super.equals(object) && object instanceof StepsCadenceRecordSample) {
+                StepsCadenceRecordSample other = (StepsCadenceRecordSample) object;
+                return this.getRate() == other.getRate() && this.getTime().equals(other.getTime());
             }
             return false;
         }
@@ -82,115 +114,71 @@ public class HeartRateRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), this.getBeatsPerMinute(), this.getTime());
+            return Objects.hash(super.hashCode(), this.getRate(), this.getTime());
         }
     }
 
-    /**
-     * Builder class for {@link HeartRateRecord}
-     *
-     * @see HeartRateRecord
-     */
+    /** Builder class for {@link StepsCadenceRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final List<HeartRateSample> mHeartRateSamples;
-        private ZoneOffset mStartZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-        private ZoneOffset mEndZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        private final List<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
+        private ZoneOffset mStartZoneOffset;
+        private ZoneOffset mEndZoneOffset;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
-         * @param heartRateSamples Samples of recorded heart rate
-         * @throws IllegalArgumentException if {@code heartRateSamples} is empty
+         * @param stepsCadenceRecordSamples Samples of recorded StepsCadenceRecord
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                @NonNull List<HeartRateSample> heartRateSamples) {
+                @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
-            Objects.requireNonNull(heartRateSamples);
-            if (heartRateSamples.isEmpty()) {
-                throw new IllegalArgumentException("record samples should not be empty");
-            }
-
+            Objects.requireNonNull(stepsCadenceRecordSamples);
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mHeartRateSamples = heartRateSamples;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
         }
 
-        /**
-         * Sets the zone offset of the user when the activity started. By default, the starting zone
-         * offset is set the current zone offset.
-         */
+        /** Sets the zone offset of the user when the activity started */
         @NonNull
         public Builder setStartZoneOffset(@NonNull ZoneOffset startZoneOffset) {
             Objects.requireNonNull(startZoneOffset);
-
             mStartZoneOffset = startZoneOffset;
             return this;
         }
 
-        /**
-         * Sets the zone offset of the user when the activity ended. By default, the end zone offset
-         * is set the current zone offset.
-         */
+        /** Sets the zone offset of the user when the activity ended */
         @NonNull
         public Builder setEndZoneOffset(@NonNull ZoneOffset endZoneOffset) {
             Objects.requireNonNull(endZoneOffset);
-
             mEndZoneOffset = endZoneOffset;
             return this;
         }
 
         /**
-         * @return Object of {@link HeartRateRecord}
+         * @return Object of {@link StepsCadenceRecord}
          */
         @NonNull
-        public HeartRateRecord build() {
-            return new HeartRateRecord(
+        public StepsCadenceRecord build() {
+            return new StepsCadenceRecord(
                     mMetadata,
                     mStartTime,
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mHeartRateSamples);
+                    mStepsCadenceRecordSamples);
         }
-    }
-
-    private final List<HeartRateSample> mHeartRateSamples;
-
-    private HeartRateRecord(
-            @NonNull Metadata metadata,
-            @NonNull Instant startTime,
-            @NonNull ZoneOffset startZoneOffset,
-            @NonNull Instant endTime,
-            @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<HeartRateSample> heartRateSamples) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
-        Objects.requireNonNull(heartRateSamples);
-        mHeartRateSamples = heartRateSamples;
-    }
-
-    /**
-     * @return heart rate samples corresponding to this record
-     */
-    @NonNull
-    public List<HeartRateSample> getSamples() {
-        return mHeartRateSamples;
     }
 
     /**
@@ -201,8 +189,8 @@ public class HeartRateRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof HeartRateRecord) {
-            HeartRateRecord other = (HeartRateRecord) object;
+        if (super.equals(object) && object instanceof StepsCadenceRecord) {
+            StepsCadenceRecord other = (StepsCadenceRecord) object;
             return this.getSamples().equals(other.getSamples());
         }
         return false;

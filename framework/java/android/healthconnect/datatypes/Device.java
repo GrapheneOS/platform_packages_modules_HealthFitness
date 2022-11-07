@@ -23,6 +23,7 @@ import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Objects;
 
 /**
  * A physical device (such as phone, watch, scale, or chest strap) which captured associated health
@@ -116,6 +117,34 @@ public final class Device {
     @DeviceType
     public int getType() {
         return mType;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(@NonNull Object object) {
+        if (this == object) return true;
+        if (object instanceof Device) {
+            Device other = (Device) object;
+            return this.getType() == other.getType()
+                    && Objects.equals(this.getManufacturer(), other.getManufacturer())
+                    && Objects.equals(this.getModel(), other.getModel());
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getManufacturer(), this.getModel(), this.getType());
     }
 
     /** @hide */
