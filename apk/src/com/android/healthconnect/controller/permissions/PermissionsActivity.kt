@@ -24,7 +24,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.permissions_activity)
+        setContentView(R.layout.activity_permissions)
         setTitle(R.string.permissions_and_data_header)
         getSupportFragmentManager()
                 .beginTransaction()

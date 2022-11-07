@@ -237,4 +237,11 @@
   <string name="request_permissions_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow</string>
   <!--endregion-->
 
+
+  <!-- region Data Entries -->
+  <string name="navigation_next_day" description="Content description for button that changes the current data view to the next day [CHAR_LIMIT=NONE]">Next day</string>
+  <string name="navigation_previous_day" description="Content description for button that changes the current data view to the previous day [CHAR_LIMIT=NONE]">Previous day</string>
+
+  <!-- endregion -->
+
 </resources>
