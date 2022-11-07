@@ -14,15 +14,52 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/request_permissions"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <TextView
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:filterTouchesWhenObscured="true">
+
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="vertical">
+
+    <FrameLayout
+        android:id="@+id/permission_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+  </androidx.core.widget.NestedScrollView>
+
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="48dp"
-      android:paddingHorizontal="24dp"
-      android:gravity="center"
-      android:text="Permissions"/>
+      android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:layout_marginVertical="@dimen/spacing_normal"
+        android:minHeight="@dimen/button_size"
+        android:text="@string/request_permissions_cancel"
+        style="?attr/materialButtonOutlinedStyle" />
+
+    <Button
+        android:id="@+id/allow"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:layout_marginVertical="@dimen/spacing_normal"
+        android:minHeight="@dimen/button_size"
+        android:text="@string/request_permissions_allow"
+        style="?attr/materialButtonOutlinedStyle" />
+  </LinearLayout>
 </LinearLayout>

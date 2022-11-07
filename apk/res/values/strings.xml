@@ -110,7 +110,6 @@
   <!--endregion-->
 
   <!-- region Body measurements data types -->
-
   <string name="basal_metabolic_rate_label" description="Label used to show the user's basal metabolic rate data [CHAR_LIMIT=50]">Basal metabolic rate</string>
   <string name="basal_metabolic_rate_read_content_description" description="Content description for switch that enables permissions for reading the user's basal metabolic rate data [CHAR_LIMIT=NONE]">Read basal metabolic rate</string>
   <string name="basal_metabolic_rate_write_content_description" description="Content description for switch that enables permissions for writing the user's basal metabolic rate data [CHAR_LIMIT=NONE]">Write basal metabolic rate</string>
@@ -149,7 +148,6 @@
   <!--endregion-->
 
   <!-- region Cycle tracking data types -->
-
   <string name="cervical_mucus_label" description="Label used to show the user's cervical mucus data [CHAR_LIMIT=50]">Cervical mucus</string>
   <string name="cervical_mucus_read_content_description" description="Content description for switch that enables permissions for reading the user's cervical mucus data [CHAR_LIMIT=NONE]">Read cervical mucus</string>
   <string name="cervical_mucus_write_content_description" description="Content description for switch that enables permissions for writing the user's cervical mucus data [CHAR_LIMIT=NONE]">Write cervical mucus</string>
@@ -172,7 +170,6 @@
   <!--endregion-->
 
   <!-- region Nutrition data types -->
-
   <string name="hydration_label" description="Label used to show the user's hydration data [CHAR_LIMIT=50]">Hydration</string>
   <string name="hydration_read_content_description" description="Content description for switch that enables permissions for reading the user's hydration data [CHAR_LIMIT=NONE]">Read hydration</string>
   <string name="hydration_write_content_description" description="Content description for switch that enables permissions for writing the user's hydration data [CHAR_LIMIT=NONE]">Write hydration</string>
@@ -183,14 +180,12 @@
   <!--endregion-->
 
   <!-- region Sleep data types -->
-
   <string name="sleep_label" description="Label used to show the user's sleep data [CHAR_LIMIT=50]">Sleep</string>
   <string name="sleep_read_content_description" description="Content description for switch that enables permissions for reading the user's sleep data [CHAR_LIMIT=NONE]">Read sleep</string>
   <string name="sleep_write_content_description" description="Content description for switch that enables permissions for writing the user's sleep session data [CHAR_LIMIT=NONE]">Write sleep</string>
   <!--endregion-->
 
   <!-- region Vitals data types -->
-
   <string name="basal_body_temperature_label" description="Label used to show the user's basal body temperature data [CHAR_LIMIT=50]">Basal body temperature</string>
   <string name="basal_body_temperature_read_content_description" description="Content description for switch that enables permissions for reading the user's basal body temperature data [CHAR_LIMIT=NONE]">Read basal body temperature</string>
   <string name="basal_body_temperature_write_content_description" description="Content description for switch that enables permissions for writing the user's basal body temperature data [CHAR_LIMIT=NONE]">Write basal body temperature</string>
@@ -232,6 +227,14 @@
   <!--region recent access -->
   <string name="recent_app_1" translatable="false">Recent app 1</string>
   <string name="recent_app_2" translatable="false">Recent app 2</string>
+  <!--endregion-->
+
+
+  <!-- region Permissions -->
+  <string name="read_permission_category" description="Title for read permission category in the app permission screen">Can read from Health&#160;Connect</string>
+  <string name="write_permission_category" description="Title for write permission category in the app permission screen">Can write to Health&#160;Connect</string>
+  <string name="request_permissions_cancel" description="Label for button to cancel an app's request for permissions [CHAR_LIMIT=20]">Cancel</string>
+  <string name="request_permissions_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow</string>
   <!--endregion-->
 
 </resources>

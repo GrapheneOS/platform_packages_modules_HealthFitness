@@ -26,5 +26,9 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.permissions_activity)
         setTitle(R.string.permissions_and_data_header)
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.permission_content, PermissionsFragment.newInstance())
+                .commit()
     }
 }
