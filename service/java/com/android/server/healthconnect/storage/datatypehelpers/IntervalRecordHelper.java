@@ -44,6 +44,11 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
         super();
     }
 
+    @Override
+    public final String getStartTimeColumnName() {
+        return START_TIME_COLUMN_NAME;
+    }
+
     /**
      * This implementation should return the column names with which the table should be created.
      *

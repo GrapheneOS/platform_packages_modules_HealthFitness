@@ -39,6 +39,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -162,10 +163,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
-                        List<RecordInternal<?>> recordInternalList =
-                                mTransactionManager.readRecords(
-                                        new ReadTransactionRequest(packageName, request));
-                        callback.onResult(new RecordsParcel(recordInternalList));
+                        try {
+                            List<RecordInternal<?>> recordInternalList =
+                                    mTransactionManager.readRecords(
+                                            new ReadTransactionRequest(packageName, request));
+                            callback.onResult(new RecordsParcel(recordInternalList));
+                        } catch (TypeNotPresentException exception) {
+                            // All the requested package names are not present, so simply return
+                            // an empty list
+                            if (ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME.equals(
+                                    exception.typeName())) {
+                                callback.onResult(new RecordsParcel(new ArrayList<>()));
+                            } else {
+                                throw exception;
+                            }
+                        }
                     } catch (SQLiteException sqLiteException) {
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
@@ -174,8 +186,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                 });
     }
-
-
 
     private static void tryAndThrowException(
             @NonNull IInsertRecordsResponseCallback callback,

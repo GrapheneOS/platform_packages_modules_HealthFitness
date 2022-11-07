@@ -35,7 +35,6 @@ import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
-import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
@@ -70,8 +69,6 @@ import java.util.concurrent.Executor;
  */
 @SystemService(Context.HEALTHCONNECT_SERVICE)
 public class HealthConnectManager {
-    private static final String TAG = "HealthConnectManager";
-
     /**
      * Used in conjunction with {@link android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} to
      * launch UI to show an app’s health permission rationale/data policy.
@@ -83,7 +80,6 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.INTENT_CATEGORY)
     public static final String CATEGORY_HEALTH_PERMISSIONS =
             "android.intent.category.HEALTH_PERMISSIONS";
-
     /**
      * Activity action: Launch UI to manage (e.g. grant/revoke) health permissions.
      *
@@ -99,7 +95,6 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_MANAGE_HEALTH_PERMISSIONS =
             "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
-
     /**
      * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions and
      * health data (e.g. delete) for an app.
@@ -113,7 +108,6 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_MANAGE_HEALTH_PERMISSIONS_AND_DATA =
             "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS_AND_DATA";
-
     /**
      * Activity action: Launch UI to health connect home settings screen.
      *
@@ -127,17 +121,73 @@ public class HealthConnectManager {
     public static final String ACTION_HEALTH_HOME_SETTINGS =
             "android.healthconnect.action.HEALTH_HOME_SETTINGS";
 
+    private static final String TAG = "HealthConnectManager";
+    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
+    private static volatile Set<String> sHealthPermissions;
     private final Context mContext;
     private final IHealthConnectService mService;
     private final InternalExternalRecordConverter mInternalExternalRecordConverter;
-    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
-    private static volatile Set<String> sHealthPermissions;
 
     /** @hide */
     HealthConnectManager(@NonNull Context context, @NonNull IHealthConnectService service) {
         mContext = context;
         mService = service;
         mInternalExternalRecordConverter = InternalExternalRecordConverter.getInstance();
+    }
+
+    /**
+     * Returns {@code true} if the given permission protects access to health connect data.
+     *
+     * @hide
+     */
+    @SystemApi
+    public static boolean isHealthPermission(
+            @NonNull Context context, @NonNull final String permission) {
+        if (permission == null || !permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
+            return false;
+        }
+        return getHealthPermissions(context).contains(permission);
+    }
+
+    /**
+     * Returns a set of health permissions defined within the module and belonging to {@link
+     * HealthPermissions#HEALTH_PERMISSION_GROUP}.
+     *
+     * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
+     * than crashing the device. This means the health permissions infra will be inactive.
+     *
+     * @hide
+     */
+    @NonNull
+    public static Set<String> getHealthPermissions(@NonNull Context context) {
+        if (sHealthPermissions != null) {
+            return sHealthPermissions;
+        }
+
+        PackageInfo packageInfo = null;
+        try {
+            final PackageManager pm = context.getApplicationContext().getPackageManager();
+            final PermissionGroupInfo permGroupInfo =
+                    pm.getPermissionGroupInfo(
+                            HealthPermissions.HEALTH_PERMISSION_GROUP, /* flags= */ 0);
+            packageInfo =
+                    pm.getPackageInfo(
+                            permGroupInfo.packageName,
+                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
+        } catch (PackageManager.NameNotFoundException ex) {
+            Log.e(TAG, "Health permission group or HC package not found", ex);
+            sHealthPermissions = Collections.emptySet();
+            return sHealthPermissions;
+        }
+
+        Set<String> permissions = new HashSet<>();
+        for (PermissionInfo perm : packageInfo.permissions) {
+            if (HealthPermissions.HEALTH_PERMISSION_GROUP.equals(perm.group)) {
+                permissions.add(perm.name);
+            }
+        }
+        sHealthPermissions = permissions;
+        return sHealthPermissions;
     }
 
     /**
@@ -210,20 +260,6 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
-    }
-
-    /**
-     * Returns {@code true} if the given permission protects access to health connect data.
-     *
-     * @hide
-     */
-    @SystemApi
-    public static boolean isHealthPermission(
-            @NonNull Context context, @NonNull final String permission) {
-        if (permission == null || !permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
-            return false;
-        }
-        return getHealthPermissions(context).contains(permission);
     }
 
     /**
@@ -306,39 +342,70 @@ public class HealthConnectManager {
         try {
             mService.readRecords(
                     mContext.getPackageName(),
-                    new ReadRecordsRequestParcel(
-                            new RecordIdFiltersParcel(request.getRecordIdFilters())),
-                    new IReadRecordsResponseCallback.Stub() {
-                        @Override
-                        public void onResult(RecordsParcel parcel) {
-                            Binder.clearCallingIdentity();
-                            try {
-                                executor.execute(
-                                        () -> callback.onResult(
-                                                new ReadRecordsResponse(
-                                                        mInternalExternalRecordConverter
-                                                                .getExternalRecords(
-                                                                        parcel.getRecords()))));
-                            } catch (ClassCastException castException) {
-                                HealthConnectException healthConnectException =
-                                        new HealthConnectException(
-                                                HealthConnectException.ERROR_INTERNAL,
-                                                castException.getMessage());
-                                returnError(
-                                        executor,
-                                        new HealthConnectExceptionParcel(healthConnectException),
-                                        callback);
-                            }
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new ReadRecordsRequestParcel(request),
+                    getReadCallback(executor, callback));
         } catch (RemoteException remoteException) {
             remoteException.rethrowFromSystemServer();
         }
+    }
+
+    /**
+     * API to read records based on {@link ReadRecordsRequestUsingFilters}.
+     *
+     * @param request Read request based on {@link ReadRecordsRequestUsingFilters}
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    public <T extends Record> void readRecords(
+            @NonNull ReadRecordsRequestUsingFilters<T> request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.readRecords(
+                    mContext.getPackageName(),
+                    new ReadRecordsRequestParcel(request),
+                    getReadCallback(executor, callback));
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+        return new IReadRecordsResponseCallback.Stub() {
+            @Override
+            public void onResult(RecordsParcel parcel) {
+                Binder.clearCallingIdentity();
+                try {
+                    List<T> externalRecords =
+                            (List<T>)
+                                    mInternalExternalRecordConverter.getExternalRecords(
+                                            parcel.getRecords());
+                    executor.execute(
+                            () -> callback.onResult(new ReadRecordsResponse<>(externalRecords)));
+                } catch (ClassCastException castException) {
+                    HealthConnectException healthConnectException =
+                            new HealthConnectException(
+                                    HealthConnectException.ERROR_INTERNAL,
+                                    castException.getMessage());
+                    returnError(
+                            executor,
+                            new HealthConnectExceptionParcel(healthConnectException),
+                            callback);
+                }
+            }
+
+            @Override
+            public void onError(HealthConnectExceptionParcel exception) {
+                returnError(executor, exception, callback);
+            }
+        };
     }
 
     private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {
@@ -348,47 +415,6 @@ public class HealthConnectManager {
         }
 
         return records;
-    }
-
-    /**
-     * Returns a set of health permissions defined within the module and belonging to {@link
-     * HealthPermissions#HEALTH_PERMISSION_GROUP}.
-     *
-     * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
-     * than crashing the device. This means the health permissions infra will be inactive.
-     *
-     * @hide
-     */
-    @NonNull
-    public static Set<String> getHealthPermissions(@NonNull Context context) {
-        if (sHealthPermissions != null) {
-            return sHealthPermissions;
-        }
-
-        PackageInfo packageInfo = null;
-        try {
-            final PackageManager pm = context.getApplicationContext().getPackageManager();
-            final PermissionGroupInfo permGroupInfo =
-                    pm.getPermissionGroupInfo(
-                            HealthPermissions.HEALTH_PERMISSION_GROUP, /* flags= */ 0);
-            packageInfo =
-                    pm.getPackageInfo(
-                            permGroupInfo.packageName,
-                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
-        } catch (PackageManager.NameNotFoundException ex) {
-            Log.e(TAG, "Health permission group or HC package not found", ex);
-            sHealthPermissions = Collections.emptySet();
-            return sHealthPermissions;
-        }
-
-        Set<String> permissions = new HashSet<>();
-        for (PermissionInfo perm : packageInfo.permissions) {
-            if (HealthPermissions.HEALTH_PERMISSION_GROUP.equals(perm.group)) {
-                permissions.add(perm.name);
-            }
-        }
-        sHealthPermissions = permissions;
-        return sHealthPermissions;
     }
 
     private void returnError(

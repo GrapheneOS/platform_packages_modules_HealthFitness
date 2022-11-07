@@ -30,6 +30,16 @@ public final class WhereClauses {
         return this;
     }
 
+    public WhereClauses addWhereBetweenTimeClause(String columnName, long startTime, long endTime) {
+        if (startTime < 0 || endTime < 0 || endTime < startTime) {
+            return this;
+        }
+
+        mClauses.add(columnName + " BETWEEN " + startTime + " AND " + endTime);
+
+        return this;
+    }
+
     public WhereClauses addWhereInClause(List<String> values, String columnName) {
         if (values == null || values.isEmpty()) return this;
 
@@ -55,6 +65,18 @@ public final class WhereClauses {
     }
 
     public WhereClauses addWhereInIntsClause(String columnName, List<Integer> values) {
+        if (values == null || values.isEmpty()) return this;
+
+        mClauses.add(
+                columnName
+                        + " IN ("
+                        + values.stream().map(String::valueOf).collect(Collectors.joining(", "))
+                        + ")");
+
+        return this;
+    }
+
+    public WhereClauses addWhereInLongsClause(String columnName, List<Long> values) {
         if (values == null || values.isEmpty()) return this;
 
         mClauses.add(

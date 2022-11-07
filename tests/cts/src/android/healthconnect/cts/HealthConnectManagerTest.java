@@ -29,8 +29,10 @@ import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.ReadRecordsResponse;
+import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -52,6 +54,7 @@ import org.junit.runner.RunWith;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -62,6 +65,24 @@ import java.util.concurrent.atomic.AtomicReference;
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectManagerTest {
+    static final class RecordAndIdentifier {
+        private final int id;
+        private final Record recordClass;
+
+        public RecordAndIdentifier(int id, Record recordClass) {
+            this.id = id;
+            this.recordClass = recordClass;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public Record getRecordClass() {
+            return recordClass;
+        }
+    }
+
     private static final String TAG = "HealthConnectManagerTest";
 
     @Test
@@ -105,23 +126,19 @@ public class HealthConnectManagerTest {
 
     @Test
     public void testReadRecord_invalidIds() throws InterruptedException {
-        ReadRecordsRequestUsingIds request =
-                new ReadRecordsRequestUsingIds.Builder(StepsRecord.class)
-                        .addClientRecordId("abc")
-                        .addClientRecordId("xyz")
-                        .build();
-        List<Record> result = readRecords(request);
+        ReadRecordsRequestUsingIds<StepsRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class).addId("abc").build();
+        List<StepsRecord> result = readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
 
     @Test
     public void testReadRecord_invalidClientRecordIds() throws InterruptedException {
-        ReadRecordsRequestUsingIds request =
-                new ReadRecordsRequestUsingIds.Builder(StepsRecord.class)
-                        .addId("abc")
-                        .addId("xyz")
+        ReadRecordsRequestUsingIds<StepsRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                        .addClientRecordId("abc")
                         .build();
-        List<Record> result = readRecords(request);
+        List<StepsRecord> result = readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
 
@@ -140,6 +157,73 @@ public class HealthConnectManagerTest {
         assertThat(isHealthPermission(context, HealthPermissions.MANAGE_HEALTH_PERMISSIONS))
                 .isFalse();
         assertThat(isHealthPermission(context, CAMERA)).isFalse();
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_default() throws InterruptedException {
+        List<StepsRecord> oldStepsRecords =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+        insertRecords(Collections.singletonList(getStepsRecord()));
+        List<StepsRecord> newStepsRecords =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+        assertThat(newStepsRecords.size()).isEqualTo(oldStepsRecords.size() + 1);
+        assertThat(newStepsRecords.get(newStepsRecords.size() - 1).getCount())
+                .isEqualTo(getStepsRecord().getCount());
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_timeFilter() throws InterruptedException {
+        TimeRangeFilter filter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        insertRecords(Collections.singletonList(getStepsRecord()));
+        List<StepsRecord> newStepsRecords =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .build());
+        assertThat(newStepsRecords.size()).isEqualTo(1);
+        assertThat(newStepsRecords.get(0).getCount()).isEqualTo(getStepsRecord().getCount());
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_dataFilter_incorrect() throws InterruptedException {
+        insertRecords(Collections.singletonList(getStepsRecord()));
+        List<StepsRecord> newStepsRecords =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder().setPackageName("abc").build())
+                                .build());
+        assertThat(newStepsRecords.size()).isEqualTo(0);
+    }
+
+    // TODO(b/257796081): Move read tests to respective record type classes, verify that the correct
+    // details are being fetched, and add tests for all record type
+
+    @Test
+    public void testReadStepsRecordUsingFilters_dataFilter_correct() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<StepsRecord> oldStepsRecords =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        insertRecords(Collections.singletonList(getStepsRecord()));
+        List<StepsRecord> newStepsRecords =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        assertThat(newStepsRecords.size() - oldStepsRecords.size()).isEqualTo(1);
+        assertThat(newStepsRecords.get(0).getCount()).isEqualTo(getStepsRecord().getCount());
     }
 
     private List<Record> insertRecords(List<Record> records) throws InterruptedException {
@@ -193,31 +277,31 @@ public class HealthConnectManagerTest {
     }
 
     private void readStepsRecordUsingIds(List<Record> insertedRecord) throws InterruptedException {
-        ReadRecordsRequestUsingIds.Builder request =
-                new ReadRecordsRequestUsingIds.Builder(StepsRecord.class);
+        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
         for (Record record : insertedRecord) {
             request.addId(record.getMetadata().getId());
         }
-        List<Record> result = readRecords(request.build());
+        List<StepsRecord> result = readRecords(request.build());
         verifyStepsRecordReadResults(insertedRecord, result);
     }
 
     private void readStepsRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
-        ReadRecordsRequestUsingIds.Builder request =
-                new ReadRecordsRequestUsingIds.Builder(StepsRecord.class);
+        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
         for (Record record : insertedRecord) {
             request.addClientRecordId(record.getMetadata().getClientRecordId());
         }
-        List<Record> result = readRecords(request.build());
+        List<StepsRecord> result = readRecords(request.build());
         verifyStepsRecordReadResults(insertedRecord, result);
     }
 
     private void verifyStepsRecordReadResults(
-            List<Record> insertedRecords, List<Record> readResult) {
+            List<Record> insertedRecords, List<StepsRecord> readResult) {
         assertThat(readResult).hasSize(insertedRecords.size());
         for (int i = 0; i < readResult.size(); i++) {
-            StepsRecord stepsRecord = (StepsRecord) readResult.get(i);
+            StepsRecord stepsRecord = readResult.get(i);
             StepsRecord input = (StepsRecord) insertedRecords.get(i);
             assertThat(stepsRecord.getRecordType()).isEqualTo(input.getRecordType());
             assertThat(stepsRecord.getMetadata().getDevice().getManufacturer())
@@ -234,20 +318,20 @@ public class HealthConnectManagerTest {
 
     private void readHeartRateRecordUsingIds(List<Record> recordList) throws InterruptedException {
         List<Record> insertedRecords = insertRecords(recordList);
-        ReadRecordsRequestUsingIds.Builder request =
-                new ReadRecordsRequestUsingIds.Builder(HeartRateRecord.class);
+        ReadRecordsRequestUsingIds.Builder<HeartRateRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(HeartRateRecord.class);
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<Record> result = readRecords(request.build());
+        List<HeartRateRecord> result = readRecords(request.build());
         verifyHeartRateRecordReadResults(insertedRecords, result);
     }
 
     private void verifyHeartRateRecordReadResults(
-            List<Record> insertedRecords, List<Record> readResult) {
+            List<Record> insertedRecords, List<HeartRateRecord> readResult) {
         assertThat(readResult).hasSize(insertedRecords.size());
         for (int i = 0; i < readResult.size(); i++) {
-            HeartRateRecord heartRateRecord = (HeartRateRecord) readResult.get(i);
+            HeartRateRecord heartRateRecord = readResult.get(i);
             HeartRateRecord input = (HeartRateRecord) insertedRecords.get(i);
             assertThat(heartRateRecord.getRecordType()).isEqualTo(input.getRecordType());
             assertThat(heartRateRecord.getMetadata().getDevice().getManufacturer())
@@ -264,19 +348,20 @@ public class HealthConnectManagerTest {
     private void readBasalMetabolicRateRecordUsingIds(List<Record> recordList)
             throws InterruptedException {
         List<Record> insertedRecords = insertRecords(recordList);
-        ReadRecordsRequestUsingIds.Builder request =
-                new ReadRecordsRequestUsingIds.Builder(BasalMetabolicRateRecord.class);
+        ReadRecordsRequestUsingIds.Builder<BasalMetabolicRateRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(BasalMetabolicRateRecord.class);
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<Record> result = readRecords(request.build());
+        List<BasalMetabolicRateRecord> result = readRecords(request.build());
         verifyBMRRecordReadResults(insertedRecords, result);
     }
 
-    private void verifyBMRRecordReadResults(List<Record> insertedRecords, List<Record> readResult) {
+    private void verifyBMRRecordReadResults(
+            List<Record> insertedRecords, List<BasalMetabolicRateRecord> readResult) {
         assertThat(readResult).hasSize(insertedRecords.size());
         for (int i = 0; i < readResult.size(); i++) {
-            BasalMetabolicRateRecord bmrRecord = (BasalMetabolicRateRecord) readResult.get(i);
+            BasalMetabolicRateRecord bmrRecord = readResult.get(i);
             BasalMetabolicRateRecord input = (BasalMetabolicRateRecord) insertedRecords.get(i);
             assertThat(bmrRecord.getRecordType()).isEqualTo(input.getRecordType());
             assertThat(bmrRecord.getMetadata().getDevice().getManufacturer())
@@ -293,6 +378,32 @@ public class HealthConnectManagerTest {
     }
 
     private <T extends Record> List<T> readRecords(ReadRecordsRequestUsingIds<T> request)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        AtomicReference<List<T>> response = new AtomicReference<>();
+        service.readRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException>() {
+                    @Override
+                    public void onResult(ReadRecordsResponse<T> result) {
+                        response.set(result.getRecords());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        return response.get();
+    }
+
+    private <T extends Record> List<T> readRecords(ReadRecordsRequestUsingFilters<T> request)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
@@ -339,7 +450,7 @@ public class HealthConnectManagerTest {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("SR" + String.valueOf(Math.random()))
+                                .setClientRecordId("SR" + Math.random())
                                 .build(),
                         Instant.now(),
                         Instant.now(),
@@ -362,7 +473,7 @@ public class HealthConnectManagerTest {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("HR" + String.valueOf(Math.random()))
+                                .setClientRecordId("HR" + Math.random())
                                 .build(),
                         Instant.now(),
                         Instant.now(),
@@ -383,28 +494,10 @@ public class HealthConnectManagerTest {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("BMR" + String.valueOf(Math.random()))
+                                .setClientRecordId("BMR" + Math.random())
                                 .build(),
                         Instant.now(),
                         Power.fromWatts(100.0))
                 .build();
-    }
-
-    static final class RecordAndIdentifier {
-        private final int id;
-        private final Record recordClass;
-
-        public RecordAndIdentifier(int id, Record recordClass) {
-            this.id = id;
-            this.recordClass = recordClass;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public Record getRecordClass() {
-            return recordClass;
-        }
     }
 }

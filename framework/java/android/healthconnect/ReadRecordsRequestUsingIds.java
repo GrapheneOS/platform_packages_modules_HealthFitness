@@ -20,14 +20,17 @@ import android.annotation.NonNull;
 import android.annotation.SuppressLint;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
+import android.os.OutcomeReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 /**
  * A request class to represent request for {@link
- * android.healthconnect.HealthConnectManager#readRecords}
+ * android.healthconnect.HealthConnectManager#readRecords(ReadRecordsRequestUsingIds, Executor,
+ * OutcomeReceiver)}
  *
  * @param <T> the type of the Record for the request
  */
@@ -35,7 +38,7 @@ public class ReadRecordsRequestUsingIds<T extends Record> {
     /** Builder class for {@link ReadRecordsRequestUsingIds} */
     public static final class Builder<T extends Record> {
         private final Class<T> mRecordType;
-        private List<RecordIdFilter> mRecordIdFiltersList = new ArrayList<>();
+        private final List<RecordIdFilter> mRecordIdFiltersList = new ArrayList<>();
 
         /**
          * @param recordType Record class for which the id is being set
@@ -81,7 +84,7 @@ public class ReadRecordsRequestUsingIds<T extends Record> {
                         "RecordIdFilter list is empty, "
                                 + "Either record id or client record id must be set");
             }
-            return new ReadRecordsRequestUsingIds(mRecordType, mRecordIdFiltersList);
+            return new ReadRecordsRequestUsingIds<>(mRecordType, mRecordIdFiltersList);
         }
     }
 

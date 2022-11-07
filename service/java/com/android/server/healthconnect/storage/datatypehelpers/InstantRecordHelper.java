@@ -38,6 +38,11 @@ abstract class InstantRecordHelper<T extends InstantRecordInternal<?>> extends R
     private static final String TIME_COLUMN_NAME = "time";
     private static final String ZONE_OFFSET_COLUMN_NAME = "zone_offset";
 
+    @Override
+    public final String getStartTimeColumnName() {
+        return TIME_COLUMN_NAME;
+    }
+
     /**
      * This implementation should return the column names with which the table should be created.
      *
