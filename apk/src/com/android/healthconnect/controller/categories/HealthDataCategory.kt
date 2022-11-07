@@ -50,6 +50,17 @@ enum class HealthDataCategory(
         R.drawable.quantum_gm_ic_grocery_vd_theme_24),
 }
 
+fun fromName(categoryName: String): HealthDataCategory =
+    when (categoryName) {
+        HealthDataCategory.ACTIVITY.name -> HealthDataCategory.ACTIVITY
+        HealthDataCategory.BODY_MEASUREMENTS.name -> HealthDataCategory.BODY_MEASUREMENTS
+        HealthDataCategory.CYCLE_TRACKING.name -> HealthDataCategory.CYCLE_TRACKING
+        HealthDataCategory.NUTRITION.name -> HealthDataCategory.NUTRITION
+        HealthDataCategory.SLEEP.name -> HealthDataCategory.SLEEP
+        HealthDataCategory.VITALS.name -> HealthDataCategory.VITALS
+        else -> throw IllegalArgumentException("Category name is not supported.")
+    }
+
 /** Represents Category group for HealthConnect data in All Categories screen. */
 data class AllCategoriesScreenHealthDataCategory(
     val category: HealthDataCategory,

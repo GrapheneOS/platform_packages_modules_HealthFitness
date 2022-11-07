@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     companion object {
+        const val CATEGORY_NAME_KEY = "category_name_key"
         private const val BROWSE_DATA_CATEGORY = "browse_data_category"
         private const val DELETE_ALL_DATA_BUTTON = "delete_all_data"
     }
@@ -63,7 +64,8 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     }
 
     private fun updateDataList(categoriesList: List<HealthDataCategory>) {
-        val sortedCategoriesList: List<HealthDataCategory> = categoriesList.sortedBy { getString(it.title) }
+        val sortedCategoriesList: List<HealthDataCategory> =
+            categoriesList.sortedBy { getString(it.title) }
         mBrowseDataCategory?.removeAll()
         if (sortedCategoriesList.isEmpty()) {
             mBrowseDataCategory?.addPreference(
@@ -74,6 +76,14 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                     Preference(requireContext()).also {
                         it.setTitle(category.title)
                         it.setIcon(category.icon)
+                        it.onPreferenceClickListener =
+                            Preference.OnPreferenceClickListener {
+                                findNavController()
+                                    .navigate(
+                                        R.id.action_healthDataCategories_to_healthPermissionTypes,
+                                        getBundle(category.name))
+                                true
+                            }
                     })
             }
         }
@@ -97,4 +107,10 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
         mDeleteAllData?.isEnabled = categoriesList.isNotEmpty()
     }
+}
+
+fun getBundle(string: String): Bundle {
+    val bundle = Bundle()
+    bundle.putString(HealthDataCategoriesFragment.CATEGORY_NAME_KEY, string)
+    return bundle
 }

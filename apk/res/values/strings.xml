@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
-  <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health Connect</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health&#160;Connect</string>
 
   <!-- region HomeScreen -->
   <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
@@ -30,7 +30,7 @@
 
   <!-- region  Recent access -->
   <string name="recent_access_header" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">Recent access</string>
-  <string name="no_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">No apps recently accessed Health Connect</string>
+  <string name="no_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">No apps recently accessed Health&#160;Connect</string>
   <string name="see_all_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">See all</string>
   <string name="recent_access_screen_description" description="Description of Recent access screen, placed at the top. [CHAR LIMIT=NONE]">See which apps have accessed your data in the past 24 hours</string>
   <string name="today_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Today</string>
@@ -49,6 +49,24 @@
   <string name="export_data_button" description="Label for a button that allows a user to export their data. [CHAR_LIMIT=50]">Export data</string>
   <string name="delete_all_data_button" description="Label for a button that allows deleting all data points. [CHAR_LIMIT=50]">Delete all data</string>
   <string name="no_categories" description="Label that shows when health connect does not have data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">You don\'t have any data in Health&#160;Connect</string>
+  <!--endregion-->
+
+  <!-- region Permission types  -->
+  <string name="permission_types_title" description="Title of screen for a user to manage their health and fitness data [CHAR_LIMIT=40]">Your data</string>
+  <string name="app_priority_button" description="Label for a button that opens the app priority settings screen where users can set which app should have higher priority. [CHAR_LIMIT=50]">App priority</string>
+  <string name="delete_category_data_button" description="Label for a button that allows deleting all data points from a given health data category. [CHAR_LIMIT=50]">Delete <xliff:g id="category" example="activity">%s</xliff:g> data</string>
+  <!--endregion-->
+
+  <!-- region Data access  -->
+  <string name="can_read" description="Section title that refers to apps with read permission for given permission type. [CHAR_LIMIT=50]">Can read <xliff:g id="permission_type" example="heart rate">%s</xliff:g></string>
+  <string name="can_write" description="Section title that refers to apps with write permission for given permission type. [CHAR_LIMIT=50]">Can write <xliff:g id="permission_type" example="heart rate">%s</xliff:g></string>
+  <string name="inactive_apps" description="Section title that refers to apps that are inactive in Health Connect. [CHAR_LIMIT=50]">Inactive apps</string>
+  <string name="inactive_apps_message" description="Description of the inactive apps section. [CHAR_LIMIT=NONE]">These apps can no longer write <xliff:g id="data_type" example="heart rate">%s</xliff:g>, but still have data stored in Health&#160;Connect</string>
+  <string name="data_access_empty_message" description="Message shown if there is no app to display on this page [CHAR_LIMIT=NONE]">Apps can no longer read or write <xliff:g id="data_type" example="heart rate">%1$s</xliff:g> and there is no <xliff:g id="data_type_2" example="heart rate">%2$s</xliff:g> data stored in Health&#160;Connect</string>
+  <string name="data_access_exercise_description" description="Description of data access for the exercise data type [CHAR_LIMIT=NONE]">This data includes information like active time, exercise type, laps, repetitions, sessions, or swimming strokes</string>
+  <string name="data_access_sleep_description" description="Description of data access for the sleep data type [CHAR_LIMIT=NONE]">This data includes information like sleep stages and sleep sessions</string>
+  <string name="all_entries_button" description="Label for a button that opens the Data entries page. [CHAR_LIMIT=50]">See all entries</string>
+  <string name="delete_permission_type_data_button" description="Label for a button that allows deleting all data points from a given health permission type. [CHAR_LIMIT=50]">Delete this data</string>
   <!--endregion-->
 
   <!-- region framework permissions -->
