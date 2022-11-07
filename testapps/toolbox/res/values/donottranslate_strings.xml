@@ -20,4 +20,7 @@
   <string name="insert_update_data">Insert / Update Data</string>
   <string name="insert_session">Insert Session</string>
   <string name="seed_random_data">Seed Random Data</string>
+  <string name="all_permissions_already_granted_toast">Permissions already granted, please manage them via HC App</string>
+  <string name="all_permissions_success">All permissions were successfully granted</string>
+  <string name="number_of_permissions_not_granted">%1$d permissions were not granted</string>
 </resources>

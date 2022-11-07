@@ -16,20 +16,90 @@
 
 package com.android.healthconnect.testapps.toolbox.ui
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.android.healthconnect.testapps.toolbox.Constants.ALL_PERMISSIONS
 import com.android.healthconnect.testapps.toolbox.R
 
+/** Home fragment for Health Connect Toolbox. */
 class HomeFragment : Fragment() {
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?,
-  ): View? {
-    return inflater.inflate(R.layout.fragment_home, container, false);
-  }
+    private lateinit var mRequestPermissionLauncher: ActivityResultLauncher<Array<String>>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Starting API Level 30 If permission is denied more than once, user doesn't see the dialog
+        // asking permissions again unless they grant the permission from settings.
+        mRequestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                permissionMap: Map<String, Boolean> ->
+                requestPermissionResultHandler(permissionMap)
+            }
+    }
+
+    private fun requestPermissionResultHandler(permissionMap: Map<String, Boolean>) {
+        var numberOfPermissionsMissing = ALL_PERMISSIONS.size
+        for (value in permissionMap.values) {
+            if (value) {
+                numberOfPermissionsMissing--
+            }
+        }
+
+        if (numberOfPermissionsMissing == 0) {
+            Toast.makeText(
+                    this.requireContext(), R.string.all_permissions_success, Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            Toast.makeText(
+                    this.requireContext(),
+                    getString(
+                        R.string.number_of_permissions_not_granted, numberOfPermissionsMissing),
+                    Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val requestPermissionsButton = view.findViewById<Button>(R.id.request_permissions_button)
+        requestPermissionsButton.setOnClickListener { requestPermissions() }
+    }
+
+    private fun isPermissionMissing(): Boolean {
+        for (permission in ALL_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this.requireContext(), permission) !=
+                PackageManager.PERMISSION_GRANTED) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        if (isPermissionMissing()) {
+            mRequestPermissionLauncher.launch(ALL_PERMISSIONS)
+            return
+        }
+        Toast.makeText(
+            this.requireContext(), R.string.all_permissions_already_granted_toast, Toast.LENGTH_LONG)
+            .show()
+    }
 }
