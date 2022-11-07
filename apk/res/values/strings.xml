@@ -229,7 +229,6 @@
   <string name="recent_app_2" translatable="false">Recent app 2</string>
   <!--endregion-->
 
-
   <!-- region Permissions -->
   <string name="read_permission_category" description="Title for read permission category in the app permission screen">Can read from Health&#160;Connect</string>
   <string name="write_permission_category" description="Title for write permission category in the app permission screen">Can write to Health&#160;Connect</string>
@@ -237,11 +236,17 @@
   <string name="request_permissions_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow</string>
   <!--endregion-->
 
-
   <!-- region Data Entries -->
   <string name="navigation_next_day" description="Content description for button that changes the current data view to the next day [CHAR_LIMIT=NONE]">Next day</string>
   <string name="navigation_previous_day" description="Content description for button that changes the current data view to the previous day [CHAR_LIMIT=NONE]">Previous day</string>
-
   <!-- endregion -->
 
+  <!-- region Connected apps -->
+  <string name="connected_apps_text" description="Description text shown on screen for managing which apps have access to health and fitness data. Note: Health Connect is the brand [CHAR_LIMIT=NONE]">Control which apps can access data stored in Health&#160;Connect. Tap an app to review the data it can read or write.</string>
+  <string name="connected_apps_section_title" description="Title of section containing all the connected apps [CHAR_LIMIT=40]">Allowed access</string>
+  <string name="not_connected_apps_section_title" description="Title of section containing all the not-connected apps [CHAR_LIMIT=40]">Not allowed access</string>
+  <string name="settings_and_help_header" description="Title shown for the section of settings and help [CHAR_LIMIT=70]">Settings &amp; help</string>
+  <string name="disconnect_all_apps" description="Button text for removing access to health and fitness data for all apps [CHAR_LIMIT=40]">Remove access for all apps</string>
+  <string name="cant_see_all_your_apps_button" description="Button text for navigating to a help page of advice about connecting more apps [CHAR_LIMIT=40]">Can\'t see all your apps?</string>
+  <!--endregion-->
 </resources>

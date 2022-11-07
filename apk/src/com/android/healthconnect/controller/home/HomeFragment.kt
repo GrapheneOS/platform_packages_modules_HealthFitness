@@ -35,6 +35,7 @@ class HomeFragment : Hilt_HomeFragment() {
     companion object {
         private const val DATA_AND_ACCESS_PREFERENCE_KEY = "data_and_access"
         private const val RECENT_ACCESS_PREFERENCE_KEY = "recent_access"
+        private const val CONNECTED_APPS_PREFERENCE_KEY = "connected_apps"
         @JvmStatic fun newInstance() = HomeFragment()
     }
 
@@ -48,10 +49,18 @@ class HomeFragment : Hilt_HomeFragment() {
         preferenceScreen.findPreference(RECENT_ACCESS_PREFERENCE_KEY)
     }
 
+    private val mConnectedAppsPreference: Preference? by lazy {
+        preferenceScreen.findPreference(CONNECTED_APPS_PREFERENCE_KEY)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.home_preference_screen, rootKey)
         mDataAndAccessPreference?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_healthDataCategoriesFragment)
+            true
+        }
+        mConnectedAppsPreference?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
             true
         }
     }
