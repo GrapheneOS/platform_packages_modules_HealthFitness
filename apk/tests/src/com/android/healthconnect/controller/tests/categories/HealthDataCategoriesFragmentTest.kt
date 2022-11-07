@@ -40,7 +40,8 @@ import org.mockito.Mockito
 @HiltAndroidTest
 class HealthDataCategoriesFragmentTest {
 
-    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
 
     @BindValue
     val viewModel: HealthDataCategoryViewModel =
@@ -50,17 +51,23 @@ class HealthDataCategoriesFragmentTest {
     val HEALTH_DATA_ALL_CATEGORIES =
         listOf(
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.ACTIVITY, noData = false),
+                category = HealthDataCategory.ACTIVITY, noData = false
+            ),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
+                category = HealthDataCategory.BODY_MEASUREMENTS, noData = false
+            ),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.SLEEP, noData = false),
+                category = HealthDataCategory.SLEEP, noData = false
+            ),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.VITALS, noData = false),
+                category = HealthDataCategory.VITALS, noData = false
+            ),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.CYCLE_TRACKING, noData = false),
+                category = HealthDataCategory.CYCLE_TRACKING, noData = false
+            ),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.NUTRITION, noData = true),
+                category = HealthDataCategory.NUTRITION, noData = true
+            ),
         )
 
     @Before
@@ -100,7 +107,8 @@ class HealthDataCategoriesFragmentTest {
     fun categoriesFragment_withCategories_categoryInformationIsDisplayed() {
         Mockito.`when`(viewModel.categoriesData).then {
             MutableLiveData(
-                listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.BODY_MEASUREMENTS))
+                listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.BODY_MEASUREMENTS)
+            )
         }
         Mockito.`when`(viewModel.allCategoriesData).then {
             MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
@@ -113,7 +121,13 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun seeAllCategoriesPreference_isDisplayed() {
-        Mockito.`when`(viewModel.categoriesData).then { MutableLiveData(HEALTH_DATA_CATEGORIES) }
+        Mockito.`when`(viewModel.categoriesData).then {
+            MutableLiveData(
+                listOf(
+                    HealthDataCategory.ACTIVITY
+                )
+            )
+        }
         Mockito.`when`(viewModel.allCategoriesData).then {
             MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
         }
@@ -135,7 +149,9 @@ class HealthDataCategoriesFragmentTest {
                     HealthDataCategory.SLEEP,
                     HealthDataCategory.VITALS,
                     HealthDataCategory.NUTRITION,
-                    HealthDataCategory.CYCLE_TRACKING))
+                    HealthDataCategory.CYCLE_TRACKING
+                )
+            )
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
