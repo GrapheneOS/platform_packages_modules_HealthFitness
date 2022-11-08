@@ -13,7 +13,9 @@
  */
 package com.android.healthconnect.controller.permissions
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import com.android.healthconnect.controller.R
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,8 +29,13 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         setContentView(R.layout.activity_permissions)
         setTitle(R.string.permissions_and_data_header)
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.permission_content, PermissionsFragment.newInstance())
-                .commit()
+            .beginTransaction()
+            .replace(R.id.permission_content, PermissionsFragment.newInstance())
+            .commit()
+        val allowButton: View? = findViewById(R.id.allow)
+        allowButton?.setOnClickListener {
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
     }
 }
