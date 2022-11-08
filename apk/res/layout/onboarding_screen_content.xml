@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
+    android:visibility ="visible"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    >
+  <LinearLayout
+      android:id="@+id/onboarding_content_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/onboarding_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spacing_onboarding_page_title"
+      android:layout_marginHorizontal="@dimen/spacing_large"
+      android:text="@string/onboarding_title"
+      android:gravity="center"
+      android:textSize="@dimen/onboarding_title_text_size"
+      android:textColor="@color/onboarding_title_color"
+      />
+
+  <TextView
+      android:id="@+id/onboarding_description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spacing_normal"
+      android:layout_marginHorizontal="@dimen/spacing_large"
+      android:layout_marginBottom="@dimen/spacing_large"
+      android:text="@string/onboarding_description"
+      android:gravity="center"
+      android:textSize="@dimen/onboarding_description_text_size"
+      android:textColor="@color/onboarding_description_color"/>
+
+  <ImageView
+      android:id="@+id/onboarding_image"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:importantForAccessibility="no"
+      android:src="@drawable/ic_onboarding"
+      android:layoutDirection="ltr"
+      android:layout_marginBottom="@dimen/spacing_large"
+      android:scaleType="centerInside"
+      />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/spacing_normal"
+        >
+      <ImageView
+          android:id="@+id/share_icon"
+          android:src="@drawable/ic_baseline_sync_24"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/spacing_normal"
+          android:visibility="visible" />
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          >
+        <TextView
+            android:id="@+id/share_text"
+            android:text="@string/share_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textSize="@dimen/onboarding_item_view_text_size"
+            android:textColor="@color/onboarding_title_color"
+            android:textFontWeight="@integer/m3_sys_motion_duration_500"
+            />
+        <TextView
+            android:id="@+id/share_description"
+            android:text="@string/share_data_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:textSize="@dimen/onboarding_item_view_text_size"
+            android:textColor="@color/onboarding_item_view_description_color"
+            android:textFontWeight="@integer/m3_sys_motion_duration_400"
+            />
+      </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+      <ImageView
+          android:id="@+id/manage_icon"
+          android:src="@drawable/manage_settings_icon"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/spacing_normal"
+          android:visibility="visible" />
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          >
+        <TextView
+            android:id="@+id/manage_text"
+            android:text="@string/manage_your_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textSize="@dimen/onboarding_item_view_text_size"
+            android:textColor="@color/onboarding_title_color"
+            android:textFontWeight="@integer/m3_sys_motion_duration_500"
+            />
+        <TextView
+            android:id="@+id/description"
+            android:text="@string/manage_your_settings_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:textSize="@dimen/onboarding_item_view_text_size"
+            android:textColor="@color/onboarding_item_view_description_color"
+            android:textFontWeight="@integer/m3_sys_motion_duration_400"
+            />
+      </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+</androidx.core.widget.NestedScrollView>
