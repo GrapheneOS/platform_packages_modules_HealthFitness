@@ -48,5 +48,10 @@
       android:name="com.android.healthconnect.controller.categories.HealthDataAllCategoriesFragment"
       android:label="@string/see_all_categories">
   </fragment>
+  <fragment
+      android:id="@+id/dataEntriesFragment"
+      android:name="com.android.healthconnect.controller.dataentries.DataEntriesFragment"
+      android:label="DataEntriesFragment">
+  </fragment>
 
 </navigation>

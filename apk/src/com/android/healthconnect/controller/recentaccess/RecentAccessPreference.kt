@@ -24,7 +24,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.getSystemService
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
@@ -32,7 +31,6 @@ import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 /** Custom preference for displaying Recent access apps, including dash lines for timeline views. */
 class RecentAccessPreference
@@ -66,7 +64,7 @@ constructor(
         if (recentAccessWidget == null) {
             val inflater: LayoutInflater = context.getSystemService(LayoutInflater::class.java)
             recentAccessWidget =
-                inflater.inflate(R.layout.recent_access_timeline_widget, widgetFrameParent, false)
+                inflater.inflate(R.layout.widget_recent_access_timeline, widgetFrameParent, false)
                     as ViewGroup?
             widgetFrameParent.addView(recentAccessWidget, 0)
         }
