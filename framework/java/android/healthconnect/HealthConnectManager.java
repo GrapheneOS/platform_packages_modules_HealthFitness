@@ -25,6 +25,10 @@ import android.annotation.SystemApi;
 import android.annotation.SystemService;
 import android.annotation.UserHandleAware;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PermissionGroupInfo;
+import android.content.pm.PermissionInfo;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -39,10 +43,14 @@ import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConv
 import android.os.Binder;
 import android.os.OutcomeReceiver;
 import android.os.RemoteException;
+import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Executor;
 
 /**
@@ -62,6 +70,8 @@ import java.util.concurrent.Executor;
  */
 @SystemService(Context.HEALTHCONNECT_SERVICE)
 public class HealthConnectManager {
+    private static final String TAG = "HealthConnectManager";
+
     /**
      * Used in conjunction with {@link android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} to
      * launch UI to show an app’s health permission rationale/data policy.
@@ -120,6 +130,8 @@ public class HealthConnectManager {
     private final Context mContext;
     private final IHealthConnectService mService;
     private final InternalExternalRecordConverter mInternalExternalRecordConverter;
+    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
+    private static volatile Set<String> sHealthPermissions;
 
     /** @hide */
     HealthConnectManager(@NonNull Context context, @NonNull IHealthConnectService service) {
@@ -198,6 +210,20 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    /**
+     * Returns {@code true} if the given permission protects access to health connect data.
+     *
+     * @hide
+     */
+    @SystemApi
+    public static boolean isHealthPermission(
+            @NonNull Context context, @NonNull final String permission) {
+        if (!permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
+            return false;
+        }
+        return getHealthPermissions(context).contains(permission);
     }
 
     /**
@@ -322,6 +348,47 @@ public class HealthConnectManager {
         }
 
         return records;
+    }
+
+    /**
+     * Returns a set of health permissions defined within the module and belonging to {@link
+     * HealthPermissions#HEALTH_PERMISSION_GROUP}.
+     *
+     * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
+     * than crashing the device. This means the health permissions infra will be inactive.
+     *
+     * @hide
+     */
+    @NonNull
+    public static Set<String> getHealthPermissions(@NonNull Context context) {
+        if (sHealthPermissions != null) {
+            return sHealthPermissions;
+        }
+
+        PackageInfo packageInfo = null;
+        try {
+            final PackageManager pm = context.getApplicationContext().getPackageManager();
+            final PermissionGroupInfo permGroupInfo =
+                    pm.getPermissionGroupInfo(
+                            HealthPermissions.HEALTH_PERMISSION_GROUP, /* flags= */ 0);
+            packageInfo =
+                    pm.getPackageInfo(
+                            permGroupInfo.packageName,
+                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
+        } catch (PackageManager.NameNotFoundException ex) {
+            Log.e(TAG, "Health permission group or HC package not found", ex);
+            sHealthPermissions = Collections.emptySet();
+            return sHealthPermissions;
+        }
+
+        Set<String> permissions = new HashSet<>();
+        for (PermissionInfo perm : packageInfo.permissions) {
+            if (HealthPermissions.HEALTH_PERMISSION_GROUP.equals(perm.group)) {
+                permissions.add(perm.name);
+            }
+        }
+        sHealthPermissions = permissions;
+        return sHealthPermissions;
     }
 
     private void returnError(

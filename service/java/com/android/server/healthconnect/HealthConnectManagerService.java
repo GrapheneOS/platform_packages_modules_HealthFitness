@@ -18,6 +18,7 @@ package com.android.server.healthconnect;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.healthconnect.HealthConnectManager;
 
 import com.android.server.SystemService;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -39,7 +40,7 @@ public class HealthConnectManagerService extends SystemService {
                 new HealthConnectPermissionHelper(
                         context,
                         packageManager,
-                        HealthConnectServiceImpl.getDefinedHealthPerms(packageManager));
+                        HealthConnectManager.getHealthPermissions(context));
         mTransactionManager = TransactionManager.getInstance(getContext());
         mContext = context;
     }

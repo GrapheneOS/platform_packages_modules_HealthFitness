@@ -16,6 +16,8 @@
 
 package android.healthconnect.cts;
 
+import static android.Manifest.permission.CAMERA;
+import static android.healthconnect.HealthConnectManager.isHealthPermission;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
@@ -25,6 +27,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
+import android.healthconnect.HealthPermissions;
 import android.healthconnect.InsertRecordsResponse;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.ReadRecordsResponse;
@@ -160,6 +163,23 @@ public class HealthConnectManagerTest {
                         .build();
         List<Record> result = readRecords(request);
         assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testIsHealthPermission_forHealthPermission_returnsTrue() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        assertThat(isHealthPermission(context, HealthPermissions.READ_ACTIVE_CALORIES_BURNED))
+                .isTrue();
+        assertThat(isHealthPermission(context, HealthPermissions.READ_ACTIVE_CALORIES_BURNED))
+                .isTrue();
+    }
+
+    @Test
+    public void testIsHealthPermission_forNonHealthGroupPermission_returnsFalse() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        assertThat(isHealthPermission(context, HealthPermissions.MANAGE_HEALTH_PERMISSIONS))
+                .isFalse();
+        assertThat(isHealthPermission(context, CAMERA)).isFalse();
     }
 
     private List<Record> insertRecords(List<Record> records) throws InterruptedException {

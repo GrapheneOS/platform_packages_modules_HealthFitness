@@ -2,6 +2,7 @@
 package android.healthconnect {
 
   public class HealthConnectManager {
+    method public static boolean isHealthPermission(@NonNull android.content.Context, @NonNull String);
     field public static final String ACTION_HEALTH_HOME_SETTINGS = "android.healthconnect.action.HEALTH_HOME_SETTINGS";
     field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS = "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
     field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS_AND_DATA = "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS_AND_DATA";
