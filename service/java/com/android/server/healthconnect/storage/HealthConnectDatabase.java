@@ -67,6 +67,13 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onConfigure(SQLiteDatabase db) {
+        // Enforce FK constraints for DB writes as we want to enforce FK constraints on DB write.
+        // This is also required for when we delete entries, for cascade to work
+        db.setForeignKeyConstraintsEnabled(true);
+    }
+
+    @Override
     public void onDowngrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
     }

@@ -138,7 +138,7 @@ public final class CreateTableRequest {
                     + mReferencedTableName
                     + "("
                     + String.join(DELIMITER_COLUMN_LIST, mReferencedColumnNames)
-                    + ")";
+                    + ") ON DELETE CASCADE";
         }
 
         String getFkIndexStatement(int fkNumber) {
