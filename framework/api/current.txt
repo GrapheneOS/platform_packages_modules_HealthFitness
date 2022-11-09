@@ -184,6 +184,12 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
+  public final class AppInfo {
+    method @Nullable public byte[] getIcon();
+    method @Nullable public String getName();
+    method @NonNull public String getPackageName();
+  }
+
   public class BasalMetabolicRateRecord extends android.healthconnect.datatypes.InstantRecord {
     ctor public BasalMetabolicRateRecord(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.ZoneOffset, @NonNull android.healthconnect.datatypes.units.Power);
     method @NonNull public android.healthconnect.datatypes.units.Power getBasalMetabolicRate();

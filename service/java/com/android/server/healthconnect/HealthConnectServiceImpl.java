@@ -22,10 +22,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
+import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
@@ -36,6 +38,7 @@ import android.healthconnect.aidl.InsertRecordsResponseParcel;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.datatypes.AppInfo;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.os.RemoteException;
 import android.os.UserHandle;
@@ -44,6 +47,7 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
@@ -267,8 +271,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#getChangeLogs
      * @hide
+     * @see HealthConnectManager#getChangeLogs
      */
     @Override
     public void getChangeLogs(
@@ -346,6 +350,35 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /**
+     * Returns information, represented by {@code ApplicationInfoResponse}, for all the packages
+     * that have contributed to the health connect DB.
+     *
+     * @param callback Callback to receive result of performing this operation. In case of an error
+     *     or a permission failure the HealthConnect service, {@link IEmptyResponseCallback#onError}
+     *     will be invoked with a {@link HealthConnectException}.
+     */
+    @Override
+    public void getContributorApplicationsInfo(@NonNull IApplicationInfoResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        List<AppInfo> applicationInfos =
+                                AppInfoHelper.getInstance().getApplicationInfos();
+
+                        callback.onResult(new ApplicationInfoResponseParcel(applicationInfos));
+
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SqlException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
+                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
     private static void tryAndThrowException(
             @NonNull IInsertRecordsResponseCallback callback,
             @NonNull Exception exception,
@@ -393,6 +426,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             callback.onError(
                     new HealthConnectExceptionParcel(
                             new HealthConnectException(errorCode, exception.toString())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IApplicationInfoResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.getMessage())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }

@@ -16,6 +16,9 @@
 
 package android.healthconnect;
 
+import static android.Manifest.permission.QUERY_ALL_PACKAGES;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 import android.annotation.CallbackExecutor;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -29,10 +32,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
+import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
@@ -278,11 +283,11 @@ public class HealthConnectManager {
      * service, {@link OutcomeReceiver#onError} will be invoked with a {@link
      * HealthConnectException}.
      *
-     * @throws RuntimeException for internal errors
      * @param records list of records to be inserted.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      *     <p>TODO(b/251194265): User permission checks once available.
+     * @throws RuntimeException for internal errors
      */
     public void insertRecords(
             @NonNull List<Record> records,
@@ -461,8 +466,8 @@ public class HealthConnectManager {
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      *     <p>TODO(b/251194265): User permission checks once available.
-     * @see HealthConnectManager#getChangeLogToken
      * @hide
+     * @see HealthConnectManager#getChangeLogToken
      */
     public void getChangeLogs(
             long token,
@@ -670,6 +675,54 @@ public class HealthConnectManager {
                 | ClassCastException
                 | IllegalArgumentException invalidArgumentException) {
             throw new IllegalArgumentException(invalidArgumentException.getMessage());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns information, represented by {@code ApplicationInfoResponse}, for all the packages
+     * that have contributed to the health connect DB. If the application is does not have
+     * permissions to query other packages, a {@link java.lang.SecurityException} is thrown.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     *     <p>TODO(b/260069905): Add privileges permission for HC UI only.
+     * @hide
+     */
+    @NonNull
+    @SystemApi
+    @RequiresPermission(QUERY_ALL_PACKAGES)
+    public void getContributorApplicationsInfo(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<ApplicationInfoResponse, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        if (mContext.checkCallingOrSelfPermission(QUERY_ALL_PACKAGES) != PERMISSION_GRANTED) {
+            throw new SecurityException(
+                    "Caller does not hold " + android.Manifest.permission.QUERY_ALL_PACKAGES);
+        }
+        try {
+            mService.getContributorApplicationsInfo(
+                    new IApplicationInfoResponseCallback.Stub() {
+                        @Override
+                        public void onResult(ApplicationInfoResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () ->
+                                            callback.onResult(
+                                                    new ApplicationInfoResponse(
+                                                            parcel.getAppInfoList())));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

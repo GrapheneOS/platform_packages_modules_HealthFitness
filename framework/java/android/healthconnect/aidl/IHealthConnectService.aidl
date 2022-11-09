@@ -6,6 +6,7 @@ import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -96,4 +97,12 @@ interface IHealthConnectService {
         String packageName,
         in DeleteUsingFiltersRequestParcel request,
         in IEmptyResponseCallback callback);
+
+    /**
+     * Returns information, represented by {@code ApplicationInfoResponse}, for all the
+     * packages that have contributed to the health connect DB.
+     *
+     * @param callback Callback to receive result of performing this operation.
+     */
+    void getContributorApplicationsInfo(in IApplicationInfoResponseCallback callback);
 }

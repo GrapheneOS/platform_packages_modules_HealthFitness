@@ -38,6 +38,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.healthconnect.Constants;
+import android.healthconnect.datatypes.AppInfo;
+import android.healthconnect.internal.datatypes.AppInfoInternal;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 import android.util.Pair;
@@ -54,6 +56,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A class to help with the DB transaction for storing Application Info. {@link AppInfoHelper} acts
@@ -76,7 +79,7 @@ public class AppInfoHelper {
      * Map to store application package-name -> AppInfo mapping (such as packageName -> appName,
      * icon, rowId in the DB etc.)
      */
-    private Map<String, AppInfo> mAppInfoMap;
+    private Map<String, AppInfoInternal> mAppInfoMap;
 
     private AppInfoHelper() {}
 
@@ -104,7 +107,7 @@ public class AppInfoHelper {
     /** Populates record with appInfoId */
     public void populateAppInfoId(@NonNull RecordInternal<?> recordInternal, Context context) {
         String packageName = recordInternal.getPackageName();
-        AppInfo appInfo;
+        AppInfoInternal appInfo;
         synchronized (mLock) {
             appInfo = getAppInfoMap().getOrDefault(packageName, null);
         }
@@ -132,7 +135,8 @@ public class AppInfoHelper {
                     String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
                     String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
                     byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
-                    mAppInfoMap.put(packageName, new AppInfo(rowId, appName, icon));
+                    mAppInfoMap.put(
+                            packageName, new AppInfoInternal(rowId, packageName, appName, icon));
                     mIdPackageNameMap.put(rowId, packageName);
                 }
             }
@@ -160,7 +164,7 @@ public class AppInfoHelper {
      * @return id of {@code packageName} or {@link Constants#DEFAULT_LONG} if the id is not found
      */
     public long getAppInfoId(String packageName) {
-        AppInfo appInfo;
+        AppInfoInternal appInfo;
         synchronized (mLock) {
             appInfo = getAppInfoMap().getOrDefault(packageName, null);
         }
@@ -180,7 +184,7 @@ public class AppInfoHelper {
         List<Long> result = new ArrayList<>(packageNames.size());
         packageNames.forEach(
                 (packageName) -> {
-                    AppInfo appInfo;
+                    AppInfoInternal appInfo;
                     synchronized (mLock) {
                         appInfo = getAppInfoMap().getOrDefault(packageName, null);
                     }
@@ -215,7 +219,7 @@ public class AppInfoHelper {
         return packageNames;
     }
 
-    private Map<String, AppInfo> getAppInfoMap() {
+    private Map<String, AppInfoInternal> getAppInfoMap() {
         if (Objects.isNull(mAppInfoMap)) {
             populateAppInfoMap();
         }
@@ -238,7 +242,18 @@ public class AppInfoHelper {
         }
     }
 
-    private AppInfo getAppInfo(String packageName, Context context) {
+    /** Returns a list of AppInfo objects */
+    public List<AppInfo> getApplicationInfos() {
+        if (Objects.isNull(mAppInfoMap)) {
+            populateAppInfoMap();
+        }
+
+        return mAppInfoMap.values().stream()
+                .map(AppInfoInternal::toExternal)
+                .collect(Collectors.toList());
+    }
+
+    private AppInfoInternal getAppInfo(String packageName, Context context) {
         try {
             PackageManager packageManager = context.getPackageManager();
             ApplicationInfo info =
@@ -250,7 +265,7 @@ public class AppInfoHelper {
             try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESS_FACTOR, stream);
                 byte[] bitmapData = stream.toByteArray();
-                return new AppInfo(DEFAULT_LONG, appName, bitmapData);
+                return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmapData);
             } catch (IOException exception) {
                 throw new IllegalArgumentException(exception);
             }
@@ -260,8 +275,8 @@ public class AppInfoHelper {
         }
     }
 
-    private AppInfo insertAndGetAppInfo(String packageName, Context context) {
-        AppInfo appInfo = getAppInfo(packageName, context);
+    private AppInfoInternal insertAndGetAppInfo(String packageName, Context context) {
+        AppInfoInternal appInfo = getAppInfo(packageName, context);
         long rowId =
                 TransactionManager.getInitialisedInstance()
                         .insert(
@@ -276,10 +291,10 @@ public class AppInfoHelper {
     }
 
     @NonNull
-    private ContentValues getContentValues(String packageName, AppInfo appInfo) {
+    private ContentValues getContentValues(String packageName, AppInfoInternal appInfo) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
-        contentValues.put(APPLICATION_COLUMN_NAME, appInfo.getAppName());
+        contentValues.put(APPLICATION_COLUMN_NAME, appInfo.getName());
         contentValues.put(APP_ICON_COLUMN_NAME, appInfo.getIcon());
         return contentValues;
     }
@@ -314,33 +329,5 @@ public class AppInfoHelper {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bmp;
-    }
-
-    private static final class AppInfo {
-        private final String mAppName;
-        private final byte[] mIcon;
-        private long mId;
-
-        AppInfo(long id, String appName, byte[] icon) {
-            this.mId = id;
-            this.mAppName = appName;
-            this.mIcon = icon;
-        }
-
-        public byte[] getIcon() {
-            return mIcon;
-        }
-
-        public String getAppName() {
-            return mAppName;
-        }
-
-        public long getId() {
-            return mId;
-        }
-
-        public void setId(long id) {
-            this.mId = id;
-        }
     }
 }

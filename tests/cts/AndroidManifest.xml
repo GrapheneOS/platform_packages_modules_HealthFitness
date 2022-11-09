@@ -26,6 +26,7 @@
     <!-- To get visibility of the app with health permissions definitions,
          required for testing defined permissions. -->
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
 
     <!--  self-instrumenting test package. -->
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
