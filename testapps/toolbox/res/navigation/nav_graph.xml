@@ -23,6 +23,30 @@
       android:id="@+id/home_screen"
       android:name="com.android.healthconnect.testapps.toolbox.ui.HomeFragment"
       android:label="fragment_title_screen"
-      tools:layout="@layout/fragment_home" />
+      tools:layout="@layout/fragment_home">
+    <action
+        android:id="@+id/action_homeFragment_to_categoryList"
+        app:destination="@id/categories_list_screen" />
+  </fragment>
+
+  <fragment
+      android:id="@+id/categories_list_screen"
+      android:name="com.android.healthconnect.testapps.toolbox.ui.CategoryListFragment"
+      android:label="fragment_category_list_screen"
+      tools:layout="@layout/fragment_list_screen">
+    <action
+        android:id="@+id/action_categoryList_to_dataTypeList"
+        app:destination="@id/data_type_list_screen" />
+  </fragment>
+
+  <fragment
+      android:id="@+id/data_type_list_screen"
+      android:name="com.android.healthconnect.testapps.toolbox.ui.DataTypeListFragment"
+      android:label="fragment_data_type_list_screen"
+      tools:layout="@layout/fragment_list_screen">
+    <argument
+        android:name="category"
+        app:argType="com.android.healthconnect.testapps.toolbox.Constants$HealthDataCategory" />
+  </fragment>
 
 </navigation>
