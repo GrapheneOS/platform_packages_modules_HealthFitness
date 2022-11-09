@@ -54,6 +54,7 @@ import android.healthconnect.datatypes.StepsRecord;
 import android.healthconnect.datatypes.units.Power;
 import android.os.OutcomeReceiver;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -474,6 +475,40 @@ public class TestUtils {
                                         .addId(uuid)
                                         .build()))
                 .isNotEmpty();
+    }
+
+    public static <T extends Record> Pair<List<T>, Long> readRecordsWithPagination(
+            ReadRecordsRequest<T> request) throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        AtomicReference<List<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        AtomicReference<Long> pageToken = new AtomicReference<>();
+        service.readRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ReadRecordsResponse<T> result) {
+                        response.set(result.getRecords());
+                        pageToken.set(result.getPageToken());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+        return Pair.create(response.get(), pageToken.get());
     }
 
     public static void setAutoDeletePeriod(int period) throws InterruptedException {

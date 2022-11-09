@@ -173,8 +173,11 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
+            throws InterruptedException,
+                    InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    NoSuchMethodException {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -242,8 +245,11 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_invalidInputRecords_noChangeInDataBase()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
+            throws InterruptedException,
+                    InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    NoSuchMethodException {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -316,8 +322,11 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_recordWithInvalidPackageName_noChangeInDataBase()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
+            throws InterruptedException,
+                    InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    NoSuchMethodException {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);

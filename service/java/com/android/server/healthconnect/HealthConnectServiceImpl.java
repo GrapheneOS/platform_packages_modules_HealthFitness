@@ -17,6 +17,7 @@
 package com.android.server.healthconnect;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.healthconnect.Constants.DEFAULT_LONG;
 import static android.healthconnect.Constants.READ;
 import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
@@ -59,6 +60,7 @@ import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.healthconnect.aidl.ReadRecordsResponseParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
@@ -312,12 +314,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         try {
-                            List<RecordInternal<?>> recordInternalList =
-                                    mTransactionManager.readRecords(
+                            Pair<List<RecordInternal<?>>, Long> readRecordsResponse =
+                                    mTransactionManager.readRecordsAndGetNextToken(
                                             new ReadTransactionRequest(
                                                     packageName,
                                                     request,
                                                     enforceSelfReadAndCheckUi.first));
+                            long pageToken =
+                                    request.getRecordIdFiltersParcel() == null
+                                            ? readRecordsResponse.second
+                                            : DEFAULT_LONG;
+
+                            if (Constants.DEBUG) {
+                                Slog.d(TAG, "pageToken: " + pageToken);
+                            }
 
                             // UI API calls should not be recorded in access logs.
                             // enforceSelfReadAndCheckUi.second signifies that the caller is UI.
@@ -333,14 +343,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                             READ);
                                         });
                             }
-                            callback.onResult(new RecordsParcel(recordInternalList));
+                            callback.onResult(
+                                    new ReadRecordsResponseParcel(
+                                            new RecordsParcel(readRecordsResponse.first),
+                                            pageToken));
                             finishDataDeliveryRead(request.getRecordType(), uid);
                         } catch (TypeNotPresentException exception) {
                             // All the requested package names are not present, so simply return
                             // an empty list
                             if (ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME.equals(
                                     exception.typeName())) {
-                                callback.onResult(new RecordsParcel(new ArrayList<>()));
+                                callback.onResult(
+                                        new ReadRecordsResponseParcel(
+                                                new RecordsParcel(new ArrayList<>()),
+                                                DEFAULT_LONG));
                             } else {
                                 throw exception;
                             }

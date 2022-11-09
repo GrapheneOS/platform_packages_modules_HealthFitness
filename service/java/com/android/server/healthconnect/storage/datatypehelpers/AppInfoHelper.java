@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
 
 /**
  * A class to help with the DB transaction for storing Application Info. {@link AppInfoHelper} acts
- * as a layer b/w the application_info_table stored in the DB and helps perform insert and read
+ * as a layer b/w the application_igenfo_table stored in the DB and helps perform insert and read
  * operations on the table
  *
  * @hide
@@ -176,6 +176,10 @@ public final class AppInfoHelper {
         return appInfo.getId();
     }
 
+    /**
+     * @param packageNames List of package names
+     * @return A list of appinfo ids from the application_info_table.
+     */
     public List<Long> getAppInfoIds(List<String> packageNames) {
         if (packageNames == null || packageNames.isEmpty()) {
             return Collections.emptyList();

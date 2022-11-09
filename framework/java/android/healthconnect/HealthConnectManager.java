@@ -60,6 +60,7 @@ import android.healthconnect.aidl.IMigrationCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
+import android.healthconnect.aidl.ReadRecordsResponseParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
@@ -1196,15 +1197,18 @@ public class HealthConnectManager {
             @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
         return new IReadRecordsResponseCallback.Stub() {
             @Override
-            public void onResult(RecordsParcel parcel) {
+            public void onResult(ReadRecordsResponseParcel parcel) {
                 Binder.clearCallingIdentity();
                 try {
                     List<T> externalRecords =
                             (List<T>)
                                     mInternalExternalRecordConverter.getExternalRecords(
-                                            parcel.getRecords());
+                                            parcel.getRecordsParcel().getRecords());
                     executor.execute(
-                            () -> callback.onResult(new ReadRecordsResponse<>(externalRecords)));
+                            () ->
+                                    callback.onResult(
+                                            new ReadRecordsResponse<>(
+                                                    externalRecords, parcel.getPageToken())));
                 } catch (ClassCastException castException) {
                     HealthConnectException healthConnectException =
                             new HealthConnectException(

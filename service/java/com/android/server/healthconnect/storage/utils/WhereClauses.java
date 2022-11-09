@@ -76,6 +76,12 @@ public final class WhereClauses {
         return this;
     }
 
+    /**
+     * Adds where in condition for the column
+     *
+     * @param columnName Column name on which where condition to be applied
+     * @param values to check in the where condition
+     */
     public WhereClauses addWhereInLongsClause(String columnName, List<Long> values) {
         if (values == null || values.isEmpty()) return this;
 

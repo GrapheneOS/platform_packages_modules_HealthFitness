@@ -36,6 +36,35 @@ import java.util.concurrent.Executor;
  * @param <T> the type of the Record for the request
  */
 public final class ReadRecordsRequestUsingIds<T extends Record> extends ReadRecordsRequest<T> {
+    /** List of {@link RecordIdFilter} */
+    private final List<RecordIdFilter> mRecordIdFiltersList;
+
+    /**
+     * @see Builder
+     */
+    private ReadRecordsRequestUsingIds(
+            @NonNull Class<T> recordType, @NonNull List<RecordIdFilter> recordIdFiltersList) {
+        super(recordType);
+        Objects.requireNonNull(recordIdFiltersList);
+        mRecordIdFiltersList = recordIdFiltersList;
+    }
+
+    /** Returns List of RecordId */
+    @NonNull
+    public List<RecordIdFilter> getRecordIdFilters() {
+        return mRecordIdFiltersList;
+    }
+
+    /**
+     * Returns an object of ReadRecordsRequestParcel to carry read request
+     *
+     * @hide
+     */
+    @NonNull
+    public ReadRecordsRequestParcel toReadRecordsRequestParcel() {
+        return new ReadRecordsRequestParcel(this);
+    }
+
     /** Builder class for {@link ReadRecordsRequestUsingIds} */
     public static final class Builder<T extends Record> {
         private final Class<T> mRecordType;
@@ -73,9 +102,7 @@ public final class ReadRecordsRequestUsingIds<T extends Record> extends ReadReco
             return this;
         }
 
-        /**
-         * @return Object of {@link ReadRecordsRequestUsingIds}
-         */
+        /** Returns Object of {@link ReadRecordsRequestUsingIds} */
         @NonNull
         public ReadRecordsRequestUsingIds<T> build() {
             if (mRecordIdFiltersList.isEmpty()) {
@@ -85,36 +112,5 @@ public final class ReadRecordsRequestUsingIds<T extends Record> extends ReadReco
             }
             return new ReadRecordsRequestUsingIds<>(mRecordType, mRecordIdFiltersList);
         }
-    }
-
-    /** List of {@link RecordIdFilter} */
-    private final List<RecordIdFilter> mRecordIdFiltersList;
-
-    /**
-     * @see Builder
-     */
-    private ReadRecordsRequestUsingIds(
-            @NonNull Class<T> recordType, @NonNull List<RecordIdFilter> recordIdFiltersList) {
-        super(recordType);
-        Objects.requireNonNull(recordIdFiltersList);
-        mRecordIdFiltersList = recordIdFiltersList;
-    }
-
-    /**
-     * @return List of RecordId
-     */
-    @NonNull
-    public List<RecordIdFilter> getRecordIdFilters() {
-        return mRecordIdFiltersList;
-    }
-
-    /**
-     * Returns an object of ReadRecordsRequestParcel to carry read request
-     *
-     * @hide
-     */
-    @NonNull
-    public ReadRecordsRequestParcel toReadRecordsRequestParcel() {
-        return new ReadRecordsRequestParcel(this);
     }
 }

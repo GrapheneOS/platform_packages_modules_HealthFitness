@@ -181,13 +181,19 @@ package android.healthconnect {
 
   public final class ReadRecordsRequestUsingFilters<T extends android.healthconnect.datatypes.Record> extends android.healthconnect.ReadRecordsRequest<T> {
     method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins();
+    method @IntRange(from=1, to=5000) public int getPageSize();
+    method public long getPageToken();
     method @Nullable public android.healthconnect.TimeRangeFilter getTimeRangeFilter();
+    method public boolean isAscending();
   }
 
   public static final class ReadRecordsRequestUsingFilters.Builder<T extends android.healthconnect.datatypes.Record> {
     ctor public ReadRecordsRequestUsingFilters.Builder(@NonNull Class<T>);
     method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> addDataOrigins(@NonNull android.healthconnect.datatypes.DataOrigin);
     method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters<T> build();
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setAscending(boolean);
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setPageSize(@IntRange(from=1, to=5000) int);
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setPageToken(long);
     method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setTimeRangeFilter(@Nullable android.healthconnect.TimeRangeFilter);
   }
 
@@ -203,6 +209,7 @@ package android.healthconnect {
   }
 
   public class ReadRecordsResponse<T extends android.healthconnect.datatypes.Record> {
+    method public long getPageToken();
     method @NonNull public java.util.List<T> getRecords();
   }
 

@@ -23,35 +23,12 @@ import java.util.Objects;
 
 /** Specification of time range for read and delete requests. */
 public final class TimeRangeFilter {
-    /**
-     * @see TimeRangeFilter
-     */
-    public static final class Builder {
-        private final Instant mStartTime;
-        private final Instant mEndTime;
-
-        /**
-         * @param startTime represents start time of this filter
-         * @param endTime end time of this filter
-         */
-        public Builder(@NonNull Instant startTime, @NonNull Instant endTime) {
-            Objects.requireNonNull(startTime);
-            Objects.requireNonNull(endTime);
-
-            mStartTime = startTime;
-            mEndTime = endTime;
-        }
-
-        @NonNull
-        public TimeRangeFilter build() {
-            return new TimeRangeFilter(mStartTime, mEndTime);
-        }
-    }
-
     private final Instant mStartTime;
     private final Instant mEndTime;
 
     /**
+     * Sets startTime and endTime of the time range filter which are inclusive
+     *
      * @param startTime represents start time of this filter
      * @param endTime end time of this filter
      */
@@ -77,5 +54,31 @@ public final class TimeRangeFilter {
     @NonNull
     public Instant getEndTime() {
         return mEndTime;
+    }
+
+    /**
+     * @see TimeRangeFilter
+     */
+    public static final class Builder {
+        private final Instant mStartTime;
+        private final Instant mEndTime;
+
+        /**
+         * @param startTime represents start time of this filter
+         * @param endTime end time of this filter
+         */
+        public Builder(@NonNull Instant startTime, @NonNull Instant endTime) {
+            Objects.requireNonNull(startTime);
+            Objects.requireNonNull(endTime);
+
+            mStartTime = startTime;
+            mEndTime = endTime;
+        }
+
+        /** Build and return {@link TimeRangeFilter} object */
+        @NonNull
+        public TimeRangeFilter build() {
+            return new TimeRangeFilter(mStartTime, mEndTime);
+        }
     }
 }

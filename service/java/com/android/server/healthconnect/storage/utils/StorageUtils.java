@@ -69,6 +69,8 @@ public final class StorageUtils {
     public static final String PRIMARY = "INTEGER PRIMARY KEY";
     public static final String DELIMITER = ",";
     public static final String BLOB = "BLOB";
+    public static final String SELECT_ALL = "SELECT * FROM ";
+    public static final String LIMIT_SIZE = " LIMIT ";
 
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
         byte[] clientIDBlob;

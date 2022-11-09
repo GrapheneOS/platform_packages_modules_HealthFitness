@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.healthconnect.Constants.DEFAULT_INT;
 import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.healthconnect.Constants.MAXIMUM_PAGE_SIZE;
 
 import static com.android.server.healthconnect.storage.request.ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
@@ -44,6 +45,7 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
@@ -164,15 +166,17 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public ReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
         return new ReadTableRequest(getMainTableName())
-                .setInnerJoinClause(getInnerJoinFoReadRequest())
+                .setJoinClause(getInnerJoinFoReadRequest())
                 .setWhereClause(getReadTableWhereClause(request, packageName, enforceSelfRead))
+                .setOrderBy(getOrderByClause(request))
+                .setLimit(getLimitSize(request))
                 .setRecordHelper(this);
     }
 
     /** Returns ReadTableRequest for {@code uuids} */
     public ReadTableRequest getReadTableRequest(List<String> uuids) {
         return new ReadTableRequest(getMainTableName())
-                .setInnerJoinClause(getInnerJoinFoReadRequest())
+                .setJoinClause(getInnerJoinFoReadRequest())
                 .setWhereClause(new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, uuids))
                 .setRecordHelper(this);
     }
@@ -188,11 +192,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Returns List of Internal records from the cursor */
-    public List<RecordInternal<?>> getInternalRecords(Cursor cursor) {
+    @SuppressWarnings("unchecked")
+    public List<RecordInternal<?>> getInternalRecords(Cursor cursor, int requestSize) {
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+        int count = 0;
         while (cursor.moveToNext()) {
             try {
-                @SuppressWarnings("unchecked")
                 T record =
                         (T)
                                 RecordMapper.getInstance()
@@ -211,6 +216,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 AppInfoHelper.getInstance().populateRecordWithValue(appInfoId, record);
                 populateRecordValue(cursor, record);
                 recordInternalList.add(record);
+                count++;
+                if (count == requestSize) {
+                    break;
+                }
             } catch (InstantiationException
                     | IllegalAccessException
                     | NoSuchMethodException
@@ -295,6 +304,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return null;
     }
 
+    private int getLimitSize(ReadRecordsRequestParcel request) {
+        if (request.getRecordIdFiltersParcel() == null) {
+            return request.getPageSize();
+        } else {
+            return MAXIMUM_PAGE_SIZE;
+        }
+    }
+
     private WhereClauses getReadTableWhereClause(
             ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
         if (request.getRecordIdFiltersParcel() == null) {
@@ -311,6 +328,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
             WhereClauses clauses =
                     new WhereClauses().addWhereInLongsClause(APP_INFO_ID_COLUMN_NAME, appIds);
+
+            if (request.getPageToken() != DEFAULT_LONG) {
+                clauses.addWhereGreaterThanClause(
+                        RecordHelper.PRIMARY_COLUMN_NAME, String.valueOf(request.getPageToken()));
+            }
 
             return clauses.addWhereBetweenTimeClause(
                     getStartTimeColumnName(), request.getStartTime(), request.getEndTime());
@@ -338,6 +360,16 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     abstract String getZoneOffsetColumnName();
+
+    private OrderByClause getOrderByClause(ReadRecordsRequestParcel request) {
+        OrderByClause orderByClause = new OrderByClause();
+        if (request.getRecordIdFiltersParcel() != null) {
+            orderByClause
+                    .addOrderByClause(getStartTimeColumnName(), request.isAscending())
+                    .addOrderByClause(PRIMARY_COLUMN_NAME, true);
+        }
+        return orderByClause;
+    }
 
     @NonNull
     private ContentValues getContentValues(@NonNull T recordInternal) {
