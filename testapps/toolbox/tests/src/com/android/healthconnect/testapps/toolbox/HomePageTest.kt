@@ -30,21 +30,21 @@ class HomePageTest {
 
     @Test
     fun requestPermissionsButtonFound() {
-        onView(withText("REQUEST PERMISSIONS")).check(matches(isDisplayed()))
+        onView(withText(R.string.request_permissions)).check(matches(isDisplayed()))
     }
 
     @Test
     fun insertOrUpdateDataButtonFound() {
-        onView(withText("INSERT / UPDATE DATA")).check(matches(isDisplayed()))
+        onView(withText(R.string.insert_update_data)).check(matches(isDisplayed()))
     }
 
     @Test
     fun insertSessionButtonFound() {
-        onView(withText("INSERT SESSION")).check(matches(isDisplayed()))
+        onView(withText(R.string.insert_session)).check(matches(isDisplayed()))
     }
 
     @Test
     fun seedRandomDataButtonFound() {
-        onView(withText("SEED RANDOM DATA")).check(matches(isDisplayed()))
+        onView(withText(R.string.seed_random_data)).check(matches(isDisplayed()))
     }
 }

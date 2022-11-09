@@ -44,5 +44,6 @@ android_test {
     test_suites: [
       "general-tests",
     ],
+    resource_dirs: ["res"],
     test_mainline_modules: ["com.google.android.healthconnect.apex"]
 }
