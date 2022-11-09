@@ -30,6 +30,9 @@
     <action
         android:id="@+id/action_homeFragment_to_recentAccessFragment"
         app:destination="@id/recentAccessFragment" />
+    <action
+        android:id="@+id/action_homeFragment_to_connectedAppsFragment"
+        app:destination="@id/connectedAppsFragment" />
   </fragment>
   <fragment
       android:id="@+id/healthDataCategoriesFragment"
@@ -46,12 +49,14 @@
   <fragment
       android:id="@+id/healthDataAllCategoriesFragment"
       android:name="com.android.healthconnect.controller.categories.HealthDataAllCategoriesFragment"
-      android:label="@string/see_all_categories">
-  </fragment>
+      android:label="@string/see_all_categories"/>
   <fragment
       android:id="@+id/dataEntriesFragment"
       android:name="com.android.healthconnect.controller.dataentries.DataEntriesFragment"
-      android:label="DataEntriesFragment">
-  </fragment>
+      android:label="DataEntriesFragment"/>
+  <fragment
+      android:id="@+id/connectedAppsFragment"
+      android:name="com.android.healthconnect.controller.permissions.ConnectedAppsFragment"
+      android:label="@string/connected_apps_title" />
 
 </navigation>
