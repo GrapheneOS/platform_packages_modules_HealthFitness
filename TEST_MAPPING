@@ -13,6 +13,12 @@
     },
     {
        "name": "CtsHealthConnectDeviceTestCases"
+    },
+    {
+      "name": "HealthConnectWithoutManagePermissionsIntegrationTests"
+    },
+    {
+      "name": "HealthConnectWithManagePermissionsIntegrationTests"
     }
   ]
 }
