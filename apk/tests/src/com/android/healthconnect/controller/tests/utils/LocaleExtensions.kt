@@ -13,18 +13,14 @@
  */
 package com.android.healthconnect.controller.tests.utils
 
-import com.android.healthconnect.controller.utils.getInstant
-import com.google.common.truth.Truth.assertThat
-import java.time.ZoneId
-import java.util.TimeZone
-import org.junit.Test
+import android.content.Context
+import android.content.res.Configuration
+import java.util.Locale
 
-class TimeExtensionsTest {
-
-    @Test
-    fun getInstant_returnsCorrectInstant() {
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-
-        assertThat(getInstant(2022, 10, 23).toEpochMilli()).isEqualTo(1666483200000)
-    }
+fun Context.setLocale(locale: Locale) {
+    Locale.setDefault(locale)
+    // here we update locale for app resources
+    val config: Configuration = resources.configuration
+    config.locale = locale
+    resources.updateConfiguration(config, resources.displayMetrics)
 }
