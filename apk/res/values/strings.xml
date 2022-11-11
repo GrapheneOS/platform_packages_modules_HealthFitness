@@ -242,9 +242,11 @@
   <!--endregion-->
   <!--endregion-->
 
-  <!--region recent access -->
-  <string name="recent_app_1" translatable="false">Recent app 1</string>
-  <string name="recent_app_2" translatable="false">Recent app 2</string>
+  <!--region apps -->
+  <string name="app_1" translatable="false">App 1</string>
+  <string name="app_2" translatable="false">App 2</string>
+  <string name="app_3" translatable="false">App 3</string>
+  <string name="app_4" translatable="false">App 4</string>
   <!--endregion-->
 
   <!-- region Permissions -->

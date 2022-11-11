@@ -62,7 +62,7 @@
       android:label="DataEntriesFragment"/>
   <fragment
       android:id="@+id/connectedAppsFragment"
-      android:name="com.android.healthconnect.controller.permissions.ConnectedAppsFragment"
+      android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsFragment"
       android:label="@string/connected_apps_title" />
   <fragment
       android:id="@+id/healthPermissionTypesFragment"

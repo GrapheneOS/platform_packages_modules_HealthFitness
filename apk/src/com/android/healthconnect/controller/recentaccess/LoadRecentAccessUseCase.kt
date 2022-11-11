@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.recentaccess
 
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.AppMetadata
 import com.google.common.collect.ImmutableSet
 import java.time.Instant
 import javax.inject.Inject
@@ -35,7 +36,9 @@ class LoadRecentAccessUseCase @Inject constructor() {
             val instant = Instant.parse("2022-10-20T${i}:12:13.00Z")
             recentApps.add(
                 RecentAccessApp(
-                    R.string.recent_app_1, R.drawable.ic_vitals, instant, ImmutableSet.of("Read")))
+                    AppMetadata(R.string.app_1, R.drawable.ic_vitals),
+                    instant,
+                    ImmutableSet.of("Read")))
         }
 
         return recentApps
