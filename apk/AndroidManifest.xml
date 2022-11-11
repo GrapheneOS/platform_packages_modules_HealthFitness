@@ -49,6 +49,11 @@
       </intent-filter>
     </activity>
 
+    <activity
+        android:name="com.android.healthconnect.controller.onboarding.OnboardingActivity"
+        android:exported="true"
+        android:theme="@style/Theme.AppCompat"/>
+
     <service
         android:name=".quicksettings.QuickSettingsService"
         android:exported="true"
@@ -60,6 +65,7 @@
       </intent-filter>
     </service>
   </application>
+
   <queries>
     <intent>
       <!-- An intent action to get package visibility into client apps. See more at b/193547946 -->

@@ -19,7 +19,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_nav_graph"
     app:startDestination="@id/homeFragment">
-
   <fragment
       android:id="@+id/homeFragment"
       android:name="com.android.healthconnect.controller.home.HomeFragment"

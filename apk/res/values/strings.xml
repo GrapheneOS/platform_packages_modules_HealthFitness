@@ -267,4 +267,16 @@
   <string name="disconnect_all_apps" description="Button text for removing access to health and fitness data for all apps [CHAR_LIMIT=40]">Remove access for all apps</string>
   <string name="cant_see_all_your_apps_button" description="Button text for navigating to a help page of advice about connecting more apps [CHAR_LIMIT=40]">Can\'t see all your apps?</string>
   <!--endregion-->
+
+  <!--region Onboarding -->
+  <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time" translatable="true">Get Started with Health Connect</string>
+  <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page" translatable="true">Health Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone</string>
+  <string name="share_data" description="Label used to show how the user can share data with apps" translatable="true">Share data with your apps</string>
+  <string name="share_data_description" description="Content description for how the user can share data with apps" translatable="true">Choose the data each app can read or write to Health Connect</string>
+  <string name="manage_your_settings" description="Label used to show how the user can manage settings and privacy" translatable="true">Manage your settings and privacy</string>
+  <string name="manage_your_settings_description" description="Content description for how the user can change app permissions and manage data" translatable="true">Change app permissions and manage your data at any time</string>
+  <string name="onboarding_go_back_button_text" description="Content description for button to exit from onboarding page" translatable="true">Go back</string>
+  <string name="onboarding_get_started_button_text" description="Content description for button to get started with Health Connect app" translatable="true">Get started</string>
+  <string name="previously_opened" description="Label used as key to track if user has opened Health Connected previously" translatable="false">Previously Opened</string>
+  <!--endregion-->
 </resources>
