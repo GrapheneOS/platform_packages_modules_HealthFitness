@@ -16,7 +16,19 @@
 
 <resources>
 
-  <style name="Base.Theme.HealthConnect" parent="@style/Theme.SubSettingsBase"/>
+  <style name="Base.Theme.HealthConnect" parent="@style/Theme.SubSettingsBase">
+    <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
+    <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
+    <item name="alertDialogTheme">@style/Theme.HealthConnect.Dialog.Alert</item>
+    <item name="deleteSettingsIcon">@drawable/ic_deletion_settings</item>
+    <item name="dialogGravity">@integer/dialog_gravity</item>
+    <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
+    <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>
+  </style>
+
+  <style name="Theme.HealthConnect.Dialog.Alert" parent="@style/Theme.AlertDialog.SettingsLib">
+    <item name="textAllCaps">false</item>
+  </style>
 
   <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />
 

@@ -279,4 +279,30 @@
   <string name="onboarding_get_started_button_text" description="Content description for button to get started with Health Connect app" translatable="true">Get started</string>
   <string name="previously_opened" description="Label used as key to track if user has opened Health Connected previously" translatable="false">Previously Opened</string>
   <!--endregion-->
+
+  <!-- region Deletion -->
+  <string name="time_range_title" description="Window title where user can choose the time range for data deletion. [CHAR_LIMIT=50]">Choose data to delete</string>
+  <string name="time_range_next_button" description="Label of a button that navigates to the next window of the deletion flow. [CHAR_LIMIT=50]">Next</string>
+
+  <string name="time_range_message_all" description="Description explaining that this data deletion user activity is permanent. [CHAR_LIMIT=NONE]">This permanently deletes all data added to Health&#160;Connect in the chosen time period</string>
+  <string name="time_range_message_data_type" description="Description explaining that this data deletion user activity is permanent. [CHAR_LIMIT=NONE]">This permanently deletes <xliff:g id="data_type" example="heart rate">%s</xliff:g> data added to Health&#160;Connect in the chosen time period</string>
+  <string name="time_range_message_category" description="Description explaining that this data deletion user activity is permanent. [CHAR_LIMIT=NONE]">This permanently deletes <xliff:g id="category" example="activity">%s</xliff:g> data added to Health&#160;Connect in the chosen time period</string>
+  <string name="time_range_message_app_data" description="Description explaining that this data deletion user activity is permanent. [CHAR_LIMIT=NONE]">This permanently deletes <xliff:g id="app_data" example="Strava">%s</xliff:g> data added to Health&#160;Connect in the chosen time period</string>
+
+  <string name="time_range_one_day" description="Item on list of possible deletion time ranges the user can choose. This option deletes data for the last 24 hours. [CHAR_LIMIT=50]">Delete last 24 hours</string>
+  <string name="time_range_one_week" description="Item on list of possible deletion time ranges the user can choose. This option deletes data for the last 7 days. [CHAR_LIMIT=50]">Delete last 7 days</string>
+  <string name="time_range_one_month" description="Item on list of possible deletion time ranges the user can choose. This option deletes data for the last 30 days. [CHAR_LIMIT=50]">Delete last 30 days</string>
+  <string name="time_range_all" description="Item on list of possible deletion time ranges the user can choose. This option deletes all data written during the selected time period. [CHAR_LIMIT=50]">Delete all data </string>
+
+  <string name="confirming_question_all" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from all time?</string>
+  <string name="confirming_question_one_day" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 24 hours?</string>
+  <string name="confirming_question_one_week" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 7 days?</string>
+  <string name="confirming_question_one_month" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 30 days?</string>
+
+  <string name="confirming_question_message" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Connected apps will no longer be able to access this data from Health&#160;Connect</string>
+  <string name="confirming_question_delete_button" description="Label of a button that deletes data. [CHAR_LIMIT=50]">Delete</string>
+  <string name="confirming_question_go_back_button" description="Label of a button that goes back to the previous dialog. [CHAR_LIMIT=50]">Go back</string>
+  <string name="delete_dialog_success_got_it_button" description="Label of a button that dismisses the pop-up window. [CHAR_LIMIT=50]">Done</string>
+  <string name="delete_dialog_failure_close_button" description="Label of a button that closes the window. [CHAR_LIMIT=50]">Close</string>
+  <!--endregion-->
 </resources>

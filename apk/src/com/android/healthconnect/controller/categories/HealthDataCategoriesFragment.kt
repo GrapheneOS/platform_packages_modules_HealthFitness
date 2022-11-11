@@ -21,6 +21,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.deletion.TimeRangeDialogFragment
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,7 +47,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.health_data_categories_screen, rootKey)
         mDeleteAllData?.setOnPreferenceClickListener {
-            // TODO(b/246161850) implement delete all data flow
+            TimeRangeDialogFragment().show(childFragmentManager, TimeRangeDialogFragment.TAG)
             true
         }
     }
