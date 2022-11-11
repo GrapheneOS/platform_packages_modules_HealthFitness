@@ -20,6 +20,8 @@ import android.annotation.CallbackExecutor;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.RequiresPermission;
+import android.annotation.SdkConstant;
+import android.annotation.SystemApi;
 import android.annotation.SystemService;
 import android.annotation.UserHandleAware;
 import android.content.Context;
@@ -57,6 +59,61 @@ import java.util.concurrent.Executor;
  */
 @SystemService(Context.HEALTHCONNECT_SERVICE)
 public class HealthConnectManager {
+    /**
+     * Used in conjunction with {@link android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} to
+     * launch UI to show an app’s health permission rationale/data policy.
+     *
+     * <p><b>Note:</b> Used by apps to define an intent filter in conjunction with {@link
+     * android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} that the HC UI can link out to.
+     */
+    // We use intent.category prefix to be compatible with HealthPermissions strings definitions.
+    @SdkConstant(SdkConstant.SdkConstantType.INTENT_CATEGORY)
+    public static final String CATEGORY_HEALTH_PERMISSIONS =
+            "android.intent.category.HEALTH_PERMISSIONS";
+
+    /**
+     * Activity action: Launch UI to manage (e.g. grant/revoke) health permissions.
+     *
+     * <p>Shows a list of apps which request at least one permission of the Health permission group.
+     *
+     * <p>Input: {@link android.content.Intent#EXTRA_PACKAGE_NAME} string extra with the name of the
+     * app requesting the action. Optional: Adding package name extras launches a UI to manager
+     * (e.g. grant/revoke) for this app.
+     *
+     * @hide
+     */
+    @SystemApi
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_MANAGE_HEALTH_PERMISSIONS =
+            "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
+
+    /**
+     * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions and
+     * health data (e.g. delete) for an app.
+     *
+     * <p>Input: {@link android.content.Intent#EXTRA_PACKAGE_NAME} string extra with the name of the
+     * app requesting the action must be present. An app can open only its own page.
+     *
+     * @hide
+     */
+    @SystemApi
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_MANAGE_HEALTH_PERMISSIONS_AND_DATA =
+            "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS_AND_DATA";
+
+    /**
+     * Activity action: Launch UI to health connect home settings screen.
+     *
+     * <p>shows a list of recent apps that accessed (e.g. read/write) health data and allows the
+     * user to access health permissions and health data.
+     *
+     * @hide
+     */
+    @SystemApi
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_HEALTH_HOME_SETTINGS =
+            "android.healthconnect.action.HEALTH_HOME_SETTINGS";
+
     private final Context mContext;
     private final IHealthConnectService mService;
     private final InternalExternalRecordConverter mInternalExternalRecordConverter;

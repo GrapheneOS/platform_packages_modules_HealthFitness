@@ -19,7 +19,13 @@ package android.healthconnect;
 import android.annotation.SystemApi;
 
 // TODO(b/255340973): consider generate this class.
-/** Permissions for accessing the HealthConnect APIs. */
+/**
+ * Permissions for accessing the HealthConnect APIs.
+ *
+ * <p>Apps must support {@link android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} with {@link
+ * android.healthconnect.HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS} category to be granted
+ * read/write health data permissions.
+ */
 public final class HealthPermissions {
     private HealthPermissions() {}
 
