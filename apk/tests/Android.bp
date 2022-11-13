@@ -27,6 +27,7 @@ android_test {
     min_sdk_version: "UpsideDownCake",
     static_libs: [
         "HealthConnectLibrary",
+        "HealthConnectPermissionsApis",
         "SettingsLibSettingsTheme",
         "kotlin-stdlib",
         "kotlinx-coroutines-android",
@@ -49,6 +50,7 @@ android_test {
         "kotlin-annotations",
         "android.test.base",
         "android.test.mock.stubs",
+        "framework-healthconnect.impl",
     ],
     kotlincflags: ["-Xjvm-default=all"],
     test_suites: [
