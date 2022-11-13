@@ -21,6 +21,13 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 
+/**
+ * Returns an Instant with the specified year, month and day-of-month. The day must be valid for the year and month, otherwise an exception will be thrown.
+ *
+ * @param year the year to represent, from MIN_YEAR to MAX_YEAR
+ * @param month the month-of-year to represent, from 1 (January) to 12 (December)
+ * @param day the day-of-month to represent, from 1 to 31
+ */
 fun getInstant(year: Int, month: Int, day: Int): Instant {
     val date = LocalDate.of(year, month, day)
     return date.atTime(LocalTime.MIDNIGHT).atZone(ZoneId.systemDefault()).toInstant()

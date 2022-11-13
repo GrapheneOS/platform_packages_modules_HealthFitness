@@ -27,9 +27,11 @@ object DatePickerFactory {
         datePicker.maxDate = maxDate.toEpochMilli()
 
         val date = selectedDate.toLocaleDate()
+        // date picker takes month starting from 0, local date return month starting from 1
+        val month = date.month.value - 1
         datePicker.updateDate(
             date.year,
-            date.month.value,
+            month,
             date.dayOfMonth
         )
 

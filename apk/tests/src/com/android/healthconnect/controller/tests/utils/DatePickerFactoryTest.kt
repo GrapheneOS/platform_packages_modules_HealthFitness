@@ -49,7 +49,8 @@ class DatePickerFactoryTest {
 
             val localSelectedDate = selectedDate.toLocaleDate()
             assertThat(dialog.datePicker.year).isEqualTo(localSelectedDate.year)
-            assertThat(dialog.datePicker.month).isEqualTo(localSelectedDate.month.value)
+            // date picker saves month starting from 0, local date saves month starting from 1
+            assertThat(dialog.datePicker.month).isEqualTo(localSelectedDate.month.value - 1)
             assertThat(dialog.datePicker.dayOfMonth).isEqualTo(localSelectedDate.dayOfMonth)
         }
     }
