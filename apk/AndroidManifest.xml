@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,59 +17,73 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.healthconnect.controller">
 
-  <uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" />
-
-  <application
-      android:icon="@drawable/health_connect_logo"
-      android:label="@string/app_label"
-      android:supportsRtl="true"
-      android:name=".HealthConnectApplication"
-      android:theme="@style/Theme.HealthConnect">
-    <activity
-        android:name=".MainActivity"
-        android:exported="true">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.DEFAULT" />
-      </intent-filter>
-      <!-- For Open button in App Info. -->
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.INFO"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.android.healthconnect.controller.permissions.PermissionsActivity"
-        android:excludeFromRecents="true"
-        android:exported="true"
-        android:noHistory="true">
-      <intent-filter android:priority="1">
-        <action android:name="android.intent.action.MANAGE_HEALTH_PERMISSIONS" />
-        <category android:name="android.intent.category.DEFAULT" />
-      </intent-filter>
-    </activity>
-
-    <activity
-        android:name="com.android.healthconnect.controller.onboarding.OnboardingActivity"
-        android:exported="true"
-        android:theme="@style/Theme.AppCompat"/>
-
-    <service
-        android:name=".quicksettings.QuickSettingsService"
-        android:exported="true"
+    <application
+        android:name=".HealthConnectApplication"
         android:icon="@drawable/health_connect_logo"
         android:label="@string/app_label"
-        android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-      <intent-filter>
-        <action android:name="android.service.quicksettings.action.QS_TILE" />
-      </intent-filter>
-    </service>
-  </application>
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HealthConnect">
 
-  <queries>
-    <intent>
-      <!-- An intent action to get package visibility into client apps. See more at b/193547946 -->
-      <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
-      <category android:name="android.intent.category.HEALTH" />
-    </intent>
-  </queries>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- For Open button in App Info. -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.INFO" />
+            </intent-filter>
+            <!-- Deeplink to Home Screen -->
+            <intent-filter>
+                <action android:name="android.healthconnect.action.HEALTH_HOME_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- Deeplink to App Access screen -->
+            <intent-filter>
+                <action android:name="android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS_AND_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.android.healthconnect.controller.permissions.PermissionsActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:permission="android.permission.GRANT_RUNTIME_PERMISSIONS">
+            <intent-filter android:priority="1">
+                <action android:name="android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.android.healthconnect.controller.onboarding.OnboardingActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat" />
+
+        <service
+            android:name=".quicksettings.QuickSettingsService"
+            android:exported="true"
+            android:icon="@drawable/health_connect_logo"
+            android:label="@string/app_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+    </application>
+
+    <queries>
+        <intent>
+            <!-- An intent action to get package visibility into client apps. See more at b/193547946 -->
+            <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+            <category android:name="android.intent.category.HEALTH" />
+        </intent>
+    </queries>
+
+    <uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" />
 </manifest>
