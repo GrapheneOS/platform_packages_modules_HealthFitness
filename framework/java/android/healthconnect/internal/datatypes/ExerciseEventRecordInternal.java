@@ -16,34 +16,36 @@
 package android.healthconnect.internal.datatypes;
 
 import android.annotation.NonNull;
+import android.healthconnect.datatypes.ExerciseEventRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.datatypes.StepsRecord;
 import android.os.Parcel;
 
 /**
- * @see StepsRecord
+ * @see ExerciseEventRecord
  * @hide
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
-public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecord> {
-    private long mCount;
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_EXERCISE_EVENT)
+public final class ExerciseEventRecordInternal extends IntervalRecordInternal<ExerciseEventRecord> {
+    private int mEventType;
 
-    public long getCount() {
-        return mCount;
+    @ExerciseEventRecord.ExerciseEventType.ExerciseEventTypes
+    public int getEventType() {
+        return mEventType;
     }
 
-    /** returns this object with the specified count */
+    /** returns this object with the specified eventType */
     @NonNull
-    public StepsRecordInternal setCount(long count) {
-        this.mCount = count;
+    public ExerciseEventRecordInternal setEventType(int eventType) {
+        this.mEventType = eventType;
         return this;
     }
 
     @NonNull
     @Override
-    public StepsRecord toExternalRecord() {
-        return new StepsRecord.Builder(buildMetaData(), getStartTime(), getEndTime(), getCount())
+    public ExerciseEventRecord toExternalRecord() {
+        return new ExerciseEventRecord.Builder(
+                        buildMetaData(), getStartTime(), getEndTime(), getEventType())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .build();
@@ -51,16 +53,16 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
 
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mCount = parcel.readLong();
+        mEventType = parcel.readInt();
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull StepsRecord stepsRecord) {
-        mCount = stepsRecord.getCount();
+    void populateIntervalRecordFrom(@NonNull ExerciseEventRecord exerciseEventRecord) {
+        mEventType = exerciseEventRecord.getEventType();
     }
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
-        parcel.writeLong(mCount);
+        parcel.writeInt(mEventType);
     }
 }

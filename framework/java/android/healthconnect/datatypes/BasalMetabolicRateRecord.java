@@ -45,6 +45,7 @@ public class BasalMetabolicRateRecord extends InstantRecord {
                 @NonNull Metadata metadata,
                 @NonNull Instant time,
                 @NonNull Power basalMetabolicRate) {
+            Objects.requireNonNull(basalMetabolicRate);
             mMetadata = metadata;
             mTime = time;
             mBasalMetabolicRate = basalMetabolicRate;

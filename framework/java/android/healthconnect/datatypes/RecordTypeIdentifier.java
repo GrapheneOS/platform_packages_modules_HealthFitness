@@ -35,6 +35,22 @@ public final class RecordTypeIdentifier {
 
     // Interval Records
     public static final int RECORD_TYPE_STEPS = 1;
+    public static final int RECORD_TYPE_EXERCISE_SESSION = 2;
+    public static final int RECORD_TYPE_ACTIVE_CALORIES_BURNED = 3;
+    public static final int RECORD_TYPE_EXERCISE_REPETITIONS = 4;
+    public static final int RECORD_TYPE_HYDRATION = 5;
+    public static final int RECORD_TYPE_ELEVATION_GAINED = 6;
+    public static final int RECORD_TYPE_SWIMMING_STROKES = 7;
+    public static final int RECORD_TYPE_EXERCISE_EVENT = 8;
+    public static final int RECORD_TYPE_FLOORS_CLIMBED = 9;
+    public static final int RECORD_TYPE_WHEELCHAIR_PUSHES = 10;
+    public static final int RECORD_TYPE_DISTANCE = 11;
+    public static final int RECORD_TYPE_SLEEP_SESSION = 12;
+    public static final int RECORD_TYPE_NUTRITION = 13;
+    public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 14;
+    public static final int RECORD_TYPE_SLEEP_STAGE = 15;
+    public static final int RECORD_TYPE_EXERCISE_LAP = 16;
+
     // Series Records
     public static final int RECORD_TYPE_HEART_RATE = 17;
     public static final int RECORD_TYPE_CYCLING_PEDALING_CADENCE = 18;
@@ -55,7 +71,22 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_CYCLING_PEDALING_CADENCE,
         RECORD_TYPE_POWER,
         RECORD_TYPE_SPEED,
-        RECORD_TYPE_STEPS_CADENCE
+        RECORD_TYPE_STEPS_CADENCE,
+        RECORD_TYPE_DISTANCE,
+        RECORD_TYPE_WHEELCHAIR_PUSHES,
+        RECORD_TYPE_EXERCISE_SESSION,
+        RECORD_TYPE_TOTAL_CALORIES_BURNED,
+        RECORD_TYPE_SWIMMING_STROKES,
+        RECORD_TYPE_FLOORS_CLIMBED,
+        RECORD_TYPE_ELEVATION_GAINED,
+        RECORD_TYPE_ACTIVE_CALORIES_BURNED,
+        RECORD_TYPE_HYDRATION,
+        RECORD_TYPE_SLEEP_SESSION,
+        RECORD_TYPE_EXERCISE_REPETITIONS,
+        RECORD_TYPE_SLEEP_STAGE,
+        RECORD_TYPE_EXERCISE_EVENT,
+        RECORD_TYPE_EXERCISE_LAP,
+        RECORD_TYPE_NUTRITION
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}

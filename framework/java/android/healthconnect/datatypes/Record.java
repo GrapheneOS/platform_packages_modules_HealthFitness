@@ -23,6 +23,7 @@ import java.util.Objects;
 
 /** A base class for all record classes */
 public abstract class Record {
+
     private final Metadata mMetadata;
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 

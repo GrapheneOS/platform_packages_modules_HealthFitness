@@ -171,12 +171,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     abstract void populateContentValues(
             @NonNull ContentValues contentValues, @NonNull T recordInternal);
 
-    /**
-     * Child classes implementation should populate the values to the {@code record} using the
-     * cursor {@code cursor} queried from the DB .
-     */
-    abstract void populateRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
-
     List<UpsertTableRequest> getChildTableUpsertRequests(T record) {
         return Collections.emptyList();
     }
@@ -226,4 +220,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
         return columnInfo;
     }
+
+    /**
+     * Child classes implementation should populate the values to the {@code record} using the
+     * cursor {@code cursor} queried from the DB .
+     */
+    abstract void populateRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
 }

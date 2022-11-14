@@ -16,34 +16,40 @@
 package android.healthconnect.internal.datatypes;
 
 import android.annotation.NonNull;
+import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.datatypes.StepsRecord;
+import android.healthconnect.datatypes.units.Energy;
 import android.os.Parcel;
 
 /**
- * @see StepsRecord
+ * @see ActiveCaloriesBurnedRecord
  * @hide
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
-public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecord> {
-    private long mCount;
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED)
+public final class ActiveCaloriesBurnedRecordInternal
+        extends IntervalRecordInternal<ActiveCaloriesBurnedRecord> {
+    private double mEnergy;
 
-    public long getCount() {
-        return mCount;
+    public double getEnergy() {
+        return mEnergy;
     }
 
-    /** returns this object with the specified count */
+    /** returns this object with the specified energy */
     @NonNull
-    public StepsRecordInternal setCount(long count) {
-        this.mCount = count;
+    public ActiveCaloriesBurnedRecordInternal setEnergy(double energy) {
+        this.mEnergy = energy;
         return this;
     }
 
     @NonNull
     @Override
-    public StepsRecord toExternalRecord() {
-        return new StepsRecord.Builder(buildMetaData(), getStartTime(), getEndTime(), getCount())
+    public ActiveCaloriesBurnedRecord toExternalRecord() {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        buildMetaData(),
+                        getStartTime(),
+                        getEndTime(),
+                        Energy.fromJoules(getEnergy()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .build();
@@ -51,16 +57,17 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
 
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mCount = parcel.readLong();
+        mEnergy = parcel.readDouble();
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull StepsRecord stepsRecord) {
-        mCount = stepsRecord.getCount();
+    void populateIntervalRecordFrom(
+            @NonNull ActiveCaloriesBurnedRecord activeCaloriesBurnedRecord) {
+        mEnergy = activeCaloriesBurnedRecord.getEnergy().getInJoules();
     }
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
-        parcel.writeLong(mCount);
+        parcel.writeDouble(mEnergy);
     }
 }

@@ -34,7 +34,7 @@ public final class Length implements Comparable<Length> {
      * @param value value to be set as meters.
      */
     @NonNull
-    public Length fromMeters(double value) {
+    public static Length fromMeters(double value) {
         return new Length(value);
     }
 
