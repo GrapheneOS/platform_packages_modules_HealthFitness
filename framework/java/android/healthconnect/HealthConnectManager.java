@@ -28,7 +28,10 @@ import android.content.Context;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
+import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
+import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
@@ -258,6 +261,60 @@ public class HealthConnectManager {
         }
     }
 
+    /**
+     * API to read records based on {@link RecordIdFilter}.
+     *
+     * @param request ReadRecordsRequestUsingIds request containing a list of {@link RecordIdFilter}
+     *     and recordType to perform read operation.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    public <T extends Record> void readRecords(
+            @NonNull ReadRecordsRequestUsingIds<T> request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.readRecords(
+                    mContext.getPackageName(),
+                    new ReadRecordsRequestParcel(
+                            new RecordIdFiltersParcel(request.getRecordIdFilters())),
+                    new IReadRecordsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(RecordsParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            try {
+                                executor.execute(
+                                        () -> callback.onResult(
+                                                new ReadRecordsResponse(
+                                                        mInternalExternalRecordConverter
+                                                                .getExternalRecords(
+                                                                        parcel.getRecords()))));
+                            } catch (ClassCastException castException) {
+                                HealthConnectException healthConnectException =
+                                        new HealthConnectException(
+                                                HealthConnectException.ERROR_INTERNAL,
+                                                castException.getMessage());
+                                returnError(
+                                        executor,
+                                        new HealthConnectExceptionParcel(healthConnectException),
+                                        callback);
+                            }
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
     private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {
         int i = 0;
         for (Record record : records) {
@@ -265,5 +322,13 @@ public class HealthConnectManager {
         }
 
         return records;
+    }
+
+    private void returnError(
+            Executor executor,
+            HealthConnectExceptionParcel exception,
+            OutcomeReceiver<?, HealthConnectException> callback) {
+        Binder.clearCallingIdentity();
+        executor.execute(() -> callback.onError(exception.getHealthConnectException()));
     }
 }

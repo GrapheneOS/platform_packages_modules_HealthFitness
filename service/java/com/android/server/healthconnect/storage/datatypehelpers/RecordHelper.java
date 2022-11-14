@@ -20,17 +20,24 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +50,7 @@ import java.util.Objects;
  */
 public abstract class RecordHelper<T extends RecordInternal<?>> {
     public static final String PRIMARY_COLUMN_NAME = "row_id";
-    private static final String UUID_COLUMN_NAME = "uuid";
+    public static final String UUID_COLUMN_NAME = "uuid";
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
@@ -93,6 +100,46 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
     }
 
+    /** Returns ReadTableRequest for the record corresponding to this helper */
+    public ReadTableRequest getReadTableRequest() {
+        return new ReadTableRequest(getMainTableName())
+                .setInnerJoinClause(getInnerJoinFoReadRequest());
+    }
+
+    /** Returns List of Internal records from the cursor */
+    public List<RecordInternal<?>> getInternalRecords(Cursor cursor) {
+        List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            try {
+                @SuppressWarnings("unchecked")
+                T record =
+                        (T)
+                                RecordMapper.getInstance()
+                                        .getRecordIdToInternalRecordClassMap()
+                                        .get(getRecordIdentifier())
+                                        .getConstructor()
+                                        .newInstance();
+                record.setUuid(getCursorString(cursor, UUID_COLUMN_NAME));
+                record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
+                record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
+                record.setClientRecordVersion(
+                        getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
+                long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+                DeviceInfoHelper.getInstance().populateRecordWithValue(deviceInfoId, record);
+                long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
+                AppInfoHelper.getInstance().populateRecordWithValue(appInfoId, record);
+                populateRecordValue(cursor, record);
+                recordInternalList.add(record);
+            } catch (InstantiationException
+                    | IllegalAccessException
+                    | NoSuchMethodException
+                    | InvocationTargetException exception) {
+                throw new IllegalArgumentException(exception);
+            }
+        }
+        return recordInternalList;
+    }
+
     /**
      * Child classes should implement this if it wants to create additional tables, apart from the
      * main table.
@@ -124,8 +171,18 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     abstract void populateContentValues(
             @NonNull ContentValues contentValues, @NonNull T recordInternal);
 
+    /**
+     * Child classes implementation should populate the values to the {@code record} using the
+     * cursor {@code cursor} queried from the DB .
+     */
+    abstract void populateRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
+
     List<UpsertTableRequest> getChildTableUpsertRequests(T record) {
         return Collections.emptyList();
+    }
+
+    SqlJoin getInnerJoinFoReadRequest() {
+        return null;
     }
 
     @NonNull

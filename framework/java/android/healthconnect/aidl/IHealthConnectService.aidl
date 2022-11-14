@@ -2,6 +2,8 @@ package android.healthconnect.aidl;
 
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
+import android.healthconnect.aidl.IReadRecordsResponseCallback;
+import android.healthconnect.aidl.ReadRecordsRequestParcel;
 
 import android.os.UserHandle;
 
@@ -32,4 +34,17 @@ interface IHealthConnectService {
         String packageName,
         in RecordsParcel recordsParcel,
         in IInsertRecordsResponseCallback callback);
+
+    /**
+     * Reads from the HealthConnect database.
+     *
+     * @param packageName name of the package reading the record.
+     * @param request represents the request to be read.
+     * @param callback Callback to receive result of performing this operation.
+     * {@hide}
+     */
+    void readRecords(
+        in String packageName,
+        in ReadRecordsRequestParcel request,
+        in IReadRecordsResponseCallback callback);
 }

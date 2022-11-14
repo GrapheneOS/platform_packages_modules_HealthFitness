@@ -17,9 +17,12 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.healthconnect.internal.datatypes.IntervalRecordInternal;
 import android.util.Pair;
 
@@ -74,6 +77,18 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
 
         populateSpecificContentValues(contentValues, intervalRecord);
     }
+
+    @Override
+    final void populateRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal) {
+        recordInternal.setStartTime(getCursorLong(cursor, START_TIME_COLUMN_NAME));
+        recordInternal.setStartZoneOffset(getCursorInt(cursor, START_ZONE_OFFSET_COLUMN_NAME));
+        recordInternal.setEndTime(getCursorLong(cursor, END_TIME_COLUMN_NAME));
+        recordInternal.setEndZoneOffset(getCursorInt(cursor, END_ZONE_OFFSET_COLUMN_NAME));
+        populateSpecificRecordValue(cursor, recordInternal);
+    }
+
+    /** This implementation should populate record with datatype specific values from the table. */
+    abstract void populateSpecificRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
 
     abstract void populateSpecificContentValues(
             @NonNull ContentValues contentValues, @NonNull T intervalRecordInternal);

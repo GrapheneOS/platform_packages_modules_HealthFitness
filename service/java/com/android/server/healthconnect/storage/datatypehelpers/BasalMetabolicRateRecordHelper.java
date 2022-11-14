@@ -17,9 +17,11 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
@@ -51,6 +53,13 @@ public final class BasalMetabolicRateRecordHelper
             @NonNull BasalMetabolicRateRecordInternal basalMetabolicRateRecord) {
         contentValues.put(
                 BASAL_METABOLIC_RATE_COLUMN_NAME, basalMetabolicRateRecord.getBasalMetabolicRate());
+    }
+
+    @Override
+    protected void populateSpecificRecordValue(
+            @NonNull Cursor cursor, @NonNull BasalMetabolicRateRecordInternal recordInternal) {
+        recordInternal.setBasalMetabolicRate(
+                getCursorDouble(cursor, BASAL_METABOLIC_RATE_COLUMN_NAME));
     }
 
     @Override

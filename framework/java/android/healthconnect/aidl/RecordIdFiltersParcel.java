@@ -16,7 +16,7 @@
 
 package android.healthconnect.aidl;
 
-import android.healthconnect.RecordId;
+import android.healthconnect.RecordIdFilter;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -27,31 +27,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** @hide */
-public final class RecordIdsParcel implements Parcelable {
-    public static final Creator<RecordIdsParcel> CREATOR =
-            new Creator<RecordIdsParcel>() {
+public final class RecordIdFiltersParcel implements Parcelable {
+    public static final Creator<RecordIdFiltersParcel> CREATOR =
+            new Creator<RecordIdFiltersParcel>() {
                 @Override
-                public RecordIdsParcel createFromParcel(Parcel in) {
-                    return new RecordIdsParcel(in);
+                public RecordIdFiltersParcel createFromParcel(Parcel in) {
+                    return new RecordIdFiltersParcel(in);
                 }
 
                 @Override
-                public RecordIdsParcel[] newArray(int size) {
-                    return new RecordIdsParcel[size];
+                public RecordIdFiltersParcel[] newArray(int size) {
+                    return new RecordIdFiltersParcel[size];
                 }
             };
-    private final List<RecordId> mRecordIds;
 
-    public RecordIdsParcel(List<RecordId> recordIds) {
-        mRecordIds = recordIds;
+    private final List<RecordIdFilter> mRecordIdFilters;
+
+    public RecordIdFiltersParcel(List<RecordIdFilter> recordIdFilters) {
+        mRecordIdFilters = recordIdFilters;
     }
 
-    private RecordIdsParcel(Parcel in) {
+    private RecordIdFiltersParcel(Parcel in) {
         int size = in.readInt();
-        mRecordIds = new ArrayList<>(size);
+        mRecordIdFilters = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            mRecordIds.add(
-                    new RecordId.Builder(
+            mRecordIdFilters.add(
+                    new RecordIdFilter.Builder(
                                     RecordMapper.getInstance()
                                             .getRecordIdToExternalRecordClassMap()
                                             .get(in.readInt()))
@@ -61,8 +62,8 @@ public final class RecordIdsParcel implements Parcelable {
         }
     }
 
-    public List<RecordId> getRecordIds() {
-        return mRecordIds;
+    public List<RecordIdFilter> getRecordIdFilters() {
+        return mRecordIdFilters;
     }
 
     @Override
@@ -72,8 +73,8 @@ public final class RecordIdsParcel implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(mRecordIds.size());
-        mRecordIds.forEach(
+        dest.writeInt(mRecordIdFilters.size());
+        mRecordIdFilters.forEach(
                 (recordId -> {
                     dest.writeInt(
                             RecordMapper.getInstance().getRecordType(recordId.getRecordType()));

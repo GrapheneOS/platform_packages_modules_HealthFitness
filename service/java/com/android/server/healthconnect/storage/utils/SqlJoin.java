@@ -46,4 +46,8 @@ public final class SqlJoin {
                 + "."
                 + mJoiningColumnNameToMatch;
     }
+
+    public String getOrderByClause() {
+        return " ORDER BY " + mSelfColumnNameToMatch;
+    }
 }

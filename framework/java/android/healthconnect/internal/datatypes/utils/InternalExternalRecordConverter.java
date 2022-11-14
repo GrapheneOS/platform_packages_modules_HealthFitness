@@ -76,7 +76,7 @@ public final class InternalExternalRecordConverter {
 
     /** Returns a record for {@param record} */
     @NonNull
-    public List<Record> getExternalRecord(@NonNull List<RecordInternal<?>> recordInternals) {
+    public List<Record> getExternalRecords(@NonNull List<RecordInternal<?>> recordInternals) {
         List<Record> externalRecordList = new ArrayList<>(recordInternals.size());
 
         for (RecordInternal<?> recordInternal : recordInternals) {

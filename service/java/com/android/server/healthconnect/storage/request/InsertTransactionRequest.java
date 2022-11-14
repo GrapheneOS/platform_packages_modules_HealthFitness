@@ -54,10 +54,10 @@ public class InsertTransactionRequest {
             // Always generate an uuid field for insert requests, we should not trust what is
             // already present.
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
-            StorageUtils.addNameBasedUUIDTo(recordInternal);
-            mUUIDsInOrder.add(recordInternal.getUuid());
             DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);
             AppInfoHelper.getInstance().populateAppInfoId(recordInternal, context);
+            StorageUtils.addNameBasedUUIDTo(recordInternal);
+            mUUIDsInOrder.add(recordInternal.getUuid());
             addRequest(recordInternal);
         }
     }

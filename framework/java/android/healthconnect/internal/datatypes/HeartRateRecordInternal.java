@@ -39,7 +39,7 @@ public class HeartRateRecordInternal
         private final long mBeatsPerMinute;
         private final long mEpochMillis;
 
-        HeartRateSample(long beatsPerMinute, long epochMillis) {
+        public HeartRateSample(long beatsPerMinute, long epochMillis) {
             mBeatsPerMinute = beatsPerMinute;
             mEpochMillis = epochMillis;
         }
@@ -59,6 +59,12 @@ public class HeartRateRecordInternal
     @Nullable
     public List<HeartRateSample> getSamples() {
         return mHeartRateHeartRateSamples;
+    }
+
+    @Override
+    public HeartRateRecordInternal setSamples(List<? extends Sample> samples) {
+        this.mHeartRateHeartRateSamples = (List<HeartRateSample>) samples;
+        return this;
     }
 
     @Override
