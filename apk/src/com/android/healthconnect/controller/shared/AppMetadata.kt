@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.android.healthconnect.controller.dataaccess
+package com.android.healthconnect.controller.shared
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 
-/** Represents an app with the necessary information to display across the Health Connect UI. */
-// TODO(b/245513815): Add inactive status.
-data class AppInfo(@StringRes val appName: Int, @DrawableRes val icon: Int)
+/** Represents an app being displayed in Health Connect. */
+data class AppMetadata(@StringRes val appName: Int, @DrawableRes val icon: Int)
 
-// TODO(b/245513815): Remove these placeholder constants after API integration.
-val APP_1 = AppInfo(R.string.app_1, R.drawable.ic_sleep)
-val APP_2 = AppInfo(R.string.app_2, R.drawable.ic_health_data)
-val EXAMPLE_APPS = listOf(APP_1, APP_2)
+// Placeholder constants
+val APP_1 = AppMetadata(R.string.app_1, R.drawable.ic_sleep)
+val APP_2 = AppMetadata(R.string.app_2, R.drawable.ic_health_data)
+// Placeholder constants
+val APP_3 = AppMetadata(R.string.app_3, R.drawable.ic_cycle_tracking)
+val APP_4 = AppMetadata(R.string.app_4, R.drawable.ic_vitals)

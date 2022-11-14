@@ -54,6 +54,6 @@ class RecentAccessFragmentTest {
 
         launchFragment<RecentAccessFragment>(Bundle())
         onView(withText(R.string.today_header)).check(matches(isDisplayed()))
-        onView(withText(R.string.recent_app_1)).check(matches(isDisplayed()))
+        onView(withText(R.string.app_1)).check(matches(isDisplayed()))
     }
 }

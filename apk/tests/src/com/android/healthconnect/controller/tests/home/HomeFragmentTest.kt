@@ -60,7 +60,7 @@ class HomeFragmentTest {
         onView(withText(R.string.data_subtitle)).check(matches(isDisplayed()))
 
         onView(withText(R.string.recent_access_header)).check(matches(isDisplayed()))
-        onView(withText(R.string.recent_app_1)).check(matches(isDisplayed()))
+        onView(withText(R.string.app_1)).check(matches(isDisplayed()))
         onView(withText(R.string.see_all_recent_access)).check(matches(isDisplayed()))
     }
 

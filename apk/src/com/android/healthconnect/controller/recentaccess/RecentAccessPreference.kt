@@ -42,7 +42,7 @@ constructor(
 ) : Preference(context) {
 
     init {
-        super.setTitle(recentAccessApp.appName)
+        super.setTitle(recentAccessApp.metadata.appName)
 
         if (isHistory) {
             val writeData: String = recentAccessApp.dataTypesWritten.joinToString(", ")
@@ -77,7 +77,7 @@ constructor(
 
         val recentAccessAppIcon: ImageView? =
             recentAccessWidget?.findViewById(R.id.recent_access_app_icon) as ImageView?
-        recentAccessAppIcon?.setImageResource(recentAccessApp.icon)
+        recentAccessAppIcon?.setImageResource(recentAccessApp.metadata.icon)
 
         val dashLine: View? = recentAccessWidget?.findViewById(R.id.recent_access_dash_line)
 

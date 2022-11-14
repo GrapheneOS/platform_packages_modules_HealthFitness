@@ -16,33 +16,25 @@
 
 package com.android.healthconnect.controller.recentaccess
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.APP_1
+import com.android.healthconnect.controller.shared.APP_2
+import com.android.healthconnect.controller.shared.AppMetadata
 import com.google.common.collect.ImmutableSet
 import java.time.Instant
 
 /** Represents one app that recently accessed health data. */
 data class RecentAccessApp(
-    @StringRes val appName: Int,
-    @DrawableRes val icon: Int,
+    val metadata: AppMetadata,
     val instantTime: Instant,
     val dataTypesWritten: ImmutableSet<String>
 )
 
 // Placeholder constants
 val RECENT_APP_1 =
-    RecentAccessApp(
-        R.string.recent_app_1,
-        R.drawable.ic_sleep,
-        Instant.parse("2022-10-20T18:40:13.00Z"),
-        ImmutableSet.of("Read"))
+    RecentAccessApp(APP_1, Instant.parse("2022-10-20T18:40:13.00Z"), ImmutableSet.of("Read"))
 
 val RECENT_APP_2 =
     RecentAccessApp(
-        R.string.recent_app_2,
-        R.drawable.ic_health_data,
-        Instant.parse("2022-10-20T19:53:14.00Z"),
-        ImmutableSet.of("Read", "Write"))
+        APP_2, Instant.parse("2022-10-20T19:53:14.00Z"), ImmutableSet.of("Read", "Write"))
 
 val RECENT_ACCESS_APPS = listOf(RECENT_APP_1, RECENT_APP_2)
