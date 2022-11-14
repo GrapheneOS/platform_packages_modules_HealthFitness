@@ -21,6 +21,7 @@ import android.healthconnect.datatypes.InstantRecord;
 import android.os.Parcel;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 /**
@@ -59,6 +60,15 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
     public InstantRecordInternal<T> setZoneOffset(int zoneOffset) {
         mZoneOffset = zoneOffset;
         return this;
+    }
+
+    /**
+     * @return the {@link LocalDate} object of this activity time.
+     */
+    @Override
+    @NonNull
+    public LocalDate getLocalDate() {
+        return LocalDate.ofInstant(this.getTime(), this.getZoneOffset());
     }
 
     @Override

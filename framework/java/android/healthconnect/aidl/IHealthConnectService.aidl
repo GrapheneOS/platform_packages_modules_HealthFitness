@@ -1,5 +1,6 @@
 package android.healthconnect.aidl;
 
+import android.healthconnect.aidl.ActivityDatesRequestParcel;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
@@ -17,6 +18,7 @@ import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.UpdatePriorityRequestParcel;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
+import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
 
@@ -165,4 +167,15 @@ interface IHealthConnectService {
     void queryAccessLogs(
         String packageName,
         in IAccessLogsResponseCallback callback);
+
+    /**
+     * Returns a list of unique dates for which at least one record type has at least one entry.
+     *
+     * @param recordTypes List of record types classes for which to get the activity dates.
+     * @param callback Callback to receive the result of performing this operation.
+     * {@hide}
+     */
+    void getActivityDates(
+        in ActivityDatesRequestParcel recordTypes,
+        in IActivityDatesResponseCallback callback);
 }

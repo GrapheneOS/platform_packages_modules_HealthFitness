@@ -29,6 +29,7 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -240,6 +241,11 @@ public abstract class RecordInternal<T extends Record> {
                                 .build())
                 .build();
     }
+
+    /**
+     * @return the {@link LocalDate} object of this activity start time.
+     */
+    public abstract LocalDate getLocalDate();
 
     /**
      * Populate {@code bundle} with the data required to un-bundle self. This is used suring IPC

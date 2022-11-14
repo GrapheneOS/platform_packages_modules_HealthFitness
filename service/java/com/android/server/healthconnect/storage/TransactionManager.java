@@ -24,12 +24,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.Constants;
-import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -37,9 +34,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
-import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
-import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -105,6 +99,25 @@ public class TransactionManager {
             }
 
             return request.getUUIdsInOrder();
+        }
+    }
+
+    /**
+     * Inserts all the {@link UpsertTableRequest} into the HealthConnect database.
+     *
+     * @param upsertTableRequests a list of insert table requests.
+     */
+    public void insertAll(@NonNull List<UpsertTableRequest> upsertTableRequests)
+            throws SQLiteException {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.beginTransaction();
+            try {
+                upsertTableRequests.forEach(
+                        (upsertTableRequest) -> insertOrReplace(db, upsertTableRequest));
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
         }
     }
 
@@ -262,6 +275,11 @@ public class TransactionManager {
         }
     }
 
+    /** Note: it is the responsibility of the requester to manage and close {@code db} */
+    public SQLiteDatabase getWritableDb() {
+        return mHealthConnectDatabase.getWritableDatabase();
+    }
+
     /**
      * Updates all the {@link RecordInternal} in {@code request} into the HealthConnect database.
      *
@@ -290,7 +308,8 @@ public class TransactionManager {
             ArrayList<DataOrigin> packageNamesForDatatype = new ArrayList<>();
             try (Cursor cursorForDistinctPackageNames =
                     db.rawQuery(
-                            /* sql query */ recordHelper
+                            /* sql query */
+                            recordHelper
                                     .getReadTableRequestWithDistinctAppInfoIds()
                                     .getReadCommand(),
                             /* selectionArgs */ null)) {
@@ -437,5 +456,9 @@ public class TransactionManager {
                         SQLiteDatabase.CONFLICT_REPLACE);
         request.getChildTableRequests()
                 .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+    }
+
+    private void insertOrReplace(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
+        db.replace(request.getTable(), null, request.getContentValues());
     }
 }
