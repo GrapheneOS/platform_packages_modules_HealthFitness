@@ -19,6 +19,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,19 +31,24 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permissions)
         setTitle(R.string.permissions_and_data_header)
-        getSupportFragmentManager()
-            .beginTransaction()
-            .replace(R.id.permission_content, PermissionsFragment.newInstance())
-            .commit()
-        val allowButton: View? = findViewById(R.id.allow)
-        val permissions: Array<out String> =
+
+        val permissionsStrings: Array<out String> =
             getIntent()
                 .getStringArrayExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES)
                 .orEmpty()
-        val grants = Array<Int?>(permissions.size) { PackageManager.PERMISSION_DENIED }
+        val permissions: List<HealthPermission> =
+            permissionsStrings.mapNotNull { permissionString ->
+                HealthPermission.fromPermissionString(permissionString)
+            }
+        getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.permission_content, PermissionsFragment.newInstance(permissions))
+            .commit()
+        val allowButton: View? = findViewById(R.id.allow)
+        val grants = Array<Int?>(permissionsStrings.size) { PackageManager.PERMISSION_DENIED }
         allowButton?.setOnClickListener {
             val result = Intent()
-            result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
+            result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, permissionsStrings)
             result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS, grants)
             setResult(Activity.RESULT_OK, result)
             finish()
