@@ -24,6 +24,7 @@ import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
@@ -286,26 +287,29 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getChangeLogs(
             @NonNull String packageName,
-            @NonNull long token,
+            @NonNull ChangeLogsRequestParcel token,
             IChangeLogsResponseCallback callback) {
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
                         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
-                                ChangeLogsRequestHelper.getRequest(token);
-                        final Map<Integer, ChangeLogsHelper.ChangeLogs> operationTypeToUUIds =
+                                ChangeLogsRequestHelper.getRequest(packageName, token.getToken());
+                        final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                                 ChangeLogsHelper.getInstance()
-                                        .getChangeLogs(changeLogsTokenRequest);
+                                        .getChangeLogs(changeLogsTokenRequest, token.getPageSize());
 
                         List<RecordInternal<?>> recordInternals =
                                 mTransactionManager.readRecords(
                                         new ReadTransactionRequest(
                                                 ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                                                        operationTypeToUUIds)));
+                                                        changeLogsResponse.getChangeLogsMap())));
                         callback.onResult(
                                 new ChangeLogsResponseParcel(
                                         new RecordsParcel(recordInternals),
-                                        ChangeLogsHelper.getDeletedIds(operationTypeToUUIds)));
+                                        ChangeLogsHelper.getDeletedIds(
+                                                changeLogsResponse.getChangeLogsMap()),
+                                        changeLogsResponse.getNextPageToken(),
+                                        changeLogsResponse.hasMorePages()));
                     } catch (IllegalArgumentException illegalArgumentException) {
                         Slog.e(TAG, "IllegalArgumentException: ", illegalArgumentException);
                         tryAndThrowException(

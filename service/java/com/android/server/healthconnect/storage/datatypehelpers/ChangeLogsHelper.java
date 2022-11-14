@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.healthconnect.Constants.DEFAULT_INT;
+import static android.healthconnect.Constants.DEFAULT_LONG;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
@@ -129,6 +130,39 @@ public final class ChangeLogsHelper {
         }
     }
 
+    /** A class to represent the token for pagination for the change logs response */
+    public static final class ChangeLogsResponse {
+        private final Map<Integer, ChangeLogsHelper.ChangeLogs> mChangeLogsMap;
+        private final String mNextPageToken;
+        private final boolean mHasMorePages;
+
+        public ChangeLogsResponse(
+                @NonNull Map<Integer, ChangeLogsHelper.ChangeLogs> changeLogsMap,
+                @NonNull String nextPageToken,
+                boolean hasMorePages) {
+            mChangeLogsMap = changeLogsMap;
+            mNextPageToken = nextPageToken;
+            mHasMorePages = hasMorePages;
+        }
+
+        /** Returns map of operation type to change logs */
+        @NonNull
+        public Map<Integer, ChangeLogs> getChangeLogsMap() {
+            return mChangeLogsMap;
+        }
+
+        /** Returns the next page token for the change logs */
+        @NonNull
+        public String getNextPageToken() {
+            return mNextPageToken;
+        }
+
+        /** Returns true if there are more change logs to be read */
+        public boolean hasMorePages() {
+            return mHasMorePages;
+        }
+    }
+
     public static final int UPSERT = 0;
     public static final int DELETE = 1;
 
@@ -180,16 +214,13 @@ public final class ChangeLogsHelper {
                 .createIndexOn(APP_ID_COLUMN_NAME);
     }
 
-    /**
-     * @return recordId -> ChangeLogs
-     */
-    public Map<Integer, ChangeLogs> getChangeLogs(
-            ChangeLogsRequestHelper.TokenRequest changeLogTokenRequest) {
+    /** Returns change logs post the time when {@code changeLogTokenRequest} was generated */
+    public ChangeLogsResponse getChangeLogs(
+            ChangeLogsRequestHelper.TokenRequest changeLogTokenRequest, int pageSize) {
+        long token = changeLogTokenRequest.getRowIdChangeLogs();
         WhereClauses whereClause =
                 new WhereClauses()
-                        .addWhereGreaterThanClause(
-                                PRIMARY_COLUMN_NAME,
-                                String.valueOf(changeLogTokenRequest.getRowIdChangeLogs()));
+                        .addWhereGreaterThanClause(PRIMARY_COLUMN_NAME, String.valueOf(token));
         if (!changeLogTokenRequest.getRecordTypes().isEmpty()) {
             whereClause.addWhereInIntsClause(
                     RECORD_TYPE_COLUMN_NAME, changeLogTokenRequest.getRecordTypes());
@@ -202,34 +233,50 @@ public final class ChangeLogsHelper {
                             .getAppInfoIds(changeLogTokenRequest.getPackageNamesToFilter()));
         }
 
+        // We set limit size to pageSize + 1,so that if number of records returned is more than
+        // pageSize we know there are more records available to return for the next read.
         final ReadTableRequest readTableRequest =
-                new ReadTableRequest(TABLE_NAME).setWhereClause(whereClause);
+                new ReadTableRequest(TABLE_NAME).setWhereClause(whereClause).setLimit(pageSize + 1);
 
         Map<Integer, ChangeLogs> operationToChangeLogMap = new ArrayMap<>();
         TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
+        long nextChangesToken = DEFAULT_LONG;
+        boolean hasMoreRecords = false;
         try (SQLiteDatabase db = transactionManager.getReadableDb();
                 Cursor cursor = transactionManager.read(db, readTableRequest)) {
+            int count = 0;
             while (cursor.moveToNext()) {
-                addChangeLogs(cursor, operationToChangeLogMap);
+                if (count >= pageSize) {
+                    hasMoreRecords = true;
+                    break;
+                }
+                count += addChangeLogs(cursor, operationToChangeLogMap);
+                nextChangesToken = getCursorInt(cursor, PRIMARY_COLUMN_NAME);
             }
         }
 
-        return operationToChangeLogMap;
+        String nextToken =
+                nextChangesToken != DEFAULT_LONG
+                        ? ChangeLogsRequestHelper.getNextPageToken(
+                                changeLogTokenRequest, nextChangesToken)
+                        : String.valueOf(token);
+
+        return new ChangeLogsResponse(operationToChangeLogMap, nextToken, hasMoreRecords);
     }
 
     public long getLatestRowId() {
         return TransactionManager.getInitialisedInstance().getLastRowIdFor(TABLE_NAME);
     }
 
-    private void addChangeLogs(Cursor cursor, Map<Integer, ChangeLogs> changeLogs) {
+    private int addChangeLogs(Cursor cursor, Map<Integer, ChangeLogs> changeLogs) {
         @RecordTypeIdentifier.RecordType
         int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
         @OperationType int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
+        List<String> uuidList = getCursorStringList(cursor, UUIDS_COLUMN_NAME, DELIMITER);
 
         changeLogs.putIfAbsent(operationType, new ChangeLogs(operationType));
-        changeLogs
-                .get(operationType)
-                .addUUIDs(recordType, getCursorStringList(cursor, UUIDS_COLUMN_NAME, DELIMITER));
+        changeLogs.get(operationType).addUUIDs(recordType, uuidList);
+        return uuidList.size();
     }
 
     @NonNull

@@ -24,6 +24,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.healthconnect.ChangeLogTokenRequest;
+import android.healthconnect.ChangeLogsRequest;
+import android.healthconnect.ChangeLogsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
@@ -60,13 +62,13 @@ import java.util.stream.Collectors;
 public class TestUtils {
     private static final String TAG = "HCTestUtils";
 
-    public static Long getChangeLogToken(ChangeLogTokenRequest request)
+    public static String getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
         CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<Long> response = new AtomicReference<>();
+        AtomicReference<String> response = new AtomicReference<>();
         service.getChangeLogToken(
                 request,
                 Executors.newSingleThreadExecutor(),
@@ -109,23 +111,24 @@ public class TestUtils {
         return response.get();
     }
 
-    //    public static ChangeLogsResponse getChangeLogs(long token) throws InterruptedException {
-    //        Context context = ApplicationProvider.getApplicationContext();
-    //        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-    //        assertThat(service).isNotNull();
-    //
-    //        CountDownLatch latch = new CountDownLatch(1);
-    //        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
-    //        service.getChangeLogs(
-    //                token,
-    //                Executors.newSingleThreadExecutor(),
-    //                result -> {
-    //                    response.set(result);
-    //                    latch.countDown();
-    //                });
-    //        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-    //        return response.get();
-    //    }
+    public static ChangeLogsResponse getChangeLogs(ChangeLogsRequest changeLogsRequest)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
+        service.getChangeLogs(
+                changeLogsRequest,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    response.set(result);
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        return response.get();
+    }
 
     public static List<Record> getTestRecords() {
         return Arrays.asList(getStepsRecord(), getHeartRateRecord(), getBasalMetabolicRateRecord());

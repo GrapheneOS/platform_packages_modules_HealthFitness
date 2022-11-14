@@ -16,9 +16,8 @@
 
 package com.android.server.healthconnect.storage.utils;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
-
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
@@ -40,6 +39,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * An util class for HC storage
@@ -157,6 +157,10 @@ public final class StorageUtils {
                 .mapToInt(Integer::valueOf)
                 .boxed()
                 .toList();
+    }
+
+    public static String flattenIntList(List<Integer> values) {
+        return values.stream().map(String::valueOf).collect(Collectors.joining(DELIMITER));
     }
 
     @Nullable

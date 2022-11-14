@@ -1,6 +1,7 @@
 package android.healthconnect.aidl;
 
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
@@ -86,7 +87,7 @@ interface IHealthConnectService {
      */
     void getChangeLogs(
         String packageName,
-        long token,
+        in ChangeLogsRequestParcel token,
         in IChangeLogsResponseCallback callback);
 
     /**

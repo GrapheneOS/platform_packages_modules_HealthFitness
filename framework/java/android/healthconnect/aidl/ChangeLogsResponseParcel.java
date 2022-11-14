@@ -42,25 +42,39 @@ public class ChangeLogsResponseParcel implements Parcelable {
             };
     private final RecordsParcel mUpsertedRecords;
     private final List<String> mDeletedRecords;
+    private final String mNextChangesToken;
+    private final boolean mHasMorePages;
 
     protected ChangeLogsResponseParcel(Parcel in) {
         mUpsertedRecords =
                 in.readParcelable(RecordsParcel.class.getClassLoader(), RecordsParcel.class);
         mDeletedRecords = in.createStringArrayList();
+        mNextChangesToken = in.readString();
+        mHasMorePages = in.readBoolean();
     }
 
-    public ChangeLogsResponseParcel(RecordsParcel upsertedRecords, List<String> deletedRecords) {
+    public ChangeLogsResponseParcel(
+            RecordsParcel upsertedRecords,
+            List<String> deletedRecords,
+            String nextChangesToken,
+            boolean hasMorePages) {
         mUpsertedRecords = upsertedRecords;
         mDeletedRecords = deletedRecords;
+        mNextChangesToken = nextChangesToken;
+        mHasMorePages = hasMorePages;
     }
 
     public ChangeLogsResponse getChangeLogsResponse()
-            throws InvocationTargetException, InstantiationException, IllegalAccessException,
+            throws InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException,
                     NoSuchMethodException {
         return new ChangeLogsResponse(
                 InternalExternalRecordConverter.getInstance()
                         .getExternalRecords(mUpsertedRecords.getRecords()),
-                mDeletedRecords);
+                mDeletedRecords,
+                mNextChangesToken,
+                mHasMorePages);
     }
 
     @Override
@@ -72,5 +86,7 @@ public class ChangeLogsResponseParcel implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeParcelable(mUpsertedRecords, 0);
         dest.writeStringList(mDeletedRecords);
+        dest.writeString(mNextChangesToken);
+        dest.writeBoolean(mHasMorePages);
     }
 }
