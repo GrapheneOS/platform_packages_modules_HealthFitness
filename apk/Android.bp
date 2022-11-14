@@ -22,7 +22,36 @@ filegroup {
         "src/**/*.java",
         "src/**/*.kt",
     ],
-    exclude_srcs: ["src/**/HealthConnectApplication.kt"]
+    exclude_srcs: [
+        ":healthconnectController-permissions-apis",
+        "src/**/HealthConnectApplication.kt"
+    ]
+}
+
+//TODO(b/250880188) Split permission ui to different lib.
+filegroup {
+    name: "healthconnectController-permissions-apis",
+    srcs: [
+        "src/com/android/healthconnect/controller/permissions/api/**/*.kt"
+    ]
+}
+
+java_library {
+    name: "HealthConnectPermissionsApis",
+    srcs: [":healthconnectController-permissions-apis"],
+    sdk_version: "module_current",
+    min_sdk_version: "UpsideDownCake",
+    libs: [
+        "kotlin-annotations",
+        "framework-healthconnect.impl" // permissions ui needs access to healthconnect hidden apis.
+    ], 
+    static_libs: [
+        "kotlin-stdlib",
+        "hilt_android",
+        "guava",
+    ],
+    kotlincflags: ["-Xjvm-default=all"],
+    apex_available: ["com.android.healthconnect"],
 }
 
 android_app_certificate {
@@ -35,7 +64,10 @@ android_library {
     srcs: [":healthConnectController-sources"],
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
-    libs: ["kotlin-annotations"],
+    libs: [
+        "kotlin-annotations",
+        "framework-healthconnect"
+    ],
     static_libs: [
         "com.google.android.material_material",
         "SettingsLibSettingsTheme",
@@ -70,6 +102,7 @@ android_app {
     certificate: ":com.android.healthconnect.controller.certificate",
     static_libs: [
         "HealthConnectLibrary",
+        "HealthConnectPermissionsApis",
         "hilt_android"
     ],
     apex_available: ["com.android.healthconnect"],

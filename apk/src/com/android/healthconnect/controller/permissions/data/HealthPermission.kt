@@ -52,4 +52,12 @@ data class HealthPermission(
             }
         }
     }
+
+    override fun toString(): String {
+        return if (permissionsAccessType == PermissionsAccessType.READ) {
+            "$READ_PERMISSION_PREFIX${healthPermissionType.name}"
+        } else {
+            "$WRITE_PERMISSION_PREFIX${healthPermissionType.name}"
+        }
+    }
 }
