@@ -20,15 +20,13 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
-import android.os.Parcel;
 import android.util.ArrayMap;
 
+import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * A class representing response for {@link HealthConnectManager#aggregate}
- */
+/** A class representing response for {@link HealthConnectManager#aggregate} */
 public final class AggregateRecordsResponse<T> {
     private final Map<AggregationType<T>, AggregateResult<T>> mAggregateResults;
 
@@ -77,30 +75,19 @@ public final class AggregateRecordsResponse<T> {
     }
 
     /**
-     * A class to represent the results of {@link HealthConnectManager} aggregate APIs
-     *
-     * @hide
+     * @return {@link ZoneOffset} for the underlying aggregation record, {@link ZoneOffset#MIN} if
+     *     multiple records were present
      */
-    public static final class AggregateResult<T> {
-        private final T mResult;
+    @NonNull
+    public ZoneOffset getZoneOffset(@NonNull AggregationType<?> aggregationType) {
+        Objects.requireNonNull(aggregationType);
 
-        /** Creates {@link AggregateResult}'s object with a long value */
-        public AggregateResult(T result) {
-            mResult = result;
+        AggregateResult<T> result = mAggregateResults.get(aggregationType);
+
+        if (result == null) {
+            return null;
         }
 
-        public void putToParcel(@NonNull Parcel parcel) {
-            if (mResult instanceof Long) {
-                parcel.writeLong((Long) mResult);
-            }
-        }
-
-        /**
-         * @return an Object representing the result of an aggregation.
-         */
-        @NonNull
-        T getResult() {
-            return mResult;
-        }
+        return result.getZoneOffset();
     }
 }

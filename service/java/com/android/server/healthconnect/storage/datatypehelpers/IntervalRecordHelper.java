@@ -26,6 +26,12 @@ import android.database.Cursor;
 import android.healthconnect.internal.datatypes.IntervalRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.utils.StorageUtils;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +45,7 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
     private static final String START_ZONE_OFFSET_COLUMN_NAME = "start_zone_offset";
     private static final String END_TIME_COLUMN_NAME = "end_time";
     private static final String END_ZONE_OFFSET_COLUMN_NAME = "end_zone_offset";
+    private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
 
     IntervalRecordHelper() {
         super();
@@ -47,6 +54,27 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
     @Override
     public final String getStartTimeColumnName() {
         return START_TIME_COLUMN_NAME;
+    }
+
+    @Override
+    public final String getDurationGroupByColumnName() {
+        return START_TIME_COLUMN_NAME;
+    }
+
+    @Override
+    public final String getPeriodGroupByColumnName() {
+        return LOCAL_DATE_COLUMN_NAME;
+    }
+
+    final ZoneOffset getZoneOffset(Cursor cursor) {
+        ZoneOffset zoneOffset = null;
+        if (cursor.getColumnIndex(START_ZONE_OFFSET_COLUMN_NAME) != -1) {
+            zoneOffset =
+                    ZoneOffset.ofTotalSeconds(
+                            StorageUtils.getCursorInt(cursor, START_ZONE_OFFSET_COLUMN_NAME));
+        }
+
+        return zoneOffset;
     }
 
     /**
@@ -65,6 +93,7 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
         columnInfo.add(new Pair<>(START_ZONE_OFFSET_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(END_TIME_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(END_ZONE_OFFSET_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(LOCAL_DATE_COLUMN_NAME, INTEGER));
 
         columnInfo.addAll(getIntervalRecordColumnInfo());
 
@@ -79,6 +108,14 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
                 START_ZONE_OFFSET_COLUMN_NAME, intervalRecord.getStartZoneOffsetInSeconds());
         contentValues.put(END_TIME_COLUMN_NAME, intervalRecord.getEndTimeInMillis());
         contentValues.put(END_ZONE_OFFSET_COLUMN_NAME, intervalRecord.getEndZoneOffsetInSeconds());
+        contentValues.put(
+                LOCAL_DATE_COLUMN_NAME,
+                ChronoUnit.DAYS.between(
+                        LocalDate.ofEpochDay(0),
+                        LocalDate.ofInstant(
+                                Instant.ofEpochMilli(intervalRecord.getStartTimeInMillis()),
+                                ZoneOffset.ofTotalSeconds(
+                                        intervalRecord.getStartZoneOffsetInSeconds()))));
 
         populateSpecificContentValues(contentValues, intervalRecord);
     }
@@ -94,6 +131,11 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
 
     /** This implementation should populate record with datatype specific values from the table. */
     abstract void populateSpecificRecordValue(@NonNull Cursor cursor, @NonNull T recordInternal);
+
+    @Override
+    final String getZoneOffsetColumnName() {
+        return START_ZONE_OFFSET_COLUMN_NAME;
+    }
 
     abstract void populateSpecificContentValues(
             @NonNull ContentValues contentValues, @NonNull T intervalRecordInternal);

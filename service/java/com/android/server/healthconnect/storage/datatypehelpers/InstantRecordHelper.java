@@ -26,6 +26,10 @@ import android.database.Cursor;
 import android.healthconnect.internal.datatypes.InstantRecordInternal;
 import android.util.Pair;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +41,21 @@ import java.util.List;
 abstract class InstantRecordHelper<T extends InstantRecordInternal<?>> extends RecordHelper<T> {
     private static final String TIME_COLUMN_NAME = "time";
     private static final String ZONE_OFFSET_COLUMN_NAME = "zone_offset";
+    private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
 
     @Override
     public final String getStartTimeColumnName() {
         return TIME_COLUMN_NAME;
+    }
+
+    @Override
+    public final String getDurationGroupByColumnName() {
+        return TIME_COLUMN_NAME;
+    }
+
+    @Override
+    public final String getPeriodGroupByColumnName() {
+        return LOCAL_DATE_COLUMN_NAME;
     }
 
     /**
@@ -57,6 +72,7 @@ abstract class InstantRecordHelper<T extends InstantRecordInternal<?>> extends R
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(TIME_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(ZONE_OFFSET_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(LOCAL_DATE_COLUMN_NAME, INTEGER));
 
         columnInfo.addAll(getInstantRecordColumnInfo());
 
@@ -68,8 +84,21 @@ abstract class InstantRecordHelper<T extends InstantRecordInternal<?>> extends R
             @NonNull ContentValues contentValues, @NonNull T instantRecord) {
         contentValues.put(TIME_COLUMN_NAME, instantRecord.getTimeInMillis());
         contentValues.put(ZONE_OFFSET_COLUMN_NAME, instantRecord.getZoneOffsetInSeconds());
+        contentValues.put(
+                LOCAL_DATE_COLUMN_NAME,
+                ChronoUnit.DAYS.between(
+                        LocalDate.ofEpochDay(0),
+                        LocalDate.ofInstant(
+                                Instant.ofEpochMilli(instantRecord.getTimeInMillis()),
+                                ZoneOffset.ofTotalSeconds(
+                                        instantRecord.getZoneOffsetInSeconds()))));
 
         populateSpecificContentValues(contentValues, instantRecord);
+    }
+
+    @Override
+    final String getZoneOffsetColumnName() {
+        return ZONE_OFFSET_COLUMN_NAME;
     }
 
     abstract void populateSpecificContentValues(

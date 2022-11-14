@@ -20,7 +20,7 @@ import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
 
 import android.annotation.NonNull;
-import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.os.Parcel;
 
@@ -38,6 +38,7 @@ public final class AggregationTypeIdMapper {
     private static AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
+    private final Map<AggregationType<?>, Integer> mDataAggregationTypeIdMap;
 
     private AggregationTypeIdMapper() {
         mIdToAggregateResult = new HashMap<>(MAP_SIZE);
@@ -49,6 +50,10 @@ public final class AggregationTypeIdMapper {
         mIdDataAggregationTypeMap = new HashMap<>(MAP_SIZE);
         mIdDataAggregationTypeMap.put(BPM_MIN.getAggregateOperationType(), BPM_MIN);
         mIdDataAggregationTypeMap.put(BPM_MAX.getAggregateOperationType(), BPM_MAX);
+
+        mDataAggregationTypeIdMap = new HashMap<>(MAP_SIZE);
+        mIdDataAggregationTypeMap.forEach(
+                (key, value) -> mDataAggregationTypeIdMap.put(value, key));
     }
 
     @NonNull
@@ -61,7 +66,7 @@ public final class AggregationTypeIdMapper {
     }
 
     @NonNull
-    public AggregateRecordsResponse.AggregateResult<?> getAggregateResultFor(
+    public AggregateResult<?> getAggregateResultFor(
             @AggregationType.AggregationTypeIdentifier.Id int id, @NonNull Parcel parcel) {
         return mIdToAggregateResult.get(id).getAggregateResult(parcel);
     }
@@ -73,8 +78,14 @@ public final class AggregationTypeIdMapper {
     }
 
     @NonNull
-    private AggregateRecordsResponse.AggregateResult<Long> getLongResult(long result) {
-        return new AggregateRecordsResponse.AggregateResult<>(result);
+    @AggregationType.AggregationTypeIdentifier.Id
+    public int getIdFor(AggregationType<?> aggregationType) {
+        return mDataAggregationTypeIdMap.get(aggregationType);
+    }
+
+    @NonNull
+    private AggregateResult<Long> getLongResult(long result) {
+        return new AggregateResult<>(result);
     }
 
     /**
@@ -82,6 +93,6 @@ public final class AggregationTypeIdMapper {
      * using {@code result}
      */
     private interface AggregationResultCreator {
-        AggregateRecordsResponse.AggregateResult<?> getAggregateResult(Parcel result);
+        AggregateResult<?> getAggregateResult(Parcel result);
     }
 }

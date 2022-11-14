@@ -16,7 +16,12 @@
 
 package android.healthconnect.aidl;
 
+import static android.healthconnect.Constants.DEFAULT_INT;
+import static android.healthconnect.Constants.DEFAULT_LONG;
+
+import android.annotation.Nullable;
 import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.os.Parcel;
@@ -24,6 +29,9 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,10 +53,17 @@ public class AggregateDataRequestParcel implements Parcelable {
     private final long mEndTime;
     private final int[] mAggregateIds;
     private final List<String> mPackageFilters;
+    // If set represents that the aggregations have to be grouped by on {@code mDuration}
+    private Duration mDuration;
+    // If set represents that the aggregations have to be grouped by on {@code mPeriod}. If both are
+    // set the duration takes precedence, but there should not be case when both are set.
+    private Period mPeriod;
 
     public AggregateDataRequestParcel(AggregateRecordsRequest<?> request) {
         mStartTime = request.getTimeRangeFilter().getStartTime().toEpochMilli();
         mEndTime = request.getTimeRangeFilter().getEndTime().toEpochMilli();
+        // Use durations group by single queries as it support null values
+        mDuration = Duration.ofMillis(mEndTime - mStartTime);
         mAggregateIds = new int[request.getAggregationTypes().size()];
 
         int i = 0;
@@ -66,6 +81,25 @@ public class AggregateDataRequestParcel implements Parcelable {
         mEndTime = in.readLong();
         mAggregateIds = in.createIntArray();
         mPackageFilters = in.createStringArrayList();
+        int period = in.readInt();
+        if (period != DEFAULT_INT) {
+            mPeriod = Period.ofDays(period);
+        }
+
+        long duration = in.readLong();
+        if (duration != DEFAULT_LONG) {
+            mDuration = Duration.ofMillis(duration);
+        }
+    }
+
+    @Nullable
+    public Duration getDuration() {
+        return mDuration;
+    }
+
+    @Nullable
+    public Period getPeriod() {
+        return mPeriod;
     }
 
     @Override
@@ -79,6 +113,17 @@ public class AggregateDataRequestParcel implements Parcelable {
         dest.writeLong(mEndTime);
         dest.writeIntArray(mAggregateIds);
         dest.writeStringList(mPackageFilters);
+        if (mPeriod != null) {
+            dest.writeInt(mPeriod.getDays());
+        } else {
+            dest.writeInt(DEFAULT_INT);
+        }
+
+        if (mDuration != null) {
+            dest.writeLong(mDuration.toMillis());
+        } else {
+            dest.writeLong(DEFAULT_LONG);
+        }
     }
 
     public long getStartTime() {
@@ -93,7 +138,15 @@ public class AggregateDataRequestParcel implements Parcelable {
         return mAggregateIds;
     }
 
+    @NonNull
     public List<String> getPackageFilters() {
         return mPackageFilters;
+    }
+
+    @NonNull
+    public TimeRangeFilter getTimeRangeFilter() {
+        return new TimeRangeFilter.Builder(
+                        Instant.ofEpochMilli(mStartTime), Instant.ofEpochMilli(mEndTime))
+                .build();
     }
 }
