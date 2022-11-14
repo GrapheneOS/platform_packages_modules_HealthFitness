@@ -57,7 +57,8 @@ class DateNavigationPreference @JvmOverloads constructor(
     private var dateChangedListener: OnDateChangedListener? = null
     private val onDateChangedListener =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            selectedDate = getInstant(year, month, day)
+            // OnDateSetListener returns months as Int from ( 0 - 11 ), getInstant accept month as integer from 1 - 12
+            selectedDate = getInstant(year, month + 1, day)
             updateSelectedDate()
         }
 
