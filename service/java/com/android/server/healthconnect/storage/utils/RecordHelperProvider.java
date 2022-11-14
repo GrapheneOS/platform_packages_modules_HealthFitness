@@ -36,6 +36,9 @@ import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.SpeedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.SwimmingStrokesRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.TotalCaloriesBurnedRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.WheelchairPushesRecordHelper;
 
 import java.util.Collections;
 import java.util.Map;
@@ -71,6 +74,16 @@ public final class RecordHelperProvider {
                 RecordTypeIdentifier.RECORD_TYPE_HYDRATION, new HydrationRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_NUTRITION, new NutritionRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_SWIMMING_STROKES,
+                new SwimmingStrokesRecordHelper());
+
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES,
+                new WheelchairPushesRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
+                new TotalCaloriesBurnedRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_HEART_RATE, new HeartRateRecordHelper());
         recordIDToHelperMap.put(

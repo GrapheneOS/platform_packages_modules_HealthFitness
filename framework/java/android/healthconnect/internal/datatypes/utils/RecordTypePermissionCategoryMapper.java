@@ -28,8 +28,6 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_H
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_POWER;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_STAGE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
@@ -84,8 +82,6 @@ public final class RecordTypePermissionCategoryMapper {
                                 RECORD_TYPE_ACTIVE_CALORIES_BURNED,
                                 HealthPermissionCategory.ACTIVE_CALORIES_BURNED);
                         put(RECORD_TYPE_HYDRATION, HealthPermissionCategory.HYDRATION);
-                        put(RECORD_TYPE_SLEEP_SESSION, HealthPermissionCategory.SLEEP);
-                        put(RECORD_TYPE_SLEEP_STAGE, HealthPermissionCategory.SLEEP);
                         put(RECORD_TYPE_EXERCISE_EVENT, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_EXERCISE_LAP, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_NUTRITION, HealthPermissionCategory.NUTRITION);

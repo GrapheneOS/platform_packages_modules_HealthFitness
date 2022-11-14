@@ -19,7 +19,6 @@ package android.healthconnect.internal.datatypes.utils;
 import static android.healthconnect.HealthDataCategory.ACTIVITY;
 import static android.healthconnect.HealthDataCategory.BODY_MEASUREMENTS;
 import static android.healthconnect.HealthDataCategory.NUTRITION;
-import static android.healthconnect.HealthDataCategory.SLEEP;
 import static android.healthconnect.HealthDataCategory.VITALS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
@@ -33,8 +32,6 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_H
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_POWER;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_STAGE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
@@ -75,8 +72,6 @@ public final class RecordTypeRecordCategoryMapper {
                         put(RECORD_TYPE_ELEVATION_GAINED, ACTIVITY);
                         put(RECORD_TYPE_ACTIVE_CALORIES_BURNED, ACTIVITY);
                         put(RECORD_TYPE_HYDRATION, NUTRITION);
-                        put(RECORD_TYPE_SLEEP_SESSION, SLEEP);
-                        put(RECORD_TYPE_SLEEP_STAGE, SLEEP);
                         put(RECORD_TYPE_EXERCISE_EVENT, ACTIVITY);
                         put(RECORD_TYPE_EXERCISE_LAP, ACTIVITY);
                         put(RECORD_TYPE_NUTRITION, NUTRITION);
