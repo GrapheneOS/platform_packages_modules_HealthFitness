@@ -39,17 +39,7 @@ class OnboardingScreenTest {
 
     @Test
     fun onboardingScreen_isDisplayedCorrectly() {
-        val startOnboardingActivityIntent =
-            Intent.makeMainActivity(
-                    ComponentName(
-                        InstrumentationRegistry.getInstrumentation().getContext(),
-                        OnboardingActivity::class.java))
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-
-        InstrumentationRegistry.getInstrumentation()
-            .getContext()
-            .startActivity(startOnboardingActivityIntent)
+        startOnboardingActivity()
 
         Espresso.onView(ViewMatchers.withText(R.string.onboarding_title))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -58,16 +48,22 @@ class OnboardingScreenTest {
         Espresso.onView(ViewMatchers.withId(R.id.onboarding_image))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.share_icon))
+            .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(R.string.share_data))
+            .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(R.string.share_data_description))
+            .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.manage_icon))
+            .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(R.string.manage_your_settings))
+            .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(R.string.manage_your_settings_description))
+            .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(R.string.onboarding_get_started_button_text))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
