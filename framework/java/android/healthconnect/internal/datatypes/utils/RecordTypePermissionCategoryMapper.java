@@ -23,8 +23,6 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_D
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_EVENT;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_LAP;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_REPETITIONS;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
@@ -74,7 +72,6 @@ public final class RecordTypePermissionCategoryMapper {
                         put(
                                 RECORD_TYPE_WHEELCHAIR_PUSHES,
                                 HealthPermissionCategory.WHEELCHAIR_PUSHES);
-                        put(RECORD_TYPE_EXERCISE_SESSION, HealthPermissionCategory.EXERCISE);
                         put(
                                 RECORD_TYPE_TOTAL_CALORIES_BURNED,
                                 HealthPermissionCategory.TOTAL_CALORIES_BURNED);
@@ -88,7 +85,6 @@ public final class RecordTypePermissionCategoryMapper {
                                 HealthPermissionCategory.ACTIVE_CALORIES_BURNED);
                         put(RECORD_TYPE_HYDRATION, HealthPermissionCategory.HYDRATION);
                         put(RECORD_TYPE_SLEEP_SESSION, HealthPermissionCategory.SLEEP);
-                        put(RECORD_TYPE_EXERCISE_REPETITIONS, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_SLEEP_STAGE, HealthPermissionCategory.SLEEP);
                         put(RECORD_TYPE_EXERCISE_EVENT, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_EXERCISE_LAP, HealthPermissionCategory.EXERCISE);

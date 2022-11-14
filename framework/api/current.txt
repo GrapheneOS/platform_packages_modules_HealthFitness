@@ -342,6 +342,17 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
+  public final class FloorsClimbedRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method public int getFloors();
+  }
+
+  public static final class FloorsClimbedRecord.Builder {
+    ctor public FloorsClimbedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord build();
+    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
   public class HeartRateRecord extends android.healthconnect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample> getSamples();
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
@@ -361,6 +372,17 @@ package android.healthconnect.datatypes {
     method @NonNull public java.time.Instant getTime();
   }
 
+  public final class HydrationRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Volume getVolume();
+  }
+
+  public static final class HydrationRecord.Builder {
+    ctor public HydrationRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Volume);
+    method @NonNull public android.healthconnect.datatypes.HydrationRecord build();
+    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
   public abstract class InstantRecord extends android.healthconnect.datatypes.Record {
     method @NonNull public java.time.Instant getTime();
     method @NonNull public java.time.ZoneOffset getZoneOffset();
@@ -371,6 +393,14 @@ package android.healthconnect.datatypes {
     method @NonNull public java.time.ZoneOffset getEndZoneOffset();
     method @NonNull public java.time.Instant getStartTime();
     method @NonNull public java.time.ZoneOffset getStartZoneOffset();
+  }
+
+  public final class MealType {
+    field public static final int MEAL_TYPE_BREAKFAST = 1; // 0x1
+    field public static final int MEAL_TYPE_DINNER = 3; // 0x3
+    field public static final int MEAL_TYPE_LUNCH = 2; // 0x2
+    field public static final int MEAL_TYPE_SNACK = 4; // 0x4
+    field public static final int MEAL_TYPE_UNKNOWN = 0; // 0x0
   }
 
   public final class Metadata {
@@ -392,6 +422,104 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setDevice(@NonNull android.healthconnect.datatypes.Device);
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setId(@NonNull String);
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
+  }
+
+  public final class NutritionRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @Nullable public android.healthconnect.datatypes.units.Mass getBiotin();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getCaffeine();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getCalcium();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getChloride();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getCholesterol();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getChromium();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getCopper();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getDietaryFiber();
+    method @Nullable public android.healthconnect.datatypes.units.Energy getEnergy();
+    method @Nullable public android.healthconnect.datatypes.units.Energy getEnergyFromFat();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getFolate();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getFolicAcid();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getIodine();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getIron();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getMagnesium();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getManganese();
+    method @Nullable public String getMealName();
+    method public int getMealType();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getMolybdenum();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getMonounsaturatedFat();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getNiacin();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getPantothenicAcid();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getPhosphorus();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getPolyunsaturatedFat();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getPotassium();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getProtein();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getRiboflavin();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getSaturatedFat();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getSelenium();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getSodium();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getSugar();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getThiamin();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getTotalCarbohydrate();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getTotalFat();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getTransFat();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getUnsaturatedFat();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminA();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminB12();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminB6();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminC();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminD();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminE();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminK();
+    method @Nullable public android.healthconnect.datatypes.units.Mass getZinc();
+  }
+
+  public static final class NutritionRecord.Builder {
+    ctor public NutritionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord build();
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setBiotin(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCaffeine(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCalcium(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setChloride(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCholesterol(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setChromium(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCopper(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setDietaryFiber(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setEnergy(@Nullable android.healthconnect.datatypes.units.Energy);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setEnergyFromFat(@Nullable android.healthconnect.datatypes.units.Energy);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setFolate(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setFolicAcid(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setIodine(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setIron(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMagnesium(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setManganese(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMealName(@NonNull String);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMealType(int);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMolybdenum(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMonounsaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setNiacin(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPantothenicAcid(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPhosphorus(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPolyunsaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPotassium(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setProtein(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setRiboflavin(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSelenium(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSodium(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSugar(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setThiamin(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setTotalCarbohydrate(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setTotalFat(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setTransFat(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setUnsaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminA(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminB12(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminB6(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminC(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminD(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminE(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminK(@Nullable android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setZinc(@Nullable android.healthconnect.datatypes.units.Mass);
   }
 
   public final class PowerRecord extends android.healthconnect.datatypes.IntervalRecord {
