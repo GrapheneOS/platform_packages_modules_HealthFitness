@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright (C) 2022 The Android Open Source Project
 
@@ -14,8 +15,15 @@
   limitations under the License.
 -->
 
-<resources>
-  <style name="AppTheme" parent="Theme.AppCompat.Light">
-    <item name="android:fontFamily">sans-serif</item>
-  </style>
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="72.0"
+    android:viewportWidth="72.0"
+    android:tint="?attr/colorControlNormal">
+  <path
+      android:pathData="M6,48l0,6l14.2,0l6.8,-30.7l9,42.7l6,0l6,-26.2l3.8,14.2l14.2,0l0,-6l-9.8,0l-5.2,-21l-6,0l-6,24.8l-9,-42.8l-6,0l-8.2,39z"
+      android:strokeWidth="1"
+      android:fillColor="@android:color/white"
+      android:strokeColor="@android:color/transparent" />
+</vector>
