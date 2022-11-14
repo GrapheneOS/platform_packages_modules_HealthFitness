@@ -13,11 +13,16 @@
  */
 package com.android.healthconnect.testapps.toolbox.ui
 
+import android.healthconnect.datatypes.IntervalRecord
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.testapps.toolbox.Constants.HealthDataCategory
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
@@ -28,6 +33,7 @@ import com.android.healthconnect.testapps.toolbox.adapters.TextViewListViewHolde
 class DataTypeListFragment : Fragment() {
 
     private lateinit var mDataSet: List<HealthPermissionType>
+    private lateinit var mNavigationController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +44,10 @@ class DataTypeListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val category = arguments?.get("category") as HealthDataCategory
+        val category =
+            arguments?.getSerializable("category", HealthDataCategory::class.java)
+                ?: throw IllegalArgumentException("Please pass category.")
+
         mDataSet = category.healthPermissionTypes
 
         val recyclerView: RecyclerView = view.findViewById(R.id.list_recycler_view)
@@ -46,10 +55,20 @@ class DataTypeListFragment : Fragment() {
             TextViewListAdapter(mDataSet) { viewHolder: TextViewListViewHolder, position: Int ->
                 onBindViewHolderCallback(viewHolder, position)
             }
+        mNavigationController = findNavController()
     }
 
     private fun onBindViewHolderCallback(viewHolder: TextViewListViewHolder, position: Int) {
         val textView = viewHolder.textView
-        textView.text = getString(mDataSet[position].title)
+        textView.text = viewHolder.itemView.context.getString(mDataSet[position].title)
+        textView.setOnClickListener {
+            val bundle = bundleOf("permissionType" to mDataSet[position])
+            if (mDataSet[position].recordClass?.java?.superclass == IntervalRecord::class.java) {
+                mNavigationController.navigate(
+                    R.id.action_dataTypeList_to_insertIntervalRecord, bundle)
+            } else {
+                Toast.makeText(context, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
