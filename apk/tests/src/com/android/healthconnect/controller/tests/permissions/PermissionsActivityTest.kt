@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.tests.permissions
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -89,7 +90,10 @@ class PermissionsActivityTest {
     }
 
     @Test
-    fun sendsOkResult() {
+    fun sendsOkResult_emptyRequest() {
+        val expectedIntent = Intent()
+        expectedIntent.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf<String>())
+        expectedIntent.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS, arrayOf<Int>())
         Mockito.`when`(viewModel.permissions).then { MutableLiveData(PERMISSIONS_STATE) }
 
         val startActivityIntent =
@@ -99,10 +103,44 @@ class PermissionsActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        ActivityScenario.launch<PermissionsActivity>(startActivityIntent).onActivity {
-            activity: Activity -> {
+        val scenario =
+            ActivityScenario.launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        scenario.onActivity { activity: Activity ->
+            {
                 onView(withText("Allow")).perform(click())
                 assertThat(activity.isFinishing()).isTrue()
+                assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
+                assertThat(scenario.getResult().getResultData()).isEqualTo(expectedIntent)
+            }
+        }
+    }
+
+    @Test
+    fun sendsOkResult_requestWithPermissions() {
+        val expectedIntent = Intent()
+        expectedIntent.putExtra(
+            PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf(arrayOf("Permission")))
+        expectedIntent.putExtra(
+            PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS,
+            arrayOf(PackageManager.PERMISSION_DENIED))
+        Mockito.`when`(viewModel.permissions).then { MutableLiveData(PERMISSIONS_STATE) }
+
+        val startActivityIntent =
+            Intent.makeMainActivity(
+                    ComponentName(
+                        getInstrumentation().getContext(), PermissionsActivity::class.java))
+                .putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf("Permission"))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        val scenario =
+            ActivityScenario.launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        scenario.onActivity { activity: Activity ->
+            {
+                onView(withText("Allow")).perform(click())
+                assertThat(activity.isFinishing()).isTrue()
+                assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
+                assertThat(scenario.getResult().getResultData()).isEqualTo(expectedIntent)
             }
         }
     }
