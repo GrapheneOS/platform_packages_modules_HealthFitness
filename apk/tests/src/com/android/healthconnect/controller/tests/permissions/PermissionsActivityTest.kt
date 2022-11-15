@@ -16,35 +16,37 @@ package com.android.healthconnect.controller.tests.permissions
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.lifecycle.MutableLiveData
+import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
+import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
+import android.content.pm.PackageManager.PERMISSION_DENIED
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.healthconnect.HealthPermissions.READ_HEART_RATE
+import android.healthconnect.HealthPermissions.READ_STEPS
+import android.healthconnect.HealthPermissions.WRITE_DISTANCE
+import android.healthconnect.HealthPermissions.WRITE_EXERCISE
+import android.widget.Button
+import androidx.preference.PreferenceCategory
+import androidx.preference.SwitchPreference
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import com.android.healthconnect.controller.permissions.PERMISSIONS_STATE
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.PermissionsActivity
-import com.android.healthconnect.controller.permissions.PermissionsState
-import com.android.healthconnect.controller.permissions.PermissionsViewModel
+import com.android.healthconnect.controller.permissions.PermissionsFragment
 import com.google.common.truth.Truth.assertThat
-import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
 
 @HiltAndroidTest
 class PermissionsActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
-    @BindValue val viewModel: PermissionsViewModel = Mockito.mock(PermissionsViewModel::class.java)
 
     @Before
     fun setup() {
@@ -53,10 +55,6 @@ class PermissionsActivityTest {
 
     @Test
     fun intentLaunchesPermissionsActivity() {
-        Mockito.`when`(viewModel.permissions).then {
-            MutableLiveData(PermissionsState(listOf(), listOf()))
-        }
-
         val startActivityIntent =
             Intent.makeMainActivity(
                     ComponentName(
@@ -72,76 +70,133 @@ class PermissionsActivityTest {
 
     @Test
     fun intentDisplaysPermissions() {
-        Mockito.`when`(viewModel.permissions).then { MutableLiveData(PERMISSIONS_STATE) }
-
         val startActivityIntent =
             Intent.makeMainActivity(
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
+                .putExtra(
+                    EXTRA_REQUEST_PERMISSIONS_NAMES,
+                    arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         getInstrumentation().getContext().startActivity(startActivityIntent)
 
-        onView(withText("STEPS")).check(matches(isDisplayed()))
-        onView(withText("HEART_RATE")).check(matches(isDisplayed()))
-        onView(withText("DISTANCE")).check(matches(isDisplayed()))
-        onView(withText("SESSION")).check(matches(isDisplayed()))
+        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Heart rate")).check(matches(isDisplayed()))
+        onView(withText("Distance")).check(matches(isDisplayed()))
+        onView(withText("Exercise")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun intentSkipsUnrecognisedPermission() {
+        val startActivityIntent =
+            Intent.makeMainActivity(
+                    ComponentName(
+                        getInstrumentation().getContext(), PermissionsActivity::class.java))
+                .putExtra(
+                    EXTRA_REQUEST_PERMISSIONS_NAMES,
+                    arrayOf(READ_STEPS, WRITE_EXERCISE, "permission"))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        getInstrumentation().getContext().startActivity(startActivityIntent)
+
+        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Exercise")).check(matches(isDisplayed()))
     }
 
     @Test
     fun sendsOkResult_emptyRequest() {
-        val expectedIntent = Intent()
-        expectedIntent.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf<String>())
-        expectedIntent.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS, arrayOf<Int>())
-        Mockito.`when`(viewModel.permissions).then { MutableLiveData(PERMISSIONS_STATE) }
-
         val startActivityIntent =
             Intent.makeMainActivity(
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
+                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf<String>())
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         val scenario =
             ActivityScenario.launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        scenario.onActivity { activity: Activity ->
-            {
-                onView(withText("Allow")).perform(click())
-                assertThat(activity.isFinishing()).isTrue()
-                assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
-                assertThat(scenario.getResult().getResultData()).isEqualTo(expectedIntent)
-            }
+
+        scenario.onActivity { activity: PermissionsActivity ->
+            activity.findViewById<Button>(R.id.allow).callOnClick()
+            assertThat(activity.isFinishing()).isTrue()
         }
+
+        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
+        val returnedIntent = scenario.getResult().getResultData()
+        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES)).isEmpty()
+        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS)).isEmpty()
     }
 
     @Test
     fun sendsOkResult_requestWithPermissions() {
-        val expectedIntent = Intent()
-        expectedIntent.putExtra(
-            PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf(arrayOf("Permission")))
-        expectedIntent.putExtra(
-            PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS,
-            arrayOf(PackageManager.PERMISSION_DENIED))
-        Mockito.`when`(viewModel.permissions).then { MutableLiveData(PERMISSIONS_STATE) }
+        val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
 
         val startActivityIntent =
             Intent.makeMainActivity(
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
-                .putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf("Permission"))
+                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         val scenario =
             ActivityScenario.launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        scenario.onActivity { activity: Activity ->
-            {
-                onView(withText("Allow")).perform(click())
-                assertThat(activity.isFinishing()).isTrue()
-                assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
-                assertThat(scenario.getResult().getResultData()).isEqualTo(expectedIntent)
-            }
+
+        scenario.onActivity { activity: PermissionsActivity ->
+            activity.findViewById<Button>(R.id.allow).callOnClick()
+            assertThat(activity.isFinishing()).isTrue()
         }
+        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
+        val returnedIntent = scenario.getResult().getResultData()
+        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+            .isEqualTo(permissions)
+        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+            .isEqualTo(
+                intArrayOf(
+                    PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED))
+    }
+
+    @Test
+    fun sendsOkResult_requestWithPermissionsSomeDenied() {
+        val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
+
+        val startActivityIntent =
+            Intent.makeMainActivity(
+                    ComponentName(
+                        getInstrumentation().getContext(), PermissionsActivity::class.java))
+                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        val scenario =
+            ActivityScenario.launchActivityForResult<PermissionsActivity>(startActivityIntent)
+
+        scenario.onActivity { activity: PermissionsActivity ->
+            val fragment =
+                activity.supportFragmentManager.findFragmentById(R.id.permission_content)
+                    as PermissionsFragment
+            val preferenceCategory =
+                fragment.preferenceScreen.findPreference("read_permission_category")
+                    as PreferenceCategory?
+            val preference = preferenceCategory?.getPreference(0) as SwitchPreference
+            preference.onPreferenceChangeListener?.onPreferenceChange(preference, false)
+        }
+
+        scenario.onActivity { activity: PermissionsActivity ->
+            activity.findViewById<Button>(R.id.allow).callOnClick()
+            assertThat(activity.isFinishing).isTrue()
+        }
+
+        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
+        val returnedIntent = scenario.getResult().getResultData()
+        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+            .isEqualTo(permissions)
+        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+            .isEqualTo(
+                intArrayOf(
+                    PERMISSION_DENIED, PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED))
     }
 }
