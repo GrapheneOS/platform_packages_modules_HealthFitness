@@ -17,21 +17,32 @@
 package android.healthconnect;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.util.ArrayMap;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 
-/** @hide */
+/**
+ * Class to represent the response from {@link HealthConnectManager#aggregateGroupByPeriod}
+ *
+ * @see HealthConnectManager#aggregateGroupByPeriod
+ */
 public final class AggregateRecordsGroupedByPeriodResponse<T> {
-    private final LocalDateTime mStartTime;
-    private final LocalDateTime mEndTime;
     private final Map<AggregationType<T>, AggregateResult<T>> mResult;
+    private LocalDateTime mStartTime;
+    private LocalDateTime mEndTime;
 
-    /** @hide */
+    /**
+     * @param startTime Start time of the window for the underlying aggregation
+     * @param endTime End time of the window for the underlying aggregation
+     * @param result Map representing the result of this window for various aggregations requested
+     * @hide
+     */
     @SuppressWarnings("unchecked")
     public AggregateRecordsGroupedByPeriodResponse(
             @NonNull LocalDateTime startTime,
@@ -53,27 +64,48 @@ public final class AggregateRecordsGroupedByPeriodResponse<T> {
                                 (AggregateResult<T>) value));
     }
 
+    /**
+     * @return Start {@link LocalDateTime} of the window for the underlying aggregation
+     */
     @NonNull
     public LocalDateTime getStartTime() {
         return mStartTime;
     }
 
+    /** @hide */
+    public AggregateRecordsGroupedByPeriodResponse<T> setStartTime(LocalDateTime startTime) {
+        mStartTime = startTime;
+        return this;
+    }
+
+    /**
+     * @return End {@link LocalDateTime} of the window for the underlying aggregation
+     */
     @NonNull
     public LocalDateTime getEndTime() {
         return mEndTime;
     }
 
-    @NonNull
-    @SuppressWarnings("unchecked")
+    /** @hide */
+    public AggregateRecordsGroupedByPeriodResponse<T> setEndTime(LocalDateTime endTime) {
+        mEndTime = endTime;
+        return this;
+    }
+
+    /**
+     * @return An aggregation result for {@code aggregationType}, and null if one doesn't exist
+     */
+    @Nullable
     public T get(@NonNull AggregationType<T> aggregationType) {
-        Objects.requireNonNull(aggregationType);
+        return AggregateRecordsResponse.getInternal(aggregationType, mResult);
+    }
 
-        AggregateResult<T> result = mResult.get(aggregationType);
-
-        if (result == null) {
-            return null;
-        }
-
-        return result.getResult();
+    /**
+     * @return {@link ZoneOffset} for the underlying aggregation record, null if the corresponding
+     *     aggregation doesn't exist or if multiple records were present.
+     */
+    @Nullable
+    public ZoneOffset getZoneOffset(@NonNull AggregationType<T> aggregationType) {
+        return AggregateRecordsResponse.getZoneOffsetInternal(aggregationType, mResult);
     }
 }

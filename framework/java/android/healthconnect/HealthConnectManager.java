@@ -69,6 +69,10 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.Period;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -387,10 +391,146 @@ public class HealthConnectManager {
                         }
                     });
         } catch (ClassCastException classCastException) {
-            callback.onError(
-                    new HealthConnectException(
-                            HealthConnectException.ERROR_INTERNAL,
-                            classCastException.getMessage()));
+            returnError(
+                    executor,
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(HealthConnectException.ERROR_INTERNAL)),
+                    callback);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Get aggregations corresponding to {@code request}. Use this API if results are to be grouped
+     * by concrete intervals of time, for example 5 Hrs, 10 Hrs etc.
+     *
+     * @param <T> Result type of the aggregation.
+     *     <p>Note:
+     *     <p>This type is embedded in the {@link AggregationType} as {@link AggregationType} are
+     *     typed in nature.
+     *     <p>Only {@link AggregationType}s that are of same type T can be queried together
+     * @param request request for different aggregation.
+     * @param duration Duration on which to group by results
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     * @see HealthConnectManager#aggregateGroupByPeriod
+     */
+    @SuppressWarnings("unchecked")
+    public <T> void aggregateGroupByDuration(
+            @NonNull AggregateRecordsRequest<T> request,
+            @NonNull Duration duration,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull
+                    OutcomeReceiver<
+                                    List<AggregateRecordsGroupedByDurationResponse<T>>,
+                                    HealthConnectException>
+                            callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(duration);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.aggregateRecords(
+                    mContext.getPackageName(),
+                    new AggregateDataRequestParcel(request, duration),
+                    new IAggregateRecordsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(AggregateDataResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            List<AggregateRecordsGroupedByDurationResponse<T>> result =
+                                    new ArrayList<>();
+                            for (AggregateRecordsGroupedByDurationResponse<?>
+                                    aggregateRecordsGroupedByDurationResponse :
+                                            parcel.getAggregateDataResponseGroupedByDuration()) {
+                                result.add(
+                                        (AggregateRecordsGroupedByDurationResponse<T>)
+                                                aggregateRecordsGroupedByDurationResponse);
+                            }
+                            executor.execute(() -> callback.onResult(result));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (ClassCastException classCastException) {
+            returnError(
+                    executor,
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(HealthConnectException.ERROR_INTERNAL)),
+                    callback);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Get aggregations corresponding to {@code request}. Use this API if results are to be grouped
+     * by number of days. This API handles changes in {@link ZoneOffset} when computing the data on
+     * a per-day basis.
+     *
+     * @param <T> Result type of the aggregation.
+     *     <p>Note:
+     *     <p>This type is embedded in the {@link AggregationType} as {@link AggregationType} are
+     *     typed in nature.
+     *     <p>Only {@link AggregationType}s that are of same type T can be queried together
+     * @param request Request for different aggregation.
+     * @param period Period on which to group by results
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @see AggregateRecordsGroupedByPeriodResponse#get
+     * @see HealthConnectManager#aggregateGroupByDuration
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> void aggregateGroupByPeriod(
+            @NonNull AggregateRecordsRequest<T> request,
+            @NonNull Period period,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull
+                    OutcomeReceiver<
+                                    List<AggregateRecordsGroupedByPeriodResponse<T>>,
+                                    HealthConnectException>
+                            callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(period);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.aggregateRecords(
+                    mContext.getPackageName(),
+                    new AggregateDataRequestParcel(request, period),
+                    new IAggregateRecordsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(AggregateDataResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            List<AggregateRecordsGroupedByPeriodResponse<T>> result =
+                                    new ArrayList<>();
+                            for (AggregateRecordsGroupedByPeriodResponse<?>
+                                    aggregateRecordsGroupedByPeriodResponse :
+                                            parcel.getAggregateDataResponseGroupedByPeriod()) {
+                                result.add(
+                                        (AggregateRecordsGroupedByPeriodResponse<T>)
+                                                aggregateRecordsGroupedByPeriodResponse);
+                            }
+
+                            executor.execute(() -> callback.onResult(result));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (ClassCastException classCastException) {
+            returnError(
+                    executor,
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(HealthConnectException.ERROR_INTERNAL)),
+                    callback);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

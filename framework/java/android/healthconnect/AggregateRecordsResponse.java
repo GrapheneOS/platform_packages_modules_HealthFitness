@@ -49,23 +49,28 @@ public final class AggregateRecordsResponse<T> {
                                 (AggregateResult<T>) value));
     }
 
-    /**
-     * @return a map of {@link AggregationType} -> {@link AggregateResult}
-     * @hide
-     */
-    @NonNull
-    public Map<AggregationType<T>, AggregateResult<T>> getAggregateResults() {
-        return mAggregateResults;
+    /** @hide */
+    public static <U> ZoneOffset getZoneOffsetInternal(
+            @NonNull AggregationType<U> aggregationType,
+            Map<AggregationType<U>, AggregateResult<U>> mAggregateResults) {
+        Objects.requireNonNull(aggregationType);
+
+        AggregateResult<U> result = mAggregateResults.get(aggregationType);
+
+        if (result == null) {
+            return null;
+        }
+
+        return result.getZoneOffset();
     }
 
-    /**
-     * @return an aggregation result for {@code aggregationType}. *
-     * @param aggregationType {@link AggregationType} for which to get the result
-     */
-    @Nullable
-    public T get(@NonNull AggregationType<T> aggregationType) {
+    /** @hide */
+    public static <U> U getInternal(
+            @NonNull AggregationType<U> aggregationType,
+            Map<AggregationType<U>, AggregateResult<U>> mAggregateResults) {
         Objects.requireNonNull(aggregationType);
-        AggregateResult<T> result = mAggregateResults.get(aggregationType);
+
+        AggregateResult<U> result = mAggregateResults.get(aggregationType);
 
         if (result == null) {
             return null;
@@ -75,19 +80,35 @@ public final class AggregateRecordsResponse<T> {
     }
 
     /**
-     * @return {@link ZoneOffset} for the underlying aggregation record, {@link ZoneOffset#MIN} if
-     *     multiple records were present
+     * @return a map of {@link AggregationType} -> {@link AggregateResult}
+     * @hide
      */
     @NonNull
-    public ZoneOffset getZoneOffset(@NonNull AggregationType<?> aggregationType) {
-        Objects.requireNonNull(aggregationType);
+    public Map<Integer, AggregateResult<?>> getAggregateResults() {
+        Map<Integer, AggregateResult<?>> aggregateResultMap = new ArrayMap<>();
+        mAggregateResults.forEach(
+                (key, value) -> {
+                    aggregateResultMap.put(
+                            AggregationTypeIdMapper.getInstance().getIdFor(key), value);
+                });
+        return aggregateResultMap;
+    }
 
-        AggregateResult<T> result = mAggregateResults.get(aggregationType);
+    /**
+     * @return an aggregation result for {@code aggregationType}. *
+     * @param aggregationType {@link AggregationType} for which to get the result
+     */
+    @Nullable
+    public T get(@NonNull AggregationType<T> aggregationType) {
+        return getInternal(aggregationType, mAggregateResults);
+    }
 
-        if (result == null) {
-            return null;
-        }
-
-        return result.getZoneOffset();
+    /**
+     * @return {@link ZoneOffset} for the underlying aggregation record, null if the corresponding
+     *     aggregation doesn't exist and or if multiple records were present.
+     */
+    @Nullable
+    public ZoneOffset getZoneOffset(@NonNull AggregationType<T> aggregationType) {
+        return getZoneOffsetInternal(aggregationType, mAggregateResults);
     }
 }

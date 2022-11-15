@@ -80,16 +80,11 @@ public class AggregateDataResponseParcel implements Parcelable {
                 int id = in.readInt();
                 boolean hasValue = in.readBoolean();
                 if (hasValue) {
-                    int zoneOffsetInSecs = in.readInt();
-                    ZoneOffset zoneOffset = null;
-                    if (zoneOffsetInSecs != DEFAULT_INT) {
-                        zoneOffset = ZoneOffset.ofTotalSeconds(in.readInt());
-                    }
                     result.put(
                             id,
                             AggregationTypeIdMapper.getInstance()
                                     .getAggregateResultFor(id, in)
-                                    .setZoneOffset(zoneOffset));
+                                    .setZoneOffset(parseZoneOffset(in)));
                 } else {
                     result.put(id, null);
                 }
@@ -145,17 +140,17 @@ public class AggregateDataResponseParcel implements Parcelable {
      * @return responses from {@code mAggregateRecordsResponses} grouped as per the {@code
      *     mDuration}
      */
-    public List<AggregateRecordsGroupedByDurationResponse>
+    public List<AggregateRecordsGroupedByDurationResponse<?>>
             getAggregateDataResponseGroupedByDuration() {
         Objects.requireNonNull(mDuration);
 
-        List<AggregateRecordsGroupedByDurationResponse> aggregateRecordsGroupedByDurationResponse =
-                new ArrayList<>();
+        List<AggregateRecordsGroupedByDurationResponse<?>>
+                aggregateRecordsGroupedByDurationResponse = new ArrayList<>();
         long mStartTime = getDurationStart(mTimeRangeFilter);
         long mDelta = getDurationDelta(mDuration);
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
             aggregateRecordsGroupedByDurationResponse.add(
-                    new AggregateRecordsGroupedByDurationResponse(
+                    new AggregateRecordsGroupedByDurationResponse<>(
                             getDurationInstant(mStartTime),
                             getDurationInstant(mStartTime + mDelta),
                             aggregateRecordsResponse.getAggregateResults()));
@@ -168,23 +163,33 @@ public class AggregateDataResponseParcel implements Parcelable {
     /**
      * @return responses from {@code mAggregateRecordsResponses} grouped as per the {@code mPeriod}
      */
-    public List<AggregateRecordsGroupedByPeriodResponse> getAggregateDataResponseGroupedByPeriod() {
+    public List<AggregateRecordsGroupedByPeriodResponse<?>>
+            getAggregateDataResponseGroupedByPeriod() {
         Objects.requireNonNull(mPeriod);
 
-        List<AggregateRecordsGroupedByPeriodResponse> aggregateRecordsGroupedByPeriodRespons =
+        List<AggregateRecordsGroupedByPeriodResponse<?>> aggregateRecordsGroupedByPeriodResponses =
                 new ArrayList<>();
         long mStartTime = getPeriodStart(mTimeRangeFilter);
         long mDelta = getPeriodDelta(mPeriod);
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
-            aggregateRecordsGroupedByPeriodRespons.add(
-                    new AggregateRecordsGroupedByPeriodResponse(
+            aggregateRecordsGroupedByPeriodResponses.add(
+                    new AggregateRecordsGroupedByPeriodResponse<>(
                             getPeriodLocalDateTime(mStartTime),
                             getPeriodLocalDateTime(mStartTime + mDelta),
                             aggregateRecordsResponse.getAggregateResults()));
             mStartTime += mDelta;
         }
 
-        return aggregateRecordsGroupedByPeriodRespons;
+        if (!aggregateRecordsGroupedByPeriodResponses.isEmpty()) {
+            aggregateRecordsGroupedByPeriodResponses
+                    .get(0)
+                    .setStartTime(getPeriodStartLocalDateTime(mTimeRangeFilter));
+            aggregateRecordsGroupedByPeriodResponses
+                    .get(aggregateRecordsGroupedByPeriodResponses.size() - 1)
+                    .setStartTime(getPeriodEndLocalDateTime(mTimeRangeFilter));
+        }
+
+        return aggregateRecordsGroupedByPeriodResponses;
     }
 
     @Override
@@ -201,7 +206,7 @@ public class AggregateDataResponseParcel implements Parcelable {
                     .getAggregateResults()
                     .forEach(
                             (key, val) -> {
-                                dest.writeInt(key.getAggregationTypeIdentifier());
+                                dest.writeInt(key);
                                 // to represent if the value is present or not
                                 dest.writeBoolean(val != null);
                                 if (val != null) {
@@ -237,6 +242,24 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
     }
 
+    private ZoneOffset parseZoneOffset(Parcel in) {
+        int zoneOffsetInSecs = in.readInt();
+        ZoneOffset zoneOffset = null;
+        if (zoneOffsetInSecs != DEFAULT_INT) {
+            zoneOffset = ZoneOffset.ofTotalSeconds(zoneOffsetInSecs);
+        }
+
+        return zoneOffset;
+    }
+
+    private LocalDateTime getPeriodStartLocalDateTime(TimeRangeFilter timeRangeFilter) {
+        return LocalDateTime.ofInstant(timeRangeFilter.getStartTime(), ZoneOffset.systemDefault());
+    }
+
+    private LocalDateTime getPeriodEndLocalDateTime(TimeRangeFilter timeRangeFilter) {
+        return LocalDateTime.ofInstant(timeRangeFilter.getEndTime(), ZoneOffset.systemDefault());
+    }
+
     private long getPeriodStart(TimeRangeFilter timeRangeFilter) {
         return ChronoUnit.DAYS.between(
                 LocalDate.ofEpochDay(0),
@@ -260,6 +283,6 @@ public class AggregateDataResponseParcel implements Parcelable {
     }
 
     private long getDurationDelta(Duration duration) {
-        return duration.toSeconds() * 1000; // to millis
+        return duration.toMillis();
     }
 }

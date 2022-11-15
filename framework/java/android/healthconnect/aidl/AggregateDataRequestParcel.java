@@ -62,8 +62,6 @@ public class AggregateDataRequestParcel implements Parcelable {
     public AggregateDataRequestParcel(AggregateRecordsRequest<?> request) {
         mStartTime = request.getTimeRangeFilter().getStartTime().toEpochMilli();
         mEndTime = request.getTimeRangeFilter().getEndTime().toEpochMilli();
-        // Use durations group by single queries as it support null values
-        mDuration = Duration.ofMillis(mEndTime - mStartTime);
         mAggregateIds = new int[request.getAggregationTypes().size()];
 
         int i = 0;
@@ -74,6 +72,19 @@ public class AggregateDataRequestParcel implements Parcelable {
                 request.getDataOriginsFilters().stream()
                         .map(DataOrigin::getPackageName)
                         .collect(Collectors.toList());
+        // Use durations group by single queries as it support null values
+        mDuration = Duration.ofMillis(mEndTime - mStartTime);
+    }
+
+    public AggregateDataRequestParcel(AggregateRecordsRequest request, Duration duration) {
+        this(request);
+        mDuration = duration;
+    }
+
+    public AggregateDataRequestParcel(AggregateRecordsRequest request, Period period) {
+        this(request);
+        mDuration = null;
+        mPeriod = period;
     }
 
     protected AggregateDataRequestParcel(Parcel in) {
