@@ -11,13 +11,20 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.utils
+package com.android.healthconnect.controller.tests.utils
 
-import android.app.Activity
-import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
+import com.android.healthconnect.controller.utils.TimeSource
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset.UTC
 
-/** Sets fragment title on the collapsing layout, delegating to host if needed. */
-fun Fragment.setTitle(@StringRes title: Int) {
-    (requireActivity() as Activity).setTitle(title)
+/** Time source for testing purposes. */
+object TestTimeSource : TimeSource {
+    override fun currentTimeMillis(): Long = NOW.toEpochMilli()
+
+    override fun deviceZoneOffset(): ZoneId = UTC
+
+    override fun currentLocalDateTime(): LocalDateTime =
+        Instant.ofEpochMilli(currentTimeMillis()).atZone(deviceZoneOffset()).toLocalDateTime()
 }

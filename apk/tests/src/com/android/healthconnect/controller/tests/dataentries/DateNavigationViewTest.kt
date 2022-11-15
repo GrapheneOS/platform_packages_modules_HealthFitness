@@ -21,6 +21,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.DateNavigationView
 import com.android.healthconnect.controller.tests.utils.NOW
+import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.TimeSource
 import com.google.common.truth.Truth.assertThat
@@ -40,12 +41,7 @@ class DateNavigationViewTest {
     private lateinit var context: Context
     private val dateChangedListener =
         Mockito.mock(DateNavigationView.OnDateChangedListener::class.java)
-    private val timeSource: TimeSource =
-        object : TimeSource {
-            override fun currentTimeMillis(): Long {
-                return NOW.toEpochMilli()
-            }
-        }
+    private val timeSource: TimeSource = TestTimeSource
 
     @Before
     fun setup() {

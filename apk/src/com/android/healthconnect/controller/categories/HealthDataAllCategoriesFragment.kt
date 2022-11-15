@@ -15,6 +15,7 @@ package com.android.healthconnect.controller.categories
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -77,7 +78,9 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
                                         .navigate(
                                             R.id
                                                 .action_healthDataAllCategories_to_healthPermissionTypes,
-                                            getBundle(categoryInfo.category.name))
+                                            bundleOf(
+                                                HealthDataCategoriesFragment.CATEGORY_NAME_KEY to
+                                                    categoryInfo.category.name))
                                     true
                                 }
                         }

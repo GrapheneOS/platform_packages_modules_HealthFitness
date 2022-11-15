@@ -342,4 +342,32 @@
   <string name="send_feedback" description="Label for a button that is used to send feedback">Send feedback</string>
   <string name="send_feedback_description" description="Content description for a button that is used to send feedback">Tell us which health &amp; fitness apps you’d like to work with Health&#160;Connect</string>
   <!--endregion-->
+
+  <!-- region Auto-delete -->
+  <string name="auto_delete_button" description="Label for a button that open the auto-deletion settings. [CHAR_LIMIT=50]">Auto-delete</string>
+  <string name="auto_delete_title" description="Title of screen for a user to manage the auto-deletion settings [CHAR_LIMIT=40]">Auto-delete</string>
+  <string name="auto_delete_header" description="Description for the auto-delete settings page. [CHAR_LIMIT=NONE]">Control how long your data is stored in Health&#160;Connect by scheduling it to delete after a set time</string>
+  <string name="auto_delete_learn_more" description="Label of a link that helps to learn more about auto-delete. [CHAR_LIMIT=50]">Learn more</string>
+  <string name="auto_delete_section" description="Label for a section that picks the time range for auto-deletion. [CHAR_LIMIT=50]">Auto-delete data</string>
+  <string name="range_after_x_months" description="Item in a list of possible time ranges for auto-deletion. Choosing this will automatically delete data older than x months. [CHAR_LIMIT=50]">{count, plural, =1{After # month}other{After # months}}</string>
+  <string name="range_never" description="Item in a list of possible time ranges for auto-deletion. Choosing this will never delete data automatically. [CHAR_LIMIT=50]">Never</string>
+  <string name="auto_delete_rationale" description="Footer note explaining that after changing auto-delete settings, corresponding data will be deleted. [CHAR_LIMIT=NONE]">When you change these settings, Health&#160;Connect deletes existing data to reflect your new preferences</string>
+  <string name="confirming_question_x_months" description="Title of a dialog that asks the user to confirm whether they want to auto-delete all data that is older than x months. [CHAR_LIMIT=NONE]">{count, plural,
+    =1{Auto-delete data after # month?}
+    other{Auto-delete data after # months?}
+  }</string>
+  <string name="confirming_message_x_months" description="Description to explain what auto-deleting data older than x months means. [CHAR_LIMIT=NONE]">{count, plural,
+    =1{Health&#160;Connect will auto-delete new data after # month. Setting this will also delete existing data older than # month.}
+    other{Health&#160;Connect will auto-delete new data after # months. Setting this will also delete existing data older than # months.}
+  }</string>
+  <string name="set_auto_delete_button" description="Label of a button that sets the chosen auto-delete setting. [CHAR_LIMIT=50]">Set auto-delete</string>
+
+  <string name="deletion_started_title" description="Title of a dialog that lets the user know about some existing data being deleted. [CHAR_LIMIT=50]">Existing data will be deleted</string>
+  <string name="deletion_started_x_months" description="Description explaining what deleting data older than x months means and when the changes will be visible. [CHAR_LIMIT=NONE]">{count, plural,
+    =1{Health&#160;Connect will delete all data older than # months.\nIt may take a day for these changes to appear in your connected apps.}
+    other{Health&#160;Connect will delete all data older than # months.\nIt may take a day for these changes to appear in your connected apps.}
+  }</string>
+  <string name="deletion_started_category_list_section" description="Title of a section that lists those categories where data will be deleted from. [CHAR_LIMIT=NONE]">Data to be deleted from these</string>
+  <string name="deletion_started_done_button" description="Button that closes the dialog. [CHAR_LIMIT=40]">Done</string>
+  <!--endregion -->
 </resources>

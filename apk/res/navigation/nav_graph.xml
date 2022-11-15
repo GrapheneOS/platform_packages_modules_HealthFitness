@@ -41,6 +41,9 @@
         android:id="@+id/action_healthDataCategories_to_healthDataAllCategories"
         app:destination="@id/healthDataAllCategoriesFragment" />
     <action
+        android:id="@+id/action_healthDataCategories_to_autoDelete"
+        app:destination="@id/autoDeleteFragment" />
+    <action
         android:id="@+id/action_healthDataCategories_to_healthPermissionTypes"
         app:destination="@id/healthPermissionTypesFragment" />
   </fragment>
@@ -97,4 +100,7 @@
         android:name="packageName"
         app:argType="string"/>
   </fragment>
+  <fragment
+      android:id="@+id/autoDeleteFragment"
+      android:name="com.android.healthconnect.controller.autodelete.AutoDeleteFragment"/>
 </navigation>

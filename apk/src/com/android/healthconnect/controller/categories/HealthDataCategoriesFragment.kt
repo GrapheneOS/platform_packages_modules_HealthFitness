@@ -15,6 +15,7 @@ package com.android.healthconnect.controller.categories
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,6 +37,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     companion object {
         const val CATEGORY_NAME_KEY = "category_name_key"
         private const val BROWSE_DATA_CATEGORY = "browse_data_category"
+        private const val AUTO_DELETE_BUTTON = "auto_delete_button"
         private const val DELETE_ALL_DATA_BUTTON = "delete_all_data"
     }
 
@@ -43,6 +45,9 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     private val mBrowseDataCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(BROWSE_DATA_CATEGORY)
+    }
+    private val mAutoDelete: Preference? by lazy {
+        preferenceScreen.findPreference(AUTO_DELETE_BUTTON)
     }
     private val mDeleteAllData: Preference? by lazy {
         preferenceScreen.findPreference(DELETE_ALL_DATA_BUTTON)
@@ -55,6 +60,10 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
         }
 
+        mAutoDelete?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.action_healthDataCategories_to_autoDelete)
+            true
+        }
         mDeleteAllData?.setOnPreferenceClickListener {
             val deletionFragment =
                 childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) as DeletionFragment
@@ -97,7 +106,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                                 findNavController()
                                     .navigate(
                                         R.id.action_healthDataCategories_to_healthPermissionTypes,
-                                        getBundle(category.name))
+                                        bundleOf(CATEGORY_NAME_KEY to category.name))
                                 true
                             }
                     })
@@ -123,10 +132,4 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
         mDeleteAllData?.isEnabled = categoriesList.isNotEmpty()
     }
-}
-
-fun getBundle(string: String): Bundle {
-    val bundle = Bundle()
-    bundle.putString(HealthDataCategoriesFragment.CATEGORY_NAME_KEY, string)
-    return bundle
 }
