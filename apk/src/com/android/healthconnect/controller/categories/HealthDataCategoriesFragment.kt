@@ -15,13 +15,17 @@ package com.android.healthconnect.controller.categories
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.deletion.TimeRangeDialogFragment
+import com.android.healthconnect.controller.deletion.Deletion
+import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
+import com.android.healthconnect.controller.deletion.DeletionFragment
+import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,8 +50,19 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.health_data_categories_screen, rootKey)
+
+        if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
+            childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
+        }
+
         mDeleteAllData?.setOnPreferenceClickListener {
-            TimeRangeDialogFragment().show(childFragmentManager, TimeRangeDialogFragment.TAG)
+            val deletionFragment =
+                childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) as DeletionFragment
+            val deleteAllData =
+                Deletion(
+                    deletionType = DeletionType.DeletionTypeAllData(),
+                    showTimeRangePickerDialog = true)
+            deletionFragment.startDataDeletion(deleteAllData)
             true
         }
     }
