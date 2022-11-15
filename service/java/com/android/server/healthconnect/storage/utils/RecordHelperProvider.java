@@ -21,8 +21,12 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 
 import com.android.server.healthconnect.storage.datatypehelpers.BasalMetabolicRateRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.CyclingPedalingCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.PowerRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.SpeedRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.StepsCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper;
 
 import java.util.Collections;
@@ -46,6 +50,13 @@ public final class RecordHelperProvider {
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE,
                 new BasalMetabolicRateRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                new CyclingPedalingCadenceRecordHelper());
+        recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_POWER, new PowerRecordHelper());
+        recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_SPEED, new SpeedRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, new StepsCadenceRecordHelper());
 
         mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
     }

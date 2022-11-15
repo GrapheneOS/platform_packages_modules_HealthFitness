@@ -218,4 +218,42 @@ public final class Metadata {
     public Device getDevice() {
         return mDevice;
     }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(@NonNull Object object) {
+        if (this == object) return true;
+        if (object instanceof Metadata) {
+            Metadata other = (Metadata) object;
+            return this.getDevice().equals(other.getDevice())
+                    && this.getDataOrigin().equals(other.getDataOrigin())
+                    && this.getId().equals(other.getId())
+                    && Objects.equals(this.getClientRecordId(), other.getClientRecordId())
+                    && this.getClientRecordVersion() == other.getClientRecordVersion()
+                    && this.getLastModifiedTime().equals(other.getLastModifiedTime());
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                this.getDevice(),
+                this,
+                getDataOrigin(),
+                this.getId(),
+                this.getClientRecordId(),
+                this.getClientRecordVersion(),
+                this.getLastModifiedTime());
+    }
 }

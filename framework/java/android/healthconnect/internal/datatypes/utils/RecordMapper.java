@@ -18,13 +18,21 @@ package android.healthconnect.internal.datatypes.utils;
 
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
+import android.healthconnect.datatypes.CyclingPedalingCadenceRecord;
 import android.healthconnect.datatypes.HeartRateRecord;
+import android.healthconnect.datatypes.PowerRecord;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.healthconnect.datatypes.SpeedRecord;
+import android.healthconnect.datatypes.StepsCadenceRecord;
 import android.healthconnect.datatypes.StepsRecord;
 import android.healthconnect.internal.datatypes.BasalMetabolicRateRecordInternal;
+import android.healthconnect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
+import android.healthconnect.internal.datatypes.PowerRecordInternal;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.healthconnect.internal.datatypes.SpeedRecordInternal;
+import android.healthconnect.internal.datatypes.StepsCadenceRecordInternal;
 import android.healthconnect.internal.datatypes.StepsRecordInternal;
 import android.util.ArrayMap;
 
@@ -48,6 +56,15 @@ public final class RecordMapper {
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE,
                 BasalMetabolicRateRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                CyclingPedalingCadenceRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_POWER, PowerRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_SPEED, SpeedRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, StepsCadenceRecordInternal.class);
 
         mRecordIdToExternalRecordClassMap = new ArrayMap<>(NUM_ENTRIES);
         mRecordIdToExternalRecordClassMap.put(
@@ -62,6 +79,15 @@ public final class RecordMapper {
                 new ArrayMap<>(mRecordIdToExternalRecordClassMap.size());
         mRecordIdToExternalRecordClassMap.forEach(
                 (id, recordClass) -> mExternalRecordClassToRecordIdMap.put(recordClass, id));
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                CyclingPedalingCadenceRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_POWER, PowerRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_SPEED, SpeedRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, StepsCadenceRecord.class);
     }
 
     @NonNull

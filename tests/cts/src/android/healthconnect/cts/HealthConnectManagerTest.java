@@ -37,12 +37,10 @@ import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.HeartRateRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.StepsRecord;
 import android.healthconnect.datatypes.units.Power;
 import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
-import android.util.ArraySet;
 import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -55,7 +53,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -65,24 +62,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectManagerTest {
-    static final class RecordAndIdentifier {
-        private final int id;
-        private final Record recordClass;
-
-        public RecordAndIdentifier(int id, Record recordClass) {
-            this.id = id;
-            this.recordClass = recordClass;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public Record getRecordClass() {
-            return recordClass;
-        }
-    }
-
     private static final String TAG = "HealthConnectManagerTest";
 
     @Test
@@ -97,25 +76,6 @@ public class HealthConnectManagerTest {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
-    }
-
-    @Test
-    public void testAllRecordsAreBeingTested() {
-        List<Record> records = getTestRecords();
-        assertThat(records.size()).isEqualTo(RecordTypeIdentifier.class.getDeclaredFields().length);
-        Set<Integer> recordIdSet = new ArraySet<>();
-        records.forEach(
-                (record -> {
-                    assertThat(recordIdSet.contains(record.getRecordType())).isEqualTo(false);
-                    recordIdSet.add(record.getRecordType());
-                }));
-    }
-
-    @Test
-    public void testAllIdentifiersAreBeingTested() {
-        List<RecordAndIdentifier> recordAndIdentifiers = getRecordsAndIdentifiers();
-        assertThat(recordAndIdentifiers.size())
-                .isEqualTo(RecordTypeIdentifier.class.getDeclaredFields().length);
     }
 
     @Test
@@ -428,5 +388,23 @@ public class HealthConnectManagerTest {
                         Instant.now(),
                         Power.fromWatts(100.0))
                 .build();
+    }
+
+    static final class RecordAndIdentifier {
+        private final int id;
+        private final Record recordClass;
+
+        public RecordAndIdentifier(int id, Record recordClass) {
+            this.id = id;
+            this.recordClass = recordClass;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public Record getRecordClass() {
+            return recordClass;
+        }
     }
 }

@@ -19,6 +19,8 @@ package android.healthconnect.datatypes;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 
+import java.util.Objects;
+
 /** Specifies the contributing source/application of any {@link Record} */
 public final class DataOrigin {
     /**
@@ -59,5 +61,31 @@ public final class DataOrigin {
     @Nullable
     public String getPackageName() {
         return mPackageName;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(@NonNull Object object) {
+        if (this == object) return true;
+        if (object instanceof DataOrigin) {
+            DataOrigin other = (DataOrigin) object;
+            return Objects.equals(this.getPackageName(), other.getPackageName());
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getPackageName());
     }
 }
