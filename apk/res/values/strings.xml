@@ -271,10 +271,10 @@
   <!--endregion-->
 
   <!--region Onboarding -->
-  <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time" translatable="true">Get Started with Health Connect</string>
-  <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page" translatable="true">Health Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone</string>
+  <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time" translatable="true">Get Started with Health&#160;Connect</string>
+  <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page" translatable="true">Health&#160;Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone</string>
   <string name="share_data" description="Label used to show how the user can share data with apps" translatable="true">Share data with your apps</string>
-  <string name="share_data_description" description="Content description for how the user can share data with apps" translatable="true">Choose the data each app can read or write to Health Connect</string>
+  <string name="share_data_description" description="Content description for how the user can share data with apps" translatable="true">Choose the data each app can read or write to Health&#160;Connect</string>
   <string name="manage_your_settings" description="Label used to show how the user can manage settings and privacy" translatable="true">Manage your settings and privacy</string>
   <string name="manage_your_settings_description" description="Content description for how the user can change app permissions and manage data" translatable="true">Change app permissions and manage your data at any time</string>
   <string name="onboarding_go_back_button_text" description="Content description for button to exit from onboarding page" translatable="true">Go back</string>
@@ -306,5 +306,17 @@
   <string name="confirming_question_go_back_button" description="Label of a button that goes back to the previous dialog. [CHAR_LIMIT=50]">Go back</string>
   <string name="delete_dialog_success_got_it_button" description="Label of a button that dismisses the pop-up window. [CHAR_LIMIT=50]">Done</string>
   <string name="delete_dialog_failure_close_button" description="Label of a button that closes the window. [CHAR_LIMIT=50]">Close</string>
+  <!--endregion-->
+
+  <!-- region Can't See All Your Apps -->
+  <string name="cant_see_all_your_apps_title" description="Title of can't see all your apps screen">Can’t see all your apps?</string>
+  <string name="cant_see_all_your_apps_description" description="Description of can't see all your apps screen">If you can’t see an installed app, it may not be compatible with Health&#160;Connect yet</string>
+  <string name="things_to_try" description="Label used to show how user can try with different options">Things to try</string>
+  <string name="check_for_updates" description="Label for a button that is used to check for updates">Check for updates</string>
+  <string name="check_for_updates_description" description="Content description for a button that is used to check for updates">Make sure installed apps are up-to-date</string>
+  <string name="see_all_compatible_apps" description="Label for a button that is used to show all compatible apps on Google Play">See all compatible apps</string>
+  <string name="see_all_compatible_apps_description" description="Content description for a button that is used to show all compatible apps on Google Play">Find apps on Google&#160;Play</string>
+  <string name="send_feedback" description="Label for a button that is used to send feedback">Send feedback</string>
+  <string name="send_feedback_description" description="Content description for a button that is used to send feedback">Tell us which health &amp; fitness apps you’d like to work with Health&#160;Connect</string>
   <!--endregion-->
 </resources>

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.ComponentName
@@ -41,33 +57,38 @@ class OnboardingScreenTest {
     fun onboardingScreen_isDisplayedCorrectly() {
         startOnboardingActivity()
 
-        Espresso.onView(ViewMatchers.withText(R.string.onboarding_title))
+        Espresso.onView(ViewMatchers.withText("Get Started with Health\u00A0Connect"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.onboarding_description))
+        Espresso.onView(
+                ViewMatchers.withText(
+                    "Health\u00A0Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.onboarding_image))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.share_icon))
             .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.share_data))
+        Espresso.onView(ViewMatchers.withText("Share data with your apps"))
             .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.share_data_description))
+        Espresso.onView(
+                ViewMatchers.withText(
+                    "Choose the data each app can read or write to Health\u00A0Connect"))
             .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.manage_icon))
             .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.manage_your_settings))
+        Espresso.onView(ViewMatchers.withText("Manage your settings and privacy"))
             .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.manage_your_settings_description))
+        Espresso.onView(
+                ViewMatchers.withText("Change app permissions and manage your data at any time"))
             .perform(ViewActions.scrollTo())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.onboarding_get_started_button_text))
+        Espresso.onView(ViewMatchers.withText("Get started"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.onboarding_go_back_button_text))
+        Espresso.onView(ViewMatchers.withText("Go back"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
