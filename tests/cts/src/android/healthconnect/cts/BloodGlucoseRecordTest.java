@@ -22,10 +22,10 @@ import android.content.Context;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
+import android.healthconnect.datatypes.BloodGlucoseRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.units.BloodGlucose;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
@@ -45,27 +45,37 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RunWith(AndroidJUnit4.class)
-public class BasalMetabolicRateRecordTest {
-    private static final String TAG = "BasalMetabolicRateRecordTest";
+public class BloodGlucoseRecordTest {
+    private static final String TAG = "BloodGlucoseRecordTest";
 
-    static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0))
+    static BloodGlucoseRecord getBaseBloodGlucoseRecord() {
+        return new BloodGlucoseRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        BloodGlucose.fromMillimolesPerLiter(10.0),
+                        1,
+                        1)
                 .build();
     }
 
-    static BasalMetabolicRateRecord getCompleteBasalMetabolicRateRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0))
+    static BloodGlucoseRecord getCompleteBloodGlucoseRecord() {
+        return new BloodGlucoseRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        BloodGlucose.fromMillimolesPerLiter(10.0),
+                        1,
+                        1)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 
     @Test
-    public void testInsertBasalMetabolicRateRecord() throws InterruptedException {
+    public void testInsertBloodGlucoseRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
-        records.add(getBaseBasalMetabolicRateRecord());
-        records.add(getCompleteBasalMetabolicRateRecord());
+        records.add(getBaseBloodGlucoseRecord());
+        records.add(getCompleteBloodGlucoseRecord());
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
@@ -88,11 +98,5 @@ public class BasalMetabolicRateRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
-    }
-
-    static Record getBasalMetabolicRateRecord(double power) {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(power))
-                .build();
     }
 }

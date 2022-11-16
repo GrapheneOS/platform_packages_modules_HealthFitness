@@ -15,11 +15,8 @@
  */
 package android.healthconnect.datatypes;
 
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.BMR_RECORD_BASAL_CALORIES_TOTAL;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
-
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations;
+import android.healthconnect.datatypes.units.Temperature;
 
 import androidx.annotation.NonNull;
 
@@ -28,38 +25,50 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 
 /**
- * Captures the BMR of a user. Each record represents the energy a user would burn if at rest all
- * day, based on their height and weight.
+ * Captures the body temperature of a user. Each record represents a single instantaneous body
+ * temperature measuremen
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE)
-public final class BasalMetabolicRateRecord extends InstantRecord {
-    private final Power mBasalMetabolicRate;
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE)
+public final class BodyTemperatureRecord extends InstantRecord {
+
+    private final int mMeasurementLocation;
+    private final Temperature mTemperature;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
-     * @param basalMetabolicRate BasalMetabolicRate of this activity
+     * @param measurementLocation MeasurementLocation of this activity
+     * @param temperature Temperature of this activity
      */
-    private BasalMetabolicRateRecord(
+    private BodyTemperatureRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Power basalMetabolicRate) {
+            @BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations
+                    int measurementLocation,
+            @NonNull Temperature temperature) {
         super(metadata, time, zoneOffset);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
-        Objects.requireNonNull(basalMetabolicRate);
-        mBasalMetabolicRate = basalMetabolicRate;
+        Objects.requireNonNull(temperature);
+        mMeasurementLocation = measurementLocation;
+        mTemperature = temperature;
     }
-
     /**
-     * @return basalMetabolicRate
+     * @return measurementLocation
+     */
+    @BodyTemperatureMeasurementLocations
+    public int getMeasurementLocation() {
+        return mMeasurementLocation;
+    }
+    /**
+     * @return temperature in {@link Temperature} unit.
      */
     @NonNull
-    public Power getBasalMetabolicRate() {
-        return mBasalMetabolicRate;
+    public Temperature getTemperature() {
+        return mTemperature;
     }
 
     /**
@@ -72,40 +81,47 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BasalMetabolicRateRecord that = (BasalMetabolicRateRecord) o;
-        return getBasalMetabolicRate().equals(that.getBasalMetabolicRate());
+        BodyTemperatureRecord that = (BodyTemperatureRecord) o;
+        return getMeasurementLocation() == that.getMeasurementLocation()
+                && getTemperature().equals(that.getTemperature());
     }
 
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getBasalMetabolicRate());
+        return Objects.hash(super.hashCode(), getMeasurementLocation(), getTemperature());
     }
 
-    /** Builder class for {@link BasalMetabolicRateRecord} */
+    /** Builder class for {@link BodyTemperatureRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
         private final Instant mTime;
         private ZoneOffset mZoneOffset;
-        private final Power mBasalMetabolicRate;
+        private final int mMeasurementLocation;
+        private final Temperature mTemperature;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param time Start time of this activity
-         * @param basalMetabolicRate Basal metabolic rate, in {@link Power} unit. Required field.
-         *     Valid range: 0-10000 kcal/day.
+         * @param measurementLocation Where on the user's body the temperature measurement was taken
+         *     from. Optional field. Allowed values: {@link BodyTemperatureMeasurementLocation}.
+         * @param temperature Temperature in {@link Temperature} unit. Required field. Valid range:
+         *     0-100 Celsius degrees.
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant time,
-                @NonNull Power basalMetabolicRate) {
+                @BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations
+                        int measurementLocation,
+                @NonNull Temperature temperature) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(time);
-            Objects.requireNonNull(basalMetabolicRate);
+            Objects.requireNonNull(temperature);
             mMetadata = metadata;
             mTime = time;
             mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-            mBasalMetabolicRate = basalMetabolicRate;
+            mMeasurementLocation = measurementLocation;
+            mTemperature = temperature;
         }
 
         /** Sets the zone offset of the user when the activity happened */
@@ -117,23 +133,12 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
         }
 
         /**
-         * @return Object of {@link BasalMetabolicRateRecord}
+         * @return Object of {@link BodyTemperatureRecord}
          */
         @NonNull
-        public BasalMetabolicRateRecord build() {
-            return new BasalMetabolicRateRecord(mMetadata, mTime, mZoneOffset, mBasalMetabolicRate);
+        public BodyTemperatureRecord build() {
+            return new BodyTemperatureRecord(
+                    mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature);
         }
     }
-
-    /**
-     * Metric identifier get total basal calories burnt using aggregate APIs in {@link
-     * HealthConnectManager}
-     */
-    @NonNull
-    public static final AggregationType<Power> BASAL_CALORIES_TOTAL =
-            new AggregationType<>(
-                    BMR_RECORD_BASAL_CALORIES_TOTAL,
-                    AggregationType.SUM,
-                    RECORD_TYPE_BASAL_METABOLIC_RATE,
-                    Power.class);
 }

@@ -15,11 +15,7 @@
  */
 package android.healthconnect.datatypes;
 
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.BMR_RECORD_BASAL_CALORIES_TOTAL;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
-
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.units.Mass;
 
 import androidx.annotation.NonNull;
 
@@ -27,39 +23,36 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
-/**
- * Captures the BMR of a user. Each record represents the energy a user would burn if at rest all
- * day, based on their height and weight.
- */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE)
-public final class BasalMetabolicRateRecord extends InstantRecord {
-    private final Power mBasalMetabolicRate;
+/** Captures the user's bone mass. Each record represents a single instantaneous measurement. */
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BONE_MASS)
+public final class BoneMassRecord extends InstantRecord {
+
+    private final Mass mMass;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
-     * @param basalMetabolicRate BasalMetabolicRate of this activity
+     * @param mass Mass of this activity
      */
-    private BasalMetabolicRateRecord(
+    private BoneMassRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Power basalMetabolicRate) {
+            @NonNull Mass mass) {
         super(metadata, time, zoneOffset);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
-        Objects.requireNonNull(basalMetabolicRate);
-        mBasalMetabolicRate = basalMetabolicRate;
+        Objects.requireNonNull(mass);
+        mMass = mass;
     }
-
     /**
-     * @return basalMetabolicRate
+     * @return mass in {@link Mass} unit.
      */
     @NonNull
-    public Power getBasalMetabolicRate() {
-        return mBasalMetabolicRate;
+    public Mass getMass() {
+        return mMass;
     }
 
     /**
@@ -72,40 +65,36 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BasalMetabolicRateRecord that = (BasalMetabolicRateRecord) o;
-        return getBasalMetabolicRate().equals(that.getBasalMetabolicRate());
+        BoneMassRecord that = (BoneMassRecord) o;
+        return getMass().equals(that.getMass());
     }
 
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getBasalMetabolicRate());
+        return Objects.hash(super.hashCode(), getMass());
     }
 
-    /** Builder class for {@link BasalMetabolicRateRecord} */
+    /** Builder class for {@link BoneMassRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
         private final Instant mTime;
         private ZoneOffset mZoneOffset;
-        private final Power mBasalMetabolicRate;
+        private final Mass mMass;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param time Start time of this activity
-         * @param basalMetabolicRate Basal metabolic rate, in {@link Power} unit. Required field.
-         *     Valid range: 0-10000 kcal/day.
+         * @param mass Mass in {@link Mass} unit. Required field. Valid range: 0-1000 kilograms.
          */
-        public Builder(
-                @NonNull Metadata metadata,
-                @NonNull Instant time,
-                @NonNull Power basalMetabolicRate) {
+        public Builder(@NonNull Metadata metadata, @NonNull Instant time, @NonNull Mass mass) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(time);
-            Objects.requireNonNull(basalMetabolicRate);
+            Objects.requireNonNull(mass);
             mMetadata = metadata;
             mTime = time;
             mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-            mBasalMetabolicRate = basalMetabolicRate;
+            mMass = mass;
         }
 
         /** Sets the zone offset of the user when the activity happened */
@@ -117,23 +106,11 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
         }
 
         /**
-         * @return Object of {@link BasalMetabolicRateRecord}
+         * @return Object of {@link BoneMassRecord}
          */
         @NonNull
-        public BasalMetabolicRateRecord build() {
-            return new BasalMetabolicRateRecord(mMetadata, mTime, mZoneOffset, mBasalMetabolicRate);
+        public BoneMassRecord build() {
+            return new BoneMassRecord(mMetadata, mTime, mZoneOffset, mMass);
         }
     }
-
-    /**
-     * Metric identifier get total basal calories burnt using aggregate APIs in {@link
-     * HealthConnectManager}
-     */
-    @NonNull
-    public static final AggregationType<Power> BASAL_CALORIES_TOTAL =
-            new AggregationType<>(
-                    BMR_RECORD_BASAL_CALORIES_TOTAL,
-                    AggregationType.SUM,
-                    RECORD_TYPE_BASAL_METABOLIC_RATE,
-                    Power.class);
 }

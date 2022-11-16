@@ -77,11 +77,7 @@ public final class BloodGlucose implements Comparable<BloodGlucose> {
         return false;
     }
 
-    /**
-     * Returns a hash code value for the object.
-     *
-     * @return a hash code value for this object.
-     */
+    /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
         return Objects.hash(this.getInMillimolesPerLiter());

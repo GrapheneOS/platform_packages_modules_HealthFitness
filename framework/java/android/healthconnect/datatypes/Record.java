@@ -65,19 +65,19 @@ public abstract class Record {
     @Override
     public boolean equals(@NonNull Object object) {
         if (this == object) return true;
-        if (object instanceof Record) {
+        if (Objects.isNull(object)) {
+            return false;
+        }
+
+        if (getClass().isAssignableFrom(object.getClass())) {
             Record other = (Record) object;
-            return this.getMetadata().equals(other.getMetadata())
-                    && this.getRecordType() == other.getRecordType();
+            return getMetadata().equals(other.getMetadata())
+                    && getRecordType() == other.getRecordType();
         }
         return false;
     }
 
-    /**
-     * Returns a hash code value for the object.
-     *
-     * @return a hash code value for this object.
-     */
+    /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
         return Objects.hash(this.getMetadata(), this.getRecordType());

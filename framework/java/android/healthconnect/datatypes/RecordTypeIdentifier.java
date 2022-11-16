@@ -55,6 +55,23 @@ public final class RecordTypeIdentifier {
     public static final int RECORD_TYPE_STEPS_CADENCE = 21;
     // Instant records
     public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 22;
+    public static final int RECORD_TYPE_BODY_FAT = 23;
+    public static final int RECORD_TYPE_VO2_MAX = 24;
+    public static final int RECORD_TYPE_CERVICAL_MUCUS = 25;
+    public static final int RECORD_TYPE_BASAL_BODY_TEMPERATURE = 26;
+    public static final int RECORD_TYPE_MENSTRUATION_FLOW = 27;
+    public static final int RECORD_TYPE_OXYGEN_SATURATION = 28;
+    public static final int RECORD_TYPE_BLOOD_PRESSURE = 29;
+    public static final int RECORD_TYPE_HEIGHT = 30;
+    public static final int RECORD_TYPE_BLOOD_GLUCOSE = 31;
+    public static final int RECORD_TYPE_WEIGHT = 32;
+    public static final int RECORD_TYPE_LEAN_BODY_MASS = 33;
+    public static final int RECORD_TYPE_SEXUAL_ACTIVITY = 34;
+    public static final int RECORD_TYPE_BODY_TEMPERATURE = 35;
+    public static final int RECORD_TYPE_OVULATION_TEST = 36;
+    public static final int RECORD_TYPE_RESPIRATORY_RATE = 37;
+    public static final int RECORD_TYPE_BONE_MASS = 38;
+    public static final int RECORD_TYPE_RESTING_HEART_RATE = 39;
 
     private RecordTypeIdentifier() {}
 
@@ -78,7 +95,24 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_HYDRATION,
         RECORD_TYPE_EXERCISE_EVENT,
         RECORD_TYPE_EXERCISE_LAP,
-        RECORD_TYPE_NUTRITION
+        RECORD_TYPE_NUTRITION,
+        RECORD_TYPE_RESPIRATORY_RATE,
+        RECORD_TYPE_BONE_MASS,
+        RECORD_TYPE_RESTING_HEART_RATE,
+        RECORD_TYPE_BODY_FAT,
+        RECORD_TYPE_VO2_MAX,
+        RECORD_TYPE_CERVICAL_MUCUS,
+        RECORD_TYPE_BASAL_BODY_TEMPERATURE,
+        RECORD_TYPE_MENSTRUATION_FLOW,
+        RECORD_TYPE_OXYGEN_SATURATION,
+        RECORD_TYPE_BLOOD_PRESSURE,
+        RECORD_TYPE_HEIGHT,
+        RECORD_TYPE_BLOOD_GLUCOSE,
+        RECORD_TYPE_WEIGHT,
+        RECORD_TYPE_LEAN_BODY_MASS,
+        RECORD_TYPE_SEXUAL_ACTIVITY,
+        RECORD_TYPE_BODY_TEMPERATURE,
+        RECORD_TYPE_OVULATION_TEST
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}

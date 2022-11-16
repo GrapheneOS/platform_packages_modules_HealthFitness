@@ -136,8 +136,7 @@ public final class SwimmingStrokesRecord extends IntervalRecord {
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
          * @param count Count of strokes. Optional field. Valid range: 1-1000000.
-         * @param type Swimming style. Required field. Allowed values:
-         *     SwimmingStrokesRecord.SwimmingStrokesType.SwimmingStrokesTypes.
+         * @param type Swimming style. Required field. Allowed values: {@link SwimmingStrokesType}.
          */
         public Builder(
                 @NonNull Metadata metadata,

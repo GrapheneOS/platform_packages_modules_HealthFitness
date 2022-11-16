@@ -17,7 +17,14 @@
 package android.healthconnect.internal.datatypes.utils;
 
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_FAT;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
@@ -25,14 +32,24 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_E
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_LAP;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEIGHT;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_POWER;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SEXUAL_ACTIVITY;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SWIMMING_STROKES;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES;
 
 import android.annotation.SuppressLint;
@@ -85,6 +102,33 @@ public final class RecordTypePermissionCategoryMapper {
                         put(RECORD_TYPE_EXERCISE_EVENT, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_EXERCISE_LAP, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_NUTRITION, HealthPermissionCategory.NUTRITION);
+                        put(
+                                RECORD_TYPE_BASAL_BODY_TEMPERATURE,
+                                HealthPermissionCategory.BASAL_BODY_TEMPERATURE);
+                        put(RECORD_TYPE_BLOOD_GLUCOSE, HealthPermissionCategory.BLOOD_GLUCOSE);
+                        put(RECORD_TYPE_BLOOD_PRESSURE, HealthPermissionCategory.BLOOD_PRESSURE);
+                        put(RECORD_TYPE_BODY_FAT, HealthPermissionCategory.BODY_FAT);
+                        put(
+                                RECORD_TYPE_BODY_TEMPERATURE,
+                                HealthPermissionCategory.BODY_TEMPERATURE);
+                        put(RECORD_TYPE_BONE_MASS, HealthPermissionCategory.BONE_MASS);
+                        put(RECORD_TYPE_VO2_MAX, HealthPermissionCategory.VO2_MAX);
+                        put(RECORD_TYPE_CERVICAL_MUCUS, HealthPermissionCategory.CERVICAL_MUCUS);
+                        put(RECORD_TYPE_MENSTRUATION_FLOW, HealthPermissionCategory.MENSTRUATION);
+                        put(
+                                RECORD_TYPE_OXYGEN_SATURATION,
+                                HealthPermissionCategory.OXYGEN_SATURATION);
+                        put(RECORD_TYPE_OVULATION_TEST, HealthPermissionCategory.OVULATION_TEST);
+                        put(RECORD_TYPE_LEAN_BODY_MASS, HealthPermissionCategory.LEAN_BODY_MASS);
+                        put(RECORD_TYPE_SEXUAL_ACTIVITY, HealthPermissionCategory.SEXUAL_ACTIVITY);
+                        put(
+                                RECORD_TYPE_RESPIRATORY_RATE,
+                                HealthPermissionCategory.RESPIRATORY_RATE);
+                        put(
+                                RECORD_TYPE_RESTING_HEART_RATE,
+                                HealthPermissionCategory.RESTING_HEART_RATE);
+                        put(RECORD_TYPE_HEIGHT, HealthPermissionCategory.HEIGHT);
+                        put(RECORD_TYPE_WEIGHT, HealthPermissionCategory.WEIGHT);
                     }
                 };
     }

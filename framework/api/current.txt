@@ -248,8 +248,18 @@ package android.healthconnect.datatypes {
     method @NonNull public String getPackageName();
   }
 
-  public class BasalMetabolicRateRecord extends android.healthconnect.datatypes.InstantRecord {
-    ctor public BasalMetabolicRateRecord(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.ZoneOffset, @NonNull android.healthconnect.datatypes.units.Power);
+  public final class BasalBodyTemperatureRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public int getMeasurementLocation();
+    method @NonNull public android.healthconnect.datatypes.units.Temperature getTemperature();
+  }
+
+  public static final class BasalBodyTemperatureRecord.Builder {
+    ctor public BasalBodyTemperatureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Temperature);
+    method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord build();
+    method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class BasalMetabolicRateRecord extends android.healthconnect.datatypes.InstantRecord {
     method @NonNull public android.healthconnect.datatypes.units.Power getBasalMetabolicRate();
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Power> BASAL_CALORIES_TOTAL;
   }
@@ -258,6 +268,111 @@ package android.healthconnect.datatypes {
     ctor public BasalMetabolicRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Power);
     method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord build();
     method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class BloodGlucoseRecord extends android.healthconnect.datatypes.InstantRecord {
+    method @NonNull public android.healthconnect.datatypes.units.BloodGlucose getLevel();
+    method public int getMealType();
+    method public int getRelationToMeal();
+    method public int getSpecimenSource();
+  }
+
+  public static final class BloodGlucoseRecord.Builder {
+    ctor public BloodGlucoseRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.BloodGlucose, int, int);
+    method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord build();
+    method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class BloodGlucoseRecord.RelationToMealType {
+    field public static final int RELATION_TO_MEAL_AFTER_MEAL = 4; // 0x4
+    field public static final int RELATION_TO_MEAL_BEFORE_MEAL = 3; // 0x3
+    field public static final int RELATION_TO_MEAL_FASTING = 2; // 0x2
+    field public static final int RELATION_TO_MEAL_GENERAL = 1; // 0x1
+    field public static final int RELATION_TO_MEAL_UNKNOWN = 0; // 0x0
+  }
+
+  public static final class BloodGlucoseRecord.SpecimenSource {
+    field public static final int SPECIMEN_SOURCE_CAPILLARY_BLOOD = 2; // 0x2
+    field public static final int SPECIMEN_SOURCE_INTERSTITIAL_FLUID = 1; // 0x1
+    field public static final int SPECIMEN_SOURCE_PLASMA = 3; // 0x3
+    field public static final int SPECIMEN_SOURCE_SERUM = 4; // 0x4
+    field public static final int SPECIMEN_SOURCE_TEARS = 5; // 0x5
+    field public static final int SPECIMEN_SOURCE_UNKNOWN = 0; // 0x0
+    field public static final int SPECIMEN_SOURCE_WHOLE_BLOOD = 6; // 0x6
+  }
+
+  public final class BloodPressureRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public int getBodyPosition();
+    method @NonNull public android.healthconnect.datatypes.units.Pressure getDiastolic();
+    method public int getMeasurementLocation();
+    method @NonNull public android.healthconnect.datatypes.units.Pressure getSystolic();
+  }
+
+  public static final class BloodPressureRecord.BloodPressureMeasurementLocation {
+    field public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM = 3; // 0x3
+    field public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_WRIST = 1; // 0x1
+    field public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_UPPER_ARM = 4; // 0x4
+    field public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_WRIST = 2; // 0x2
+    field public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_UNKNOWN = 0; // 0x0
+  }
+
+  public static final class BloodPressureRecord.BodyPosition {
+    field public static final int BODY_POSITION_LYING_DOWN = 3; // 0x3
+    field public static final int BODY_POSITION_RECLINING = 4; // 0x4
+    field public static final int BODY_POSITION_SITTING_DOWN = 2; // 0x2
+    field public static final int BODY_POSITION_STANDING_UP = 1; // 0x1
+    field public static final int BODY_POSITION_UNKNOWN = 0; // 0x0
+  }
+
+  public static final class BloodPressureRecord.Builder {
+    ctor public BloodPressureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Pressure, @NonNull android.healthconnect.datatypes.units.Pressure, int);
+    method @NonNull public android.healthconnect.datatypes.BloodPressureRecord build();
+    method @NonNull public android.healthconnect.datatypes.BloodPressureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class BodyFatRecord extends android.healthconnect.datatypes.InstantRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Percentage getPercentage();
+  }
+
+  public static final class BodyFatRecord.Builder {
+    ctor public BodyFatRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Percentage);
+    method @NonNull public android.healthconnect.datatypes.BodyFatRecord build();
+    method @NonNull public android.healthconnect.datatypes.BodyFatRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class BodyTemperatureMeasurementLocation {
+    field public static final int MEASUREMENT_LOCATION_ARMPIT = 1; // 0x1
+    field public static final int MEASUREMENT_LOCATION_EAR = 8; // 0x8
+    field public static final int MEASUREMENT_LOCATION_FINGER = 2; // 0x2
+    field public static final int MEASUREMENT_LOCATION_FOREHEAD = 3; // 0x3
+    field public static final int MEASUREMENT_LOCATION_MOUTH = 4; // 0x4
+    field public static final int MEASUREMENT_LOCATION_RECTUM = 5; // 0x5
+    field public static final int MEASUREMENT_LOCATION_TEMPORAL_ARTERY = 6; // 0x6
+    field public static final int MEASUREMENT_LOCATION_TOE = 7; // 0x7
+    field public static final int MEASUREMENT_LOCATION_UNKNOWN = 0; // 0x0
+    field public static final int MEASUREMENT_LOCATION_VAGINA = 10; // 0xa
+    field public static final int MEASUREMENT_LOCATION_WRIST = 9; // 0x9
+  }
+
+  public final class BodyTemperatureRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public int getMeasurementLocation();
+    method @NonNull public android.healthconnect.datatypes.units.Temperature getTemperature();
+  }
+
+  public static final class BodyTemperatureRecord.Builder {
+    ctor public BodyTemperatureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Temperature);
+    method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord build();
+    method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class BoneMassRecord extends android.healthconnect.datatypes.InstantRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Mass getMass();
+  }
+
+  public static final class BoneMassRecord.Builder {
+    ctor public BoneMassRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.BoneMassRecord build();
+    method @NonNull public android.healthconnect.datatypes.BoneMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class CyclingPedalingCadenceRecord extends android.healthconnect.datatypes.IntervalRecord {

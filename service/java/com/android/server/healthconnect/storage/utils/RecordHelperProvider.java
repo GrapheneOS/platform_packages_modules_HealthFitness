@@ -21,7 +21,13 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 
 import com.android.server.healthconnect.storage.datatypehelpers.ActiveCaloriesBurnedRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BasalBodyTemperatureRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BasalMetabolicRateRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BloodGlucoseRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BloodPressureRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BodyFatRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BodyTemperatureRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BoneMassRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.CyclingPedalingCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ElevationGainedRecordHelper;
@@ -96,6 +102,21 @@ public final class RecordHelperProvider {
         recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_SPEED, new SpeedRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, new StepsCadenceRecordHelper());
+
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE,
+                new BodyTemperatureRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BONE_MASS, new BoneMassRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE, new BloodPressureRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BODY_FAT, new BodyFatRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE, new BloodGlucoseRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE,
+                new BasalBodyTemperatureRecordHelper());
 
         mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
     }

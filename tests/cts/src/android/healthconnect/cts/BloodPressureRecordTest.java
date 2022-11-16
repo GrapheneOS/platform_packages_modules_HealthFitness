@@ -22,10 +22,10 @@ import android.content.Context;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
+import android.healthconnect.datatypes.BloodPressureRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.units.Pressure;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
@@ -45,27 +45,37 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RunWith(AndroidJUnit4.class)
-public class BasalMetabolicRateRecordTest {
-    private static final String TAG = "BasalMetabolicRateRecordTest";
+public class BloodPressureRecordTest {
+    private static final String TAG = "BloodPressureRecordTest";
 
-    static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0))
+    static BloodPressureRecord getBaseBloodPressureRecord() {
+        return new BloodPressureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Pressure.fromMillimetersOfMercury(10.0),
+                        Pressure.fromMillimetersOfMercury(10.0),
+                        1)
                 .build();
     }
 
-    static BasalMetabolicRateRecord getCompleteBasalMetabolicRateRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0))
+    static BloodPressureRecord getCompleteBloodPressureRecord() {
+        return new BloodPressureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Pressure.fromMillimetersOfMercury(10.0),
+                        Pressure.fromMillimetersOfMercury(10.0),
+                        1)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 
     @Test
-    public void testInsertBasalMetabolicRateRecord() throws InterruptedException {
+    public void testInsertBloodPressureRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
-        records.add(getBaseBasalMetabolicRateRecord());
-        records.add(getCompleteBasalMetabolicRateRecord());
+        records.add(getBaseBloodPressureRecord());
+        records.add(getCompleteBloodPressureRecord());
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
@@ -88,11 +98,5 @@ public class BasalMetabolicRateRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
-    }
-
-    static Record getBasalMetabolicRateRecord(double power) {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(power))
-                .build();
     }
 }

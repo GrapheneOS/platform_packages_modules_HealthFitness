@@ -13,58 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.healthconnect.internal.datatypes;
 
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
+import android.healthconnect.datatypes.BoneMassRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.units.Mass;
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
 /**
- * @see BasalMetabolicRateRecord
+ * @see BoneMassRecord
  * @hide
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE)
-public final class BasalMetabolicRateRecordInternal
-        extends InstantRecordInternal<BasalMetabolicRateRecord> {
-    private double mBasalMetabolicRate;
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BONE_MASS)
+public final class BoneMassRecordInternal extends InstantRecordInternal<BoneMassRecord> {
+    private double mMass;
 
-    public double getBasalMetabolicRate() {
-        return mBasalMetabolicRate;
+    public double getMass() {
+        return mMass;
     }
 
-    /** returns this object with the specified basalMetabolicRate */
+    /** returns this object with the specified mass */
     @NonNull
-    public BasalMetabolicRateRecordInternal setBasalMetabolicRate(double basalMetabolicRate) {
-        this.mBasalMetabolicRate = basalMetabolicRate;
+    public BoneMassRecordInternal setMass(double mass) {
+        this.mMass = mass;
         return this;
     }
 
     @NonNull
     @Override
-    public BasalMetabolicRateRecord toExternalRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        buildMetaData(), getTime(), Power.fromWatts(getBasalMetabolicRate()))
+    public BoneMassRecord toExternalRecord() {
+        return new BoneMassRecord.Builder(buildMetaData(), getTime(), Mass.fromKilograms(getMass()))
                 .setZoneOffset(getZoneOffset())
                 .build();
     }
 
     @Override
     void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mBasalMetabolicRate = parcel.readDouble();
+        mMass = parcel.readDouble();
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BasalMetabolicRateRecord basalMetabolicRateRecord) {
-        mBasalMetabolicRate = basalMetabolicRateRecord.getBasalMetabolicRate().getInWatts();
+    void populateInstantRecordFrom(@NonNull BoneMassRecord boneMassRecord) {
+        mMass = boneMassRecord.getMass().getInKilograms();
     }
 
     @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
-        parcel.writeDouble(mBasalMetabolicRate);
+        parcel.writeDouble(mMass);
     }
 }

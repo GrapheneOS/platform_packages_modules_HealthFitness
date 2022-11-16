@@ -22,10 +22,10 @@ import android.content.Context;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
+import android.healthconnect.datatypes.BasalBodyTemperatureRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.units.Temperature;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
@@ -45,27 +45,33 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RunWith(AndroidJUnit4.class)
-public class BasalMetabolicRateRecordTest {
-    private static final String TAG = "BasalMetabolicRateRecordTest";
+public class BasalBodyTemperatureRecordTest {
+    private static final String TAG = "BasalBodyTemperatureRecordTest";
 
-    static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0))
+    static BasalBodyTemperatureRecord getBaseBasalBodyTemperatureRecord() {
+        return new BasalBodyTemperatureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Temperature.fromCelsius(10.0))
                 .build();
     }
 
-    static BasalMetabolicRateRecord getCompleteBasalMetabolicRateRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0))
+    static BasalBodyTemperatureRecord getCompleteBasalBodyTemperatureRecord() {
+        return new BasalBodyTemperatureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Temperature.fromCelsius(10.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 
     @Test
-    public void testInsertBasalMetabolicRateRecord() throws InterruptedException {
+    public void testInsertBasalBodyTemperatureRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
-        records.add(getBaseBasalMetabolicRateRecord());
-        records.add(getCompleteBasalMetabolicRateRecord());
+        records.add(getBaseBasalBodyTemperatureRecord());
+        records.add(getCompleteBasalBodyTemperatureRecord());
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
@@ -88,11 +94,5 @@ public class BasalMetabolicRateRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
-    }
-
-    static Record getBasalMetabolicRateRecord(double power) {
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(power))
-                .build();
     }
 }

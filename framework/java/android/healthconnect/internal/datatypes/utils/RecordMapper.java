@@ -18,7 +18,13 @@ package android.healthconnect.internal.datatypes.utils;
 
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord;
+import android.healthconnect.datatypes.BasalBodyTemperatureRecord;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
+import android.healthconnect.datatypes.BloodGlucoseRecord;
+import android.healthconnect.datatypes.BloodPressureRecord;
+import android.healthconnect.datatypes.BodyFatRecord;
+import android.healthconnect.datatypes.BodyTemperatureRecord;
+import android.healthconnect.datatypes.BoneMassRecord;
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord;
 import android.healthconnect.datatypes.DistanceRecord;
 import android.healthconnect.datatypes.ElevationGainedRecord;
@@ -38,7 +44,13 @@ import android.healthconnect.datatypes.SwimmingStrokesRecord;
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord;
 import android.healthconnect.datatypes.WheelchairPushesRecord;
 import android.healthconnect.internal.datatypes.ActiveCaloriesBurnedRecordInternal;
+import android.healthconnect.internal.datatypes.BasalBodyTemperatureRecordInternal;
 import android.healthconnect.internal.datatypes.BasalMetabolicRateRecordInternal;
+import android.healthconnect.internal.datatypes.BloodGlucoseRecordInternal;
+import android.healthconnect.internal.datatypes.BloodPressureRecordInternal;
+import android.healthconnect.internal.datatypes.BodyFatRecordInternal;
+import android.healthconnect.internal.datatypes.BodyTemperatureRecordInternal;
+import android.healthconnect.internal.datatypes.BoneMassRecordInternal;
 import android.healthconnect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 import android.healthconnect.internal.datatypes.DistanceRecordInternal;
 import android.healthconnect.internal.datatypes.ElevationGainedRecordInternal;
@@ -62,7 +74,7 @@ import java.util.Map;
 
 /** @hide */
 public final class RecordMapper {
-    private static final int NUM_ENTRIES = 15;
+    private static final int NUM_ENTRIES = 21;
     private static RecordMapper sRecordMapper;
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
@@ -118,6 +130,21 @@ public final class RecordMapper {
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, StepsCadenceRecordInternal.class);
 
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE,
+                BodyTemperatureRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BONE_MASS, BoneMassRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE, BloodPressureRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BODY_FAT, BodyFatRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE, BloodGlucoseRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE,
+                BasalBodyTemperatureRecordInternal.class);
+
         mRecordIdToExternalRecordClassMap = new ArrayMap<>(NUM_ENTRIES);
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS, StepsRecord.class);
@@ -161,6 +188,19 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_SPEED, SpeedRecord.class);
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, StepsCadenceRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE, BodyTemperatureRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BONE_MASS, BoneMassRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE, BloodPressureRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BODY_FAT, BodyFatRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE, BloodGlucoseRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE,
+                BasalBodyTemperatureRecord.class);
 
         mExternalRecordClassToRecordIdMap =
                 new ArrayMap<>(mRecordIdToExternalRecordClassMap.size());

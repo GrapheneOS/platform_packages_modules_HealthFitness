@@ -13,58 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.healthconnect.internal.datatypes;
 
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
+import android.healthconnect.datatypes.BodyFatRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.units.Percentage;
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
 /**
- * @see BasalMetabolicRateRecord
+ * @see BodyFatRecord
  * @hide
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE)
-public final class BasalMetabolicRateRecordInternal
-        extends InstantRecordInternal<BasalMetabolicRateRecord> {
-    private double mBasalMetabolicRate;
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BODY_FAT)
+public final class BodyFatRecordInternal extends InstantRecordInternal<BodyFatRecord> {
+    private double mPercentage;
 
-    public double getBasalMetabolicRate() {
-        return mBasalMetabolicRate;
+    public double getPercentage() {
+        return mPercentage;
     }
 
-    /** returns this object with the specified basalMetabolicRate */
+    /** returns this object with the specified percentage */
     @NonNull
-    public BasalMetabolicRateRecordInternal setBasalMetabolicRate(double basalMetabolicRate) {
-        this.mBasalMetabolicRate = basalMetabolicRate;
+    public BodyFatRecordInternal setPercentage(double percentage) {
+        this.mPercentage = percentage;
         return this;
     }
 
     @NonNull
     @Override
-    public BasalMetabolicRateRecord toExternalRecord() {
-        return new BasalMetabolicRateRecord.Builder(
-                        buildMetaData(), getTime(), Power.fromWatts(getBasalMetabolicRate()))
+    public BodyFatRecord toExternalRecord() {
+        return new BodyFatRecord.Builder(
+                        buildMetaData(), getTime(), Percentage.fromValue(getPercentage()))
                 .setZoneOffset(getZoneOffset())
                 .build();
     }
 
     @Override
     void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mBasalMetabolicRate = parcel.readDouble();
+        mPercentage = parcel.readDouble();
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BasalMetabolicRateRecord basalMetabolicRateRecord) {
-        mBasalMetabolicRate = basalMetabolicRateRecord.getBasalMetabolicRate().getInWatts();
+    void populateInstantRecordFrom(@NonNull BodyFatRecord bodyFatRecord) {
+        mPercentage = bodyFatRecord.getPercentage().getValue();
     }
 
     @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
-        parcel.writeDouble(mBasalMetabolicRate);
+        parcel.writeDouble(mPercentage);
     }
 }
