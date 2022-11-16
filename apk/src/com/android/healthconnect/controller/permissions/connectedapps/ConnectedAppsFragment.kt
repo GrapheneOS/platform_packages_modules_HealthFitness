@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.permissions.connectedapps
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
@@ -31,6 +32,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     companion object {
         const val ALLOWED_APPS_CATEGORY = "allowed_apps"
         private const val NOT_ALLOWED_APPS = "not_allowed_apps"
+        private const val CANT_SEE_ALL_YOUR_APPS = "cant_see_apps"
     }
 
     private val viewModel: ConnectedAppsViewModel by viewModels()
@@ -43,8 +45,16 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         preferenceScreen.findPreference(NOT_ALLOWED_APPS)
     }
 
+    private val mCantSeeAllYourAppsPreference: Preference? by lazy {
+        preferenceScreen.findPreference(CANT_SEE_ALL_YOUR_APPS)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
+        mCantSeeAllYourAppsPreference?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.action_connectedApps_to_cantSeeAllYourApps)
+            true
+        }
     }
 
     override fun onResume() {
@@ -54,13 +64,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.allowedApps.observe(viewLifecycleOwner) { apps ->
-            updateAllowedApps(apps)
-        }
+        viewModel.allowedApps.observe(viewLifecycleOwner) { apps -> updateAllowedApps(apps) }
 
-        viewModel.notAllowedApps.observe(viewLifecycleOwner) { apps ->
-            updateNotAllowedApps(apps)
-        }
+        viewModel.notAllowedApps.observe(viewLifecycleOwner) { apps -> updateNotAllowedApps(apps) }
     }
 
     private fun updateAllowedApps(appsList: List<AppMetadata>) {
@@ -68,21 +74,21 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
         appsList.forEach { app ->
             mAllowedAppsCategory?.addPreference(
-                    Preference(requireContext()).also {
-                        it.setTitle(app.appName)
-                        it.setIcon(app.icon)
-                    })
-            }
+                Preference(requireContext()).also {
+                    it.setTitle(app.appName)
+                    it.setIcon(app.icon)
+                })
+        }
     }
     private fun updateNotAllowedApps(appsList: List<AppMetadata>) {
         mNotAllowedAppsCategory?.removeAll()
 
         appsList.forEach { app ->
             mNotAllowedAppsCategory?.addPreference(
-                    Preference(requireContext()).also {
-                        it.setTitle(app.appName)
-                        it.setIcon(app.icon)
-                    })
+                Preference(requireContext()).also {
+                    it.setTitle(app.appName)
+                    it.setIcon(app.icon)
+                })
         }
     }
 }

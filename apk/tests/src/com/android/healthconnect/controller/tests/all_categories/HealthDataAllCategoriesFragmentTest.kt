@@ -74,12 +74,12 @@ class HealthDataAllCategoriesFragmentTest {
         }
         launchFragment<HealthDataAllCategoriesFragment>(Bundle())
 
-        onView(withText(R.string.activity_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.body_measurements_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.cycle_tracking_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.nutrition_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.sleep_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.vitals_category)).check(matches(isDisplayed()))
+        onView(withText("Activity")).check(matches(isDisplayed()))
+        onView(withText("Body measurements")).check(matches(isDisplayed()))
+        onView(withText("Cycle tracking")).check(matches(isDisplayed()))
+        onView(withText("Nutrition")).check(matches(isDisplayed()))
+        onView(withText("Sleep")).check(matches(isDisplayed()))
+        onView(withText("Vitals")).check(matches(isDisplayed()))
     }
 
     @Test
