@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 
 import android.annotation.NonNull;
@@ -24,9 +25,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.Constants;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.Slog;
 
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -280,6 +284,39 @@ public class TransactionManager {
             // If the record was deleted successfully then re-insert the record with the
             // updated contents.
             insertRecord(db, request);
+        }
+    }
+
+    /**
+     * @return list of distinct packageNames corresponding to the input table name after querying
+     *     the table.
+     */
+    public ArrayList<DataOrigin> getDistinctPackageNamesForRecordTable(RecordHelper<?> recordHelper)
+            throws SQLiteException {
+        try (SQLiteDatabase db = getReadableDb()) {
+            ArrayList<DataOrigin> packageNamesForDatatype = new ArrayList<>();
+            try (Cursor cursorForDistinctPackageNames =
+                    db.rawQuery(
+                            /* sql query */ recordHelper
+                                    .getReadTableRequestWithDistinctAppInfoIds()
+                                    .getReadCommand(),
+                            /* selectionArgs */ null)) {
+                if (cursorForDistinctPackageNames.getCount() > 0) {
+                    AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
+                    while (cursorForDistinctPackageNames.moveToNext()) {
+                        String packageName =
+                                appInfoHelper.getPackageName(
+                                        cursorForDistinctPackageNames.getLong(
+                                                cursorForDistinctPackageNames.getColumnIndex(
+                                                        APP_INFO_ID_COLUMN_NAME)));
+                        if (!packageName.isEmpty()) {
+                            packageNamesForDatatype.add(
+                                    new DataOrigin.Builder().setPackageName(packageName).build());
+                        }
+                    }
+                }
+            }
+            return packageNamesForDatatype;
         }
     }
 }

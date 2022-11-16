@@ -43,6 +43,7 @@ public class ReadTableRequest {
     private List<String> mColumnNames;
     private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses();
+    private boolean mDistinct = false;
 
     public ReadTableRequest(@NonNull String tableName) {
         Objects.requireNonNull(tableName);
@@ -78,11 +79,30 @@ public class ReadTableRequest {
         return this;
     }
 
-    /** Returns SQL statement to perform read operation */
+    /**
+     * Use this method to enable the Distinct clause in the read command.
+     *
+     * <p><b>NOTE: make sure to use the {@link ReadTableRequest#setColumnNames(List)} to set the
+     * column names to be used as the selection args.</b>
+     */
+    @NonNull
+    public ReadTableRequest setDistinctClause(boolean isDistinctValuesRequired) {
+        mDistinct = isDistinctValuesRequired;
+        return this;
+    }
+
+    /** Returns SQL statement to perform read operation. */
     @NonNull
     public String getReadCommand() {
-        final StringBuilder builder =
-                new StringBuilder("SELECT " + getColumnsToFetch() + " FROM " + mTableName + " ");
+        StringBuilder builder = new StringBuilder("SELECT ");
+        if (mDistinct) {
+            builder.append("DISTINCT ");
+            builder.append(getColumnsToFetch());
+        } else {
+            builder.append(getColumnsToFetch());
+        }
+        builder.append(" FROM ");
+        builder.append(mTableName);
 
         if (mJoinClause != null) {
             builder.append(mJoinClause.getInnerJoinClause());

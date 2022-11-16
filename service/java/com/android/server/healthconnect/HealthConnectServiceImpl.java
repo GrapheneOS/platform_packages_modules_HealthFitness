@@ -34,14 +34,20 @@ import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
+import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
+import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.datatypes.AppInfo;
+import android.healthconnect.datatypes.DataOrigin;
+import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.os.RemoteException;
 import android.os.UserHandle;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.util.Slog;
 
@@ -50,13 +56,16 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -379,6 +388,47 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /** Retrieves {@link android.healthconnect.RecordTypeInfoResponse} for each RecordType. */
+    @Override
+    public void queryAllRecordTypesInfo(@NonNull IRecordTypeInfoResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        try {
+                            callback.onResult(
+                                    new RecordTypeInfoResponseParcel(
+                                            getPopulatedRecordTypeInfoResponses()));
+                        } catch (SQLiteException sqLiteException) {
+                            tryAndThrowException(
+                                    callback, sqLiteException, HealthConnectException.ERROR_IO);
+                        }
+                    } catch (Exception exception) {
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {
+        Map<Integer, Class<? extends Record>> recordIdToExternalRecordClassMap =
+                RecordMapper.getInstance().getRecordIdToExternalRecordClassMap();
+        Map<Integer, List<DataOrigin>> recordTypeInfoResponses =
+                new ArrayMap<>(recordIdToExternalRecordClassMap.size());
+        recordIdToExternalRecordClassMap
+                .keySet()
+                .forEach(
+                        (recordType) -> {
+                            RecordHelper<?> recordHelper =
+                                    RecordHelperProvider.getInstance().getRecordHelper(recordType);
+                            Objects.requireNonNull(recordHelper);
+                            List<DataOrigin> packages =
+                                    mTransactionManager.getDistinctPackageNamesForRecordTable(
+                                            recordHelper);
+                            recordTypeInfoResponses.put(recordType, packages);
+                        });
+        return recordTypeInfoResponses;
+    }
+
     private static void tryAndThrowException(
             @NonNull IInsertRecordsResponseCallback callback,
             @NonNull Exception exception,
@@ -452,6 +502,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             callback.onError(
                     new HealthConnectExceptionParcel(
                             new HealthConnectException(errorCode, exception.toString())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IRecordTypeInfoResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.getMessage())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }

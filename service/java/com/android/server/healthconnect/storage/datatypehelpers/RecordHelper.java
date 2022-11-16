@@ -125,6 +125,16 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setRecordHelper(this);
     }
 
+    /**
+     * Returns ReadTableRequest for the record corresponding to this helper with a distinct clause
+     * on the input column names.
+     */
+    public ReadTableRequest getReadTableRequestWithDistinctAppInfoIds() {
+        return new ReadTableRequest(getMainTableName())
+                .setColumnNames(new ArrayList<>(List.of(APP_INFO_ID_COLUMN_NAME)))
+                .setDistinctClause(true);
+    }
+
     /** Returns List of Internal records from the cursor */
     public List<RecordInternal<?>> getInternalRecords(Cursor cursor) {
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();

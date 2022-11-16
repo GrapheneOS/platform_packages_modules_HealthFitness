@@ -10,6 +10,7 @@ import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
+import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
 
 import android.os.UserHandle;
@@ -105,4 +106,11 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation.
      */
     void getContributorApplicationsInfo(in IApplicationInfoResponseCallback callback);
+
+    /** Returns information for each RecordType like health permission category, record category and
+     * contributing packages.
+     * @param callback Callback to receive result of performing this operation.
+     * {@hide}
+     */
+    void queryAllRecordTypesInfo(in IRecordTypeInfoResponseCallback callback);
 }

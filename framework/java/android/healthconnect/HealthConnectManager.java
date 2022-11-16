@@ -44,9 +44,11 @@ import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
+import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
+import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
@@ -61,6 +63,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -538,6 +541,41 @@ public class HealthConnectManager {
                         public void onResult(long token) {
                             Binder.clearCallingIdentity();
                             executor.execute(() -> callback.onResult(token));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * @hide
+     *     <p>Retrieves {@link android.healthconnect.RecordTypeInfoResponse} for each RecordType.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    public void queryAllRecordTypesInfo(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull
+                    OutcomeReceiver<
+                                    Map<Class<? extends Record>, RecordTypeInfoResponse>,
+                                    HealthConnectException>
+                            callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.queryAllRecordTypesInfo(
+                    new IRecordTypeInfoResponseCallback.Stub() {
+                        @Override
+                        public void onResult(RecordTypeInfoResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onResult(parcel.getRecordTypeInfoResponses()));
                         }
 
                         @Override

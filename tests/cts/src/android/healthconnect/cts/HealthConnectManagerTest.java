@@ -294,6 +294,65 @@ public class HealthConnectManagerTest {
                 .isEqualTo(TestUtils.getStepsRecord().getCount());
     }
 
+    /*
+    @Test
+    public void test_getRecordTypeInfo() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        AtomicReference<Map<Class<? extends Record>, RecordTypeInfoResponse>> response =
+                new AtomicReference<>();
+        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
+
+        service.queryAllRecordTypesInfo(
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<
+                        Map<Class<? extends Record>, RecordTypeInfoResponse>,
+                        HealthConnectException>() {
+                    @Override
+                    public void onResult(
+                            Map<Class<? extends Record>, RecordTypeInfoResponse> result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        responseException.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(responseException.get()).isNull();
+        assertThat(response).isNotNull();
+        Log.d(TAG, "GetDataTypeInfoResponse : \n");
+        response.get()
+                .forEach(
+                        (recordTypeClass, recordTypeInfoResponse) -> {
+                            StringBuilder builder =
+                                    new StringBuilder(recordTypeClass.getTypeName() + " : ");
+                            builder.append(
+                                    " HealthPermissionCategory : "
+                                            + recordTypeInfoResponse.getPermissionCategory());
+                            builder.append(
+                                    " HealthDataCategory : "
+                                            + recordTypeInfoResponse.getDataCategory());
+                            builder.append(
+                                    " Contributing Packages : "
+                                            + String.join(
+                                                    ",",
+                                                    recordTypeInfoResponse
+                                                            .getContributingPackages()
+                                                            .stream()
+                                                            .map(DataOrigin::getPackageName)
+                                                            .collect(Collectors.toList())));
+                            builder.append("\n");
+                            Log.d(TAG, builder.toString());
+                        });
+    }
+    */
+
     /**
      * Test to verify the working of {@link
      * android.healthconnect.HealthConnectManager#updateRecords(java.util.List,
