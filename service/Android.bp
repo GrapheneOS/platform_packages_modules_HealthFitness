@@ -45,4 +45,10 @@ java_sdk_library {
     optimize: {
         proguard_flags_files: ["proguard.flags"],
     },
+    visibility: [
+            "//packages/modules/HealthConnect/tests:__subpackages__",
+    ],
+    impl_library_visibility: [
+        "//packages/modules/HealthConnect/tests/unittests",
+    ],
 }
