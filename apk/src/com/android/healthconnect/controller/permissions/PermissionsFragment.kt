@@ -19,10 +19,12 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         private const val WRITE_CATEGORY = "write_permission_category"
         @JvmStatic
         fun newInstance(permissions: List<HealthPermission>) =
-            PermissionsFragment().apply { permissionList = permissions }
+            PermissionsFragment().apply {
+                permissionMap = permissions.associateWith { true }.toMutableMap()
+            }
     }
 
-    private var permissionList: List<HealthPermission> = listOf()
+    private var permissionMap: MutableMap<HealthPermission, Boolean> = HashMap()
 
     private val mReadPermissionCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(READ_CATEGORY)
@@ -37,10 +39,15 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         updateDataList()
     }
 
+    fun getPermissionAssignments(): Map<HealthPermission, Boolean> {
+        return permissionMap.toMap()
+    }
+
     private fun updateDataList() {
         mReadPermissionCategory?.removeAll()
         mWritePermissionCategory?.removeAll()
-        permissionList.forEach { permission ->
+
+        permissionMap.keys.forEach { permission ->
             if (permission.permissionsAccessType.equals(PermissionsAccessType.READ)) {
                 mReadPermissionCategory?.addPreference(
                     SwitchPreference(requireContext()).also {
@@ -48,10 +55,15 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                             HealthPermissionStrings.fromPermissionType(
                                     permission.healthPermissionType)
                                 .label)
+                        it.setOnPreferenceChangeListener { _, newValue ->
+                            permissionMap[permission] = newValue as Boolean
+                            true
+                        }
                     })
             }
         }
-        permissionList.forEach { permission ->
+
+        permissionMap.keys.forEach { permission ->
             if (permission.permissionsAccessType.equals(PermissionsAccessType.WRITE)) {
                 mWritePermissionCategory?.addPreference(
                     SwitchPreference(requireContext()).also {
@@ -59,6 +71,10 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                             HealthPermissionStrings.fromPermissionType(
                                     permission.healthPermissionType)
                                 .label)
+                        it.setOnPreferenceChangeListener { _, newValue ->
+                            permissionMap[permission] = newValue as Boolean
+                            true
+                        }
                     })
             }
         }

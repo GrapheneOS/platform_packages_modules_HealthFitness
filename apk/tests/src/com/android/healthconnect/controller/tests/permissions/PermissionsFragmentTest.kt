@@ -15,6 +15,8 @@
  */
 package com.android.healthconnect.controller.tests.permissions
 
+import androidx.preference.PreferenceCategory
+import androidx.preference.SwitchPreference
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -24,7 +26,9 @@ import com.android.healthconnect.controller.permissions.PermissionsFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -73,5 +77,61 @@ class PermissionsFragmentTest {
 
         onView(withText("Distance")).check(matches(isDisplayed()))
         onView(withText("Exercise")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_returnsGrants() {
+        val activityScenario =
+            launchFragment({
+                PermissionsFragment.newInstance(
+                    listOf(
+                        HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ),
+                        HealthPermission(
+                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)))
+            })
+
+        activityScenario.onActivity { activity: TestActivity ->
+            assertThat(
+                    (activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as PermissionsFragment)
+                        .getPermissionAssignments())
+                .isEqualTo(
+                    hashMapOf(
+                        HealthPermission(
+                            HealthPermissionType.DISTANCE, PermissionsAccessType.READ) to true,
+                        HealthPermission(
+                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE) to true))
+        }
+    }
+
+    @Test
+    fun test_togglesPermissions() {
+        val activityScenario =
+            launchFragment({
+                PermissionsFragment.newInstance(
+                    listOf(
+                        HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ),
+                        HealthPermission(
+                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)))
+            })
+
+        activityScenario.onActivity { activity: TestActivity ->
+            val fragment =
+                activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                    as PermissionsFragment
+            val preferenceCategory =
+                fragment.preferenceScreen.findPreference("read_permission_category")
+                    as PreferenceCategory?
+            val preference = preferenceCategory?.getPreference(0) as SwitchPreference
+            preference.onPreferenceChangeListener?.onPreferenceChange(preference, false)
+
+            assertThat(fragment.getPermissionAssignments())
+                .isEqualTo(
+                    hashMapOf(
+                        HealthPermission(
+                            HealthPermissionType.DISTANCE, PermissionsAccessType.READ) to false,
+                        HealthPermission(
+                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE) to true))
+        }
     }
 }

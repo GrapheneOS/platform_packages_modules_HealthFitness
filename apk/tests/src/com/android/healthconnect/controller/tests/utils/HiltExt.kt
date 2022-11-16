@@ -53,7 +53,7 @@ inline fun <reified T : Fragment> launchFragment(
 inline fun <reified T : Fragment> launchFragment(
     crossinline fragmentInstantiation: () -> T,
     @StyleRes themeResId: Int = R.style.Theme_HealthConnect
-) {
+): ActivityScenario<TestActivity> {
     val startActivityIntent =
         Intent.makeMainActivity(
                 ComponentName(
@@ -61,8 +61,7 @@ inline fun <reified T : Fragment> launchFragment(
             .putExtra(
                 "androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
                 themeResId)
-
-    ActivityScenario.launch<TestActivity>(startActivityIntent).onActivity { activity ->
+    return ActivityScenario.launch<TestActivity>(startActivityIntent).onActivity { activity ->
         activity.supportFragmentManager
             .beginTransaction()
             .replace(android.R.id.content, fragmentInstantiation.invoke())

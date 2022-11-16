@@ -40,14 +40,23 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             permissionsStrings.mapNotNull { permissionString ->
                 HealthPermission.fromPermissionString(permissionString)
             }
+        val permissionsFragment = PermissionsFragment.newInstance(permissions)
         getSupportFragmentManager()
             .beginTransaction()
-            .replace(R.id.permission_content, PermissionsFragment.newInstance(permissions))
+            .replace(R.id.permission_content, permissionsFragment)
             .commit()
+
         val allowButton: View? = findViewById(R.id.allow)
-        val grants = Array<Int?>(permissionsStrings.size) { PackageManager.PERMISSION_DENIED }
         allowButton?.setOnClickListener {
             val result = Intent()
+            val permissionMap = permissionsFragment.getPermissionAssignments()
+            val grants =
+                permissions
+                    .map { permission ->
+                        if (permissionMap[permission] == true) PackageManager.PERMISSION_GRANTED
+                        else PackageManager.PERMISSION_DENIED
+                    }
+                    .toIntArray()
             result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, permissionsStrings)
             result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS, grants)
             setResult(Activity.RESULT_OK, result)
