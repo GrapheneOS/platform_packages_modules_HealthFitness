@@ -42,13 +42,19 @@ import com.android.server.healthconnect.storage.datatypehelpers.LeanBodyMassReco
 import com.android.server.healthconnect.storage.datatypehelpers.MenstruationFlowRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.NutritionRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.OvulationTestRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.OxygenSaturationRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PowerRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.RespiratoryRateRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.RestingHeartRateRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.SexualActivityRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.SpeedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.SwimmingStrokesRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.TotalCaloriesBurnedRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.Vo2MaxRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.WeightRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.WheelchairPushesRecordHelper;
 
 import java.util.Collections;
@@ -132,6 +138,19 @@ public final class RecordHelperProvider {
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE,
                 new BasalBodyTemperatureRecordHelper());
+        recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_VO2_MAX, new Vo2MaxRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_SEXUAL_ACTIVITY, new SexualActivityRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE,
+                new RespiratoryRateRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE,
+                new RestingHeartRateRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION,
+                new OxygenSaturationRecordHelper());
+        recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_WEIGHT, new WeightRecordHelper());
 
         mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
     }

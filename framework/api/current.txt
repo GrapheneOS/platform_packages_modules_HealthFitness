@@ -741,6 +741,16 @@ package android.healthconnect.datatypes {
     field public static final int RESULT_POSITIVE = 1; // 0x1
   }
 
+  public final class OxygenSaturationRecord extends android.healthconnect.datatypes.InstantRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Percentage getPercentage();
+  }
+
+  public static final class OxygenSaturationRecord.Builder {
+    ctor public OxygenSaturationRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Percentage);
+    method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord build();
+    method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
   public final class PowerRecord extends android.healthconnect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.healthconnect.datatypes.PowerRecord.PowerRecordSample> getSamples();
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Power> POWER_AVG;
@@ -763,6 +773,42 @@ package android.healthconnect.datatypes {
 
   public abstract class Record {
     method @NonNull public android.healthconnect.datatypes.Metadata getMetadata();
+  }
+
+  public final class RespiratoryRateRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public double getRate();
+  }
+
+  public static final class RespiratoryRateRecord.Builder {
+    ctor public RespiratoryRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @FloatRange(from=0, to=1000) double);
+    method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class RestingHeartRateRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public long getBeatsPerMinute();
+  }
+
+  public static final class RestingHeartRateRecord.Builder {
+    ctor public RestingHeartRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @IntRange(from=1, to=300) long);
+    method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class SexualActivityRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public int getProtectionUsed();
+  }
+
+  public static final class SexualActivityRecord.Builder {
+    ctor public SexualActivityRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int);
+    method @NonNull public android.healthconnect.datatypes.SexualActivityRecord build();
+    method @NonNull public android.healthconnect.datatypes.SexualActivityRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class SexualActivityRecord.SexualActivityProtectionUsed {
+    field public static final int PROTECTION_USED_PROTECTED = 1; // 0x1
+    field public static final int PROTECTION_USED_UNKNOWN = 0; // 0x0
+    field public static final int PROTECTION_USED_UNPROTECTED = 2; // 0x2
   }
 
   public final class SpeedRecord extends android.healthconnect.datatypes.IntervalRecord {
@@ -841,6 +887,36 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord build();
     method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class Vo2MaxRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public int getMeasurementMethod();
+    method public double getVo2MillilitersPerMinuteKilogram();
+  }
+
+  public static final class Vo2MaxRecord.Builder {
+    ctor public Vo2MaxRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @FloatRange(from=0, to=100) double);
+    method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord build();
+    method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class Vo2MaxRecord.Vo2MaxMeasurementMethod {
+    field public static final int MEASUREMENT_METHOD_COOPER_TEST = 3; // 0x3
+    field public static final int MEASUREMENT_METHOD_HEART_RATE_RATIO = 2; // 0x2
+    field public static final int MEASUREMENT_METHOD_METABOLIC_CART = 1; // 0x1
+    field public static final int MEASUREMENT_METHOD_MULTISTAGE_FITNESS_TEST = 4; // 0x4
+    field public static final int MEASUREMENT_METHOD_OTHER = 0; // 0x0
+    field public static final int MEASUREMENT_METHOD_ROCKPORT_FITNESS_TEST = 5; // 0x5
+  }
+
+  public final class WeightRecord extends android.healthconnect.datatypes.InstantRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Mass getWeight();
+  }
+
+  public static final class WeightRecord.Builder {
+    ctor public WeightRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.WeightRecord build();
+    method @NonNull public android.healthconnect.datatypes.WeightRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class WheelchairPushesRecord extends android.healthconnect.datatypes.IntervalRecord {
