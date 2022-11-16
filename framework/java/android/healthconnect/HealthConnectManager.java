@@ -143,7 +143,7 @@ public class HealthConnectManager {
     @SystemApi
     public static boolean isHealthPermission(
             @NonNull Context context, @NonNull final String permission) {
-        if (permission == null || !permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
+        if (!permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
             return false;
         }
         return getHealthPermissions(context).contains(permission);
