@@ -28,6 +28,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.BloodPressureRec
 import com.android.server.healthconnect.storage.datatypehelpers.BodyFatRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BodyTemperatureRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BoneMassRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.CervicalMucusRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.CyclingPedalingCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ElevationGainedRecordHelper;
@@ -35,8 +36,12 @@ import com.android.server.healthconnect.storage.datatypehelpers.ExerciseEventRec
 import com.android.server.healthconnect.storage.datatypehelpers.ExerciseLapRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.FloorsClimbedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HeightRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HydrationRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.LeanBodyMassRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.MenstruationFlowRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.NutritionRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.OvulationTestRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PowerRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.SpeedRecordHelper;
@@ -102,7 +107,17 @@ public final class RecordHelperProvider {
         recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_SPEED, new SpeedRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, new StepsCadenceRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW,
+                new MenstruationFlowRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS, new LeanBodyMassRecordHelper());
+        recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_HEIGHT, new HeightRecordHelper());
 
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST, new OvulationTestRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS, new CervicalMucusRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE,
                 new BodyTemperatureRecordHelper());
