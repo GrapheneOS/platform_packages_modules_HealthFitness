@@ -306,6 +306,27 @@
   <string name="confirming_question_go_back_button" description="Label of a button that goes back to the previous dialog. [CHAR_LIMIT=50]">Go back</string>
   <string name="delete_dialog_success_got_it_button" description="Label of a button that dismisses the pop-up window. [CHAR_LIMIT=50]">Done</string>
   <string name="delete_dialog_failure_close_button" description="Label of a button that closes the window. [CHAR_LIMIT=50]">Close</string>
+
+  <!-- region Data entries -->
+  <string name="data_entry_header" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
+
+  <string name="watt_format" description="Power value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 W} other {# W}}</string>
+  <string name="watt_format_long" description="Power value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 watt} other {# watts}}</string>
+
+  <string name="steps_value" translation_description="Value of steps taken. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 step} other {# steps}}</string>
+
+  <string name="heart_rate_value" translation_description="Value of heart rate beats per minute. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 bpm} other {# bpm}}</string>
+  <string name="heart_rate_long_value" translation_description="Value of heart rate beats per minute. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 beat per minute} other {# beats per minute}}</string>
+
+
+  <string name="heart_rate_series_range" translatable="false"><xliff:g example="100 bpm" id="min">%1$s</xliff:g> - <xliff:g example="109 bpm" id="max">%2$s</xliff:g></string>
+  <string name="heart_rate_series_range_long" translatable="false"> from <xliff:g example="100 beats per minute" id="min">%1$s</xliff:g> to <xliff:g example="109 beats per minute" id="max">%2$s</xliff:g></string>
+
+  <string name="time_range" translatable="false"><xliff:g example="14:41" id="start_time">%1$s</xliff:g> - <xliff:g example="15:41" id="end_time">%2$s</xliff:g> </string>
+  <string name="time_range_long" description="Content description for time interval. [CHAR_LIMIT=NONE]"> from <xliff:g example="14:41" id="start_time">%1$s</xliff:g> to <xliff:g example="15:41" id="end_time">%2$s</xliff:g></string>
+
+  <string name="date_range" translatable="false"><xliff:g example="Oct 30, 2021" id="start_time">%1$s</xliff:g> - <xliff:g example="Nov 11, 2021" id="end_time">%2$s</xliff:g> </string>
+  <string name="date_range_long" description="Content description for date interval. [CHAR_LIMIT=NONE]"> from <xliff:g example="October 30, 2021" id="start_time">%1$s</xliff:g> to <xliff:g example="November 11, 2021" id="end_time">%2$s</xliff:g></string>
   <!--endregion-->
 
   <!-- region Can't See All Your Apps -->
