@@ -150,8 +150,8 @@ public class HealthConnectManager {
     }
 
     /**
-     * Returns a set of health permissions defined within the module and belonging to {@link
-     * HealthPermissions#HEALTH_PERMISSION_GROUP}.
+     * Returns an <b>immutable</b> set of health permissions defined within the module and belonging
+     * to {@link HealthPermissions#HEALTH_PERMISSION_GROUP}.
      *
      * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
      * than crashing the device. This means the health permissions infra will be inactive.
@@ -159,6 +159,7 @@ public class HealthConnectManager {
      * @hide
      */
     @NonNull
+    @SystemApi
     public static Set<String> getHealthPermissions(@NonNull Context context) {
         if (sHealthPermissions != null) {
             return sHealthPermissions;
@@ -186,7 +187,7 @@ public class HealthConnectManager {
                 permissions.add(perm.name);
             }
         }
-        sHealthPermissions = permissions;
+        sHealthPermissions = Collections.unmodifiableSet(permissions);
         return sHealthPermissions;
     }
 

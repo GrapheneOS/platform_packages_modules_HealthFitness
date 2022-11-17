@@ -18,9 +18,11 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
@@ -133,6 +135,15 @@ public class HealthPermissionsPresenceTest {
     public void testHealthPermissions_isDefined() throws Exception {
         for (String permissionName : HEALTH_PERMISSIONS) {
             assertHealthPermissionIsDefined(permissionName);
+        }
+    }
+
+    @Test
+    public void testGetHealthPermissions_returns_allHealthPermissions() throws Exception {
+        Context context = InstrumentationRegistry.getTargetContext();
+        Set<String> healthPermissions = HealthConnectManager.getHealthPermissions(context);
+        for (String permission : HEALTH_PERMISSIONS) {
+            assertThat(healthPermissions.contains(permission)).isTrue();
         }
     }
 
