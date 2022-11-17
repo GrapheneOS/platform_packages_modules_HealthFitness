@@ -133,6 +133,17 @@ package android.healthconnect {
 
 package android.healthconnect.datatypes {
 
+  public final class ActiveCaloriesBurnedRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Energy getEnergy();
+  }
+
+  public static final class ActiveCaloriesBurnedRecord.Builder {
+    ctor public ActiveCaloriesBurnedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Energy);
+    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord build();
+    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
   public class BasalMetabolicRateRecord extends android.healthconnect.datatypes.InstantRecord {
     ctor public BasalMetabolicRateRecord(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.ZoneOffset, @NonNull android.healthconnect.datatypes.units.Power);
     method @NonNull public android.healthconnect.datatypes.units.Power getBasalMetabolicRate();
@@ -192,6 +203,57 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.Device.Builder setManufacturer(@Nullable String);
     method @NonNull public android.healthconnect.datatypes.Device.Builder setModel(@Nullable String);
     method @NonNull public android.healthconnect.datatypes.Device.Builder setType(int);
+  }
+
+  public final class DistanceRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Length getDistance();
+  }
+
+  public static final class DistanceRecord.Builder {
+    ctor public DistanceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
+    method @NonNull public android.healthconnect.datatypes.DistanceRecord build();
+    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class ElevationGainedRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Length getElevation();
+  }
+
+  public static final class ElevationGainedRecord.Builder {
+    ctor public ElevationGainedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
+    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord build();
+    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class ExerciseEventRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public int getEventType();
+  }
+
+  public static final class ExerciseEventRecord.Builder {
+    ctor public ExerciseEventRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    method @NonNull public android.healthconnect.datatypes.ExerciseEventRecord build();
+    method @NonNull public android.healthconnect.datatypes.ExerciseEventRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.ExerciseEventRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class ExerciseEventRecord.ExerciseEventType {
+    field public static final int EXERCISE_EVENT_TYPE_PAUSE = 1; // 0x1
+    field public static final int EXERCISE_EVENT_TYPE_REST = 2; // 0x2
+    field public static final int EXERCISE_EVENT_TYPE_UNKNOWN = 0; // 0x0
+  }
+
+  public final class ExerciseLapRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @Nullable public android.healthconnect.datatypes.units.Length getLength();
+  }
+
+  public static final class ExerciseLapRecord.Builder {
+    ctor public ExerciseLapRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord build();
+    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord.Builder setLength(@Nullable android.healthconnect.datatypes.units.Length);
+    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public class HeartRateRecord extends android.healthconnect.datatypes.IntervalRecord {
@@ -328,13 +390,13 @@ package android.healthconnect.datatypes.units {
 
   public final class Length implements java.lang.Comparable<android.healthconnect.datatypes.units.Length> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Length);
-    method @NonNull public android.healthconnect.datatypes.units.Length fromMeters(double);
+    method @NonNull public static android.healthconnect.datatypes.units.Length fromMeters(double);
     method public double getInMeters();
   }
 
   public final class Mass implements java.lang.Comparable<android.healthconnect.datatypes.units.Mass> {
     method public int compareTo(@NonNull android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.units.Mass fromKilograms(double);
+    method @NonNull public static android.healthconnect.datatypes.units.Mass fromKilograms(double);
     method public double getInKilograms();
   }
 

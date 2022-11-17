@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Objects;
 
 /** A record that contains a measurement with a time interval. */
 public abstract class IntervalRecord extends Record {
@@ -78,5 +79,38 @@ public abstract class IntervalRecord extends Record {
     @NonNull
     public ZoneOffset getEndZoneOffset() {
         return mEndZoneOffset;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(@NonNull Object object) {
+        if (super.equals(object) && object instanceof IntervalRecord) {
+            IntervalRecord other = (IntervalRecord) object;
+            return this.getStartTime().equals(other.getStartTime())
+                    && this.getEndTime().equals(other.getEndTime())
+                    && this.getStartZoneOffset().equals(other.getStartZoneOffset())
+                    && this.getEndZoneOffset().equals(other.getEndZoneOffset());
+        }
+        return false;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                super.hashCode(),
+                this.getStartTime(),
+                this.getStartZoneOffset(),
+                this.getEndTime(),
+                this.getEndZoneOffset());
     }
 }

@@ -13,51 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.healthconnect.datatypes;
 
 import android.annotation.NonNull;
+import android.healthconnect.datatypes.units.Length;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
 /**
- * Captures the number of steps taken since the last reading. Each step is only reported once so
- * records shouldn't have overlapping time. The start time of each record should represent the start
- * of the interval in which steps were taken.
+ * Captures distance travelled by the user since the last reading. The total distance over an
+ * interval can be calculated by adding together all the values during the interval. The start time
+ * of each record should represent the start of the interval in which the distance was covered.
+ *
+ * <p>If break downs are preferred in scenario of a long workout, consider writing multiple distance
+ * records. The start time of each record should be equal to or greater than the end time of the
+ * previous record.
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
-public final class StepsRecord extends IntervalRecord {
-    /** Builder class for {@link StepsRecord} */
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_DISTANCE)
+public final class DistanceRecord extends IntervalRecord {
+    /** Builder class for {@link DistanceRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final long mCount;
-        private ZoneOffset mStartZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-        private ZoneOffset mEndZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        private ZoneOffset mStartZoneOffset;
+        private ZoneOffset mEndZoneOffset;
+        private final Length mDistance;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
-         * @param count Number of steps recorded for this activity
+         * @param distance Distance in {@link Length} unit. Required field. Valid range: 0-1000000
+         *     meters.
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                long count) {
+                @NonNull Length distance) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
+            Objects.requireNonNull(distance);
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mCount = count;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mDistance = distance;
         }
 
         /** Sets the zone offset of the user when the activity started */
@@ -79,38 +85,48 @@ public final class StepsRecord extends IntervalRecord {
         }
 
         /**
-         * @return Object of {@link StepsRecord}
+         * @return Object of {@link DistanceRecord}
          */
         @NonNull
-        public StepsRecord build() {
-            return new StepsRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mCount);
+        public DistanceRecord build() {
+            return new DistanceRecord(
+                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mDistance);
         }
     }
 
-    private final long mCount;
+    private final Length mDistance;
 
-    private StepsRecord(
+    /**
+     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+     * @param startTime Start time of this activity
+     * @param startZoneOffset Zone offset of the user when the activity started
+     * @param endTime End time of this activity
+     * @param endZoneOffset Zone offset of the user when the activity finished
+     * @param distance Distance of this activity
+     */
+    private DistanceRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            long count) {
+            @NonNull Length distance) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(startZoneOffset);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(endZoneOffset);
-        mCount = count;
+        Objects.requireNonNull(distance);
+        mDistance = distance;
     }
 
     /**
-     * @return Number of steps taken
+     * @return distance of this activity in {@link Length} unit
      */
-    public long getCount() {
-        return mCount;
+    @NonNull
+    public Length getDistance() {
+        return mDistance;
     }
 
     /**
@@ -122,20 +138,16 @@ public final class StepsRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof StepsRecord) {
-            StepsRecord other = (StepsRecord) object;
-            return this.getCount() == other.getCount();
+        if (super.equals(object) && object instanceof DistanceRecord) {
+            DistanceRecord other = (DistanceRecord) object;
+            return this.getDistance().equals(other.getDistance());
         }
         return false;
     }
 
-    /**
-     * Returns a hash code value for the object.
-     *
-     * @return a hash code value for this object.
-     */
+    /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getCount());
+        return Objects.hash(super.hashCode(), this.getDistance());
     }
 }

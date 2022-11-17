@@ -35,7 +35,7 @@ public final class Mass implements Comparable<Mass> {
      * @param value value to be set as kilograms.
      */
     @NonNull
-    public Mass fromKilograms(double value) {
+    public static Mass fromKilograms(double value) {
         return new Mass(value);
     }
 

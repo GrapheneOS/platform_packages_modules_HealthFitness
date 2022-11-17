@@ -16,34 +16,39 @@
 package android.healthconnect.internal.datatypes;
 
 import android.annotation.NonNull;
+import android.healthconnect.datatypes.DistanceRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.datatypes.StepsRecord;
+import android.healthconnect.datatypes.units.Length;
 import android.os.Parcel;
 
 /**
- * @see StepsRecord
+ * @see DistanceRecord
  * @hide
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
-public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecord> {
-    private long mCount;
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_DISTANCE)
+public final class DistanceRecordInternal extends IntervalRecordInternal<DistanceRecord> {
+    private double mDistance;
 
-    public long getCount() {
-        return mCount;
+    public double getDistance() {
+        return mDistance;
     }
 
-    /** returns this object with the specified count */
+    /** returns this object with the specified distance */
     @NonNull
-    public StepsRecordInternal setCount(long count) {
-        this.mCount = count;
+    public DistanceRecordInternal setDistance(double distance) {
+        this.mDistance = distance;
         return this;
     }
 
     @NonNull
     @Override
-    public StepsRecord toExternalRecord() {
-        return new StepsRecord.Builder(buildMetaData(), getStartTime(), getEndTime(), getCount())
+    public DistanceRecord toExternalRecord() {
+        return new DistanceRecord.Builder(
+                        buildMetaData(),
+                        getStartTime(),
+                        getEndTime(),
+                        Length.fromMeters(getDistance()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .build();
@@ -51,16 +56,16 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
 
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mCount = parcel.readLong();
+        mDistance = parcel.readDouble();
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull StepsRecord stepsRecord) {
-        mCount = stepsRecord.getCount();
+    void populateIntervalRecordFrom(@NonNull DistanceRecord distanceRecord) {
+        mDistance = distanceRecord.getDistance().getInMeters();
     }
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
-        parcel.writeLong(mCount);
+        parcel.writeDouble(mDistance);
     }
 }

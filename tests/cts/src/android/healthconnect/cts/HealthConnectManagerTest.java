@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.healthconnect.cts;
 
 import static android.Manifest.permission.CAMERA;
@@ -165,7 +164,6 @@ public class HealthConnectManagerTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
-
         return response.get();
     }
 
@@ -357,7 +355,6 @@ public class HealthConnectManagerTest {
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin =
                 new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
-
         return new HeartRateRecord.Builder(
                         new Metadata.Builder()
                                 .setDevice(device)

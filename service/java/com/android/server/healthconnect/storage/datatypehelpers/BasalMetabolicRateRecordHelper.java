@@ -26,7 +26,7 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,6 +65,6 @@ public final class BasalMetabolicRateRecordHelper
     @Override
     @NonNull
     protected List<Pair<String, String>> getInstantRecordColumnInfo() {
-        return Arrays.asList(new Pair<>(BASAL_METABOLIC_RATE_COLUMN_NAME, REAL));
+        return Collections.singletonList(new Pair<>(BASAL_METABOLIC_RATE_COLUMN_NAME, REAL));
     }
 }

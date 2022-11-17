@@ -20,8 +20,13 @@ import android.annotation.NonNull;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 
+import com.android.server.healthconnect.storage.datatypehelpers.ActiveCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BasalMetabolicRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.CyclingPedalingCadenceRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DistanceRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ElevationGainedRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ExerciseEventRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ExerciseLapRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PowerRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
@@ -45,6 +50,19 @@ public final class RecordHelperProvider {
     private RecordHelperProvider() {
         Map<Integer, RecordHelper<?>> recordIDToHelperMap = new ArrayMap<>();
         recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_STEPS, new StepsRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_EVENT, new ExerciseEventRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_DISTANCE, new DistanceRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_LAP, new ExerciseLapRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
+                new ElevationGainedRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
+                new ActiveCaloriesBurnedRecordHelper());
+
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_HEART_RATE, new HeartRateRecordHelper());
         recordIDToHelperMap.put(
