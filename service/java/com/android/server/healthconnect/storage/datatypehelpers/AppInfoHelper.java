@@ -49,6 +49,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -95,15 +96,13 @@ public class AppInfoHelper {
     private static final String APP_ICON_COLUMN_NAME = "app_icon";
     private static final int COMPRESS_FACTOR = 100;
     private static AppInfoHelper sAppInfoHelper;
-
+    /** Map to store appInfoId -> packageName mapping for populating record for read */
+    private final Map<Long, String> mIdPackageNameMap = new ArrayMap<>();
     /**
      * Map to store application package-name -> AppInfo mapping (such as packageName -> appName,
      * icon, rowId in the DB etc.)
      */
     private Map<String, AppInfo> mAppInfoMap;
-
-    /** Map to store appInfoId -> packageName mapping for populating record for read */
-    private final Map<Long, String> mIdPackageNameMap = new ArrayMap<>();
 
     private AppInfoHelper() {}
 
@@ -171,6 +170,29 @@ public class AppInfoHelper {
     // Called on DB update.
     public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
         // empty by default
+    }
+
+    public List<Long> getAppInfoIds(List<String> packageNames) {
+        if (packageNames == null || packageNames.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        if (Objects.isNull(mAppInfoMap)) {
+            populateAppInfoMap();
+        }
+
+        List<Long> result = new ArrayList<>(packageNames.size());
+        packageNames.forEach(
+                (packageName) -> {
+                    AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
+                    if (appInfo == null) {
+                        result.add(DEFAULT_LONG);
+                    } else {
+                        result.add(appInfo.getId());
+                    }
+                });
+
+        return result;
     }
 
     public long getAppInfoId(String packageName) {

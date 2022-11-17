@@ -16,6 +16,7 @@ package android.healthconnect {
   public class HealthConnectManager {
     method public void insertRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.InsertRecordsResponse,android.healthconnect.HealthConnectException>);
     method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequestUsingIds<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
+    method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequestUsingFilters<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
     field public static final String CATEGORY_HEALTH_PERMISSIONS = "android.intent.category.HEALTH_PERMISSIONS";
   }
 
@@ -99,6 +100,19 @@ package android.healthconnect {
     method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getRecords();
   }
 
+  public final class ReadRecordsRequestUsingFilters<T extends android.healthconnect.datatypes.Record> {
+    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins();
+    method @NonNull public Class<T> getRecordType();
+    method @Nullable public android.healthconnect.TimeRangeFilter getTimeRangeFilter();
+  }
+
+  public static final class ReadRecordsRequestUsingFilters.Builder<T extends android.healthconnect.datatypes.Record> {
+    ctor public ReadRecordsRequestUsingFilters.Builder(@NonNull Class<T>);
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> addDataOrigins(@NonNull android.healthconnect.datatypes.DataOrigin);
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters<T> build();
+    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setTimeRangeFilter(@Nullable android.healthconnect.TimeRangeFilter);
+  }
+
   public class ReadRecordsRequestUsingIds<T extends android.healthconnect.datatypes.Record> {
     method @NonNull public java.util.List<android.healthconnect.RecordIdFilter> getRecordIdFilters();
     method @NonNull public Class<T> getRecordType();
@@ -127,6 +141,16 @@ package android.healthconnect {
     method @NonNull public android.healthconnect.RecordIdFilter build();
     method @NonNull public android.healthconnect.RecordIdFilter.Builder setClientRecordId(@Nullable String);
     method @NonNull public android.healthconnect.RecordIdFilter.Builder setId(@Nullable String);
+  }
+
+  public final class TimeRangeFilter {
+    method @NonNull public java.time.Instant getEndTime();
+    method @NonNull public java.time.Instant getStartTime();
+  }
+
+  public static final class TimeRangeFilter.Builder {
+    ctor public TimeRangeFilter.Builder(@NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.TimeRangeFilter build();
   }
 
 }

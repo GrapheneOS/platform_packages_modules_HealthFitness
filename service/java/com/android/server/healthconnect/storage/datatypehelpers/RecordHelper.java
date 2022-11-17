@@ -51,11 +51,11 @@ import java.util.Objects;
 public abstract class RecordHelper<T extends RecordInternal<?>> {
     public static final String PRIMARY_COLUMN_NAME = "row_id";
     public static final String UUID_COLUMN_NAME = "uuid";
+    public static final String APP_INFO_ID_COLUMN_NAME = "app_info_id";
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
-    private static final String APP_INFO_ID_COLUMN_NAME = "app_info_id";
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
     RecordHelper() {
@@ -139,6 +139,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
         return recordInternalList;
     }
+
+    public abstract String getStartTimeColumnName();
 
     /**
      * Child classes should implement this if it wants to create additional tables, apart from the
