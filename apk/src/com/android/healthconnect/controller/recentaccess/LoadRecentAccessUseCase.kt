@@ -36,7 +36,7 @@ class LoadRecentAccessUseCase @Inject constructor() {
             val instant = Instant.parse("2022-10-20T${i}:12:13.00Z")
             recentApps.add(
                 RecentAccessApp(
-                    AppMetadata(R.string.app_1, R.drawable.ic_vitals),
+                    AppMetadata("com.package.app1", R.string.app_1, R.drawable.ic_vitals),
                     instant,
                     ImmutableSet.of("Read")))
         }

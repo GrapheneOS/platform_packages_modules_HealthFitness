@@ -96,5 +96,4 @@ class ConnectedAppsFragmentTest {
         onView(withText("App 3")).check(matches(isDisplayed()))
         onView(withText("App 4")).check(matches(isDisplayed()))
     }
-
 }

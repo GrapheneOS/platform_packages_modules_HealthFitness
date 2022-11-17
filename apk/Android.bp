@@ -70,6 +70,7 @@ android_library {
     ],
     static_libs: [
         "com.google.android.material_material",
+        "HealthConnectPermissionsApis",
         "SettingsLibSettingsTheme",
         "kotlin-stdlib",
         "kotlinx-coroutines-android",
@@ -104,6 +105,9 @@ android_app {
         "HealthConnectLibrary",
         "HealthConnectPermissionsApis",
         "hilt_android"
+    ],
+    libs: [
+        "framework-healthconnect"
     ],
     apex_available: ["com.android.healthconnect"],
 }

@@ -77,6 +77,13 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 Preference(requireContext()).also {
                     it.setTitle(app.appName)
                     it.setIcon(app.icon)
+                    it.setOnPreferenceClickListener {
+                        findNavController()
+                            .navigate(
+                                R.id.action_connectedApps_to_connectedApp,
+                                getBundle(app.packageNane))
+                        true
+                    }
                 })
         }
     }
@@ -88,7 +95,20 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 Preference(requireContext()).also {
                     it.setTitle(app.appName)
                     it.setIcon(app.icon)
+                    it.setOnPreferenceClickListener {
+                        findNavController()
+                            .navigate(
+                                R.id.action_connectedApps_to_connectedApp,
+                                getBundle(app.packageNane))
+                        true
+                    }
                 })
         }
+    }
+
+    private fun getBundle(packageName: String): Bundle {
+        val bundle = Bundle()
+        bundle.putString("packageName", packageName)
+        return bundle
     }
 }
