@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.Constants.DEFAULT_INT;
+
+import static com.android.server.healthconnect.storage.request.ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
@@ -27,6 +30,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
@@ -37,12 +41,15 @@ import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Parent class for all the helper classes for all the records
@@ -101,10 +108,21 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
     }
 
-    /** Returns ReadTableRequest for the record corresponding to this helper */
-    public ReadTableRequest getReadTableRequest() {
+    /** Returns ReadTableRequest for {@code request} and package name {@code packageName} */
+    public ReadTableRequest getReadTableRequest(
+            ReadRecordsRequestParcel request, String packageName) {
         return new ReadTableRequest(getMainTableName())
-                .setInnerJoinClause(getInnerJoinFoReadRequest());
+                .setInnerJoinClause(getInnerJoinFoReadRequest())
+                .setWhereClause(getReadTableWhereClause(request, packageName))
+                .setRecordHelper(this);
+    }
+
+    /** Returns ReadTableRequest for {@code uuids} */
+    public ReadTableRequest getReadTableRequest(List<String> uuids) {
+        return new ReadTableRequest(getMainTableName())
+                .setInnerJoinClause(getInnerJoinFoReadRequest())
+                .setWhereClause(new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, uuids))
+                .setRecordHelper(this);
     }
 
     /** Returns List of Internal records from the cursor */
@@ -153,7 +171,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     public DeleteTableRequest getDeleteTableRequest(List<String> ids) {
         return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setIds(UUID_COLUMN_NAME, ids);
+                .setIds(UUID_COLUMN_NAME, ids)
+                .setRequiresUuId(UUID_COLUMN_NAME)
+                .setEnforcePackageCheck(APP_INFO_ID_COLUMN_NAME, UUID_COLUMN_NAME);
     }
 
     public abstract String getStartTimeColumnName();
@@ -201,6 +221,38 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     SqlJoin getInnerJoinFoReadRequest() {
         return null;
+    }
+
+    private WhereClauses getReadTableWhereClause(
+            ReadRecordsRequestParcel request, String packageName) {
+        if (request.getRecordIdFiltersParcel() == null) {
+            List<Long> appIds =
+                    AppInfoHelper.getInstance().getAppInfoIds(request.getPackageFilters()).stream()
+                            .distinct()
+                            .collect(Collectors.toList());
+            if (appIds.size() == 1 && appIds.get(0) == DEFAULT_INT) {
+                throw new TypeNotPresentException(TYPE_NOT_PRESENT_PACKAGE_NAME, new Throwable());
+            }
+
+            WhereClauses clauses =
+                    new WhereClauses()
+                            .addWhereInLongsClause(
+                                    APP_INFO_ID_COLUMN_NAME,
+                                    AppInfoHelper.getInstance()
+                                            .getAppInfoIds(request.getPackageFilters()));
+
+            return clauses.addWhereBetweenTimeClause(
+                    getStartTimeColumnName(), request.getStartTime(), request.getEndTime());
+        }
+
+        // Since for now we don't support mixing IDs and filters, we need to look for IDs now
+        List<String> ids =
+                request.getRecordIdFiltersParcel().getRecordIdFilters().stream()
+                        .map(
+                                (recordIdFilter) ->
+                                        StorageUtils.getUUIDFor(recordIdFilter, packageName))
+                        .collect(Collectors.toList());
+        return new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, ids);
     }
 
     @NonNull

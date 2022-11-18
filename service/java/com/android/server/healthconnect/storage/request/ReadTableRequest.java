@@ -23,6 +23,7 @@ import android.healthconnect.Constants;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
@@ -38,6 +39,7 @@ public class ReadTableRequest {
     private static final String TAG = "HealthConnectRead";
 
     private final String mTableName;
+    private RecordHelper<?> mRecordHelper;
     private List<String> mColumnNames;
     private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses();
@@ -46,6 +48,15 @@ public class ReadTableRequest {
         Objects.requireNonNull(tableName);
 
         mTableName = tableName;
+    }
+
+    public RecordHelper<?> getRecordHelper() {
+        return mRecordHelper;
+    }
+
+    public ReadTableRequest setRecordHelper(RecordHelper<?> recordHelper) {
+        mRecordHelper = recordHelper;
+        return this;
     }
 
     public ReadTableRequest setColumnNames(@NonNull List<String> columnNames) {

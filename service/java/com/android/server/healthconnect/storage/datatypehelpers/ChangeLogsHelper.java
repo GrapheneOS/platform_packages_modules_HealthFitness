@@ -62,7 +62,6 @@ public final class ChangeLogsHelper {
         private final Map<Integer, List<String>> mRecordTypeToUUIDMap = new ArrayMap<>();
         @OperationType private final int mOperationType;
         private final String mPackageName;
-
         /**
          * Create a change logs object that can be used to get change log request for {@code
          * operationType} for {@code packageName}
@@ -79,6 +78,10 @@ public final class ChangeLogsHelper {
         public ChangeLogs(@OperationType int operationType) {
             mOperationType = operationType;
             mPackageName = null;
+        }
+
+        public Map<Integer, List<String>> getRecordTypeToUUIDMap() {
+            return mRecordTypeToUUIDMap;
         }
 
         public List<String> getUUIds() {
@@ -149,13 +152,7 @@ public final class ChangeLogsHelper {
 
     @NonNull
     public static List<String> getDeletedIds(Map<Integer, ChangeLogs> operationToChangeLogs) {
-        /*
-         * TODO(b/249530105): Update to operationToChangeLogs.getOrDefault(DELETE, null)
-         *
-         * <p>This is like this just for testing - so that we can count the number of entries
-         * fetched
-         */
-        ChangeLogs logs = operationToChangeLogs.get(UPSERT);
+        ChangeLogs logs = operationToChangeLogs.get(DELETE);
 
         if (logs != null) {
             return logs.getUUIds();
@@ -165,14 +162,15 @@ public final class ChangeLogsHelper {
     }
 
     @NonNull
-    public static List<String> getUpsertedIds(Map<Integer, ChangeLogs> operationToChangeLogs) {
+    public static Map<Integer, List<String>> getRecordTypeToInsertedUuids(
+            Map<Integer, ChangeLogs> operationToChangeLogs) {
         ChangeLogs logs = operationToChangeLogs.getOrDefault(UPSERT, null);
 
         if (!Objects.isNull(logs)) {
-            return logs.getUUIds();
+            return logs.getRecordTypeToUUIDMap();
         }
 
-        return Collections.emptyList();
+        return new ArrayMap<>(0);
     }
 
     @NonNull

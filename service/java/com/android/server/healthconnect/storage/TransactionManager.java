@@ -23,10 +23,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.healthconnect.Constants;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.util.Slog;
 
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
@@ -34,6 +35,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,6 +47,7 @@ import java.util.Objects;
  * @hide
  */
 public class TransactionManager {
+    private static final String TAG = "HealthConnectTransactionMan";
     private static TransactionManager sTransactionManager;
     private final HealthConnectDatabase mHealthConnectDatabase;
 
@@ -103,31 +106,33 @@ public class TransactionManager {
         try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
             db.beginTransaction();
             try {
-                request.getDeleteTableRequests()
-                        .forEach(
-                                (deleteTableRequest) -> {
-                                    if (deleteTableRequest.requiresUuId()) {
-                                        /*
-                                        Delete request needs UUID before the entry can be
-                                        deleted, fetch and set it in {@code request}
-                                        */
-                                        try (Cursor cursor =
-                                                db.rawQuery(
-                                                        deleteTableRequest.getReadCommand(),
-                                                        null)) {
-                                            while (cursor.moveToNext()) {
-                                                request.onUuidFetched(
-                                                        deleteTableRequest.getRecordType(),
-                                                        StorageUtils.getCursorString(
-                                                                cursor,
-                                                                deleteTableRequest
-                                                                        .getIdColumnName()));
-                                            }
-                                        }
-                                    }
+                for (DeleteTableRequest deleteTableRequest : request.getDeleteTableRequests()) {
+                    if (deleteTableRequest.requiresRead()) {
+                        /*
+                        Delete request needs UUID before the entry can be
+                        deleted, fetch and set it in {@code request}
+                        */
+                        try (Cursor cursor =
+                                db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
+                            while (cursor.moveToNext()) {
+                                request.onUuidFetched(
+                                        deleteTableRequest.getRecordType(),
+                                        StorageUtils.getCursorString(
+                                                cursor, deleteTableRequest.getIdColumnName()));
+                                if (deleteTableRequest.requiresPackageCheck()) {
+                                    request.enforcePackageCheck(
+                                            StorageUtils.getCursorString(
+                                                    cursor, deleteTableRequest.getIdColumnName()),
+                                            StorageUtils.getCursorLong(
+                                                    cursor,
+                                                    deleteTableRequest.getPackageColumnName()));
+                                }
+                            }
+                        }
+                    }
+                    db.execSQL(deleteTableRequest.getDeleteCommand());
+                }
 
-                                    db.execSQL(deleteTableRequest.getDeleteCommand());
-                                });
                 request.getChangeLogUpsertRequests()
                         .forEach((insertRequest) -> insertRecord(db, insertRequest));
 
@@ -146,9 +151,20 @@ public class TransactionManager {
      */
     public List<RecordInternal<?>> readRecords(@NonNull ReadTransactionRequest request)
             throws SQLiteException {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-                Cursor cursor = read(db, request.getReadRequest())) {
-            return request.getInternalRecords(cursor);
+        List<RecordInternal<?>> recordInternals = new ArrayList<>();
+        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase()) {
+            request.getReadRequests()
+                    .forEach(
+                            (readTableRequest -> {
+                                try (Cursor cursor = read(db, readTableRequest)) {
+                                    Objects.requireNonNull(readTableRequest.getRecordHelper());
+                                    recordInternals.addAll(
+                                            readTableRequest
+                                                    .getRecordHelper()
+                                                    .getInternalRecords(cursor));
+                                }
+                            }));
+            return recordInternals;
         }
     }
 
@@ -174,6 +190,9 @@ public class TransactionManager {
     /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
     @NonNull
     public Cursor read(@NonNull SQLiteDatabase db, @NonNull ReadTableRequest request) {
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Read query: " + request.getReadCommand());
+        }
         return db.rawQuery(request.getReadCommand(), null);
     }
 

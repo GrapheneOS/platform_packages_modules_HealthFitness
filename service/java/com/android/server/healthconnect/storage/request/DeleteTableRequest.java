@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.storage.request;
 
 import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -26,6 +27,7 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +51,7 @@ public class DeleteTableRequest {
     private long mEndTime = DEFAULT_LONG;
     private boolean mRequiresUuId;
     private List<String> mIds;
+    private boolean mEnforcePackageCheck;
 
     public DeleteTableRequest(
             @NonNull String tableName, @RecordTypeIdentifier.RecordType int recordType) {
@@ -56,6 +59,29 @@ public class DeleteTableRequest {
 
         mTableName = tableName;
         mRecordType = recordType;
+    }
+
+    public DeleteTableRequest(@NonNull String tableName) {
+        Objects.requireNonNull(tableName);
+
+        mTableName = tableName;
+        mRecordType = RECORD_TYPE_UNKNOWN;
+    }
+
+    public String getPackageColumnName() {
+        return mPackageColumnName;
+    }
+
+    public boolean requiresPackageCheck() {
+        return mEnforcePackageCheck;
+    }
+
+    public DeleteTableRequest setEnforcePackageCheck(
+            String packageColumnName, String uuidColumnName) {
+        mEnforcePackageCheck = true;
+        mPackageColumnName = packageColumnName;
+        mIdColumnName = uuidColumnName;
+        return this;
     }
 
     public DeleteTableRequest setIds(@NonNull String idColumnName, @NonNull List<String> ids) {
@@ -67,8 +93,17 @@ public class DeleteTableRequest {
         return this;
     }
 
-    public boolean requiresUuId() {
-        return mRequiresUuId;
+    public DeleteTableRequest setId(@NonNull String idColumnName, @NonNull String id) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(idColumnName);
+
+        mIds = Collections.singletonList(id);
+        mIdColumnName = idColumnName;
+        return this;
+    }
+
+    public boolean requiresRead() {
+        return mRequiresUuId || mEnforcePackageCheck;
     }
 
     public DeleteTableRequest setRequiresUuId(@NonNull String idColumnName) {
@@ -116,7 +151,12 @@ public class DeleteTableRequest {
     }
 
     public String getReadCommand() {
-        return "SELECT " + mIdColumnName + " FROM " + mTableName + getWhereCommand();
+        StringBuilder builder = new StringBuilder("SELECT ").append(mIdColumnName);
+        if (mEnforcePackageCheck) {
+            builder.append(", ").append(mPackageColumnName);
+        }
+        builder.append(" FROM ").append(mTableName).append(getWhereCommand());
+        return builder.toString();
     }
 
     public String getWhereCommand() {

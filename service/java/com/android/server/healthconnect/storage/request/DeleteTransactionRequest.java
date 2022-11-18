@@ -26,6 +26,7 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
@@ -42,10 +43,13 @@ public final class DeleteTransactionRequest {
     private static final String TAG = "HealthConnectDelete";
     private final List<DeleteTableRequest> mDeleteTableRequests;
     private final ChangeLogsHelper.ChangeLogs mChangeLogs;
+    private final long mRequestingPackageNameId;
 
     public DeleteTransactionRequest(String packageName, DeleteUsingFiltersRequestParcel request) {
+        Objects.requireNonNull(packageName);
         mDeleteTableRequests = new ArrayList<>(request.getRecordTypeFilters().size());
         mChangeLogs = new ChangeLogsHelper.ChangeLogs(ChangeLogsHelper.DELETE, packageName);
+        mRequestingPackageNameId = AppInfoHelper.getInstance().getAppInfoId(packageName);
         if (request.getRecordIdFiltersParcel().getRecordIdFilters() != null
                 && !request.getRecordIdFiltersParcel().getRecordIdFilters().isEmpty()) {
             List<RecordIdFilter> recordIds =
@@ -69,8 +73,9 @@ public final class DeleteTransactionRequest {
             }
 
             recordTypeToUuids.forEach(
-                    (recordHelper, uuids) ->
-                            mDeleteTableRequests.add(recordHelper.getDeleteTableRequest(uuids)));
+                    (recordHelper, uuids) -> {
+                        mDeleteTableRequests.add(recordHelper.getDeleteTableRequest(uuids));
+                    });
 
             // We currently only support either using filters or ids, so if we are deleting using
             // ids no need to proceed further.
@@ -116,5 +121,12 @@ public final class DeleteTransactionRequest {
     @NonNull
     public List<UpsertTableRequest> getChangeLogUpsertRequests() {
         return mChangeLogs.getUpsertTableRequests();
+    }
+
+    public void enforcePackageCheck(String uuid, long appInfoId) {
+        if (mRequestingPackageNameId != appInfoId) {
+            throw new IllegalArgumentException(
+                    mRequestingPackageNameId + " is not the owner for " + uuid);
+        }
     }
 }

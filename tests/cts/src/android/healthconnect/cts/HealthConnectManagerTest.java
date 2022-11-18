@@ -17,16 +17,13 @@ package android.healthconnect.cts;
 
 import static android.Manifest.permission.CAMERA;
 import static android.healthconnect.HealthConnectManager.isHealthPermission;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.ChangeLogTokenRequest;
-import android.healthconnect.HealthConnectException;
 import android.healthconnect.DeleteUsingFiltersRequest;
+import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
@@ -459,7 +456,7 @@ public class HealthConnectManagerTest {
         AtomicReference<Exception> responseException = new AtomicReference<>();
 
         // Insert a sample record of each data type.
-        List<Record> insertRecords = insertRecords(getTestRecords());
+        List<Record> insertRecords = TestUtils.insertRecords(TestUtils.getTestRecords());
 
         // read inserted records and verify that the data is same as inserted.
 

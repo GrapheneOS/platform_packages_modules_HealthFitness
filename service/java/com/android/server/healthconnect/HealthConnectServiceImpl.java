@@ -284,14 +284,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 ChangeLogsHelper.getInstance()
                                         .getChangeLogs(changeLogsTokenRequest);
 
-                        /*
-                         TODO(b/249530105): Read entries for
-                         ChangeLogHelper.getUpsertedIds(operationTypeToUUIds) and then populate
-                         them in RecordsParcel
-                        */
+                        List<RecordInternal<?>> recordInternals =
+                                mTransactionManager.readRecords(
+                                        new ReadTransactionRequest(
+                                                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                                                        operationTypeToUUIds)));
                         callback.onResult(
                                 new ChangeLogsResponseParcel(
-                                        new RecordsParcel(new ArrayList<>()),
+                                        new RecordsParcel(recordInternals),
                                         ChangeLogsHelper.getDeletedIds(operationTypeToUUIds)));
                     } catch (IllegalArgumentException illegalArgumentException) {
                         Slog.e(TAG, "IllegalArgumentException: ", illegalArgumentException);
@@ -332,6 +332,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (IllegalArgumentException illegalArgumentException) {
+                        Slog.e(TAG, "SQLiteException: ", illegalArgumentException);
+                        tryAndThrowException(
+                                callback,
+                                illegalArgumentException,
+                                HealthConnectException.ERROR_SECURITY);
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
                         tryAndThrowException(

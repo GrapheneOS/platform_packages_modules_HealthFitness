@@ -24,7 +24,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.healthconnect.ChangeLogTokenRequest;
-import android.healthconnect.ChangeLogsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
@@ -56,6 +55,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class TestUtils {
     private static final String TAG = "HCTestUtils";
@@ -109,23 +109,23 @@ public class TestUtils {
         return response.get();
     }
 
-    public static ChangeLogsResponse getChangeLogs(long token) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
-        service.getChangeLogs(
-                token,
-                Executors.newSingleThreadExecutor(),
-                result -> {
-                    response.set(result);
-                    latch.countDown();
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        return response.get();
-    }
+    //    public static ChangeLogsResponse getChangeLogs(long token) throws InterruptedException {
+    //        Context context = ApplicationProvider.getApplicationContext();
+    //        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+    //        assertThat(service).isNotNull();
+    //
+    //        CountDownLatch latch = new CountDownLatch(1);
+    //        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
+    //        service.getChangeLogs(
+    //                token,
+    //                Executors.newSingleThreadExecutor(),
+    //                result -> {
+    //                    response.set(result);
+    //                    latch.countDown();
+    //                });
+    //        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+    //        return response.get();
+    //    }
 
     public static List<Record> getTestRecords() {
         return Arrays.asList(getStepsRecord(), getHeartRateRecord(), getBasalMetabolicRateRecord());
@@ -316,6 +316,18 @@ public class TestUtils {
                     latch.countDown();
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+    }
+
+    public static void deleteRecords(List<Record> records) throws InterruptedException {
+        List<RecordIdFilter> recordIdFilters =
+                records.stream()
+                        .map(
+                                (record ->
+                                        new RecordIdFilter.Builder(record.getClass())
+                                                .setId(record.getMetadata().getId())
+                                                .build()))
+                        .collect(Collectors.toList());
+        verifyDeleteRecords(recordIdFilters);
     }
 
     static final class RecordAndIdentifier {

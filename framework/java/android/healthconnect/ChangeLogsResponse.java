@@ -30,11 +30,7 @@ public class ChangeLogsResponse {
     private final List<Record> mUpsertedRecords;
     private final List<String> mDeletedIds;
 
-    /**
-     * Response for {@link HealthConnectManager#getChangeLogs}
-     *
-     * @hide
-     */
+    /** Response for {@link HealthConnectManager#getChangeLogs} */
     public ChangeLogsResponse(
             @NonNull List<Record> upsertedRecords, @NonNull List<String> deletedIds) {
         mUpsertedRecords = upsertedRecords;
