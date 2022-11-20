@@ -35,27 +35,42 @@ class AlertDialogBuilder(dialogFragment: DialogFragment) {
     private var customTitleLayout: View =
         LayoutInflater.from(context).inflate(R.layout.dialog_title, null)
 
-    init {
-        alertDialogBuilder.setCustomTitle(customTitleLayout)
-    }
-
     fun setIcon(@AttrRes iconId: Int): AlertDialogBuilder {
         val iconView: ImageView = customTitleLayout.findViewById(R.id.dialog_icon)
         val iconDrawable = AttributeResolver.getNullableDrawable(context, iconId)
-        iconDrawable?.let { iconView.setImageDrawable(it) }
+        iconDrawable?.let {
+            iconView.setImageDrawable(it)
+            alertDialogBuilder.setCustomTitle(customTitleLayout)
+        }
+
         return this
     }
 
-    /** Sets the title in the custom title layout */
+    /** Sets the title in the custom title layout using the given resource id. */
     fun setTitle(@StringRes titleId: Int): AlertDialogBuilder {
         val titleView: DialogTitle = customTitleLayout.findViewById(R.id.dialog_title)
         titleView.setText(titleId)
+        alertDialogBuilder.setCustomTitle(customTitleLayout)
         return this
     }
 
-    fun setTitle(title: String): AlertDialogBuilder {
+    /** Sets the title in the custom title layout. */
+    fun setTitle(titleString: String): AlertDialogBuilder {
         val titleView: DialogTitle = customTitleLayout.findViewById(R.id.dialog_title)
-        titleView.text = title
+        titleView.text = titleString
+        alertDialogBuilder.setCustomTitle(customTitleLayout)
+        return this
+    }
+
+    /** Sets the message to be displayed in the dialog using the given resource id. */
+    fun setMessage(@StringRes messageId: Int): AlertDialogBuilder {
+        alertDialogBuilder.setMessage(messageId)
+        return this
+    }
+
+    /** Sets the message to be displayed in the dialog. */
+    fun setMessage(message: CharSequence?): AlertDialogBuilder {
+        alertDialogBuilder.setMessage(message)
         return this
     }
 
@@ -72,14 +87,11 @@ class AlertDialogBuilder(dialogFragment: DialogFragment) {
         return this
     }
 
-    fun setNegativeButton(@StringRes textId: Int): AlertDialogBuilder {
-        alertDialogBuilder.setNegativeButton(textId) { dialog, which -> // TODO
-        }
-        return this
-    }
-
-    fun setMessage(@StringRes messageId: Int): AlertDialogBuilder {
-        alertDialogBuilder.setMessage(messageId)
+    fun setNegativeButton(
+        @StringRes textId: Int,
+        onClickListener: DialogInterface.OnClickListener? = null
+    ): AlertDialogBuilder {
+        alertDialogBuilder.setNegativeButton(textId, onClickListener)
         return this
     }
 

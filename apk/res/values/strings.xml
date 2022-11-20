@@ -285,6 +285,7 @@
   <!--endregion-->
 
   <!-- region Deletion -->
+  <!-- region Time range -->
   <string name="time_range_title" description="Window title where user can choose the time range for data deletion. [CHAR_LIMIT=50]">Choose data to delete</string>
   <string name="time_range_next_button" description="Label of a button that navigates to the next window of the deletion flow. [CHAR_LIMIT=50]">Next</string>
 
@@ -297,13 +298,39 @@
   <string name="time_range_one_week" description="Item on list of possible deletion time ranges the user can choose. This option deletes data for the last 7 days. [CHAR_LIMIT=50]">Delete last 7 days</string>
   <string name="time_range_one_month" description="Item on list of possible deletion time ranges the user can choose. This option deletes data for the last 30 days. [CHAR_LIMIT=50]">Delete last 30 days</string>
   <string name="time_range_all" description="Item on list of possible deletion time ranges the user can choose. This option deletes all data written during the selected time period. [CHAR_LIMIT=50]">Delete all data </string>
+  <!--endregion-->
 
+  <!-- region Confirming question -->
   <string name="confirming_question_all" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from all time?</string>
   <string name="confirming_question_one_day" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 24 hours?</string>
   <string name="confirming_question_one_week" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 7 days?</string>
   <string name="confirming_question_one_month" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 30 days?</string>
 
+  <string name="confirming_question_data_type_all" description="Description of what permanent deletion of all given data type data means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="data_type" example="heart rate">%s</xliff:g> data from all time?</string>
+  <string name="confirming_question_data_type_one_day" description="Description of what permanent deletion of given data type data from the lat 24 hours means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="data_type" example="heart rate">%s</xliff:g> data from the last 24 hours?</string>
+  <string name="confirming_question_data_type_one_week" description="Description of what permanent deletion of given data type data from the last 7 days means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="data_type" example="heart rate">%s</xliff:g> data from the last 7 days?</string>
+  <string name="confirming_question_data_type_one_month" description="Description of what permanent deletion of given data type data from the last 30 days means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="data_type" example="heart rate">%s</xliff:g> data from the last 30 days?</string>
+
+  <string name="confirming_question_category_all" description="Description of what permanent deletion of all given activity data means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="category" example="activity">%s</xliff:g> data from all time?</string>
+  <string name="confirming_question_category_one_day" description="Description of what permanent deletion of given activity data from the lat 24 hours means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="category" example="activity">%s</xliff:g> data from the last 24 hours?</string>
+  <string name="confirming_question_category_one_week" description="Description of what permanent deletion of given activity data from the lat 7 days means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="category" example="activity">%s</xliff:g> data from the last 7 days?</string>
+  <string name="confirming_question_category_one_month" description="Description of what permanent deletion of given activity data from the lat 30 days means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="category" example="activity">%s</xliff:g> data from the last 30 days?</string>
+
+  <string name="confirming_question_app_data_all" description="Description of what permanent deletion of all data written by given app means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="app_data" example="Strava">%s</xliff:g> data from all time?</string>
+  <string name="confirming_question_app_data_one_day" description="Description of what permanent deletion of data written by given app from the lat 24 hours means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="app_data" example="Strava">%s</xliff:g> data from the last 24 hours?</string>
+  <string name="confirming_question_app_data_one_week" description="Description of what permanent deletion of data written by given app from the lat 7 days means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="app_data" example="Strava">%s</xliff:g> data from the last 7 days?</string>
+  <string name="confirming_question_app_data_one_month" description="Description of what permanent deletion of data written by given app from the lat 30 days means. [CHAR_LIMIT=NONE]">Permanently delete <xliff:g id="app_data" example="Strava">%s</xliff:g> data from the last 30 days?</string>
+
+  <string name="confirming_question_app_remove_all_permissions" description="Message of a check box that gives the user an option to remove all permissions from an app they're deleting data from. [CHAR_LIMIT=NONE]">Also remove all <xliff:g id="app_with_permissions" example="Strava">%s</xliff:g> permissions from Health&#160;Connect</string>
+
+  <string name="confirming_question_data_type_from_app_all" description="Description of what permanent deletion of given data type written by given app means. [CHAR_LIMIT=NONE]">Permanently delete all <xliff:g id="data_type" example="heart rate">%1$s</xliff:g> data added by <xliff:g id="app_data" example="Strava">%2$s</xliff:g>?</string>
+
+  <string name="confirming_question_single_entry" description="Description of what permanent deletion of a single data point means. [CHAR_LIMIT=NONE]">Permanently delete this entry?</string>
   <string name="confirming_question_message" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Connected apps will no longer be able to access this data from Health&#160;Connect</string>
+
+  <!--endregion-->
+
+  <!-- region Dialog buttons -->
   <string name="confirming_question_delete_button" description="Label of a button that deletes data. [CHAR_LIMIT=50]">Delete</string>
   <string name="confirming_question_go_back_button" description="Label of a button that goes back to the previous dialog. [CHAR_LIMIT=50]">Go back</string>
   <string name="delete_dialog_success_got_it_button" description="Label of a button that dismisses the pop-up window. [CHAR_LIMIT=50]">Done</string>
@@ -330,6 +357,22 @@
   <string name="date_range" translatable="false"><xliff:g example="Oct 30, 2021" id="start_time">%1$s</xliff:g> - <xliff:g example="Nov 11, 2021" id="end_time">%2$s</xliff:g> </string>
   <string name="date_range_long" description="Content description for date interval. [CHAR_LIMIT=NONE]"> from <xliff:g example="October 30, 2021" id="start_time">%1$s</xliff:g> to <xliff:g example="November 11, 2021" id="end_time">%2$s</xliff:g></string>
   <!--endregion-->
+
+  <string name="delete_dialog_success_title" description="Title of the confirmation window of successful data deletion. [CHAR_LIMIT=50]">Data deleted</string>
+  <string name="delete_dialog_success_message" description="A message that confirms successful data deletion. [CHAR_LIMIT=NONE]">This data is no longer stored in Health&#160;Connect.</string>
+
+  <string name="delete_progress_indicator" description="Label of a message on a loading page with a progress bar during data deletion. [CHAR_LIMIT=100]">Deleting your data</string>
+
+  <string name="delete_dialog_failure_title" description="Title of the window that nforms the user about failed data deletion. [CHAR_LIMIT=50]">Couldn\'t delete data</string>
+  <string name="delete_dialog_failure_message" description="A message that informs the user about failed data deletion. [CHAR_LIMIT=NONE]">Something went wrong and Health&#160;Connect couldn\'t delete your data</string>
+  <string name="delete_dialog_failure_try_again_button" description="Label of a button that closes the window and goes back to the previous one. [CHAR_LIMIT=50]">Try again</string>
+
+  <string name="delete_data_notification_title" description="The title text of the notification that is shown while data is being deleted. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
+  <string name="delete_data_notification_ticker_text" description="The ticker text of the notification that is shown while data is being deleted, which is read out by screen readers. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
+  <string name="delete_data_notification_channel_name" description="The channel name for the notification that is shown while data is being deleted, which is visible to users in system settings. [CHAR_LIMIT=50]">Data deletion</string>
+
+  <!--endregion-->
+
 
   <!-- region Can't See All Your Apps -->
   <string name="cant_see_all_your_apps_title" description="Title of can't see all your apps screen">Can’t see all your apps?</string>
