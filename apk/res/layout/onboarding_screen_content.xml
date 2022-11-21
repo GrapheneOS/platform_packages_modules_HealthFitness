@@ -4,8 +4,8 @@
     android:visibility ="visible"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     >
+
   <LinearLayout
       android:id="@+id/onboarding_content_layout"
       android:layout_width="match_parent"
@@ -20,8 +20,7 @@
       android:layout_marginHorizontal="@dimen/spacing_large"
       android:text="@string/onboarding_title"
       android:gravity="center"
-      android:textSize="@dimen/onboarding_title_text_size"
-      android:textColor="@color/onboarding_title_color"
+      android:textAppearance="?attr/textAppearancePageTitle"
       />
 
   <TextView
@@ -33,8 +32,8 @@
       android:layout_marginBottom="@dimen/spacing_large"
       android:text="@string/onboarding_description"
       android:gravity="center"
-      android:textSize="@dimen/onboarding_description_text_size"
-      android:textColor="@color/onboarding_description_color"/>
+      android:textAppearance="?attr/textAppearanceSummary"
+ />
 
   <ImageView
       android:id="@+id/onboarding_image"
@@ -74,9 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:textSize="@dimen/onboarding_item_view_text_size"
-            android:textColor="@color/onboarding_title_color"
-            android:textFontWeight="@integer/m3_sys_motion_duration_500"
+            android:textAppearance="?attr/textAppearanceOnboardingHeader"
             />
         <TextView
             android:id="@+id/share_description"
@@ -84,9 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="3"
-            android:textSize="@dimen/onboarding_item_view_text_size"
-            android:textColor="@color/onboarding_item_view_description_color"
-            android:textFontWeight="@integer/m3_sys_motion_duration_400"
+            android:textAppearance="?attr/textAppearanceOnboardingDescription"
             />
       </LinearLayout>
     </LinearLayout>
@@ -116,9 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:textSize="@dimen/onboarding_item_view_text_size"
-            android:textColor="@color/onboarding_title_color"
-            android:textFontWeight="@integer/m3_sys_motion_duration_500"
+            android:textAppearance="?attr/textAppearanceOnboardingHeader"
             />
         <TextView
             android:id="@+id/description"
@@ -126,9 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="3"
-            android:textSize="@dimen/onboarding_item_view_text_size"
-            android:textColor="@color/onboarding_item_view_description_color"
-            android:textFontWeight="@integer/m3_sys_motion_duration_400"
+            android:textAppearance="?attr/textAppearanceOnboardingDescription"
             />
       </LinearLayout>
     </LinearLayout>

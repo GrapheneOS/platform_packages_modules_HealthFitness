@@ -3,5 +3,5 @@
   <color name="onboarding_title_color">#1F1F1F</color>
   <color name="onboarding_description_color">#3C4043</color>
   <color name="onboarding_item_view_description_color">#444746</color>
-  <color name="get_started_button_background_color">#0B57D0</color>
+  <color name="get_started_button_background_color">?android:attr/colorAccent</color>
 </resources>

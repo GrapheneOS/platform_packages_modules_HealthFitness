@@ -25,4 +25,19 @@
     <attr name="alertDialogTitleGravity" format="reference"/>
     <attr name="alertDialogTitleTextAlignment" format="reference"/>
     <attr name="alertDialogTitleIconVisibility" format="reference"/>
+
+    <attr name="textAppearancePageTitle" format="reference"/>
+    <attr name="textAppearanceTitle" format="reference"/>
+    <attr name="textAppearanceTitleSecondary" format="reference"/>
+    <attr name="textAppearanceSectionTitle" format="reference"/>
+    <attr name="textAppearanceSummary" format="reference"/>
+    <attr name="textAppearanceItem" format="reference"/>
+    <attr name="textAppearanceItemSummary" format="reference"/>
+    <attr name="textAppearanceLabel" format="reference"/>
+    <attr name="textAppearanceLabelLarge" format="reference"/>
+    <attr name="textAppearanceOnboardingDescription" format="reference"/>
+    <attr name="textAppearanceOnboardingHeader" format="reference"/>
+
+    <attr name="outlinedButton" format="reference"/>
+
 </resources>
