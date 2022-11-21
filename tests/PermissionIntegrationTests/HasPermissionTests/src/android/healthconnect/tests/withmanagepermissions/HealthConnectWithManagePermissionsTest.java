@@ -59,6 +59,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectWithManagePermissionsTest {
     private static final String DEFAULT_APP_PACKAGE = "android.healthconnect.test.app";
+    private static final String NO_USAGE_INTENT_APP_PACKAGE = "android.healthconnect.test.app2";
     private static final String INEXISTENT_APP_PACKAGE = "my.invalid.package.name";
     private static final String DEFAULT_PERM = HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
     private static final String DEFAULT_PERM_2 = HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
@@ -92,6 +93,13 @@ public class HealthConnectWithManagePermissionsTest {
         mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
 
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+    }
+
+    @Test(expected = SecurityException.class)
+    public void testGrantHealthPermission_usageIntentNotSupported_throwsIllegalArgumentException()
+            throws Exception {
+        mHealthConnectManager.grantHealthPermission(NO_USAGE_INTENT_APP_PACKAGE, DEFAULT_PERM);
+        fail("Expected SecurityException due to undeclared health permissions usage intent.");
     }
 
     @Test
