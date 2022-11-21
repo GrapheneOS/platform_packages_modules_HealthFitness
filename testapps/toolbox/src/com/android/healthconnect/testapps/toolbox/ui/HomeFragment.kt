@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.testapps.toolbox.Constants.ALL_PERMISSIONS
 import com.android.healthconnect.testapps.toolbox.R
+import com.android.healthconnect.testapps.toolbox.seed.SeedData
 
 /** Home fragment for Health Connect Toolbox. */
 class HomeFragment : Fragment() {
@@ -84,6 +85,9 @@ class HomeFragment : Fragment() {
         }
         view.findViewById<Button>(R.id.insert_update_data_button).setOnClickListener {
             goToCategoryListPage()
+        }
+        view.findViewById<Button>(R.id.seed_random_data_button).setOnClickListener {
+           SeedData(requireContext()).seedData()
         }
         mNavigationController = findNavController()
     }
