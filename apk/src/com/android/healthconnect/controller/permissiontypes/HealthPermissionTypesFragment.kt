@@ -14,6 +14,7 @@
 package com.android.healthconnect.controller.permissiontypes
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -28,7 +29,6 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,7 +74,7 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
                         findNavController()
                             .navigate(
                                 R.id.action_healthPermissionTypes_to_healthDataAccess,
-                                getBundle(permissionType))
+                                bundleOf(PERMISSION_TYPE_KEY to permissionType))
                         true
                     }
                 })
@@ -96,11 +96,5 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
     override fun onResume() {
         super.onResume()
         setTitle(R.string.permission_types_title)
-    }
-
-    fun getBundle(permissionType: HealthPermissionType): Bundle {
-        val bundle = Bundle()
-        bundle.putSerializable(PERMISSION_TYPE_KEY, permissionType)
-        return bundle
     }
 }

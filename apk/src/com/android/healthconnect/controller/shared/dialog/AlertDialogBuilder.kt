@@ -53,6 +53,12 @@ class AlertDialogBuilder(dialogFragment: DialogFragment) {
         return this
     }
 
+    fun setTitle(title: String): AlertDialogBuilder {
+        val titleView: DialogTitle = customTitleLayout.findViewById(R.id.dialog_title)
+        titleView.text = title
+        return this
+    }
+
     fun setView(view: View): AlertDialogBuilder {
         alertDialogBuilder.setView(view)
         return this
@@ -69,6 +75,16 @@ class AlertDialogBuilder(dialogFragment: DialogFragment) {
     fun setNegativeButton(@StringRes textId: Int): AlertDialogBuilder {
         alertDialogBuilder.setNegativeButton(textId) { dialog, which -> // TODO
         }
+        return this
+    }
+
+    fun setMessage(@StringRes messageId: Int): AlertDialogBuilder {
+        alertDialogBuilder.setMessage(messageId)
+        return this
+    }
+
+    fun setMessage(message: String): AlertDialogBuilder {
+        alertDialogBuilder.setMessage(message)
         return this
     }
 
