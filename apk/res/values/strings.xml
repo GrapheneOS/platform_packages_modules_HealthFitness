@@ -254,6 +254,11 @@
   <string name="write_permission_category" description="Title for write permission category in the app permission screen">Can write to Health&#160;Connect</string>
   <string name="request_permissions_cancel" description="Label for button to cancel an app's request for permissions [CHAR_LIMIT=20]">Cancel</string>
   <string name="request_permissions_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow</string>
+  <string name="request_permissions_header_desc" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read or write to Health&#160;Connect</string>
+  <string name="request_permissions_header_time_frame_desc" description="Text describing the time frame of data which an app will be able to access. [CHAR_LIMIT=NONE]">If you give read access, this app can read new data and data from the past 30 days</string>
+  <string name="request_permissions_header_title" description="Title for screen to give permissions to an app to read or write users data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access Health&#160;Connect?</string>
+  <string name="request_permissions_rationale" description="Text informing the user that data they share with an app is covered by that app's data privacy policy. Has a link to the app's privacy policy. [CHAR_LIMIT=NONE]">You can learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> handles your data in the developer\'s <xliff:g example="privacy policy" id="privacy_policy_link">%2$s</xliff:g></string>
+  <string name="request_permissions_privacy_policy" description="Link text that open's a third party app's data privacy policy [CHAR_LIMIT=NONE]">privacy policy</string>
   <!--endregion-->
 
   <!-- region Data Entries -->
@@ -346,7 +351,6 @@
 
   <string name="heart_rate_value" translation_description="Value of heart rate beats per minute. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 bpm} other {# bpm}}</string>
   <string name="heart_rate_long_value" translation_description="Value of heart rate beats per minute. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 beat per minute} other {# beats per minute}}</string>
-
 
   <string name="heart_rate_series_range" translatable="false"><xliff:g example="100 bpm" id="min">%1$s</xliff:g> - <xliff:g example="109 bpm" id="max">%2$s</xliff:g></string>
   <string name="heart_rate_series_range_long" translatable="false"> from <xliff:g example="100 beats per minute" id="min">%1$s</xliff:g> to <xliff:g example="109 beats per minute" id="max">%2$s</xliff:g></string>

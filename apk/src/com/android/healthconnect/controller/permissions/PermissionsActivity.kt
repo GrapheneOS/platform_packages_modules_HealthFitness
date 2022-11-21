@@ -18,19 +18,20 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
+import com.android.healthconnect.controller.utils.convertTextViewIntoLink
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Permissions activity for Health Connect. */
-@AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
+@AndroidEntryPoint(FragmentActivity::class)
 class PermissionsActivity : Hilt_PermissionsActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permissions)
-        setTitle(R.string.permissions_and_data_header)
 
         val permissionsStrings: Array<out String> =
             getIntent()
@@ -45,6 +46,8 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             .beginTransaction()
             .replace(R.id.permission_content, permissionsFragment)
             .commit()
+
+        updateAppName(getIntent())
 
         val allowButton: View? = findViewById(R.id.allow)
         allowButton?.setOnClickListener {
@@ -62,5 +65,22 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             setResult(Activity.RESULT_OK, result)
             finish()
         }
+    }
+
+    private fun updateAppName(intent: Intent) {
+        // TODO: get the name based on package name.
+        val policyString = resources.getString(R.string.request_permissions_privacy_policy)
+        val packageName = intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME).orEmpty()
+        val rationaleText =
+            resources.getString(R.string.request_permissions_rationale, packageName, policyString)
+        convertTextViewIntoLink(
+            findViewById<TextView>(R.id.privacy_policy),
+            rationaleText,
+            rationaleText.indexOf(policyString),
+            rationaleText.indexOf(policyString) + policyString.length,
+            { // TODO: Link to developer's policy
+            })
+        findViewById<TextView>(R.id.title)
+            .setText(resources.getString(R.string.request_permissions_header_title, packageName))
     }
 }

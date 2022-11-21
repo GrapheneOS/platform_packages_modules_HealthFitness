@@ -19,18 +19,70 @@
     android:id="@+id/request_permissions"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/spacing_xlarge"
+    android:paddingHorizontal="@dimen/spacing_small"
+    android:paddingBottom="@dimen/spacing_small"
     android:orientation="vertical"
     android:filterTouchesWhenObscured="true">
 
   <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:scrollbars="vertical">
 
-    <FrameLayout
-        android:id="@+id/permission_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/app_header_icon_size"
+        android:layout_height="@dimen/app_header_icon_size"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/health_connect_logo"
+        android:contentDescription="@string/app_label" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_large"
+        android:paddingBottom="@dimen/spacing_large"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        style="@style/CollapsingToolbarTitle.Collapsed" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_small"
+        android:text="@string/request_permissions_header_desc"
+        android:drawablePadding="@dimen/spacing_normal"
+        android:drawableStart="@drawable/quantum_gm_ic_tune_vd_theme_24" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_small"
+        android:text="@string/request_permissions_header_time_frame_desc"
+        android:drawablePadding="@dimen/spacing_normal"
+        android:drawableStart="@drawable/quantum_gm_ic_history_vd_theme_24" />
+
+    <TextView
+        android:id="@+id/privacy_policy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_small"
+        android:drawablePadding="@dimen/spacing_normal"
+        android:drawableStart="@drawable/quantum_gm_ic_privacy_tip_vd_theme_24" />
+
+      <FrameLayout
+          android:id="@+id/permission_content"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" />
+    </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 
   <LinearLayout
