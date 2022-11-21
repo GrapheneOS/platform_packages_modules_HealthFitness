@@ -21,10 +21,15 @@ import javax.inject.Inject
 
 class AppInfoReader @Inject constructor(@ApplicationContext private val context: Context) {
 
+    private val cache = HashMap<String, String>()
+
     // TODO(magdi) replace this with health connect framework api
     private val packageManager = context.packageManager
 
     fun getAppName(packageName: String): String {
+        if (cache.containsKey(packageName)) {
+            return cache[packageName]!!
+        }
         return packageManager.getApplicationLabel(getPackageInfo(packageName)).toString()
     }
 

@@ -13,87 +13,62 @@
  */
 package com.android.healthconnect.controller.dataentries
 
-import android.healthconnect.datatypes.BasalMetabolicRateRecord
-import android.healthconnect.datatypes.DataOrigin
-import android.healthconnect.datatypes.Device
-import android.healthconnect.datatypes.HeartRateRecord
-import android.healthconnect.datatypes.Metadata
+import android.healthconnect.HealthConnectManager
+import android.healthconnect.ReadRecordsRequestUsingFilters
+import android.healthconnect.ReadRecordsResponse
+import android.healthconnect.TimeRangeFilter
 import android.healthconnect.datatypes.Record
-import android.healthconnect.datatypes.StepsRecord
-import android.healthconnect.datatypes.units.Power
+import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes
+import java.time.Duration.ofDays
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 
+@Singleton
 class LoadDataEntriesUseCase
 @Inject
-constructor(private val healthDataEntryFormatter: HealthDataEntryFormatter) {
+constructor(
+    private val healthDataEntryFormatter: HealthDataEntryFormatter,
+    private val healthConnectManager: HealthConnectManager,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
+) {
     suspend operator fun invoke(
-        type: HealthPermissionType,
+        permissionType: HealthPermissionType,
         selectedDate: Instant
-    ): List<FormattedDataEntry> {
+    ): List<FormattedDataEntry> =
+        withContext(dispatcher) {
+            val timeFilterRange = getTimeFilter(selectedDate)
+            val dataTypes = getDataTypes(permissionType)
+            dataTypes.map { dataType -> readDataType(dataType, timeFilterRange) }.flatten()
+        }
 
-        val entries: List<Record> =
-            when (type) {
-                HealthPermissionType.STEPS -> STEPS_MOCKED_LIST
-                HealthPermissionType.HEART_RATE -> HEART_RATE_MOCKED_LIST
-                HealthPermissionType.BASAL_METABOLIC_RATE -> BASEL_METABOLIC_RATE_LIST
-                else -> emptyList()
-            }
-        return entries.map { record -> healthDataEntryFormatter.format(record) }
+    private fun getTimeFilter(selectedDate: Instant): TimeRangeFilter {
+        val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
+        val end = start.plus(ofDays(1))
+        return TimeRangeFilter.Builder(start, end).build()
     }
-}
 
-// TODO(magdi) remove after calling hc apis
-private val STEPS_MOCKED_LIST =
-    listOf(
-        getStepsRecord(10),
-        getStepsRecord(200),
-        getStepsRecord(31),
-    )
+    private suspend fun readDataType(
+        data: Class<out Record>,
+        timeFilterRange: TimeRangeFilter
+    ): List<FormattedDataEntry> {
+        val filter =
+            ReadRecordsRequestUsingFilters.Builder(data).setTimeRangeFilter(timeFilterRange).build()
 
-// TODO(magdi) remove after calling hc apis
-private val HEART_RATE_MOCKED_LIST =
-    listOf(
-        getHeartRateRecord(listOf(80, 85, 90)),
-        getHeartRateRecord(listOf(100, 110, 102)),
-        getHeartRateRecord(listOf(60, 65, 50)),
-    )
+        val response =
+            suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
+                healthConnectManager.readRecords(
+                    filter, Runnable::run, continuation.asOutcomeReceiver())
+            }
 
-private val BASEL_METABOLIC_RATE_LIST =
-    listOf(
-        getBasalMetabolicRateRecord(100.0),
-        getBasalMetabolicRateRecord(90.3),
-        getBasalMetabolicRateRecord(100.3))
-
-private fun getHeartRateRecord(heartRateValues: List<Long>): HeartRateRecord {
-    return HeartRateRecord.Builder(
-            getMetaData(),
-            Instant.now(),
-            Instant.now().plusSeconds(2),
-            heartRateValues.map { HeartRateRecord.HeartRateSample(it, Instant.now()) })
-        .build()
-}
-
-private fun getStepsRecord(steps: Long): StepsRecord {
-    return StepsRecord.Builder(getMetaData(), Instant.now(), Instant.now().plusSeconds(2), steps)
-        .build()
-}
-
-private fun getBasalMetabolicRateRecord(record: Double): BasalMetabolicRateRecord {
-    return BasalMetabolicRateRecord.Builder(getMetaData(), Instant.now(), Power.fromWatts(record))
-        .build()
-}
-
-private fun getMetaData(): Metadata {
-    val device: Device =
-        Device.Builder().setManufacturer("google").setModel("Pixel4a").setType(2).build()
-    val dataOrigin =
-        DataOrigin.Builder().setPackageName("android.healthconnect.controller.test.app").build()
-    return Metadata.Builder()
-        .setDevice(device)
-        .setDataOrigin(dataOrigin)
-        .setClientRecordId("BMR" + Math.random().toString())
-        .build()
+        return response.records.map { record -> healthDataEntryFormatter.format(record) }
+    }
 }

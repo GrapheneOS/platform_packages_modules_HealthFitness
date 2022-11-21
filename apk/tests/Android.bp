@@ -26,6 +26,8 @@ android_test {
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
     static_libs: [
+        "androidx.test.core",
+        "androidx.test.rules",
         "HealthConnectLibrary",
         "HealthConnectPermissionsApis",
         "SettingsLibSettingsTheme",
@@ -39,6 +41,7 @@ android_test {
         "SettingsLibTopIntroPreference",
         "androidx.annotation_annotation",
         "hilt_android_testing",
+        "kotlinx_coroutines_test",
         // test dependencies
         "androidx.test.espresso.contrib",
         "androidx.test.ext.junit",
