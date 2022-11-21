@@ -19,6 +19,7 @@
     <integer name="gravity_start">0x800003</integer>
     <integer name="gravity_center">0x11</integer>
     <integer name="gravity_bottom">0x50</integer>
+    <integer name="alignment_center">4</integer>
 
     <!-- Values are from https://developer.android.com/reference/android/view/View#attr_android:visibility. -->
     <integer name="visibility_visible">0</integer>
@@ -27,5 +28,6 @@
     <!-- Overlayable values -->
     <integer name="dialog_gravity">@integer/gravity_center</integer>
     <integer name="dialog_title_gravity">@integer/gravity_center</integer>
+    <integer name="dialog_title_text_alignment">@integer/alignment_center</integer>
     <integer name="dialog_title_icon_visibility">@integer/visibility_visible</integer>
 </resources>

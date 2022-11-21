@@ -14,33 +14,28 @@
 package com.android.healthconnect.controller.deletion
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.deletion.DeletionConstants.TIME_RANGE_SELECTION_EVENT
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.internal.managers.FragmentComponentManager
 import java.util.Locale
 
 /** A {@link DialogFragment} for choosing the deletion time range. */
 @AndroidEntryPoint(DialogFragment::class)
 class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
 
-    private lateinit var deletionParameters: Deletion
-    var onNextClickListener: DialogInterface.OnClickListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val deletionBundle = requireArguments().getParcelable("DELETION_PARAMETERS") as Deletion?
-        deletionParameters = deletionBundle ?: Deletion()
-    }
+    private val viewModel: DeletionViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view: View = layoutInflater.inflate(R.layout.time_range_picker, null)
+        val radioGroup: RadioGroup = view.findViewById(R.id.radio_group)
         val messageView: TextView = view.findViewById(R.id.time_range_message)
         messageView.text = buildMessage()
 
@@ -49,11 +44,16 @@ class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
             .setIcon(R.attr.deleteSettingsIcon)
             .setView(view)
             .setNegativeButton(android.R.string.cancel)
-            .setPositiveButton(R.string.time_range_next_button, onNextClickListener)
+            .setPositiveButton(R.string.time_range_next_button) { _, _ ->
+                val chosenRange = getChosenRange(radioGroup)
+                viewModel.setChosenRange(chosenRange)
+                setFragmentResult(TIME_RANGE_SELECTION_EVENT, Bundle())
+            }
             .create()
     }
 
     private fun buildMessage(): String {
+        val deletionParameters = viewModel.deletionParameters.value ?: DeletionParameters()
         val deletionType: DeletionType = deletionParameters.deletionType
 
         return when (deletionType) {
@@ -80,20 +80,16 @@ class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
         }
     }
 
-    fun setClickListener(mOnNextClickListener: DialogInterface.OnClickListener) {
-        this.onNextClickListener = mOnNextClickListener
+    private fun getChosenRange(radioGroup: RadioGroup): ChosenRange {
+        return when (radioGroup.checkedRadioButtonId) {
+            R.id.radio_button_one_day -> ChosenRange.DELETE_RANGE_LAST_24_HOURS
+            R.id.radio_button_one_week -> ChosenRange.DELETE_RANGE_LAST_7_DAYS
+            R.id.radio_button_one_month -> ChosenRange.DELETE_RANGE_LAST_30_DAYS
+            else -> ChosenRange.DELETE_RANGE_ALL_DATA
+        }
     }
 
     companion object {
         const val TAG = "TimeRangeDialogFragment"
-        @JvmStatic
-        fun create(deletionParameters: Deletion): TimeRangeDialogFragment {
-            val fragment = TimeRangeDialogFragment()
-            FragmentComponentManager.initializeArguments(fragment)
-            val bundle = Bundle()
-            bundle.putParcelable("DELETION_PARAMETERS", deletionParameters)
-            fragment.arguments = bundle
-            return fragment
-        }
     }
 }

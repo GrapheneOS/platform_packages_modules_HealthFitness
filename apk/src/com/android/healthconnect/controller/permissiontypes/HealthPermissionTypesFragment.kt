@@ -24,8 +24,9 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_NAME_KEY
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.categories.fromName
-import com.android.healthconnect.controller.deletion.Deletion
+import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
@@ -82,13 +83,9 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
         mDeleteCategoryData?.title =
             getString(R.string.delete_category_data_button, getString(category.title))
         mDeleteCategoryData?.setOnPreferenceClickListener {
-            val deletionFragment =
-                childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) as DeletionFragment
-            val deleteCategoryData =
-                Deletion(
-                    deletionType = DeletionType.DeletionTypeCategoryData(category = category),
-                    showTimeRangePickerDialog = true)
-            deletionFragment.startDataDeletion(deleteCategoryData)
+            val deletionType = DeletionType.DeletionTypeCategoryData(category = category)
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
         }
     }

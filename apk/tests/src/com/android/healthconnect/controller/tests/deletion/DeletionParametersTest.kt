@@ -3,7 +3,7 @@ package com.android.healthconnect.controller.tests.deletion
 import android.os.Bundle
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.deletion.ChosenRange
-import com.android.healthconnect.controller.deletion.Deletion
+import com.android.healthconnect.controller.deletion.DeletionParameters
 import com.android.healthconnect.controller.deletion.DeletionState
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -11,25 +11,25 @@ import java.time.Instant
 import junit.framework.Assert.assertTrue
 import org.junit.Test
 
-class DeletionTest {
+class DeletionParametersTest {
 
     @Test
     fun deletionToParcel() {
 
-        val deletion =
-            Deletion(
+        val deletionParameters =
+            DeletionParameters(
                 chosenRange = ChosenRange.DELETE_RANGE_LAST_24_HOURS,
                 deletionType = DeletionType.DeletionTypeAllData(),
             )
 
         val bundle = Bundle()
-        bundle.putParcelable("DELETION_TEST", deletion)
+        bundle.putParcelable("DELETION_TEST", deletionParameters)
 
-        val outValue = bundle.getParcelable("DELETION_TEST") as Deletion?
+        val outValue = bundle.getParcelable("DELETION_TEST") as DeletionParameters?
 
         assertTrue(outValue != null)
-        assertTrue(deletion.chosenRange == outValue?.chosenRange)
-        assertTrue(deletion.deletionType == outValue?.deletionType)
+        assertTrue(deletionParameters.chosenRange == outValue?.chosenRange)
+        assertTrue(deletionParameters.deletionType == outValue?.deletionType)
     }
 
     @Test
@@ -39,8 +39,8 @@ class DeletionTest {
         val deletionType =
             DeletionType.DeletionTypeHealthPermissionTypeData(
                 HealthPermissionType.ACTIVE_CALORIES_BURNED)
-        val deletion =
-            Deletion(
+        val deletionParameters =
+            DeletionParameters(
                 chosenRange = ChosenRange.DELETE_RANGE_LAST_30_DAYS,
                 startTimeMs = startTime.toEpochMilli(),
                 endTimeMs = endTime.toEpochMilli(),
@@ -49,21 +49,22 @@ class DeletionTest {
                 showTimeRangePickerDialog = false)
 
         val bundle = Bundle()
-        bundle.putParcelable("DELETION_TEST", deletion)
+        bundle.putParcelable("DELETION_TEST", deletionParameters)
 
-        val outValue = bundle.getParcelable("DELETION_TEST") as Deletion?
+        val outValue = bundle.getParcelable("DELETION_TEST") as DeletionParameters?
 
         assertTrue(outValue != null)
-        assertTrue(deletion.chosenRange == outValue?.chosenRange)
-        assertTrue(deletion.startTimeMs == outValue?.startTimeMs)
-        assertTrue(deletion.endTimeMs == outValue?.endTimeMs)
-        assertTrue(deletion.deletionType == outValue?.deletionType)
+        assertTrue(deletionParameters.chosenRange == outValue?.chosenRange)
+        assertTrue(deletionParameters.startTimeMs == outValue?.startTimeMs)
+        assertTrue(deletionParameters.endTimeMs == outValue?.endTimeMs)
+        assertTrue(deletionParameters.deletionType == outValue?.deletionType)
         assertTrue(
             deletionType.healthPermissionType ==
                 (outValue?.deletionType as DeletionType.DeletionTypeHealthPermissionTypeData)
                     .healthPermissionType)
-        assertTrue(deletion.deletionState == outValue.deletionState)
-        assertTrue(deletion.showTimeRangePickerDialog == outValue.showTimeRangePickerDialog)
+        assertTrue(deletionParameters.deletionState == outValue.deletionState)
+        assertTrue(
+            deletionParameters.showTimeRangePickerDialog == outValue.showTimeRangePickerDialog)
     }
 
     @Test
@@ -71,8 +72,8 @@ class DeletionTest {
         val startTime = Instant.parse("2022-11-11T20:00:00.000Z")
         val endTime = Instant.parse("2022-11-14T20:00:00.000Z")
         val deletionType = DeletionType.DeletionTypeCategoryData(HealthDataCategory.ACTIVITY)
-        val deletion =
-            Deletion(
+        val deletionParameters =
+            DeletionParameters(
                 chosenRange = ChosenRange.DELETE_RANGE_LAST_30_DAYS,
                 startTimeMs = startTime.toEpochMilli(),
                 endTimeMs = endTime.toEpochMilli(),
@@ -81,19 +82,20 @@ class DeletionTest {
                 showTimeRangePickerDialog = false)
 
         val bundle = Bundle()
-        bundle.putParcelable("DELETION_TEST", deletion)
+        bundle.putParcelable("DELETION_TEST", deletionParameters)
 
-        val outValue = bundle.getParcelable("DELETION_TEST") as Deletion?
+        val outValue = bundle.getParcelable("DELETION_TEST") as DeletionParameters?
 
         assertTrue(outValue != null)
-        assertTrue(deletion.chosenRange == outValue?.chosenRange)
-        assertTrue(deletion.startTimeMs == outValue?.startTimeMs)
-        assertTrue(deletion.endTimeMs == outValue?.endTimeMs)
-        assertTrue(deletion.deletionType == outValue?.deletionType)
+        assertTrue(deletionParameters.chosenRange == outValue?.chosenRange)
+        assertTrue(deletionParameters.startTimeMs == outValue?.startTimeMs)
+        assertTrue(deletionParameters.endTimeMs == outValue?.endTimeMs)
+        assertTrue(deletionParameters.deletionType == outValue?.deletionType)
         assertTrue(
             deletionType.category ==
                 (outValue?.deletionType as DeletionType.DeletionTypeCategoryData).category)
-        assertTrue(deletion.deletionState == outValue.deletionState)
-        assertTrue(deletion.showTimeRangePickerDialog == outValue.showTimeRangePickerDialog)
+        assertTrue(deletionParameters.deletionState == outValue.deletionState)
+        assertTrue(
+            deletionParameters.showTimeRangePickerDialog == outValue.showTimeRangePickerDialog)
     }
 }

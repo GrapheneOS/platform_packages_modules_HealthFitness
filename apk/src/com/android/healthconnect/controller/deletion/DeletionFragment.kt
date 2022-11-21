@@ -18,8 +18,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_PARAMETERS
+import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMATION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
+import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.TIME_RANGE_SELECTION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.TRY_AGAIN_EVENT
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -42,7 +48,40 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint(Fragment::class)
 class DeletionFragment : Hilt_DeletionFragment() {
 
-    var deletionParameters = Deletion()
+    private val viewModel: DeletionViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // set event listeners
+        // start deletion
+        parentFragmentManager.setFragmentResultListener(START_DELETION_EVENT, this) { _, bundle ->
+            val deletionType = bundle.getParcelable(DELETION_TYPE) as DeletionType?
+            viewModel.setDeletionType(deletionType!!)
+            showFirstDialog()
+        }
+
+        // time range selection
+        childFragmentManager.setFragmentResultListener(TIME_RANGE_SELECTION_EVENT, this) { _, _ ->
+            showConfirmationDialog()
+        }
+
+        // confirmation dialog
+        childFragmentManager.setFragmentResultListener(GO_BACK_EVENT, this) { _, _ ->
+            showTimeRagePickerDialog()
+        }
+
+        // deletion in progress
+        childFragmentManager.setFragmentResultListener(CONFIRMATION_EVENT, this) { _, _ ->
+            // start deletion from here which will trigger the progressDialog from observable
+            viewModel.delete()
+        }
+
+        // try again
+        childFragmentManager.setFragmentResultListener(TRY_AGAIN_EVENT, this) { _, _ ->
+            showConfirmationDialog()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,35 +91,72 @@ class DeletionFragment : Hilt_DeletionFragment() {
         return inflater.inflate(R.layout.fragment_deletion, container, false)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(DELETION_PARAMETERS, deletionParameters)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.deletionParameters.observe(viewLifecycleOwner) { deletion ->
+            deletion?.let { render(deletion) }
+        }
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        savedInstanceState?.let { bundle ->
-            (bundle.getParcelable(DELETION_PARAMETERS) as Deletion?)?.let {
-                deletionParameters = it
+    private fun render(deletionParameters: DeletionParameters) {
+        when (deletionParameters.deletionState) {
+            DeletionState.STATE_NO_DELETION_IN_PROGRESS -> {
+                // clear dialogs?
+                hideProgressDialog()
+            }
+            DeletionState.STATE_PROGRESS_INDICATOR_STARTED -> {
+                showProgressDialogFragment()
+            }
+            DeletionState.STATE_PROGRESS_INDICATOR_CAN_END -> {
+                hideProgressDialog()
+            }
+            DeletionState.STATE_DELETION_SUCCESSFUL -> {
+                showSuccessDialogFragment()
+            }
+            DeletionState.STATE_DELETION_FAILED -> {
+                showFailedDialogFragment()
+            }
+            else -> {
+                // do nothing
             }
         }
     }
 
     private fun showConfirmationDialog() {
-        // TODO
+        DeletionConfirmationDialogFragment()
+            .show(childFragmentManager, DeletionConfirmationDialogFragment.TAG)
     }
 
-    private fun showFirstDialog() {
-        if (deletionParameters.showTimeRangePickerDialog) {
-            TimeRangeDialogFragment.create(deletionParameters)
-                .also { it.setClickListener { dialog, which -> showConfirmationDialog() } }
-                .show(childFragmentManager, TimeRangeDialogFragment.TAG)
+    private fun showTimeRagePickerDialog() {
+        TimeRangeDialogFragment().show(childFragmentManager, TimeRangeDialogFragment.TAG)
+    }
+
+    private fun showProgressDialogFragment() {
+        ProgressDialogFragment().show(childFragmentManager, ProgressDialogFragment.TAG)
+    }
+
+    private fun showSuccessDialogFragment() {
+        hideProgressDialog()
+        SuccessDialogFragment().show(childFragmentManager, SuccessDialogFragment.TAG)
+    }
+
+    private fun showFailedDialogFragment() {
+        hideProgressDialog()
+        FailedDialogFragment().show(childFragmentManager, FailedDialogFragment.TAG)
+    }
+
+    private fun showFirstDialog(showPicker: Boolean = true) {
+        if (showPicker) {
+            showTimeRagePickerDialog()
         }
+
+        // TODO implement other flows which do not require TimeRangePicker
     }
 
-    fun startDataDeletion(deletionParameters: Deletion) {
-        this.deletionParameters = deletionParameters
-
-        showFirstDialog()
+    private fun hideProgressDialog() {
+        (childFragmentManager.findFragmentByTag(ProgressDialogFragment.TAG)
+                as ProgressDialogFragment?)
+            ?.dismiss()
     }
 }

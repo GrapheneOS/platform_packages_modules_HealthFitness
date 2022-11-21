@@ -23,8 +23,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.deletion.Deletion
+import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.utils.setTitle
@@ -65,13 +66,9 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             true
         }
         mDeleteAllData?.setOnPreferenceClickListener {
-            val deletionFragment =
-                childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) as DeletionFragment
-            val deleteAllData =
-                Deletion(
-                    deletionType = DeletionType.DeletionTypeAllData(),
-                    showTimeRangePickerDialog = true)
-            deletionFragment.startDataDeletion(deleteAllData)
+            val deletionType = DeletionType.DeletionTypeAllData()
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
         }
     }

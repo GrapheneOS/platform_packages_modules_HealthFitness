@@ -19,8 +19,8 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 
 /** Represents deletion parameters chosen by the user in the deletion dialogs. */
-data class Deletion(
-    val chosenRange: ChosenRange = ChosenRange.DELETE_RANGE_LAST_24_HOURS,
+data class DeletionParameters(
+    var chosenRange: ChosenRange = ChosenRange.DELETE_RANGE_LAST_24_HOURS,
     val startTimeMs: Long = -1L,
     val endTimeMs: Long = -1L,
     var deletionType: DeletionType = DeletionType.DeletionTypeAllData(),
@@ -54,12 +54,12 @@ data class Deletion(
         parcel.writeByte(if (showTimeRangePickerDialog) 1 else 0)
     }
 
-    companion object CREATOR : Parcelable.Creator<Deletion> {
-        override fun createFromParcel(parcel: Parcel): Deletion {
-            return Deletion(parcel)
+    companion object CREATOR : Parcelable.Creator<DeletionParameters> {
+        override fun createFromParcel(parcel: Parcel): DeletionParameters {
+            return DeletionParameters(parcel)
         }
 
-        override fun newArray(size: Int): Array<Deletion?> {
+        override fun newArray(size: Int): Array<DeletionParameters?> {
             return arrayOfNulls(size)
         }
     }

@@ -21,8 +21,12 @@
     <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
     <item name="alertDialogTheme">@style/Theme.HealthConnect.Dialog.Alert</item>
     <item name="deleteSettingsIcon">@drawable/ic_deletion_settings</item>
+    <item name="deleteIcon">@drawable/quantum_gm_ic_delete_vd_theme_24</item>
+    <item name="successIcon">@drawable/quantum_gm_ic_check_circle_vd_theme_24</item>
+    <item name="failureIcon">@drawable/quantum_ic_cancel_vd_theme_24</item>
     <item name="dialogGravity">@integer/dialog_gravity</item>
     <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
+    <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>
     <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>
   </style>
 
