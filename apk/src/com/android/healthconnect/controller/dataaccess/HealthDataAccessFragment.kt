@@ -15,6 +15,7 @@ package com.android.healthconnect.controller.dataaccess
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -86,7 +87,10 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         }
 
         mAllEntriesButton?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_healthDataAccess_to_dataEntries)
+            findNavController()
+                .navigate(
+                    R.id.action_healthDataAccess_to_dataEntries,
+                    bundleOf(PERMISSION_TYPE_KEY to permissionType))
             true
         }
         mDeletePermissionTypeData?.setOnPreferenceClickListener {

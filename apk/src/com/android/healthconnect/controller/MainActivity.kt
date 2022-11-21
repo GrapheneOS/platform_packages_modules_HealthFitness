@@ -16,6 +16,8 @@ package com.android.healthconnect.controller
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,5 +41,13 @@ class MainActivity : Hilt_MainActivity() {
             val intent = Intent(this, OnboardingActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onNavigateUp(): Boolean {
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        if (!navController.popBackStack()) {
+            finish()
+        }
+        return true
     }
 }

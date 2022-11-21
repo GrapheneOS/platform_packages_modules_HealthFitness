@@ -20,7 +20,10 @@ import javax.inject.Singleton
 class LoadCategoriesUseCase @Inject constructor() {
     /** Returns list of available data categories. */
     suspend operator fun invoke(): List<HealthDataCategory> =
-        listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.CYCLE_TRACKING)
+        listOf(
+            HealthDataCategory.ACTIVITY,
+            HealthDataCategory.VITALS,
+            HealthDataCategory.BODY_MEASUREMENTS)
 }
 
 @Singleton

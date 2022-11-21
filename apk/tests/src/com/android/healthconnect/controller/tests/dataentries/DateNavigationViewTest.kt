@@ -17,10 +17,9 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.preference.PreferenceViewHolder
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.DateNavigationPreference
+import com.android.healthconnect.controller.dataentries.DateNavigationView
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.TimeSource
@@ -31,18 +30,16 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 
-class DateNavigationPreferenceTest {
+class DateNavigationViewTest {
 
-    private lateinit var dateNavigationView: View
+    private lateinit var dateNavigationView: DateNavigationView
     private lateinit var previousDayButton: ImageButton
     private lateinit var nextDayButton: ImageButton
     private lateinit var selectedDateView: TextView
 
-    private lateinit var preference: DateNavigationPreference
     private lateinit var context: Context
-    private lateinit var viewHolder: PreferenceViewHolder
     private val dateChangedListener =
-        Mockito.mock(DateNavigationPreference.OnDateChangedListener::class.java)
+        Mockito.mock(DateNavigationView.OnDateChangedListener::class.java)
     private val timeSource: TimeSource =
         object : TimeSource {
             override fun currentTimeMillis(): Long {
@@ -55,64 +52,51 @@ class DateNavigationPreferenceTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
 
-        dateNavigationView = View.inflate(context, R.layout.widget_date_navigation, null /* root */)
+        dateNavigationView =
+            DateNavigationView(context = context, attrs = null, timeSource = timeSource)
         selectedDateView = dateNavigationView.findViewById(R.id.selected_date)
         previousDayButton = dateNavigationView.findViewById(R.id.navigation_previous_day)
         nextDayButton = dateNavigationView.findViewById(R.id.navigation_next_day)
-        viewHolder = PreferenceViewHolder.createInstanceForTests(dateNavigationView)
-        preference =
-            DateNavigationPreference(context = context, attrs = null, timeSource = timeSource)
     }
 
     @Test
     fun initDateNavigationPreference_titleSet() {
-        preference.onBindViewHolder(viewHolder)
-
         assertThat(selectedDateView.visibility).isEqualTo(View.VISIBLE)
         assertThat(selectedDateView.text).isEqualTo("October 20, 2022")
     }
 
     @Test
     fun initDateNavigationPreference_nextNavigationDisabled() {
-        preference.onBindViewHolder(viewHolder)
-
         assertThat(nextDayButton.visibility).isEqualTo(View.VISIBLE)
         assertThat(nextDayButton.isEnabled).isEqualTo(false)
     }
 
     @Test
     fun initDateNavigationPreference_prevNavigationEnabled() {
-        preference.onBindViewHolder(viewHolder)
-
         assertThat(previousDayButton.visibility).isEqualTo(View.VISIBLE)
         assertThat(previousDayButton.isEnabled).isEqualTo(true)
     }
 
     @Test
     fun setDate_changesSelectedDateView() {
-        preference.onBindViewHolder(viewHolder)
-
-        preference.setDate(NOW.minus(Duration.ofDays(1)))
+        dateNavigationView.setDate(NOW.minus(Duration.ofDays(1)))
 
         assertThat(selectedDateView.text).isEqualTo("October 19, 2022")
     }
 
     @Test
     fun setDate_withValidFutureDates_nextButtonIsEnabled() {
-        preference.onBindViewHolder(viewHolder)
-
-        preference.setDate(NOW.minus(Duration.ofDays(1)))
+        dateNavigationView.setDate(NOW.minus(Duration.ofDays(1)))
 
         assertThat(nextDayButton.isEnabled).isEqualTo(true)
     }
 
     @Test
     fun onDateChanged_listenerIsCalled() {
-        preference.onBindViewHolder(viewHolder)
-        preference.setDateChangedListener(dateChangedListener)
+        dateNavigationView.setDateChangedListener(dateChangedListener)
 
         val newDate = NOW.minus(Duration.ofDays(1))
-        preference.setDate(newDate)
+        dateNavigationView.setDate(newDate)
 
         Mockito.verify(dateChangedListener).onDateChanged(newDate)
     }
