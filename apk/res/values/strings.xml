@@ -268,6 +268,8 @@
   <string name="settings_and_help_header" description="Title shown for the section of settings and help [CHAR_LIMIT=70]">Settings &amp; help</string>
   <string name="disconnect_all_apps" description="Button text for removing access to health and fitness data for all apps [CHAR_LIMIT=40]">Remove access for all apps</string>
   <string name="cant_see_all_your_apps_button" description="Button text for navigating to a help page of advice about connecting more apps [CHAR_LIMIT=40]">Can\'t see all your apps?</string>
+  <string name="manage_permissions_read_header" description="Header for list of permissions an app is allowed read access to [CHAR_LIMIT=40]">Allowed to read</string>
+  <string name="manage_permissions_write_header" description="Header for list of permissions an app is allowed write access to [CHAR_LIMIT=40]">Allowed to write</string>
   <!--endregion-->
 
   <!--region Onboarding -->

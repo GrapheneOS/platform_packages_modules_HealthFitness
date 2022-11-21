@@ -20,11 +20,15 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 
 /** Represents an app being displayed in Health Connect. */
-data class AppMetadata(@StringRes val appName: Int, @DrawableRes val icon: Int)
+data class AppMetadata(
+    val packageNane: String,
+    @StringRes val appName: Int,
+    @DrawableRes val icon: Int
+)
 
 // Placeholder constants
-val APP_1 = AppMetadata(R.string.app_1, R.drawable.ic_sleep)
-val APP_2 = AppMetadata(R.string.app_2, R.drawable.ic_health_data)
+val APP_1 = AppMetadata("com.app.app1", R.string.app_1, R.drawable.ic_sleep)
+val APP_2 = AppMetadata("com.app.app2", R.string.app_2, R.drawable.ic_health_data)
 // Placeholder constants
-val APP_3 = AppMetadata(R.string.app_3, R.drawable.ic_cycle_tracking)
-val APP_4 = AppMetadata(R.string.app_4, R.drawable.ic_vitals)
+val APP_3 = AppMetadata("com.app.app3", R.string.app_3, R.drawable.ic_cycle_tracking)
+val APP_4 = AppMetadata("com.app.app4", R.string.app_4, R.drawable.ic_vitals)

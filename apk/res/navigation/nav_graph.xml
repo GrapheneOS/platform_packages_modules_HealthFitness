@@ -67,6 +67,9 @@
     <action
         android:id="@+id/action_connectedApps_to_cantSeeAllYourApps"
         app:destination="@id/cantSeeAllYourAppsFragment" />
+    <action
+        android:id="@+id/action_connectedApps_to_connectedApp"
+        app:destination="@id/connectedAppFragment" />
   </fragment>
   <fragment
       android:id="@+id/cantSeeAllYourAppsFragment"
@@ -87,5 +90,11 @@
         android:id="@+id/action_healthDataAccess_to_dataEntries"
         app:destination="@id/dataEntriesFragment" />
   </fragment>
-
+  <fragment
+      android:id="@+id/connectedAppFragment"
+      android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment">
+    <argument
+        android:name="packageName"
+        app:argType="string"/>
+  </fragment>
 </navigation>
