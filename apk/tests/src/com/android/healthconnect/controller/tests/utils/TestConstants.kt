@@ -33,8 +33,8 @@ fun getHeartRateRecord(heartRateValues: List<Long>): HeartRateRecord {
         .build()
 }
 
-fun getStepsRecord(steps: Long): StepsRecord {
-    return StepsRecord.Builder(getMetaData(), NOW, NOW.plusSeconds(2), steps).build()
+fun getStepsRecord(steps: Long, time: Instant = NOW): StepsRecord {
+    return StepsRecord.Builder(getMetaData(), time, time.plusSeconds(2), steps).build()
 }
 
 fun getBasalMetabolicRateRecord(record: Double): BasalMetabolicRateRecord {

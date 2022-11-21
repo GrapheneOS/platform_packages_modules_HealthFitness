@@ -11,31 +11,23 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.dataentries.formatters
+package com.android.healthconnect.controller.shared
 
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.StepsRecord
-import com.android.healthconnect.controller.dataentries.FormattedDataEntry
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 
-@Singleton
-class HealthDataEntryFormatter
-@Inject
-constructor(
-    private val heartRateFormatter: HeartRateFormatter,
-    private val stepsFormatter: StepsFormatter,
-    private val powerFormatter: PowerFormatter
-) {
+object HealthPermissionToDatatypeMapper {
+    private val map =
+        mapOf(
+            HealthPermissionType.STEPS to listOf(StepsRecord::class.java),
+            HealthPermissionType.HEART_RATE to listOf(HeartRateRecord::class.java),
+            HealthPermissionType.BASAL_METABOLIC_RATE to
+                listOf(BasalMetabolicRateRecord::class.java))
 
-    suspend fun format(record: Record): FormattedDataEntry {
-        return when (record) {
-            is HeartRateRecord -> heartRateFormatter.format(record)
-            is StepsRecord -> stepsFormatter.format(record)
-            is BasalMetabolicRateRecord -> powerFormatter.format(record)
-            else -> throw IllegalArgumentException("${record::class.java} Not supported!")
-        }
+    fun getDataTypes(permissionType: HealthPermissionType): List<Class<out Record>> {
+        return map[permissionType].orEmpty()
     }
 }

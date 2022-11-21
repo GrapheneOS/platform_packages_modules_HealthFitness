@@ -19,8 +19,10 @@ import android.icu.text.MessageFormat
 import com.android.healthconnect.controller.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /** Formatter for printing Steps data. */
+@Singleton
 class StepsFormatter @Inject constructor(@ApplicationContext private val context: Context) :
     DataEntriesFormatter<StepsRecord>(context) {
 

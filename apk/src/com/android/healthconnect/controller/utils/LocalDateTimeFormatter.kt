@@ -23,23 +23,17 @@ import javax.inject.Inject
 /** Formatter for printing time and time ranges. */
 class LocalDateTimeFormatter @Inject constructor(@ApplicationContext private val context: Context) {
 
-    companion object {
-        private const val TAG = "LocalDateTimeFormatter"
-    }
+    private val timeFormat by lazy { getTimeFormat(context) }
+    private val longDateFormat by lazy { getLongDateFormat(context) }
 
     /** Returns localized time. */
     fun formatTime(instant: Instant): String {
-        return getTimeFormat(context).format(instant.toEpochMilli())
-    }
-
-    /** Returns localized date. */
-    fun formatDate(instant: Instant): String {
-        return getDateFormat(context).format(instant.toEpochMilli())
+        return timeFormat.format(instant.toEpochMilli())
     }
 
     /** Returns localized long versions of date. */
     fun formatLongDate(instant: Instant): String {
-        return getLongDateFormat(context).format(instant.toEpochMilli())
+        return longDateFormat.format(instant.toEpochMilli())
     }
 
     /** Returns localized time range. */
@@ -47,19 +41,8 @@ class LocalDateTimeFormatter @Inject constructor(@ApplicationContext private val
         return context.getString(R.string.time_range, formatTime(start), formatTime(end))
     }
 
-    /** Returns localized time range. */
-    fun formatDateRange(start: Instant, end: Instant): String {
-        return context.getString(R.string.date_range, formatDate(start), formatDate(end))
-    }
-
     /** Returns accessible and localized time range. */
     fun formatTimeRangeA11y(start: Instant, end: Instant): String {
         return context.getString(R.string.time_range_long, formatTime(start), formatTime(end))
-    }
-
-    /** Returns accessible and localized time range. */
-    fun formatDateRangeA11y(start: Instant, end: Instant): String {
-        return context.getString(
-            R.string.date_range_long, formatLongDate(start), formatLongDate(end))
     }
 }

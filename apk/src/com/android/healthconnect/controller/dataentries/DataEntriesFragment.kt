@@ -25,6 +25,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Empty
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +43,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var dataNavigationView: DateNavigationView
     private lateinit var entriesRecyclerView: RecyclerView
     private lateinit var noDataView: TextView
+    private lateinit var loadingView: View
     private val adapter = DataEntryAdapter()
 
     override fun onCreateView(
@@ -54,6 +58,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
 
         dataNavigationView = view.findViewById(R.id.date_navigation_view)
         noDataView = view.findViewById(R.id.no_data_view)
+        loadingView = view.findViewById(R.id.loading)
         entriesRecyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {
                 it.adapter = adapter
@@ -71,9 +76,25 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 }
             })
         viewModel.loadData(permissionType, dataNavigationView.getDate())
-        viewModel.dataEntries.observe(viewLifecycleOwner) { entriesList ->
-            noDataView.isVisible = entriesList.isEmpty()
-            adapter.updateData(entriesList)
+        viewModel.dataEntries.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is Loading -> {
+                    loadingView.isVisible = true
+                    noDataView.isVisible = false
+                    entriesRecyclerView.isVisible = false
+                }
+                is Empty -> {
+                    noDataView.isVisible = true
+                    loadingView.isVisible = false
+                    entriesRecyclerView.isVisible = false
+                }
+                is WithData -> {
+                    entriesRecyclerView.isVisible = true
+                    adapter.updateData(state.entries)
+                    noDataView.isVisible = false
+                    loadingView.isVisible = false
+                }
+            }
         }
     }
 }

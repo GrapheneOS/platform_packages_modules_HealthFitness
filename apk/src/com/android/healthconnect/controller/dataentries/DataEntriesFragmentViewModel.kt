@@ -29,17 +29,26 @@ class DataEntriesFragmentViewModel
 @Inject
 constructor(private val loadDataEntriesUseCase: LoadDataEntriesUseCase) : ViewModel() {
 
-    companion object {
-        private const val TAG = "DataEntriesFragmentView"
-    }
-
-    private val _dataEntries = MutableLiveData<List<FormattedDataEntry>>()
-    val dataEntries: LiveData<List<FormattedDataEntry>>
+    private val _dataEntries = MutableLiveData<DataEntriesFragmentState>()
+    val dataEntries: LiveData<DataEntriesFragmentState>
         get() = _dataEntries
 
     fun loadData(permissionType: HealthPermissionType, selectedDate: Instant) {
+        _dataEntries.postValue(DataEntriesFragmentState.Loading)
         viewModelScope.launch {
-            _dataEntries.value = loadDataEntriesUseCase.invoke(permissionType, selectedDate)
+            val entries = loadDataEntriesUseCase.invoke(permissionType, selectedDate)
+            _dataEntries.postValue(
+                if (entries.isEmpty()) {
+                    DataEntriesFragmentState.Empty
+                } else {
+                    DataEntriesFragmentState.WithData(entries)
+                })
         }
+    }
+
+    sealed class DataEntriesFragmentState {
+        object Loading : DataEntriesFragmentState()
+        object Empty : DataEntriesFragmentState()
+        data class WithData(val entries: List<FormattedDataEntry>) : DataEntriesFragmentState()
     }
 }

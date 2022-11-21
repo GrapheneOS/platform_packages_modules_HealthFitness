@@ -23,6 +23,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.DataEntriesFragment
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Empty
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
@@ -51,7 +54,7 @@ class DataEntriesFragmentTest {
 
     @Test
     fun dataEntriesInit_showsDateNavigationPreference() {
-        Mockito.`when`(viewModel.dataEntries).thenReturn(MutableLiveData(emptyList()))
+        Mockito.`when`(viewModel.dataEntries).thenReturn(MutableLiveData(WithData(emptyList())))
 
         launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
 
@@ -60,16 +63,26 @@ class DataEntriesFragmentTest {
 
     @Test
     fun dataEntriesInit_noData_showsNoData() {
-        Mockito.`when`(viewModel.dataEntries).thenReturn(MutableLiveData(emptyList()))
+        Mockito.`when`(viewModel.dataEntries).thenReturn(MutableLiveData(Empty))
 
         launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
 
-        onView(withText("No data")).check(matches(isDisplayed()))
+        onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataEntriesInit_loading_showsLoading() {
+        Mockito.`when`(viewModel.dataEntries).thenReturn(MutableLiveData(Loading))
+
+        launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
+
+        onView(withId(R.id.loading)).check(matches(isDisplayed()))
     }
 
     @Test
     fun dataEntriesInit_withData_showsListOfEntries() {
-        Mockito.`when`(viewModel.dataEntries).thenReturn(MutableLiveData(FORMATTED_STEPS_LIST))
+        Mockito.`when`(viewModel.dataEntries)
+            .thenReturn(MutableLiveData(WithData(FORMATTED_STEPS_LIST)))
 
         launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
 
