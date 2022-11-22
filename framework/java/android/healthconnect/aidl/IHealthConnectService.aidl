@@ -5,6 +5,7 @@ import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
+import android.healthconnect.aidl.IAccessLogsResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
@@ -152,4 +153,12 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation.
      */
     void queryAllRecordTypesInfo(in IRecordTypeInfoResponseCallback callback);
+
+    /**
+     * @param packageName name of the package reading access logs
+     * @param callback Callback to receive result of performing this operation
+     */
+    void queryAccessLogs(
+        String packageName,
+        in IAccessLogsResponseCallback callback);
 }

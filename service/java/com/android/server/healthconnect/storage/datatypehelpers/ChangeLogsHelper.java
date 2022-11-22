@@ -16,8 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static android.healthconnect.Constants.DEFAULT_INT;
 import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.healthconnect.Constants.DELETE;
+import static android.healthconnect.Constants.UPSERT;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
@@ -32,11 +33,10 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.healthconnect.Constants;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 import android.util.Pair;
-
-import androidx.annotation.IntDef;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
@@ -45,8 +45,6 @@ import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -63,8 +61,6 @@ import java.util.stream.Collectors;
  * @hide
  */
 public final class ChangeLogsHelper {
-    public static final int UPSERT = 0;
-    public static final int DELETE = 1;
     public static final String TABLE_NAME = "change_logs_table";
     private static final String RECORD_TYPE_COLUMN_NAME = "record_type";
     private static final String APP_ID_COLUMN_NAME = "app_id";
@@ -186,7 +182,8 @@ public final class ChangeLogsHelper {
     private int addChangeLogs(Cursor cursor, Map<Integer, ChangeLogs> changeLogs) {
         @RecordTypeIdentifier.RecordType
         int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
-        @OperationType int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
+        @Constants.OperationType
+        int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
         List<String> uuidList = getCursorStringList(cursor, UUIDS_COLUMN_NAME, DELIMITER);
 
         changeLogs.putIfAbsent(operationType, new ChangeLogs(operationType));
@@ -207,19 +204,15 @@ public final class ChangeLogsHelper {
         return columnInfo;
     }
 
-    @IntDef({UPSERT, DELETE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface OperationType {}
-
     public static final class ChangeLogs {
         private final Map<Integer, List<String>> mRecordTypeToUUIDMap = new ArrayMap<>();
-        @OperationType private final int mOperationType;
+        @Constants.OperationType private final int mOperationType;
         private final String mPackageName;
         /**
          * Create a change logs object that can be used to get change log request for {@code
          * operationType} for {@code packageName}
          */
-        public ChangeLogs(@OperationType int operationType, @NonNull String packageName) {
+        public ChangeLogs(@Constants.OperationType int operationType, @NonNull String packageName) {
             mOperationType = operationType;
             mPackageName = packageName;
         }
@@ -228,7 +221,7 @@ public final class ChangeLogsHelper {
          * Create a change logs object that can be used to get change log request for {@code
          * operationType} for {@code packageName}
          */
-        public ChangeLogs(@OperationType int operationType) {
+        public ChangeLogs(@Constants.OperationType int operationType) {
             mOperationType = operationType;
             mPackageName = null;
         }

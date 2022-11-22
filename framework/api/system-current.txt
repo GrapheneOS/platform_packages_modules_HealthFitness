@@ -1,6 +1,13 @@
 // Signature format: 2.0
 package android.healthconnect {
 
+  public class AccessLog {
+    method @NonNull public java.time.Instant getAccessTime();
+    method public int getOperationType();
+    method @NonNull public String getPackageName();
+    method @NonNull public java.util.List<java.lang.Class<? extends android.healthconnect.datatypes.Record>> getRecordTypes();
+  }
+
   public class ApplicationInfoResponse {
     method @NonNull public java.util.List<android.healthconnect.datatypes.AppInfo> getApplicationInfoList();
   }
@@ -32,11 +39,13 @@ package android.healthconnect {
     method @NonNull public static java.util.Set<java.lang.String> getHealthPermissions(@NonNull android.content.Context);
     method @IntRange(from=0, to=7300) public int getRecordRetentionPeriodInDays();
     method public static boolean isHealthPermission(@NonNull android.content.Context, @NonNull String);
+    method @RequiresPermission(android.healthconnect.HealthConnectManager.PERMISSION_MANAGE_HEALTH_DATA) public void queryAccessLogs(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.healthconnect.AccessLog>,android.healthconnect.HealthConnectException>);
     method public void setRecordRetentionPeriodInDays(@IntRange(from=0, to=7300) int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
     method public void updateDataOriginPriorityOrder(@NonNull android.healthconnect.UpdateDataOriginPriorityOrderRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
     field public static final String ACTION_HEALTH_HOME_SETTINGS = "android.healthconnect.action.HEALTH_HOME_SETTINGS";
     field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS = "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
     field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS_AND_DATA = "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS_AND_DATA";
+    field public static final String PERMISSION_MANAGE_HEALTH_DATA = "android.permission.MANAGE_HEALTH_DATA";
   }
 
   public class HealthDataCategory {
