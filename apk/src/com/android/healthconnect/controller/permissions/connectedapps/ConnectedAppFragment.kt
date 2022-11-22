@@ -7,8 +7,8 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
+import com.android.healthconnect.controller.permissions.connectedApp.HealthPermissionStatus
+import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,31 +50,30 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         }
     }
 
-    private fun updatePermissions(permissions: List<HealthPermission>) {
+    private fun updatePermissions(permissions: List<HealthPermissionStatus>) {
         mReadPermissionCategory?.removeAll()
         mWritePermissionCategory?.removeAll()
 
-        permissions.forEach { permission ->
-            if (permission.permissionsAccessType.equals(PermissionsAccessType.READ)) {
-                mReadPermissionCategory?.addPreference(
-                    SwitchPreference(requireContext()).also {
-                        it.setTitle(
-                            HealthPermissionStrings.fromPermissionType(
-                                    permission.healthPermissionType)
-                                .label)
-                    })
-            }
-        }
-        permissions.forEach { permission ->
-            if (permission.permissionsAccessType.equals(PermissionsAccessType.WRITE)) {
-                mWritePermissionCategory?.addPreference(
-                    SwitchPreference(requireContext()).also {
-                        it.setTitle(
-                            HealthPermissionStrings.fromPermissionType(
-                                    permission.healthPermissionType)
-                                .label)
-                    })
-            }
+        permissions.forEach { permissionStatus ->
+            val permission = permissionStatus.healthPermission
+            val category =
+                if (permission.permissionsAccessType == PermissionsAccessType.READ) {
+                    mReadPermissionCategory
+                } else {
+                    mWritePermissionCategory
+                }
+
+            category?.addPreference(
+                SwitchPreference(requireContext()).also {
+                    it.setTitle(fromPermissionType(permission.healthPermissionType).label)
+                    it.isChecked = permissionStatus.isGranted
+                    it.setOnPreferenceChangeListener { preference, newValue ->
+                        val checked = (preference as SwitchPreference).isChecked
+                        viewModel.updatePermissions(
+                            mPackageName, permissionStatus.healthPermission, !checked)
+                        true
+                    }
+                })
         }
     }
 }

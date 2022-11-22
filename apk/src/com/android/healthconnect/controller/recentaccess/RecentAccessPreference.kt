@@ -77,7 +77,7 @@ constructor(
 
         val recentAccessAppIcon: ImageView? =
             recentAccessWidget?.findViewById(R.id.recent_access_app_icon) as ImageView?
-        recentAccessAppIcon?.setImageResource(recentAccessApp.metadata.icon)
+        recentAccessAppIcon?.setImageDrawable(recentAccessApp.metadata.icon)
 
         val dashLine: View? = recentAccessWidget?.findViewById(R.id.recent_access_dash_line)
 

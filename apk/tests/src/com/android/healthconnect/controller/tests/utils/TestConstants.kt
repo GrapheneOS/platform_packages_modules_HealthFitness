@@ -20,6 +20,7 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.Metadata
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.units.Power
+import com.android.healthconnect.controller.shared.AppMetadata
 import java.time.Instant
 
 val NOW: Instant = Instant.parse("2022-10-20T07:06:05.432Z")
@@ -44,8 +45,7 @@ fun getBasalMetabolicRateRecord(record: Double): BasalMetabolicRateRecord {
 fun getMetaData(): Metadata {
     val device: Device =
         Device.Builder().setManufacturer("google").setModel("Pixel4a").setType(2).build()
-    val dataOrigin =
-        DataOrigin.Builder().setPackageName("android.healthconnect.controller.test.app").build()
+    val dataOrigin = DataOrigin.Builder().setPackageName(TEST_APP_PACKAGE_NAME).build()
     return Metadata.Builder()
         .setId("test_id")
         .setDevice(device)
@@ -53,3 +53,17 @@ fun getMetaData(): Metadata {
         .setClientRecordId("BMR" + Math.random().toString())
         .build()
 }
+
+// region apps
+
+const val TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app"
+const val TEST_APP_PACKAGE_NAME_2 = "android.healthconnect.controller.test.app2"
+const val TEST_APP_NAME = "Health Connect test app"
+const val TEST_APP_NAME_2 = "Health Connect test app 2"
+
+val TEST_APP =
+    AppMetadata(packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME, icon = null)
+val TEST_APP_2 =
+    AppMetadata(packageName = TEST_APP_PACKAGE_NAME_2, appName = TEST_APP_NAME_2, icon = null)
+
+// endregion

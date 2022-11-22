@@ -16,8 +16,6 @@
 
 package com.android.healthconnect.controller.recentaccess
 
-import com.android.healthconnect.controller.shared.APP_1
-import com.android.healthconnect.controller.shared.APP_2
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.google.common.collect.ImmutableSet
 import java.time.Instant
@@ -30,6 +28,9 @@ data class RecentAccessApp(
 )
 
 // Placeholder constants
+val APP_1 = AppMetadata("package.name1", "app name A", null)
+
+val APP_2 = AppMetadata("package.name2", "app name B", null)
 val RECENT_APP_1 =
     RecentAccessApp(APP_1, Instant.parse("2022-10-20T18:40:13.00Z"), ImmutableSet.of("Read"))
 

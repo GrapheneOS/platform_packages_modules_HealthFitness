@@ -19,11 +19,14 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.android.healthconnect.controller.permissions.connectedApp.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.EXERCISE
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.google.common.truth.Truth.assertThat
@@ -51,7 +54,7 @@ class ConnectedAppFragmentTest {
     @Test
     fun test_noPermissions() {
         Mockito.`when`(viewModel.grantedPermissions).then {
-            MutableLiveData(listOf<HealthPermission>())
+            MutableLiveData(listOf<HealthPermissionStatus>())
         }
 
         val scenario = launchFragment({ ConnectedAppFragment.newInstance("package.name") })
@@ -73,9 +76,10 @@ class ConnectedAppFragmentTest {
 
     @Test
     fun test_readPermission() {
+        val permission = HealthPermission(DISTANCE, READ)
         Mockito.`when`(viewModel.grantedPermissions).then {
             MutableLiveData(
-                listOf(HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ)))
+                listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }
 
         val scenario = launchFragment({ ConnectedAppFragment.newInstance("package.name") })
@@ -98,10 +102,10 @@ class ConnectedAppFragmentTest {
 
     @Test
     fun test_writePermission() {
+        val permission = HealthPermission(EXERCISE, WRITE)
         Mockito.`when`(viewModel.grantedPermissions).then {
             MutableLiveData(
-                listOf(
-                    HealthPermission(HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)))
+                listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }
 
         val scenario = launchFragment({ ConnectedAppFragment.newInstance("package.name") })
@@ -124,11 +128,14 @@ class ConnectedAppFragmentTest {
 
     @Test
     fun test_readAndWritePermission() {
+        val writePermission =
+            HealthPermissionStatus(
+                healthPermission = HealthPermission(EXERCISE, WRITE), isGranted = true)
+        val readPermission =
+            HealthPermissionStatus(
+                healthPermission = HealthPermission(DISTANCE, READ), isGranted = false)
         Mockito.`when`(viewModel.grantedPermissions).then {
-            MutableLiveData(
-                listOf(
-                    HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ),
-                    HealthPermission(HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)))
+            MutableLiveData(listOf(writePermission, readPermission))
         }
 
         val scenario = launchFragment({ ConnectedAppFragment.newInstance("package.name") })

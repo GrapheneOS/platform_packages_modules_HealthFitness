@@ -32,6 +32,14 @@
     </activity>
   </application>
 
+  <queries>
+    <intent>
+      <!-- An intent action to get package visibility into client apps. See more at b/193547946 -->
+      <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+      <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+    </intent>
+  </queries>
+
   <instrumentation
       android:name="com.android.healthconnect.controller.tests.HiltTestRunner"
       android:label="Health Connect UI Test Cases"

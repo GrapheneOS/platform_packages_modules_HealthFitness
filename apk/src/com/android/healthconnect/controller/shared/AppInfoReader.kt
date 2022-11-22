@@ -37,6 +37,10 @@ class AppInfoReader @Inject constructor(@ApplicationContext private val context:
         return packageManager.getApplicationIcon(packageName)
     }
 
+    fun getAppMetadata(packageName: String): AppMetadata {
+        return AppMetadata(packageName, getAppName(packageName), getAppIcon(packageName))
+    }
+
     private fun getPackageInfo(packageName: String): ApplicationInfo {
         return packageManager.getApplicationInfo(packageName, 0 /* flags */)
     }

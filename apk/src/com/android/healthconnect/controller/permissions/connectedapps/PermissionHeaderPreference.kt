@@ -11,19 +11,23 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package com.android.healthconnect.controller.permissions.connectedapps
 
-import com.android.healthconnect.controller.shared.APP_1
-import com.android.healthconnect.controller.shared.APP_2
-import com.android.healthconnect.controller.shared.AppMetadata
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.content.Context
+import android.util.AttributeSet
+import androidx.preference.Preference
+import com.android.healthconnect.controller.R
 
-@Singleton
-class LoadAllowedAppsUseCase @Inject constructor() {
-    /** Returns a list of apps. */
-    suspend operator fun invoke(): List<AppMetadata> {
-        return listOf(APP_1, APP_2)
+class PermissionHeaderPreference
+@JvmOverloads
+constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0,
+) : Preference(context, attrs, defStyleAttr, defStyleRes) {
+    init {
+        layoutResource = R.layout.widget_permission_header
+        isSelectable = false
     }
 }

@@ -59,7 +59,7 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
 
     private fun getRationalIntent(packageName: String? = null): Intent {
         val intent = Intent("android.intent.action.VIEW_PERMISSION_USAGE")
-        intent.addCategory("android.intent.category.HEALTH")
+        intent.addCategory("android.intent.category.HEALTH_PERMISSIONS")
         if (packageName != null) {
             intent.setPackage(packageName)
         }

@@ -24,12 +24,15 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.home.HomeFragment
 import com.android.healthconnect.controller.home.HomeFragmentViewModel
-import com.android.healthconnect.controller.recentaccess.RECENT_APP_1
 import com.android.healthconnect.controller.recentaccess.RecentAccessApp
+import com.android.healthconnect.controller.tests.utils.TEST_APP
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.google.common.collect.ImmutableSet
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -50,7 +53,11 @@ class HomeFragmentTest {
 
     @Test
     fun test_HomeFragment_withRecentAccessApps() {
-        Mockito.`when`(viewModel.recentAccessApps).then { MutableLiveData(listOf(RECENT_APP_1)) }
+        val recentApp =
+            RecentAccessApp(
+                TEST_APP, Instant.parse("2022-10-20T18:40:13.00Z"), ImmutableSet.of("Read"))
+
+        Mockito.`when`(viewModel.recentAccessApps).then { MutableLiveData(listOf(recentApp)) }
         launchFragment<HomeFragment>(Bundle())
 
         onView(withText(R.string.home_subtitle)).check(matches(isDisplayed()))
@@ -60,7 +67,7 @@ class HomeFragmentTest {
         onView(withText(R.string.data_subtitle)).check(matches(isDisplayed()))
 
         onView(withText(R.string.recent_access_header)).check(matches(isDisplayed()))
-        onView(withText(R.string.app_1)).check(matches(isDisplayed()))
+        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
         onView(withText(R.string.see_all_recent_access)).check(matches(isDisplayed()))
     }
 

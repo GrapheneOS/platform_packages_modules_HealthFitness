@@ -15,13 +15,13 @@ package com.android.healthconnect.controller.permissions.connectedapps
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,50 +59,58 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.connected_apps_title)
+        setTitle(R.string.permgrouplab_health)
+        viewModel.loadConnectedApps()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.allowedApps.observe(viewLifecycleOwner) { apps -> updateAllowedApps(apps) }
-
-        viewModel.notAllowedApps.observe(viewLifecycleOwner) { apps -> updateNotAllowedApps(apps) }
-    }
-
-    private fun updateAllowedApps(appsList: List<AppMetadata>) {
-        mAllowedAppsCategory?.removeAll()
-
-        appsList.forEach { app ->
-            mAllowedAppsCategory?.addPreference(
-                Preference(requireContext()).also {
-                    it.setTitle(app.appName)
-                    it.setIcon(app.icon)
-                    it.setOnPreferenceClickListener {
-                        findNavController()
-                            .navigate(
-                                R.id.action_connectedApps_to_connectedApp,
-                                getBundle(app.packageNane))
-                        true
-                    }
-                })
+        viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
+            val connectedAppsGroup = connectedApps.groupBy { it.isAllowed }
+            updateAllowedApps(connectedAppsGroup[true /*isAllowed*/].orEmpty())
+            updateDeniedApps(connectedAppsGroup[false /*isAllowed*/].orEmpty())
         }
     }
-    private fun updateNotAllowedApps(appsList: List<AppMetadata>) {
+
+    private fun updateAllowedApps(appsList: List<ConnectedAppMetadata>) {
+        mAllowedAppsCategory?.removeAll()
+        if (appsList.isEmpty()) {
+            mAllowedAppsCategory?.addPreference(getNoAppsPreference(R.string.no_apps_allowed))
+        } else {
+            appsList.forEach { app -> mAllowedAppsCategory?.addPreference(getAppPreference(app)) }
+        }
+    }
+
+    private fun updateDeniedApps(appsList: List<ConnectedAppMetadata>) {
         mNotAllowedAppsCategory?.removeAll()
 
-        appsList.forEach { app ->
-            mNotAllowedAppsCategory?.addPreference(
-                Preference(requireContext()).also {
-                    it.setTitle(app.appName)
-                    it.setIcon(app.icon)
-                    it.setOnPreferenceClickListener {
-                        findNavController()
-                            .navigate(
-                                R.id.action_connectedApps_to_connectedApp,
-                                getBundle(app.packageNane))
-                        true
-                    }
-                })
+        if (appsList.isEmpty()) {
+            mNotAllowedAppsCategory?.addPreference(getNoAppsPreference(R.string.no_apps_denied))
+        } else {
+            appsList.forEach { app ->
+                mNotAllowedAppsCategory?.addPreference(getAppPreference(app))
+            }
+        }
+    }
+
+    private fun getNoAppsPreference(@StringRes res: Int): Preference {
+        return Preference(context).also {
+            it.setTitle(res)
+            it.isSelectable = false
+        }
+    }
+
+    private fun getAppPreference(app: ConnectedAppMetadata): Preference {
+        return Preference(requireContext()).also {
+            it.title = app.appMetadata.appName
+            it.icon = app.appMetadata.icon
+            it.setOnPreferenceClickListener {
+                findNavController()
+                    .navigate(
+                        R.id.action_connectedApps_to_connectedApp,
+                        getBundle(app.appMetadata.packageName))
+                true
+            }
         }
     }
 

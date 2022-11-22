@@ -11,41 +11,30 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package com.android.healthconnect.controller.permissions.connectedapps
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.shared.AppMetadata
-import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ConnectedAppsViewModel
 @Inject
-constructor(private val loadAllowedAppsUseCase: LoadAllowedAppsUseCase, private val loadNotAllowedAppsUseCase: LoadNotAllowedAppsUseCase) : ViewModel() {
+constructor(private val loadHealthPermissionApps: LoadHealthPermissionApps) : ViewModel() {
 
-    private val _allowedApps = MutableLiveData<List<AppMetadata>>()
-    private val _notAllowedApps = MutableLiveData<List<AppMetadata>>()
-
-    val allowedApps: LiveData<List<AppMetadata>>
-        get() = _allowedApps
-    val notAllowedApps: LiveData<List<AppMetadata>>
-        get() = _notAllowedApps
+    private val _connectedApps = MutableLiveData<List<ConnectedAppMetadata>>()
+    val connectedApps: LiveData<List<ConnectedAppMetadata>>
+        get() = _connectedApps
 
     init {
-        loadAllowedApps()
-        loadNotAllowedApps()
+        loadConnectedApps()
     }
 
-    private fun loadAllowedApps() {
-        viewModelScope.launch { _allowedApps.postValue(loadAllowedAppsUseCase.invoke()) }
-    }
-
-    private fun loadNotAllowedApps() {
-        viewModelScope.launch { _notAllowedApps.postValue(loadNotAllowedAppsUseCase.invoke()) }
+    fun loadConnectedApps() {
+        viewModelScope.launch { _connectedApps.postValue(loadHealthPermissionApps.invoke()) }
     }
 }
