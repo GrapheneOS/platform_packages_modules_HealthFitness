@@ -27,4 +27,7 @@ data class AppInfo(@StringRes val appName: Int, @DrawableRes val icon: Int)
 // TODO(b/245513815): Remove these placeholder constants after API integration.
 val APP_1 = AppInfo(R.string.app_1, R.drawable.ic_sleep)
 val APP_2 = AppInfo(R.string.app_2, R.drawable.ic_health_data)
+val APP_3 = AppInfo(R.string.app_3, R.drawable.ic_sleep)
+val APP_4 = AppInfo(R.string.app_4, R.drawable.ic_health_data)
 val EXAMPLE_APPS = listOf(APP_1, APP_2)
+val MORE_EXAMPLE_APPS = listOf(APP_3, APP_4)

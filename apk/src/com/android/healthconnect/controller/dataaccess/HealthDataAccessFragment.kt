@@ -23,6 +23,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessAppState
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -30,7 +31,6 @@ import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.TopIntroPreference
@@ -44,6 +44,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         private const val PERMISSION_TYPE_DESCRIPTION = "permission_type_description"
         private const val CAN_READ_SECTION = "can_read"
         private const val CAN_WRITE_SECTION = "can_write"
+        private const val INACTIVE_SECTION = "inactive"
         private const val ALL_ENTRIES_BUTTON = "all_entries_button"
         private const val DELETE_PERMISSION_TYPE_DATA_BUTTON = "delete_permission_type_data"
     }
@@ -61,6 +62,10 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
 
     private val mCanWriteSection: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(CAN_WRITE_SECTION)
+    }
+
+    private val mInactiveSection: PreferenceGroup? by lazy {
+        preferenceScreen.findPreference(INACTIVE_SECTION)
     }
 
     private val mAllEntriesButton: Preference? by lazy {
@@ -82,7 +87,6 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
             getString(R.string.can_read, getString(fromPermissionType(permissionType).label))
         mCanWriteSection?.title =
             getString(R.string.can_write, getString(fromPermissionType(permissionType).label))
-
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
         }
@@ -128,18 +132,19 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         }
     }
 
-    private fun updateDataAccess(appInfoMap: Map<PermissionsAccessType, List<AppInfo>>) {
+    private fun updateDataAccess(appInfoMap: Map<DataAccessAppState, List<AppInfo>>) {
         // TODO(b/245513815): Add inactive apps.
         // TODO(b/245513815): Add empty page.
         mCanReadSection?.removeAll()
         mCanWriteSection?.removeAll()
+        mInactiveSection?.removeAll()
 
-        if (appInfoMap.containsKey(PermissionsAccessType.READ) &&
-            appInfoMap[PermissionsAccessType.READ]!!.isEmpty()) {
+        if (appInfoMap.containsKey(DataAccessAppState.Read) &&
+            appInfoMap[DataAccessAppState.Read]!!.isEmpty()) {
             mCanReadSection?.isVisible = false
         } else {
             mCanReadSection?.isVisible = true
-            appInfoMap[PermissionsAccessType.READ]!!.forEach { _appInfo ->
+            appInfoMap[DataAccessAppState.Write]!!.forEach { _appInfo ->
                 mCanReadSection?.addPreference(
                     Preference(requireContext()).also {
                         it.setTitle(_appInfo.appName)
@@ -148,13 +153,33 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                     })
             }
         }
-        if (appInfoMap.containsKey(PermissionsAccessType.WRITE) &&
-            appInfoMap[PermissionsAccessType.WRITE]!!.isEmpty()) {
+        if (appInfoMap.containsKey(DataAccessAppState.Write) &&
+            appInfoMap[DataAccessAppState.Write]!!.isEmpty()) {
             mCanWriteSection?.isVisible = false
         } else {
             mCanWriteSection?.isVisible = true
-            appInfoMap[PermissionsAccessType.WRITE]!!.forEach { _appInfo ->
+            appInfoMap[DataAccessAppState.Write]!!.forEach { _appInfo ->
                 mCanWriteSection?.addPreference(
+                    Preference(requireContext()).also {
+                        it.setTitle(_appInfo.appName)
+                        it.setIcon(_appInfo.icon)
+                    })
+            }
+        }
+        if (appInfoMap.containsKey(DataAccessAppState.Inactive) &&
+            appInfoMap[DataAccessAppState.Inactive]!!.isEmpty()) {
+            mInactiveSection?.isVisible = false
+        } else {
+            mInactiveSection?.isVisible = true
+            mInactiveSection?.addPreference(
+                Preference(requireContext()).also {
+                    it.summary =
+                        getString(
+                            R.string.inactive_apps_message,
+                            getString(fromPermissionType(permissionType).label))
+                })
+            appInfoMap[DataAccessAppState.Inactive]!!.forEach { _appInfo ->
+                mInactiveSection?.addPreference(
                     Preference(requireContext()).also {
                         it.setTitle(_appInfo.appName)
                         it.setIcon(_appInfo.icon)

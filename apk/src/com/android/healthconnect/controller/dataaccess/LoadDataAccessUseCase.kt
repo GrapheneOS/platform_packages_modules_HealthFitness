@@ -16,17 +16,18 @@
 
 package com.android.healthconnect.controller.dataaccess
 
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessAppState
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class LoadDataAccessUseCase @Inject constructor() {
     /** Temporary mock data, returns a map of apps with read and write permissions. */
-    suspend operator fun invoke(): Map<PermissionsAccessType, List<AppInfo>> {
-        val dataAccessMap: MutableMap<PermissionsAccessType, List<AppInfo>> = hashMapOf()
-        dataAccessMap[PermissionsAccessType.READ] = EXAMPLE_APPS
-        dataAccessMap[PermissionsAccessType.WRITE] = EXAMPLE_APPS
+    suspend operator fun invoke(): Map<DataAccessAppState, List<AppInfo>> {
+        val dataAccessMap: MutableMap<DataAccessAppState, List<AppInfo>> = hashMapOf()
+        dataAccessMap[DataAccessAppState.Read] = EXAMPLE_APPS
+        dataAccessMap[DataAccessAppState.Write] = EXAMPLE_APPS
+        dataAccessMap[DataAccessAppState.Inactive] = MORE_EXAMPLE_APPS
         return dataAccessMap
     }
 }
