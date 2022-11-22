@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    >
 
   <include
       layout="@layout/onboarding_screen_content"
@@ -32,11 +32,9 @@
           android:gravity="center"
           android:maxLines="2"
           android:text="@string/onboarding_go_back_button_text"
-          android:background="@android:color/white"
-          android:textAllCaps="false"
-          style="@style/Widget.AppCompat.Button.Borderless"
-          android:textColor="@color/get_started_button_background_color"
+          style="@style/Widget.HealthConnect.Button.Borderless"
       />
+
     </FrameLayout>
 
     <FrameLayout
@@ -51,11 +49,10 @@
           android:gravity="center"
           android:maxLines="2"
           android:text="@string/onboarding_get_started_button_text"
-          android:background="@drawable/get_started_button_rounded_background"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white"
           android:paddingHorizontal="@dimen/spacing_large"
+          style="@style/Widget.HealthConnect.Button"
           />
+
     </FrameLayout>
 
   </LinearLayout>
