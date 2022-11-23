@@ -274,6 +274,20 @@ public class TestUtils {
         return response.get();
     }
 
+    public static void setAutoDeletePeriod(int period) throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        service.setRecordRetentionPeriodInDays(
+                period,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+    }
+
     public static void verifyDeleteRecords(DeleteUsingFiltersRequest request)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();

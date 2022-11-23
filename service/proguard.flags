@@ -5,3 +5,4 @@
 # See b/255377941 for more details.
 -if @com.android.server.healthconnect.storage.datatypehelpers.HelperFor class **
 -keep class <1>
+-keep class * extends android.app.Service

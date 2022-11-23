@@ -16,8 +16,10 @@
 
 package com.android.server.healthconnect;
 
+import android.annotation.NonNull;
 import android.content.Context;
 import android.healthconnect.HealthConnectManager;
+import android.util.Slog;
 
 import com.android.server.SystemService;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
@@ -25,7 +27,10 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackagePermissionChangesMonitor;
+import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
+
+import java.util.Objects;
 
 /**
  * HealthConnect system service scaffold.
@@ -33,6 +38,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
  * @hide
  */
 public class HealthConnectManagerService extends SystemService {
+    private static final String TAG = "HealthConnectManagerService";
     private final Context mContext;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final TransactionManager mTransactionManager;
@@ -68,5 +74,25 @@ public class HealthConnectManagerService extends SystemService {
         publishBinderService(
                 Context.HEALTHCONNECT_SERVICE,
                 new HealthConnectServiceImpl(mTransactionManager, mPermissionHelper, mContext));
+    }
+
+    @Override
+    public void onUserUnlocking(@NonNull TargetUser user) {
+        Objects.requireNonNull(user);
+        try {
+            AutoDeleteService.schedule(mContext, user.getUserHandle().getIdentifier());
+        } catch (Exception e) {
+            Slog.e(TAG, "Auto delete schedule failed", e);
+        }
+    }
+
+    @Override
+    public void onUserStopping(@NonNull TargetUser user) {
+        Objects.requireNonNull(user);
+        try {
+            AutoDeleteService.stop(mContext, user.getUserHandle().getIdentifier());
+        } catch (Exception e) {
+            Slog.e(TAG, "Auto delete stop failed", e);
+        }
     }
 }

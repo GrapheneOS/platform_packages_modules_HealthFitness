@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static android.healthconnect.Constants.DEFAULT_INT;
 import static android.healthconnect.Constants.DEFAULT_LONG;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
@@ -39,12 +40,15 @@ import androidx.annotation.IntDef;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -66,6 +70,7 @@ public final class ChangeLogsHelper {
     private static final String APP_ID_COLUMN_NAME = "app_id";
     private static final String UUIDS_COLUMN_NAME = "uuids";
     private static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
+    private static final String TIME_COLUMN_NAME = "time";
     private static final int NUM_COLS = 5;
     private static ChangeLogsHelper sChangeLogsHelper;
 
@@ -100,6 +105,16 @@ public final class ChangeLogsHelper {
         }
 
         return new ArrayMap<>(0);
+    }
+
+    public DeleteTableRequest getDeleteRequestForAutoDelete() {
+        return new DeleteTableRequest(TABLE_NAME)
+                .setTimeFilter(
+                        TIME_COLUMN_NAME,
+                        Instant.EPOCH.toEpochMilli(),
+                        Instant.now()
+                                .minus(DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS, ChronoUnit.DAYS)
+                                .toEpochMilli());
     }
 
     @NonNull
@@ -187,6 +202,7 @@ public final class ChangeLogsHelper {
         columnInfo.add(new Pair<>(APP_ID_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(UUIDS_COLUMN_NAME, TEXT_NOT_NULL));
         columnInfo.add(new Pair<>(OPERATION_TYPE_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(TIME_COLUMN_NAME, INTEGER));
 
         return columnInfo;
     }

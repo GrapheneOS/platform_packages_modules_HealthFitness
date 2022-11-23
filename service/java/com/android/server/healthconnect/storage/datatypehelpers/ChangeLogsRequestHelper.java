@@ -36,11 +36,14 @@ import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +57,13 @@ import java.util.List;
  * @hide
  */
 public final class ChangeLogsRequestHelper {
+    static final int DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS = 32;
     private static final String TABLE_NAME = "change_log_request_table";
     private static final String PACKAGES_TO_FILTERS_COLUMN_NAME = "packages_to_filter";
     private static final String RECORD_TYPES_COLUMN_NAME = "record_types";
     private static final String PACKAGE_NAME_COLUMN_NAME = "package_name";
     private static final String ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME = "row_id_change_logs_table";
+    private static final String TIME_COLUMN_NAME = "time";
     private static ChangeLogsRequestHelper sChangeLogsRequestHelper;
 
     private ChangeLogsRequestHelper() {}
@@ -143,10 +148,21 @@ public final class ChangeLogsRequestHelper {
         contentValues.put(
                 ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME,
                 ChangeLogsHelper.getInstance().getLatestRowId());
+        contentValues.put(TIME_COLUMN_NAME, Instant.now().toEpochMilli());
 
         return String.valueOf(
                 TransactionManager.getInitialisedInstance()
                         .insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
+    }
+
+    public DeleteTableRequest getDeleteRequestForAutoDelete() {
+        return new DeleteTableRequest(TABLE_NAME)
+                .setTimeFilter(
+                        TIME_COLUMN_NAME,
+                        Instant.EPOCH.toEpochMilli(),
+                        Instant.now()
+                                .minus(DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS, ChronoUnit.DAYS)
+                                .toEpochMilli());
     }
 
     @NonNull
@@ -157,6 +173,7 @@ public final class ChangeLogsRequestHelper {
         columnInfo.add(new Pair<>(PACKAGE_NAME_COLUMN_NAME, TEXT_NOT_NULL));
         columnInfo.add(new Pair<>(RECORD_TYPES_COLUMN_NAME, TEXT_NULL));
         columnInfo.add(new Pair<>(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(TIME_COLUMN_NAME, INTEGER));
 
         return columnInfo;
     }

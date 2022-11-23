@@ -65,6 +65,7 @@ import android.util.Log;
 import android.util.Slog;
 
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
+import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
@@ -500,6 +501,32 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
                     }
                 });
+    }
+
+    @Override
+    public void setRecordRetentionPeriodInDays(
+            int days, @NonNull UserHandle user, IEmptyResponseCallback callback) {
+        try {
+            AutoDeleteService.setRecordRetentionPeriodInDays(days, user.getIdentifier());
+            callback.onResult();
+        } catch (SQLiteException sqLiteException) {
+            Slog.e(TAG, "SQLiteException: ", sqLiteException);
+            tryAndThrowException(callback, sqLiteException, HealthConnectException.ERROR_IO);
+        } catch (Exception exception) {
+            Slog.e(TAG, "Exception: ", exception);
+            tryAndThrowException(callback, exception, HealthConnectException.ERROR_INTERNAL);
+        }
+    }
+
+    @Override
+    public int getRecordRetentionPeriodInDays(@NonNull UserHandle user) {
+        try {
+            return AutoDeleteService.getRecordRetentionPeriodInDays(user.getIdentifier());
+        } catch (Exception e) {
+            Slog.e(TAG, "Unable to get record retention period for " + user);
+        }
+
+        throw new RuntimeException();
     }
 
     /** Retrieves {@link android.healthconnect.RecordTypeInfoResponse} for each RecordType. */

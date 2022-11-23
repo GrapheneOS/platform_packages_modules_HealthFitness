@@ -25,6 +25,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
@@ -60,6 +61,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
         createTable(db, ChangeLogsHelper.getInstance().getCreateTableRequest());
         createTable(db, ChangeLogsRequestHelper.getInstance().getCreateTableRequest());
         createTable(db, HealthDataCategoryPriorityHelper.getInstance().getCreateTableRequest());
+        createTable(db, PreferenceHelper.getInstance().getCreateTableRequest());
     }
 
     @Override
