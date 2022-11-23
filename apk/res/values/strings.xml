@@ -393,6 +393,13 @@
   <string name="send_feedback_description" description="Content description for a button that is used to send feedback">Tell us which health &amp; fitness apps you’d like to work with Health&#160;Connect</string>
   <!--endregion-->
 
+  <!-- region Play Store -->
+  <string name="playstore_app_title" description="Navigates to the Play Store and shows a collection of apps compatible with Health Connect [CHAR_LIMIT=40]">Play Store</string>
+  <string name="playstore_collection_url" description="Play Store collection URL to navigate to when button is clicked [CHAR_LIMIT=NONE]" translatable="false">https://play.google.com/store/apps/collection/promotion_all__health_connect</string>
+  <string name="playstore_package_name" description="Android package name for the Play Store app [CHAR_LIMIT=NONE]" translatable="false">com.android.vending</string>
+  <string name="playstore_manage_apps_url" description="Play Store Manage Apps and Devices screen to navigate to when button is clicked [CHAR_LIMIT=NONE]" translatable="false">https://play.google.com/apps</string>
+  <!--endregion-->
+
   <!-- region Auto-delete -->
   <string name="auto_delete_button" description="Label for a button that open the auto-deletion settings. [CHAR_LIMIT=50]">Auto-delete</string>
   <string name="auto_delete_title" description="Title of screen for a user to manage the auto-deletion settings [CHAR_LIMIT=40]">Auto-delete</string>
