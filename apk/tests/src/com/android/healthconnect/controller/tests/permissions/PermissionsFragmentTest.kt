@@ -47,7 +47,7 @@ class PermissionsFragmentTest {
 
     @Test
     fun test_displaysCategories() {
-        launchFragment({ PermissionsFragment.newInstance(listOf()) })
+        launchFragment({ PermissionsFragment.newInstance(mapOf()) })
 
         onView(withText(R.string.read_permission_category)).check(matches(isDisplayed()))
         onView(withText(R.string.write_permission_category)).check(matches(isDisplayed()))
@@ -57,9 +57,11 @@ class PermissionsFragmentTest {
     fun test_displaysReadPermissions() {
         launchFragment({
             PermissionsFragment.newInstance(
-                listOf(
-                    HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ),
-                    HealthPermission(HealthPermissionType.HEART_RATE, PermissionsAccessType.READ)))
+                mapOf(
+                    HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ) to
+                        true,
+                    HealthPermission(HealthPermissionType.HEART_RATE, PermissionsAccessType.READ) to
+                        true))
         })
 
         onView(withText("Steps")).check(matches(isDisplayed()))
@@ -70,9 +72,11 @@ class PermissionsFragmentTest {
     fun test_displaysWritePermissions() {
         launchFragment({
             PermissionsFragment.newInstance(
-                listOf(
-                    HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.WRITE),
-                    HealthPermission(HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)))
+                mapOf(
+                    HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.WRITE) to
+                        true,
+                    HealthPermission(HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE) to
+                        true))
         })
 
         onView(withText("Distance")).check(matches(isDisplayed()))
@@ -84,10 +88,11 @@ class PermissionsFragmentTest {
         val activityScenario =
             launchFragment({
                 PermissionsFragment.newInstance(
-                    listOf(
-                        HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ),
+                    mapOf(
                         HealthPermission(
-                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)))
+                            HealthPermissionType.DISTANCE, PermissionsAccessType.READ) to true,
+                        HealthPermission(
+                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE) to true))
             })
 
         activityScenario.onActivity { activity: TestActivity ->
@@ -109,10 +114,11 @@ class PermissionsFragmentTest {
         val activityScenario =
             launchFragment({
                 PermissionsFragment.newInstance(
-                    listOf(
-                        HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ),
+                    mapOf(
                         HealthPermission(
-                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)))
+                            HealthPermissionType.DISTANCE, PermissionsAccessType.READ) to true,
+                        HealthPermission(
+                            HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE) to true))
             })
 
         activityScenario.onActivity { activity: TestActivity ->

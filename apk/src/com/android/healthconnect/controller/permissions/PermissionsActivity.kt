@@ -19,9 +19,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.utils.convertTextViewIntoLink
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,42 +31,27 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint(FragmentActivity::class)
 class PermissionsActivity : Hilt_PermissionsActivity() {
 
+    private val viewModel: RequestPermissionViewModel by viewModels()
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permissions)
 
-        val permissionsStrings: Array<out String> =
-            getIntent()
-                .getStringArrayExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES)
-                .orEmpty()
-        val permissions: List<HealthPermission> =
-            permissionsStrings.mapNotNull { permissionString ->
-                HealthPermission.fromPermissionString(permissionString)
-            }
+        val permissionSelection = viewModel.getPermissionSelection()
+        val permissions = permissionSelection.ifEmpty { getPermissions().associateWith { true } }
         val permissionsFragment = PermissionsFragment.newInstance(permissions)
-        getSupportFragmentManager()
+        supportFragmentManager
             .beginTransaction()
             .replace(R.id.permission_content, permissionsFragment)
             .commit()
 
-        updateAppName(getIntent())
+        updateAppName(intent)
+        setupAllowButton()
+    }
 
-        val allowButton: View? = findViewById(R.id.allow)
-        allowButton?.setOnClickListener {
-            val result = Intent()
-            val permissionMap = permissionsFragment.getPermissionAssignments()
-            val grants =
-                permissions
-                    .map { permission ->
-                        if (permissionMap[permission] == true) PackageManager.PERMISSION_GRANTED
-                        else PackageManager.PERMISSION_DENIED
-                    }
-                    .toIntArray()
-            result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, permissionsStrings)
-            result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS, grants)
-            setResult(Activity.RESULT_OK, result)
-            finish()
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        viewModel.savePermissionSelection(getPermissionsFragment().getPermissionAssignments())
     }
 
     private fun updateAppName(intent: Intent) {
@@ -74,13 +61,57 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         val rationaleText =
             resources.getString(R.string.request_permissions_rationale, packageName, policyString)
         convertTextViewIntoLink(
-            findViewById<TextView>(R.id.privacy_policy),
+            findViewById(R.id.privacy_policy),
             rationaleText,
             rationaleText.indexOf(policyString),
             rationaleText.indexOf(policyString) + policyString.length,
             { // TODO: Link to developer's policy
             })
-        findViewById<TextView>(R.id.title)
-            .setText(resources.getString(R.string.request_permissions_header_title, packageName))
+        findViewById<TextView>(R.id.title).text =
+            resources.getString(R.string.request_permissions_header_title, packageName)
+    }
+
+    private fun setupAllowButton() {
+        val allowButton: View? = findViewById(R.id.allow)
+        allowButton?.setOnClickListener {
+            val permissions =
+                getPermissionsFragment()
+                    .getPermissionAssignments()
+                    .filter { entry -> entry.value }
+                    .keys
+            viewModel.request(packageName, permissions)
+            viewModel.permissionResults.observe(this) { results -> handleResults(results) }
+        }
+    }
+
+    private fun handleResults(results: Map<HealthPermission, PermissionState>) {
+        val grants =
+            getPermissions()
+                .map { permission ->
+                    if (results[permission] == PermissionState.GRANTED)
+                        PackageManager.PERMISSION_GRANTED
+                    else PackageManager.PERMISSION_DENIED
+                }
+                .toIntArray()
+        val result = Intent()
+        result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, getPermissionStrings())
+        result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS, grants)
+        setResult(Activity.RESULT_OK, result)
+        finish()
+    }
+
+    private fun getPermissionStrings(): Array<out String> {
+        return intent.getStringArrayExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES).orEmpty()
+    }
+
+    private fun getPermissions(): List<HealthPermission> {
+        return getPermissionStrings().mapNotNull { permissionString ->
+            HealthPermission.fromPermissionString(permissionString)
+        }
+    }
+
+    private fun getPermissionsFragment(): PermissionsFragment {
+        return supportFragmentManager.findFragmentById(R.id.permission_content)
+            as PermissionsFragment
     }
 }
