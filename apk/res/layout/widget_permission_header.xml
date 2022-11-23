@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/permission_header_icon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/app_header_icon_size"
+        android:layout_height="@dimen/app_header_icon_size"
         android:src="@drawable/health_connect_logo"
         android:tint="?android:attr/textColorPrimary"
         android:scaleType="fitCenter"
@@ -45,7 +45,7 @@
         android:text="@string/permgrouplab_health"
         android:ellipsize="marquee"
         android:textDirection="locale"
-        android:layout_marginVertical="8dp" />
+        android:layout_marginVertical="@dimen/spacing_small" />
 
     <TextView
         android:id="@+id/permission_header_summary"
