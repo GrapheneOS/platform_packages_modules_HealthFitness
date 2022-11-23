@@ -42,8 +42,6 @@ import java.util.Map;
 
 @RunWith(AndroidJUnit4.class)
 public class GrantTimePersistenceUnitTest {
-    private MockitoSession mStaticMockSession;
-
     private static final UserGrantTimeState DEFAULT_STATE =
             new UserGrantTimeState(
                     Map.of("package1", Instant.ofEpochSecond((long) 1e8)),
@@ -73,6 +71,7 @@ public class GrantTimePersistenceUnitTest {
     private static final UserGrantTimeState EMPTY_STATE =
             new UserGrantTimeState(new ArrayMap<>(), new ArrayMap<>(), 3);
 
+    private MockitoSession mStaticMockSession;
     private UserHandle mUser = UserHandle.of(UserHandle.myUserId());
     private File mMockDataDirectory;
 
@@ -96,7 +95,7 @@ public class GrantTimePersistenceUnitTest {
     }
 
     @Test
-    public void testWriteReadDatabase_RestoredStateIsEqualToWritten_defaultState() {
+    public void testWriteReadData_packageAndSharedUserState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
         datastore.writeForUser(DEFAULT_STATE, mUser);
         UserGrantTimeState restoredState = datastore.readForUser(mUser);
@@ -104,7 +103,7 @@ public class GrantTimePersistenceUnitTest {
     }
 
     @Test
-    public void testWriteReadDatabase_RestoredStateIsEqualToWritten_sharedUsersState() {
+    public void testWriteReadData_multipleSharedUserState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
         datastore.writeForUser(SHARED_USERS_STATE, mUser);
         UserGrantTimeState restoredState = datastore.readForUser(mUser);
@@ -112,7 +111,7 @@ public class GrantTimePersistenceUnitTest {
     }
 
     @Test
-    public void testWriteReadDatabase_RestoredStateIsEqualToWritten_packagesState() {
+    public void testWriteReadData_multiplePackagesState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
         datastore.writeForUser(PACKAGES_STATE, mUser);
         UserGrantTimeState restoredState = datastore.readForUser(mUser);
@@ -120,7 +119,7 @@ public class GrantTimePersistenceUnitTest {
     }
 
     @Test
-    public void testWriteReadDatabase_RestoredStateIsEqualToWritten_emptyState() {
+    public void testWriteReadData_emptyState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
         datastore.writeForUser(EMPTY_STATE, mUser);
         UserGrantTimeState restoredState = datastore.readForUser(mUser);
@@ -128,7 +127,7 @@ public class GrantTimePersistenceUnitTest {
     }
 
     @Test
-    public void testWriteReadDatabase_RestoredStateIsEqualToWritten_afterOverwriting() {
+    public void testWriteReadData_overwroteState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
         datastore.writeForUser(PACKAGES_STATE, mUser);
         datastore.writeForUser(DEFAULT_STATE, mUser);
@@ -137,7 +136,7 @@ public class GrantTimePersistenceUnitTest {
     }
 
     @Test
-    public void testWriteReadDatabase_RestoredStateIsEqualToWritten_forDifferentUsers() {
+    public void testWriteReadData_statesForTwoUsersWritten_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
         datastore.writeForUser(PACKAGES_STATE, mUser);
         datastore.writeForUser(SHARED_USERS_STATE, UserHandle.of(10));
@@ -148,13 +147,13 @@ public class GrantTimePersistenceUnitTest {
     }
 
     @Test
-    public void testReadDatabase_StateIsNotWritten_nullIsReturned() {
+    public void testReadData_stateIsNotWritten_nullIsReturned() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
         UserGrantTimeState state = datastore.readForUser(mUser);
         assertThat(state).isNull();
     }
 
-    private void deleteFile(File file) {
+    private static void deleteFile(File file) {
         File[] contents = file.listFiles();
         if (contents != null) {
             for (File f : contents) {
@@ -164,9 +163,8 @@ public class GrantTimePersistenceUnitTest {
         assertThat(file.delete()).isTrue();
     }
 
-    void assertRestoredStateIsCorrect(
+    private static void assertRestoredStateIsCorrect(
             UserGrantTimeState restoredState, UserGrantTimeState initialState) {
-        assertThat(initialState).isEqualTo(restoredState);
         assertThat(initialState.getVersion()).isEqualTo(restoredState.getVersion());
         assertThat(initialState.getPackageGrantTimes())
                 .isEqualTo(restoredState.getPackageGrantTimes());

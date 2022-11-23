@@ -77,6 +77,10 @@ public class HealthPermissionIntentAppsTracker {
                 return false;
             }
 
+            if (!mUserToHealthPackageNamesMap.get(userHandle).contains(packageName)) {
+                updatePackageStateForUser(packageName, userHandle);
+            }
+
             return mUserToHealthPackageNamesMap.get(userHandle).contains(packageName);
         }
     }

@@ -17,12 +17,17 @@
 package com.android.server.healthconnect.permission;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
+import android.util.ArrayMap;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.Objects;
 
-/** State of user health permissions first grant times. Used by {@link FirstGrantTimeDatastore}. */
+/**
+ * State of user health permissions first grant times. Used by {@link FirstGrantTimeDatastore}.
+ *
+ * @hide
+ */
 class UserGrantTimeState {
     /** Special value for {@link #mVersion} to indicate that no version was read. */
     public static final int NO_VERSION = -1;
@@ -35,6 +40,10 @@ class UserGrantTimeState {
 
     /** The version of the grant times state. */
     private final int mVersion;
+
+    UserGrantTimeState(@NonNull int version) {
+        this(new ArrayMap<>(), new ArrayMap<>(), version);
+    }
 
     UserGrantTimeState(
             @NonNull Map<String, Instant> packagePermissions,
@@ -55,27 +64,39 @@ class UserGrantTimeState {
         return mSharedUserPermissions;
     }
 
+    void setPackageGrantTime(@NonNull String packageName, @Nullable Instant time) {
+        mPackagePermissions.put(packageName, time);
+    }
+
+    void setSharedUserGrantTime(@NonNull String sharedUserId, @Nullable Instant time) {
+        mSharedUserPermissions.put(sharedUserId, time);
+    }
+
+    boolean containsPackageGrantTime(@NonNull String packageName) {
+        return mPackagePermissions.containsKey(packageName);
+    }
+
+    boolean containsSharedUserGrantTime(@NonNull String sharedUserId) {
+        return mSharedUserPermissions.containsKey(sharedUserId);
+    }
+
+    /**
+     * Get the version of the grant time.
+     *
+     * @return the version of the grant time
+     */
     int getVersion() {
         return mVersion;
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof UserGrantTimeState)) {
-            return false;
-        }
-
-        UserGrantTimeState that = (UserGrantTimeState) object;
-        return Objects.equals(mPackagePermissions, that.mPackagePermissions)
-                && Objects.equals(mSharedUserPermissions, that.mSharedUserPermissions)
-                && (mVersion == that.mVersion);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(mPackagePermissions, mSharedUserPermissions, mVersion);
+    public String toString() {
+        return "GrantTimeState{version="
+                + mVersion
+                + ",packagePermissions="
+                + mPackagePermissions.toString()
+                + ",sharedUserPermissions="
+                + mSharedUserPermissions.toString()
+                + "}";
     }
 }

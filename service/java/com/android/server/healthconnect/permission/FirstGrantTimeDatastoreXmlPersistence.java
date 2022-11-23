@@ -42,7 +42,7 @@ import java.time.Instant;
 import java.util.Map;
 
 class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
-    private static final String TAG = "FirstGrantTimeDatastorePersistence";
+    private static final String TAG = "HealthConnectFirstGrantTimeDatastore";
     private static final String GRANT_TIME_FILE_NAME = "health-permissions-first-grant-times.xml";
 
     private static final String TAG_FIRST_GRANT_TIMES = "first-grant-times";
@@ -53,6 +53,11 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
     private static final String ATTRIBUTE_FIRST_GRANT_TIME = "first-grant-time";
     private static final String ATTRIBUTE_VERSION = "version";
 
+    /**
+     * Read {@link UserGrantTimeState for given user}.
+     *
+     * @hide
+     */
     @Nullable
     @Override
     public UserGrantTimeState readForUser(@NonNull UserHandle user) {
@@ -62,7 +67,7 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
         }
         try (FileInputStream inputStream = new AtomicFile(file).openRead()) {
             XmlPullParser parser = Xml.newPullParser();
-            parser.setInput(inputStream, null);
+            parser.setInput(inputStream, /* inputEncoding= */ null);
             return parseXml(parser);
         } catch (FileNotFoundException e) {
             Log.i(TAG, GRANT_TIME_FILE_NAME + " not found");
@@ -72,6 +77,11 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
         }
     }
 
+    /**
+     * Write {@link UserGrantTimeState for given user}.
+     *
+     * @hide
+     */
     @Override
     public void writeForUser(
             @NonNull UserGrantTimeState grantTimesState, @NonNull UserHandle user) {
@@ -105,19 +115,22 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
     private static void serializeGrantTimes(
             @NonNull XmlSerializer serializer, @NonNull UserGrantTimeState userGrantTimeState)
             throws IOException {
-        serializer.startTag(null, TAG_FIRST_GRANT_TIMES);
+        serializer.startTag(/* namespace= */ null, TAG_FIRST_GRANT_TIMES);
         serializer.attribute(
-                null, ATTRIBUTE_VERSION, Integer.toString(userGrantTimeState.getVersion()));
+                /* namespace= */ null,
+                ATTRIBUTE_VERSION,
+                Integer.toString(userGrantTimeState.getVersion()));
 
         for (Map.Entry<String, Instant> entry :
                 userGrantTimeState.getPackageGrantTimes().entrySet()) {
             String packageName = entry.getKey();
             Instant grantTime = entry.getValue();
 
-            serializer.startTag(null, TAG_PACKAGE);
-            serializer.attribute(null, ATTRIBUTE_NAME, packageName);
-            serializer.attribute(null, ATTRIBUTE_FIRST_GRANT_TIME, grantTime.toString());
-            serializer.endTag(null, TAG_PACKAGE);
+            serializer.startTag(/* namespace= */ null, TAG_PACKAGE);
+            serializer.attribute(/* namespace= */ null, ATTRIBUTE_NAME, packageName);
+            serializer.attribute(
+                    /* namespace= */ null, ATTRIBUTE_FIRST_GRANT_TIME, grantTime.toString());
+            serializer.endTag(/* namespace= */ null, TAG_PACKAGE);
         }
 
         for (Map.Entry<String, Instant> entry :
@@ -125,13 +138,14 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
             String sharedUserName = entry.getKey();
             Instant grantTime = entry.getValue();
 
-            serializer.startTag(null, TAG_SHARED_USER);
-            serializer.attribute(null, ATTRIBUTE_NAME, sharedUserName);
-            serializer.attribute(null, ATTRIBUTE_FIRST_GRANT_TIME, grantTime.toString());
-            serializer.endTag(null, TAG_SHARED_USER);
+            serializer.startTag(/* namespace= */ null, TAG_SHARED_USER);
+            serializer.attribute(/* namespace= */ null, ATTRIBUTE_NAME, sharedUserName);
+            serializer.attribute(
+                    /* namespace= */ null, ATTRIBUTE_FIRST_GRANT_TIME, grantTime.toString());
+            serializer.endTag(/* namespace= */ null, TAG_SHARED_USER);
         }
 
-        serializer.endTag(null, TAG_FIRST_GRANT_TIMES);
+        serializer.endTag(/* namespace= */ null, TAG_FIRST_GRANT_TIMES);
     }
 
     @NonNull
@@ -200,6 +214,10 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
                                             /* namespace= */ null, ATTRIBUTE_FIRST_GRANT_TIME));
                     sharedUserPermissions.put(sharedUserName, firstGrantTime);
                     break;
+                }
+                default:
+                {
+                    Log.w(TAG, "Tag " + parser.getName() + " is not parsed");
                 }
             }
             type = parser.next();

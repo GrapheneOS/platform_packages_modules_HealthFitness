@@ -20,6 +20,8 @@ import android.content.Context;
 import android.healthconnect.HealthConnectManager;
 
 import com.android.server.SystemService;
+import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
+import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackagePermissionChangesMonitor;
@@ -36,6 +38,7 @@ public class HealthConnectManagerService extends SystemService {
     private final TransactionManager mTransactionManager;
     private final HealthPermissionIntentAppsTracker mPermissionIntentTracker;
     private final PackagePermissionChangesMonitor mPackageMonitor;
+    private final FirstGrantTimeManager mFirstGrantTimeManager;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -46,13 +49,21 @@ public class HealthConnectManagerService extends SystemService {
                         context.getPackageManager(),
                         HealthConnectManager.getHealthPermissions(context),
                         mPermissionIntentTracker);
-        mPackageMonitor = new PackagePermissionChangesMonitor(mPermissionIntentTracker);
+        mFirstGrantTimeManager =
+                new FirstGrantTimeManager(
+                        context,
+                        mPermissionIntentTracker,
+                        FirstGrantTimeDatastore.createInstance());
+        mPackageMonitor =
+                new PackagePermissionChangesMonitor(
+                        mPermissionIntentTracker, mFirstGrantTimeManager);
         mTransactionManager = TransactionManager.getInstance(getContext());
         mContext = context;
     }
 
     @Override
     public void onStart() {
+        mFirstGrantTimeManager.initializeState();
         mPackageMonitor.registerBroadcastReceiver(mContext);
         publishBinderService(
                 Context.HEALTHCONNECT_SERVICE,
