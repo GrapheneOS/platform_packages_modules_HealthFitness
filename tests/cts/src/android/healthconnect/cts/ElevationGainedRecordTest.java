@@ -59,6 +59,15 @@ public class ElevationGainedRecordTest {
                 .build();
     }
 
+    static ElevationGainedRecord getBaseElevationGainedRecord(double elevation) {
+        return new ElevationGainedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(elevation))
+                .build();
+    }
+
     static ElevationGainedRecord getCompleteElevationGainedRecord() {
         return new ElevationGainedRecord.Builder(
                         new Metadata.Builder().build(),

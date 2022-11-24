@@ -59,6 +59,15 @@ public class DistanceRecordTest {
                 .build();
     }
 
+    static DistanceRecord getBaseDistanceRecord(double distance) {
+        return new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(distance))
+                .build();
+    }
+
     static DistanceRecord getCompleteDistanceRecord() {
         return new DistanceRecord.Builder(
                         new Metadata.Builder().build(),

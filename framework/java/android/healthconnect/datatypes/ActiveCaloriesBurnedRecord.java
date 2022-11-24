@@ -15,7 +15,11 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
+
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Energy;
 
 import java.time.Instant;
@@ -87,6 +91,18 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mEnergy);
         }
     }
+
+    /**
+     * Metric identifier to get total active calories burnt using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Energy> ACTIVE_CALORIES_TOTAL =
+            new AggregationType<>(
+                    ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_ACTIVE_CALORIES_BURNED,
+                    Energy.class);
 
     private final Energy mEnergy;
 

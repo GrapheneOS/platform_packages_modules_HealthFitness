@@ -59,6 +59,15 @@ public class ActiveCaloriesBurnedRecordTest {
                 .build();
     }
 
+    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(double energy) {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Energy.fromJoules(energy))
+                .build();
+    }
+
     static ActiveCaloriesBurnedRecord getCompleteActiveCaloriesBurnedRecord() {
         return new ActiveCaloriesBurnedRecord.Builder(
                         new Metadata.Builder().build(),

@@ -16,7 +16,11 @@
 
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -87,6 +91,15 @@ public final class StepsRecord extends IntervalRecord {
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mCount);
         }
     }
+
+    /**
+     * Metric identifier to get total steps count using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Long> COUNT_TOTAL =
+            new AggregationType<>(
+                    STEPS_RECORD_COUNT_TOTAL, AggregationType.SUM, RECORD_TYPE_STEPS, Long.class);
 
     private final long mCount;
 

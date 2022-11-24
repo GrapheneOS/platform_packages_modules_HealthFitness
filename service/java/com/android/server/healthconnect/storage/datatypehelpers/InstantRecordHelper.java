@@ -26,6 +26,8 @@ import android.database.Cursor;
 import android.healthconnect.internal.datatypes.InstantRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.utils.StorageUtils;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -39,7 +41,7 @@ import java.util.List;
  * @hide
  */
 abstract class InstantRecordHelper<T extends InstantRecordInternal<?>> extends RecordHelper<T> {
-    private static final String TIME_COLUMN_NAME = "time";
+    protected static final String TIME_COLUMN_NAME = "time";
     private static final String ZONE_OFFSET_COLUMN_NAME = "zone_offset";
     private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
 
@@ -99,6 +101,17 @@ abstract class InstantRecordHelper<T extends InstantRecordInternal<?>> extends R
     @Override
     final String getZoneOffsetColumnName() {
         return ZONE_OFFSET_COLUMN_NAME;
+    }
+
+    final ZoneOffset getZoneOffset(Cursor cursor) {
+        ZoneOffset zoneOffset = null;
+        if (cursor.getColumnIndex(ZONE_OFFSET_COLUMN_NAME) != -1) {
+            zoneOffset =
+                    ZoneOffset.ofTotalSeconds(
+                            StorageUtils.getCursorInt(cursor, ZONE_OFFSET_COLUMN_NAME));
+        }
+
+        return zoneOffset;
     }
 
     abstract void populateSpecificContentValues(

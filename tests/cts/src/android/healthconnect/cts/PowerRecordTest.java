@@ -62,6 +62,18 @@ public class PowerRecordTest {
                 .build();
     }
 
+    static PowerRecord getBasePowerRecord(double power) {
+        PowerRecord.PowerRecordSample powerRecord =
+                new PowerRecord.PowerRecordSample(Power.fromWatts(power), Instant.now());
+        ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
+        powerRecords.add(powerRecord);
+        powerRecords.add(powerRecord);
+
+        return new PowerRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), powerRecords)
+                .build();
+    }
+
     @Test
     public void testInsertPowerRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();

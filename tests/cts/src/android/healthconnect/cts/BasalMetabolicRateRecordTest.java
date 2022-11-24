@@ -42,4 +42,10 @@ public class BasalMetabolicRateRecordTest {
                                 ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                         .build());
     }
+
+    static Record getBasalMetabolicRateRecord(double power) {
+        return new BasalMetabolicRateRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(power))
+                .build();
+    }
 }

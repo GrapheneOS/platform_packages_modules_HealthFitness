@@ -16,12 +16,16 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.BMR_RECORD_BASAL_CALORIES_TOTAL;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
@@ -42,9 +46,37 @@ public final class BasalMetabolicRateRecordHelper
     private static final String BASAL_METABOLIC_RATE_COLUMN_NAME = "basal_metabolic_rate";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case BMR_RECORD_BASAL_CALORIES_TOTAL:
+                return new AggregateResult<>(
+                                results.getDouble(
+                                        results.getColumnIndex(BASAL_METABOLIC_RATE_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return BASAL_METABOLIC_RATE_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case BMR_RECORD_BASAL_CALORIES_TOTAL:
+                return new AggregateParams(
+                        BASAL_METABOLIC_RATE_RECORD_TABLE_NAME,
+                        Collections.singletonList(BASAL_METABOLIC_RATE_COLUMN_NAME),
+                        TIME_COLUMN_NAME);
+            default:
+                return null;
+        }
     }
 
     @Override

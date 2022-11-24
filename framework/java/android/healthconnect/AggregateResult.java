@@ -38,6 +38,8 @@ public final class AggregateResult<T> {
     public void putToParcel(@NonNull Parcel parcel) {
         if (mResult instanceof Long) {
             parcel.writeLong((Long) mResult);
+        } else if (mResult instanceof Double) {
+            parcel.writeDouble((Double) mResult);
         }
     }
 

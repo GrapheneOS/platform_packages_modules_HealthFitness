@@ -106,9 +106,30 @@ public final class AggregationType<T> {
     public @interface AggregationTypeIdentifier {
         int HEART_RATE_RECORD_BPM_MAX = 0;
         int HEART_RATE_RECORD_BPM_MIN = 1;
+        int STEPS_RECORD_COUNT_TOTAL = 2;
+        int ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL = 3;
+        int BMR_RECORD_BASAL_CALORIES_TOTAL = 4;
+        int DISTANCE_RECORD_DISTANCE_TOTAL = 5;
+        int ELEVATION_RECORD_ELEVATION_GAINED_TOTAL = 6;
+        int HEART_RATE_RECORD_BPM_AVG = 7;
+        int POWER_RECORD_POWER_MIN = 8;
+        int POWER_RECORD_POWER_MAX = 9;
+        int POWER_RECORD_POWER_AVG = 10;
 
         /** @hide */
-        @IntDef({HEART_RATE_RECORD_BPM_MAX, HEART_RATE_RECORD_BPM_MIN})
+        @IntDef({
+            HEART_RATE_RECORD_BPM_MAX,
+            HEART_RATE_RECORD_BPM_MIN,
+            STEPS_RECORD_COUNT_TOTAL,
+            ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL,
+            BMR_RECORD_BASAL_CALORIES_TOTAL,
+            DISTANCE_RECORD_DISTANCE_TOTAL,
+            ELEVATION_RECORD_ELEVATION_GAINED_TOTAL,
+            HEART_RATE_RECORD_BPM_AVG,
+            POWER_RECORD_POWER_MIN,
+            POWER_RECORD_POWER_MAX,
+            POWER_RECORD_POWER_AVG
+        })
         @Retention(RetentionPolicy.SOURCE)
         @interface Id {}
     }
