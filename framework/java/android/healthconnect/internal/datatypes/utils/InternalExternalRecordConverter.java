@@ -57,16 +57,22 @@ public final class InternalExternalRecordConverter {
 
     /** Returns a record for {@param record} */
     @NonNull
-    public List<RecordInternal<?>> getInternalRecords(@NonNull List<? extends Record> records)
-            throws InstantiationException, IllegalAccessException, NoSuchMethodException,
-                    InvocationTargetException {
+    public List<RecordInternal<?>> getInternalRecords(@NonNull List<? extends Record> records) {
         List<RecordInternal<?>> internalRecordListInternal = new ArrayList<>(records.size());
 
         for (Record record : records) {
             Class<? extends RecordInternal<?>> recordClass =
                     mRecordIdToInternalRecordClassMap.get(record.getRecordType());
             Objects.requireNonNull(recordClass);
-            RecordInternal<?> recordInternal = recordClass.getConstructor().newInstance();
+            RecordInternal<?> recordInternal;
+            try {
+                recordInternal = recordClass.getConstructor().newInstance();
+            } catch (InstantiationException
+                    | IllegalAccessException
+                    | InvocationTargetException
+                    | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
             recordInternal.populateUsing(record);
             internalRecordListInternal.add(recordInternal);
         }

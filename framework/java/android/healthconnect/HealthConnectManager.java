@@ -269,6 +269,7 @@ public class HealthConnectManager {
      * service, {@link OutcomeReceiver#onError} will be invoked with a {@link
      * HealthConnectException}.
      *
+     * @throws RuntimeException for internal errors
      * @param records list of records to be inserted.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
@@ -306,18 +307,6 @@ public class HealthConnectManager {
                             callback.onError(exception.getHealthConnectException());
                         }
                     });
-        } catch (ArithmeticException | ClassCastException invalidArgumentException) {
-            callback.onError(
-                    new HealthConnectException(
-                            HealthConnectException.ERROR_INVALID_ARGUMENT,
-                            invalidArgumentException.getMessage()));
-        } catch (IllegalAccessException
-                | InstantiationException
-                | InvocationTargetException
-                | NoSuchMethodException exception) {
-            callback.onError(
-                    new HealthConnectException(
-                            HealthConnectException.ERROR_INTERNAL, exception.getMessage()));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
