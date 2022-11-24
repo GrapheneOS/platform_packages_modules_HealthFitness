@@ -13,8 +13,16 @@
  */
 package com.android.healthconnect.testapps.toolbox
 
+import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
+import android.healthconnect.datatypes.DistanceRecord
+import android.healthconnect.datatypes.ElevationGainedRecord
+import android.healthconnect.datatypes.ExerciseEventRecord
+import android.healthconnect.datatypes.ExerciseLapRecord
+import android.healthconnect.datatypes.Record
+import android.healthconnect.datatypes.StepsRecord
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import kotlin.reflect.KClass
 
 /** Constant variables used across the app. */
 object Constants {
@@ -134,7 +142,8 @@ object Constants {
                 HealthPermissionType.ACTIVE_CALORIES_BURNED,
                 HealthPermissionType.DISTANCE,
                 HealthPermissionType.ELEVATION_GAINED,
-                HealthPermissionType.EXERCISE,
+                HealthPermissionType.EXERCISE_EVENT,
+                HealthPermissionType.EXERCISE_LAP,
                 HealthPermissionType.FLOORS_CLIMBED,
                 HealthPermissionType.POWER,
                 HealthPermissionType.SPEED,
@@ -183,55 +192,60 @@ object Constants {
                 HealthPermissionType.RESTING_HEART_RATE)
     }
 
-    enum class HealthPermissionType(@StringRes val title: Int) {
+    enum class HealthPermissionType(
+        val recordClass: KClass<out Record>?,
+        @StringRes val title: Int,
+    ) {
         // ACTIVITY
-        ACTIVE_CALORIES_BURNED(R.string.active_calories_burned_label),
-        DISTANCE(R.string.distance_label),
-        ELEVATION_GAINED(R.string.elevation_gained_label),
-        EXERCISE(R.string.exercise_label),
-        FLOORS_CLIMBED(R.string.floors_climbed_label),
-        STEPS(R.string.steps_label),
-        TOTAL_CALORIES_BURNED(R.string.total_calories_burned_label),
-        VO2_MAX(R.string.vo2_max_label),
-        WHEELCHAIR_PUSHES(R.string.wheelchair_pushes_label),
-        POWER(R.string.power_label),
-        SPEED(R.string.speed_label),
+        ACTIVE_CALORIES_BURNED(
+            ActiveCaloriesBurnedRecord::class, R.string.active_calories_burned_label),
+        DISTANCE(DistanceRecord::class, R.string.distance_label),
+        ELEVATION_GAINED(ElevationGainedRecord::class, R.string.elevation_gained_label),
+        EXERCISE_EVENT(ExerciseEventRecord::class, R.string.exercise_event_label),
+        EXERCISE_LAP(ExerciseLapRecord::class, R.string.exercise_lap_label),
+        FLOORS_CLIMBED(null, R.string.floors_climbed_label),
+        STEPS(StepsRecord::class, R.string.steps_label),
+        TOTAL_CALORIES_BURNED(null, R.string.total_calories_burned_label),
+        VO2_MAX(null, R.string.vo2_max_label),
+        WHEELCHAIR_PUSHES(null, R.string.wheelchair_pushes_label),
+        POWER(null, R.string.power_label),
+        SPEED(null, R.string.speed_label),
 
         // BODY_MEASUREMENTS
-        BASAL_METABOLIC_RATE(R.string.basal_metabolic_rate_label),
-        BODY_FAT(R.string.body_fat_label),
-        BODY_WATER_MASS(R.string.body_water_mass_label),
-        BONE_MASS(R.string.bone_mass_label),
-        HEIGHT(R.string.height_label),
-        HIP_CIRCUMFERENCE(R.string.hip_circumference_label),
-        LEAN_BODY_MASS(R.string.lean_body_mass_label),
-        WAIST_CIRCUMFERENCE(R.string.waist_circumference_label),
-        WEIGHT(R.string.weight_label),
+        BASAL_METABOLIC_RATE(null, R.string.basal_metabolic_rate_label),
+        BODY_FAT(null, R.string.body_fat_label),
+        BODY_WATER_MASS(null, R.string.body_water_mass_label),
+        BONE_MASS(null, R.string.bone_mass_label),
+        HEIGHT(null, R.string.height_label),
+        HIP_CIRCUMFERENCE(null, R.string.hip_circumference_label),
+        LEAN_BODY_MASS(null, R.string.lean_body_mass_label),
+        WAIST_CIRCUMFERENCE(null, R.string.waist_circumference_label),
+        WEIGHT(null, R.string.weight_label),
 
         // CYCLE_TRACKING
-        CERVICAL_MUCUS(R.string.cervical_mucus_label),
-        MENSTRUATION(R.string.menstruation_label),
-        OVULATION_TEST(R.string.ovulation_test_label),
-        SEXUAL_ACTIVITY(R.string.sexual_activity_label),
+        CERVICAL_MUCUS(null, R.string.cervical_mucus_label),
+        MENSTRUATION(null, R.string.menstruation_label),
+        OVULATION_TEST(null, R.string.ovulation_test_label),
+        SEXUAL_ACTIVITY(null, R.string.sexual_activity_label),
         // TODO: Uncomment when clarity on its progress
-        // INTERMENSTRUAL_BLEEDING(R.string.basal_body_temperature_label),
+        // INTERMENSTRUAL_BLEEDING(null,R.string.basal_body_temperature_label),
 
         // NUTRITION
-        HYDRATION(R.string.hydration_label),
-        NUTRITION(R.string.nutrition_label),
+        HYDRATION(null, R.string.hydration_label),
+        NUTRITION(null, R.string.nutrition_label),
 
         // SLEEP
-        SLEEP(R.string.sleep_label),
+        SLEEP(null, R.string.sleep_label),
 
         // VITALS
-        BASAL_BODY_TEMPERATURE(R.string.basal_body_temperature_label),
-        BLOOD_GLUCOSE(R.string.blood_glucose_label),
-        BLOOD_PRESSURE(R.string.blood_pressure_label),
-        BODY_TEMPERATURE(R.string.body_temperature_label),
-        HEART_RATE(R.string.heart_rate_label),
-        HEART_RATE_VARIABILITY(R.string.heart_rate_variability_label),
-        OXYGEN_SATURATION(R.string.oxygen_saturation_label),
-        RESPIRATORY_RATE(R.string.respiratory_rate_label),
-        RESTING_HEART_RATE(R.string.resting_heart_rate_label),
+        BASAL_BODY_TEMPERATURE(null, R.string.basal_body_temperature_label),
+        BLOOD_GLUCOSE(null, R.string.blood_glucose_label),
+        BLOOD_PRESSURE(null, R.string.blood_pressure_label),
+        BODY_TEMPERATURE(null, R.string.body_temperature_label),
+        HEART_RATE(null, R.string.heart_rate_label),
+        HEART_RATE_VARIABILITY(null, R.string.heart_rate_variability_label),
+        OXYGEN_SATURATION(null, R.string.oxygen_saturation_label),
+        RESPIRATORY_RATE(null, R.string.respiratory_rate_label),
+        RESTING_HEART_RATE(null, R.string.resting_heart_rate_label),
     }
 }

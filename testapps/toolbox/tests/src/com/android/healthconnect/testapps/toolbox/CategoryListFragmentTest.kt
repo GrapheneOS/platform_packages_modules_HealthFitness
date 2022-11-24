@@ -33,7 +33,7 @@ class CategoryListFragmentTest {
     @Test
     fun allCategoriesShowOnPage() {
         launchScenario()
-        
+
         onView(withText(R.string.vitals_category)).check(matches(isDisplayed()))
         onView(withText(R.string.activity_category)).check(matches(isDisplayed()))
         onView(withText(R.string.body_measurements_category)).check(matches(isDisplayed()))

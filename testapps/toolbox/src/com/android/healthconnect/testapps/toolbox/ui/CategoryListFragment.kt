@@ -53,7 +53,7 @@ class CategoryListFragment : Fragment() {
 
     private fun onBindViewHolderCallback(viewHolder: TextViewListViewHolder, position: Int) {
         val textView = viewHolder.textView
-        textView.text = getString(mDataSet[position].title)
+        textView.text = viewHolder.itemView.context.getString(mDataSet[position].title)
         textView.setCompoundDrawablesWithIntrinsicBounds(mDataSet[position].icon, 0, 0, 0)
         textView.setOnClickListener {
             val bundle = bundleOf("category" to mDataSet[position])
