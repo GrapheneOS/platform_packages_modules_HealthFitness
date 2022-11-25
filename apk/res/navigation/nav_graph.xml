@@ -77,7 +77,26 @@
   <fragment
       android:id="@+id/cantSeeAllYourAppsFragment"
       android:name="com.android.healthconnect.controller.cantseeallyourapps.CantSeeAllYourAppsFragment"
-      android:label="@string/cant_see_all_your_apps_title"/>
+      android:label="@string/cant_see_all_your_apps_title">
+    <action
+        android:id="@+id/action_connected_apps_to_play_store"
+        app:destination="@id/playstore_activity" />
+    <action
+        android:id="@+id/action_connected_apps_to_updated_apps"
+        app:destination="@id/update_apps_activity" />
+  </fragment>
+  <activity
+      android:id="@+id/playstore_activity"
+      android:label="@string/playstore_app_title"
+      app:action="android.intent.action.VIEW"
+      app:data="@string/playstore_collection_url"
+      app:targetPackage="@string/playstore_package_name"/>
+  <activity
+      android:id="@+id/update_apps_activity"
+      app:action="android.intent.action.VIEW"
+      app:data="@string/playstore_manage_apps_url"
+      app:targetPackage="@string/playstore_package_name">
+  </activity>
   <fragment
       android:id="@+id/healthPermissionTypesFragment"
       android:name="com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment"

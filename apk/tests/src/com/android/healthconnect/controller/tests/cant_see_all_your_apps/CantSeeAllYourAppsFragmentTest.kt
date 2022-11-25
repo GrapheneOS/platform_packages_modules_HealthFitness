@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.cant_see_all_your_apps
 
 import android.os.Bundle
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import com.android.healthconnect.controller.cantseeallyourapps.CantSeeAllYourAppsFragment
@@ -56,5 +57,12 @@ class CantSeeAllYourAppsFragmentTest {
                 ViewMatchers.withText(
                     "Tell us which health & fitness apps you’d like to work with Health\u00A0Connect"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
+
+    @Test
+    fun cantSeeAllYourAppsFragment_sendFeedbackButton_isClickable() {
+        launchFragment<CantSeeAllYourAppsFragment>(Bundle())
+
+        Espresso.onView(ViewMatchers.withText("Send feedback")).perform(ViewActions.click())
     }
 }
