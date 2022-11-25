@@ -11,29 +11,42 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.shared
+package com.android.healthconnect.controller.tests.shared
 
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.HeartRateRecord
-import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BASAL_METABOLIC_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SPEED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
+import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
-object HealthPermissionToDatatypeMapper {
-    private val map =
-        mapOf(
-            STEPS to listOf(StepsRecord::class.java, StepsCadenceRecord::class.java),
-            HEART_RATE to listOf(HeartRateRecord::class.java),
-            BASAL_METABOLIC_RATE to listOf(BasalMetabolicRateRecord::class.java),
-            SPEED to listOf(SpeedRecord::class.java))
+class HealthPermissionToDatatypeMapperTest {
 
-    fun getDataTypes(permissionType: HealthPermissionType): List<Class<out Record>> {
-        return map[permissionType].orEmpty()
+    @Test
+    fun getDataTypes_steps_returnsCorrectRecords() {
+        assertThat(getDataTypes(STEPS))
+            .containsExactly(StepsRecord::class.java, StepsCadenceRecord::class.java)
+    }
+
+    @Test
+    fun getDataTypes_heartRate_returnsCorrectRecords() {
+        assertThat(getDataTypes(HEART_RATE)).containsExactly(HeartRateRecord::class.java)
+    }
+
+    @Test
+    fun getDataTypes_basalMetabolicRate_returnsCorrectRecords() {
+        assertThat(getDataTypes(BASAL_METABOLIC_RATE))
+            .containsExactly(BasalMetabolicRateRecord::class.java)
+    }
+
+    @Test
+    fun getDataTypes_speed_returnsCorrectRecords() {
+        assertThat(getDataTypes(SPEED)).containsExactly(SpeedRecord::class.java)
     }
 }

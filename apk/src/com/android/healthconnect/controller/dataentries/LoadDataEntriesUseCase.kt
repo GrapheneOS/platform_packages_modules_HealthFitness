@@ -18,6 +18,7 @@ import android.healthconnect.ReadRecordsRequestUsingFilters
 import android.healthconnect.ReadRecordsResponse
 import android.healthconnect.TimeRangeFilter
 import android.healthconnect.datatypes.Record
+import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -40,6 +41,10 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
+    companion object {
+        private const val TAG = "LoadDataEntriesUseCase"
+    }
+
     suspend operator fun invoke(
         permissionType: HealthPermissionType,
         selectedDate: Instant
@@ -60,11 +65,17 @@ constructor(
     ): List<FormattedDataEntry> {
         val filter =
             ReadRecordsRequestUsingFilters.Builder(data).setTimeRangeFilter(timeFilterRange).build()
-        val response =
-            suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
-                healthConnectManager.readRecords(
-                    filter, Runnable::run, continuation.asOutcomeReceiver())
+        val records =
+            try {
+                suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
+                        healthConnectManager.readRecords(
+                            filter, Runnable::run, continuation.asOutcomeReceiver())
+                    }
+                    .records
+            } catch (ex: Exception) {
+                Log.e(TAG, "Failed to load records $data", ex)
+                emptyList()
             }
-        return response.records.map { record -> healthDataEntryFormatter.format(record) }
+        return records.map { record -> healthDataEntryFormatter.format(record) }
     }
 }
