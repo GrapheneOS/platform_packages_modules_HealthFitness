@@ -14,31 +14,41 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.StepsRecord
+import android.healthconnect.datatypes.StepsCadenceRecord
+import android.healthconnect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample
 import android.icu.text.MessageFormat
+import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
-/** Formatter for printing Steps data. */
-@Singleton
-class StepsFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<StepsRecord>(context) {
+/** Formatter for printing StepsCadence series data. */
+class StepsCadenceFormatter @Inject constructor(@ApplicationContext private val context: Context) :
+    DataEntriesFormatter<StepsCadenceRecord>(context) {
 
+    /** Returns localized average StepsCadence from multiple data points. */
     override suspend fun formatValue(
-        record: StepsRecord,
+        record: StepsCadenceRecord,
         unitPreferences: UnitPreferences
     ): String {
-        return MessageFormat.format(
-            context.getString(R.string.steps_value), mapOf("count" to record.count))
+        return formatRange(R.string.steps_per_minute, record.samples)
     }
 
+    /** Returns localized StepsCadence value. */
     override suspend fun formatA11yValue(
-        record: StepsRecord,
+        record: StepsCadenceRecord,
         unitPreferences: UnitPreferences
     ): String {
-        return formatValue(record, unitPreferences)
+        return formatRange(R.string.steps_per_minute_long, record.samples)
+    }
+
+    private fun formatRange(@StringRes res: Int, samples: List<StepsCadenceRecordSample>): String {
+        return if (samples.isEmpty()) {
+            context.getString(R.string.no_data)
+        } else {
+            val avrStepsCadence = samples.sumOf { it.rate } / samples.size
+            MessageFormat.format(context.getString(res), mapOf("value" to avrStepsCadence))
+        }
     }
 }

@@ -18,6 +18,7 @@ import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,11 +28,17 @@ import javax.inject.Singleton
 class PowerFormatter @Inject constructor(@ApplicationContext private val context: Context) :
     DataEntriesFormatter<BasalMetabolicRateRecord>(context) {
 
-    override suspend fun formatA11yValue(record: BasalMetabolicRateRecord): String {
+    override suspend fun formatA11yValue(
+        record: BasalMetabolicRateRecord,
+        unitPreferences: UnitPreferences
+    ): String {
         return format(R.string.watt_format_long, record)
     }
 
-    override suspend fun formatValue(record: BasalMetabolicRateRecord): String {
+    override suspend fun formatValue(
+        record: BasalMetabolicRateRecord,
+        unitPreferences: UnitPreferences
+    ): String {
         return format(R.string.watt_format, record)
     }
 

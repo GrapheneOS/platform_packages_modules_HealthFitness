@@ -16,6 +16,8 @@ package com.android.healthconnect.controller.dataentries.formatters
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.Record
+import android.healthconnect.datatypes.SpeedRecord
+import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import javax.inject.Inject
@@ -27,14 +29,18 @@ class HealthDataEntryFormatter
 constructor(
     private val heartRateFormatter: HeartRateFormatter,
     private val stepsFormatter: StepsFormatter,
-    private val powerFormatter: PowerFormatter
+    private val stepsCadenceFormatter: StepsCadenceFormatter,
+    private val powerFormatter: PowerFormatter,
+    private val speedFormatter: SpeedFormatter
 ) {
 
     suspend fun format(record: Record): FormattedDataEntry {
         return when (record) {
             is HeartRateRecord -> heartRateFormatter.format(record)
             is StepsRecord -> stepsFormatter.format(record)
+            is StepsCadenceRecord -> stepsCadenceFormatter.format(record)
             is BasalMetabolicRateRecord -> powerFormatter.format(record)
+            is SpeedRecord -> speedFormatter.format(record)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

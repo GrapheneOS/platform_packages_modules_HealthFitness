@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.tests.dataentries.formatters
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.PowerFormatter
+import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.*
@@ -35,6 +36,7 @@ class PowerFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @Inject lateinit var formatter: PowerFormatter
+    @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
 
     @Before
@@ -49,18 +51,22 @@ class PowerFormatterTest {
     @Test
     fun formatValue_returnsPowerValue() {
         val record = getBasalMetabolicRateRecord(10.2)
-        runBlocking { assertThat(formatter.formatValue(record)).isEqualTo("10.2 W") }
+        runBlocking { assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.2 W") }
     }
 
     @Test
     fun formatA11yValue_pluralValue_returnsA11yPowerValues() {
         val record = getBasalMetabolicRateRecord(10.1)
-        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("10.1 watts") }
+        runBlocking {
+            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("10.1 watts")
+        }
     }
 
     @Test
     fun formatA11yValue_singleValue_returnsA11yPowerValues() {
         val record = getBasalMetabolicRateRecord(1.0)
-        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("1 watt") }
+        runBlocking {
+            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1 watt")
+        }
     }
 }

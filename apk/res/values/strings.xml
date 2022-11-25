@@ -352,8 +352,16 @@
 
   <string name="steps_value" translation_description="Value of steps taken. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 step} other {# steps}}</string>
 
+  <string name="steps_per_minute" description="Step cadence value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 step/min} other {# steps/min}}</string>
+  <string name="steps_per_minute_long" description="Step cadence value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 step per minute} other {# steps per minute}}</string>
+
   <string name="heart_rate_value" translation_description="Value of heart rate beats per minute. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 bpm} other {# bpm}}</string>
   <string name="heart_rate_long_value" translation_description="Value of heart rate beats per minute. [ICU SYNTAX][CHAR LIMIT=10]">{count, plural, =1 {1 beat per minute} other {# beats per minute}}</string>
+
+  <string name="velocity_speed_miles" translation_description="Speed in miles per hour formatted. [ICU SYNTAX][CHAR LIMIT=15]" >{value, plural, =1 {1 mph} other {# mph}}</string>
+  <string name="velocity_speed_km" translation_description="Speed in kilometers per hour formatted. [ICU SYNTAX][CHAR LIMIT=15]" >{value, plural, =1 {1 km/h} other {# km/h}}</string>
+  <string name="velocity_speed_miles_long" translation_description="Speed in miles per hour formatted for audible announcement. [ICU SYNTAX][CHAR LIMIT=100]" >{value, plural, =1 {1 mile per hour} other {# miles per hour}}</string>
+  <string name="velocity_speed_km_long" translation_description="Speed in kilometers per hour formatted audible announcement. [ICU SYNTAX][CHAR LIMIT=100]" >{value, plural, =1 {1 kilometer per hour} other {# kilometers per hour}}</string>
 
   <string name="heart_rate_series_range" translatable="false"><xliff:g example="100 bpm" id="min">%1$s</xliff:g> - <xliff:g example="109 bpm" id="max">%2$s</xliff:g></string>
   <string name="heart_rate_series_range_long" translatable="false"> from <xliff:g example="100 beats per minute" id="min">%1$s</xliff:g> to <xliff:g example="109 beats per minute" id="max">%2$s</xliff:g></string>

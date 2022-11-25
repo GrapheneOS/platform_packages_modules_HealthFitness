@@ -18,6 +18,7 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,7 +28,10 @@ import javax.inject.Singleton
 class HeartRateFormatter @Inject constructor(@ApplicationContext private val context: Context) :
     DataEntriesFormatter<HeartRateRecord>(context) {
 
-    override suspend fun formatValue(record: HeartRateRecord): String {
+    override suspend fun formatValue(
+        record: HeartRateRecord,
+        unitPreferences: UnitPreferences
+    ): String {
         return if (record.samples.size == 1) {
             formatSampleValue(R.string.heart_rate_value, record.samples.first().beatsPerMinute)
         } else {
@@ -37,7 +41,10 @@ class HeartRateFormatter @Inject constructor(@ApplicationContext private val con
         }
     }
 
-    override suspend fun formatA11yValue(record: HeartRateRecord): String {
+    override suspend fun formatA11yValue(
+        record: HeartRateRecord,
+        unitPreferences: UnitPreferences
+    ): String {
         return if (record.samples.size == 1) {
             formatSampleValue(R.string.heart_rate_long_value, record.samples.first().beatsPerMinute)
         } else {
