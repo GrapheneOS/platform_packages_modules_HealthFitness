@@ -59,7 +59,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.permgrouplab_health)
+        setTitle(R.string.connected_apps_title)
         viewModel.loadConnectedApps()
     }
 
