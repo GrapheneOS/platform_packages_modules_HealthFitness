@@ -17,6 +17,7 @@ import android.content.Context
 import android.healthconnect.datatypes.HeartRateRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter
+import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
@@ -37,6 +38,7 @@ class HeartRateFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @Inject lateinit var formatter: HeartRateFormatter
+    @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
 
     @Before
@@ -51,20 +53,22 @@ class HeartRateFormatterTest {
     @Test
     fun formatValue_returnsHeartRateValues() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(100, 102))
-        runBlocking { assertThat(formatter.formatValue(record)).isEqualTo("100 bpm - 102 bpm") }
+        runBlocking {
+            assertThat(formatter.formatValue(record, preferences)).isEqualTo("100 bpm - 102 bpm")
+        }
     }
 
     @Test
     fun formatValue_singleSampleValue_returnsSingleHeartRateValue() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(100))
-        runBlocking { assertThat(formatter.formatValue(record)).isEqualTo("100 bpm") }
+        runBlocking { assertThat(formatter.formatValue(record, preferences)).isEqualTo("100 bpm") }
     }
 
     @Test
     fun formatA11yValue_pluralValue_returnsA11yHeartRateValues() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(100, 102))
         runBlocking {
-            assertThat(formatter.formatA11yValue(record))
+            assertThat(formatter.formatA11yValue(record, preferences))
                 .isEqualTo("from 100 beats per minute to 102 beats per minute")
         }
     }
@@ -72,6 +76,9 @@ class HeartRateFormatterTest {
     @Test
     fun formatA11yValue_singleSampleValue_returnsA11yHeartRateValues() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(1))
-        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("1 beat per minute") }
+        runBlocking {
+            assertThat(formatter.formatA11yValue(record, preferences))
+                .isEqualTo("1 beat per minute")
+        }
     }
 }

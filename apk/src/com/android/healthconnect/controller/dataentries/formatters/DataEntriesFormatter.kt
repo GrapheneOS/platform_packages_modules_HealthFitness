@@ -19,6 +19,7 @@ import android.healthconnect.datatypes.IntervalRecord
 import android.healthconnect.datatypes.Record
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 
@@ -26,19 +27,20 @@ abstract class DataEntriesFormatter<T : Record>(private val context: Context) {
 
     private val timeFormatter = LocalDateTimeFormatter(context)
     private val appInfoReader = AppInfoReader(context)
+    private val unitPreferences = UnitPreferences(context)
 
     suspend fun format(record: T): FormattedDataEntry {
         return FormattedDataEntry(
             uuid = record.metadata.id,
             header = getHeader(record),
             headerA11y = getHeaderA11y(record),
-            title = formatValue(record),
-            titleA11y = formatA11yValue(record))
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences))
     }
 
-    abstract suspend fun formatValue(record: T): String
+    abstract suspend fun formatValue(record: T, unitPreferences: UnitPreferences): String
 
-    abstract suspend fun formatA11yValue(record: T): String
+    abstract suspend fun formatA11yValue(record: T, unitPreferences: UnitPreferences): String
 
     private fun getHeader(record: T): String {
         return context.getString(
