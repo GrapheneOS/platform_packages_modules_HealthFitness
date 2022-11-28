@@ -13,8 +13,8 @@
  */
 package com.android.healthconnect.controller.dataentries.units
 
-import com.android.healthconnect.controller.dataentries.units.LengthUnit.IMPERIAL_LENGTH_UNIT
-import com.android.healthconnect.controller.dataentries.units.LengthUnit.METRIC_LENGTH_UNIT
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
 
 /** Length conversion utilities. */
 object LengthConverter {
@@ -28,10 +28,10 @@ object LengthConverter {
      * @param source the m length to convert to toUnit length
      * @return the sourceMeters in toUnit length units
      */
-    fun convertDistanceFromMeters(unit: LengthUnit, source: Double): Double {
+    fun convertDistanceFromMeters(unit: DistanceUnit, source: Double): Double {
         return when (unit) {
-            IMPERIAL_LENGTH_UNIT -> return source / METERS_PER_MILE
-            METRIC_LENGTH_UNIT -> return source / METERS_PER_KM
+            MILES -> return source / METERS_PER_MILE
+            KILOMETERS -> return source / METERS_PER_KM
         }
     }
 }

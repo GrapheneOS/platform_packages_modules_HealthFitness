@@ -373,6 +373,30 @@
   <string name="date_range_long" description="Content description for date interval. [CHAR_LIMIT=NONE]"> from <xliff:g example="October 30, 2021" id="start_time">%1$s</xliff:g> to <xliff:g example="November 11, 2021" id="end_time">%2$s</xliff:g></string>
   <!--endregion-->
 
+  <!-- region units -->
+  <string name="units_title" description="Title on a screen allowing users to go to display units (weight/height/temperature etc) in the app[CHAR_LIMIT=50]">Units</string>
+  <string name="set_units_label" description="Label in the drop down menu, allowing users to go to display units (weight/height/temperature etc) in the app [CHAR_LIMIT=50]">Set data units</string>
+
+  <string name="distance_unit_title" description="Label of a unit preference in settings, allowing the user to change height display unit in the app [CHAR_LIMIT=50]">Distance</string>
+  <string name="height_unit_title" description="Label of a unit preference in settings, allowing the user to change height display unit in the app [CHAR_LIMIT=50]">Height</string>
+  <string name="weight_unit_title" description="Label of a unit preference in settings, allowing the user to change height display unit in the app [CHAR_LIMIT=50]">Weight</string>
+  <string name="energy_unit_title" description="Label of a unit preference in settings, allowing the user to change height display unit in the app [CHAR_LIMIT=50]">Energy</string>
+  <string name="temperature_unit_title" description="Label of a unit preference in settings, allowing the user to change height display unit in the app [CHAR_LIMIT=50]">Temperature</string>
+
+  <string name="distance_unit_kilometers_label" translation_description="The label for the metric option within the distance unit preferences menu. [CHAR LIMIT=19]">Kilometers</string>
+  <string name="distance_unit_miles_label" translation_description="The label for the imperial option within the distance unit preferences menu. [CHAR LIMIT=19]">Miles</string>
+  <string name="height_unit_centimeters_label" translation_description="The label for the metric option within the height unit preferences menu. [CHAR LIMIT=19]">Centimeters</string>
+  <string name="height_unit_feet_label" translation_description="The label for the imperial option within the height unit preferences menu. [CHAR LIMIT=19]">Feet &amp; Inches</string>
+  <string name="weight_unit_pound_label" translation_description="The label for the pound option within the weight unit preferences menu. [CHAR LIMIT=19]">Pounds</string>
+  <string name="weight_unit_kilogram_label" translation_description="The label for the Kilogram option within the weight unit preferences menu. [CHAR LIMIT=19]">Kilograms</string>
+  <string name="weight_unit_stone_label" translation_description="The label for the Stone option within the weight unit preferences menu. [CHAR LIMIT=19]">Stones</string>
+  <string name="energy_unit_calorie_label" translation_description="The label for the calorie option within the energy unit preferences menu. [CHAR LIMIT=19]">Calories</string>
+  <string name="energy_unit_kilojoule_label" translation_description="The label for the Kilojoule option within the energy unit preferences menu. [CHAR LIMIT=19]">Kilojoules</string>
+  <string name="temperature_unit_celsius_label" translation_description="The label for the Celsius option within the weight unit preferences menu. [CHAR LIMIT=19]">Celsius</string>
+  <string name="temperature_unit_fahrenheit_label" translation_description="The label for the Fahrenheit option within the weight unit preferences menu. [CHAR LIMIT=19]">Fahrenheit</string>
+  <string name="temperature_unit_kelvin_label" translation_description="The label for the Kelvin option within the weight unit preferences menu. [CHAR LIMIT=19]">Kelvin</string>
+  <!--endregion-->
+
   <string name="delete_dialog_success_title" description="Title of the confirmation window of successful data deletion. [CHAR_LIMIT=50]">Data deleted</string>
   <string name="delete_dialog_success_message" description="A message that confirms successful data deletion. [CHAR_LIMIT=NONE]">This data is no longer stored in Health&#160;Connect.</string>
 

@@ -20,8 +20,11 @@ import java.util.concurrent.TimeUnit
 object SpeedConverter {
 
     /** Converts meters per second to lengthUnit per hour. */
-    fun convertToDistancePerHour(lengthUnit: LengthUnit?, speedMetersPerSecond: Double): Double {
-        val lengthPerSecond = convertDistanceFromMeters(lengthUnit!!, speedMetersPerSecond)
+    fun convertToDistancePerHour(
+        distanceUnit: DistanceUnit?,
+        speedMetersPerSecond: Double
+    ): Double {
+        val lengthPerSecond = convertDistanceFromMeters(distanceUnit!!, speedMetersPerSecond)
         return lengthPerSecond * TimeUnit.HOURS.toSeconds(1)
     }
 }

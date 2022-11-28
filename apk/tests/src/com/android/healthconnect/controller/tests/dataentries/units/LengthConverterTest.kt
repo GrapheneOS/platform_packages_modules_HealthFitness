@@ -13,9 +13,9 @@
  */
 package com.android.healthconnect.controller.tests.dataentries.units
 
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
 import com.android.healthconnect.controller.dataentries.units.LengthConverter.convertDistanceFromMeters
-import com.android.healthconnect.controller.dataentries.units.LengthUnit.IMPERIAL_LENGTH_UNIT
-import com.android.healthconnect.controller.dataentries.units.LengthUnit.METRIC_LENGTH_UNIT
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -23,13 +23,13 @@ class LengthConverterTest {
 
     @Test
     fun convertDistanceFromMeters_toMiles() {
-        val value = convertDistanceFromMeters(IMPERIAL_LENGTH_UNIT, 1234.0)
+        val value = convertDistanceFromMeters(MILES, 1234.0)
         assertThat(value).isWithin(/*tolerance*/ 0.1).of(/*expected*/ 0.8)
     }
 
     @Test
     fun convertDistanceFromMeters_toKilometers() {
-        val value = convertDistanceFromMeters(METRIC_LENGTH_UNIT, 1234.0)
+        val value = convertDistanceFromMeters(KILOMETERS, 1234.0)
         assertThat(value).isEqualTo(1.234)
     }
 }

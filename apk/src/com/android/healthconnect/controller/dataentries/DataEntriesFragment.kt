@@ -15,12 +15,19 @@ package com.android.healthconnect.controller.dataentries
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
@@ -28,8 +35,10 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Empty
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
+import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 
@@ -45,6 +54,23 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var noDataView: TextView
     private lateinit var loadingView: View
     private val adapter = DataEntryAdapter()
+    private val menuProvider =
+        object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.data_entries, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.menu_open_units -> {
+                        findNavController()
+                            .navigate(R.id.action_dataEntriesFragment_to_unitsFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +81,8 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
 
         permissionType =
             requireArguments().getSerializable(PERMISSION_TYPE_KEY) as HealthPermissionType
-
+        setTitle(fromPermissionType(permissionType).label)
+        setupMenu()
         dataNavigationView = view.findViewById(R.id.date_navigation_view)
         noDataView = view.findViewById(R.id.no_data_view)
         loadingView = view.findViewById(R.id.loading)
@@ -65,6 +92,11 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 it.layoutManager = LinearLayoutManager(context, VERTICAL, false)
             }
         return view
+    }
+
+    private fun setupMenu() {
+        (activity as MenuHost).addMenuProvider(
+            menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

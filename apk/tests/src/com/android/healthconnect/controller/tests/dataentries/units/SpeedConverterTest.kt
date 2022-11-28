@@ -13,8 +13,8 @@
  */
 package com.android.healthconnect.controller.tests.dataentries.units
 
-import com.android.healthconnect.controller.dataentries.units.LengthUnit.IMPERIAL_LENGTH_UNIT
-import com.android.healthconnect.controller.dataentries.units.LengthUnit.METRIC_LENGTH_UNIT
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
 import com.android.healthconnect.controller.dataentries.units.SpeedConverter
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -23,13 +23,13 @@ class SpeedConverterTest {
 
     @Test
     fun convertToDistancePerHour_toMiles() {
-        val value = SpeedConverter.convertToDistancePerHour(IMPERIAL_LENGTH_UNIT, 12.0)
+        val value = SpeedConverter.convertToDistancePerHour(MILES, 12.0)
         assertThat(value).isWithin(/*tolerance*/ 0.1).of(/*expected*/ 26.84)
     }
 
     @Test
     fun convertToDistancePerHour_toKilometers() {
-        val value = SpeedConverter.convertToDistancePerHour(METRIC_LENGTH_UNIT, 12.0)
+        val value = SpeedConverter.convertToDistancePerHour(KILOMETERS, 12.0)
         assertThat(value).isEqualTo(43.2)
     }
 }
