@@ -25,6 +25,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,24 +41,33 @@ import java.util.Objects;
  *
  * @hide
  */
-public class InsertTransactionRequest {
+public class UpsertTransactionRequest {
     @NonNull private final List<UpsertTableRequest> mInsertRequests = new ArrayList<>();
     @NonNull private final List<String> mUUIDsInOrder = new ArrayList<>();
     @NonNull private final String mPackageName;
 
-    public InsertTransactionRequest(
+    public UpsertTransactionRequest(
             @NonNull String packageName,
             @NonNull List<RecordInternal<?>> recordInternals,
-            Context context) {
+            Context context,
+            boolean isInsertRequest) {
         mPackageName = packageName;
         for (RecordInternal<?> recordInternal : recordInternals) {
-            // Always generate an uuid field for insert requests, we should not trust what is
-            // already present.
+
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
-            DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);
             AppInfoHelper.getInstance().populateAppInfoId(recordInternal, context);
-            StorageUtils.addNameBasedUUIDTo(recordInternal);
-            mUUIDsInOrder.add(recordInternal.getUuid());
+            DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);
+
+            if (isInsertRequest) {
+                // Always generate an uuid field for insert requests, we should not trust what is
+                // already present.
+                StorageUtils.addNameBasedUUIDTo(recordInternal);
+                mUUIDsInOrder.add(recordInternal.getUuid());
+            } else {
+                // For update requests, generate uuid if the clientRecordID is present, else use the
+                // uuid passed as input.
+                StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
+            }
             addRequest(recordInternal);
         }
     }
@@ -77,11 +87,23 @@ public class InsertTransactionRequest {
         return mUUIDsInOrder;
     }
 
+    private WhereClauses generateWhereClausesForUpdate(@NonNull RecordInternal<?> recordInternal) {
+        WhereClauses whereClauseForUpdateRequest = new WhereClauses();
+        whereClauseForUpdateRequest.addWhereEqualsClause(
+                RecordHelper.UUID_COLUMN_NAME, /* expected args value */ recordInternal.getUuid());
+        whereClauseForUpdateRequest.addWhereEqualsClause(
+                RecordHelper.APP_INFO_ID_COLUMN_NAME,
+                /* expected args value */ String.valueOf(recordInternal.getAppInfoId()));
+        return whereClauseForUpdateRequest;
+    }
+
     private void addRequest(@NonNull RecordInternal<?> recordInternal) {
         RecordHelper<?> recordHelper =
                 RecordHelperProvider.getInstance().getRecordHelper(recordInternal.getRecordType());
         Objects.requireNonNull(recordHelper);
 
-        mInsertRequests.add(recordHelper.getUpsertTableRequest(recordInternal));
+        UpsertTableRequest request = recordHelper.getUpsertTableRequest(recordInternal);
+        request.setWhereClauses(generateWhereClausesForUpdate(recordInternal));
+        mInsertRequests.add(request);
     }
 }
