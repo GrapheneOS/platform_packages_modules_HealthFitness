@@ -19,6 +19,7 @@
   <string name="not_implemented">Not implemented</string>
   <string name="insert_data">Insert Data</string>
   <string name="update_data">Update Data</string>
+  <string name="add_sample_entry">Add Sample Entry</string>
 
   <!-- Home Screen -->
   <string name="request_permissions">Request Permissions</string>
@@ -51,6 +52,7 @@
   <string name="total_calories_burned_label" description="Label used to show the user's total calories burned data [CHAR_LIMIT=50]">Total calories burned</string>
   <string name="vo2_max_label" description="Label used to show the user's V02 max data [CHAR_LIMIT=50]">VO2 max</string>
   <string name="wheelchair_pushes_label" description="Label used to show the user's wheelchair pushes data [CHAR_LIMIT=50]">Wheelchair pushes</string>
+  <string name="cycling_pedaling_cadence" description="Label used to show the user's cycling pedaling cadence data [CHAR_LIMIT=50]">Cycling Pedaling Cadence</string>
   <!--endregion-->
 
   <!-- region Body measurements data types -->

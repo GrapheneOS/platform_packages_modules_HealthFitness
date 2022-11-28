@@ -45,18 +45,18 @@
       android:label="fragment_data_type_list_screen"
       tools:layout="@layout/fragment_list_screen">
     <action
-        android:id="@+id/action_dataTypeList_to_insertIntervalRecord"
-        app:destination="@id/interval_entry_screen" />
+        android:id="@+id/action_dataTypeList_to_insertRecord"
+        app:destination="@id/record_entry_screen" />
     <argument
         android:name="category"
         app:argType="com.android.healthconnect.testapps.toolbox.Constants$HealthDataCategory" />
   </fragment>
 
   <fragment
-      android:id="@+id/interval_entry_screen"
-      android:name="com.android.healthconnect.testapps.toolbox.ui.IntervalRecordEntry"
-      android:label="fragment_interval_entry"
-      tools:layout="@layout/fragment_interval_entry">
+      android:id="@+id/record_entry_screen"
+      android:name="com.android.healthconnect.testapps.toolbox.ui.InsertRecordFragment"
+      android:label="fragment_record_entry"
+      tools:layout="@layout/fragment_insert_record">
     <argument
         android:name="permissionType"
         app:argType="com.android.healthconnect.testapps.toolbox.Constants$HealthPermissionType" />

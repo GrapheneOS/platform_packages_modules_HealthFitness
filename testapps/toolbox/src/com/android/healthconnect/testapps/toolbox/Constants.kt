@@ -14,18 +14,27 @@
 package com.android.healthconnect.testapps.toolbox
 
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
+import android.healthconnect.datatypes.BasalMetabolicRateRecord
+import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
 import android.healthconnect.datatypes.ExerciseEventRecord
 import android.healthconnect.datatypes.ExerciseLapRecord
+import android.healthconnect.datatypes.HeartRateRecord
+import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
+import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsRecord
+import android.text.InputType
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlin.reflect.KClass
 
 /** Constant variables used across the app. */
 object Constants {
+
+    const val INPUT_TYPE_DOUBLE = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+    const val INPUT_TYPE_LONG = InputType.TYPE_CLASS_NUMBER
 
     val ALL_PERMISSIONS =
         arrayOf(
@@ -150,6 +159,7 @@ object Constants {
                 HealthPermissionType.STEPS,
                 HealthPermissionType.TOTAL_CALORIES_BURNED,
                 HealthPermissionType.VO2_MAX,
+                HealthPermissionType.CYCLING_PEDALING_CADENCE,
                 HealthPermissionType.WHEELCHAIR_PUSHES,
             )
 
@@ -208,11 +218,13 @@ object Constants {
         TOTAL_CALORIES_BURNED(null, R.string.total_calories_burned_label),
         VO2_MAX(null, R.string.vo2_max_label),
         WHEELCHAIR_PUSHES(null, R.string.wheelchair_pushes_label),
-        POWER(null, R.string.power_label),
-        SPEED(null, R.string.speed_label),
+        POWER(PowerRecord::class, R.string.power_label),
+        SPEED(SpeedRecord::class, R.string.speed_label),
+        CYCLING_PEDALING_CADENCE(
+            CyclingPedalingCadenceRecord::class, R.string.cycling_pedaling_cadence),
 
         // BODY_MEASUREMENTS
-        BASAL_METABOLIC_RATE(null, R.string.basal_metabolic_rate_label),
+        BASAL_METABOLIC_RATE(BasalMetabolicRateRecord::class, R.string.basal_metabolic_rate_label),
         BODY_FAT(null, R.string.body_fat_label),
         BODY_WATER_MASS(null, R.string.body_water_mass_label),
         BONE_MASS(null, R.string.bone_mass_label),
@@ -242,7 +254,7 @@ object Constants {
         BLOOD_GLUCOSE(null, R.string.blood_glucose_label),
         BLOOD_PRESSURE(null, R.string.blood_pressure_label),
         BODY_TEMPERATURE(null, R.string.body_temperature_label),
-        HEART_RATE(null, R.string.heart_rate_label),
+        HEART_RATE(HeartRateRecord::class, R.string.heart_rate_label),
         HEART_RATE_VARIABILITY(null, R.string.heart_rate_variability_label),
         OXYGEN_SATURATION(null, R.string.oxygen_saturation_label),
         RESPIRATORY_RATE(null, R.string.respiratory_rate_label),

@@ -13,7 +13,6 @@
  */
 package com.android.healthconnect.testapps.toolbox.ui
 
-import android.healthconnect.datatypes.IntervalRecord
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -61,14 +60,14 @@ class DataTypeListFragment : Fragment() {
     private fun onBindViewHolderCallback(viewHolder: TextViewListViewHolder, position: Int) {
         val textView = viewHolder.textView
         textView.text = viewHolder.itemView.context.getString(mDataSet[position].title)
+
         textView.setOnClickListener {
-            val bundle = bundleOf("permissionType" to mDataSet[position])
-            if (mDataSet[position].recordClass?.java?.superclass == IntervalRecord::class.java) {
-                mNavigationController.navigate(
-                    R.id.action_dataTypeList_to_insertIntervalRecord, bundle)
-            } else {
+            if (mDataSet[position].recordClass == null) {
                 Toast.makeText(context, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+            val bundle = bundleOf("permissionType" to mDataSet[position])
+            mNavigationController.navigate(R.id.action_dataTypeList_to_insertRecord, bundle)
         }
     }
 }

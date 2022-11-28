@@ -14,45 +14,53 @@
 package com.android.healthconnect.testapps.toolbox.ui
 
 import android.healthconnect.datatypes.ExerciseEventRecord
+import android.healthconnect.datatypes.InstantRecord
 import android.healthconnect.datatypes.IntervalRecord
+import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.units.Energy
 import android.healthconnect.datatypes.units.Length
+import android.healthconnect.datatypes.units.Power
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
+import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_DOUBLE
+import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_LONG
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.fieldviews.DateTimePicker
 import com.android.healthconnect.testapps.toolbox.fieldviews.EditableTextView
 import com.android.healthconnect.testapps.toolbox.fieldviews.EnumDropDown
-import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldInterface
+import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldView
+import com.android.healthconnect.testapps.toolbox.fieldviews.ListInputField
 import com.android.healthconnect.testapps.toolbox.utils.EnumFieldsWithValues
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getStaticFieldNamesAndValues
-import com.android.healthconnect.testapps.toolbox.utils.InsertOrUpdateIntervalRecords.Companion.insertOrUpdateRecord
+import com.android.healthconnect.testapps.toolbox.utils.InsertOrUpdateRecords.Companion.insertOrUpdateRecord
 import java.lang.reflect.Field
+import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 
-class IntervalRecordEntry : Fragment() {
+class InsertRecordFragment : Fragment() {
 
     private lateinit var mRecordFields: Array<Field>
-    private lateinit var mRecordClass: KClass<out IntervalRecord>
+    private lateinit var mRecordClass: KClass<out Record>
     private lateinit var mNavigationController: NavController
-    private lateinit var mFieldNameToFieldInput: HashMap<String, InputFieldInterface>
+    private lateinit var mFieldNameToFieldInput: HashMap<String, InputFieldView>
+    private lateinit var mLinearLayout: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_interval_entry, container, false)
+        return inflater.inflate(R.layout.fragment_insert_record, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,49 +72,65 @@ class IntervalRecordEntry : Fragment() {
 
         mFieldNameToFieldInput = HashMap()
         mRecordFields = permissionType.recordClass?.java?.declaredFields as Array<Field>
-        mRecordClass = permissionType.recordClass as KClass<out IntervalRecord>
+        mRecordClass = permissionType.recordClass
         view.findViewById<TextView>(R.id.title).setText(permissionType.title)
+        mLinearLayout = view.findViewById<LinearLayout>(R.id.record_input_linear_layout)
 
-        setupStartAndEndTimeFields(view)
-        setupRecordFields(view)
+        when (mRecordClass.java.superclass) {
+            IntervalRecord::class.java -> {
+                setupStartAndEndTimeFields()
+            }
+            InstantRecord::class.java -> {
+                setupTimeField("Time", "time")
+            }
+            else -> {
+                Toast.makeText(context, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+                mNavigationController.popBackStack()
+            }
+        }
+        setupRecordFields()
         setupSubmitButton(view)
     }
 
-    private fun setupStartAndEndTimeFields(view: View) {
-        val startTimeField = DateTimePicker(this.requireContext(), "Start Time")
-        val endTimeField = DateTimePicker(this.requireContext(), "End Time")
+    private fun setupTimeField(title: String, key: String) {
+        val timeField = DateTimePicker(this.requireContext(), title)
+        mLinearLayout.addView(timeField)
 
-        view.findViewById<LinearLayout>(R.id.interval_linear_layout).addView(startTimeField)
-
-        view.findViewById<LinearLayout>(R.id.interval_linear_layout).addView(endTimeField)
-
-        mFieldNameToFieldInput["startTime"] = startTimeField
-        mFieldNameToFieldInput["endTime"] = endTimeField
+        mFieldNameToFieldInput[key] = timeField
     }
 
-    private fun setupRecordFields(view: View) {
-        val layout = view.findViewById<LinearLayout>(R.id.interval_linear_layout)
-        var field: InputFieldInterface
+    private fun setupStartAndEndTimeFields() {
+        setupTimeField("Start Time", "startTime")
+        setupTimeField("End Time", "endTime")
+    }
+
+    private fun setupRecordFields() {
+        var field: InputFieldView
         for (mRecordsField in mRecordFields) {
             when (mRecordsField.type) {
                 Long::class.java -> {
                     field =
-                        EditableTextView(
-                            this.requireContext(), mRecordsField.name, InputType.TYPE_CLASS_NUMBER)
+                        EditableTextView(this.requireContext(), mRecordsField.name, INPUT_TYPE_LONG)
                 }
                 Length::class.java,
-                Energy::class.java, -> {
+                Energy::class.java,
+                Power::class.java, -> {
                     field =
                         EditableTextView(
+                            this.requireContext(), mRecordsField.name, INPUT_TYPE_DOUBLE)
+                }
+                List::class.java -> {
+                    field =
+                        ListInputField(
                             this.requireContext(),
                             mRecordsField.name,
-                            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL)
+                            mRecordsField.genericType as ParameterizedType)
                 }
                 else -> {
                     break
                 }
             }
-            layout.addView(field)
+            mLinearLayout.addView(field)
             mFieldNameToFieldInput[mRecordsField.name] = field
         }
 
@@ -115,14 +139,14 @@ class IntervalRecordEntry : Fragment() {
                 val enumFieldsWithValues: EnumFieldsWithValues =
                     getStaticFieldNamesAndValues(ExerciseEventRecord.ExerciseEventType::class)
                 field = EnumDropDown(this.requireContext(), "mEventType", enumFieldsWithValues)
-                layout.addView(field)
+                mLinearLayout.addView(field)
                 mFieldNameToFieldInput["mEventType"] = field
             }
         }
     }
 
     private fun setupSubmitButton(view: View) {
-        val buttonView = view.findViewById<Button>(R.id.insert_or_update_interval_record)
+        val buttonView = view.findViewById<Button>(R.id.insert_or_update_record)
 
         buttonView.setText(R.string.insert_data)
         buttonView.setOnClickListener {

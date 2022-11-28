@@ -20,7 +20,6 @@ import android.content.Context
 import android.text.InputType
 import android.widget.DatePicker
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.TimePicker
 import com.android.healthconnect.testapps.toolbox.R
@@ -32,7 +31,7 @@ import java.time.ZoneId
 import java.util.Calendar
 
 @SuppressLint("ViewConstructor")
-class DateTimePicker(context: Context, title: String) : LinearLayout(context), InputFieldInterface {
+class DateTimePicker(context: Context, fieldName: String) : InputFieldView(context) {
 
     private val mCalendar: Calendar = Calendar.getInstance()
     private var mSelectedYear: Int = mCalendar.get(Calendar.YEAR)
@@ -43,7 +42,7 @@ class DateTimePicker(context: Context, title: String) : LinearLayout(context), I
 
     init {
         inflate(context, R.layout.date_time_picker, this)
-        findViewById<TextView>(R.id.title).text = title
+        findViewById<TextView>(R.id.title).text = fieldName
         setupDate()
         setupTime()
     }
