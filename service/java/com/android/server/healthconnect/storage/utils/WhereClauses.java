@@ -88,15 +88,11 @@ public final class WhereClauses {
         return this;
     }
 
-    /**
-     * Returns where clauses joined by 'AND', if the input parameter isIncludeWHEREinClauses is true
-     * then the clauses are preceded by 'WHERE'.
-     */
-    public String get(boolean withWhereKeyword) {
+    public String get() {
         if (mClauses.isEmpty()) {
             return "";
         }
 
-        return (withWhereKeyword ? " WHERE " : "") + String.join(" AND ", mClauses);
+        return " WHERE " + String.join(" AND ", mClauses);
     }
 }

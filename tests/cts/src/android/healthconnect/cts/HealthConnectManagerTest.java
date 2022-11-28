@@ -50,7 +50,6 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -199,6 +198,9 @@ public class HealthConnectManagerTest {
         assertThat(newStepsRecords.size()).isEqualTo(0);
     }
 
+    // TODO(b/257796081): Move read tests to respective record type classes, verify that the correct
+    // details are being fetched, and add tests for all record type
+
     @Test
     public void testReadStepsRecordUsingFilters_dataFilter_correct() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -221,231 +223,6 @@ public class HealthConnectManagerTest {
                                 .build());
         assertThat(newStepsRecords.size() - oldStepsRecords.size()).isEqualTo(1);
         assertThat(newStepsRecords.get(0).getCount()).isEqualTo(getStepsRecord().getCount());
-    }
-
-    // TODO(b/257796081): Move read tests to respective record type classes, verify that the correct
-    // details are being fetched, and add tests for all record type
-
-    /**
-     * Test to verify the working of {@link
-     * android.healthconnect.HealthConnectManager#updateRecords(java.util.List,
-     * java.util.concurrent.Executor, android.os.OutcomeReceiver)}.
-     *
-     * <p>Insert a sample record of each dataType, update them and check by reading them.
-     */
-    @Test
-    public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
-
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
-
-        // Insert a sample record of each data type.
-        List<Record> insertRecords = insertRecords(getTestRecords());
-
-        // read inserted records and verify that the data is same as inserted.
-
-        // Generate a second set of records that will be used to perform the update operation.
-        List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
-
-        // Modify the Uid of the updateRecords to the uuid that was present in the insert records.
-        for (int itr = 0; itr < updateRecords.size(); itr++) {
-            updateRecords
-                    .get(itr)
-                    .getMetadata()
-                    .setId(insertRecords.get(itr).getMetadata().getId());
-        }
-
-        service.updateRecords(
-                updateRecords,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<Void, HealthConnectException>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        responseException.set(exception);
-                        latch.countDown();
-                        Log.e(
-                                TAG,
-                                "Exception: "
-                                        + exception.getMessage()
-                                        + ", error code: "
-                                        + exception.getErrorCode());
-                    }
-                });
-
-        // assert the inserted data has been modified per the updateRecords.
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-
-        // assert the inserted data has been modified by reading the data.
-        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
-        //  using read API
-
-        assertThat(responseException.get()).isNull();
-    }
-
-    /**
-     * Test to verify the working of {@link
-     * android.healthconnect.HealthConnectManager#updateRecords(java.util.List,
-     * java.util.concurrent.Executor, android.os.OutcomeReceiver)}.
-     *
-     * <p>Insert a sample record of each dataType, while updating provide input with a few invalid
-     * records. These records will have UUIDs that are not present in the table. Since this record
-     * won't be updated, the transaction should fail and revert and no other record(even though
-     * valid inputs) should not be modified either.
-     */
-    @Test
-    public void testUpdateRecords_invalidInputRecords_noChangeInDataBase()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
-
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
-
-        // Insert a sample record of each data type.
-        List<Record> insertRecords = insertRecords(getTestRecords());
-
-        // read inserted records and verify that the data is same as inserted.
-
-        // Generate a second set of records that will be used to perform the update operation.
-        List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
-
-        // Modify the Uid of the updateRecords to the UUID that was present in the insert records,
-        // leaving out alternate records so that they have a new UUID which is not present in the
-        // dataBase.
-        for (int itr = 0; itr < updateRecords.size(); itr++) {
-            updateRecords
-                    .get(itr)
-                    .getMetadata()
-                    .setId(
-                            itr % 2 == 0
-                                    ? insertRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()));
-        }
-
-        // perform the update operation.
-        service.updateRecords(
-                updateRecords,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<Void, HealthConnectException>() {
-                    @Override
-                    public void onResult(Void result) {}
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        responseException.set(exception);
-                        latch.countDown();
-                        Log.e(
-                                TAG,
-                                "Exception: "
-                                        + exception.getMessage()
-                                        + ", error code: "
-                                        + exception.getErrorCode());
-                    }
-                });
-
-        assertThat(latch.await(/* timeout */ 3, TimeUnit.SECONDS)).isEqualTo(true);
-
-        // assert the inserted data has not been modified by reading the data.
-        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
-        //  using read API
-
-        // verify that the testcase failed due to invalid argument exception.
-        assertThat(responseException.get()).isNotNull();
-        assertThat(responseException.get().getErrorCode())
-                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
-    }
-
-    /**
-     * Test to verify the working of {@link
-     * android.healthconnect.HealthConnectManager#updateRecords(java.util.List,
-     * java.util.concurrent.Executor, android.os.OutcomeReceiver)}.
-     *
-     * <p>Insert a sample record of each dataType, while updating add an input record with an
-     * invalid packageName. Since this is an invalid record the transaction should fail and revert
-     * and no other record(even though valid inputs) should not be modified either.
-     */
-    @Test
-    public void testUpdateRecords_recordWithInvalidPackageName_noChangeInDataBase()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
-
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<Exception> responseException = new AtomicReference<>();
-
-        // Insert a sample record of each data type.
-        List<Record> insertRecords = insertRecords(getTestRecords());
-
-        // read inserted records and verify that the data is same as inserted.
-
-        // Generate a second set of records that will be used to perform the update operation.
-        List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
-
-        // Modify the Uuid of the updateRecords to the uuid that was present in the insert records.
-        for (int itr = 0; itr < updateRecords.size(); itr++) {
-            updateRecords
-                    .get(itr)
-                    .getMetadata()
-                    .setId(insertRecords.get(itr).getMetadata().getId());
-
-            //             adding an entry with invalid packageName.
-            if (updateRecords.get(itr).getRecordType() == RECORD_TYPE_STEPS) {
-                updateRecords.set(
-                        itr, getStepsRecord(false, /* incorrectPackageName */ "abc.xyz.pqr"));
-            }
-        }
-
-        try {
-            // perform the update operation.
-            service.updateRecords(
-                    updateRecords,
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<Void, HealthConnectException>() {
-                        @Override
-                        public void onResult(Void result) {
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException exception) {
-                            responseException.set(exception);
-                            latch.countDown();
-                            Log.e(
-                                    TAG,
-                                    "Exception: "
-                                            + exception.getMessage()
-                                            + ", error code: "
-                                            + exception.getErrorCode());
-                        }
-                    });
-
-        } catch (Exception exception) {
-            latch.countDown();
-            responseException.set(exception);
-        }
-        assertThat(latch.await(/* timeout */ 3, TimeUnit.SECONDS)).isEqualTo(true);
-
-        // assert the inserted data has not been modified by reading the data.
-        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
-        //  using read API
-
-        // verify that the testcase failed due to invalid argument exception.
-        assertThat(responseException.get()).isNotNull();
-        assertThat(responseException.get().getClass()).isEqualTo(IllegalArgumentException.class);
     }
 
     private List<Record> insertRecords(List<Record> records) throws InterruptedException {
@@ -651,14 +428,7 @@ public class HealthConnectManagerTest {
     }
 
     private List<Record> getTestRecords() {
-        return getTestRecords(/* isSetClientRecordId */ true);
-    }
-
-    private List<Record> getTestRecords(boolean isSetClientRecordId) {
-        return Arrays.asList(
-                getStepsRecord(isSetClientRecordId, ""),
-                getHeartRateRecord(isSetClientRecordId),
-                getBasalMetabolicRateRecord(isSetClientRecordId));
+        return Arrays.asList(getStepsRecord(), getHeartRateRecord(), getBasalMetabolicRateRecord());
     }
 
     private List<RecordAndIdentifier> getRecordsAndIdentifiers() {
@@ -670,33 +440,23 @@ public class HealthConnectManagerTest {
     }
 
     private StepsRecord getStepsRecord() {
-        return getStepsRecord(true, "");
-    }
-
-    private StepsRecord getStepsRecord(boolean isSetClientRecordId, String packageName) {
         Device device =
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin =
-                new DataOrigin.Builder()
-                        .setPackageName(
-                                packageName.isEmpty() ? "android.healthconnect.cts" : packageName)
-                        .build();
-
-        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        if (isSetClientRecordId) {
-            testMetadataBuilder.setClientRecordId("SR" + Math.random());
-        }
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
         return new StepsRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), 10)
+                        new Metadata.Builder()
+                                .setDevice(device)
+                                .setDataOrigin(dataOrigin)
+                                .setClientRecordId("SR" + Math.random())
+                                .build(),
+                        Instant.now(),
+                        Instant.now(),
+                        10)
                 .build();
     }
 
     private HeartRateRecord getHeartRateRecord() {
-        return getHeartRateRecord(true);
-    }
-
-    private HeartRateRecord getHeartRateRecord(boolean isSetClientRecordId) {
         HeartRateRecord.HeartRateSample heartRateSample =
                 new HeartRateRecord.HeartRateSample(72, Instant.now());
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
@@ -706,21 +466,19 @@ public class HealthConnectManagerTest {
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin =
                 new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
-        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        if (isSetClientRecordId) {
-            testMetadataBuilder.setClientRecordId("HR" + Math.random());
-        }
         return new HeartRateRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), heartRateSamples)
+                        new Metadata.Builder()
+                                .setDevice(device)
+                                .setDataOrigin(dataOrigin)
+                                .setClientRecordId("HR" + Math.random())
+                                .build(),
+                        Instant.now(),
+                        Instant.now(),
+                        heartRateSamples)
                 .build();
     }
 
     private BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
-        return getBasalMetabolicRateRecord(true);
-    }
-
-    private BasalMetabolicRateRecord getBasalMetabolicRateRecord(boolean isSetClientRecordId) {
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
@@ -729,13 +487,14 @@ public class HealthConnectManagerTest {
                         .build();
         DataOrigin dataOrigin =
                 new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
-        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        if (isSetClientRecordId) {
-            testMetadataBuilder.setClientRecordId("BMR" + Math.random());
-        }
         return new BasalMetabolicRateRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Power.fromWatts(100.0))
+                        new Metadata.Builder()
+                                .setDevice(device)
+                                .setDataOrigin(dataOrigin)
+                                .setClientRecordId("BMR" + Math.random())
+                                .build(),
+                        Instant.now(),
+                        Power.fromWatts(100.0))
                 .build();
     }
 }
