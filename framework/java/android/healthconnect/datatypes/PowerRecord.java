@@ -109,8 +109,8 @@ public final class PowerRecord extends IntervalRecord {
         public boolean equals(@NonNull Object object) {
             if (super.equals(object) && object instanceof PowerRecordSample) {
                 PowerRecordSample other = (PowerRecordSample) object;
-                return this.getPower().equals(other.getPower())
-                        && this.getTime().equals(other.getTime());
+                return getPower().equals(other.getPower())
+                        && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
             return false;
         }
@@ -122,7 +122,7 @@ public final class PowerRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), this.getPower(), this.getTime());
+            return Objects.hash(super.hashCode(), getPower(), getTime());
         }
     }
 
@@ -217,7 +217,17 @@ public final class PowerRecord extends IntervalRecord {
     public boolean equals(@NonNull Object object) {
         if (super.equals(object) && object instanceof PowerRecord) {
             PowerRecord other = (PowerRecord) object;
-            return this.getSamples().equals(other.getSamples());
+            if (getSamples().size() != other.getSamples().size()) return false;
+            for (int idx = 0; idx < getSamples().size(); idx++) {
+                if (!Objects.equals(
+                                getSamples().get(idx).getPower(),
+                                other.getSamples().get(idx).getPower())
+                        || getSamples().get(idx).getTime().toEpochMilli()
+                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -225,6 +235,6 @@ public final class PowerRecord extends IntervalRecord {
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getSamples());
+        return Objects.hash(super.hashCode(), getSamples());
     }
 }

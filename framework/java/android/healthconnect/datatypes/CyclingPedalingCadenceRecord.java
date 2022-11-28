@@ -43,11 +43,6 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull List<CyclingPedalingCadenceRecordSample> cyclingPedalingCadenceRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(cyclingPedalingCadenceRecordSamples);
         mCyclingPedalingCadenceRecordSamples = cyclingPedalingCadenceRecordSamples;
     }
@@ -104,8 +99,8 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
             if (super.equals(object) && object instanceof CyclingPedalingCadenceRecordSample) {
                 CyclingPedalingCadenceRecordSample other =
                         (CyclingPedalingCadenceRecordSample) object;
-                return this.getRevolutionsPerMinute() == other.getRevolutionsPerMinute()
-                        && this.getTime().equals(other.getTime());
+                return getRevolutionsPerMinute() == other.getRevolutionsPerMinute()
+                        && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
             return false;
         }
@@ -117,7 +112,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), this.getRevolutionsPerMinute(), this.getTime());
+            return Objects.hash(super.hashCode(), getRevolutionsPerMinute(), getTime());
         }
     }
 
@@ -195,9 +190,18 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof CyclingPedalingCadenceRecord) {
+        if (super.equals(object)) {
             CyclingPedalingCadenceRecord other = (CyclingPedalingCadenceRecord) object;
-            return this.getSamples().equals(other.getSamples());
+            if (getSamples().size() != other.getSamples().size()) return false;
+            for (int idx = 0; idx < getSamples().size(); idx++) {
+                if (getSamples().get(idx).getRevolutionsPerMinute()
+                                != other.getSamples().get(idx).getRevolutionsPerMinute()
+                        || getSamples().get(idx).getTime().toEpochMilli()
+                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -205,6 +209,6 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getSamples());
+        return Objects.hash(super.hashCode(), getSamples());
     }
 }

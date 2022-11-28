@@ -133,12 +133,13 @@ public final class Metadata {
         if (this == object) return true;
         if (object instanceof Metadata) {
             Metadata other = (Metadata) object;
-            return this.getDevice().equals(other.getDevice())
-                    && this.getDataOrigin().equals(other.getDataOrigin())
-                    && this.getId().equals(other.getId())
-                    && Objects.equals(this.getClientRecordId(), other.getClientRecordId())
-                    && this.getClientRecordVersion() == other.getClientRecordVersion()
-                    && this.getLastModifiedTime().equals(other.getLastModifiedTime());
+            return getDevice().equals(other.getDevice())
+                    && getDataOrigin().equals(other.getDataOrigin())
+                    && getId().equals(other.getId())
+                    && Objects.equals(getClientRecordId(), other.getClientRecordId())
+                    && getClientRecordVersion() == other.getClientRecordVersion()
+                    && getLastModifiedTime().toEpochMilli()
+                            == other.getLastModifiedTime().toEpochMilli();
         }
         return false;
     }
@@ -151,13 +152,13 @@ public final class Metadata {
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.getDevice(),
+                getDevice(),
                 this,
                 getDataOrigin(),
-                this.getId(),
-                this.getClientRecordId(),
-                this.getClientRecordVersion(),
-                this.getLastModifiedTime());
+                getId(),
+                getClientRecordId(),
+                getClientRecordVersion(),
+                getLastModifiedTime());
     }
 
     /**

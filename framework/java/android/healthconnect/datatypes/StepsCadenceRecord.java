@@ -43,11 +43,6 @@ public final class StepsCadenceRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(stepsCadenceRecordSamples);
         mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
     }
@@ -102,7 +97,8 @@ public final class StepsCadenceRecord extends IntervalRecord {
         public boolean equals(@NonNull Object object) {
             if (super.equals(object) && object instanceof StepsCadenceRecordSample) {
                 StepsCadenceRecordSample other = (StepsCadenceRecordSample) object;
-                return this.getRate() == other.getRate() && this.getTime().equals(other.getTime());
+                return getRate() == other.getRate()
+                        && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
             return false;
         }
@@ -114,7 +110,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), this.getRate(), this.getTime());
+            return Objects.hash(super.hashCode(), getRate(), getTime());
         }
     }
 
@@ -191,7 +187,15 @@ public final class StepsCadenceRecord extends IntervalRecord {
     public boolean equals(@NonNull Object object) {
         if (super.equals(object) && object instanceof StepsCadenceRecord) {
             StepsCadenceRecord other = (StepsCadenceRecord) object;
-            return this.getSamples().equals(other.getSamples());
+            if (getSamples().size() != other.getSamples().size()) return false;
+            for (int idx = 0; idx < getSamples().size(); idx++) {
+                if (getSamples().get(idx).getRate() != other.getSamples().get(idx).getRate()
+                        || getSamples().get(idx).getTime().toEpochMilli()
+                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -199,6 +203,6 @@ public final class StepsCadenceRecord extends IntervalRecord {
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getSamples());
+        return Objects.hash(super.hashCode(), getSamples());
     }
 }

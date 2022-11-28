@@ -76,11 +76,6 @@ public class HeartRateRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull List<HeartRateSample> heartRateSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(heartRateSamples);
         mHeartRateSamples = heartRateSamples;
     }
@@ -103,7 +98,16 @@ public class HeartRateRecord extends IntervalRecord {
     public boolean equals(@NonNull Object object) {
         if (super.equals(object) && object instanceof HeartRateRecord) {
             HeartRateRecord other = (HeartRateRecord) object;
-            return this.getSamples().equals(other.getSamples());
+            if (getSamples().size() != other.getSamples().size()) return false;
+            for (int idx = 0; idx < getSamples().size(); idx++) {
+                if (getSamples().get(idx).getBeatsPerMinute()
+                                != other.getSamples().get(idx).getBeatsPerMinute()
+                        || getSamples().get(idx).getTime().toEpochMilli()
+                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -111,7 +115,7 @@ public class HeartRateRecord extends IntervalRecord {
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getSamples());
+        return Objects.hash(super.hashCode(), getSamples());
     }
 
     /** A class to represent heart rate samples */
@@ -157,8 +161,8 @@ public class HeartRateRecord extends IntervalRecord {
         public boolean equals(@NonNull Object object) {
             if (super.equals(object) && object instanceof HeartRateSample) {
                 HeartRateSample other = (HeartRateSample) object;
-                return this.getBeatsPerMinute() == other.getBeatsPerMinute()
-                        && this.getTime().equals(other.getTime());
+                return getBeatsPerMinute() == other.getBeatsPerMinute()
+                        && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
             return false;
         }
@@ -170,7 +174,7 @@ public class HeartRateRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), this.getBeatsPerMinute(), this.getTime());
+            return Objects.hash(super.hashCode(), getBeatsPerMinute(), getTime());
         }
     }
 

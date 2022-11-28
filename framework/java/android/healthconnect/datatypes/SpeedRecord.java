@@ -44,11 +44,6 @@ public final class SpeedRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull List<SpeedRecordSample> speedRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(speedRecordSamples);
         mSpeedRecordSamples = speedRecordSamples;
     }
@@ -105,8 +100,8 @@ public final class SpeedRecord extends IntervalRecord {
         public boolean equals(@NonNull Object object) {
             if (super.equals(object) && object instanceof SpeedRecordSample) {
                 SpeedRecordSample other = (SpeedRecordSample) object;
-                return this.getSpeed().equals(other.getSpeed())
-                        && this.getTime().equals(other.getTime());
+                return getSpeed().equals(other.getSpeed())
+                        && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
             return false;
         }
@@ -118,7 +113,7 @@ public final class SpeedRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), this.getSpeed(), this.getTime());
+            return Objects.hash(super.hashCode(), getSpeed(), getTime());
         }
     }
 
@@ -195,7 +190,17 @@ public final class SpeedRecord extends IntervalRecord {
     public boolean equals(@NonNull Object object) {
         if (super.equals(object) && object instanceof SpeedRecord) {
             SpeedRecord other = (SpeedRecord) object;
-            return this.getSamples().equals(other.getSamples());
+            if (getSamples().size() != other.getSamples().size()) return false;
+            for (int idx = 0; idx < getSamples().size(); idx++) {
+                if (!Objects.equals(
+                                getSamples().get(idx).getSpeed(),
+                                other.getSamples().get(idx).getSpeed())
+                        || getSamples().get(idx).getTime().toEpochMilli()
+                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -203,6 +208,6 @@ public final class SpeedRecord extends IntervalRecord {
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getSamples());
+        return Objects.hash(super.hashCode(), getSamples());
     }
 }

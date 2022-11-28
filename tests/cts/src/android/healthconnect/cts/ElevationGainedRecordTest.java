@@ -19,64 +19,294 @@ package android.healthconnect.cts;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.DeleteUsingFiltersRequest;
+import android.healthconnect.ReadRecordsRequestUsingFilters;
+import android.healthconnect.ReadRecordsRequestUsingIds;
+import android.healthconnect.RecordIdFilter;
+import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.DataOrigin;
+import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.ElevationGainedRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.units.Length;
-import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
-import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class ElevationGainedRecordTest {
     private static final String TAG = "ElevationGainedRecordTest";
 
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                ElevationGainedRecord.class,
+                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+    }
+
     @Test
     public void testInsertElevationGainedRecord() throws InterruptedException {
-        List<Record> records = new ArrayList<>();
-        records.add(getBaseElevationGainedRecord());
-        records.add(getCompleteElevationGainedRecord());
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<List<Record>> response = new AtomicReference<>();
-        service.insertRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(InsertRecordsResponse result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
+        List<Record> records =
+                List.of(getBaseElevationGainedRecord(), getCompleteElevationGainedRecord());
+        TestUtils.insertRecords(records);
+    }
 
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        assertThat(response.get()).hasSize(records.size());
+    @Test
+    public void testReadElevationGainedRecord_usingIds() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getCompleteElevationGainedRecord(), getCompleteElevationGainedRecord());
+        readElevationGainedRecordUsingIds(recordList);
+    }
+
+    @Test
+    public void testReadElevationGainedRecord_invalidIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<ElevationGainedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ElevationGainedRecord.class)
+                        .addId("abc")
+                        .build();
+        List<ElevationGainedRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadElevationGainedRecord_usingClientRecordIds() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getCompleteElevationGainedRecord(), getCompleteElevationGainedRecord());
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        readElevationGainedRecordUsingClientId(insertedRecords);
+    }
+
+    @Test
+    public void testReadElevationGainedRecord_invalidClientRecordIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<ElevationGainedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ElevationGainedRecord.class)
+                        .addClientRecordId("abc")
+                        .build();
+        List<ElevationGainedRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadElevationGainedRecordUsingFilters_default() throws InterruptedException {
+        List<ElevationGainedRecord> oldElevationGainedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ElevationGainedRecord.class)
+                                .build());
+        ElevationGainedRecord testRecord = getCompleteElevationGainedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<ElevationGainedRecord> newElevationGainedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ElevationGainedRecord.class)
+                                .build());
+        assertThat(newElevationGainedRecords.size())
+                .isEqualTo(oldElevationGainedRecords.size() + 1);
+        assertThat(
+                        newElevationGainedRecords
+                                .get(newElevationGainedRecords.size() - 1)
+                                .equals(testRecord))
+                .isTrue();
+    }
+
+    @Test
+    public void testReadElevationGainedRecordUsingFilters_timeFilter() throws InterruptedException {
+        TimeRangeFilter filter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        ElevationGainedRecord testRecord = getCompleteElevationGainedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<ElevationGainedRecord> newElevationGainedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ElevationGainedRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .build());
+        assertThat(newElevationGainedRecords.size()).isEqualTo(1);
+        assertThat(
+                        newElevationGainedRecords
+                                .get(newElevationGainedRecords.size() - 1)
+                                .equals(testRecord))
+                .isTrue();
+    }
+
+    @Test
+    public void testReadElevationGainedRecordUsingFilters_dataFilter_correct()
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<ElevationGainedRecord> oldElevationGainedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ElevationGainedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        ElevationGainedRecord testRecord = getCompleteElevationGainedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<ElevationGainedRecord> newElevationGainedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ElevationGainedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        assertThat(newElevationGainedRecords.size() - oldElevationGainedRecords.size())
+                .isEqualTo(1);
+        ElevationGainedRecord newRecord =
+                newElevationGainedRecords.get(newElevationGainedRecords.size() - 1);
+        assertThat(newRecord.equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadElevationGainedRecordUsingFilters_dataFilter_incorrect()
+            throws InterruptedException {
+        TestUtils.insertRecords(Collections.singletonList(getCompleteElevationGainedRecord()));
+        List<ElevationGainedRecord> newElevationGainedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ElevationGainedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder().setPackageName("abc").build())
+                                .build());
+        assertThat(newElevationGainedRecords.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testDeleteElevationGainedRecord_no_filters() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteElevationGainedRecord());
+        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        TestUtils.assertRecordNotFound(id, ElevationGainedRecord.class);
+    }
+
+    @Test
+    public void testDeleteElevationGainedRecord_time_filters() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteElevationGainedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(ElevationGainedRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id, ElevationGainedRecord.class);
+    }
+
+    @Test
+    public void testDeleteElevationGainedRecord_recordId_filters() throws InterruptedException {
+        List<Record> records =
+                List.of(getBaseElevationGainedRecord(), getCompleteElevationGainedRecord());
+        TestUtils.insertRecords(records);
+
+        for (Record record : records) {
+            TestUtils.verifyDeleteRecords(
+                    new DeleteUsingFiltersRequest.Builder()
+                            .addRecordType(record.getClass())
+                            .build());
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteElevationGainedRecord_dataOrigin_filters() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        String id = TestUtils.insertRecordAndGetId(getCompleteElevationGainedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build())
+                        .build());
+        TestUtils.assertRecordNotFound(id, ElevationGainedRecord.class);
+    }
+
+    @Test
+    public void testDeleteElevationGainedRecord_dataOrigin_filter_incorrect()
+            throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteElevationGainedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(new DataOrigin.Builder().setPackageName("abc").build())
+                        .build());
+        TestUtils.assertRecordFound(id, ElevationGainedRecord.class);
+    }
+
+    @Test
+    public void testDeleteElevationGainedRecord_usingIds() throws InterruptedException {
+        List<Record> records =
+                List.of(getBaseElevationGainedRecord(), getCompleteElevationGainedRecord());
+        List<Record> insertedRecord = TestUtils.insertRecords(records);
+        List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
+        for (Record record : insertedRecord) {
+            recordIds.add(
+                    new RecordIdFilter.Builder(record.getClass())
+                            .setId(record.getMetadata().getId())
+                            .build());
+        }
+
+        TestUtils.verifyDeleteRecords(recordIds);
+        for (Record record : records) {
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteElevationGainedRecord_time_range() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteElevationGainedRecord());
+        TestUtils.verifyDeleteRecords(ElevationGainedRecord.class, timeRangeFilter);
+        TestUtils.assertRecordNotFound(id, ElevationGainedRecord.class);
+    }
+
+    private void readElevationGainedRecordUsingClientId(List<Record> insertedRecord)
+            throws InterruptedException {
+        ReadRecordsRequestUsingIds.Builder<ElevationGainedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ElevationGainedRecord.class);
+        for (Record record : insertedRecord) {
+            request.addClientRecordId(record.getMetadata().getClientRecordId());
+        }
+        List<ElevationGainedRecord> result = TestUtils.readRecords(request.build());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            ElevationGainedRecord other = (ElevationGainedRecord) insertedRecord.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
+    }
+
+    private void readElevationGainedRecordUsingIds(List<Record> recordList)
+            throws InterruptedException {
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        ReadRecordsRequestUsingIds.Builder<ElevationGainedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ElevationGainedRecord.class);
+        for (Record record : insertedRecords) {
+            request.addId(record.getMetadata().getId());
+        }
+        List<ElevationGainedRecord> result = TestUtils.readRecords(request.build());
+        assertThat(result).hasSize(insertedRecords.size());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            ElevationGainedRecord other = (ElevationGainedRecord) insertedRecords.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
     }
 
     static ElevationGainedRecord getBaseElevationGainedRecord() {
@@ -88,7 +318,7 @@ public class ElevationGainedRecordTest {
                 .build();
     }
 
-    static ElevationGainedRecord getBaseElevationGainedRecord(double elevation) {
+    static ElevationGainedRecord getElevationGainedRecord(double elevation) {
         return new ElevationGainedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
@@ -98,8 +328,21 @@ public class ElevationGainedRecordTest {
     }
 
     static ElevationGainedRecord getCompleteElevationGainedRecord() {
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setClientRecordId("EGR" + Math.random());
+
         return new ElevationGainedRecord.Builder(
-                        new Metadata.Builder().build(),
+                        testMetadataBuilder.build(),
                         Instant.now(),
                         Instant.now(),
                         Length.fromMeters(10.0))

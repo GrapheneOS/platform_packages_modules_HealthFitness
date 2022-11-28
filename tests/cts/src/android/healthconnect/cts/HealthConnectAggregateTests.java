@@ -371,9 +371,9 @@ public class HealthConnectAggregateTests {
         Context context = ApplicationProvider.getApplicationContext();
         List<Record> records =
                 Arrays.asList(
-                        PowerRecordTest.getBasePowerRecord(5.0),
-                        PowerRecordTest.getBasePowerRecord(10.0),
-                        PowerRecordTest.getBasePowerRecord(15.0));
+                        PowerRecordTest.getPowerRecord(5.0),
+                        PowerRecordTest.getPowerRecord(10.0),
+                        PowerRecordTest.getPowerRecord(15.0));
         AggregateRecordsResponse<Power> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Power>(
@@ -439,8 +439,8 @@ public class HealthConnectAggregateTests {
     public void testAggregation_ElevationTotal() throws Exception {
         List<Record> records =
                 Arrays.asList(
-                        ElevationGainedRecordTest.getBaseElevationGainedRecord(74.0),
-                        ElevationGainedRecordTest.getBaseElevationGainedRecord(100.5));
+                        ElevationGainedRecordTest.getElevationGainedRecord(74.0),
+                        ElevationGainedRecordTest.getElevationGainedRecord(100.5));
         AggregateRecordsResponse<Length> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
@@ -452,7 +452,7 @@ public class HealthConnectAggregateTests {
                                 .build(),
                         records);
         List<Record> recordNew =
-                Arrays.asList(ElevationGainedRecordTest.getBaseElevationGainedRecord(100.5));
+                Arrays.asList(ElevationGainedRecordTest.getElevationGainedRecord(100.5));
         AggregateRecordsResponse<Length> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(

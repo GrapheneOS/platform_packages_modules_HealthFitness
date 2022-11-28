@@ -31,7 +31,8 @@ public abstract class Record {
      * @param metadata Metadata to be associated with the record. See {@link Metadata}
      */
     Record(@NonNull Metadata metadata) {
-        Identifier annotation = this.getClass().getAnnotation(Identifier.class);
+        Objects.requireNonNull(metadata);
+        Identifier annotation = getClass().getAnnotation(Identifier.class);
         Objects.requireNonNull(annotation);
         mRecordIdentifier = annotation.recordIdentifier();
         mMetadata = metadata;
@@ -80,6 +81,6 @@ public abstract class Record {
     /** Returns a hash code value for the object. */
     @Override
     public int hashCode() {
-        return Objects.hash(this.getMetadata(), this.getRecordType());
+        return Objects.hash(getMetadata(), getRecordType());
     }
 }

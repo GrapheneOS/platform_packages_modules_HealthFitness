@@ -19,30 +19,32 @@ package android.healthconnect.cts;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.DeleteUsingFiltersRequest;
+import android.healthconnect.ReadRecordsRequestUsingFilters;
+import android.healthconnect.ReadRecordsRequestUsingIds;
+import android.healthconnect.RecordIdFilter;
+import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.DataOrigin;
+import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.SpeedRecord;
 import android.healthconnect.datatypes.units.Velocity;
-import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
-import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -50,35 +52,236 @@ public class SpeedRecordTest {
 
     private static final String TAG = "SpeedRecordTest";
 
-    @Test
-    public void testInsertSpeedRecord() throws InterruptedException {
-        List<Record> records = new ArrayList<>();
-        records.add(getBaseSpeedRecord());
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<List<Record>> response = new AtomicReference<>();
-        service.insertRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(InsertRecordsResponse result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        assertThat(response.get()).hasSize(records.size());
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                SpeedRecord.class,
+                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
     }
 
-    static SpeedRecord getBaseSpeedRecord() {
+    @Test
+    public void testInsertSpeedRecord() throws InterruptedException {
+        TestUtils.insertRecords(Arrays.asList(getBaseSpeedRecord(), getCompleteSpeedRecord()));
+    }
+
+    @Test
+    public void testReadSpeedRecord_usingIds() throws InterruptedException {
+        testReadSpeedRecordIds();
+    }
+
+    @Test
+    public void testReadSpeedRecord_invalidIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<SpeedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(SpeedRecord.class).addId("abc").build();
+        List<SpeedRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadSpeedRecord_usingClientRecordIds() throws InterruptedException {
+        List<Record> recordList = Arrays.asList(getCompleteSpeedRecord(), getCompleteSpeedRecord());
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        readSpeedRecordUsingClientId(insertedRecords);
+    }
+
+    @Test
+    public void testReadSpeedRecord_invalidClientRecordIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<SpeedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(SpeedRecord.class)
+                        .addClientRecordId("abc")
+                        .build();
+        List<SpeedRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadSpeedRecordUsingFilters_default() throws InterruptedException {
+        List<SpeedRecord> oldSpeedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(SpeedRecord.class).build());
+        SpeedRecord testRecord = getCompleteSpeedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<SpeedRecord> newSpeedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(SpeedRecord.class).build());
+        assertThat(newSpeedRecords.size()).isEqualTo(oldSpeedRecords.size() + 1);
+        assertThat(newSpeedRecords.get(newSpeedRecords.size() - 1).equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadSpeedRecordUsingFilters_timeFilter() throws InterruptedException {
+        TimeRangeFilter filter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        SpeedRecord testRecord = getCompleteSpeedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<SpeedRecord> newSpeedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(SpeedRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .build());
+        assertThat(newSpeedRecords.size()).isEqualTo(1);
+        assertThat(newSpeedRecords.get(newSpeedRecords.size() - 1).equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadSpeedRecordUsingFilters_dataFilter_correct() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<SpeedRecord> oldSpeedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(SpeedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        SpeedRecord testRecord = getCompleteSpeedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<SpeedRecord> newSpeedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(SpeedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        assertThat(newSpeedRecords.size() - oldSpeedRecords.size()).isEqualTo(1);
+        assertThat(newSpeedRecords.get(newSpeedRecords.size() - 1).equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadSpeedRecordUsingFilters_dataFilter_incorrect() throws InterruptedException {
+        TestUtils.insertRecords(Collections.singletonList(getCompleteSpeedRecord()));
+        List<SpeedRecord> newSpeedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(SpeedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder().setPackageName("abc").build())
+                                .build());
+        assertThat(newSpeedRecords.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testDeleteSpeedRecord_no_filters() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
+        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        TestUtils.assertRecordNotFound(id, SpeedRecord.class);
+    }
+
+    @Test
+    public void testDeleteSpeedRecord_time_filters() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(SpeedRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id, SpeedRecord.class);
+    }
+
+    @Test
+    public void testDeleteSpeedRecord_recordId_filters() throws InterruptedException {
+        List<Record> records = List.of(getBaseSpeedRecord(), getCompleteSpeedRecord());
+        TestUtils.insertRecords(records);
+
+        for (Record record : records) {
+            TestUtils.verifyDeleteRecords(
+                    new DeleteUsingFiltersRequest.Builder()
+                            .addRecordType(record.getClass())
+                            .build());
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteSpeedRecord_dataOrigin_filters() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build())
+                        .build());
+        TestUtils.assertRecordNotFound(id, SpeedRecord.class);
+    }
+
+    @Test
+    public void testDeleteSpeedRecord_dataOrigin_filter_incorrect() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(new DataOrigin.Builder().setPackageName("abc").build())
+                        .build());
+        TestUtils.assertRecordFound(id, SpeedRecord.class);
+    }
+
+    @Test
+    public void testDeleteSpeedRecord_usingIds() throws InterruptedException {
+        List<Record> records = List.of(getBaseSpeedRecord(), getCompleteSpeedRecord());
+        List<Record> insertedRecord = TestUtils.insertRecords(records);
+        List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
+        for (Record record : insertedRecord) {
+            recordIds.add(
+                    new RecordIdFilter.Builder(record.getClass())
+                            .setId(record.getMetadata().getId())
+                            .build());
+        }
+
+        TestUtils.verifyDeleteRecords(recordIds);
+        for (Record record : records) {
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteSpeedRecord_time_range() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
+        TestUtils.verifyDeleteRecords(SpeedRecord.class, timeRangeFilter);
+        TestUtils.assertRecordNotFound(id, SpeedRecord.class);
+    }
+
+    private void testReadSpeedRecordIds() throws InterruptedException {
+        List<Record> recordList = Arrays.asList(getCompleteSpeedRecord(), getCompleteSpeedRecord());
+        readSpeedRecordUsingIds(recordList);
+    }
+
+    private void readSpeedRecordUsingClientId(List<Record> insertedRecord)
+            throws InterruptedException {
+        ReadRecordsRequestUsingIds.Builder<SpeedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(SpeedRecord.class);
+        for (Record record : insertedRecord) {
+            request.addClientRecordId(record.getMetadata().getClientRecordId());
+        }
+        List<SpeedRecord> result = TestUtils.readRecords(request.build());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            SpeedRecord other = (SpeedRecord) insertedRecord.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
+    }
+
+    private void readSpeedRecordUsingIds(List<Record> recordList) throws InterruptedException {
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        ReadRecordsRequestUsingIds.Builder<SpeedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(SpeedRecord.class);
+        for (Record record : insertedRecords) {
+            request.addId(record.getMetadata().getId());
+        }
+        List<SpeedRecord> result = TestUtils.readRecords(request.build());
+        assertThat(result).hasSize(insertedRecords.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertThat(result.get(i).equals(insertedRecords.get(i))).isTrue();
+        }
+    }
+
+    private static SpeedRecord getBaseSpeedRecord() {
         SpeedRecord.SpeedRecordSample speedRecord =
                 new SpeedRecord.SpeedRecordSample(
                         Velocity.fromMetersPerSecond(10.0), Instant.now());
@@ -88,6 +291,33 @@ public class SpeedRecordTest {
 
         return new SpeedRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Instant.now(), speedRecords)
+                .build();
+    }
+
+    private static SpeedRecord getCompleteSpeedRecord() {
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setClientRecordId("SPR" + Math.random());
+
+        SpeedRecord.SpeedRecordSample speedRecord =
+                new SpeedRecord.SpeedRecordSample(
+                        Velocity.fromMetersPerSecond(10.0), Instant.now());
+
+        ArrayList<SpeedRecord.SpeedRecordSample> speedRecords = new ArrayList<>();
+        speedRecords.add(speedRecord);
+        speedRecords.add(speedRecord);
+
+        return new SpeedRecord.Builder(
+                        testMetadataBuilder.build(), Instant.now(), Instant.now(), speedRecords)
                 .build();
     }
 }

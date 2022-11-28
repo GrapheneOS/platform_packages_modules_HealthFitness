@@ -24,15 +24,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
 import android.content.Context;
-import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
-import android.healthconnect.ReadRecordsRequestUsingFilters;
-import android.healthconnect.ReadRecordsRequestUsingIds;
-import android.healthconnect.RecordIdFilter;
-import android.healthconnect.RecordTypeInfoResponse;
-import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -49,29 +43,25 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 /** CTS test for API provided by HealthConnectManager. */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectManagerTest {
     private static final String TAG = "HealthConnectManagerTest";
-    private static final UiAutomation sUiAutomation =
-            InstrumentationRegistry.getInstrumentation().getUiAutomation();
 
     @Test
     public void testHCManagerIsAccessible_viaHCManager() {
@@ -97,158 +87,6 @@ public class HealthConnectManagerTest {
     }
 
     @Test
-    public void testInsertRecords() throws Exception {
-        TestUtils.insertRecords(TestUtils.getTestRecords());
-    }
-
-    @Test
-    public void testDeleteRecord_no_filters() throws InterruptedException {
-        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-
-        try {
-            String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
-            TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
-            TestUtils.assertRecordNotFound(id, StepsRecord.class);
-        } finally {
-            sUiAutomation.dropShellPermissionIdentity();
-        }
-    }
-
-    @Test
-    public void testDeleteRecord_no_filters_no_perm() throws InterruptedException {
-        try {
-            TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
-            assertThat(false).isTrue();
-        } catch (SecurityException securityException) {
-            assertThat(securityException).isNotNull();
-        }
-    }
-
-    @Test
-    public void testDeleteRecord_time_filters() throws InterruptedException {
-        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-        try {
-            TimeRangeFilter timeRangeFilter =
-                    new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000))
-                            .build();
-            String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
-            TestUtils.verifyDeleteRecords(
-                    new DeleteUsingFiltersRequest.Builder()
-                            .addRecordType(StepsRecord.class)
-                            .setTimeRangeFilter(timeRangeFilter)
-                            .build());
-            TestUtils.assertRecordNotFound(id, StepsRecord.class);
-        } finally {
-            sUiAutomation.dropShellPermissionIdentity();
-        }
-    }
-
-    @Test
-    public void testDeleteRecord_recordId_filters() throws InterruptedException {
-        List<Record> records = TestUtils.getTestRecords();
-        TestUtils.insertRecords(records);
-
-        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-        try {
-            for (Record record : records) {
-                TestUtils.verifyDeleteRecords(
-                        new DeleteUsingFiltersRequest.Builder()
-                                .addRecordType(record.getClass())
-                                .build());
-                TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
-            }
-        } finally {
-            sUiAutomation.dropShellPermissionIdentity();
-        }
-    }
-
-    @Test
-    public void testDeleteRecord_dataOrigin_filters() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
-        TestUtils.verifyDeleteRecords(
-                new DeleteUsingFiltersRequest.Builder()
-                        .addDataOrigin(
-                                new DataOrigin.Builder()
-                                        .setPackageName(context.getPackageName())
-                                        .build())
-                        .build());
-        TestUtils.assertRecordNotFound(id, StepsRecord.class);
-    }
-
-    @Test
-    public void testDeleteRecord_dataOrigin_filter_incorrect() throws InterruptedException {
-        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-        try {
-            String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
-            TestUtils.verifyDeleteRecords(
-                    new DeleteUsingFiltersRequest.Builder()
-                            .addDataOrigin(new DataOrigin.Builder().setPackageName("abc").build())
-                            .build());
-            TestUtils.assertRecordFound(id, StepsRecord.class);
-        } finally {
-            sUiAutomation.dropShellPermissionIdentity();
-        }
-    }
-
-    @Test
-    public void testDeleteRecord_usingIds() throws InterruptedException {
-        List<Record> records = TestUtils.getTestRecords();
-        List<Record> insertedRecord = TestUtils.insertRecords(records);
-        List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
-        for (Record record : insertedRecord) {
-            recordIds.add(
-                    new RecordIdFilter.Builder(record.getClass())
-                            .setId(record.getMetadata().getId())
-                            .build());
-        }
-
-        TestUtils.verifyDeleteRecords(recordIds);
-        for (Record record : records) {
-            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
-        }
-    }
-
-    @Test
-    public void testDeleteRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
-        String id = TestUtils.insertRecordAndGetId(TestUtils.getStepsRecord());
-        TestUtils.verifyDeleteRecords(StepsRecord.class, timeRangeFilter);
-        TestUtils.assertRecordNotFound(id, StepsRecord.class);
-    }
-
-    @Test
-    public void testReadRecord_usingIds() throws InterruptedException {
-        testRead_StepsRecordIds();
-        testRead_HeartRateRecord();
-        testRead_BasalMetabolicRateRecord();
-    }
-
-    @Test
-    public void testReadRecord_usingClientRecordIds() throws InterruptedException {
-        testRead_StepsRecordClientIds();
-    }
-
-    @Test
-    public void testReadRecord_invalidIds() throws InterruptedException {
-        ReadRecordsRequestUsingIds<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class).addId("abc").build();
-        List<StepsRecord> result = TestUtils.readRecords(request);
-        assertThat(result.size()).isEqualTo(0);
-    }
-
-    @Test
-    public void testReadRecord_invalidClientRecordIds() throws InterruptedException {
-        ReadRecordsRequestUsingIds<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
-                        .addClientRecordId("abc")
-                        .build();
-        List<StepsRecord> result = TestUtils.readRecords(request);
-        assertThat(result.size()).isEqualTo(0);
-    }
-
-    @Test
     public void testIsHealthPermission_forHealthPermission_returnsTrue() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         assertThat(isHealthPermission(context, HealthPermissions.READ_ACTIVE_CALORIES_BURNED))
@@ -265,134 +103,9 @@ public class HealthConnectManagerTest {
         assertThat(isHealthPermission(context, CAMERA)).isFalse();
     }
 
-    @Test
-    public void testReadStepsRecordUsingFilters_default() throws InterruptedException {
-        List<StepsRecord> oldStepsRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
-        TestUtils.insertRecords(Collections.singletonList(TestUtils.getStepsRecord()));
-        List<StepsRecord> newStepsRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
-        assertThat(newStepsRecords.size()).isEqualTo(oldStepsRecords.size() + 1);
-        assertThat(newStepsRecords.get(newStepsRecords.size() - 1).getCount())
-                .isEqualTo(TestUtils.getStepsRecord().getCount());
-    }
-
-    @Test
-    public void testReadStepsRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
-        TestUtils.insertRecords(Collections.singletonList(TestUtils.getStepsRecord()));
-        List<StepsRecord> newStepsRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .setTimeRangeFilter(filter)
-                                .build());
-        assertThat(newStepsRecords.size()).isEqualTo(1);
-        assertThat(newStepsRecords.get(0).getCount())
-                .isEqualTo(TestUtils.getStepsRecord().getCount());
-    }
-
-    @Test
-    public void testReadStepsRecordUsingFilters_dataFilter_incorrect() throws InterruptedException {
-        TestUtils.insertRecords(Collections.singletonList(TestUtils.getStepsRecord()));
-        List<StepsRecord> newStepsRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .addDataOrigins(
-                                        new DataOrigin.Builder().setPackageName("abc").build())
-                                .build());
-        assertThat(newStepsRecords.size()).isEqualTo(0);
-    }
-
-    // TODO(b/257796081): Move read tests to respective record type classes, verify that the correct
-    // details are being fetched, and add tests for all record type
-
-    @Test
-    public void testReadStepsRecordUsingFilters_dataFilter_correct() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        List<StepsRecord> oldStepsRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .addDataOrigins(
-                                        new DataOrigin.Builder()
-                                                .setPackageName(context.getPackageName())
-                                                .build())
-                                .build());
-        TestUtils.insertRecords(Collections.singletonList(TestUtils.getStepsRecord()));
-        List<StepsRecord> newStepsRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .addDataOrigins(
-                                        new DataOrigin.Builder()
-                                                .setPackageName(context.getPackageName())
-                                                .build())
-                                .build());
-        assertThat(newStepsRecords.size() - oldStepsRecords.size()).isEqualTo(1);
-        assertThat(newStepsRecords.get(0).getCount())
-                .isEqualTo(TestUtils.getStepsRecord().getCount());
-    }
-
+    /*
     @Test
     public void test_getRecordTypeInfo() throws InterruptedException {
-        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-
-        try {
-            Context context = ApplicationProvider.getApplicationContext();
-            CountDownLatch latch = new CountDownLatch(1);
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            assertThat(service).isNotNull();
-            AtomicReference<Map<Class<? extends Record>, RecordTypeInfoResponse>> response =
-                    new AtomicReference<>();
-            AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
-
-            service.queryAllRecordTypesInfo(
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<>() {
-                        @Override
-                        public void onResult(
-                                Map<Class<? extends Record>, RecordTypeInfoResponse> result) {
-                            response.set(result);
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException exception) {
-                            responseException.set(exception);
-                            latch.countDown();
-                        }
-                    });
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-            assertThat(responseException.get()).isNull();
-            assertThat(response).isNotNull();
-            Log.d(TAG, "GetDataTypeInfoResponse : \n");
-            response.get()
-                    .forEach(
-                            (recordTypeClass, recordTypeInfoResponse) -> {
-                                String builder =
-                                        recordTypeClass.getTypeName()
-                                                + " : "
-                                                + " HealthPermissionCategory : "
-                                                + recordTypeInfoResponse.getPermissionCategory()
-                                                + " HealthDataCategory : "
-                                                + recordTypeInfoResponse.getDataCategory()
-                                                + " Contributing Packages : "
-                                                + recordTypeInfoResponse
-                                                        .getContributingPackages()
-                                                        .stream()
-                                                        .map(DataOrigin::getPackageName)
-                                                        .collect(Collectors.joining(","))
-                                                + "\n";
-                                Log.d(TAG, builder);
-                            });
-        } finally {
-            sUiAutomation.dropShellPermissionIdentity();
-        }
-    }
-
-    @Test
-    public void test_getRecordTypeInfo_no_perm() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
@@ -401,29 +114,53 @@ public class HealthConnectManagerTest {
                 new AtomicReference<>();
         AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
 
-        try {
-            service.queryAllRecordTypesInfo(
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<>() {
-                        @Override
-                        public void onResult(
-                                Map<Class<? extends Record>, RecordTypeInfoResponse> result) {
-                            response.set(result);
-                            latch.countDown();
-                        }
+        service.queryAllRecordTypesInfo(
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<
+                        Map<Class<? extends Record>, RecordTypeInfoResponse>,
+                        HealthConnectException>() {
+                    @Override
+                    public void onResult(
+                            Map<Class<? extends Record>, RecordTypeInfoResponse> result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
 
-                        @Override
-                        public void onError(HealthConnectException exception) {
-                            responseException.set(exception);
-                            latch.countDown();
-                        }
-                    });
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-            assertThat(responseException).isNotNull();
-        } catch (SecurityException exception) {
-            assertThat(exception).isNotNull();
-        }
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        responseException.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(responseException.get()).isNull();
+        assertThat(response).isNotNull();
+        Log.d(TAG, "GetDataTypeInfoResponse : \n");
+        response.get()
+                .forEach(
+                        (recordTypeClass, recordTypeInfoResponse) -> {
+                            StringBuilder builder =
+                                    new StringBuilder(recordTypeClass.getTypeName() + " : ");
+                            builder.append(
+                                    " HealthPermissionCategory : "
+                                            + recordTypeInfoResponse.getPermissionCategory());
+                            builder.append(
+                                    " HealthDataCategory : "
+                                            + recordTypeInfoResponse.getDataCategory());
+                            builder.append(
+                                    " Contributing Packages : "
+                                            + String.join(
+                                                    ",",
+                                                    recordTypeInfoResponse
+                                                            .getContributingPackages()
+                                                            .stream()
+                                                            .map(DataOrigin::getPackageName)
+                                                            .collect(Collectors.toList())));
+                            builder.append("\n");
+                            Log.d(TAG, builder.toString());
+                        });
     }
+    */
 
     /**
      * Test to verify the working of {@link
@@ -434,9 +171,19 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully()
-            throws InterruptedException {
+            throws InterruptedException, InvocationTargetException, InstantiationException,
+                    IllegalAccessException, NoSuchMethodException {
+
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
+
         // Insert a sample record of each data type.
         List<Record> insertRecords = TestUtils.insertRecords(TestUtils.getTestRecords());
+
+        // read inserted records and verify that the data is same as inserted.
 
         // Generate a second set of records that will be used to perform the update operation.
         List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
@@ -448,7 +195,37 @@ public class HealthConnectManagerTest {
                     .getMetadata()
                     .setId(insertRecords.get(itr).getMetadata().getId());
         }
-        TestUtils.updateRecords(updateRecords);
+
+        service.updateRecords(
+                updateRecords,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<Void, HealthConnectException>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        responseException.set(exception);
+                        latch.countDown();
+                        Log.e(
+                                TAG,
+                                "Exception: "
+                                        + exception.getMessage()
+                                        + ", error code: "
+                                        + exception.getErrorCode());
+                    }
+                });
+
+        // assert the inserted data has been modified per the updateRecords.
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+
+        // assert the inserted data has been modified by reading the data.
+        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
+        //  using read API
+
+        assertThat(responseException.get()).isNull();
     }
 
     /**
@@ -463,9 +240,19 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_invalidInputRecords_noChangeInDataBase()
-            throws InterruptedException {
+            throws InterruptedException, InvocationTargetException, InstantiationException,
+                    IllegalAccessException, NoSuchMethodException {
+
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
+
         // Insert a sample record of each data type.
         List<Record> insertRecords = TestUtils.insertRecords(TestUtils.getTestRecords());
+
+        // read inserted records and verify that the data is same as inserted.
 
         // Generate a second set of records that will be used to perform the update operation.
         List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
@@ -483,13 +270,37 @@ public class HealthConnectManagerTest {
                                     : String.valueOf(Math.random()));
         }
 
-        try {
-            TestUtils.updateRecords(updateRecords);
-            assertThat(true).isFalse();
-        } catch (HealthConnectException healthConnectException) {
-            assertThat(healthConnectException.getErrorCode())
-                    .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
-        }
+        // perform the update operation.
+        service.updateRecords(
+                updateRecords,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<Void, HealthConnectException>() {
+                    @Override
+                    public void onResult(Void result) {}
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        responseException.set(exception);
+                        latch.countDown();
+                        Log.e(
+                                TAG,
+                                "Exception: "
+                                        + exception.getMessage()
+                                        + ", error code: "
+                                        + exception.getErrorCode());
+                    }
+                });
+
+        assertThat(latch.await(/* timeout */ 3, TimeUnit.SECONDS)).isEqualTo(true);
+
+        // assert the inserted data has not been modified by reading the data.
+        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
+        //  using read API
+
+        // verify that the testcase failed due to invalid argument exception.
+        assertThat(responseException.get()).isNotNull();
+        assertThat(responseException.get().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
     }
 
     /**
@@ -503,7 +314,15 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_recordWithInvalidPackageName_noChangeInDataBase()
-            throws InterruptedException {
+            throws InterruptedException, InvocationTargetException, InstantiationException,
+                    IllegalAccessException, NoSuchMethodException {
+
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        AtomicReference<Exception> responseException = new AtomicReference<>();
+
         // Insert a sample record of each data type.
         List<Record> insertRecords = TestUtils.insertRecords(TestUtils.getTestRecords());
 
@@ -519,7 +338,7 @@ public class HealthConnectManagerTest {
                     .getMetadata()
                     .setId(insertRecords.get(itr).getMetadata().getId());
 
-            // adding an entry with invalid packageName.
+            //             adding an entry with invalid packageName.
             if (updateRecords.get(itr).getRecordType() == RECORD_TYPE_STEPS) {
                 updateRecords.set(
                         itr, getStepsRecord(false, /* incorrectPackageName */ "abc.xyz.pqr"));
@@ -527,179 +346,65 @@ public class HealthConnectManagerTest {
         }
 
         try {
-            TestUtils.updateRecords(updateRecords);
-            Assert.fail();
+            // perform the update operation.
+            service.updateRecords(
+                    updateRecords,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<Void, HealthConnectException>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(HealthConnectException exception) {
+                            responseException.set(exception);
+                            latch.countDown();
+                            Log.e(
+                                    TAG,
+                                    "Exception: "
+                                            + exception.getMessage()
+                                            + ", error code: "
+                                            + exception.getErrorCode());
+                        }
+                    });
+
         } catch (Exception exception) {
-            assertThat(exception.getClass()).isEqualTo(IllegalArgumentException.class);
+            latch.countDown();
+            responseException.set(exception);
         }
+        assertThat(latch.await(/* timeout */ 3, TimeUnit.SECONDS)).isEqualTo(true);
 
         // assert the inserted data has not been modified by reading the data.
         // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
         //  using read API
+
+        // verify that the testcase failed due to invalid argument exception.
+        assertThat(responseException.get()).isNotNull();
+        assertThat(responseException.get().getClass()).isEqualTo(IllegalArgumentException.class);
     }
 
     @Test
     public void testAutoDeleteApis() throws InterruptedException {
-        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
 
-        try {
-            Context context = ApplicationProvider.getApplicationContext();
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            assertThat(service).isNotNull();
-            TestUtils.setAutoDeletePeriod(30);
-            assertThat(service.getRecordRetentionPeriodInDays()).isEqualTo(30);
-            TestUtils.setAutoDeletePeriod(0);
-            assertThat(service.getRecordRetentionPeriodInDays()).isEqualTo(0);
-        } finally {
-            sUiAutomation.dropShellPermissionIdentity();
-        }
-    }
-
-    @Test
-    public void testAutoDeleteApis_no_perm() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
+        TestUtils.setAutoDeletePeriod(30);
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         try {
-            TestUtils.setAutoDeletePeriod(30);
-            assertThat(false).isTrue();
-        } catch (SecurityException securityException) {
-            assertThat(securityException).isNotNull();
+            assertThat(service.getRecordRetentionPeriodInDays()).isEqualTo(30);
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
         }
+
+        TestUtils.setAutoDeletePeriod(0);
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         try {
-            service.getRecordRetentionPeriodInDays();
-            Assert.fail();
-        } catch (SecurityException securityException) {
-            // ignore as this is expected
-        }
-    }
-
-    private void testRead_StepsRecordIds() throws InterruptedException {
-        List<Record> recordList =
-                Arrays.asList(TestUtils.getStepsRecord(), TestUtils.getStepsRecord());
-        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
-        readStepsRecordUsingIds(insertedRecords);
-    }
-
-    private void testRead_StepsRecordClientIds() throws InterruptedException {
-        List<Record> recordList =
-                Arrays.asList(TestUtils.getStepsRecord(), TestUtils.getStepsRecord());
-        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
-        readStepsRecordUsingClientId(insertedRecords);
-    }
-
-    private void testRead_HeartRateRecord() throws InterruptedException {
-        List<Record> recordList =
-                Arrays.asList(TestUtils.getHeartRateRecord(), TestUtils.getHeartRateRecord());
-        readHeartRateRecordUsingIds(recordList);
-    }
-
-    private void testRead_BasalMetabolicRateRecord() throws InterruptedException {
-        List<Record> recordList =
-                Arrays.asList(
-                        TestUtils.getBasalMetabolicRateRecord(),
-                        TestUtils.getBasalMetabolicRateRecord());
-        readBasalMetabolicRateRecordUsingIds(recordList);
-    }
-
-    private void readStepsRecordUsingIds(List<Record> insertedRecord) throws InterruptedException {
-        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
-        for (Record record : insertedRecord) {
-            request.addId(record.getMetadata().getId());
-        }
-        List<StepsRecord> result = TestUtils.readRecords(request.build());
-        verifyStepsRecordReadResults(insertedRecord, result);
-    }
-
-    private void readStepsRecordUsingClientId(List<Record> insertedRecord)
-            throws InterruptedException {
-        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
-        for (Record record : insertedRecord) {
-            request.addClientRecordId(record.getMetadata().getClientRecordId());
-        }
-        List<StepsRecord> result = TestUtils.readRecords(request.build());
-        verifyStepsRecordReadResults(insertedRecord, result);
-    }
-
-    private void verifyStepsRecordReadResults(
-            List<Record> insertedRecords, List<StepsRecord> readResult) {
-        assertThat(readResult).hasSize(insertedRecords.size());
-        for (int i = 0; i < readResult.size(); i++) {
-            StepsRecord stepsRecord = readResult.get(i);
-            StepsRecord input = (StepsRecord) insertedRecords.get(i);
-            assertThat(stepsRecord.getRecordType()).isEqualTo(input.getRecordType());
-            assertThat(stepsRecord.getMetadata().getDevice().getManufacturer())
-                    .isEqualTo(input.getMetadata().getDevice().getManufacturer());
-            assertThat(stepsRecord.getMetadata().getDevice().getModel())
-                    .isEqualTo(input.getMetadata().getDevice().getModel());
-            assertThat(stepsRecord.getMetadata().getDevice().getType())
-                    .isEqualTo(input.getMetadata().getDevice().getType());
-            assertThat(stepsRecord.getMetadata().getDataOrigin().getPackageName())
-                    .isEqualTo(input.getMetadata().getDataOrigin().getPackageName());
-            assertThat(stepsRecord.getCount()).isEqualTo(input.getCount());
-        }
-    }
-
-    private void readHeartRateRecordUsingIds(List<Record> recordList) throws InterruptedException {
-        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
-        ReadRecordsRequestUsingIds.Builder<HeartRateRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(HeartRateRecord.class);
-        for (Record record : insertedRecords) {
-            request.addId(record.getMetadata().getId());
-        }
-        List<HeartRateRecord> result = TestUtils.readRecords(request.build());
-        verifyHeartRateRecordReadResults(insertedRecords, result);
-    }
-
-    private void verifyHeartRateRecordReadResults(
-            List<Record> insertedRecords, List<HeartRateRecord> readResult) {
-        assertThat(readResult).hasSize(insertedRecords.size());
-        for (int i = 0; i < readResult.size(); i++) {
-            HeartRateRecord heartRateRecord = readResult.get(i);
-            HeartRateRecord input = (HeartRateRecord) insertedRecords.get(i);
-            assertThat(heartRateRecord.getRecordType()).isEqualTo(input.getRecordType());
-            assertThat(heartRateRecord.getMetadata().getDevice().getManufacturer())
-                    .isEqualTo(input.getMetadata().getDevice().getManufacturer());
-            assertThat(heartRateRecord.getMetadata().getDevice().getModel())
-                    .isEqualTo(input.getMetadata().getDevice().getModel());
-            assertThat(heartRateRecord.getMetadata().getDevice().getType())
-                    .isEqualTo(input.getMetadata().getDevice().getType());
-            assertThat(heartRateRecord.getMetadata().getDataOrigin().getPackageName())
-                    .isEqualTo(input.getMetadata().getDataOrigin().getPackageName());
-        }
-    }
-
-    private void readBasalMetabolicRateRecordUsingIds(List<Record> recordList)
-            throws InterruptedException {
-        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
-        ReadRecordsRequestUsingIds.Builder<BasalMetabolicRateRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(BasalMetabolicRateRecord.class);
-        for (Record record : insertedRecords) {
-            request.addId(record.getMetadata().getId());
-        }
-        List<BasalMetabolicRateRecord> result = TestUtils.readRecords(request.build());
-        verifyBMRRecordReadResults(insertedRecords, result);
-    }
-
-    private void verifyBMRRecordReadResults(
-            List<Record> insertedRecords, List<BasalMetabolicRateRecord> readResult) {
-        assertThat(readResult).hasSize(insertedRecords.size());
-        for (int i = 0; i < readResult.size(); i++) {
-            BasalMetabolicRateRecord bmrRecord = readResult.get(i);
-            BasalMetabolicRateRecord input = (BasalMetabolicRateRecord) insertedRecords.get(i);
-            assertThat(bmrRecord.getRecordType()).isEqualTo(input.getRecordType());
-            assertThat(bmrRecord.getMetadata().getDevice().getManufacturer())
-                    .isEqualTo(input.getMetadata().getDevice().getManufacturer());
-            assertThat(bmrRecord.getMetadata().getDevice().getModel())
-                    .isEqualTo(input.getMetadata().getDevice().getModel());
-            assertThat(bmrRecord.getMetadata().getDevice().getType())
-                    .isEqualTo(input.getMetadata().getDevice().getType());
-            assertThat(bmrRecord.getMetadata().getDataOrigin().getPackageName())
-                    .isEqualTo(input.getMetadata().getDataOrigin().getPackageName());
-            assertThat(bmrRecord.getBasalMetabolicRate().getInWatts())
-                    .isEqualTo(input.getBasalMetabolicRate().getInWatts());
+            assertThat(service.getRecordRetentionPeriodInDays()).isEqualTo(0);
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
         }
     }
 
@@ -708,10 +413,6 @@ public class HealthConnectManagerTest {
                 getStepsRecord(isSetClientRecordId, ""),
                 getHeartRateRecord(isSetClientRecordId),
                 getBasalMetabolicRateRecord(isSetClientRecordId));
-    }
-
-    private StepsRecord getStepsRecord() {
-        return getStepsRecord(true, "");
     }
 
     private StepsRecord getStepsRecord(boolean isSetClientRecordId, String packageName) {
@@ -731,27 +432,6 @@ public class HealthConnectManagerTest {
         return new StepsRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Instant.now(), 10)
                 .build();
-    }
-
-    private StepsRecord getStepsRecord(int count) {
-        Device device =
-                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
-        DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
-        return new StepsRecord.Builder(
-                        new Metadata.Builder()
-                                .setDevice(device)
-                                .setDataOrigin(dataOrigin)
-                                .setClientRecordId("SR" + Math.random())
-                                .build(),
-                        Instant.now(),
-                        Instant.now(),
-                        count)
-                .build();
-    }
-
-    private HeartRateRecord getHeartRateRecord() {
-        return getHeartRateRecord(true);
     }
 
     private HeartRateRecord getHeartRateRecord(boolean isSetClientRecordId) {
@@ -774,10 +454,6 @@ public class HealthConnectManagerTest {
                 .build();
     }
 
-    private BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
-        return getBasalMetabolicRateRecord(true);
-    }
-
     private BasalMetabolicRateRecord getBasalMetabolicRateRecord(boolean isSetClientRecordId) {
         Device device =
                 new Device.Builder()
@@ -794,26 +470,7 @@ public class HealthConnectManagerTest {
         }
         return new BasalMetabolicRateRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Power.fromWatts(100.0))
-                .build();
-    }
-
-    private BasalMetabolicRateRecord getBasalMetabolicRateRecord(double watts) {
-        Device device =
-                new Device.Builder()
-                        .setManufacturer("google")
-                        .setModel("Pixel4a")
-                        .setType(2)
-                        .build();
-        DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
-        return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder()
-                                .setDevice(device)
-                                .setDataOrigin(dataOrigin)
-                                .setClientRecordId("BMR" + Math.random())
-                                .build(),
-                        Instant.now(),
-                        Power.fromWatts(watts))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }
