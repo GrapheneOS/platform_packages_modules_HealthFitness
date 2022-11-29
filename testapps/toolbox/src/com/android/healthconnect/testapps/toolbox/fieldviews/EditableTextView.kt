@@ -15,17 +15,24 @@ package com.android.healthconnect.testapps.toolbox.fieldviews
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.android.healthconnect.testapps.toolbox.R
 
 @SuppressLint("ViewConstructor")
-class EditableTextView(context: Context, fieldName: String, inputType: Int) :
+class EditableTextView(context: Context, fieldName: String?, inputType: Int) :
     InputFieldView(context) {
 
     init {
         inflate(context, R.layout.fragment_editable_field, this)
-        findViewById<TextView>(R.id.title).text = fieldName
+        val textView = findViewById<TextView>(R.id.title)
+        if (fieldName == null) {
+            textView.visibility = View.GONE
+        } else {
+            textView.text = fieldName
+        }
+
         findViewById<EditText>(R.id.input_field).inputType = inputType
     }
 

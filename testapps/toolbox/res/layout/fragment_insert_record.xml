@@ -44,13 +44,30 @@
     android:orientation="vertical" />
   </ScrollView>
 
-  <Button
-    android:id="@+id/insert_or_update_record"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="8dp"
-    android:minWidth="250dp" />
+  <LinearLayout
+      android:id="@+id/insert_or_update_record"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_marginTop="8dp"
+      android:orientation="horizontal"
+      >
+    <Button
+        android:id="@+id/insert_record"
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:text="@string/insert_data"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle" />
+
+    <Button
+        android:id="@+id/update_record"
+        android:layout_width="0dp"
+        android:text="@string/update_data"
+        android:layout_weight="0.5"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle" />
+  </LinearLayout>
+
 
 </RelativeLayout>

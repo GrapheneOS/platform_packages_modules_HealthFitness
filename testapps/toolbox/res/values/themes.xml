@@ -15,7 +15,5 @@
 -->
 
 <resources>
-  <style name="AppTheme" parent="Theme.AppCompat.Light">
-    <item name="android:fontFamily">sans-serif</item>
-  </style>
+  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight"/>
 </resources>

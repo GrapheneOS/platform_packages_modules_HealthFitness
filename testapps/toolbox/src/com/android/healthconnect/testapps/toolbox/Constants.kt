@@ -35,6 +35,7 @@ object Constants {
 
     const val INPUT_TYPE_DOUBLE = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
     const val INPUT_TYPE_LONG = InputType.TYPE_CLASS_NUMBER
+    const val INPUT_TYPE_TEXT = InputType.TYPE_CLASS_TEXT
 
     val ALL_PERMISSIONS =
         arrayOf(

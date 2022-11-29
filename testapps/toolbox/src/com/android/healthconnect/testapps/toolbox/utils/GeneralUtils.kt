@@ -13,20 +13,21 @@
  */
 package com.android.healthconnect.testapps.toolbox.utils
 
-import android.app.Activity
 import android.content.Context
 import android.healthconnect.HealthConnectException
 import android.healthconnect.HealthConnectManager
+import android.healthconnect.InsertRecordsResponse
 import android.healthconnect.datatypes.DataOrigin
 import android.healthconnect.datatypes.Device
 import android.healthconnect.datatypes.Metadata
 import android.healthconnect.datatypes.Record
 import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
-import android.widget.Toast
+import androidx.core.os.asOutcomeReceiver
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class GeneralUtils {
 
@@ -38,26 +39,34 @@ class GeneralUtils {
             return Metadata.Builder().setDevice(device).setDataOrigin(dataOrigin).build()
         }
 
-        fun <T : Record> insertRecords(
-            activity: Activity,
-            context: Context,
+        suspend fun <T : Record> insertRecords(
+            records: List<T>,
+            manager: HealthConnectManager,
+        ): List<Record> {
+
+            val insertedRecords =
+                try {
+                    suspendCancellableCoroutine<InsertRecordsResponse> { continuation ->
+                            manager.insertRecords(
+                                records, Runnable::run, continuation.asOutcomeReceiver())
+                        }
+                        .records
+                } catch (ex: HealthConnectException) {
+                    throw ex
+                }
+            return insertedRecords
+        }
+
+        suspend fun <T : Record> updateRecords(
             records: List<T>,
             manager: HealthConnectManager,
         ) {
             try {
-                manager.insertRecords(records, Runnable::run) { response ->
-                    activity.runOnUiThread {
-                        Toast.makeText(
-                                context,
-                                "${response.records.size} records added!",
-                                Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                suspendCancellableCoroutine<Void> { continuation ->
+                    manager.updateRecords(records, Runnable::run, continuation.asOutcomeReceiver())
                 }
             } catch (ex: HealthConnectException) {
-                activity.runOnUiThread {
-                    Toast.makeText(context, "Failed to insert! $ex", Toast.LENGTH_SHORT).show()
-                }
+                throw ex
             }
         }
 
