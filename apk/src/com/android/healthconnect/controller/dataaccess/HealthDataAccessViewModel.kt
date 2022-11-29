@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -31,9 +30,9 @@ class HealthDataAccessViewModel
 @Inject
 constructor(private val loadDataAccessUseCase: LoadDataAccessUseCase) : ViewModel() {
 
-    private val _appInfoMap = MutableLiveData<Map<PermissionsAccessType, List<AppInfo>>>()
+    private val _appInfoMap = MutableLiveData<Map<DataAccessAppState, List<AppInfo>>>()
 
-    val appInfoMaps: LiveData<Map<PermissionsAccessType, List<AppInfo>>>
+    val appInfoMaps: LiveData<Map<DataAccessAppState, List<AppInfo>>>
         get() = _appInfoMap
 
     init {
@@ -42,5 +41,11 @@ constructor(private val loadDataAccessUseCase: LoadDataAccessUseCase) : ViewMode
 
     private fun loadAppInfoMap() {
         viewModelScope.launch { _appInfoMap.postValue(loadDataAccessUseCase.invoke()) }
+    }
+
+    sealed class DataAccessAppState {
+        object Read : DataAccessAppState()
+        object Write : DataAccessAppState()
+        object Inactive : DataAccessAppState()
     }
 }

@@ -44,6 +44,11 @@ class HealthDataAccessFragmentTest {
 
         onView(withText("Can read Distance")).check(matches(isDisplayed()))
         onView(withText("Can write Distance")).check(matches(isDisplayed()))
+        onView(withText("Inactive apps")).check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "These apps can no longer write Distance, but still have data stored in Health\u00A0Connect"))
+            .check(matches(isDisplayed()))
         onView(withText("Manage data")).check(matches(isDisplayed()))
         onView(withText("See all entries")).check(matches(isDisplayed()))
         onView(withText("Delete this data")).check(matches(isDisplayed()))

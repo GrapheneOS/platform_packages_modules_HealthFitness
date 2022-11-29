@@ -26,6 +26,10 @@
         android:key="can_write">
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="inactive"
+        android:title="@string/inactive_apps">
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="manage_data"
         android:title="@string/manage_data_section">
         <Preference
