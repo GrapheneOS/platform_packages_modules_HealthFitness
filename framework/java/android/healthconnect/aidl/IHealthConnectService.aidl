@@ -1,6 +1,7 @@
 package android.healthconnect.aidl;
 
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
@@ -47,4 +48,17 @@ interface IHealthConnectService {
         in String packageName,
         in ReadRecordsRequestParcel request,
         in IReadRecordsResponseCallback callback);
+
+    /**
+     * Updates {@param records} in the HealthConnect database.
+     *
+     * @param packageName name of the package updating the record.
+     * @param recordsParcel represents records to be updated.
+     * @param callback Callback to receive result of performing this operation.
+     * {@hide}
+     */
+    void updateRecords(
+            String packageName,
+            in RecordsParcel recordsParcel,
+            in IEmptyResponseCallback callback);
 }
