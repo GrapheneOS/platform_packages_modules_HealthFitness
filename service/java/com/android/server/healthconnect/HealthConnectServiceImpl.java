@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -37,8 +38,8 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
+import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mPermissionHelper = permissionHelper;
         mContext = context;
     }
-
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
@@ -131,8 +131,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         List<String> uuids =
                                 mTransactionManager.insertAll(
-                                        new InsertTransactionRequest(
-                                                packageName, recordsParcel.getRecords(), mContext));
+                                        new UpsertTransactionRequest(
+                                                packageName,
+                                                recordsParcel.getRecords(),
+                                                mContext,
+                                                /* isInsertRequest */ true));
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SqlException: ", sqLiteException);
@@ -188,6 +191,46 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /**
+     * Updates {@code recordsParcel} into the HealthConnect database.
+     *
+     * @param recordsParcel parcel for list of records to be updated.
+     * @param callback Callback to receive result of performing this operation. In case of an error
+     *     or a permission failure the HealthConnect service, {@link IEmptyResponseCallback#onError}
+     *     will be invoked with a {@link HealthConnectException}.
+     */
+    @Override
+    public void updateRecords(
+            @NonNull String packageName,
+            @NonNull RecordsParcel recordsParcel,
+            @NonNull IEmptyResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        mTransactionManager.updateAll(
+                                new UpsertTransactionRequest(
+                                        packageName,
+                                        recordsParcel.getRecords(),
+                                        mContext,
+                                        /* isInsertRequest */ false));
+                        callback.onResult();
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SqlException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (IllegalArgumentException illegalArgumentException) {
+                        Slog.e(TAG, "Exception: ", illegalArgumentException);
+                        tryAndThrowException(
+                                callback,
+                                illegalArgumentException,
+                                HealthConnectException.ERROR_INVALID_ARGUMENT);
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
+                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
     private static void tryAndThrowException(
             @NonNull IInsertRecordsResponseCallback callback,
             @NonNull Exception exception,
@@ -209,6 +252,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             callback.onError(
                     new HealthConnectExceptionParcel(
                             new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IEmptyResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }

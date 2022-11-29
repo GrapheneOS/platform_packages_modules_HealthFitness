@@ -25,10 +25,11 @@ import android.healthconnect.internal.datatypes.RecordInternal;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.request.InsertTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class TransactionManager {
      * @return List of uids of the inserted {@link RecordInternal}, in the same order as they
      *     presented to {@code request}.
      */
-    public List<String> insertAll(@NonNull InsertTransactionRequest request)
+    public List<String> insertAll(@NonNull UpsertTransactionRequest request)
             throws SQLiteException {
         try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
             db.beginTransaction();
@@ -125,5 +126,71 @@ public class TransactionManager {
         long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
         request.getChildTableRequests()
                 .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+    }
+
+    /**
+     * Updates all the {@link RecordInternal} in {@code request} into the HealthConnect database.
+     *
+     * @param request an update request.
+     */
+    public void updateAll(@NonNull UpsertTransactionRequest request) throws Exception {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.beginTransaction();
+            try {
+                request.getUpsertRequests()
+                        .forEach((upsertTableRequest) -> updateRecord(db, upsertTableRequest));
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+    }
+
+    private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
+        // perform an update operation where UUID and packageName (mapped by appInfoId) is same
+        // as that of the update request.
+
+        if (request.getChildTableRequests().isEmpty()) {
+            long numberOfRowsUpdated =
+                    db.update(
+                            request.getTable(),
+                            request.getContentValues(),
+                            request.getWhereClauses().get(/* withWhereKeyword */ false),
+                            /* WHERE args */ null);
+
+            // throw an exception if the no row was updated, i.e. the uuid with corresponding
+            // app_id_info for this request is not found in the table.
+            if (numberOfRowsUpdated == 0) {
+                throw new IllegalArgumentException(
+                        "No record found for the following input : "
+                                + new StorageUtils.RecordIdentifierData(request.getContentValues())
+                                        .toString());
+            }
+            return;
+        }
+
+        // If the current request has connecting child tables that needs to be updated too in
+        // that case the entire record will be first deleted and re-inserted.
+
+        // delete the record corresponding to the provided uuid and packageName. This will
+        // delete child table contents in cascade.
+        int numberOfRowsDeleted =
+                db.delete(
+                        request.getTable(),
+                        request.getWhereClauses().get(/* withWhereKeyword */ false),
+                        /* where args */ null);
+
+        // throw an exception if the no row was deleted, i.e. the uuid for this request is not
+        // found in the table.
+        if (numberOfRowsDeleted == 0) {
+            throw new IllegalArgumentException(
+                    "No record found for the following input : "
+                            + new StorageUtils.RecordIdentifierData(request.getContentValues())
+                                    .toString());
+        } else {
+            // If the record was deleted successfully then re-insert the record with the
+            // updated contents.
+            insertRecord(db, request);
+        }
     }
 }

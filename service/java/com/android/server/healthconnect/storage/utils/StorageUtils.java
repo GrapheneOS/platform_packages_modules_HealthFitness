@@ -16,14 +16,20 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
+
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 import android.annotation.NonNull;
 import android.annotation.StringDef;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.healthconnect.RecordIdFilter;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
+
+import androidx.annotation.Nullable;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 
@@ -58,6 +64,25 @@ public final class StorageUtils {
             clientIDBlob = recordInternal.getClientRecordId().getBytes();
         }
 
+        byte[] nameBasedUidBytes =
+                getUUIDByteBuffer(
+                        recordInternal.getAppInfoId(),
+                        clientIDBlob,
+                        recordInternal.getRecordType());
+
+        recordInternal.setUuid(UUID.nameUUIDFromBytes(nameBasedUidBytes).toString());
+    }
+
+    /** Updates the uuid using the clientRecordID if the clientRecordId is present. */
+    public static void updateNameBasedUUIDIfRequired(@NonNull RecordInternal<?> recordInternal) {
+        byte[] clientIDBlob;
+        if (recordInternal.getClientRecordId() == null
+                || recordInternal.getClientRecordId().isEmpty()) {
+            // If clientRecordID is absent, use the uuid already set in the input record and
+            // hence no need to modify it.
+            return;
+        }
+        clientIDBlob = recordInternal.getClientRecordId().getBytes();
         byte[] nameBasedUidBytes =
                 getUUIDByteBuffer(
                         recordInternal.getAppInfoId(),
@@ -151,4 +176,39 @@ public final class StorageUtils {
         BLOB
     })
     public @interface SQLiteType {}
+
+    /** Extracts and holds data from {@link ContentValues}. */
+    public static class RecordIdentifierData {
+        private String mClientRecordId = "";
+        private String mUuid = "";
+        private String mAppInfoId = "";
+
+        public RecordIdentifierData(ContentValues contentValues) {
+            mClientRecordId = contentValues.getAsString(CLIENT_RECORD_ID_COLUMN_NAME);
+            mUuid = contentValues.getAsString(UUID_COLUMN_NAME);
+        }
+
+        @Nullable
+        public String getClientRecordId() {
+            return mClientRecordId;
+        }
+
+        @Nullable
+        public String getUuid() {
+            return mUuid;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder builder = new StringBuilder("");
+            if (mClientRecordId != null && !mClientRecordId.isEmpty()) {
+                builder.append("clientRecordID : ").append(mClientRecordId).append(" , ");
+            }
+
+            if (mUuid != null && !mUuid.isEmpty()) {
+                builder.append("uuid : ").append(mUuid).append(" , ");
+            }
+            return builder.toString();
+        }
+    }
 }

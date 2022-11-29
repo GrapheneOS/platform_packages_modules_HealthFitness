@@ -72,10 +72,10 @@ public class ReadTableRequest {
 
         if (mJoinClause != null) {
             builder.append(mJoinClause.getInnerJoinClause());
-            builder.append(mWhereClauses.get());
+            builder.append(mWhereClauses.get(/* withWhereKeyword */ true));
             builder.append(mJoinClause.getOrderByClause());
         } else {
-            builder.append(mWhereClauses.get());
+            builder.append(mWhereClauses.get(/* withWhereKeyword */ true));
         }
 
         if (Constants.DEBUG) {
