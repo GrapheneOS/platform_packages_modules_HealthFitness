@@ -23,6 +23,10 @@
       android:key="manage_data_category"
       android:title="@string/manage_data_section">
     <Preference
+      android:key="export_data_button"
+      android:icon="@drawable/quantum_gm_ic_file_download_vd_theme_24"
+      android:title="@string/export_data_button" />
+    <Preference
         android:key="auto_delete_button"
         android:icon="@drawable/quantum_gm_ic_auto_delete_vd_theme_24"
         android:title="@string/auto_delete_button" />
