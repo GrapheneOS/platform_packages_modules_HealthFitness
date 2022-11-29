@@ -16,6 +16,8 @@
 
 package android.healthconnect.internal.datatypes;
 
+import static android.healthconnect.Constants.DEFAULT_LONG;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.datatypes.DataOrigin;
@@ -35,18 +37,17 @@ import java.util.Objects;
  * @hide
  */
 public abstract class RecordInternal<T extends Record> {
-    public static final int INT_DEFAULT = -1;
     private final int mRecordIdentifier;
     private String mUuid;
     private String mPackageName;
-    private long mLastModifiedTime = INT_DEFAULT;
+    private long mLastModifiedTime = DEFAULT_LONG;
     private String mClientRecordId;
-    private long mClientRecordVersion = INT_DEFAULT;
+    private long mClientRecordVersion = DEFAULT_LONG;
     private String mManufacturer;
     private String mModel;
     private int mDeviceType;
-    private long mDeviceInfoId = INT_DEFAULT;
-    private long mAppInfoId = INT_DEFAULT;
+    private long mDeviceInfoId = DEFAULT_LONG;
+    private long mAppInfoId = DEFAULT_LONG;
 
     RecordInternal() {
         android.healthconnect.datatypes.Identifier annotation =

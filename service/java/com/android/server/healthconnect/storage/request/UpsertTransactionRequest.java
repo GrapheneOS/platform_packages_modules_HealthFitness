@@ -16,11 +16,14 @@
 
 package com.android.server.healthconnect.storage.request;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.UPSERT;
+
 import android.annotation.NonNull;
 import android.content.Context;
 import android.healthconnect.internal.datatypes.RecordInternal;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
@@ -52,6 +55,8 @@ public class UpsertTransactionRequest {
             Context context,
             boolean isInsertRequest) {
         mPackageName = packageName;
+        ChangeLogsHelper.ChangeLogs changeLogs =
+                new ChangeLogsHelper.ChangeLogs(UPSERT, mPackageName);
         for (RecordInternal<?> recordInternal : recordInternals) {
 
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
@@ -62,6 +67,8 @@ public class UpsertTransactionRequest {
                 // Always generate an uuid field for insert requests, we should not trust what is
                 // already present.
                 StorageUtils.addNameBasedUUIDTo(recordInternal);
+                // Add uuids to change logs
+                changeLogs.addUUID(recordInternal.getRecordType(), recordInternal.getUuid());
                 mUUIDsInOrder.add(recordInternal.getUuid());
             } else {
                 // For update requests, generate uuid if the clientRecordID is present, else use the
@@ -70,6 +77,9 @@ public class UpsertTransactionRequest {
             }
             addRequest(recordInternal);
         }
+
+        // Add commands to update the change log table with all the inserts
+        mInsertRequests.addAll(changeLogs.getUpsertTableRequests());
     }
 
     @NonNull

@@ -16,11 +16,14 @@
 
 package com.android.server.healthconnect.storage.request;
 
+import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
+
 import android.annotation.NonNull;
 import android.healthconnect.Constants;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
@@ -36,6 +39,7 @@ public class ReadTableRequest {
     private static final String TAG = "HealthConnectRead";
 
     private final String mTableName;
+    private RecordHelper<?> mRecordHelper;
     private List<String> mColumnNames;
     private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses();
@@ -44,6 +48,15 @@ public class ReadTableRequest {
         Objects.requireNonNull(tableName);
 
         mTableName = tableName;
+    }
+
+    public RecordHelper<?> getRecordHelper() {
+        return mRecordHelper;
+    }
+
+    public ReadTableRequest setRecordHelper(RecordHelper<?> recordHelper) {
+        mRecordHelper = recordHelper;
+        return this;
     }
 
     public ReadTableRequest setColumnNames(@NonNull List<String> columnNames) {
@@ -68,7 +81,8 @@ public class ReadTableRequest {
     /** Returns SQL statement to perform read operation */
     @NonNull
     public String getReadCommand() {
-        final StringBuilder builder = new StringBuilder("SELECT * FROM " + mTableName + " ");
+        final StringBuilder builder =
+                new StringBuilder("SELECT " + getColumnsToFetch() + " FROM " + mTableName + " ");
 
         if (mJoinClause != null) {
             builder.append(mJoinClause.getInnerJoinClause());
@@ -85,12 +99,11 @@ public class ReadTableRequest {
         return builder.toString();
     }
 
-    @NonNull
-    public String[] getSelectionArgs() {
-        if (mColumnNames != null) {
-            return mColumnNames.toArray(new String[0]);
+    private String getColumnsToFetch() {
+        if (mColumnNames == null || mColumnNames.isEmpty()) {
+            return "*";
         }
 
-        return new String[0];
+        return String.join(DELIMITER, mColumnNames);
     }
 }

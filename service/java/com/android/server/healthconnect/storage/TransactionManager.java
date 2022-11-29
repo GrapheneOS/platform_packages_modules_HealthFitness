@@ -16,22 +16,28 @@
 
 package com.android.server.healthconnect.storage;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
+
 import android.annotation.NonNull;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.healthconnect.Constants;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.util.Slog;
 
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class to handle all the DB transaction request from the clients. {@link TransactionManager}
@@ -41,6 +47,7 @@ import java.util.List;
  * @hide
  */
 public class TransactionManager {
+    private static final String TAG = "HealthConnectTransactionMan";
     private static TransactionManager sTransactionManager;
     private final HealthConnectDatabase mHealthConnectDatabase;
 
@@ -48,17 +55,19 @@ public class TransactionManager {
         mHealthConnectDatabase = new HealthConnectDatabase(context);
     }
 
+    @NonNull
     public static TransactionManager getInstance(@NonNull Context context) {
         if (sTransactionManager == null) {
             sTransactionManager = new TransactionManager(context);
-            DeviceInfoHelper.getInstance().populateDeviceInfoMap();
-            AppInfoHelper.getInstance().populateAppInfoMap();
         }
 
         return sTransactionManager;
     }
 
-    public static TransactionManager getInitializedInstance() {
+    @NonNull
+    public static TransactionManager getInitialisedInstance() {
+        Objects.requireNonNull(sTransactionManager);
+
         return sTransactionManager;
     }
 
@@ -86,6 +95,55 @@ public class TransactionManager {
     }
 
     /**
+     * Deletes all the {@link RecordInternal} in {@code request} into the HealthConnect database.
+     *
+     * <p>NOTE: Please don't add logic to explicitly delete child table entries here as they should
+     * be deleted via cascade
+     *
+     * @param request a delete request.
+     */
+    public void deleteAll(@NonNull DeleteTransactionRequest request) throws SQLiteException {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.beginTransaction();
+            try {
+                for (DeleteTableRequest deleteTableRequest : request.getDeleteTableRequests()) {
+                    if (deleteTableRequest.requiresRead()) {
+                        /*
+                        Delete request needs UUID before the entry can be
+                        deleted, fetch and set it in {@code request}
+                        */
+                        try (Cursor cursor =
+                                db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
+                            while (cursor.moveToNext()) {
+                                request.onUuidFetched(
+                                        deleteTableRequest.getRecordType(),
+                                        StorageUtils.getCursorString(
+                                                cursor, deleteTableRequest.getIdColumnName()));
+                                if (deleteTableRequest.requiresPackageCheck()) {
+                                    request.enforcePackageCheck(
+                                            StorageUtils.getCursorString(
+                                                    cursor, deleteTableRequest.getIdColumnName()),
+                                            StorageUtils.getCursorLong(
+                                                    cursor,
+                                                    deleteTableRequest.getPackageColumnName()));
+                                }
+                            }
+                        }
+                    }
+                    db.execSQL(deleteTableRequest.getDeleteCommand());
+                }
+
+                request.getChangeLogUpsertRequests()
+                        .forEach((insertRequest) -> insertRecord(db, insertRequest));
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+    }
+
+    /**
      * Reads the records {@link RecordInternal} stored in the HealthConnect database.
      *
      * @param request a read request.
@@ -93,39 +151,62 @@ public class TransactionManager {
      */
     public List<RecordInternal<?>> readRecords(@NonNull ReadTransactionRequest request)
             throws SQLiteException {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-                Cursor cursor = read(db, request.getReadRequest())) {
-            return request.getInternalRecords(cursor);
+        List<RecordInternal<?>> recordInternals = new ArrayList<>();
+        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase()) {
+            request.getReadRequests()
+                    .forEach(
+                            (readTableRequest -> {
+                                try (Cursor cursor = read(db, readTableRequest)) {
+                                    Objects.requireNonNull(readTableRequest.getRecordHelper());
+                                    recordInternals.addAll(
+                                            readTableRequest
+                                                    .getRecordHelper()
+                                                    .getInternalRecords(cursor));
+                                }
+                            }));
+            return recordInternals;
         }
     }
 
     /**
      * Inserts record into the table in {@code request} into the HealthConnect database.
      *
+     * <p>NOTE: PLEASE ONLY USE THIS FUNCTION IF YOU WANT TO INSERT A SINGLE RECORD PER API. PLEASE
+     * DON'T USE THIS FUNCTION INSIDE A FOR LOOP OR REPEATEDLY: The reason is that this function
+     * tries to insert a record inside its own transaction and if you are trying to insert multiple
+     * things using this method in the same api call, they will all get inserted in their separate
+     * transactions and will be less performant. If at all, the requirement is to insert them in
+     * different transactions, as they are not related to each, then this method can be used.
+     *
      * @param request an insert request.
      * @return rowId of the inserted record.
      */
     public long insert(@NonNull UpsertTableRequest request) {
         try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            return db.insertOrThrow(request.getTable(), null, request.getContentValues());
+            return insertRecord(db, request);
         }
     }
 
     /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
     @NonNull
     public Cursor read(@NonNull SQLiteDatabase db, @NonNull ReadTableRequest request) {
-        return db.rawQuery(request.getReadCommand(), request.getSelectionArgs());
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Read query: " + request.getReadCommand());
+        }
+        return db.rawQuery(request.getReadCommand(), null);
+    }
+
+    public long getLastRowIdFor(String tableName) {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
+                Cursor cursor = db.rawQuery(StorageUtils.getMaxPrimaryKeyQuery(tableName), null)) {
+            cursor.moveToFirst();
+            return cursor.getLong(cursor.getColumnIndex(PRIMARY_COLUMN_NAME));
+        }
     }
 
     /** Note: it is the responsibility of the requester to manage and close {@code db} */
     public SQLiteDatabase getReadableDb() {
         return mHealthConnectDatabase.getReadableDatabase();
-    }
-
-    private void insertRecord(SQLiteDatabase db, UpsertTableRequest request) {
-        long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
-        request.getChildTableRequests()
-                .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
     }
 
     /**
@@ -146,6 +227,15 @@ public class TransactionManager {
         }
     }
 
+    /** Assumes that caller will be closing {@code db} and handling the transaction if required */
+    private long insertRecord(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
+        long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
+        request.getChildTableRequests()
+                .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+
+        return rowId;
+    }
+
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
         // perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.
@@ -163,8 +253,8 @@ public class TransactionManager {
             if (numberOfRowsUpdated == 0) {
                 throw new IllegalArgumentException(
                         "No record found for the following input : "
-                                + new StorageUtils.RecordIdentifierData(request.getContentValues())
-                                        .toString());
+                                + new StorageUtils.RecordIdentifierData(
+                                        request.getContentValues()));
             }
             return;
         }
@@ -185,8 +275,7 @@ public class TransactionManager {
         if (numberOfRowsDeleted == 0) {
             throw new IllegalArgumentException(
                     "No record found for the following input : "
-                            + new StorageUtils.RecordIdentifierData(request.getContentValues())
-                                    .toString());
+                            + new StorageUtils.RecordIdentifierData(request.getContentValues()));
         } else {
             // If the record was deleted successfully then re-insert the record with the
             // updated contents.

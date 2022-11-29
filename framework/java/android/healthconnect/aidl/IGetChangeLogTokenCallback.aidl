@@ -3,12 +3,13 @@ package android.healthconnect.aidl;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 
 /**
- * Callback to for {@link HealthConnect} APIs with no result object
+ * Callback for {@link IHealthConnectService#getChangeLogToken}
+ *
  * {@hide}
  */
-interface IEmptyResponseCallback {
+interface IGetChangeLogTokenCallback {
     // Called on a successful operation
-    oneway void onResult();
+    oneway void onResult(long token);
     // Called when an error is hit
     oneway void onError(in HealthConnectExceptionParcel exception);
 }

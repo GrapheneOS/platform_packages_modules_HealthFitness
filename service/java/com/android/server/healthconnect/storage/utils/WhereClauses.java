@@ -40,7 +40,7 @@ public final class WhereClauses {
         return this;
     }
 
-    public WhereClauses addWhereInClause(List<String> values, String columnName) {
+    public WhereClauses addWhereInClause(String columnName, List<String> values) {
         if (values == null || values.isEmpty()) return this;
 
         mClauses.add(columnName + " IN " + "('" + String.join("', '", values) + "')");

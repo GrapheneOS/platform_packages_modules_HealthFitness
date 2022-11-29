@@ -21,8 +21,14 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.HealthConnectException;
+import android.healthconnect.HealthConnectManager;
+import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogsResponseParcel;
+import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -38,11 +44,15 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -84,6 +94,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mPermissionHelper = permissionHelper;
         mContext = context;
     }
+
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
@@ -192,6 +203,30 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
+     * @see HealthConnectManager#getChangeLogToken
+     */
+    @Override
+    public void getChangeLogToken(
+            @NonNull String packageName,
+            @NonNull ChangeLogTokenRequestParcel request,
+            @NonNull IGetChangeLogTokenCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        callback.onResult(
+                                ChangeLogsRequestHelper.getInstance()
+                                        .getToken(packageName, request));
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception e) {
+                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
      * Updates {@code recordsParcel} into the HealthConnect database.
      *
      * @param recordsParcel parcel for list of records to be updated.
@@ -231,6 +266,86 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /**
+     * @see HealthConnectManager#getChangeLogs
+     * @hide
+     */
+    @Override
+    public void getChangeLogs(
+            @NonNull String packageName,
+            @NonNull long token,
+            IChangeLogsResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
+                                ChangeLogsRequestHelper.getRequest(token);
+                        final Map<Integer, ChangeLogsHelper.ChangeLogs> operationTypeToUUIds =
+                                ChangeLogsHelper.getInstance()
+                                        .getChangeLogs(changeLogsTokenRequest);
+
+                        List<RecordInternal<?>> recordInternals =
+                                mTransactionManager.readRecords(
+                                        new ReadTransactionRequest(
+                                                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                                                        operationTypeToUUIds)));
+                        callback.onResult(
+                                new ChangeLogsResponseParcel(
+                                        new RecordsParcel(recordInternals),
+                                        ChangeLogsHelper.getDeletedIds(operationTypeToUUIds)));
+                    } catch (IllegalArgumentException illegalArgumentException) {
+                        Slog.e(TAG, "IllegalArgumentException: ", illegalArgumentException);
+                        tryAndThrowException(
+                                callback,
+                                illegalArgumentException,
+                                HealthConnectException.ERROR_INVALID_ARGUMENT);
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
+     * API to delete records based on {@code request}
+     *
+     * <p>NOTE: Internally we only need a single API to handle deletes as SDK code transform all its
+     * delete requests to {@link DeleteUsingFiltersRequestParcel}
+     */
+    @Override
+    public void deleteUsingFilters(
+            @NonNull String packageName,
+            @NonNull DeleteUsingFiltersRequestParcel request,
+            @NonNull IEmptyResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        mTransactionManager.deleteAll(
+                                new DeleteTransactionRequest(packageName, request));
+                        callback.onResult();
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (IllegalArgumentException illegalArgumentException) {
+                        Slog.e(TAG, "SQLiteException: ", illegalArgumentException);
+                        tryAndThrowException(
+                                callback,
+                                illegalArgumentException,
+                                HealthConnectException.ERROR_SECURITY);
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
     private static void tryAndThrowException(
             @NonNull IInsertRecordsResponseCallback callback,
             @NonNull Exception exception,
@@ -258,7 +373,33 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private static void tryAndThrowException(
+            @NonNull IGetChangeLogTokenCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
             @NonNull IEmptyResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.toString())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IChangeLogsResponseCallback callback,
             @NonNull Exception exception,
             @HealthConnectException.ErrorCode int errorCode) {
         try {

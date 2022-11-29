@@ -145,7 +145,7 @@ public class DeviceInfoHelper {
 
     public void populateDeviceInfoMap() {
         mDeviceInfoMap = new ArrayMap<>();
-        final TransactionManager transactionManager = TransactionManager.getInitializedInstance();
+        final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         try (SQLiteDatabase db = transactionManager.getReadableDb();
                 Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
@@ -181,7 +181,7 @@ public class DeviceInfoHelper {
     }
 
     private long insertDeviceInfoAndGetRowId(String manufacturer, String model, int deviceType) {
-        return TransactionManager.getInitializedInstance()
+        return TransactionManager.getInitialisedInstance()
                 .insert(
                         new UpsertTableRequest(
                                 TABLE_NAME, getContentValues(manufacturer, model, deviceType)));

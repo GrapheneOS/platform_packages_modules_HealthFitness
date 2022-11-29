@@ -29,14 +29,21 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
+import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogsResponseParcel;
+import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
+import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
@@ -45,6 +52,7 @@ import android.os.OutcomeReceiver;
 import android.os.RemoteException;
 import android.util.Log;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -281,12 +289,12 @@ public class HealthConnectManager {
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback) {
         Objects.requireNonNull(records);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
         /*
          TODO(b/251454017): Use executor to return results after "Hidden API flags are
          inconsistent" error is fixed
         */
-        Objects.requireNonNull(executor);
-        Objects.requireNonNull(callback);
         try {
             List<RecordInternal<?>> recordInternals =
                     mInternalExternalRecordConverter.getInternalRecords(records);
@@ -304,8 +312,232 @@ public class HealthConnectManager {
 
                         @Override
                         public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Deletes records based on the {@link DeleteUsingFiltersRequest}. This is only to be used by
+     * health connect controller APK(s). Ids that don't exist will be ignored.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none
+     *
+     * @param request Request based on which to perform delete operation
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     * @hide
+     */
+    @SystemApi
+    public void deleteRecords(
+            @NonNull DeleteUsingFiltersRequest request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.deleteUsingFilters(
+                    mContext.getPackageName(),
+                    new DeleteUsingFiltersRequestParcel(request),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Deletes records based on {@link RecordIdFilter}.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none
+     *
+     * @param recordIds recordIds on which to perform delete operation.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     * @throws IllegalArgumentException if {@code recordIds is empty}
+     */
+    public void deleteRecords(
+            @NonNull List<RecordIdFilter> recordIds,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(recordIds);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        if (recordIds.isEmpty()) {
+            throw new IllegalArgumentException("record ids can't be empty");
+        }
+
+        try {
+            mService.deleteUsingFilters(
+                    mContext.getPackageName(),
+                    new DeleteUsingFiltersRequestParcel(
+                            new RecordIdFiltersParcel(recordIds), mContext.getPackageName()),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Deletes records based on the {@link TimeRangeFilter}.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none
+     *
+     * @param recordType recordType to perform delete operation on.
+     * @param timeRangeFilter time filter based on which to delete the records.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    public void deleteRecords(
+            @NonNull Class<? extends Record> recordType,
+            @NonNull TimeRangeFilter timeRangeFilter,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(recordType);
+        Objects.requireNonNull(timeRangeFilter);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.deleteUsingFilters(
+                    mContext.getPackageName(),
+                    new DeleteUsingFiltersRequestParcel(
+                            new DeleteUsingFiltersRequest.Builder()
+                                    .addDataOrigin(
+                                            new DataOrigin.Builder()
+                                                    .setPackageName(mContext.getPackageName())
+                                                    .build())
+                                    .addRecordType(recordType)
+                                    .setTimeRangeFilter(timeRangeFilter)
+                                    .build()),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Get change logs post the time when {@code token} was generated.
+     *
+     * @param token The token from {@link HealthConnectManager#getChangeLogToken}.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     * @see HealthConnectManager#getChangeLogToken
+     * @hide
+     */
+    public void getChangeLogs(
+            long token,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<ChangeLogsResponse, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.getChangeLogs(
+                    mContext.getPackageName(),
+                    token,
+                    new IChangeLogsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(ChangeLogsResponseParcel parcel) {
                             Binder.clearCallingIdentity();
-                            callback.onError(exception.getHealthConnectException());
+                            executor.execute(
+                                    () -> {
+                                        try {
+                                            callback.onResult(parcel.getChangeLogsResponse());
+                                        } catch (InvocationTargetException
+                                                | InstantiationException
+                                                | IllegalAccessException
+                                                | NoSuchMethodException e) {
+                                            callback.onError(
+                                                    new HealthConnectException(
+                                                            HealthConnectException.ERROR_INTERNAL));
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (ClassCastException invalidArgumentException) {
+            callback.onError(
+                    new HealthConnectException(
+                            HealthConnectException.ERROR_INVALID_ARGUMENT,
+                            invalidArgumentException.getMessage()));
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Get token for {HealthConnectManager#getChangeLogs}. Changelogs requested corresponding to
+     * this token will be post the time this token was generated by the system all items that match
+     * the given filters.
+     *
+     * <p>Tokens from this request are to be passed to {HealthConnectManager#getChangeLogs}
+     *
+     * @param request A request to get changelog token
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    public void getChangeLogToken(
+            @NonNull ChangeLogTokenRequest request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Long, HealthConnectException> callback) {
+        try {
+            mService.getChangeLogToken(
+                    mContext.getPackageName(),
+                    new ChangeLogTokenRequestParcel(request),
+                    new IGetChangeLogTokenCallback.Stub() {
+                        @Override
+                        public void onResult(long token) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(token));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
                         }
                     });
         } catch (RemoteException e) {
@@ -364,40 +596,6 @@ public class HealthConnectManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
-            @NonNull Executor executor,
-            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
-        return new IReadRecordsResponseCallback.Stub() {
-            @Override
-            public void onResult(RecordsParcel parcel) {
-                Binder.clearCallingIdentity();
-                try {
-                    List<T> externalRecords =
-                            (List<T>)
-                                    mInternalExternalRecordConverter.getExternalRecords(
-                                            parcel.getRecords());
-                    executor.execute(
-                            () -> callback.onResult(new ReadRecordsResponse<>(externalRecords)));
-                } catch (ClassCastException castException) {
-                    HealthConnectException healthConnectException =
-                            new HealthConnectException(
-                                    HealthConnectException.ERROR_INTERNAL,
-                                    castException.getMessage());
-                    returnError(
-                            executor,
-                            new HealthConnectExceptionParcel(healthConnectException),
-                            callback);
-                }
-            }
-
-            @Override
-            public void onError(HealthConnectExceptionParcel exception) {
-                returnError(executor, exception, callback);
-            }
-        };
-    }
-
     /**
      * Updates {@code records} into the HealthConnect database. In case of an error or a permission
      * failure the HealthConnect service, {@link OutcomeReceiver#onError} will be invoked with a
@@ -426,10 +624,10 @@ public class HealthConnectManager {
             // verify that the package requesting the change is same as the packageName in the
             // records.
             String contextPackageName = mContext.getPackageName();
-            for (int itr = 0; itr < records.size(); itr++) {
+            for (Record record : records) {
                 if (!Objects.equals(
                         contextPackageName,
-                        records.get(itr).getMetadata().getDataOrigin().getPackageName())) {
+                        record.getMetadata().getDataOrigin().getPackageName())) {
                     throw new IllegalArgumentException(
                             "The package requesting the change does not match "
                                     + "the packageName in input records");
@@ -440,8 +638,7 @@ public class HealthConnectManager {
                     mInternalExternalRecordConverter.getInternalRecords(records);
 
             // Verify if the input record has clientRecordId or UUID.
-            for (int itr = 0; itr < recordInternals.size(); itr++) {
-                RecordInternal<?> recordInternal = recordInternals.get(itr);
+            for (RecordInternal<?> recordInternal : recordInternals) {
                 if ((recordInternal.getClientRecordId() == null
                                 || recordInternal.getClientRecordId().isEmpty())
                         && (recordInternal.getUuid() == null
@@ -476,6 +673,40 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+        return new IReadRecordsResponseCallback.Stub() {
+            @Override
+            public void onResult(RecordsParcel parcel) {
+                Binder.clearCallingIdentity();
+                try {
+                    List<T> externalRecords =
+                            (List<T>)
+                                    mInternalExternalRecordConverter.getExternalRecords(
+                                            parcel.getRecords());
+                    executor.execute(
+                            () -> callback.onResult(new ReadRecordsResponse<>(externalRecords)));
+                } catch (ClassCastException castException) {
+                    HealthConnectException healthConnectException =
+                            new HealthConnectException(
+                                    HealthConnectException.ERROR_INTERNAL,
+                                    castException.getMessage());
+                    returnError(
+                            executor,
+                            new HealthConnectExceptionParcel(healthConnectException),
+                            callback);
+                }
+            }
+
+            @Override
+            public void onError(HealthConnectExceptionParcel exception) {
+                returnError(executor, exception, callback);
+            }
+        };
     }
 
     private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {

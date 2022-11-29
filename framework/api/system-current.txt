@@ -1,7 +1,24 @@
 // Signature format: 2.0
 package android.healthconnect {
 
+  public class DeleteUsingFiltersRequest {
+    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins();
+    method @NonNull public java.util.Set<java.lang.Class<? extends android.healthconnect.datatypes.Record>> getRecordTypes();
+    method @Nullable public android.healthconnect.TimeRangeFilter getTimeRangeFilter();
+  }
+
+  public static final class DeleteUsingFiltersRequest.Builder {
+    ctor public DeleteUsingFiltersRequest.Builder();
+    method @NonNull public android.healthconnect.DeleteUsingFiltersRequest.Builder addDataOrigin(@NonNull android.healthconnect.datatypes.DataOrigin);
+    method @NonNull public android.healthconnect.DeleteUsingFiltersRequest.Builder addRecordType(@NonNull Class<? extends android.healthconnect.datatypes.Record>);
+    method @NonNull public android.healthconnect.DeleteUsingFiltersRequest build();
+    method @NonNull public android.healthconnect.DeleteUsingFiltersRequest.Builder clearDataOrigins();
+    method @NonNull public android.healthconnect.DeleteUsingFiltersRequest.Builder clearRecordTypes();
+    method @NonNull public android.healthconnect.DeleteUsingFiltersRequest.Builder setTimeRangeFilter(@Nullable android.healthconnect.TimeRangeFilter);
+  }
+
   public class HealthConnectManager {
+    method public void deleteRecords(@NonNull android.healthconnect.DeleteUsingFiltersRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
     method @NonNull public static java.util.Set<java.lang.String> getHealthPermissions(@NonNull android.content.Context);
     method public static boolean isHealthPermission(@NonNull android.content.Context, @NonNull String);
     field public static final String ACTION_HEALTH_HOME_SETTINGS = "android.healthconnect.action.HEALTH_HOME_SETTINGS";

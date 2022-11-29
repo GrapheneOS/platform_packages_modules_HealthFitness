@@ -37,6 +37,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.healthconnect.Constants;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 import android.util.Pair;
@@ -62,42 +63,15 @@ import java.util.Objects;
  * @hide
  */
 public class AppInfoHelper {
-    private static final class AppInfo {
-        private final String mAppName;
-        private final byte[] mIcon;
-        private long mId;
-
-        AppInfo(long id, String appName, byte[] icon) {
-            this.mId = id;
-            this.mAppName = appName;
-            this.mIcon = icon;
-        }
-
-        public byte[] getIcon() {
-            return mIcon;
-        }
-
-        public String getAppName() {
-            return mAppName;
-        }
-
-        public long getId() {
-            return mId;
-        }
-
-        public void setId(long id) {
-            this.mId = id;
-        }
-    }
-
     private static final String TABLE_NAME = "application_info_table";
     private static final String APPLICATION_COLUMN_NAME = "app_name";
     private static final String PACKAGE_COLUMN_NAME = "package_name";
     private static final String APP_ICON_COLUMN_NAME = "app_icon";
     private static final int COMPRESS_FACTOR = 100;
     private static AppInfoHelper sAppInfoHelper;
+    private final Object mLock = new Object();
     /** Map to store appInfoId -> packageName mapping for populating record for read */
-    private final Map<Long, String> mIdPackageNameMap = new ArrayMap<>();
+    private Map<Long, String> mIdPackageNameMap;
     /**
      * Map to store application package-name -> AppInfo mapping (such as packageName -> appName,
      * icon, rowId in the DB etc.)
@@ -129,12 +103,12 @@ public class AppInfoHelper {
 
     /** Populates record with appInfoId */
     public void populateAppInfoId(@NonNull RecordInternal<?> recordInternal, Context context) {
-        if (Objects.isNull(mAppInfoMap)) {
-            populateAppInfoMap();
+        String packageName = recordInternal.getPackageName();
+        AppInfo appInfo;
+        synchronized (mLock) {
+            appInfo = getAppInfoMap().getOrDefault(packageName, null);
         }
 
-        String packageName = recordInternal.getPackageName();
-        AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
         if (appInfo == null) {
             appInfo = insertAndGetAppInfo(packageName, context);
         }
@@ -142,17 +116,25 @@ public class AppInfoHelper {
     }
 
     public void populateAppInfoMap() {
-        mAppInfoMap = new ArrayMap<>();
-        final TransactionManager transactionManager = TransactionManager.getInitializedInstance();
-        try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
-            while (cursor.moveToNext()) {
-                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
-                String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
-                String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
-                byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
-                mAppInfoMap.put(packageName, new AppInfo(rowId, appName, icon));
-                mIdPackageNameMap.put(rowId, packageName);
+        synchronized (mLock) {
+            if (mAppInfoMap != null) {
+                return;
+            }
+
+            mAppInfoMap = new ArrayMap<>();
+            mIdPackageNameMap = new ArrayMap<>();
+            final TransactionManager transactionManager =
+                    TransactionManager.getInitialisedInstance();
+            try (SQLiteDatabase db = transactionManager.getReadableDb();
+                 Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
+                while (cursor.moveToNext()) {
+                    long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                    String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
+                    String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
+                    byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
+                    mAppInfoMap.put(packageName, new AppInfo(rowId, appName, icon));
+                    mIdPackageNameMap.put(rowId, packageName);
+                }
             }
         }
     }
@@ -164,7 +146,9 @@ public class AppInfoHelper {
      * @param record The record to be populated with package name
      */
     public void populateRecordWithValue(long appInfoId, @NonNull RecordInternal<?> record) {
-        record.setPackageName(mIdPackageNameMap.get(appInfoId));
+        synchronized (mLock) {
+            record.setPackageName(getIdPackageNameMap().get(appInfoId));
+        }
     }
 
     // Called on DB update.
@@ -172,19 +156,34 @@ public class AppInfoHelper {
         // empty by default
     }
 
+    /**
+     * @return id of {@code packageName} or {@link Constants#DEFAULT_LONG} if the id is not found
+     */
+    public long getAppInfoId(String packageName) {
+        AppInfo appInfo;
+        synchronized (mLock) {
+            appInfo = getAppInfoMap().getOrDefault(packageName, null);
+        }
+
+        if (appInfo == null) {
+            return DEFAULT_LONG;
+        }
+
+        return appInfo.getId();
+    }
+
     public List<Long> getAppInfoIds(List<String> packageNames) {
         if (packageNames == null || packageNames.isEmpty()) {
             return Collections.emptyList();
         }
 
-        if (Objects.isNull(mAppInfoMap)) {
-            populateAppInfoMap();
-        }
-
         List<Long> result = new ArrayList<>(packageNames.size());
         packageNames.forEach(
                 (packageName) -> {
-                    AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
+                    AppInfo appInfo;
+                    synchronized (mLock) {
+                        appInfo = getAppInfoMap().getOrDefault(packageName, null);
+                    }
                     if (appInfo == null) {
                         result.add(DEFAULT_LONG);
                     } else {
@@ -195,17 +194,48 @@ public class AppInfoHelper {
         return result;
     }
 
-    public long getAppInfoId(String packageName) {
+    @NonNull
+    public List<String> getPackageNames(List<Long> packageIds) {
+        if (packageIds == null || packageIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<String> packageNames = new ArrayList<>();
+        packageIds.forEach(
+                (packageId) -> {
+                    String packageName;
+                    synchronized (mLock) {
+                        packageName = getIdPackageNameMap().get(packageId);
+                    }
+                    Objects.requireNonNull(packageName);
+
+                    packageNames.add(packageName);
+                });
+
+        return packageNames;
+    }
+
+    private Map<String, AppInfo> getAppInfoMap() {
         if (Objects.isNull(mAppInfoMap)) {
             populateAppInfoMap();
         }
 
-        AppInfo appInfo = mAppInfoMap.getOrDefault(packageName, null);
-        if (appInfo == null) {
-            return DEFAULT_LONG;
+        return mAppInfoMap;
+    }
+
+    private Map<Long, String> getIdPackageNameMap() {
+        if (mIdPackageNameMap == null) {
+            populateAppInfoMap();
         }
 
-        return appInfo.getId();
+        return mIdPackageNameMap;
+    }
+
+    @NonNull
+    public String getPackageName(long packageId) {
+        synchronized (mLock) {
+            return getIdPackageNameMap().get(packageId);
+        }
     }
 
     private AppInfo getAppInfo(String packageName, Context context) {
@@ -233,13 +263,15 @@ public class AppInfoHelper {
     private AppInfo insertAndGetAppInfo(String packageName, Context context) {
         AppInfo appInfo = getAppInfo(packageName, context);
         long rowId =
-                TransactionManager.getInitializedInstance()
+                TransactionManager.getInitialisedInstance()
                         .insert(
                                 new UpsertTableRequest(
                                         TABLE_NAME, getContentValues(packageName, appInfo)));
         appInfo.setId(rowId);
-        mAppInfoMap.put(packageName, appInfo);
-        mIdPackageNameMap.put(rowId, packageName);
+        synchronized (mLock) {
+            getAppInfoMap().put(packageName, appInfo);
+            getIdPackageNameMap().put(appInfo.getId(), packageName);
+        }
         return appInfo;
     }
 
@@ -282,5 +314,33 @@ public class AppInfoHelper {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bmp;
+    }
+
+    private static final class AppInfo {
+        private final String mAppName;
+        private final byte[] mIcon;
+        private long mId;
+
+        AppInfo(long id, String appName, byte[] icon) {
+            this.mId = id;
+            this.mAppName = appName;
+            this.mIcon = icon;
+        }
+
+        public byte[] getIcon() {
+            return mIcon;
+        }
+
+        public String getAppName() {
+            return mAppName;
+        }
+
+        public long getId() {
+            return mId;
+        }
+
+        public void setId(long id) {
+            this.mId = id;
+        }
     }
 }

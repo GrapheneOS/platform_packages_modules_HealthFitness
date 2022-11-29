@@ -16,20 +16,21 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.annotation.StringDef;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.healthconnect.RecordIdFilter;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
-
-import androidx.annotation.Nullable;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 
@@ -53,6 +54,7 @@ public final class StorageUtils {
     public static final String REAL = "REAL";
     public static final String PRIMARY_AUTOINCREMENT = "INTEGER PRIMARY KEY AUTOINCREMENT";
     public static final String PRIMARY = "INTEGER PRIMARY KEY";
+    public static final String DELIMITER = ",";
     public static final String BLOB = "BLOB";
 
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
@@ -136,12 +138,12 @@ public final class StorageUtils {
 
     public static List<String> getCursorStringList(
             Cursor cursor, String columnName, String delimiter) {
-        final String stringList = cursor.getString(cursor.getColumnIndex(columnName));
-        if (stringList == null || stringList.isEmpty()) {
+        final String values = cursor.getString(cursor.getColumnIndex(columnName));
+        if (values == null || values.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return Arrays.asList(stringList.split(delimiter));
+        return Arrays.asList(values.split(delimiter));
     }
 
     public static List<Integer> getCursorIntegerList(
@@ -155,6 +157,16 @@ public final class StorageUtils {
                 .mapToInt(Integer::valueOf)
                 .boxed()
                 .toList();
+    }
+
+    @Nullable
+    public static String getMaxPrimaryKeyQuery(@NonNull String tableName) {
+        return "SELECT MAX("
+                + PRIMARY_COLUMN_NAME
+                + ") as "
+                + PRIMARY_COLUMN_NAME
+                + " FROM "
+                + tableName;
     }
 
     private static byte[] getUUIDByteBuffer(long appId, byte[] clientIDBlob, int recordId) {
@@ -181,7 +193,7 @@ public final class StorageUtils {
     public static class RecordIdentifierData {
         private String mClientRecordId = "";
         private String mUuid = "";
-        private String mAppInfoId = "";
+        private final String mAppInfoId = "";
 
         public RecordIdentifierData(ContentValues contentValues) {
             mClientRecordId = contentValues.getAsString(CLIENT_RECORD_ID_COLUMN_NAME);
@@ -200,7 +212,7 @@ public final class StorageUtils {
 
         @Override
         public String toString() {
-            final StringBuilder builder = new StringBuilder("");
+            final StringBuilder builder = new StringBuilder();
             if (mClientRecordId != null && !mClientRecordId.isEmpty()) {
                 builder.append("clientRecordID : ").append(mClientRecordId).append(" , ");
             }
