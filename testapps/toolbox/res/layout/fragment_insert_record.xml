@@ -28,16 +28,24 @@
     android:textSize="20sp"
     android:textStyle="bold" />
 
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_below="@+id/title"
+      android:layout_above="@id/insert_or_update_record"
+      android:id="@+id/container_scroll_view"
+      android:layout_height="wrap_content"
+      android:paddingBottom="20dp">
+
   <LinearLayout
-    android:id="@+id/interval_linear_layout"
+    android:id="@+id/record_input_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/title"
     android:layout_marginTop="8dp"
     android:orientation="vertical" />
+  </ScrollView>
 
   <Button
-    android:id="@+id/insert_or_update_interval_record"
+    android:id="@+id/insert_or_update_record"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"

@@ -18,7 +18,6 @@ import android.content.Context
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import com.android.healthconnect.testapps.toolbox.R
@@ -26,10 +25,10 @@ import com.android.healthconnect.testapps.toolbox.utils.EnumFieldsWithValues
 
 @SuppressLint("ViewConstructor")
 class EnumDropDown(
-    context: Context?,
+    context: Context,
     title: String?,
     enumFieldsWithValues: EnumFieldsWithValues,
-) : LinearLayout(context), InputFieldInterface {
+) : InputFieldView(context) {
 
     private var mSelectedPosition = 0
     private var mDropdownValues: List<String>

@@ -17,29 +17,38 @@ import android.app.Activity
 import android.content.Context
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
+import android.healthconnect.datatypes.BasalMetabolicRateRecord
+import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
+import android.healthconnect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
 import android.healthconnect.datatypes.ExerciseEventRecord
 import android.healthconnect.datatypes.ExerciseLapRecord
-import android.healthconnect.datatypes.IntervalRecord
+import android.healthconnect.datatypes.HeartRateRecord
+import android.healthconnect.datatypes.HeartRateRecord.HeartRateSample
+import android.healthconnect.datatypes.PowerRecord
+import android.healthconnect.datatypes.PowerRecord.PowerRecordSample
 import android.healthconnect.datatypes.Record
+import android.healthconnect.datatypes.SpeedRecord
+import android.healthconnect.datatypes.SpeedRecord.SpeedRecordSample
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.units.Energy
 import android.healthconnect.datatypes.units.Length
+import android.healthconnect.datatypes.units.Power
 import android.widget.Toast
 import com.android.healthconnect.testapps.toolbox.R
-import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldInterface
+import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldView
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.insertRecords
 import java.time.Instant
 import kotlin.reflect.KClass
 
-class InsertOrUpdateIntervalRecords {
+class InsertOrUpdateRecords {
 
     companion object {
         fun insertOrUpdateRecord(
-            recordClass: KClass<out IntervalRecord>,
-            mFieldNameToFieldInput: HashMap<String, InputFieldInterface>,
+            recordClass: KClass<out Record>,
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
             activity: Activity,
             context: Context,
         ) {
@@ -121,13 +130,67 @@ class InsertOrUpdateIntervalRecords {
                                 mFieldNameToFieldInput["mEventType"]?.getFieldValue() as Int)
                             .build())
                 }
+                BasalMetabolicRateRecord::class -> {
+                    records.add(
+                        BasalMetabolicRateRecord.Builder(
+                                getMetaData(context),
+                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
+                                Power.fromWatts(
+                                    mFieldNameToFieldInput["mBasalMetabolicRate"]
+                                        ?.getFieldValue()
+                                        .toString()
+                                        .toDouble()))
+                            .build())
+                }
+                SpeedRecord::class -> {
+                    records.add(
+                        SpeedRecord.Builder(
+                                getMetaData(context),
+                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["mSpeedRecordSamples"]?.getFieldValue()
+                                    as List<SpeedRecordSample>)
+                            .build())
+                }
+                HeartRateRecord::class -> {
+                    records.add(
+                        HeartRateRecord.Builder(
+                                getMetaData(context),
+                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["mHeartRateSamples"]?.getFieldValue()
+                                    as List<HeartRateSample>)
+                            .build())
+                }
+                PowerRecord::class -> {
+                    records.add(
+                        PowerRecord.Builder(
+                                getMetaData(context),
+                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["mPowerRecordSamples"]?.getFieldValue()
+                                    as List<PowerRecordSample>)
+                            .build())
+                }
+                CyclingPedalingCadenceRecord::class -> {
+                    records.add(
+                        CyclingPedalingCadenceRecord.Builder(
+                                getMetaData(context),
+                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["mCyclingPedalingCadenceRecordSamples"]
+                                    ?.getFieldValue() as List<CyclingPedalingCadenceRecordSample>)
+                            .build())
+                }
                 else -> {
                     activity.runOnUiThread {
                         Toast.makeText(context, R.string.not_implemented, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            insertRecords(activity, context, records, manager)
+            if (records.size > 0) {
+                insertRecords(activity, context, records, manager)
+            }
         }
     }
 }

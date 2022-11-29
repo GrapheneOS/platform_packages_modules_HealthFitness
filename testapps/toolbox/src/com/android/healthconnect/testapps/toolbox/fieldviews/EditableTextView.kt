@@ -16,13 +16,12 @@ package com.android.healthconnect.testapps.toolbox.fieldviews
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.android.healthconnect.testapps.toolbox.R
 
 @SuppressLint("ViewConstructor")
 class EditableTextView(context: Context, fieldName: String, inputType: Int) :
-    LinearLayout(context), InputFieldInterface {
+    InputFieldView(context) {
 
     init {
         inflate(context, R.layout.fragment_editable_field, this)
