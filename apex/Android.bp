@@ -34,6 +34,9 @@ apex {
     apps: [
         "HealthConnectController",
     ],
+    prebuilts: [
+        "privapp_allowlist_com.android.healthconnect.controller.xml",
+    ],
     key: "com.android.healthconnect.key",
     min_sdk_version: "UpsideDownCake",
     certificate: ":com.android.healthconnect.certificate",

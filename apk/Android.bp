@@ -98,13 +98,17 @@ android_app {
     updatable: true,
     additional_manifests: [
       "HealthPermissionsManifest.xml",
-      "ManageHealthPermissionsManifest.xml"
+      "ManageHealthPermissionsManifest.xml",
+      "ManageHealthDataManifest.xml"
     ],
     certificate: ":com.android.healthconnect.controller.certificate",
     static_libs: [
         "HealthConnectLibrary",
         "HealthConnectPermissionsApis",
         "hilt_android"
+    ],
+    required: [
+        "privapp_allowlist_com.android.healthconnect.controller.xml",
     ],
     libs: [
         "framework-healthconnect"
