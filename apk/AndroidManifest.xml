@@ -86,4 +86,5 @@
     </queries>
 
     <uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" />
+    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA" />
 </manifest>
