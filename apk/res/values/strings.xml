@@ -278,6 +278,8 @@
   <string name="manage_permissions_write_header" description="Header for list of permissions an app is allowed write access to [CHAR_LIMIT=40]">Allowed to write</string>
   <string name="no_apps_allowed" description="Label when no apps have ben granted access to Health data.[CHAR_LIMIT=40]">No apps allowed</string>
   <string name="no_apps_denied" description="Label when no apps have been denied a health permission [CHAR_LIMIT=40]">No apps denied</string>
+  <string name="request_permissions_allow_all" description="Text of a toggle button that when enabled allows all permissions [CHAR_LIMIT=40] ">Allow all</string>
+  <string name="health_permissions_title" description="Title for health app permissions screens. [CHAR_LIMIT=40]">Health permissions</string>
   <!--endregion-->
 
   <!--region Onboarding -->

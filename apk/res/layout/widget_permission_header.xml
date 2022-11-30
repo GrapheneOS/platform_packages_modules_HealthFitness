@@ -30,10 +30,10 @@
         android:id="@+id/permission_header_icon"
         android:layout_width="@dimen/app_header_icon_size"
         android:layout_height="@dimen/app_header_icon_size"
-        android:src="@drawable/health_connect_logo"
-        android:tint="?android:attr/textColorPrimary"
         android:scaleType="fitCenter"
-        android:antialias="true"/>
+        android:antialias="true"
+        tools:src="@drawable/health_connect_logo"
+        />
 
     <TextView
         android:id="@+id/permission_header_title"
@@ -42,10 +42,11 @@
         android:layout_height="wrap_content"
         android:singleLine="false"
         android:gravity="center"
-        android:text="@string/permgrouplab_health"
         android:ellipsize="marquee"
         android:textDirection="locale"
-        android:layout_marginVertical="@dimen/spacing_small" />
+        android:layout_marginVertical="@dimen/spacing_small"
+        tools:text="@string/permgrouplab_health"
+        />
 
     <TextView
         android:id="@+id/permission_header_summary"
@@ -55,6 +56,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:singleLine="false"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:layout_marginHorizontal="@dimen/spacing_normal"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </LinearLayout>

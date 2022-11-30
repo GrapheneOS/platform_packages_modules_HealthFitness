@@ -45,7 +45,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
             mPackageName = arguments?.get("packageName") as String
         }
         viewModel.loadForPackage(mPackageName)
-        viewModel.grantedPermissions.observe(viewLifecycleOwner) { permissions ->
+        viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
         }
     }
@@ -69,7 +69,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                     it.isChecked = permissionStatus.isGranted
                     it.setOnPreferenceChangeListener { preference, newValue ->
                         val checked = (preference as SwitchPreference).isChecked
-                        viewModel.updatePermissions(
+                        viewModel.updatePermission(
                             mPackageName, permissionStatus.healthPermission, !checked)
                         true
                     }
