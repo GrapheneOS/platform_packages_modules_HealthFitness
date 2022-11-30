@@ -14,10 +14,18 @@
 package com.android.healthconnect.controller.tests.dataentries
 
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.datatypes.Record
+import android.healthconnect.ReadRecordsRequestUsingFilters
+import android.healthconnect.ReadRecordsResponse
+import android.healthconnect.datatypes.HeartRateRecord
+import android.os.OutcomeReceiver
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.dataentries.LoadDataEntriesUseCase
+import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
+import com.android.healthconnect.controller.tests.utils.NOW
+import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -25,14 +33,16 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
+import org.mockito.Matchers.any
+import org.mockito.Mockito.*
+import org.mockito.invocation.InvocationOnMock
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -41,54 +51,58 @@ class LoadDataEntriesUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val coroutineTestRule = CoroutineTestRule()
 
-    @Inject lateinit var manager: HealthConnectManager
-    @Inject lateinit var usecase: LoadDataEntriesUseCase
+    var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
+    @Inject lateinit var formatter: HealthDataEntryFormatter
+
+    lateinit var usecase: LoadDataEntriesUseCase
 
     @Before
     fun setup() {
+        hiltRule.inject()
         InstrumentationRegistry.getInstrumentation().context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-
-        hiltRule.inject()
+        usecase = LoadDataEntriesUseCase(formatter, manager, Dispatchers.Main)
     }
 
-    // TODO(magdi) uncomment tests when delete function is implemented
+    @Test
+    fun invoke_noData_returnsEmptyList() = runTest {
+        doAnswer(prepareAnswer(emptyList()))
+            .`when`(manager)
+            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
 
-    //    @Test
-    //    fun invoke_noData_returnsEmptyList() = runTest {
-    //        launch {
-    //            val response = usecase.invoke(STEPS, NOW)
-    //            assertThat(response).isEmpty()
-    //        }
-    //    }
+        val response = usecase.invoke(HEART_RATE, NOW)
 
-    //    @Test
-    //    fun invoke_withData_returnsCorrectList() = runTest {
-    //        val records = insertRecords(listOf(getStepsRecord(100)))
-    //        launch {
-    //            val response = usecase.invoke(STEPS, NOW)
-    //            assertThat(response[0])
-    //                .isEqualTo(
-    //                    FormattedDataEntry(
-    //                        uuid = records[0]!!.metadata.id,
-    //                        header = "7:06 AM - 7:06 AM • Health Connect",
-    //                        headerA11y = "from 7:06 AM to 7:06 AM • Health Connect",
-    //                        title = "100 steps",
-    //                        titleA11y = "100 steps"))
-    //        }
-    //    }
+        assertThat(response).isEmpty()
+    }
 
-    @Throws(InterruptedException::class)
-    private fun insertRecords(records: List<Record>): List<Record?> {
-        val latch = CountDownLatch(1)
-        assertThat(manager).isNotNull()
-        val response: AtomicReference<List<Record>> = AtomicReference()
-        manager.insertRecords(records, Executors.newSingleThreadExecutor()) { result ->
-            response.set(result.records)
-            latch.countDown()
+    @Test
+    fun invoke_withData_returnsCorrectList() = runTest {
+        val records = listOf(getHeartRateRecord(listOf(100)))
+        doAnswer(prepareAnswer(records))
+            .`when`(manager)
+            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
+
+        val response = usecase.invoke(HEART_RATE, NOW)
+
+        assertThat(response.size).isEqualTo(1)
+        assertThat(response)
+            .containsExactly(
+                FormattedDataEntry(
+                    uuid = records[0].metadata.id,
+                    header = "7:06 AM - 7:06 AM • Health Connect test app",
+                    headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
+                    title = "100 bpm",
+                    titleA11y = "100 beats per minute"),
+            )
+    }
+
+    private fun prepareAnswer(records: List<HeartRateRecord>): (InvocationOnMock) -> Nothing? {
+        val answer = { args: InvocationOnMock ->
+            val receiver =
+                args.arguments[2] as OutcomeReceiver<ReadRecordsResponse<HeartRateRecord>, *>
+            receiver.onResult(ReadRecordsResponse(records))
+            null
         }
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true)
-        assertThat(response.get()).hasSize(records.size)
-        return response.get()
+        return answer
     }
 }
