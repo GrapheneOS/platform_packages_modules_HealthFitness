@@ -25,8 +25,7 @@ import android.healthconnect.HealthPermissions.READ_STEPS
 import android.healthconnect.HealthPermissions.WRITE_DISTANCE
 import android.healthconnect.HealthPermissions.WRITE_EXERCISE
 import android.widget.Button
-import androidx.preference.PreferenceCategory
-import androidx.preference.SwitchPreference
+import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -35,22 +34,40 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.PermissionsActivity
-import com.android.healthconnect.controller.permissions.PermissionsFragment
+import com.android.healthconnect.controller.permissions.RequestPermissionViewModel
+import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
 
 @HiltAndroidTest
 class PermissionsActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
+    @BindValue
+    val viewModel: RequestPermissionViewModel = Mockito.mock(RequestPermissionViewModel::class.java)
+
     @Before
     fun setup() {
         hiltRule.inject()
+        Mockito.`when`(viewModel.permissionResults).then {
+            MutableLiveData(
+                mapOf(
+                    HealthPermission.fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(READ_HEART_RATE) to
+                        PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(WRITE_DISTANCE) to
+                        PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(WRITE_EXERCISE) to
+                        PermissionState.GRANTED))
+        }
     }
 
     @Test
@@ -153,7 +170,6 @@ class PermissionsActivityTest {
 
         scenario.onActivity { activity: PermissionsActivity ->
             activity.findViewById<Button>(R.id.allow).callOnClick()
-            assertThat(activity.isFinishing()).isTrue()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
@@ -180,8 +196,8 @@ class PermissionsActivityTest {
 
         scenario.onActivity { activity: PermissionsActivity ->
             activity.findViewById<Button>(R.id.allow).callOnClick()
-            assertThat(activity.isFinishing()).isTrue()
         }
+
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
         val returnedIntent = scenario.getResult().getResultData()
         assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
@@ -194,6 +210,18 @@ class PermissionsActivityTest {
 
     @Test
     fun sendsOkResult_requestWithPermissionsSomeDenied() {
+        Mockito.`when`(viewModel.permissionResults).then {
+            MutableLiveData(
+                mapOf(
+                    HealthPermission.fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(READ_HEART_RATE) to
+                        PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(WRITE_DISTANCE) to
+                        PermissionState.NOT_GRANTED,
+                    HealthPermission.fromPermissionString(WRITE_EXERCISE) to
+                        PermissionState.GRANTED))
+        }
+
         val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
 
         val startActivityIntent =
@@ -209,19 +237,7 @@ class PermissionsActivityTest {
             ActivityScenario.launchActivityForResult<PermissionsActivity>(startActivityIntent)
 
         scenario.onActivity { activity: PermissionsActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(R.id.permission_content)
-                    as PermissionsFragment
-            val preferenceCategory =
-                fragment.preferenceScreen.findPreference("read_permission_category")
-                    as PreferenceCategory?
-            val preference = preferenceCategory?.getPreference(0) as SwitchPreference
-            preference.onPreferenceChangeListener?.onPreferenceChange(preference, false)
-        }
-
-        scenario.onActivity { activity: PermissionsActivity ->
             activity.findViewById<Button>(R.id.allow).callOnClick()
-            assertThat(activity.isFinishing).isTrue()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
@@ -231,6 +247,46 @@ class PermissionsActivityTest {
         assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
             .isEqualTo(
                 intArrayOf(
-                    PERMISSION_DENIED, PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED))
+                    PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_DENIED, PERMISSION_GRANTED))
+    }
+
+    @Test
+    fun sendsOkResult_requestWithPermissionsSomeWithError() {
+        Mockito.`when`(viewModel.permissionResults).then {
+            MutableLiveData(
+                mapOf(
+                    HealthPermission.fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(READ_HEART_RATE) to
+                        PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(WRITE_DISTANCE) to
+                        PermissionState.GRANTED,
+                    HealthPermission.fromPermissionString(WRITE_EXERCISE) to PermissionState.ERROR))
+        }
+        val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
+
+        val startActivityIntent =
+            Intent.makeMainActivity(
+                    ComponentName(
+                        getInstrumentation().getContext(), PermissionsActivity::class.java))
+                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, "com.google.app")
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        val scenario =
+            ActivityScenario.launchActivityForResult<PermissionsActivity>(startActivityIntent)
+
+        scenario.onActivity { activity: PermissionsActivity ->
+            activity.findViewById<Button>(R.id.allow).callOnClick()
+        }
+
+        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
+        val returnedIntent = scenario.getResult().getResultData()
+        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+            .isEqualTo(permissions)
+        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+            .isEqualTo(
+                intArrayOf(
+                    PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_DENIED))
     }
 }

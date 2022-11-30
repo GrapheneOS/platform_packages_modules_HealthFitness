@@ -18,10 +18,8 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         private const val READ_CATEGORY = "read_permission_category"
         private const val WRITE_CATEGORY = "write_permission_category"
         @JvmStatic
-        fun newInstance(permissions: List<HealthPermission>) =
-            PermissionsFragment().apply {
-                permissionMap = permissions.associateWith { true }.toMutableMap()
-            }
+        fun newInstance(permissions: Map<HealthPermission, Boolean>) =
+            PermissionsFragment().apply { permissionMap = permissions.toMutableMap() }
     }
 
     private var permissionMap: MutableMap<HealthPermission, Boolean> = HashMap()
@@ -35,8 +33,10 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.permissions_screen, rootKey)
-        updateDataList()
+        if (savedInstanceState == null) {
+            setPreferencesFromResource(R.xml.permissions_screen, rootKey)
+            updateDataList()
+        }
     }
 
     fun getPermissionAssignments(): Map<HealthPermission, Boolean> {
@@ -47,10 +47,13 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         mReadPermissionCategory?.removeAll()
         mWritePermissionCategory?.removeAll()
 
-        permissionMap.keys.forEach { permission ->
+        permissionMap.forEach { entry ->
+            val permission = entry.key
+            val value = entry.value
             if (permission.permissionsAccessType.equals(PermissionsAccessType.READ)) {
                 mReadPermissionCategory?.addPreference(
                     SwitchPreference(requireContext()).also {
+                        it.setDefaultValue(value)
                         it.setTitle(
                             HealthPermissionStrings.fromPermissionType(
                                     permission.healthPermissionType)
@@ -63,10 +66,13 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             }
         }
 
-        permissionMap.keys.forEach { permission ->
+        permissionMap.forEach { entry ->
+            val permission = entry.key
+            val value = entry.value
             if (permission.permissionsAccessType.equals(PermissionsAccessType.WRITE)) {
                 mWritePermissionCategory?.addPreference(
                     SwitchPreference(requireContext()).also {
+                        it.setDefaultValue(value)
                         it.setTitle(
                             HealthPermissionStrings.fromPermissionType(
                                     permission.healthPermissionType)
