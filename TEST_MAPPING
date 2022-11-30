@@ -19,6 +19,9 @@
     },
     {
       "name": "HealthConnectWithManagePermissionsIntegrationTests"
+    },
+    {
+      "name": "HealthConnectUnitTests"
     }
   ]
 }
