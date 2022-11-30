@@ -70,7 +70,7 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
         category.healthPermissionTypes.forEach { permissionType ->
             mPermissionTypes?.addPreference(
                 Preference(requireContext()).also {
-                    it.setTitle(fromPermissionType(permissionType).label)
+                    it.setTitle(fromPermissionType(permissionType).uppercaseLabel)
                     it.setOnPreferenceClickListener {
                         findNavController()
                             .navigate(
@@ -81,7 +81,7 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
                 })
         }
         mDeleteCategoryData?.title =
-            getString(R.string.delete_category_data_button, getString(category.title))
+            getString(R.string.delete_category_data_button, getString(category.lowercaseTitle))
         mDeleteCategoryData?.setOnPreferenceClickListener {
             val deletionType = DeletionType.DeletionTypeCategoryData(category = category)
             childFragmentManager.setFragmentResult(

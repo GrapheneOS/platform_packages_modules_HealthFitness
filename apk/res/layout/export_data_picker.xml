@@ -18,7 +18,7 @@
             android:checked="true"/>
         <CheckBox
             android:id="@+id/activity_check_box"
-            android:text="@string/activity_category"
+            android:text="@string/activity_category_uppercase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
@@ -26,7 +26,7 @@
             android:checked="true"/>
         <CheckBox
             android:id="@+id/body_measurements_check_box"
-            android:text="@string/body_measurements_category"
+            android:text="@string/body_measurements_category_uppercase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
@@ -34,7 +34,7 @@
             android:checked="true"/>
         <CheckBox
             android:id="@+id/sleep_check_box"
-            android:text="@string/sleep_category"
+            android:text="@string/sleep_category_uppercase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
@@ -42,7 +42,7 @@
             android:checked="true"/>
         <CheckBox
             android:id="@+id/vitals_check_box"
-            android:text="@string/vitals_category"
+            android:text="@string/vitals_category_uppercase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
@@ -50,7 +50,7 @@
             android:checked="true"/>
         <CheckBox
             android:id="@+id/cycle_tracking_check_box"
-            android:text="@string/cycle_tracking_category"
+            android:text="@string/cycle_tracking_category_uppercase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
@@ -58,7 +58,7 @@
             android:checked="true"/>
         <CheckBox
             android:id="@+id/nutrition_check_box"
-            android:text="@string/nutrition_category"
+            android:text="@string/nutrition_category_uppercase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"

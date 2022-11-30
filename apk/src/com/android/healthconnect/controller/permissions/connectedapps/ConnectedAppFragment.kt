@@ -65,7 +65,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
             category?.addPreference(
                 SwitchPreference(requireContext()).also {
-                    it.setTitle(fromPermissionType(permission.healthPermissionType).label)
+                    it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
                     it.isChecked = permissionStatus.isGranted
                     it.setOnPreferenceChangeListener { preference, newValue ->
                         val checked = (preference as SwitchPreference).isChecked

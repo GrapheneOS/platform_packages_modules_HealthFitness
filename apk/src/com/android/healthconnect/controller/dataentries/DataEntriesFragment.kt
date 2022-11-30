@@ -81,7 +81,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
 
         permissionType =
             requireArguments().getSerializable(PERMISSION_TYPE_KEY) as HealthPermissionType
-        setTitle(fromPermissionType(permissionType).label)
+        setTitle(fromPermissionType(permissionType).uppercaseLabel)
         setupMenu()
         dataNavigationView = view.findViewById(R.id.date_navigation_view)
         noDataView = view.findViewById(R.id.no_data_view)

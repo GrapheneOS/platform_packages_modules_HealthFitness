@@ -140,7 +140,7 @@ class UnitsFragmentTest {
     fun unitsScreen_modifiesHeight_updatesValue() {
         launchFragment<UnitsFragment>(bundleOf())
 
-        onView(withText(R.string.height_label)).perform(click())
+        onView(withText(R.string.height_uppercase_label)).perform(click())
         onView(withText(R.string.height_unit_feet_label)).perform(click())
 
         assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.FEET)
@@ -150,7 +150,7 @@ class UnitsFragmentTest {
     fun unitsScreen_modifiesDistance_updatesValue() {
         launchFragment<UnitsFragment>(bundleOf())
 
-        onView(withText(R.string.distance_label)).perform(click())
+        onView(withText(R.string.distance_uppercase_label)).perform(click())
         onView(withText(R.string.distance_unit_miles_label)).perform(click())
 
         assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.MILES)
@@ -160,7 +160,7 @@ class UnitsFragmentTest {
     fun unitsScreen_modifiesWeight_updatesValue() {
         launchFragment<UnitsFragment>(bundleOf())
 
-        onView(withText(R.string.weight_label)).perform(click())
+        onView(withText(R.string.weight_uppercase_label)).perform(click())
         onView(withText(R.string.weight_unit_kilogram_label)).perform(click())
 
         assertThat(unitPreferences.getWeightUnit()).isEqualTo(WeightUnit.KILOGRAM)
