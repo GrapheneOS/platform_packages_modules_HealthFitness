@@ -13,6 +13,7 @@
  */
 package com.android.healthconnect.testapps.toolbox.ui
 
+import android.healthconnect.HealthConnectManager
 import android.healthconnect.datatypes.ExerciseEventRecord
 import android.healthconnect.datatypes.InstantRecord
 import android.healthconnect.datatypes.IntervalRecord
@@ -28,12 +29,15 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_DOUBLE
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_LONG
+import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_TEXT
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.fieldviews.DateTimePicker
 import com.android.healthconnect.testapps.toolbox.fieldviews.EditableTextView
@@ -42,7 +46,8 @@ import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldView
 import com.android.healthconnect.testapps.toolbox.fieldviews.ListInputField
 import com.android.healthconnect.testapps.toolbox.utils.EnumFieldsWithValues
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getStaticFieldNamesAndValues
-import com.android.healthconnect.testapps.toolbox.utils.InsertOrUpdateRecords.Companion.insertOrUpdateRecord
+import com.android.healthconnect.testapps.toolbox.utils.InsertOrUpdateRecords.Companion.createRecordObject
+import com.android.healthconnect.testapps.toolbox.viewmodels.InsertOrUpdateRecordsViewModel
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
@@ -54,18 +59,62 @@ class InsertRecordFragment : Fragment() {
     private lateinit var mNavigationController: NavController
     private lateinit var mFieldNameToFieldInput: HashMap<String, InputFieldView>
     private lateinit var mLinearLayout: LinearLayout
+    private lateinit var mHealthConnectManager: HealthConnectManager
+    private lateinit var mUpdateRecordUuid: InputFieldView
+
+    private val mInsertOrUpdateViewModel: InsertOrUpdateRecordsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        mInsertOrUpdateViewModel.insertedRecordsState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is InsertOrUpdateRecordsViewModel.InsertedRecordsState.WithData -> {
+                    showInsertSuccessDialog(state.entries)
+                }
+                is InsertOrUpdateRecordsViewModel.InsertedRecordsState.Error -> {
+                    Toast.makeText(
+                            context,
+                            "Unable to insert record(s)! ${state.errorMessage}",
+                            Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+
+        mInsertOrUpdateViewModel.updatedRecordsState.observe(viewLifecycleOwner) { state ->
+            if (state is InsertOrUpdateRecordsViewModel.UpdatedRecordsState.Error) {
+                Toast.makeText(
+                        context,
+                        "Unable to update record(s)! ${state.errorMessage}",
+                        Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(context, "Successfully updated record(s)!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
         return inflater.inflate(R.layout.fragment_insert_record, container, false)
+    }
+
+    private fun showInsertSuccessDialog(records: List<Record>) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Record UUID(s)")
+        builder.setMessage(records.joinToString { it.metadata.id })
+        builder.setPositiveButton(android.R.string.ok) { _, _ -> }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+        alertDialog.findViewById<TextView>(android.R.id.message)?.setTextIsSelectable(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mNavigationController = findNavController()
+        mHealthConnectManager =
+            requireContext().getSystemService(HealthConnectManager::class.java)!!
+
         val permissionType =
             arguments?.getSerializable("permissionType", HealthPermissionType::class.java)
                 ?: throw java.lang.IllegalArgumentException("Please pass the permissionType.")
@@ -74,7 +123,7 @@ class InsertRecordFragment : Fragment() {
         mRecordFields = permissionType.recordClass?.java?.declaredFields as Array<Field>
         mRecordClass = permissionType.recordClass
         view.findViewById<TextView>(R.id.title).setText(permissionType.title)
-        mLinearLayout = view.findViewById<LinearLayout>(R.id.record_input_linear_layout)
+        mLinearLayout = view.findViewById(R.id.record_input_linear_layout)
 
         when (mRecordClass.java.superclass) {
             IntervalRecord::class.java -> {
@@ -89,7 +138,8 @@ class InsertRecordFragment : Fragment() {
             }
         }
         setupRecordFields()
-        setupSubmitButton(view)
+        setupInsertDataButton(view)
+        setupUpdateDataButton(view)
     }
 
     private fun setupTimeField(title: String, key: String) {
@@ -145,15 +195,50 @@ class InsertRecordFragment : Fragment() {
         }
     }
 
-    private fun setupSubmitButton(view: View) {
-        val buttonView = view.findViewById<Button>(R.id.insert_or_update_record)
+    private fun setupInsertDataButton(view: View) {
+        val buttonView = view.findViewById<Button>(R.id.insert_record)
 
-        buttonView.setText(R.string.insert_data)
         buttonView.setOnClickListener {
-            activity?.let { activity ->
-                insertOrUpdateRecord(
-                    mRecordClass, mFieldNameToFieldInput, activity, requireContext())
+            try {
+                val record =
+                    createRecordObject(mRecordClass, mFieldNameToFieldInput, requireContext())
+                mInsertOrUpdateViewModel.insertRecordsViaViewModel(
+                    listOf(record), mHealthConnectManager)
+            } catch (ex: Exception) {
+                Toast.makeText(
+                        context,
+                        "Unable to insert record: ${ex.localizedMessage}",
+                        Toast.LENGTH_SHORT)
+                    .show()
             }
         }
+    }
+
+    private fun setupUpdateRecordUuidInputDialog() {
+        mUpdateRecordUuid = EditableTextView(requireContext(), null, INPUT_TYPE_TEXT)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Enter UUID")
+        builder.setView(mUpdateRecordUuid)
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            try {
+                val record =
+                    createRecordObject(mRecordClass, mFieldNameToFieldInput, requireContext())
+                record.metadata.id = mUpdateRecordUuid.getFieldValue().toString()
+                mInsertOrUpdateViewModel.updateRecordsViaViewModel(
+                    listOf(record), mHealthConnectManager)
+            } catch (ex: Exception) {
+                Toast.makeText(
+                        context, "Unable to update: ${ex.localizedMessage}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+    }
+
+    private fun setupUpdateDataButton(view: View) {
+        val buttonView = view.findViewById<Button>(R.id.update_record)
+
+        buttonView.setOnClickListener { setupUpdateRecordUuidInputDialog() }
     }
 }
