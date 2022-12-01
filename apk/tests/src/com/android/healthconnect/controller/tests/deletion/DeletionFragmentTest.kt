@@ -1,3 +1,16 @@
+/**
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * ```
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * ```
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package com.android.healthconnect.controller.tests.deletion
 
 import android.os.Bundle
@@ -20,6 +33,7 @@ import com.android.healthconnect.controller.deletion.DeletionParameters
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -501,5 +515,24 @@ class DeletionFragmentTest {
         onView(withText("Go back")).inRoot(isDialog()).perform(click())
 
         onView(withText("Choose data to delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteAllData_confirmationDialogForEntry_showsCorrectText() {
+        val deletionEntry = DeletionType.DeleteDataEntry("test_id", DataType.STEPS)
+
+        Mockito.`when`(viewModel.deletionParameters).then {
+            MutableLiveData(DeletionParameters(deletionType = deletionEntry))
+        }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionEntry))
+        }
+
+        onView(withText("Permanently delete this entry?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
     }
 }

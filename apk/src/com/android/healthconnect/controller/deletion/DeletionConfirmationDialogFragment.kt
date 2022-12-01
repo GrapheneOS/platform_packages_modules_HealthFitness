@@ -25,6 +25,7 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
 
         val message = getString(R.string.confirming_question_message)
 
+        // TODO(magdi) sent button strings and values using builders
         return AlertDialogBuilder(this)
             .setTitle(buildTitle())
             .setIcon(R.attr.deleteIcon)
@@ -86,6 +87,9 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
                     ChosenRange.DELETE_RANGE_ALL_DATA ->
                         getString(R.string.confirming_question_category_all, categoryLabel)
                 }
+            }
+            is DeletionType.DeleteDataEntry -> {
+                return getString(R.string.confirming_question_single_entry)
             }
             else -> {
                 // TODO implement other flows

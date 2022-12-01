@@ -58,7 +58,7 @@ class DeletionFragment : Hilt_DeletionFragment() {
         parentFragmentManager.setFragmentResultListener(START_DELETION_EVENT, this) { _, bundle ->
             val deletionType = bundle.getParcelable(DELETION_TYPE) as DeletionType?
             viewModel.setDeletionType(deletionType!!)
-            showFirstDialog()
+            showFirstDialog(deletionType)
         }
 
         // time range selection
@@ -68,6 +68,7 @@ class DeletionFragment : Hilt_DeletionFragment() {
 
         // confirmation dialog
         childFragmentManager.setFragmentResultListener(GO_BACK_EVENT, this) { _, _ ->
+            // TODO(magdi) handle cases when time range is no the starter dialog.
             showTimeRagePickerDialog()
         }
 
@@ -146,12 +147,13 @@ class DeletionFragment : Hilt_DeletionFragment() {
         FailedDialogFragment().show(childFragmentManager, FailedDialogFragment.TAG)
     }
 
-    private fun showFirstDialog(showPicker: Boolean = true) {
-        if (showPicker) {
-            showTimeRagePickerDialog()
+    private fun showFirstDialog(deletionType: DeletionType) {
+        when (deletionType) {
+            is DeletionType.DeleteDataEntry -> showConfirmationDialog()
+            else -> showTimeRagePickerDialog()
         }
 
-        // TODO implement other flows which do not require TimeRangePicker
+        // TODO(b/246161850) implement other flows which do not require TimeRangePicker
     }
 
     private fun hideProgressDialog() {

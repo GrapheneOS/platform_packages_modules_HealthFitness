@@ -21,10 +21,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -35,6 +37,11 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Empty
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
+import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
+import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionFragment
+import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
@@ -91,6 +98,11 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 it.adapter = adapter
                 it.layoutManager = LinearLayoutManager(context, VERTICAL, false)
             }
+
+        if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
+            childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
+        }
+
         return view
     }
 
@@ -101,6 +113,16 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter.setOnDeleteEntrySelected(
+            object : DataEntryAdapter.OnDeleteEntrySelected {
+                override fun onDeleteEntrySelected(dataEntry: FormattedDataEntry) {
+                    val deletionType =
+                        DeletionType.DeleteDataEntry(dataEntry.uuid, dataEntry.dataType)
+                    childFragmentManager.setFragmentResult(
+                        START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+                }
+            })
+
         dataNavigationView.setDateChangedListener(
             object : DateNavigationView.OnDateChangedListener {
                 override fun onDateChanged(selectedDate: Instant) {

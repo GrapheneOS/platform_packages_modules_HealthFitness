@@ -16,6 +16,8 @@ package com.android.healthconnect.controller.dataentries
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
@@ -23,11 +25,21 @@ import com.android.healthconnect.controller.R
 class DataEntryAdapter : RecyclerView.Adapter<DataEntryAdapter.DataEntryViewHolder>() {
 
     private var entriesList: List<FormattedDataEntry> = emptyList()
+    private var listener: OnDeleteEntrySelected? = null
+
+    fun updateData(entriesList: List<FormattedDataEntry>) {
+        this.entriesList = entriesList
+        notifyDataSetChanged()
+    }
+
+    fun setOnDeleteEntrySelected(listener: OnDeleteEntrySelected?) {
+        this.listener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataEntryViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_data_entry, parent, false)
-        return DataEntryViewHolder(view)
+        return DataEntryViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: DataEntryViewHolder, position: Int) {
@@ -38,15 +50,12 @@ class DataEntryAdapter : RecyclerView.Adapter<DataEntryAdapter.DataEntryViewHold
         return entriesList.size
     }
 
-    fun updateData(entriesList: List<FormattedDataEntry>) {
-        this.entriesList = entriesList
-        notifyDataSetChanged()
-    }
-
-    class DataEntryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class DataEntryViewHolder(view: View, private val listener: OnDeleteEntrySelected?) :
+        RecyclerView.ViewHolder(view) {
 
         private val header: TextView by lazy { view.findViewById(R.id.item_data_entry_header) }
         private val title: TextView by lazy { view.findViewById(R.id.item_data_entry_title) }
+        private val menuButton: ImageButton by lazy { view.findViewById(R.id.item_data_entry_menu) }
 
         fun bind(dataEntry: FormattedDataEntry) {
             header.text = dataEntry.header
@@ -54,6 +63,27 @@ class DataEntryAdapter : RecyclerView.Adapter<DataEntryAdapter.DataEntryViewHold
 
             title.text = dataEntry.title
             title.contentDescription = dataEntry.titleA11y
+            menuButton.setOnClickListener { view -> showPopup(view, dataEntry) }
         }
+
+        private fun showPopup(view: View, dataEntry: FormattedDataEntry) {
+            val popup = PopupMenu(view.context, view)
+            val menuInflater = popup.menuInflater
+            menuInflater.inflate(R.menu.data_entry_menu, popup.menu)
+            popup.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.delete -> {
+                        listener?.onDeleteEntrySelected(dataEntry)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+    }
+
+    interface OnDeleteEntrySelected {
+        fun onDeleteEntrySelected(dataEntry: FormattedDataEntry)
     }
 }
