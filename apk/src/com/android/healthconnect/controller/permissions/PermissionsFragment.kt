@@ -54,7 +54,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                         it.setTitle(
                             HealthPermissionStrings.fromPermissionType(
                                     permission.healthPermissionType)
-                                .uppercaseLabel)
+                                .label)
                         it.setOnPreferenceChangeListener { _, newValue ->
                             permissionMap[permission] = newValue as Boolean
                             true
@@ -70,7 +70,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                         it.setTitle(
                             HealthPermissionStrings.fromPermissionType(
                                     permission.healthPermissionType)
-                                .uppercaseLabel)
+                                .label)
                         it.setOnPreferenceChangeListener { _, newValue ->
                             permissionMap[permission] = newValue as Boolean
                             true

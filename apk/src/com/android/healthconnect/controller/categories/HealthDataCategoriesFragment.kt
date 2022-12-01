@@ -96,7 +96,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     private fun updateDataList(categoriesList: List<HealthDataCategory>) {
         val sortedCategoriesList: List<HealthDataCategory> =
-            categoriesList.sortedBy { getString(it.uppercaseTitle) }
+            categoriesList.sortedBy { getString(it.title) }
         mBrowseDataCategory?.removeAll()
         if (sortedCategoriesList.isEmpty()) {
             mBrowseDataCategory?.addPreference(
@@ -105,7 +105,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             sortedCategoriesList.forEach { category ->
                 mBrowseDataCategory?.addPreference(
                     Preference(requireContext()).also {
-                        it.setTitle(category.uppercaseTitle)
+                        it.setTitle(category.title)
                         it.setIcon(category.icon)
                         it.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {

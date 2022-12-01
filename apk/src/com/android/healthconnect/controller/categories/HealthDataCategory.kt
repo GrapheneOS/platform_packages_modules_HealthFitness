@@ -27,39 +27,26 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 /** Represents Category group for HealthConnect data. */
 enum class HealthDataCategory(
     val healthPermissionTypes: List<HealthPermissionType>,
-    @StringRes val uppercaseTitle: Int,
-    @StringRes val lowercaseTitle: Int,
+    @StringRes val title: Int,
     @DrawableRes val icon: Int
 ) {
     ACTIVITY(
         ACTIVITY_PERMISSION_GROUPS,
-        R.string.activity_category_uppercase,
-        R.string.activity_category_lowercase,
+        R.string.activity_category,
         R.drawable.quantum_gm_ic_directions_run_vd_theme_24),
     BODY_MEASUREMENTS(
         BODY_MEASUREMENTS_PERMISSION_GROUPS,
-        R.string.body_measurements_category_uppercase,
-        R.string.body_measurements_category_lowercase,
+        R.string.body_measurements_category,
         R.drawable.quantum_gm_ic_straighten_vd_theme_24),
-    SLEEP(
-        SLEEP_PERMISSION_GROUPS,
-        R.string.sleep_category_uppercase,
-        R.string.sleep_category_lowercase,
-        R.drawable.ic_sleep),
-    VITALS(
-        VITALS_PERMISSION_GROUPS,
-        R.string.vitals_category_uppercase,
-        R.string.vitals_category_lowercase,
-        R.drawable.ic_vitals),
+    SLEEP(SLEEP_PERMISSION_GROUPS, R.string.sleep_category, R.drawable.ic_sleep),
+    VITALS(VITALS_PERMISSION_GROUPS, R.string.vitals_category, R.drawable.ic_vitals),
     CYCLE_TRACKING(
         CYCLE_TRACKING_PERMISSION_GROUPS,
-        R.string.cycle_tracking_category_uppercase,
-        R.string.cycle_tracking_category_lowercase,
+        R.string.cycle_tracking_category,
         R.drawable.ic_cycle_tracking),
     NUTRITION(
         NUTRITION_PERMISSION_GROUPS,
-        R.string.nutrition_category_uppercase,
-        R.string.nutrition_category_lowercase,
+        R.string.nutrition_category,
         R.drawable.quantum_gm_ic_grocery_vd_theme_24),
 }
 

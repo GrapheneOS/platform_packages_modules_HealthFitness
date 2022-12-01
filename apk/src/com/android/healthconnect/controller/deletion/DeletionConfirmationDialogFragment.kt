@@ -10,6 +10,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMAT
 import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 /**
  * A deletion {@link DialogFragment} asking confirmation from user for deleting data from from the
@@ -55,7 +56,9 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
                 }
             }
             is DeletionType.DeletionTypeHealthPermissionTypeData -> {
-                val permissionTypeLabel = getString(deletionParameters.getPermissionTypeLabel())
+                val permissionTypeLabel =
+                    getString(deletionParameters.getPermissionTypeLabel())
+                        .lowercase(Locale.getDefault())
                 return when (chosenRange) {
                     ChosenRange.DELETE_RANGE_LAST_24_HOURS ->
                         getString(
@@ -71,7 +74,8 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
                 }
             }
             is DeletionType.DeletionTypeCategoryData -> {
-                val categoryLabel = getString(deletionParameters.getCategoryLabel())
+                val categoryLabel =
+                    getString(deletionParameters.getCategoryLabel()).lowercase(Locale.getDefault())
                 return when (chosenRange) {
                     ChosenRange.DELETE_RANGE_LAST_24_HOURS ->
                         getString(R.string.confirming_question_category_one_day, categoryLabel)

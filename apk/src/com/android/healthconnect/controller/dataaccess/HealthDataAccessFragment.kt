@@ -84,11 +84,9 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         }
         maybeShowPermissionTypeDescription()
         mCanReadSection?.title =
-            getString(
-                R.string.can_read, getString(fromPermissionType(permissionType).lowercaseLabel))
+            getString(R.string.can_read, getString(fromPermissionType(permissionType).label))
         mCanWriteSection?.title =
-            getString(
-                R.string.can_write, getString(fromPermissionType(permissionType).lowercaseLabel))
+            getString(R.string.can_write, getString(fromPermissionType(permissionType).label))
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
         }
@@ -124,7 +122,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(fromPermissionType(permissionType).uppercaseLabel)
+        setTitle(fromPermissionType(permissionType).label)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -178,7 +176,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                     it.summary =
                         getString(
                             R.string.inactive_apps_message,
-                            getString(fromPermissionType(permissionType).lowercaseLabel))
+                            getString(fromPermissionType(permissionType).label))
                 })
             appInfoMap[DataAccessAppState.Inactive]!!.forEach { _appInfo ->
                 mInactiveSection?.addPreference(

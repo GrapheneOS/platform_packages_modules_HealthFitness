@@ -50,13 +50,13 @@ class HealthPermissionTypesFragmentTest {
         onView(withText("Steps")).check(matches(isDisplayed()))
         onView(withText("Total calories burned")).check(matches(isDisplayed()))
         onView(withText("VO2 max")).check(matches(isDisplayed()))
-        // TODO(b/245513697): scrollTo doesn't work.
-        //        onView(withText("Wheelchair
-        // pushes")).perform(scrollTo()).check(matches(isDisplayed()))
-        //        onView(withText("Manage data")).perform(scrollTo()).check(matches(isDisplayed()))
-        //        onView(withText("App priority")).perform(scrollTo()).check(matches(isDisplayed()))
-        //        onView(withText("Delete activity
-        // data")).perform(scrollTo()).check(matches(isDisplayed()))
+        // TODO(b/245513697): scrollTo cannot find "Delete Activity data".
+//        onView(withText("Delete Activity data")).perform(scrollTo())
+//        onView(withText("Wheelchair pushes")).check(matches(isDisplayed()))
+//
+//        onView(withText("Manage data")).check(matches(isDisplayed()))
+//        onView(withText("App priority")).check(matches(isDisplayed()))
+//        onView(withText("Delete Activity data")).check(matches(isDisplayed()))
     }
 
     private fun activityCategoryBundle(): Bundle {
