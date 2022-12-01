@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.healthconnect.Constants.DEFAULT_INT;
+import static android.healthconnect.Constants.DEFAULT_LONG;
 
 import static com.android.server.healthconnect.storage.request.ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
@@ -62,29 +63,10 @@ import java.util.stream.Collectors;
  * @hide
  */
 public abstract class RecordHelper<T extends RecordInternal<?>> {
-    static class AggregateParams {
-        private final String mTableName;
-        private final List<String> mColumnNames;
-        private final String mTimeColumnName;
-        private SqlJoin mJoin;
-
-        public AggregateParams(String tableName, List<String> columnNames, String timeColumnName) {
-            mTableName = tableName;
-            mColumnNames = columnNames;
-            mTimeColumnName = timeColumnName;
-        }
-
-        public AggregateParams setJoin(SqlJoin join) {
-            mJoin = join;
-            return this;
-        }
-    }
-
     public static final String PRIMARY_COLUMN_NAME = "row_id";
     public static final String UUID_COLUMN_NAME = "uuid";
     public static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     public static final String APP_INFO_ID_COLUMN_NAME = "app_info_id";
-
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
@@ -173,10 +155,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     /** Returns ReadTableRequest for {@code request} and package name {@code packageName} */
     public ReadTableRequest getReadTableRequest(
-            ReadRecordsRequestParcel request, String packageName) {
+            ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
         return new ReadTableRequest(getMainTableName())
                 .setInnerJoinClause(getInnerJoinFoReadRequest())
-                .setWhereClause(getReadTableWhereClause(request, packageName))
+                .setWhereClause(getReadTableWhereClause(request, packageName, enforceSelfRead))
                 .setRecordHelper(this);
     }
 
@@ -307,22 +289,23 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     private WhereClauses getReadTableWhereClause(
-            ReadRecordsRequestParcel request, String packageName) {
+            ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
         if (request.getRecordIdFiltersParcel() == null) {
             List<Long> appIds =
                     AppInfoHelper.getInstance().getAppInfoIds(request.getPackageFilters()).stream()
                             .distinct()
                             .collect(Collectors.toList());
+            if (enforceSelfRead) {
+                appIds =
+                        Collections.singletonList(
+                                AppInfoHelper.getInstance().getAppInfoId(packageName));
+            }
             if (appIds.size() == 1 && appIds.get(0) == DEFAULT_INT) {
                 throw new TypeNotPresentException(TYPE_NOT_PRESENT_PACKAGE_NAME, new Throwable());
             }
 
             WhereClauses clauses =
-                    new WhereClauses()
-                            .addWhereInLongsClause(
-                                    APP_INFO_ID_COLUMN_NAME,
-                                    AppInfoHelper.getInstance()
-                                            .getAppInfoIds(request.getPackageFilters()));
+                    new WhereClauses().addWhereInLongsClause(APP_INFO_ID_COLUMN_NAME, appIds);
 
             return clauses.addWhereBetweenTimeClause(
                     getStartTimeColumnName(), request.getStartTime(), request.getEndTime());
@@ -335,7 +318,18 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                                 (recordIdFilter) ->
                                         StorageUtils.getUUIDFor(recordIdFilter, packageName))
                         .collect(Collectors.toList());
-        return new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, ids);
+        WhereClauses whereClauses = new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, ids);
+
+        if (enforceSelfRead) {
+            long id = AppInfoHelper.getInstance().getAppInfoId(packageName);
+            if (id == DEFAULT_LONG) {
+                throw new TypeNotPresentException(TYPE_NOT_PRESENT_PACKAGE_NAME, new Throwable());
+            }
+            whereClauses.addWhereInLongsClause(
+                    APP_INFO_ID_COLUMN_NAME, Collections.singletonList(id));
+        }
+
+        return whereClauses;
     }
 
     abstract String getZoneOffsetColumnName();
@@ -380,5 +374,23 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         columnInfo.addAll(getSpecificColumnInfo());
 
         return columnInfo;
+    }
+
+    static class AggregateParams {
+        private final String mTableName;
+        private final List<String> mColumnNames;
+        private final String mTimeColumnName;
+        private SqlJoin mJoin;
+
+        public AggregateParams(String tableName, List<String> columnNames, String timeColumnName) {
+            mTableName = tableName;
+            mColumnNames = columnNames;
+            mTimeColumnName = timeColumnName;
+        }
+
+        public AggregateParams setJoin(SqlJoin join) {
+            mJoin = join;
+            return this;
+        }
     }
 }

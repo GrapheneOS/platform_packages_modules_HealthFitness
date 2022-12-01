@@ -50,35 +50,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ActiveCaloriesBurnedRecordTest {
     private static final String TAG = "ActiveCaloriesBurnedRecordTest";
 
-    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord() {
-        return new ActiveCaloriesBurnedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Energy.fromJoules(10.0))
-                .build();
-    }
-
-    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(double energy) {
-        return new ActiveCaloriesBurnedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Energy.fromJoules(energy))
-                .build();
-    }
-
-    static ActiveCaloriesBurnedRecord getCompleteActiveCaloriesBurnedRecord() {
-        return new ActiveCaloriesBurnedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Energy.fromJoules(10.0))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     @Test
     public void testInsertActiveCaloriesBurnedRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -106,5 +77,34 @@ public class ActiveCaloriesBurnedRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord() {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Energy.fromJoules(10.0))
+                .build();
+    }
+
+    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(double energy) {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Energy.fromJoules(energy))
+                .build();
+    }
+
+    static ActiveCaloriesBurnedRecord getCompleteActiveCaloriesBurnedRecord() {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Energy.fromJoules(10.0))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

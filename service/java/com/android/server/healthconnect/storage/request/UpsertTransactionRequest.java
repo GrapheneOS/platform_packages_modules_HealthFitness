@@ -63,8 +63,8 @@ public class UpsertTransactionRequest {
         mPackageName = packageName;
         ChangeLogsHelper.ChangeLogs changeLogs =
                 new ChangeLogsHelper.ChangeLogs(UPSERT, mPackageName);
-        for (RecordInternal<?> recordInternal : recordInternals) {
 
+        for (RecordInternal<?> recordInternal : recordInternals) {
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
             AppInfoHelper.getInstance().populateAppInfoId(recordInternal, context);
             DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);

@@ -1,18 +1,24 @@
 {
-  "mainline-presubmit" : [
+  "mainline-presubmit": [
     {
-      "name" : "HealthConnectControllerUITests[com.google.android.healthconnect.apex]"
+      "name": "HealthConnectControllerUITests[com.google.android.healthconnect.apex]"
     },
     {
-       "name": "CtsHealthConnectDeviceTestCases[com.google.android.healthconnect.apex]"
+      "name": "CtsHealthConnectDeviceTestCases[com.google.android.healthconnect.apex]"
+    },
+    {
+      "name": "CtsHealthConnectDeviceTestCasesNoPermission[com.google.android.healthconnect.apex]"
     }
   ],
-  "presubmit" : [
+  "presubmit": [
     {
-       "name" : "HealthConnectControllerUITests"
+      "name": "HealthConnectControllerUITests"
     },
     {
-       "name": "CtsHealthConnectDeviceTestCases"
+      "name": "CtsHealthConnectDeviceTestCases"
+    },
+    {
+      "name": "CtsHealthConnectDeviceTestCasesNoPermission"
     },
     {
       "name": "HealthConnectWithoutManagePermissionsIntegrationTests"

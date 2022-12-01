@@ -16,8 +16,8 @@
 
 package android.healthconnect;
 
-import static android.Manifest.permission.QUERY_ALL_PACKAGES;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
+import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 
 import android.annotation.CallbackExecutor;
 import android.annotation.IntRange;
@@ -168,11 +168,6 @@ public class HealthConnectManager {
     public static final String ACTION_MANAGE_HEALTH_DATA =
             "android.healthconnect.action.MANAGE_HEALTH_DATA";
 
-    /** @hide */
-    @SystemApi
-    public static final String PERMISSION_MANAGE_HEALTH_DATA =
-            "android.permission.MANAGE_HEALTH_DATA";
-
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     private static volatile Set<String> sHealthPermissions;
@@ -251,7 +246,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void grantHealthPermission(@NonNull String packageName, @NonNull String permissionName) {
         try {
@@ -270,7 +265,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void revokeHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @Nullable String reason) {
@@ -289,7 +284,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void revokeAllHealthPermissions(@NonNull String packageName, @Nullable String reason) {
         try {
@@ -305,7 +300,7 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public List<String> getGrantedHealthPermissions(@NonNull String packageName) {
         try {
@@ -349,7 +344,6 @@ public class HealthConnectManager {
      * @param records list of records to be inserted.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      * @throws RuntimeException for internal errors
      */
     public void insertRecords(
@@ -592,10 +586,10 @@ public class HealthConnectManager {
      * @param request Request based on which to perform delete operation
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      * @hide
      */
     @SystemApi
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
     public void deleteRecords(
             @NonNull DeleteUsingFiltersRequest request,
             @NonNull Executor executor,
@@ -632,7 +626,6 @@ public class HealthConnectManager {
      * @param recordIds recordIds on which to perform delete operation.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      * @throws IllegalArgumentException if {@code recordIds is empty}
      */
     public void deleteRecords(
@@ -677,7 +670,6 @@ public class HealthConnectManager {
      * @param timeRangeFilter time filter based on which to delete the records.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      */
     public void deleteRecords(
             @NonNull Class<? extends Record> recordType,
@@ -723,7 +715,6 @@ public class HealthConnectManager {
      * @param changeLogsRequest The token from {@link HealthConnectManager#getChangeLogToken}.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      * @see HealthConnectManager#getChangeLogToken
      */
     public void getChangeLogs(
@@ -782,7 +773,6 @@ public class HealthConnectManager {
      * @param request A request to get changelog token
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      */
     public void getChangeLogToken(
             @NonNull ChangeLogTokenRequest request,
@@ -820,7 +810,7 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi
-    @RequiresPermission(QUERY_ALL_PACKAGES)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void getDataOriginsInPriorityOrder(
             @HealthDataCategory.Type int dataCategory,
             @NonNull Executor executor,
@@ -860,6 +850,7 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void updateDataOriginPriorityOrder(
             @NonNull UpdateDataOriginPriorityOrderRequest request,
             @NonNull Executor executor,
@@ -886,11 +877,14 @@ public class HealthConnectManager {
     }
 
     /**
-     * @hide
-     *     <p>Retrieves {@link android.healthconnect.RecordTypeInfoResponse} for each RecordType.
+     * Retrieves {@link android.healthconnect.RecordTypeInfoResponse} for each RecordType.
+     *
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
+     * @hide
      */
+    @SystemApi
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void queryAllRecordTypesInfo(
             @NonNull @CallbackExecutor Executor executor,
             @NonNull
@@ -926,13 +920,12 @@ public class HealthConnectManager {
      * <p>If you are calling this function for the first time after a user unlock, this might take
      * some time so consider calling this on a thread.
      *
-     * <p>TODO(b/251194265): User permission checks once available.
-     *
      * @throws RuntimeException for internal errors
      * @return Auto delete period in days, 0 is returned if auto delete period is not set.
      * @hide
      */
     @SystemApi
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     @IntRange(from = 0, to = 7300)
     public int getRecordRetentionPeriodInDays() {
         try {
@@ -947,21 +940,25 @@ public class HealthConnectManager {
      *
      * <p>Note: The max value of auto delete period can be 7300 i.e. ~20 years
      *
-     * <p>TODO(b/251194265): User permission checks once available.
-     *
      * @param days Auto period to be set in days. Use 0 to unset this value.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      * @throws RuntimeException for internal errors
+     * @throws IllegalArgumentException if {@code days} is not between 0 and 7300
      * @hide
      */
     @SystemApi
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void setRecordRetentionPeriodInDays(
             @IntRange(from = 0, to = 7300) int days,
             @NonNull Executor executor,
             @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
+
+        if (days < 0 || days > 7300) {
+            throw new IllegalArgumentException("days should be between " + 0 + " and " + 7300);
+        }
 
         try {
             mService.setRecordRetentionPeriodInDays(
@@ -992,7 +989,7 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi
-    @RequiresPermission(PERMISSION_MANAGE_HEALTH_DATA)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void queryAccessLogs(
             @NonNull Executor executor,
             @NonNull OutcomeReceiver<List<AccessLog>, HealthConnectException> callback) {
@@ -1025,7 +1022,6 @@ public class HealthConnectManager {
      *     and recordType to perform read operation.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      */
     public <T extends Record> void readRecords(
             @NonNull ReadRecordsRequestUsingIds<T> request,
@@ -1050,7 +1046,6 @@ public class HealthConnectManager {
      * @param request Read request based on {@link ReadRecordsRequestUsingFilters}
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      */
     public <T extends Record> void readRecords(
             @NonNull ReadRecordsRequestUsingFilters<T> request,
@@ -1084,7 +1079,6 @@ public class HealthConnectManager {
      * @throws IllegalArgumentException if at least one of the records is missing both
      *     ClientRecordID and UUID.
      */
-    // TODO(b/251194265): User permission checks once available.
     public void updateRecords(
             @NonNull List<Record> records,
             @NonNull @CallbackExecutor Executor executor,
@@ -1155,23 +1149,17 @@ public class HealthConnectManager {
      *
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
-     *     <p>TODO(b/260069905): Add privileges permission for HC UI only.
      * @hide
      */
     @NonNull
     @SystemApi
-    @RequiresPermission(QUERY_ALL_PACKAGES)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void getContributorApplicationsInfo(
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<ApplicationInfoResponse, HealthConnectException> callback) {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
 
-        if (mContext.checkCallingOrSelfPermission(QUERY_ALL_PACKAGES) != PERMISSION_GRANTED) {
-            throw new SecurityException(
-                    "Caller does not hold " + android.Manifest.permission.QUERY_ALL_PACKAGES);
-        }
         try {
             mService.getContributorApplicationsInfo(
                     new IApplicationInfoResponseCallback.Stub() {

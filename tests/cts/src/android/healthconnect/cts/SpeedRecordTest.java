@@ -50,19 +50,6 @@ public class SpeedRecordTest {
 
     private static final String TAG = "SpeedRecordTest";
 
-    static SpeedRecord getBaseSpeedRecord() {
-        SpeedRecord.SpeedRecordSample speedRecord =
-                new SpeedRecord.SpeedRecordSample(
-                        Velocity.fromMetersPerSecond(10.0), Instant.now());
-        ArrayList<SpeedRecord.SpeedRecordSample> speedRecords = new ArrayList<>();
-        speedRecords.add(speedRecord);
-        speedRecords.add(speedRecord);
-
-        return new SpeedRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), speedRecords)
-                .build();
-    }
-
     @Test
     public void testInsertSpeedRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -89,5 +76,18 @@ public class SpeedRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static SpeedRecord getBaseSpeedRecord() {
+        SpeedRecord.SpeedRecordSample speedRecord =
+                new SpeedRecord.SpeedRecordSample(
+                        Velocity.fromMetersPerSecond(10.0), Instant.now());
+        ArrayList<SpeedRecord.SpeedRecordSample> speedRecords = new ArrayList<>();
+        speedRecords.add(speedRecord);
+        speedRecords.add(speedRecord);
+
+        return new SpeedRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), speedRecords)
+                .build();
     }
 }

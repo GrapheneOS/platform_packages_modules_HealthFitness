@@ -49,20 +49,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ExerciseEventRecordTest {
     private static final String TAG = "ExerciseEventRecordTest";
 
-    static ExerciseEventRecord getBaseExerciseEventRecord() {
-        return new ExerciseEventRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 1)
-                .build();
-    }
-
-    static ExerciseEventRecord getCompleteExerciseEventRecord() {
-        return new ExerciseEventRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 1)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     @Test
     public void testInsertExerciseEventRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -90,5 +76,19 @@ public class ExerciseEventRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static ExerciseEventRecord getBaseExerciseEventRecord() {
+        return new ExerciseEventRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 1)
+                .build();
+    }
+
+    static ExerciseEventRecord getCompleteExerciseEventRecord() {
+        return new ExerciseEventRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 1)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

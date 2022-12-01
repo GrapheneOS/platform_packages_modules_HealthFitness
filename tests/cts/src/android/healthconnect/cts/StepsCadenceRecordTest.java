@@ -49,22 +49,6 @@ public class StepsCadenceRecordTest {
 
     private static final String TAG = "StepsCadenceRecordTest";
 
-    static StepsCadenceRecord getBaseStepsCadenceRecord() {
-        StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
-                new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now());
-        ArrayList<StepsCadenceRecord.StepsCadenceRecordSample> stepsCadenceRecords =
-                new ArrayList<>();
-        stepsCadenceRecords.add(stepsCadenceRecord);
-        stepsCadenceRecords.add(stepsCadenceRecord);
-
-        return new StepsCadenceRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        stepsCadenceRecords)
-                .build();
-    }
-
     @Test
     public void testInsertStepsCadenceRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -91,5 +75,21 @@ public class StepsCadenceRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static StepsCadenceRecord getBaseStepsCadenceRecord() {
+        StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
+                new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now());
+        ArrayList<StepsCadenceRecord.StepsCadenceRecordSample> stepsCadenceRecords =
+                new ArrayList<>();
+        stepsCadenceRecords.add(stepsCadenceRecord);
+        stepsCadenceRecords.add(stepsCadenceRecord);
+
+        return new StepsCadenceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        stepsCadenceRecords)
+                .build();
     }
 }

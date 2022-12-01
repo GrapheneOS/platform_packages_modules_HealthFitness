@@ -197,6 +197,16 @@ public class AppInfoHelper {
                 .collect(Collectors.toList());
     }
 
+    public long getOrInsertAppInfoId(String packageName, Context context) {
+        AppInfoInternal appInfoInternal = getAppInfoMap().get(packageName);
+
+        if (appInfoInternal == null) {
+            appInfoInternal = insertAndGetAppInfo(packageName, context);
+        }
+
+        return appInfoInternal.getId();
+    }
+
     private synchronized void populateAppInfoMap() {
         if (mAppInfoMap != null) {
             return;

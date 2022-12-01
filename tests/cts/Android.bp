@@ -24,7 +24,7 @@ android_test {
         "android.test.base",
         "framework-healthconnect",
     ],
-    srcs: ["src/**/*.java"],
+    srcs: ["src/android/healthconnect/cts/*.java"],
     // Tag this module as a cts test artifact
     test_suites: [
         "cts",
@@ -41,4 +41,36 @@ android_test {
     ],
     min_sdk_version: "UpsideDownCake",
     sdk_version: "module_current",
+}
+
+android_test {
+    name: "CtsHealthConnectDeviceTestCasesNoPermission",
+    defaults: ["cts_defaults"],
+    libs: [
+        "android.test.runner",
+        "android.test.base",
+        "framework-healthconnect",
+    ],
+    srcs: [
+        "src/android/healthconnect/cts/nopermission/*.java",
+        "src/android/healthconnect/cts/TestUtils.java",
+    ],
+    // Tag this module as a cts test artifact
+    test_suites: [
+        "cts",
+        "general-tests",
+        "mts-healthconnect",
+    ],
+    static_libs: [
+        "androidx.test.rules",
+        "androidx.test.ext.truth",
+        "compatibility-device-util-axt",
+        "ctstestrunner-axt",
+        "cts-wm-util",
+        "testng",
+    ],
+    min_sdk_version: "UpsideDownCake",
+    sdk_version: "module_current",
+    test_config:"AndroidTestNoPermission.xml",
+    manifest: "AndroidManifestNoPermission.xml",
 }

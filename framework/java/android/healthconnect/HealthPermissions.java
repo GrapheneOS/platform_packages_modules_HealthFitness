@@ -21,6 +21,40 @@ import static android.healthconnect.HealthDataCategory.ACTIVITY;
 import static android.healthconnect.HealthDataCategory.BODY_MEASUREMENTS;
 import static android.healthconnect.HealthDataCategory.CYCLE_TRACKING;
 import static android.healthconnect.HealthDataCategory.VITALS;
+import static android.healthconnect.HealthPermissionCategory.ACTIVE_CALORIES_BURNED;
+import static android.healthconnect.HealthPermissionCategory.BASAL_BODY_TEMPERATURE;
+import static android.healthconnect.HealthPermissionCategory.BASAL_METABOLIC_RATE;
+import static android.healthconnect.HealthPermissionCategory.BLOOD_GLUCOSE;
+import static android.healthconnect.HealthPermissionCategory.BLOOD_PRESSURE;
+import static android.healthconnect.HealthPermissionCategory.BODY_FAT;
+import static android.healthconnect.HealthPermissionCategory.BODY_TEMPERATURE;
+import static android.healthconnect.HealthPermissionCategory.BODY_WATER_MASS;
+import static android.healthconnect.HealthPermissionCategory.BONE_MASS;
+import static android.healthconnect.HealthPermissionCategory.CERVICAL_MUCUS;
+import static android.healthconnect.HealthPermissionCategory.DISTANCE;
+import static android.healthconnect.HealthPermissionCategory.ELEVATION_GAINED;
+import static android.healthconnect.HealthPermissionCategory.EXERCISE;
+import static android.healthconnect.HealthPermissionCategory.FLOORS_CLIMBED;
+import static android.healthconnect.HealthPermissionCategory.HEART_RATE;
+import static android.healthconnect.HealthPermissionCategory.HEART_RATE_VARIABILITY;
+import static android.healthconnect.HealthPermissionCategory.HEIGHT;
+import static android.healthconnect.HealthPermissionCategory.HYDRATION;
+import static android.healthconnect.HealthPermissionCategory.LEAN_BODY_MASS;
+import static android.healthconnect.HealthPermissionCategory.MENSTRUATION;
+import static android.healthconnect.HealthPermissionCategory.NUTRITION;
+import static android.healthconnect.HealthPermissionCategory.OVULATION_TEST;
+import static android.healthconnect.HealthPermissionCategory.OXYGEN_SATURATION;
+import static android.healthconnect.HealthPermissionCategory.POWER;
+import static android.healthconnect.HealthPermissionCategory.RESPIRATORY_RATE;
+import static android.healthconnect.HealthPermissionCategory.RESTING_HEART_RATE;
+import static android.healthconnect.HealthPermissionCategory.SEXUAL_ACTIVITY;
+import static android.healthconnect.HealthPermissionCategory.SLEEP;
+import static android.healthconnect.HealthPermissionCategory.SPEED;
+import static android.healthconnect.HealthPermissionCategory.STEPS;
+import static android.healthconnect.HealthPermissionCategory.TOTAL_CALORIES_BURNED;
+import static android.healthconnect.HealthPermissionCategory.VO2_MAX;
+import static android.healthconnect.HealthPermissionCategory.WEIGHT;
+import static android.healthconnect.HealthPermissionCategory.WHEELCHAIR_PUSHES;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -51,6 +85,21 @@ public final class HealthPermissions {
     @SystemApi
     public static final String MANAGE_HEALTH_PERMISSIONS =
             "android.permission.MANAGE_HEALTH_PERMISSIONS";
+
+    // Below permission was earlier declared in HealthConnectManager since it was only permission
+    // used by access logs API, is now declared here along with the other system permission.
+    // Please suggest if it will be ok to have it here.
+    /**
+     * Allows an application to modify health data.
+     *
+     * <p>Protection level: privileged.
+     *
+     * @hide
+     */
+    @SystemApi
+    public static final String MANAGE_HEALTH_DATA_PERMISSION =
+            "android.permission.MANAGE_HEALTH_DATA";
+
     /**
      * Used for runtime permissions which grant access to Health Connect data.
      *
@@ -574,6 +623,9 @@ public final class HealthPermissions {
 
     private static final Map<String, Integer> sWriteHealthPermissionToHealthDataCategoryMap =
             new ArrayMap<>();
+    private static final Map<Integer, String> sHealthCategoryToReadPermissionMap = new ArrayMap<>();
+    private static final Map<Integer, String> sHealthCategoryToWritePermissionMap =
+            new ArrayMap<>();
 
     private static final Map<Integer, String[]> sDataCategoryToWritePermissionsMap =
             new ArrayMap<>();
@@ -618,6 +670,107 @@ public final class HealthPermissions {
         return sDataCategoryToWritePermissionsMap.getOrDefault(dataCategory, new String[] {});
     }
 
+    /** @hide */
+    public static String getHealthReadPermission(
+            @HealthPermissionCategory.Type int permissionCategory) {
+        if (sHealthCategoryToReadPermissionMap.isEmpty()) {
+            populateHealthPermissionToHealthPermissionCategoryMap();
+        }
+
+        return sHealthCategoryToReadPermissionMap.get(permissionCategory);
+    }
+
+    /** @hide */
+    public static String getHealthWritePermission(
+            @HealthPermissionCategory.Type int permissionCategory) {
+        if (sHealthCategoryToWritePermissionMap.isEmpty()) {
+            populateHealthPermissionToHealthPermissionCategoryMap();
+        }
+
+        return sHealthCategoryToWritePermissionMap.get(permissionCategory);
+    }
+
+    private static synchronized void populateHealthPermissionToHealthPermissionCategoryMap() {
+        if (!sHealthCategoryToWritePermissionMap.isEmpty()) {
+            return;
+        }
+
+        // Populate permission category to write permission map
+        sHealthCategoryToWritePermissionMap.put(
+                ACTIVE_CALORIES_BURNED, WRITE_ACTIVE_CALORIES_BURNED);
+        sHealthCategoryToWritePermissionMap.put(DISTANCE, WRITE_DISTANCE);
+        sHealthCategoryToWritePermissionMap.put(ELEVATION_GAINED, WRITE_ELEVATION_GAINED);
+        sHealthCategoryToWritePermissionMap.put(EXERCISE, WRITE_EXERCISE);
+        sHealthCategoryToWritePermissionMap.put(FLOORS_CLIMBED, WRITE_FLOORS_CLIMBED);
+        sHealthCategoryToWritePermissionMap.put(STEPS, WRITE_STEPS);
+        sHealthCategoryToWritePermissionMap.put(TOTAL_CALORIES_BURNED, WRITE_TOTAL_CALORIES_BURNED);
+        sHealthCategoryToWritePermissionMap.put(VO2_MAX, WRITE_VO2_MAX);
+        sHealthCategoryToWritePermissionMap.put(WHEELCHAIR_PUSHES, WRITE_WHEELCHAIR_PUSHES);
+        sHealthCategoryToWritePermissionMap.put(POWER, WRITE_POWER);
+        sHealthCategoryToWritePermissionMap.put(SPEED, WRITE_SPEED);
+        sHealthCategoryToWritePermissionMap.put(BASAL_METABOLIC_RATE, WRITE_BASAL_METABOLIC_RATE);
+        sHealthCategoryToWritePermissionMap.put(BODY_FAT, WRITE_BODY_FAT);
+        sHealthCategoryToWritePermissionMap.put(BODY_WATER_MASS, WRITE_BODY_WATER_MASS);
+        sHealthCategoryToWritePermissionMap.put(BONE_MASS, WRITE_BONE_MASS);
+        sHealthCategoryToWritePermissionMap.put(HEIGHT, WRITE_HEIGHT);
+        sHealthCategoryToWritePermissionMap.put(LEAN_BODY_MASS, WRITE_LEAN_BODY_MASS);
+        sHealthCategoryToWritePermissionMap.put(WEIGHT, WRITE_WEIGHT);
+        sHealthCategoryToWritePermissionMap.put(CERVICAL_MUCUS, WRITE_CERVICAL_MUCUS);
+        sHealthCategoryToWritePermissionMap.put(MENSTRUATION, WRITE_MENSTRUATION);
+        sHealthCategoryToWritePermissionMap.put(OVULATION_TEST, WRITE_OVULATION_TEST);
+        sHealthCategoryToWritePermissionMap.put(SEXUAL_ACTIVITY, WRITE_SEXUAL_ACTIVITY);
+        sHealthCategoryToWritePermissionMap.put(HYDRATION, WRITE_HYDRATION);
+        sHealthCategoryToWritePermissionMap.put(NUTRITION, WRITE_NUTRITION);
+        sHealthCategoryToWritePermissionMap.put(SLEEP, WRITE_SLEEP);
+        sHealthCategoryToWritePermissionMap.put(
+                BASAL_BODY_TEMPERATURE, WRITE_BASAL_BODY_TEMPERATURE);
+        sHealthCategoryToWritePermissionMap.put(BLOOD_GLUCOSE, WRITE_BLOOD_GLUCOSE);
+        sHealthCategoryToWritePermissionMap.put(BLOOD_PRESSURE, WRITE_BLOOD_PRESSURE);
+        sHealthCategoryToWritePermissionMap.put(BODY_TEMPERATURE, WRITE_BODY_TEMPERATURE);
+        sHealthCategoryToWritePermissionMap.put(HEART_RATE, WRITE_HEART_RATE);
+        sHealthCategoryToWritePermissionMap.put(
+                HEART_RATE_VARIABILITY, WRITE_HEART_RATE_VARIABILITY);
+        sHealthCategoryToWritePermissionMap.put(OXYGEN_SATURATION, WRITE_OXYGEN_SATURATION);
+        sHealthCategoryToWritePermissionMap.put(RESPIRATORY_RATE, WRITE_RESPIRATORY_RATE);
+        sHealthCategoryToWritePermissionMap.put(RESTING_HEART_RATE, WRITE_RESTING_HEART_RATE);
+
+        // Populate permission category to read permission map
+        sHealthCategoryToReadPermissionMap.put(ACTIVE_CALORIES_BURNED, READ_ACTIVE_CALORIES_BURNED);
+        sHealthCategoryToReadPermissionMap.put(DISTANCE, READ_DISTANCE);
+        sHealthCategoryToReadPermissionMap.put(ELEVATION_GAINED, READ_ELEVATION_GAINED);
+        sHealthCategoryToReadPermissionMap.put(EXERCISE, READ_EXERCISE);
+        sHealthCategoryToReadPermissionMap.put(FLOORS_CLIMBED, READ_FLOORS_CLIMBED);
+        sHealthCategoryToReadPermissionMap.put(STEPS, READ_STEPS);
+        sHealthCategoryToReadPermissionMap.put(TOTAL_CALORIES_BURNED, READ_TOTAL_CALORIES_BURNED);
+        sHealthCategoryToReadPermissionMap.put(VO2_MAX, READ_VO2_MAX);
+        sHealthCategoryToReadPermissionMap.put(WHEELCHAIR_PUSHES, READ_WHEELCHAIR_PUSHES);
+        sHealthCategoryToReadPermissionMap.put(POWER, READ_POWER);
+        sHealthCategoryToReadPermissionMap.put(SPEED, READ_SPEED);
+        sHealthCategoryToReadPermissionMap.put(BASAL_METABOLIC_RATE, READ_BASAL_METABOLIC_RATE);
+        sHealthCategoryToReadPermissionMap.put(BODY_FAT, READ_BODY_FAT);
+        sHealthCategoryToReadPermissionMap.put(BODY_WATER_MASS, READ_BODY_WATER_MASS);
+        sHealthCategoryToReadPermissionMap.put(BONE_MASS, READ_BONE_MASS);
+        sHealthCategoryToReadPermissionMap.put(HEIGHT, READ_HEIGHT);
+        sHealthCategoryToReadPermissionMap.put(LEAN_BODY_MASS, READ_LEAN_BODY_MASS);
+        sHealthCategoryToReadPermissionMap.put(WEIGHT, READ_WEIGHT);
+        sHealthCategoryToReadPermissionMap.put(CERVICAL_MUCUS, READ_CERVICAL_MUCUS);
+        sHealthCategoryToReadPermissionMap.put(MENSTRUATION, READ_MENSTRUATION);
+        sHealthCategoryToReadPermissionMap.put(OVULATION_TEST, READ_OVULATION_TEST);
+        sHealthCategoryToReadPermissionMap.put(SEXUAL_ACTIVITY, READ_SEXUAL_ACTIVITY);
+        sHealthCategoryToReadPermissionMap.put(HYDRATION, READ_HYDRATION);
+        sHealthCategoryToReadPermissionMap.put(NUTRITION, READ_NUTRITION);
+        sHealthCategoryToReadPermissionMap.put(SLEEP, READ_SLEEP);
+        sHealthCategoryToReadPermissionMap.put(BASAL_BODY_TEMPERATURE, READ_BASAL_BODY_TEMPERATURE);
+        sHealthCategoryToReadPermissionMap.put(BLOOD_GLUCOSE, READ_BLOOD_GLUCOSE);
+        sHealthCategoryToReadPermissionMap.put(BLOOD_PRESSURE, READ_BLOOD_PRESSURE);
+        sHealthCategoryToReadPermissionMap.put(BODY_TEMPERATURE, READ_BODY_TEMPERATURE);
+        sHealthCategoryToReadPermissionMap.put(HEART_RATE, READ_HEART_RATE);
+        sHealthCategoryToReadPermissionMap.put(HEART_RATE_VARIABILITY, READ_HEART_RATE_VARIABILITY);
+        sHealthCategoryToReadPermissionMap.put(OXYGEN_SATURATION, READ_OXYGEN_SATURATION);
+        sHealthCategoryToReadPermissionMap.put(RESPIRATORY_RATE, READ_RESPIRATORY_RATE);
+        sHealthCategoryToReadPermissionMap.put(RESTING_HEART_RATE, READ_RESTING_HEART_RATE);
+    }
+
     private static synchronized void populateWriteHealthPermissionToHealthDataCategoryMap() {
         if (!sWriteHealthPermissionToHealthDataCategoryMap.isEmpty()) {
             return;
@@ -642,8 +795,6 @@ public final class HealthPermissions {
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_BODY_WATER_MASS, BODY_MEASUREMENTS);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_BONE_MASS, BODY_MEASUREMENTS);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_HEIGHT, BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_HIP_CIRCUMFERENCE, BODY_MEASUREMENTS);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_LEAN_BODY_MASS, BODY_MEASUREMENTS);
         sWriteHealthPermissionToHealthDataCategoryMap.put(
                 WRITE_WAIST_CIRCUMFERENCE, BODY_MEASUREMENTS);
@@ -694,7 +845,6 @@ public final class HealthPermissions {
                     WRITE_BODY_WATER_MASS,
                     WRITE_BONE_MASS,
                     WRITE_HEIGHT,
-                    WRITE_HIP_CIRCUMFERENCE,
                     WRITE_LEAN_BODY_MASS,
                     WRITE_WAIST_CIRCUMFERENCE,
                     WRITE_WEIGHT
