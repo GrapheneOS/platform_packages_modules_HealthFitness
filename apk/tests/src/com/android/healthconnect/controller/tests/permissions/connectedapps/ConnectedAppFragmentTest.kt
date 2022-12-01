@@ -53,7 +53,7 @@ class ConnectedAppFragmentTest {
 
     @Test
     fun test_noPermissions() {
-        Mockito.`when`(viewModel.grantedPermissions).then {
+        Mockito.`when`(viewModel.appPermissions).then {
             MutableLiveData(listOf<HealthPermissionStatus>())
         }
 
@@ -77,7 +77,7 @@ class ConnectedAppFragmentTest {
     @Test
     fun test_readPermission() {
         val permission = HealthPermission(DISTANCE, READ)
-        Mockito.`when`(viewModel.grantedPermissions).then {
+        Mockito.`when`(viewModel.appPermissions).then {
             MutableLiveData(
                 listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }
@@ -103,7 +103,7 @@ class ConnectedAppFragmentTest {
     @Test
     fun test_writePermission() {
         val permission = HealthPermission(EXERCISE, WRITE)
-        Mockito.`when`(viewModel.grantedPermissions).then {
+        Mockito.`when`(viewModel.appPermissions).then {
             MutableLiveData(
                 listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }
@@ -134,7 +134,7 @@ class ConnectedAppFragmentTest {
         val readPermission =
             HealthPermissionStatus(
                 healthPermission = HealthPermission(DISTANCE, READ), isGranted = false)
-        Mockito.`when`(viewModel.grantedPermissions).then {
+        Mockito.`when`(viewModel.appPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
 

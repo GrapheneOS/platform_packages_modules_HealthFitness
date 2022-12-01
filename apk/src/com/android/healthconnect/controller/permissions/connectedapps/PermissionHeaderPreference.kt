@@ -15,7 +15,11 @@ package com.android.healthconnect.controller.permissions.connectedapps
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.preference.Preference
+import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 
 class PermissionHeaderPreference
@@ -26,8 +30,26 @@ constructor(
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0,
 ) : Preference(context, attrs, defStyleAttr, defStyleRes) {
+
+    private lateinit var iconView: ImageView
+    private lateinit var titleView: TextView
+    private lateinit var subtitleView: TextView
+
     init {
         layoutResource = R.layout.widget_permission_header
         isSelectable = false
+    }
+
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
+        super.onBindViewHolder(holder)
+        iconView = holder.findViewById(R.id.permission_header_icon) as ImageView
+        iconView.setImageDrawable(getIcon())
+        titleView = holder.findViewById(R.id.permission_header_title) as TextView
+        titleView.setText(getTitle())
+        subtitleView = holder.findViewById(R.id.permission_header_summary) as TextView
+        subtitleView.isVisible = (summary != null)
+        if (summary != null) {
+            subtitleView.setText(summary)
+        }
     }
 }

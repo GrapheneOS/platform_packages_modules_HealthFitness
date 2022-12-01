@@ -22,6 +22,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsActivity
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.utils.convertTextViewIntoLink
@@ -36,6 +37,13 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permissions)
+
+        //TODO(b/260629311) replace with new intent
+        if (!intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
+            val newIntent = Intent(intent).setClass(this, SettingsActivity::class.java)
+            startActivity(newIntent)
+            finish()
+        }
 
         val permissionSelection = viewModel.getPermissionSelection()
         val permissions = permissionSelection.ifEmpty { getPermissions().associateWith { true } }

@@ -37,6 +37,7 @@ import com.android.healthconnect.controller.permissions.PermissionsActivity
 import com.android.healthconnect.controller.permissions.RequestPermissionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -76,21 +77,21 @@ class PermissionsActivityTest {
             Intent.makeMainActivity(
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         getInstrumentation().getContext().startActivity(startActivityIntent)
-
         onView(withText("Cancel")).check(matches(isDisplayed()))
         onView(withText("Allow")).check(matches(isDisplayed()))
-        onView(withText("Allow  to access Health Connect?")).check(matches(isDisplayed()))
+        onView(withText("Allow $TEST_APP_PACKAGE_NAME to access Health Connect?")).check(matches(isDisplayed()))
         onView(withText("Choose data you want this app to read or write to Health Connect"))
             .check(matches(isDisplayed()))
         onView(
                 withText(
                     "If you give read access, this app can read new data and data from the past 30 days"))
             .check(matches(isDisplayed()))
-        onView(withText("You can learn how  handles your data in the developer's privacy policy"))
+        onView(withText("You can learn how $TEST_APP_PACKAGE_NAME handles your data in the developer's privacy policy"))
             .check(matches(isDisplayed()))
     }
 
@@ -100,17 +101,17 @@ class PermissionsActivityTest {
             Intent.makeMainActivity(
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, "com.google.app")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         getInstrumentation().getContext().startActivity(startActivityIntent)
 
-        onView(withText("Allow com.google.app to access Health Connect?"))
+        onView(withText("Allow $TEST_APP_PACKAGE_NAME to access Health Connect?"))
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "You can learn how com.google.app handles your data in the developer's privacy policy"))
+                    "You can learn how $TEST_APP_PACKAGE_NAME handles your data in the developer's privacy policy"))
             .check(matches(isDisplayed()))
     }
 
@@ -123,7 +124,7 @@ class PermissionsActivityTest {
                 .putExtra(
                     EXTRA_REQUEST_PERMISSIONS_NAMES,
                     arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, "com.google.app")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
@@ -144,7 +145,7 @@ class PermissionsActivityTest {
                 .putExtra(
                     EXTRA_REQUEST_PERMISSIONS_NAMES,
                     arrayOf(READ_STEPS, WRITE_EXERCISE, "permission"))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, "com.google.app")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
@@ -161,7 +162,7 @@ class PermissionsActivityTest {
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
                 .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf<String>())
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, "com.google.app")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
@@ -187,7 +188,7 @@ class PermissionsActivityTest {
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
                 .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, "com.google.app")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
@@ -229,7 +230,7 @@ class PermissionsActivityTest {
                     ComponentName(
                         getInstrumentation().getContext(), PermissionsActivity::class.java))
                 .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, "com.google.app")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
