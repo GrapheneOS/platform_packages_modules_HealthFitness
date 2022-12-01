@@ -72,6 +72,7 @@ import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -294,6 +295,30 @@ public class HealthConnectManager {
     public List<String> getGrantedHealthPermissions(@NonNull String packageName) {
         try {
             return mService.getGrantedHealthPermissions(packageName, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns the date from which an app have access to the historical health data. Returns null if
+     * the package doesn't have historical access date.
+     *
+     * @hide
+     */
+    @RequiresPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
+    @UserHandleAware
+    @Nullable
+    public Instant getHealthDataHistoricalAccessStartDate(@NonNull String packageName) {
+        try {
+            long dateMilli =
+                    mService.getHistoricalAccessStartDateInMilliseconds(
+                            packageName, mContext.getUser());
+            if (dateMilli == Constants.DEFAULT_LONG) {
+                return null;
+            } else {
+                return Instant.ofEpochMilli(dateMilli);
+            }
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

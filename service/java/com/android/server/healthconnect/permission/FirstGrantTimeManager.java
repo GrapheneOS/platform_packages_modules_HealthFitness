@@ -97,6 +97,33 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         }
     }
 
+    /** Get the date when the first health permission was granted. */
+    @Nullable
+    public Instant getFirstGrantTime(@NonNull String packageName, @NonNull UserHandle user)
+            throws IllegalArgumentException {
+
+        Integer uid = mPackageInfoHelper.getPackageUid(packageName, user);
+        if (uid == null) {
+            throw new IllegalArgumentException(
+                    "Package name "
+                            + packageName
+                            + " of user "
+                            + user.getIdentifier()
+                            + " not found.");
+        }
+
+        synchronized (mGrantTimeLock) {
+            Instant grantTimeDate = mUidToGrantTimeCache.get(uid);
+            if (grantTimeDate == null) {
+                // Check and update the state in case health permission has been granted before
+                // onPermissionsChanged callback was propagated.
+                onPermissionsChanged(mPackageInfoHelper.getPackageUid(packageName, user));
+                grantTimeDate = mUidToGrantTimeCache.get(uid);
+            }
+            return grantTimeDate;
+        }
+    }
+
     @Override
     public void onPermissionsChanged(int uid) {
         String[] packageNames = mPackageManager.getPackagesForUid(uid);
@@ -335,6 +362,11 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                 return null;
             }
             return mUidToGrantTime.remove(uid);
+        }
+
+        @Nullable
+        Instant get(Integer uid) {
+            return mUidToGrantTime.get(uid);
         }
 
         boolean containsKey(@Nullable Integer uid) {

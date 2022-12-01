@@ -30,6 +30,7 @@
                 value="HealthConnectWithManagePermissionsIntegrationTests.apk"/>
         <option name="test-file-name" value="HealthConnectPermsTestApp.apk"/>
         <option name="test-file-name" value="HCPermsTestAppNoUsageIntent.apk"/>
+        <option name="test-file-name" value="HCSharedUserPermsTestApp.apk"/>
     </target_preparer>
     <test class="com.android.tradefed.testtype.AndroidJUnitTest">
         <option name="package" value="android.healthconnect.tests.withmanagepermissions"/>

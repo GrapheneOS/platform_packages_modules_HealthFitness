@@ -25,6 +25,7 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.AccessLog;
+import android.healthconnect.Constants;
 import android.healthconnect.GetDataOriginPriorityOrderResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
@@ -82,6 +83,7 @@ import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -155,6 +157,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
         return mPermissionHelper.getGrantedHealthPermissions(packageName, user);
+    }
+
+    @Override
+    public long getHistoricalAccessStartDateInMilliseconds(
+            @NonNull String packageName, @NonNull UserHandle userHandle) {
+        Instant date = mPermissionHelper.getHealthDataStartDateAccess(packageName, userHandle);
+        if (date == null) {
+            return Constants.DEFAULT_LONG;
+        } else {
+            return date.toEpochMilli();
+        }
     }
 
     /**
