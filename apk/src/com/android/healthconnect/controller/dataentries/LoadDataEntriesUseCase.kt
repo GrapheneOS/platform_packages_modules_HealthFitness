@@ -54,11 +54,13 @@ constructor(
             val dataTypes = getDataTypes(permissionType)
             dataTypes.map { dataType -> readDataType(dataType, timeFilterRange) }.flatten()
         }
+
     private fun getTimeFilter(selectedDate: Instant): TimeRangeFilter {
         val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
         val end = start.plus(ofDays(1))
         return TimeRangeFilter.Builder(start, end).build()
     }
+
     private suspend fun readDataType(
         data: Class<out Record>,
         timeFilterRange: TimeRangeFilter
