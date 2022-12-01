@@ -18,7 +18,7 @@ import android.content.Context
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.utils.EnumFieldsWithValues
@@ -44,13 +44,15 @@ class EnumDropDown(
     }
 
     private fun setupSpinner() {
-        val spinner = findViewById<Spinner>(R.id.enum_spinner)
+        val autoCompleteTextView =
+            findViewById<AutoCompleteTextView>(R.id.enum_auto_complete_textview)
         val dataAdapter: ArrayAdapter<Any> =
-            ArrayAdapter<Any>(context, android.R.layout.simple_spinner_item, mDropdownValues)
+            ArrayAdapter<Any>(context, R.layout.simple_spinner_item, mDropdownValues)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = dataAdapter
+        autoCompleteTextView.setAdapter(dataAdapter)
+        autoCompleteTextView.setText(mDropdownValues[mSelectedPosition], false)
 
-        spinner.onItemSelectedListener =
+        autoCompleteTextView.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
