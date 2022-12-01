@@ -108,11 +108,6 @@ public final class RecordMapper {
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE,
                 BasalMetabolicRateRecord.class);
-
-        mExternalRecordClassToRecordIdMap =
-                new ArrayMap<>(mRecordIdToExternalRecordClassMap.size());
-        mRecordIdToExternalRecordClassMap.forEach(
-                (id, recordClass) -> mExternalRecordClassToRecordIdMap.put(recordClass, id));
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
                 CyclingPedalingCadenceRecord.class);
@@ -122,6 +117,11 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_SPEED, SpeedRecord.class);
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, StepsCadenceRecord.class);
+
+        mExternalRecordClassToRecordIdMap =
+                new ArrayMap<>(mRecordIdToExternalRecordClassMap.size());
+        mRecordIdToExternalRecordClassMap.forEach(
+                (id, recordClass) -> mExternalRecordClassToRecordIdMap.put(recordClass, id));
     }
 
     @NonNull
