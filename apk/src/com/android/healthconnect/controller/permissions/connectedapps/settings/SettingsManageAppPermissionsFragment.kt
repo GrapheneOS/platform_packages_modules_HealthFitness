@@ -119,7 +119,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                 SwitchPreference(requireContext()).also {
                     it.setTitle(
                         HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
-                            .label)
+                            .uppercaseLabel)
                     it.isChecked = permissionStatus.isGranted
                     it.setOnPreferenceChangeListener { _, newValue ->
                         val checked = newValue as Boolean

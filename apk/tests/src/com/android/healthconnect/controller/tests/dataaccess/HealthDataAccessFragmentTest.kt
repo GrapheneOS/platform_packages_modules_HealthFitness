@@ -15,6 +15,7 @@ package com.android.healthconnect.controller.tests.dataaccess
 
 import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -42,16 +43,16 @@ class HealthDataAccessFragmentTest {
     fun dataAccessFragment_distance_isDisplayed() {
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 
-        onView(withText("Can read Distance")).check(matches(isDisplayed()))
-        onView(withText("Can write Distance")).check(matches(isDisplayed()))
+        onView(withText("Can read distance")).check(matches(isDisplayed()))
+        onView(withText("Can write distance")).check(matches(isDisplayed()))
         onView(withText("Inactive apps")).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "These apps can no longer write Distance, but still have data stored in Health\u00A0Connect"))
+                    "These apps can no longer write distance, but still have data stored in Health\u00A0Connect"))
             .check(matches(isDisplayed()))
         onView(withText("Manage data")).check(matches(isDisplayed()))
-        onView(withText("See all entries")).check(matches(isDisplayed()))
-        onView(withText("Delete this data")).check(matches(isDisplayed()))
+        onView(withText("See all entries")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Delete this data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     // TODO(b/245513697): Add tests for permission_type_description.
