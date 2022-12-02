@@ -24,18 +24,25 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
 
         val message = getString(R.string.confirming_question_message)
 
-        // TODO(magdi) sent button strings and values using builders
-        return AlertDialogBuilder(this)
-            .setTitle(buildTitle())
-            .setIcon(R.attr.deleteIcon)
-            .setMessage(message)
-            .setPositiveButton(R.string.confirming_question_delete_button) { _, _ ->
-                setFragmentResult(CONFIRMATION_EVENT, Bundle())
-            }
-            .setNegativeButton(R.string.confirming_question_go_back_button) { _, _ ->
+        val alertDialogBuilder =
+            AlertDialogBuilder(this)
+                .setTitle(buildTitle())
+                .setIcon(R.attr.deleteIcon)
+                .setMessage(message)
+                .setPositiveButton(R.string.confirming_question_delete_button) { _, _ ->
+                    setFragmentResult(CONFIRMATION_EVENT, Bundle())
+                }
+
+        if (viewModel.showTimeRangeDialogFragment) {
+            alertDialogBuilder.setNegativeButton(R.string.confirming_question_go_back_button) { _, _
+                ->
                 setFragmentResult(GO_BACK_EVENT, Bundle())
             }
-            .create()
+        } else {
+            alertDialogBuilder.setNegativeButton(android.R.string.cancel) { _, _ -> }
+        }
+
+        return alertDialogBuilder.create()
     }
 
     private fun buildTitle(): String {
