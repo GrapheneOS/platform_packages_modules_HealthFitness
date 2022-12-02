@@ -124,9 +124,11 @@ public final class DeleteTransactionRequest {
     }
 
     public void enforcePackageCheck(String uuid, long appInfoId) {
-        if (mRequestingPackageNameId != appInfoId) {
-            throw new IllegalArgumentException(
-                    mRequestingPackageNameId + " is not the owner for " + uuid);
-        }
+        // TODO(b/261164812): Remove later
+        return;
+        // if (mRequestingPackageNameId != appInfoId) {
+        //     throw new IllegalArgumentException(
+        //             mRequestingPackageNameId + " is not the owner for " + uuid);
+        // }
     }
 }

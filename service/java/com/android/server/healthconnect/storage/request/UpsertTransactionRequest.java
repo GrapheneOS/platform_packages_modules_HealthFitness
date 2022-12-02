@@ -69,12 +69,12 @@ public class UpsertTransactionRequest {
                 StorageUtils.addNameBasedUUIDTo(recordInternal);
                 // Add uuids to change logs
                 changeLogs.addUUID(recordInternal.getRecordType(), recordInternal.getUuid());
-                mUUIDsInOrder.add(recordInternal.getUuid());
             } else {
                 // For update requests, generate uuid if the clientRecordID is present, else use the
                 // uuid passed as input.
                 StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
             }
+            mUUIDsInOrder.add(recordInternal.getUuid());
             addRequest(recordInternal);
         }
 
