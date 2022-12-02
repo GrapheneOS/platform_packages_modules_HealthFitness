@@ -39,10 +39,23 @@ constructor(
     val deletionParameters: LiveData<DeletionParameters>
         get() = _deletionParameters
 
+    val showTimeRangeDialogFragment: Boolean
+        get() = currentDeletionParameters().showTimeRangePickerDialog
+
     private fun currentDeletionParameters() = _deletionParameters.value!!
 
     fun setDeletionType(deletionType: DeletionType) {
-        _deletionParameters.value = currentDeletionParameters().copy(deletionType = deletionType)
+        val showTimeRangePickerDialog =
+            when (deletionType) {
+                is DeletionType.DeleteDataEntry -> false
+                // TODO (teog) cover other flows
+                else -> true
+            }
+        _deletionParameters.value =
+            currentDeletionParameters()
+                .copy(
+                    showTimeRangePickerDialog = showTimeRangePickerDialog,
+                    deletionType = deletionType)
     }
 
     fun setChosenRange(chosenRange: ChosenRange) {

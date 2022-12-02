@@ -18,6 +18,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -497,6 +498,8 @@ class DeletionFragmentTest {
                     chosenRange = ChosenRange.DELETE_RANGE_ALL_DATA))
         }
 
+        Mockito.`when`(viewModel.showTimeRangeDialogFragment).then { true }
+
         launchFragment<DeletionFragment>(Bundle()) {
             (this as DeletionFragment)
                 .parentFragmentManager
@@ -525,6 +528,8 @@ class DeletionFragmentTest {
             MutableLiveData(DeletionParameters(deletionType = deletionEntry))
         }
 
+        Mockito.`when`(viewModel.showTimeRangeDialogFragment).then { false }
+
         launchFragment<DeletionFragment>(Bundle()) {
             (this as DeletionFragment)
                 .parentFragmentManager
@@ -534,5 +539,47 @@ class DeletionFragmentTest {
         onView(withText("Permanently delete this entry?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
+
+        onView(
+                withText(
+                    "Connected apps will no longer be able to access this data from Health Connect"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+
+        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteAllData_confirmationDialog_cancelButton_exitsFlow() {
+        val deletionTypeAllData = DeletionType.DeletionTypeAllData()
+
+        Mockito.`when`(viewModel.deletionParameters).then {
+            MutableLiveData(
+                DeletionParameters(
+                    deletionType = deletionTypeAllData,
+                    chosenRange = ChosenRange.DELETE_RANGE_ALL_DATA))
+        }
+
+        Mockito.`when`(viewModel.showTimeRangeDialogFragment).then { false }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(
+                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionTypeAllData))
+        }
+
+        onView(withId(R.id.radio_button_all)).inRoot(isDialog()).perform(click())
+
+        onView(withText("Next")).inRoot(isDialog()).perform(click())
+
+        onView(withText("Permanently delete all data from all time?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+
+        onView(withText("Cancel")).inRoot(isDialog()).perform(click())
+
+        onView(withText("Permanently delete all data from all time?")).check(doesNotExist())
     }
 }
