@@ -15,9 +15,6 @@
   limitations under the License.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreference
-        android:key="allow_all_preference"
-        android:title="@string/request_permissions_allow_all"/>
     <PreferenceCategory
         android:key="read_permission_category"
         android:title="@string/read_permission_category" />

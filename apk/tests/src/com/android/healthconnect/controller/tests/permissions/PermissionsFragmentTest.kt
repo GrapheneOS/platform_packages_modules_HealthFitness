@@ -31,7 +31,6 @@ import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -47,49 +46,11 @@ class PermissionsFragmentTest {
     }
 
     @Test
-    fun test_doesNotDisplayEmptyCategories() {
-        val activityScenario = launchFragment({ PermissionsFragment.newInstance(mapOf()) })
-
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            val readCategory =
-                fragment.preferenceScreen.findPreference("read_permission_category")
-                    as PreferenceCategory?
-            val writeCategory =
-                fragment.preferenceScreen.findPreference("write_permission_category")
-                    as PreferenceCategory?
-            assertThat(readCategory?.isVisible).isFalse()
-            assertThat(writeCategory?.isVisible).isFalse()
-        }
-    }
-
-    @Test
     fun test_displaysCategories() {
-        val activityScenario =
-            launchFragment({
-                PermissionsFragment.newInstance(
-                    mapOf(
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ) to
-                            true,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.READ) to true))
-            })
+        launchFragment({ PermissionsFragment.newInstance(mapOf()) })
 
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            val readCategory =
-                fragment.preferenceScreen.findPreference("read_permission_category")
-                    as PreferenceCategory?
-            val writeCategory =
-                fragment.preferenceScreen.findPreference("write_permission_category")
-                    as PreferenceCategory?
-            assertThat(readCategory?.isVisible).isTrue()
-            assertThat(writeCategory?.isVisible).isFalse()
-        }
+        onView(withText(R.string.read_permission_category)).check(matches(isDisplayed()))
+        onView(withText(R.string.write_permission_category)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -177,88 +138,6 @@ class PermissionsFragmentTest {
                             HealthPermissionType.DISTANCE, PermissionsAccessType.READ) to false,
                         HealthPermission(
                             HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE) to true))
-        }
-    }
-
-    @Test
-    fun test_toggleOn() {
-        val activityScenario =
-            launchFragment({
-                PermissionsFragment.newInstance(
-                    mapOf(
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ) to
-                            true,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.READ) to false,
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.WRITE) to
-                            true,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.WRITE) to false))
-            })
-
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            val allowAllPreference =
-                fragment.preferenceScreen.findPreference("allow_all_preference")
-                    as SwitchPreference?
-            allowAllPreference
-                ?.onPreferenceChangeListener
-                ?.onPreferenceChange(allowAllPreference, true)
-
-            assertThat(fragment.getPermissionAssignments())
-                .isEqualTo(
-                    hashMapOf(
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ) to
-                            true,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.READ) to true,
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.WRITE) to
-                            true,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.WRITE) to true))
-        }
-    }
-
-    @Test
-    fun test_toggleOff() {
-        val activityScenario =
-            launchFragment({
-                PermissionsFragment.newInstance(
-                    mapOf(
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ) to
-                            true,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.READ) to false,
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.WRITE) to
-                            true,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.WRITE) to false))
-            })
-
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            val allowAllPreference =
-                fragment.preferenceScreen.findPreference("allow_all_preference")
-                    as SwitchPreference?
-            allowAllPreference
-                ?.onPreferenceChangeListener
-                ?.onPreferenceChange(allowAllPreference, false)
-
-            assertThat(fragment.getPermissionAssignments())
-                .isEqualTo(
-                    hashMapOf(
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ) to
-                            false,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.READ) to false,
-                        HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.WRITE) to
-                            false,
-                        HealthPermission(
-                            HealthPermissionType.HEART_RATE, PermissionsAccessType.WRITE) to false))
         }
     }
 }
