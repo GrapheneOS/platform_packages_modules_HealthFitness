@@ -38,16 +38,28 @@
   <!--endregion-->
 
   <!--region data categories  -->
-  <string name="activity_category" description="Title for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
-  <string name="body_measurements_category" description="Title for body measurements category, displaying user data related to body measurements (such as height, weight, etc.) [CHAR LIMIT=30]">Body measurements</string>
-  <string name="sleep_category" description="Title for sleep category, displaying user data related to sleep (such as sleep duration, bedtime schedule, etc.) [CHAR LIMIT=30]">Sleep</string>
-  <string name="vitals_category" description="Title for vitals category, displaying user data related to vitals (such as heart rate, blood pressure, etc.) [CHAR LIMIT=30]">Vitals</string>
-  <string name="cycle_tracking_category" description="Title for cycle tracking category, displaying user data related to cycle tracking (such as cervical mucus, menstrual flow, etc.) [CHAR LIMIT=30]">Cycle tracking</string>
-  <string name="nutrition_category" description="Title for nutrition category, displaying user data related to nutrition (such as calories consumed, hydration, etc.) [CHAR LIMIT=30]">Nutrition</string>
-  <string name="browse_data_category" description="Label for a section that contains user data grouped by categories. [CHAR_LIMIT=50]">Browse data</string>
-  <string name="manage_data_section" description="Label for a section that has different user actions like deleting data. [CHAR_LIMIT=50]">Manage data</string>
-  <string name="export_data_button" description="Label for a button that allows a user to export their data. [CHAR_LIMIT=50]">Export data</string>
-  <string name="delete_all_data_button" description="Label for a button that allows deleting all data points. [CHAR_LIMIT=50]">Delete all data</string>
+  <string name="activity_category_uppercase" description="Uppercase name for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
+  <string name="activity_category_lowercase" description="Lowercase name for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">activity</string>
+
+  <string name="body_measurements_category_uppercase" description="Uppercase name for body measurements category, displaying user data related to body measurements (such as height, weight, etc.) [CHAR LIMIT=30]">Body measurements</string>
+  <string name="body_measurements_category_lowercase" description="Lowercase name for body measurements category, displaying user data related to body measurements (such as height, weight, etc.) [CHAR LIMIT=30]">body measurements</string>
+
+  <string name="sleep_category_uppercase" description="Uppercase name for sleep category, displaying user data related to sleep (such as sleep duration, bedtime schedule, etc.) [CHAR LIMIT=30]">Sleep</string>
+  <string name="sleep_category_lowercase" description="Lowercase name for sleep category, displaying user data related to sleep (such as sleep duration, bedtime schedule, etc.) [CHAR LIMIT=30]">sleep</string>
+
+  <string name="vitals_category_uppercase" description="Uppercase name for vitals category, displaying user data related to vitals (such as heart rate, blood pressure, etc.) [CHAR LIMIT=30]">Vitals</string>
+  <string name="vitals_category_lowercase" description="Lowercase name for vitals category, displaying user data related to vitals (such as heart rate, blood pressure, etc.) [CHAR LIMIT=30]">vitals</string>
+
+  <string name="cycle_tracking_category_uppercase" description="Uppercase name for cycle tracking category, displaying user data related to cycle tracking (such as cervical mucus, menstrual flow, etc.) [CHAR LIMIT=30]">Cycle tracking</string>
+  <string name="cycle_tracking_category_lowercase" description="Lowercase name for cycle tracking category, displaying user data related to cycle tracking (such as cervical mucus, menstrual flow, etc.) [CHAR LIMIT=30]">cycle tracking</string>
+
+  <string name="nutrition_category_uppercase" description="Uppercase name for nutrition category, displaying user data related to nutrition (such as calories consumed, hydration, etc.) [CHAR LIMIT=30]">Nutrition</string>
+  <string name="nutrition_category_lowercase" description="Lowercase name for nutrition category, displaying user data related to nutrition (such as calories consumed, hydration, etc.) [CHAR LIMIT=30]">nutrition</string>
+
+  <string name="browse_data_category" description="Uppercase name for a section that contains user data grouped by categories. [CHAR_LIMIT=50]">Browse data</string>
+  <string name="manage_data_section" description="Uppercase name for a section that has different user actions like deleting data. [CHAR_LIMIT=50]">Manage data</string>
+  <string name="export_data_button" description="Uppercase name for a button that allows a user to export their data. [CHAR_LIMIT=50]">Export data</string>
+  <string name="delete_all_data_button" description="Uppercase name for a button that allows deleting all data points. [CHAR_LIMIT=50]">Delete all data</string>
   <string name="no_categories" description="Label that shows when health connect does not have data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">You don\'t have any data in Health&#160;Connect</string>
   <!--endregion-->
 
@@ -82,161 +94,198 @@
 
   <!-- region permission ui labels -->
   <!-- region Activity data types -->
-  <string name="active_calories_burned_label" description="Label used to show the user's active calories burned data [CHAR_LIMIT=50]">Active calories burned</string>
+  <string name="active_calories_burned_uppercase_label" description="Uppercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">Active calories burned</string>
+  <string name="active_calories_burned_lowercase_label" description="Lowercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">active calories burned</string>
   <string name="active_calories_burned_read_content_description" description="Content description for switch that enables permissions for reading the user's active calories burned data [CHAR_LIMIT=NONE]">Read active calories burned</string>
   <string name="active_calories_burned_write_content_description" description="Content description for switch that enables permissions for writing the user's active calories burned data [CHAR_LIMIT=NONE]">Write active calories burned</string>
 
-  <string name="exercise_label" description="Label used to show the user's exercise data [CHAR_LIMIT=50]">Exercise</string>
+  <string name="exercise_uppercase_label" description="Uppercase label used to show the user's exercise data [CHAR_LIMIT=50]">Exercise</string>
+  <string name="exercise_lowercase_label" description="Lowercase label used to show the user's exercise data [CHAR_LIMIT=50]">exercise</string>
   <string name="exercise_read_content_description" description="Content description for switch that enables permissions for reading the user's exercise data [CHAR_LIMIT=NONE]">Read exercise</string>
   <string name="exercise_write_content_description" description="Content description for switch that enables permissions for writing the user's exercise data [CHAR_LIMIT=NONE]">Write exercise</string>
 
-  <string name="distance_label" description="Label used to show the user's distance data [CHAR_LIMIT=50]">Distance</string>
+  <string name="distance_uppercase_label" description="Uppercase label used to show the user's distance data [CHAR_LIMIT=50]">Distance</string>
+  <string name="distance_lowercase_label" description="Lowercase label used to show the user's distance data [CHAR_LIMIT=50]">distance</string>
   <string name="distance_read_content_description" description="Content description for switch that enables permissions for reading the user's distance data [CHAR_LIMIT=NONE]">Read distance</string>
   <string name="distance_write_content_description" description="Content description for switch that enables permissions for writing the user's distance data [CHAR_LIMIT=NONE]">Write distance</string>
 
-  <string name="elevation_gained_label" description="Label used to show the user's elevation gained data [CHAR_LIMIT=50]">Elevation gained</string>
+  <string name="elevation_gained_uppercase_label" description="Uppercase label used to show the user's elevation gained data [CHAR_LIMIT=50]">Elevation gained</string>
+  <string name="elevation_gained_lowercase_label" description="Lowercase label used to show the user's elevation gained data [CHAR_LIMIT=50]">elevation gained</string>
   <string name="elevation_gained_read_content_description" description="Content description for switch that enables permissions for reading the user's elevation gained data [CHAR_LIMIT=NONE]">Read elevation gained</string>
   <string name="elevation_gained_write_content_description" description="Content description for switch that enables permissions for writing the user's elevation gained data [CHAR_LIMIT=NONE]">Write elevation gained</string>
 
-  <string name="floors_climbed_label" description="Label used to show the user's floors climbed data [CHAR_LIMIT=50]">Floors climbed</string>
+  <string name="floors_climbed_uppercase_label" description="Uppercase label used to show the user's floors climbed data [CHAR_LIMIT=50]">Floors climbed</string>
+  <string name="floors_climbed_lowercase_label" description="Lowercase label used to show the user's floors climbed data [CHAR_LIMIT=50]">floors climbed</string>
   <string name="floors_climbed_read_content_description" description="Content description for switch that enables permissions for reading the user's floors climbed data [CHAR_LIMIT=NONE]">Read floors climbed</string>
   <string name="floors_climbed_write_content_description" description="Content description for switch that enables permissions for writing the user's floors climbed data [CHAR_LIMIT=NONE]">Write floors climbed</string>
 
-  <string name="power_label" description="Label used to show the user's power data [CHAR_LIMIT=50]">Power</string>
+  <string name="power_uppercase_label" description="Uppercase label used to show the user's power data [CHAR_LIMIT=50]">Power</string>
+  <string name="power_lowercase_label" description="Lowercase label used to show the user's power data [CHAR_LIMIT=50]">power</string>
   <string name="power_read_content_description" description="Content description for switch that enables permissions for reading the user's power data [CHAR_LIMIT=NONE]">Read power</string>
   <string name="power_write_content_description" description="Content description for switch that enables permissions for writing the user's power data [CHAR_LIMIT=NONE]">Write power</string>
 
-  <string name="speed_label" description="Label used to show the user's speed data [CHAR_LIMIT=50]">Speed</string>
+  <string name="speed_uppercase_label" description="Uppercase label used to show the user's speed data [CHAR_LIMIT=50]">Speed</string>
+  <string name="speed_lowercase_label" description="Lowercase label used to show the user's speed data [CHAR_LIMIT=50]">speed</string>
   <string name="speed_read_content_description" description="Content description for switch that enables permissions for reading the user's speed data [CHAR_LIMIT=NONE]">Read speed</string>
   <string name="speed_write_content_description" description="Content description for switch that enables permissions for writing the user's speed data [CHAR_LIMIT=NONE]">Write speed</string>
 
-  <string name="steps_label" description="Label used to show the user's steps data [CHAR_LIMIT=50]">Steps</string>
+  <string name="steps_uppercase_label" description="Uppercase label used to show the user's steps data [CHAR_LIMIT=50]">Steps</string>
+  <string name="steps_lowercase_label" description="Lowercase label used to show the user's steps data [CHAR_LIMIT=50]">steps</string>
   <string name="steps_read_content_description" description="Content description for switch that enables permissions for reading the user's steps data [CHAR_LIMIT=NONE]">Read steps</string>
   <string name="steps_write_content_description" description="Content description for switch that enables permissions for writing the user's steps data [CHAR_LIMIT=NONE]">Write steps</string>
 
-  <string name="total_calories_burned_label" description="Label used to show the user's total calories burned data [CHAR_LIMIT=50]">Total calories burned</string>
+  <string name="total_calories_burned_uppercase_label" description="Uppercase label used to show the user's total calories burned data [CHAR_LIMIT=50]">Total calories burned</string>
+  <string name="total_calories_burned_lowercase_label" description="Lowercase label used to show the user's total calories burned data [CHAR_LIMIT=50]">total calories burned</string>
   <string name="total_calories_burned_read_content_description" description="Content description for switch that enables permissions for reading the user's total calories burned data [CHAR_LIMIT=NONE]">Read total calories burned</string>
   <string name="total_calories_burned_write_content_description" description="Content description for switch that enables permissions for writing the user's total calories burned data [CHAR_LIMIT=NONE]">Write total calories burned</string>
 
-  <string name="vo2_max_label" description="Label used to show the user's V02 max data [CHAR_LIMIT=50]">VO2 max</string>
+  <string name="vo2_max_uppercase_label" description="Uppercase label used to show the user's V02 max data [CHAR_LIMIT=50]">VO2 max</string>
+  <string name="vo2_max_lowercase_label" description="Lowercase label used to show the user's V02 max data [CHAR_LIMIT=50]">VO2 max</string>
   <string name="vo2_max_read_content_description" description="Content description for switch that enables permissions for reading the user's V02 max data [CHAR_LIMIT=NONE]">Read VO2 max</string>
   <string name="vo2_max_write_content_description" description="Content description for switch that enables permissions for writing the user's V02 max data [CHAR_LIMIT=NONE]">Write VO2 max</string>
 
-  <string name="wheelchair_pushes_label" description="Label used to show the user's wheelchair pushes data [CHAR_LIMIT=50]">Wheelchair pushes</string>
+  <string name="wheelchair_pushes_uppercase_label" description="Uppercase label used to show the user's wheelchair pushes data [CHAR_LIMIT=50]">Wheelchair pushes</string>
+  <string name="wheelchair_pushes_lowercase_label" description="Lowercase label used to show the user's wheelchair pushes data [CHAR_LIMIT=50]">wheelchair pushes</string>
   <string name="wheelchair_pushes_read_content_description" description="Content description for switch that enables permissions for reading the user's wheelchair pushes data [CHAR_LIMIT=NONE]">Read wheelchair pushes</string>
   <string name="wheelchair_pushes_write_content_description" description="Content description for switch that enables permissions for writing the user's wheelchair pushes data [CHAR_LIMIT=NONE]">Write wheelchair pushes</string>
   <!--endregion-->
 
   <!-- region Body measurements data types -->
-  <string name="basal_metabolic_rate_label" description="Label used to show the user's basal metabolic rate data [CHAR_LIMIT=50]">Basal metabolic rate</string>
+  <string name="basal_metabolic_rate_uppercase_label" description="Uppercase label used to show the user's basal metabolic rate data [CHAR_LIMIT=50]">Basal metabolic rate</string>
+  <string name="basal_metabolic_rate_lowercase_label" description="Lowercase label used to show the user's basal metabolic rate data [CHAR_LIMIT=50]">basal metabolic rate</string>
   <string name="basal_metabolic_rate_read_content_description" description="Content description for switch that enables permissions for reading the user's basal metabolic rate data [CHAR_LIMIT=NONE]">Read basal metabolic rate</string>
   <string name="basal_metabolic_rate_write_content_description" description="Content description for switch that enables permissions for writing the user's basal metabolic rate data [CHAR_LIMIT=NONE]">Write basal metabolic rate</string>
 
-  <string name="body_fat_label" description="Label used to show the user's body fat data [CHAR_LIMIT=50]">Body fat</string>
+  <string name="body_fat_uppercase_label" description="Uppercase label used to show the user's body fat data [CHAR_LIMIT=50]">Body fat</string>
+  <string name="body_fat_lowercase_label" description="Lowercase label used to show the user's body fat data [CHAR_LIMIT=50]">body fat</string>
   <string name="body_fat_read_content_description" description="Content description for switch that enables permissions for reading the user's body fat data [CHAR_LIMIT=NONE]">Read body fat</string>
   <string name="body_fat_write_content_description" description="Content description for switch that enables permissions for writing the user's body fat data [CHAR_LIMIT=NONE]">Write body fat</string>
 
-  <string name="body_water_mass_label" description="Label used to show the user's body water mass data [CHAR_LIMIT=50]">Body water mass</string>
+  <string name="body_water_mass_uppercase_label" description="Uppercase label used to show the user's body water mass data [CHAR_LIMIT=50]">Body water mass</string>
+  <string name="body_water_mass_lowercase_label" description="Lowercase label used to show the user's body water mass data [CHAR_LIMIT=50]">body water mass</string>
   <string name="body_water_mass_read_content_description" description="Content description for switch that enables permissions for reading the user's body water mass data [CHAR_LIMIT=NONE]">Read body water mass</string>
   <string name="body_water_mass_write_content_description" description="Content description for switch that enables permissions for writing the user's body water mass data [CHAR_LIMIT=NONE]">Write body water mass</string>
 
-  <string name="bone_mass_label" description="Label used to show the user's bone mass data [CHAR_LIMIT=50]">Bone mass</string>
+  <string name="bone_mass_uppercase_label" description="Uppercase label used to show the user's bone mass data [CHAR_LIMIT=50]">Bone mass</string>
+  <string name="bone_mass_lowercase_label" description="Lowercase label used to show the user's bone mass data [CHAR_LIMIT=50]">bone mass</string>
   <string name="bone_mass_read_content_description" description="Content description for switch that enables permissions for reading the user's bone mass data [CHAR_LIMIT=NONE]">Read bone mass</string>
   <string name="bone_mass_write_content_description" description="Content description for switch that enables permissions for writing the user's bone mass data [CHAR_LIMIT=NONE]">Write bone mass</string>
 
-  <string name="height_label" description="Label used to show the user's height data [CHAR_LIMIT=50]">Height</string>
+  <string name="height_uppercase_label" description="Uppercase label used to show the user's height data [CHAR_LIMIT=50]">Height</string>
+  <string name="height_lowercase_label" description="Lowercase label used to show the user's height data [CHAR_LIMIT=50]">height</string>
   <string name="height_read_content_description" description="Content description for switch that enables permissions for reading the user's height data [CHAR_LIMIT=NONE]">Read height</string>
   <string name="height_write_content_description" description="Content description for switch that enables permissions for writing the user's height data [CHAR_LIMIT=NONE]">Write height</string>
 
-  <string name="hip_circumference_label" description="Label used to show the user's hip circumference data [CHAR_LIMIT=50]">Hip circumference</string>
+  <string name="hip_circumference_uppercase_label" description="Uppercase label used to show the user's hip circumference data [CHAR_LIMIT=50]">Hip circumference</string>
+  <string name="hip_circumference_lowercase_label" description="Lowercase label used to show the user's hip circumference data [CHAR_LIMIT=50]">hip circumference</string>
   <string name="hip_circumference_read_content_description" description="Content description for switch that enables permissions for reading the user's hip circumference data [CHAR_LIMIT=NONE]">Read hip circumference</string>
   <string name="hip_circumference_write_content_description" description="Content description for switch that enables permissions for writing the user's hip circumference data [CHAR_LIMIT=NONE]">Write hip circumference</string>
 
-  <string name="lean_body_mass_label" description="Label used to show the user's lean body mass data [CHAR_LIMIT=50]">Lean body mass</string>
+  <string name="lean_body_mass_uppercase_label" description="Uppercase label used to show the user's lean body mass data [CHAR_LIMIT=50]">Lean body mass</string>
+  <string name="lean_body_mass_lowercase_label" description="Lowercase label used to show the user's lean body mass data [CHAR_LIMIT=50]">lean body mass</string>
   <string name="lean_body_mass_read_content_description" description="Content description for switch that enables permissions for reading the user's lean body mass data [CHAR_LIMIT=NONE]">Read lean body mass</string>
   <string name="lean_body_mass_write_content_description" description="Content description for switch that enables permissions for writing the user's lean body mass data [CHAR_LIMIT=NONE]">Write lean body mass</string>
 
-  <string name="waist_circumference_label" description="Label used to show the user's waist circumference data [CHAR_LIMIT=50]">Waist circumference</string>
+  <string name="waist_circumference_uppercase_label" description="Uppercase label used to show the user's waist circumference data [CHAR_LIMIT=50]">Waist circumference</string>
+  <string name="waist_circumference_lowercase_label" description="Lowercase label used to show the user's waist circumference data [CHAR_LIMIT=50]">waist circumference</string>
   <string name="waist_circumference_read_content_description" description="Content description for switch that enables permissions for reading the user's waist circumference data [CHAR_LIMIT=NONE]">Read waist circumference</string>
   <string name="waist_circumference_write_content_description" description="Content description for switch that enables permissions for writing the user's waist circumference data [CHAR_LIMIT=NONE]">Write waist circumference</string>
 
-  <string name="weight_label" description="Label used to show the user's weight data [CHAR_LIMIT=50]">Weight</string>
+  <string name="weight_uppercase_label" description="Uppercase label used to show the user's weight data [CHAR_LIMIT=50]">Weight</string>
+  <string name="weight_lowercase_label" description="Lowercase label used to show the user's weight data [CHAR_LIMIT=50]">weight</string>
   <string name="weight_read_content_description" description="Content description for switch that enables permissions for reading the user's weight data [CHAR_LIMIT=NONE]">Read weight</string>
   <string name="weight_write_content_description" description="Content description for switch that enables permissions for writing the user's weight data [CHAR_LIMIT=NONE]">Write weight</string>
   <!--endregion-->
 
   <!-- region Cycle tracking data types -->
-  <string name="cervical_mucus_label" description="Label used to show the user's cervical mucus data [CHAR_LIMIT=50]">Cervical mucus</string>
+  <string name="cervical_mucus_uppercase_label" description="Uppercase label used to show the user's cervical mucus data [CHAR_LIMIT=50]">Cervical mucus</string>
+  <string name="cervical_mucus_lowercase_label" description="Lowercase label used to show the user's cervical mucus data [CHAR_LIMIT=50]">cervical mucus</string>
   <string name="cervical_mucus_read_content_description" description="Content description for switch that enables permissions for reading the user's cervical mucus data [CHAR_LIMIT=NONE]">Read cervical mucus</string>
   <string name="cervical_mucus_write_content_description" description="Content description for switch that enables permissions for writing the user's cervical mucus data [CHAR_LIMIT=NONE]">Write cervical mucus</string>
 
-  <string name="menstruation_label" description="Label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation</string>
+  <string name="menstruation_uppercase_label" description="Uppercase label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation</string>
+  <string name="menstruation_lowercase_label" description="Lowercase label used to show the user's menstruation data [CHAR_LIMIT=50]">menstruation</string>
   <string name="menstruation_read_content_description" description="Content description for switch that enables permissions for reading the user's menstruation data [CHAR_LIMIT=NONE]">Read menstruation</string>
   <string name="menstruation_write_content_description" description="Content description for switch that enables permissions for writing the user's menstruation data [CHAR_LIMIT=NONE]">Write menstruation</string>
 
-  <string name="ovulation_test_label" description="Label used to show the user's ovulation test data [CHAR_LIMIT=50]">Ovulation test</string>
+  <string name="ovulation_test_uppercase_label" description="Uppercase label used to show the user's ovulation test data [CHAR_LIMIT=50]">Ovulation test</string>
+  <string name="ovulation_test_lowercase_label" description="Lowercase label used to show the user's ovulation test data [CHAR_LIMIT=50]">ovulation test</string>
   <string name="ovulation_test_read_content_description" description="Content description for switch that enables permissions for reading the user's ovulation test data [CHAR_LIMIT=NONE]">Read ovulation test</string>
   <string name="ovulation_test_write_content_description" description="Content description for switch that enables permissions for writing the user's ovulation test data [CHAR_LIMIT=NONE]">Write ovulation test</string>
 
-  <string name="sexual_activity_label" description="Label used to show the user's sexual activity data [CHAR_LIMIT=50]">Sexual activity</string>
+  <string name="sexual_activity_uppercase_label" description="Uppercase label used to show the user's sexual activity data [CHAR_LIMIT=50]">Sexual activity</string>
+  <string name="sexual_activity_lowercase_label" description="Lowercase label used to show the user's sexual activity data [CHAR_LIMIT=50]">sexual activity</string>
   <string name="sexual_activity_read_content_description" description="Content description for switch that enables permissions for reading the user's sexual activity data [CHAR_LIMIT=NONE]">Read sexual activity</string>
   <string name="sexual_activity_write_content_description" description="Content description for switch that enables permissions for writing the user's sexual activity data [CHAR_LIMIT=NONE]">Write sexual activity</string>
 
-  <string name="spotting_label" description="Label used to show the user's spotting data [CHAR_LIMIT=50]">Spotting</string>
+  <string name="spotting_uppercase_label" description="Uppercase label used to show the user's spotting data [CHAR_LIMIT=50]">Spotting</string>
+  <string name="spotting_lowercase_label" description="Lowercase label used to show the user's spotting data [CHAR_LIMIT=50]">spotting</string>
   <string name="spotting_read_content_description" description="Content description for switch that enables permissions for reading the user's active spotting data [CHAR_LIMIT=NONE]">Read spotting</string>
   <string name="spotting_write_content_description" description="Content description for switch that enables permissions for writing the user's active spotting data [CHAR_LIMIT=NONE]">Write spotting</string>
   <!--endregion-->
 
   <!-- region Nutrition data types -->
-  <string name="hydration_label" description="Label used to show the user's hydration data [CHAR_LIMIT=50]">Hydration</string>
+  <string name="hydration_uppercase_label" description="Uppercase label used to show the user's hydration data [CHAR_LIMIT=50]">Hydration</string>
+  <string name="hydration_lowercase_label" description="Lowercase label used to show the user's hydration data [CHAR_LIMIT=50]">hydration</string>
   <string name="hydration_read_content_description" description="Content description for switch that enables permissions for reading the user's hydration data [CHAR_LIMIT=NONE]">Read hydration</string>
   <string name="hydration_write_content_description" description="Content description for switch that enables permissions for writing the user's hydration data [CHAR_LIMIT=NONE]">Write hydration</string>
 
-  <string name="nutrition_label" description="Label used to show the user's nutrition data [CHAR_LIMIT=50]">Nutrition</string>
+  <string name="nutrition_uppercase_label" description="Uppercase label used to show the user's nutrition data [CHAR_LIMIT=50]">Nutrition</string>
+  <string name="nutrition_lowercase_label" description="Lowercase label used to show the user's nutrition data [CHAR_LIMIT=50]">nutrition</string>
   <string name="nutrition_read_content_description" description="Content description for switch that enables permissions for reading the user's nutrition data [CHAR_LIMIT=NONE]">Read nutrition</string>
   <string name="nutrition_write_content_description" description="Content description for switch that enables permissions for writing the user's nutrition data [CHAR_LIMIT=NONE]">Write nutrition</string>
   <!--endregion-->
 
   <!-- region Sleep data types -->
-  <string name="sleep_label" description="Label used to show the user's sleep data [CHAR_LIMIT=50]">Sleep</string>
+  <string name="sleep_uppercase_label" description="Uppercase label used to show the user's sleep data [CHAR_LIMIT=50]">Sleep</string>
+  <string name="sleep_lowercase_label" description="Lowercase label used to show the user's sleep data [CHAR_LIMIT=50]">sleep</string>
   <string name="sleep_read_content_description" description="Content description for switch that enables permissions for reading the user's sleep data [CHAR_LIMIT=NONE]">Read sleep</string>
   <string name="sleep_write_content_description" description="Content description for switch that enables permissions for writing the user's sleep session data [CHAR_LIMIT=NONE]">Write sleep</string>
   <!--endregion-->
 
   <!-- region Vitals data types -->
-  <string name="basal_body_temperature_label" description="Label used to show the user's basal body temperature data [CHAR_LIMIT=50]">Basal body temperature</string>
+  <string name="basal_body_temperature_uppercase_label" description="Uppercase label used to show the user's basal body temperature data [CHAR_LIMIT=50]">Basal body temperature</string>
+  <string name="basal_body_temperature_lowercase_label" description="Lowercase label used to show the user's basal body temperature data [CHAR_LIMIT=50]">basal body temperature</string>
   <string name="basal_body_temperature_read_content_description" description="Content description for switch that enables permissions for reading the user's basal body temperature data [CHAR_LIMIT=NONE]">Read basal body temperature</string>
   <string name="basal_body_temperature_write_content_description" description="Content description for switch that enables permissions for writing the user's basal body temperature data [CHAR_LIMIT=NONE]">Write basal body temperature</string>
 
-  <string name="blood_glucose_label" description="Label used to show the user's blood glucose data [CHAR_LIMIT=50]">Blood glucose</string>
+  <string name="blood_glucose_uppercase_label" description="Uppercase label used to show the user's blood glucose data [CHAR_LIMIT=50]">Blood glucose</string>
+  <string name="blood_glucose_lowercase_label" description="Label used to show the user's blood glucose data [CHAR_LIMIT=50]">blood glucose</string>
   <string name="blood_glucose_read_content_description" description="Content description for switch that enables permissions for reading the user's blood glucose data [CHAR_LIMIT=NONE]">Read blood glucose</string>
   <string name="blood_glucose_write_content_description" description="Content description for switch that enables permissions for writing the user's blood glucose data [CHAR_LIMIT=NONE]">Write blood glucose</string>
 
-  <string name="blood_pressure_label" description="Label used to show the user's blood pressure data [CHAR_LIMIT=50]">Blood pressure</string>
+  <string name="blood_pressure_uppercase_label" description="Uppercase label used to show the user's blood pressure data [CHAR_LIMIT=50]">Blood pressure</string>
+  <string name="blood_pressure_lowercase_label" description="Lowercase label used to show the user's blood pressure data [CHAR_LIMIT=50]">blood pressure</string>
   <string name="blood_pressure_read_content_description" description="Content description for switch that enables permissions for reading the user's blood pressure data [CHAR_LIMIT=NONE]">Read blood pressure</string>
   <string name="blood_pressure_write_content_description" description="Content description for switch that enables permissions for writing the user's blood pressure data [CHAR_LIMIT=NONE]">Write blood pressure</string>
 
-  <string name="body_temperature_label" description="Label used to show the user's body temperature data [CHAR_LIMIT=50]">Body temperature</string>
+  <string name="body_temperature_uppercase_label" description="Uppercase label used to show the user's body temperature data [CHAR_LIMIT=50]">Body temperature</string>
+  <string name="body_temperature_lowercase_label" description="Lowercase label used to show the user's body temperature data [CHAR_LIMIT=50]">body temperature</string>
   <string name="body_temperature_read_content_description" description="Content description for switch that enables permissions for reading the user's body temperature data [CHAR_LIMIT=NONE]">Read body temperature</string>
   <string name="body_temperature_write_content_description" description="Content description for switch that enables permissions for writing the user's body temperature data [CHAR_LIMIT=NONE]">Write body temperature</string>
 
-  <string name="heart_rate_label" description="Label used to show the user's heart rate data [CHAR_LIMIT=50]">Heart rate</string>
+  <string name="heart_rate_uppercase_label" description="Uppercase label used to show the user's heart rate data [CHAR_LIMIT=50]">Heart rate</string>
+  <string name="heart_rate_lowercase_label" description="Lowercase label used to show the user's heart rate data [CHAR_LIMIT=50]">heart rate</string>
   <string name="heart_rate_read_content_description" description="Content description for switch that enables permissions for reading the user's heart rate data [CHAR_LIMIT=NONE]">Read heart rate</string>
   <string name="heart_rate_write_content_description" description="Content description for switch that enables permissions for writing the user's heart rate data [CHAR_LIMIT=NONE]">Write heart rate</string>
 
-  <string name="heart_rate_variability_label" description="Label used to show the user's heart rate variability data [CHAR_LIMIT=50]">Heart rate variability</string>
+  <string name="heart_rate_variability_uppercase_label" description="Uppercase label used to show the user's heart rate variability data [CHAR_LIMIT=50]">Heart rate variability</string>
+  <string name="heart_rate_variability_lowercase_label" description="Lowercase label used to show the user's heart rate variability data [CHAR_LIMIT=50]">heart rate variability</string>
   <string name="heart_rate_variability_read_content_description" description="Content description for switch that enables permissions for reading the user's heart rate variability data [CHAR_LIMIT=NONE]">Read heart rate variability</string>
   <string name="heart_rate_variability_write_content_description" description="Content description for switch that enables permissions for writing the user's heart rate variability data [CHAR_LIMIT=NONE]">Write heart rate variability</string>
 
-  <string name="oxygen_saturation_label" description="Label used to show the user's oxygen saturation data [CHAR_LIMIT=50]">Oxygen saturation</string>
+  <string name="oxygen_saturation_uppercase_label" description="Uppercase label used to show the user's oxygen saturation data [CHAR_LIMIT=50]">Oxygen saturation</string>
+  <string name="oxygen_saturation_lowercase_label" description="Lowercase label used to show the user's oxygen saturation data [CHAR_LIMIT=50]">oxygen saturation</string>
   <string name="oxygen_saturation_read_content_description" description="Content description for switch that enables permissions for reading the user's oxygen saturation data [CHAR_LIMIT=NONE]">Read oxygen saturation</string>
   <string name="oxygen_saturation_write_content_description" description="Content description for switch that enables permissions for writing the user's oxygen saturation data [CHAR_LIMIT=NONE]">Write oxygen saturation</string>
 
-  <string name="respiratory_rate_label" description="Label used to show the user's respiratory rate data [CHAR_LIMIT=50]">Respiratory rate</string>
+  <string name="respiratory_rate_uppercase_label" description="Uppercase label used to show the user's respiratory rate data [CHAR_LIMIT=50]">Respiratory rate</string>
+  <string name="respiratory_rate_lowercase_label" description="Lowercase label used to show the user's respiratory rate data [CHAR_LIMIT=50]">respiratory rate</string>
   <string name="respiratory_rate_read_content_description" description="Content description for switch that enables permissions for reading the user's respiratory rate data [CHAR_LIMIT=NONE]">Read respiratory rate</string>
   <string name="respiratory_rate_write_content_description" description="Content description for switch that enables permissions for writing the user's respiratory rate data [CHAR_LIMIT=NONE]">Write respiratory rate</string>
 
-  <string name="resting_heart_rate_label" description="Label used to show the user's resting heart rate data [CHAR_LIMIT=50]">Resting heart rate</string>
+  <string name="resting_heart_rate_uppercase_label" description="Uppercase label used to show the user's resting heart rate data [CHAR_LIMIT=50]">Resting heart rate</string>
+  <string name="resting_heart_rate_lowercase_label" description="Lowercase label used to show the user's resting heart rate data [CHAR_LIMIT=50]">resting heart rate</string>
   <string name="resting_heart_rate_read_content_description" description="Content description for switch that enables permissions for reading the user's resting heart rate data [CHAR_LIMIT=NONE]">Read resting heart rate</string>
   <string name="resting_heart_rate_write_content_description" description="Content description for switch that enables permissions for writing the user's resting heart rate data [CHAR_LIMIT=NONE]">Write resting heart rate</string>
   <!--endregion-->

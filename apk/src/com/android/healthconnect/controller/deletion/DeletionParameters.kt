@@ -78,7 +78,7 @@ data class DeletionParameters(
                 (deletionType as DeletionType.DeletionTypeHealthPermissionTypeFromApp)
                     .healthPermissionType
 
-        return HealthPermissionStrings.fromPermissionType(healthPermissionType).label
+        return HealthPermissionStrings.fromPermissionType(healthPermissionType).lowercaseLabel
     }
 
     @StringRes
@@ -89,7 +89,7 @@ data class DeletionParameters(
 
         val category = (deletionType as DeletionType.DeletionTypeCategoryData).category
 
-        return category.title
+        return category.lowercaseTitle
     }
 }
 

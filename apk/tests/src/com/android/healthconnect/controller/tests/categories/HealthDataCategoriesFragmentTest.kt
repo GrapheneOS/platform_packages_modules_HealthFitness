@@ -21,9 +21,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.AllCategoriesScreenHealthDataCategory
-import com.android.healthconnect.controller.categories.HEALTH_DATA_CATEGORIES
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel
@@ -40,8 +38,7 @@ import org.mockito.Mockito
 @HiltAndroidTest
 class HealthDataCategoriesFragmentTest {
 
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
+    @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @BindValue
     val viewModel: HealthDataCategoryViewModel =
@@ -51,23 +48,17 @@ class HealthDataCategoriesFragmentTest {
     val HEALTH_DATA_ALL_CATEGORIES =
         listOf(
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.ACTIVITY, noData = false
-            ),
+                category = HealthDataCategory.ACTIVITY, noData = false),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.BODY_MEASUREMENTS, noData = false
-            ),
+                category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.SLEEP, noData = false
-            ),
+                category = HealthDataCategory.SLEEP, noData = false),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.VITALS, noData = false
-            ),
+                category = HealthDataCategory.VITALS, noData = false),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.CYCLE_TRACKING, noData = false
-            ),
+                category = HealthDataCategory.CYCLE_TRACKING, noData = false),
             AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.NUTRITION, noData = true
-            ),
+                category = HealthDataCategory.NUTRITION, noData = true),
         )
 
     @Before
@@ -85,8 +76,8 @@ class HealthDataCategoriesFragmentTest {
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
-        onView(withText(R.string.browse_data_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.manage_data_section)).check(matches(isDisplayed()))
+        onView(withText("Browse data")).check(matches(isDisplayed()))
+        onView(withText("Manage data")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -99,41 +90,37 @@ class HealthDataCategoriesFragmentTest {
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
-        onView(withText(R.string.no_categories)).check(matches(isDisplayed()))
-        onView(withText(R.string.delete_all_data_button)).check(matches(not(isEnabled())))
+        onView(withText("You don't have any data in Health\u00A0Connect"))
+            .check(matches(isDisplayed()))
+        onView(withText("Delete all data")).check(matches(not(isEnabled())))
     }
 
     @Test
     fun categoriesFragment_withCategories_categoryInformationIsDisplayed() {
         Mockito.`when`(viewModel.categoriesData).then {
             MutableLiveData(
-                listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.BODY_MEASUREMENTS)
-            )
+                listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.BODY_MEASUREMENTS))
         }
         Mockito.`when`(viewModel.allCategoriesData).then {
             MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
-        onView(withText(R.string.activity_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.body_measurements_category)).check(matches(isDisplayed()))
+        onView(withText("Activity")).check(matches(isDisplayed()))
+        onView(withText("Body measurements")).check(matches(isDisplayed()))
     }
 
     @Test
     fun seeAllCategoriesPreference_isDisplayed() {
         Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData(
-                listOf(
-                    HealthDataCategory.ACTIVITY
-                )
-            )
+            MutableLiveData(listOf(HealthDataCategory.ACTIVITY))
         }
         Mockito.`when`(viewModel.allCategoriesData).then {
             MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
-        onView(withText(R.string.see_all_categories)).check(matches(isDisplayed()))
+        onView(withText("See all categories")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -149,12 +136,10 @@ class HealthDataCategoriesFragmentTest {
                     HealthDataCategory.SLEEP,
                     HealthDataCategory.VITALS,
                     HealthDataCategory.NUTRITION,
-                    HealthDataCategory.CYCLE_TRACKING
-                )
-            )
+                    HealthDataCategory.CYCLE_TRACKING))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
-        onView(withText(R.string.see_all_categories)).check(doesNotExist())
+        onView(withText("See all categories")).check(doesNotExist())
     }
 }
