@@ -21,6 +21,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 
 abstract class DataEntriesFormatter<T : Record>(private val context: Context) {
@@ -35,12 +36,17 @@ abstract class DataEntriesFormatter<T : Record>(private val context: Context) {
             header = getHeader(record),
             headerA11y = getHeaderA11y(record),
             title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences))
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record))
     }
 
     abstract suspend fun formatValue(record: T, unitPreferences: UnitPreferences): String
 
     abstract suspend fun formatA11yValue(record: T, unitPreferences: UnitPreferences): String
+
+    private fun getDataType(record: T): DataType {
+        return DataType.values().first { it.recordClass == record::class.java }
+    }
 
     private fun getHeader(record: T): String {
         return context.getString(

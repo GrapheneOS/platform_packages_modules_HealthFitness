@@ -23,6 +23,7 @@ import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.dataentries.LoadDataEntriesUseCase
 import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
+import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
@@ -92,7 +93,8 @@ class LoadDataEntriesUseCaseTest {
                     header = "7:06 AM - 7:06 AM • Health Connect test app",
                     headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
                     title = "100 bpm",
-                    titleA11y = "100 beats per minute"),
+                    titleA11y = "100 beats per minute",
+                    dataType = DataType.HEART_RATE),
             )
     }
 

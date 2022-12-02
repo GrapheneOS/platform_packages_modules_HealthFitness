@@ -17,6 +17,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.shared.DataType
 
 /** Represents the types of deletion that the user can perform. */
 sealed class DeletionType : Parcelable {
@@ -151,6 +152,30 @@ sealed class DeletionType : Parcelable {
             }
 
             override fun newArray(size: Int): Array<DeletionTypeAppData?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
+
+    data class DeleteDataEntry(val id: String, val dataType: DataType) : DeletionType() {
+
+        constructor(
+            parcel: Parcel
+        ) : this(parcel.readString().orEmpty(), DataType.valueOf(parcel.readString().orEmpty()))
+
+        override fun describeContents(): Int = 0
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(id)
+            parcel.writeString(dataType.name)
+        }
+
+        companion object CREATOR : Parcelable.Creator<DeleteDataEntry> {
+            override fun createFromParcel(parcel: Parcel): DeleteDataEntry {
+                return DeleteDataEntry(parcel)
+            }
+
+            override fun newArray(size: Int): Array<DeleteDataEntry?> {
                 return arrayOfNulls(size)
             }
         }

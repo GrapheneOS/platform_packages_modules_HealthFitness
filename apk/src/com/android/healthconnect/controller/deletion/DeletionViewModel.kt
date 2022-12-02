@@ -13,6 +13,7 @@
  */
 package com.android.healthconnect.controller.deletion
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,8 +23,16 @@ import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class DeletionViewModel @Inject constructor(private val deleteUseCase: DeleteUseCase) :
-    ViewModel() {
+class DeletionViewModel
+@Inject
+constructor(
+    private val deleteUseCase: DeleteUseCase,
+    private val deleteEntryUseCase: DeleteEntryUseCase
+) : ViewModel() {
+
+    companion object {
+        private const val TAG = "DeletionViewModel"
+    }
 
     private val _deletionParameters = MutableLiveData(DeletionParameters())
 
@@ -51,9 +60,17 @@ class DeletionViewModel @Inject constructor(private val deleteUseCase: DeleteUse
 
             try {
                 setDeletionState(DeletionState.STATE_PROGRESS_INDICATOR_STARTED)
-                _deletionParameters.value?.let { deleteUseCase.invoke(it) }
+                when (val deletionType = currentDeletionParameters().deletionType) {
+                    is DeletionType.DeleteDataEntry -> {
+                        _deletionParameters.value?.let { deleteEntryUseCase.invoke(deletionType) }
+                    }
+                    else -> {
+                        _deletionParameters.value?.let { deleteUseCase.invoke(it) }
+                    }
+                }
                 setDeletionState(DeletionState.STATE_DELETION_SUCCESSFUL)
             } catch (error: Exception) {
+                Log.e(TAG, "Failed to delete data ${currentDeletionParameters()}", error)
                 setDeletionState(DeletionState.STATE_DELETION_FAILED)
             } finally {
                 setDeletionState(DeletionState.STATE_PROGRESS_INDICATOR_CAN_END)

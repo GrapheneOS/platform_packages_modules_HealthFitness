@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.tests.dataentries
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -29,7 +30,9 @@ import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewM
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.withIndex
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -91,6 +94,27 @@ class DataEntriesFragmentTest {
         onView(withText("8:06 AM - 8:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("15 steps")).check(matches(isDisplayed()))
     }
+
+    @Test
+    fun dataEntries_withData_showsPopupMenu() {
+        Mockito.`when`(viewModel.dataEntries)
+            .thenReturn(MutableLiveData(WithData(FORMATTED_STEPS_LIST)))
+
+        launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
+
+        onView(withIndex(withId(R.id.item_data_entry_menu), 0)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataEntries_popupMenu_showsDeleteAction() {
+        Mockito.`when`(viewModel.dataEntries)
+            .thenReturn(MutableLiveData(WithData(FORMATTED_STEPS_LIST)))
+
+        launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
+        onView(withIndex(withId(R.id.item_data_entry_menu), 0)).perform(click())
+
+        onView(withText(R.string.delete_data_point)).check(matches(isDisplayed()))
+    }
 }
 
 private val FORMATTED_STEPS_LIST =
@@ -100,10 +124,12 @@ private val FORMATTED_STEPS_LIST =
             header = "7:06 AM - 7:06 AM • TEST_APP_NAME",
             headerA11y = "from 7:06 AM to 7:06 AM • TEST_APP_NAME",
             title = "12 steps",
-            titleA11y = "12 steps"),
+            titleA11y = "12 steps",
+            dataType = DataType.STEPS),
         FormattedDataEntry(
             uuid = "test_id",
             header = "8:06 AM - 8:06 AM • TEST_APP_NAME",
             headerA11y = "from 8:06 AM to 8:06 AM • TEST_APP_NAME",
             title = "15 steps",
-            titleA11y = "15 steps"))
+            titleA11y = "15 steps",
+            dataType = DataType.STEPS))

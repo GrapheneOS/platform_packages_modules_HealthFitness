@@ -13,10 +13,13 @@
  */
 package com.android.healthconnect.controller.dataentries
 
+import com.android.healthconnect.controller.shared.DataType
+
 data class FormattedDataEntry(
     val uuid: String,
     val header: String,
     val headerA11y: String,
     val title: String,
-    val titleA11y: String
+    val titleA11y: String,
+    val dataType: DataType
 )
