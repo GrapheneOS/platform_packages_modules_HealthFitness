@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PermissionsFragment : Hilt_PermissionsFragment() {
 
     companion object {
+        private const val ALLOW_ALL_PREFERENCE = "allow_all_preference"
         private const val READ_CATEGORY = "read_permission_category"
         private const val WRITE_CATEGORY = "write_permission_category"
         @JvmStatic
@@ -23,6 +24,10 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
     }
 
     private var permissionMap: MutableMap<HealthPermission, Boolean> = HashMap()
+
+    private val allowAllPreference: SwitchPreference? by lazy {
+        preferenceScreen.findPreference(ALLOW_ALL_PREFERENCE)
+    }
 
     private val mReadPermissionCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(READ_CATEGORY)
@@ -36,11 +41,26 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         if (savedInstanceState == null) {
             setPreferencesFromResource(R.xml.permissions_screen, rootKey)
             updateDataList()
+            setupAllowAll()
         }
     }
 
     fun getPermissionAssignments(): Map<HealthPermission, Boolean> {
         return permissionMap.toMap()
+    }
+
+    private fun setupAllowAll() {
+        allowAllPreference?.setOnPreferenceChangeListener { _, newValue ->
+            val grant = newValue as Boolean
+            (0..(mReadPermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
+                (mReadPermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            }
+            (0..(mWritePermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
+                (mWritePermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            }
+            permissionMap.keys.forEach { permission -> permissionMap[permission] = grant }
+            true
+        }
     }
 
     private fun updateDataList() {
@@ -83,6 +103,12 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                         }
                     })
             }
+        }
+        if (mReadPermissionCategory?.preferenceCount == 0) {
+            mReadPermissionCategory?.isVisible = false
+        }
+        if (mWritePermissionCategory?.preferenceCount == 0) {
+            mWritePermissionCategory?.isVisible = false
         }
     }
 }
