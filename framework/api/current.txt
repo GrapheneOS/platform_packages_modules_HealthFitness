@@ -1,6 +1,23 @@
 // Signature format: 2.0
 package android.healthconnect {
 
+  public final class AggregateRecordsRequest<T> {
+    method @NonNull public java.util.Set<android.healthconnect.datatypes.AggregationType<T>> getAggregationTypes();
+    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOriginsFilters();
+    method @NonNull public android.healthconnect.TimeRangeFilter getTimeRangeFilter();
+  }
+
+  public static final class AggregateRecordsRequest.Builder<T> {
+    ctor public AggregateRecordsRequest.Builder(@NonNull android.healthconnect.TimeRangeFilter);
+    method @NonNull public android.healthconnect.AggregateRecordsRequest.Builder<T> addAggregationType(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+    method @NonNull public android.healthconnect.AggregateRecordsRequest.Builder<T> addDataOriginsFilter(@NonNull android.healthconnect.datatypes.DataOrigin);
+    method @NonNull public android.healthconnect.AggregateRecordsRequest<T> build();
+  }
+
+  public final class AggregateRecordsResponse<T> {
+    method @Nullable public T get(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+  }
+
   public final class ChangeLogTokenRequest {
     method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOriginFilters();
     method @NonNull public java.util.Set<java.lang.Class<? extends android.healthconnect.datatypes.Record>> getRecordTypes();
@@ -26,6 +43,7 @@ package android.healthconnect {
   }
 
   public class HealthConnectManager {
+    method @NonNull public <T> void aggregate(@NonNull android.healthconnect.AggregateRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.AggregateRecordsResponse<T>,android.healthconnect.HealthConnectException>);
     method public void deleteRecords(@NonNull java.util.List<android.healthconnect.RecordIdFilter>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
     method public void deleteRecords(@NonNull Class<? extends android.healthconnect.datatypes.Record>, @NonNull android.healthconnect.TimeRangeFilter, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
     method public void getChangeLogToken(@NonNull android.healthconnect.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Long,android.healthconnect.HealthConnectException>);
@@ -184,6 +202,9 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
+  public final class AggregationType<T> {
+  }
+
   public final class AppInfo {
     method @Nullable public byte[] getIcon();
     method @Nullable public String getName();
@@ -304,6 +325,8 @@ package android.healthconnect.datatypes {
 
   public class HeartRateRecord extends android.healthconnect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample> getSamples();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
   }
 
   public static final class HeartRateRecord.Builder {
@@ -348,7 +371,7 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setClientRecordVersion(long);
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setDataOrigin(@NonNull android.healthconnect.datatypes.DataOrigin);
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setDevice(@NonNull android.healthconnect.datatypes.Device);
-    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setId(@Nullable String);
+    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setId(@NonNull String);
     method @NonNull public android.healthconnect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
   }
 

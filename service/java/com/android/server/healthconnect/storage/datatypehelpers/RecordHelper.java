@@ -31,11 +31,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -57,10 +60,29 @@ import java.util.stream.Collectors;
  * @hide
  */
 public abstract class RecordHelper<T extends RecordInternal<?>> {
+    static class AggregateParams {
+        private final String mTableName;
+        private final List<String> mColumnNames;
+        private final String mTimeColumnName;
+        private SqlJoin mJoin;
+
+        public AggregateParams(String tableName, List<String> columnNames, String timeColumnName) {
+            mTableName = tableName;
+            mColumnNames = columnNames;
+            mTimeColumnName = timeColumnName;
+        }
+
+        public AggregateParams setJoin(SqlJoin join) {
+            mJoin = join;
+            return this;
+        }
+    }
+
     public static final String PRIMARY_COLUMN_NAME = "row_id";
     public static final String UUID_COLUMN_NAME = "uuid";
     public static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     public static final String APP_INFO_ID_COLUMN_NAME = "app_info_id";
+
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
@@ -81,6 +103,35 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     // columns.
     public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
         // empty by default
+    }
+
+    /**
+     * @return {@link AggregateTableRequest} corresponding to {@code aggregationType}
+     */
+    public final AggregateTableRequest getAggregateTableRequest(
+            AggregationType<?> aggregationType,
+            List<String> packageFilter,
+            long startTime,
+            long endTime) {
+        AggregateParams params = getAggregateParams(aggregationType);
+        Objects.requireNonNull(params);
+
+        return new AggregateTableRequest(
+                        params.mTableName, params.mColumnNames, aggregationType, this)
+                .setPackageFilter(
+                        AppInfoHelper.getInstance().getAppInfoIds(packageFilter),
+                        APP_INFO_ID_COLUMN_NAME)
+                .setTimeFilter(startTime, endTime, params.mTimeColumnName)
+                .setSqlJoin(params.mJoin);
+    }
+
+    /**
+     * @return {@link AggregateRecordsResponse.AggregateResult} for {@link AggregationType}
+     */
+    public AggregateRecordsResponse.AggregateResult getAggregateResult(
+            Cursor cursor, AggregationType<?> aggregationType) {
+        // returns null by default
+        return null;
     }
 
     /**
@@ -200,6 +251,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /** Returns the table name to be created corresponding to this helper */
     @NonNull
     abstract String getMainTableName();
+
+    /** Returns the information required to perform aggregate operation. */
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        // Null by default
+        return null;
+    }
 
     /**
      * This implementation should return the column names with which the table should be created.

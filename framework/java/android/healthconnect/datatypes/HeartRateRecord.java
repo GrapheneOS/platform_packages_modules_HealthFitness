@@ -16,7 +16,12 @@
 
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MIN;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
+
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -26,6 +31,77 @@ import java.util.Objects;
 /** Captures the user's heart rate. Each record represents a series of measurements. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
 public class HeartRateRecord extends IntervalRecord {
+    /**
+     * Query param for to get max heart rate in beats per minute using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Long> BPM_MAX =
+            new AggregationType<>(
+                    HEART_RATE_RECORD_BPM_MAX,
+                    AggregationType.MAX,
+                    RECORD_TYPE_HEART_RATE,
+                    Long.class);
+    /**
+     * Query param for to get min heart rate in beats per minute using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Long> BPM_MIN =
+            new AggregationType<>(
+                    HEART_RATE_RECORD_BPM_MIN,
+                    AggregationType.MIN,
+                    RECORD_TYPE_HEART_RATE,
+                    Long.class);
+
+    private final List<HeartRateSample> mHeartRateSamples;
+
+    private HeartRateRecord(
+            @NonNull Metadata metadata,
+            @NonNull Instant startTime,
+            @NonNull ZoneOffset startZoneOffset,
+            @NonNull Instant endTime,
+            @NonNull ZoneOffset endZoneOffset,
+            @NonNull List<HeartRateSample> heartRateSamples) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+        Objects.requireNonNull(metadata);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(startZoneOffset);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(endZoneOffset);
+        Objects.requireNonNull(heartRateSamples);
+        mHeartRateSamples = heartRateSamples;
+    }
+
+    /**
+     * @return heart rate samples corresponding to this record
+     */
+    @NonNull
+    public List<HeartRateSample> getSamples() {
+        return mHeartRateSamples;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param object the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(@NonNull Object object) {
+        if (super.equals(object) && object instanceof HeartRateRecord) {
+            HeartRateRecord other = (HeartRateRecord) object;
+            return this.getSamples().equals(other.getSamples());
+        }
+        return false;
+    }
+
+    /** Returns a hash code value for the object. */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.getSamples());
+    }
+
     /** A class to represent heart rate samples */
     public static final class HeartRateSample {
         private final long mBeatsPerMinute;
@@ -164,53 +240,5 @@ public class HeartRateRecord extends IntervalRecord {
                     mEndZoneOffset,
                     mHeartRateSamples);
         }
-    }
-
-    private final List<HeartRateSample> mHeartRateSamples;
-
-    private HeartRateRecord(
-            @NonNull Metadata metadata,
-            @NonNull Instant startTime,
-            @NonNull ZoneOffset startZoneOffset,
-            @NonNull Instant endTime,
-            @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<HeartRateSample> heartRateSamples) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
-        Objects.requireNonNull(heartRateSamples);
-        mHeartRateSamples = heartRateSamples;
-    }
-
-    /**
-     * @return heart rate samples corresponding to this record
-     */
-    @NonNull
-    public List<HeartRateSample> getSamples() {
-        return mHeartRateSamples;
-    }
-
-    /**
-     * Indicates whether some other object is "equal to" this one.
-     *
-     * @param object the reference object with which to compare.
-     * @return {@code true} if this object is the same as the obj
-     */
-    @Override
-    public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof HeartRateRecord) {
-            HeartRateRecord other = (HeartRateRecord) object;
-            return this.getSamples().equals(other.getSamples());
-        }
-        return false;
-    }
-
-    /** Returns a hash code value for the object. */
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getSamples());
     }
 }

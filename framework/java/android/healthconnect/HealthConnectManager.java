@@ -32,11 +32,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
+import android.healthconnect.aidl.AggregateDataRequestParcel;
+import android.healthconnect.aidl.AggregateDataResponseParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
@@ -50,6 +53,7 @@ import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
@@ -299,10 +303,6 @@ public class HealthConnectManager {
         Objects.requireNonNull(records);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
-        /*
-         TODO(b/251454017): Use executor to return results after "Hidden API flags are
-         inconsistent" error is fixed
-        */
         try {
             List<RecordInternal<?>> recordInternals =
                     mInternalExternalRecordConverter.getInternalRecords(records);
@@ -313,9 +313,12 @@ public class HealthConnectManager {
                         @Override
                         public void onResult(InsertRecordsResponseParcel parcel) {
                             Binder.clearCallingIdentity();
-                            callback.onResult(
-                                    new InsertRecordsResponse(
-                                            getRecordsWithUids(records, parcel.getUids())));
+                            executor.execute(
+                                    () ->
+                                            callback.onResult(
+                                                    new InsertRecordsResponse(
+                                                            getRecordsWithUids(
+                                                                    records, parcel.getUids()))));
                         }
 
                         @Override
@@ -323,6 +326,66 @@ public class HealthConnectManager {
                             returnError(executor, exception, callback);
                         }
                     });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Get aggregations corresponding to {@code request}.
+     *
+     * @param <T> Result type of the aggregation.
+     *     <p>Note:
+     *     <p>This type is embedded in the {@link AggregationType} as {@link AggregationType} are
+     *     typed in nature.
+     *     <p>Only {@link AggregationType}s that are of same type T can be queried together
+     * @param request request for different aggregation.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @see AggregateRecordsResponse#get
+     *     <p>TODO(b/251194265): User permission checks once available.
+     */
+    @NonNull
+    @SuppressWarnings("unchecked")
+    public <T> void aggregate(
+            @NonNull AggregateRecordsRequest<T> request,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull
+                    OutcomeReceiver<AggregateRecordsResponse<T>, HealthConnectException> callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.aggregateRecords(
+                    mContext.getPackageName(),
+                    new AggregateDataRequestParcel(request),
+                    new IAggregateRecordsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(AggregateDataResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            try {
+                                executor.execute(
+                                        () ->
+                                                callback.onResult(
+                                                        (AggregateRecordsResponse<T>)
+                                                                parcel.getAggregateDataResponse()));
+                            } catch (Exception exception) {
+                                callback.onError(
+                                        new HealthConnectException(
+                                                HealthConnectException.ERROR_INTERNAL));
+                            }
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (ClassCastException classCastException) {
+            callback.onError(
+                    new HealthConnectException(
+                            HealthConnectException.ERROR_INTERNAL,
+                            classCastException.getMessage()));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

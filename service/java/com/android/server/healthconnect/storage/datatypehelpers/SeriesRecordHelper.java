@@ -36,7 +36,7 @@ import java.util.List;
 abstract class SeriesRecordHelper<
                 T extends SeriesRecordInternal<?, ?>, U extends SeriesRecordInternal.Sample>
         extends IntervalRecordHelper<T> {
-    private static final String PARENT_KEY_COLUMN_NAME = "parent_key";
+    protected static final String PARENT_KEY_COLUMN_NAME = "parent_key";
 
     @Override
     final List<CreateTableRequest> getChildTableCreateRequests() {

@@ -24,112 +24,12 @@ import java.util.Objects;
 
 /** Set of shared metadata fields for {@link Record} */
 public final class Metadata {
-    /**
-     * @see Metadata
-     */
-    public static final class Builder {
-        private Device mDevice = new Device.Builder().build();
-        private DataOrigin mDataOrigin = new DataOrigin.Builder().build();
-        private String mId = "";
-        private Instant mLastModifiedTime = Instant.EPOCH;
-        private String mClientRecordId;
-        private long mClientRecordVersion = 0;
-
-        public Builder() {}
-
-        /** Sets optional client supplied device information associated with the data. */
-        @NonNull
-        public Builder setDevice(@NonNull Device device) {
-            Objects.requireNonNull(device);
-
-            mDevice = device;
-            return this;
-        }
-
-        /**
-         * Sets where the data comes from, such as application information originally generated this
-         * data. When {@link Record} is created before insertion, this contains a sentinel value,
-         * any assigned value will be ignored. After insertion, this will be populated with inserted
-         * application.
-         */
-        @NonNull
-        public Builder setDataOrigin(@NonNull DataOrigin dataOrigin) {
-            Objects.requireNonNull(dataOrigin);
-
-            mDataOrigin = dataOrigin;
-            return this;
-        }
-
-        /**
-         * Sets unique identifier of this data, assigned by the Android Health Platform at insertion
-         * time. When {@link Record} is created before insertion, this takes a sentinel value, any
-         * assigned value will be ignored.
-         */
-        @NonNull
-        public Builder setId(@Nullable String id) {
-            mId = id;
-            return this;
-        }
-
-        /**
-         * Sets when data was last modified (or originally created). When {@link Record} is created
-         * before inserted, this contains a sentinel value, any assigned value will be ignored.
-         */
-        @NonNull
-        public Builder setLastModifiedTime(@NonNull Instant lastModifiedTime) {
-            Objects.requireNonNull(lastModifiedTime);
-
-            mLastModifiedTime = lastModifiedTime;
-            return this;
-        }
-
-        /**
-         * Sets optional client supplied record unique data identifier associated with the data.
-         * There is guaranteed a single entry for any type of data with same client provided
-         * identifier for a given client. Any new insertions with the same client provided
-         * identifier will either replace or be ignored depending on associated {@code
-         * clientRecordVersion}. @see clientRecordVersion
-         */
-        @NonNull
-        public Builder setClientRecordId(@Nullable String clientRecordId) {
-            mClientRecordId = clientRecordId;
-            return this;
-        }
-
-        /**
-         * Sets optional client supplied version associated with the data. This determines conflict
-         * resolution outcome when there are multiple insertions of the same {@code clientRecordId}.
-         * Data with the highest {@code clientRecordVersion} takes precedence. {@code
-         * clientRecordVersion} starts with 0. @see clientRecordId
-         */
-        @NonNull
-        public Builder setClientRecordVersion(long clientRecordVersion) {
-            mClientRecordVersion = clientRecordVersion;
-            return this;
-        }
-
-        /**
-         * @return {@link Metadata} object
-         */
-        @NonNull
-        public Metadata build() {
-            return new Metadata(
-                    mDevice,
-                    mDataOrigin,
-                    mId,
-                    mLastModifiedTime,
-                    mClientRecordId,
-                    mClientRecordVersion);
-        }
-    }
-
     private final Device mDevice;
     private final DataOrigin mDataOrigin;
     private final Instant mLastModifiedTime;
     private final String mClientRecordId;
     private final long mClientRecordVersion;
     private String mId;
-
     /**
      * @param device Optional client supplied device information associated with the data.
      * @param dataOrigin Where the data comes from, such as application information originally
@@ -183,7 +83,8 @@ public final class Metadata {
     }
 
     /**
-     * @return Contributing package name if set, null otherwise
+     * @return Corresponds to package name if set. If no data origin is set {@code
+     *     getDataOrigin().getPackageName()} will return null
      */
     @NonNull
     public DataOrigin getDataOrigin() {
@@ -191,7 +92,7 @@ public final class Metadata {
     }
 
     /**
-     * @return Record identifier if set, null otherwise
+     * @return Record identifier if set, empty string otherwise
      */
     @NonNull
     public String getId() {
@@ -200,6 +101,8 @@ public final class Metadata {
 
     /** Sets record identifier */
     public void setId(@NonNull String id) {
+        Objects.requireNonNull(id);
+
         mId = id;
     }
 
@@ -255,5 +158,108 @@ public final class Metadata {
                 this.getClientRecordId(),
                 this.getClientRecordVersion(),
                 this.getLastModifiedTime());
+    }
+
+    /**
+     * @see Metadata
+     */
+    public static final class Builder {
+        private Device mDevice = new Device.Builder().build();
+        private DataOrigin mDataOrigin = new DataOrigin.Builder().build();
+        private String mId = "";
+        private Instant mLastModifiedTime = Instant.EPOCH;
+        private String mClientRecordId;
+        private long mClientRecordVersion = 0;
+
+        public Builder() {}
+
+        /** Sets optional client supplied device information associated with the data. */
+        @NonNull
+        public Builder setDevice(@NonNull Device device) {
+            Objects.requireNonNull(device);
+
+            mDevice = device;
+            return this;
+        }
+
+        /**
+         * Sets where the data comes from, such as application information originally generated this
+         * data. When {@link Record} is created before insertion, this contains a sentinel value,
+         * any assigned value will be ignored. After insertion, this will be populated with inserted
+         * application.
+         */
+        @NonNull
+        public Builder setDataOrigin(@NonNull DataOrigin dataOrigin) {
+            Objects.requireNonNull(dataOrigin);
+
+            mDataOrigin = dataOrigin;
+            return this;
+        }
+
+        /**
+         * Sets unique identifier of this data, assigned by the Android Health Platform at insertion
+         * time. When {@link Record} is created before insertion, this takes a sentinel value, any
+         * assigned value will be ignored.
+         */
+        @NonNull
+        public Builder setId(@NonNull String id) {
+            Objects.requireNonNull(id);
+
+            mId = id;
+            return this;
+        }
+
+        /**
+         * Sets when data was last modified (or originally created). When {@link Record} is created
+         * before inserted, this contains a sentinel value, any assigned value will be ignored.
+         */
+        @NonNull
+        public Builder setLastModifiedTime(@NonNull Instant lastModifiedTime) {
+            Objects.requireNonNull(lastModifiedTime);
+
+            mLastModifiedTime = lastModifiedTime;
+            return this;
+        }
+
+        /**
+         * Sets optional client supplied record unique data identifier associated with the data.
+         * There is guaranteed a single entry for any type of data with same client provided
+         * identifier for a given client. Any new insertions with the same client provided
+         * identifier will either replace or be ignored depending on associated {@code
+         * clientRecordVersion}. @see clientRecordVersion
+         *
+         * <p>A null value means that no clientRecordId is set
+         */
+        @NonNull
+        public Builder setClientRecordId(@Nullable String clientRecordId) {
+            mClientRecordId = clientRecordId;
+            return this;
+        }
+
+        /**
+         * Sets optional client supplied version associated with the data. This determines conflict
+         * resolution outcome when there are multiple insertions of the same {@code clientRecordId}.
+         * Data with the highest {@code clientRecordVersion} takes precedence. {@code
+         * clientRecordVersion} starts with 0. @see clientRecordId
+         */
+        @NonNull
+        public Builder setClientRecordVersion(long clientRecordVersion) {
+            mClientRecordVersion = clientRecordVersion;
+            return this;
+        }
+
+        /**
+         * @return {@link Metadata} object
+         */
+        @NonNull
+        public Metadata build() {
+            return new Metadata(
+                    mDevice,
+                    mDataOrigin,
+                    mId,
+                    mLastModifiedTime,
+                    mClientRecordId,
+                    mClientRecordVersion);
+        }
     }
 }

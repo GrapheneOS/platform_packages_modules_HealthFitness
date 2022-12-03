@@ -20,13 +20,17 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.HealthConnectException;
+import android.healthconnect.aidl.AggregateDataRequestParcel;
+import android.healthconnect.aidl.AggregateDataResponseParcel;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
@@ -58,6 +62,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
+import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
@@ -162,11 +167,41 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 /* isInsertRequest */ true));
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                     } catch (SQLiteException sqLiteException) {
-                        Slog.e(TAG, "SqlException: ", sqLiteException);
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
+                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
+     * Returns aggregation results based on the {@code request} into the HealthConnect database.
+     *
+     * @param packageName name of the package inserting the record.
+     * @param request represents the request using which the aggregation is to be performed.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    public void aggregateRecords(
+            String packageName,
+            AggregateDataRequestParcel request,
+            IAggregateRecordsResponseCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        Map<Integer, AggregateRecordsResponse.AggregateResult> results =
+                                mTransactionManager.getAggregations(
+                                        new AggregateTransactionRequest(packageName, request));
+                        callback.onResult(
+                                new AggregateDataResponseParcel(
+                                        new AggregateRecordsResponse(results)));
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception e) {
                         tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
                     }
                 });
@@ -431,6 +466,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private static void tryAndThrowException(
             @NonNull IInsertRecordsResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IAggregateRecordsResponseCallback callback,
             @NonNull Exception exception,
             @HealthConnectException.ErrorCode int errorCode) {
         try {
