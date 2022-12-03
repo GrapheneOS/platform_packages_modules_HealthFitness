@@ -14,8 +14,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /** View model for {@link ConnectedAppFragment} . */
 @HiltViewModel
@@ -41,6 +41,10 @@ constructor(
     val allAppPermissionsGranted: LiveData<Boolean>
         get() = _allAppPermissionsGranted
 
+    private val _appInfo = MutableLiveData<AppMetadata>()
+    val appInfo: LiveData<AppMetadata>
+        get() = _appInfo
+
     fun loadForPackage(packageName: String) {
         viewModelScope.launch {
             val permissions = loadAppPermissionsStatusUseCase.invoke(packageName)
@@ -52,8 +56,10 @@ constructor(
         }
     }
 
-    fun loadAppInfo(packageName: String): AppMetadata {
-        return appInfoReader.getAppMetadata(packageName)
+    fun loadAppInfo(packageName: String) {
+        viewModelScope.launch {
+            _appInfo.postValue(appInfoReader.getAppMetadata(packageName))
+        }
     }
 
     fun updatePermission(packageName: String, healthPermission: HealthPermission, grant: Boolean) {

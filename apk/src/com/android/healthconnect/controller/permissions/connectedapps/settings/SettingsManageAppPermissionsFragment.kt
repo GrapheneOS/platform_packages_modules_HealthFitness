@@ -15,9 +15,7 @@ package com.android.healthconnect.controller.permissions.connectedapps.settings
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
@@ -76,14 +74,12 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
-            requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
+            requireArguments().getString(EXTRA_PACKAGE_NAME) != null
+        ) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
-        val appMetadata = viewModel.loadAppInfo(packageName)
-        header?.apply {
-            setIcon(appMetadata.icon)
-            setTitle(appMetadata.appName)
-        }
+
+        viewModel.loadAppInfo(packageName)
         viewModel.loadForPackage(packageName)
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
@@ -99,6 +95,12 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         }
         viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
             allowAllPreference?.isChecked = isAllGranted
+        }
+        viewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
+            header?.apply {
+                setIcon(appMetadata.icon)
+                setTitle(appMetadata.appName)
+            }
         }
     }
 

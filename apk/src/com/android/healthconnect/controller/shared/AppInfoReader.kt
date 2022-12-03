@@ -15,30 +15,49 @@ package com.android.healthconnect.controller.shared
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import android.graphics.drawable.Drawable
+import android.content.pm.PackageManager
+import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppInfoReader @Inject constructor(@ApplicationContext private val context: Context) {
+@Singleton
+class AppInfoReader
+@Inject
+constructor(
+    @ApplicationContext private val context: Context,
+    private val applicationsInfoUseCase: GetContributorAppInfoUseCase
+) {
 
-    private val cache = HashMap<String, String>()
-
-    // TODO(magdi) replace this with health connect framework api
+    private var cache: HashMap<String, AppMetadata> = HashMap()
     private val packageManager = context.packageManager
 
-    fun getAppName(packageName: String): String {
-        if (cache.containsKey(packageName)) {
-            return cache[packageName]!!
+    suspend fun getAppMetadata(packageName: String): AppMetadata {
+        return if (isAppInstalled(packageName)) {
+            AppMetadata(
+                packageName = packageName,
+                appName =
+                    packageManager.getApplicationLabel(getPackageInfo(packageName)).toString(),
+                icon = packageManager.getApplicationIcon(packageName))
+        } else {
+            if (!cache.containsKey(packageName)) {
+                // refresh cache
+                cache.putAll(applicationsInfoUseCase.invoke())
+            }
+            if (cache.containsKey(packageName)) {
+                cache[packageName]!!
+            } else {
+                AppMetadata(packageName = packageName, appName = "", icon = null)
+            }
         }
-        return packageManager.getApplicationLabel(getPackageInfo(packageName)).toString()
     }
 
-    fun getAppIcon(packageName: String): Drawable? {
-        return packageManager.getApplicationIcon(packageName)
-    }
-
-    fun getAppMetadata(packageName: String): AppMetadata {
-        return AppMetadata(packageName, getAppName(packageName), getAppIcon(packageName))
+    fun isAppInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getApplicationInfo(packageName, 0).enabled
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
     }
 
     private fun getPackageInfo(packageName: String): ApplicationInfo {
