@@ -171,14 +171,6 @@ public class HealthConnectWithManagePermissionsTest {
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
     }
 
-    @Test(expected = SecurityException.class)
-    public void testRevokeHealthPermission_appHasPermissionNotDeclared_throwsSecurityException()
-            throws Exception {
-        mHealthConnectManager.revokeHealthPermission(
-                DEFAULT_APP_PACKAGE, UNDECLARED_PERM, /* reason= */ null);
-        fail("Expected SecurityException due permission not being declared by target app.");
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testRevokeHealthPermission_invalidPermission_throwsIllegalArgumentException()
             throws Exception {
