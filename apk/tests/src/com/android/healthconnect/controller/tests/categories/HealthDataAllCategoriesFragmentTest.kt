@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.tests.all_categories
+package com.android.healthconnect.controller.tests.categories
 
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
