@@ -25,6 +25,10 @@
     <PreferenceCategory
         android:key="not_allowed_apps"
         android:title="@string/not_connected_apps_section_title"/>
+    <com.android.healthconnect.controller.shared.LongSummaryPreferenceCategory
+        android:key="inactive_apps"
+        android:title="@string/inactive_apps_section_title"
+        android:summary="@string/inactive_apps_section_message" />
     <PreferenceCategory
         android:key="settings_and_help"
         android:title="@string/settings_and_help_header">

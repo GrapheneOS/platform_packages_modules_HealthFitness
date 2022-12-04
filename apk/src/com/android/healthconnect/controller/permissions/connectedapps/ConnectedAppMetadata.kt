@@ -18,6 +18,12 @@ import java.time.Instant
 
 data class ConnectedAppMetadata(
     val appMetadata: AppMetadata,
-    val isAllowed: Boolean,
+    val status: ConnectedAppStatus,
     val healthUsageLastAccess: Instant? = null
 )
+
+enum class ConnectedAppStatus {
+    ALLOWED,
+    DENIED,
+    INACTIVE
+}

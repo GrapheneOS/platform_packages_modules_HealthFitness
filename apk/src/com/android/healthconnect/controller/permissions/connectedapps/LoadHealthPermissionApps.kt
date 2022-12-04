@@ -13,6 +13,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
+import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader
@@ -28,6 +29,7 @@ class LoadHealthPermissionApps
 constructor(
     private val healthPermissionReader: HealthPermissionReader,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
+    private val getContributorAppInfoUseCase: GetContributorAppInfoUseCase,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
@@ -35,12 +37,29 @@ constructor(
     suspend operator fun invoke(): List<ConnectedAppMetadata> =
         withContext(dispatcher) {
             val appsWithHealthPermissions = healthPermissionReader.getAppsWithHealthPermissions()
+            val appsWithData = getContributorAppInfoUseCase.invoke()
 
-            appsWithHealthPermissions.map { packageName ->
-                val metadata = appInfoReader.getAppMetadata(packageName)
-                val grantedPermissions = loadGrantedHealthPermissionsUseCase(packageName)
-                val isConnected = grantedPermissions.isNotEmpty()
-                ConnectedAppMetadata(metadata, isConnected)
-            }
+            val connectedApps = mutableListOf<ConnectedAppMetadata>()
+
+            connectedApps.addAll(
+                appsWithHealthPermissions.map { packageName ->
+                    val metadata = appInfoReader.getAppMetadata(packageName)
+                    val grantedPermissions = loadGrantedHealthPermissionsUseCase(packageName)
+                    val isConnected =
+                        if (grantedPermissions.isNotEmpty()) {
+                            ConnectedAppStatus.ALLOWED
+                        } else {
+                            ConnectedAppStatus.DENIED
+                        }
+                    ConnectedAppMetadata(metadata, isConnected)
+                })
+
+            val inactiveApps =
+                appsWithData.values
+                    .filter { !appsWithHealthPermissions.contains(it.packageName) }
+                    .map { ConnectedAppMetadata(it, ConnectedAppStatus.INACTIVE) }
+
+            connectedApps.addAll(inactiveApps)
+            connectedApps
         }
 }
