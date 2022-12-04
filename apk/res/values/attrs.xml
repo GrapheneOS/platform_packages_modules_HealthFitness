@@ -20,6 +20,7 @@
     <attr name="successIcon" format="reference" />
     <attr name="failureIcon" format="reference" />
     <attr name="exportDataIcon" format="reference" />
+    <attr name="disconnectAllIcon" format="reference" />
     <!-- Gravity for dialogs. Uses Android gravity values defined at
        https://developer.android.com/reference/android/view/Gravity#constants_1 -->
     <attr name="dialogGravity" format="integer"/>

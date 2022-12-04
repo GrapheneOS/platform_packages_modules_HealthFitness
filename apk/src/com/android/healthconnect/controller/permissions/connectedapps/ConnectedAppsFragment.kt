@@ -22,6 +22,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,6 +34,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         const val ALLOWED_APPS_CATEGORY = "allowed_apps"
         private const val NOT_ALLOWED_APPS = "not_allowed_apps"
         private const val CANT_SEE_ALL_YOUR_APPS = "cant_see_apps"
+        private const val REMOVE_ALL_APPS = "remove_all_apps"
     }
 
     private val viewModel: ConnectedAppsViewModel by viewModels()
@@ -49,12 +51,33 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         preferenceScreen.findPreference(CANT_SEE_ALL_YOUR_APPS)
     }
 
+    private val mRemoveAllApps: Preference? by lazy {
+        preferenceScreen.findPreference(REMOVE_ALL_APPS)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
         mCantSeeAllYourAppsPreference?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_connectedApps_to_cantSeeAllYourApps)
             true
         }
+        mRemoveAllApps?.setOnPreferenceClickListener {
+            openRemoveAllAppsAccessDialog()
+            true
+        }
+    }
+
+    private fun openRemoveAllAppsAccessDialog() {
+        AlertDialogBuilder(this)
+            .setTitle(R.string.permissions_disconnect_all_dialog_title)
+            .setMessage(R.string.permissions_disconnect_all_dialog_message)
+            .setIcon(R.attr.disconnectAllIcon)
+            .setNegativeButton(android.R.string.cancel)
+            .setPositiveButton(R.string.permissions_disconnect_all_dialog_disconnect) { _, _ ->
+                viewModel.disconnectAllApps()
+            }
+            .create()
+            .show()
     }
 
     override fun onResume() {

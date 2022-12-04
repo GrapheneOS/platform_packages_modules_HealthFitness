@@ -17,6 +17,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -24,7 +25,10 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ConnectedAppsViewModel
 @Inject
-constructor(private val loadHealthPermissionApps: LoadHealthPermissionApps) : ViewModel() {
+constructor(
+    private val loadHealthPermissionApps: LoadHealthPermissionApps,
+    private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase
+) : ViewModel() {
 
     private val _connectedApps = MutableLiveData<List<ConnectedAppMetadata>>()
     val connectedApps: LiveData<List<ConnectedAppMetadata>>
@@ -36,5 +40,14 @@ constructor(private val loadHealthPermissionApps: LoadHealthPermissionApps) : Vi
 
     fun loadConnectedApps() {
         viewModelScope.launch { _connectedApps.postValue(loadHealthPermissionApps.invoke()) }
+    }
+
+    fun disconnectAllApps() {
+        viewModelScope.launch {
+            _connectedApps.value?.forEach { app ->
+                revokeAllHealthPermissionsUseCase.invoke(app.appMetadata.packageName)
+            }
+            loadConnectedApps()
+        }
     }
 }
