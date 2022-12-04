@@ -23,4 +23,7 @@
         android:key="auto_delete_section"
         android:title="@string/auto_delete_section">
     </PreferenceCategory>
+    <com.android.settingslib.widget.FooterPreference
+        android:key="auto_delete_footer"
+        android:title="@string/auto_delete_rationale"/>
 </PreferenceScreen>

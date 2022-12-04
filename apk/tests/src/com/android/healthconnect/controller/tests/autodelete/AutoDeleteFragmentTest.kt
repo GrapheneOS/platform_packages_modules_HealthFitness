@@ -15,7 +15,6 @@ package com.android.healthconnect.controller.tests.autodelete
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
@@ -53,11 +52,10 @@ class AutoDeleteFragmentTest {
         onView(withText("After 3 months")).check(matches(isDisplayed()))
         onView(withText("After 18 months")).check(matches(isDisplayed()))
         onView(withText("Never")).check(matches(isDisplayed()))
-        // TODO(b/246773887): Add FooterPreference
         onView(
                 withText(
-                    "When you change these settings, Health\u00A0Connect deletes existing data to reflect your new preference"))
-            .check(doesNotExist())
+                    "When you change these settings, Health\u00A0Connect deletes existing data to reflect your new preferences"))
+            .check(matches(isDisplayed()))
     }
 
     @Test

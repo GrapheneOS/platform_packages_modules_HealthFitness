@@ -344,6 +344,8 @@
   <!--endregion-->
 
   <!-- region Deletion -->
+  <string name="delete_button_content_description" description="Content description of a button that starts the deletion flow. [CHAR_LIMIT=50]">Delete data</string>
+
   <!-- region Time range -->
   <string name="time_range_title" description="Window title where user can choose the time range for data deletion. [CHAR_LIMIT=50]">Choose data to delete</string>
   <string name="time_range_next_button" description="Label of a button that navigates to the next window of the deletion flow. [CHAR_LIMIT=50]">Next</string>
