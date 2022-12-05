@@ -27,6 +27,7 @@ import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.units.Length;
 import android.os.OutcomeReceiver;
+import android.platform.test.annotations.AppModeFull;
 import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -44,6 +45,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+@AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class ElevationGainedRecordTest {
     private static final String TAG = "ElevationGainedRecordTest";

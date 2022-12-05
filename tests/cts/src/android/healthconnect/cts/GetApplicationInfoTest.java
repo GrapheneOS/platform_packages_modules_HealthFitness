@@ -24,6 +24,7 @@ import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.AppInfo;
 import android.os.OutcomeReceiver;
+import android.platform.test.annotations.AppModeFull;
 import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -38,6 +39,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+@AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class GetApplicationInfoTest {
     private static final String TAG = "GetApplicationInfoTest";
