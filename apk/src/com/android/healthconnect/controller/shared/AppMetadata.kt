@@ -18,4 +18,8 @@ package com.android.healthconnect.controller.shared
 import android.graphics.drawable.Drawable
 
 /** Represents an app being displayed in Health Connect. */
-data class AppMetadata(val packageName: String, val appName: String, val icon: Drawable?)
+data class AppMetadata(
+    val packageName: String,
+    val appName: String,
+    val icon: Drawable?
+)
