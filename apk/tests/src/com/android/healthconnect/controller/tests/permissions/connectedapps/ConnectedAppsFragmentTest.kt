@@ -23,7 +23,12 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsFragment
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
 import com.android.healthconnect.controller.shared.AppMetadata
@@ -71,7 +76,7 @@ class ConnectedAppsFragmentTest {
 
     @Test
     fun test_allowedApps() {
-        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, isAllowed = true))
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
@@ -82,7 +87,7 @@ class ConnectedAppsFragmentTest {
 
     @Test
     fun test_deniedApps() {
-        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, isAllowed = false))
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
@@ -92,11 +97,23 @@ class ConnectedAppsFragmentTest {
     }
 
     @Test
+    fun test_inactiveApp_showsInactiveApps() {
+        val connectApp =
+            listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
+        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun test_all() {
         val connectApp =
             listOf(
-                ConnectedAppMetadata(TEST_APP, isAllowed = false),
-                ConnectedAppMetadata(TEST_APP_2, isAllowed = true))
+                ConnectedAppMetadata(TEST_APP, status = DENIED),
+                ConnectedAppMetadata(TEST_APP_2, status = ALLOWED))
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
@@ -105,5 +122,6 @@ class ConnectedAppsFragmentTest {
         onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
         onView(withText("No apps allowed")).check(doesNotExist())
         onView(withText("No apps denied")).check(doesNotExist())
+        onView(withText("Inactive apps")).check(doesNotExist())
     }
 }

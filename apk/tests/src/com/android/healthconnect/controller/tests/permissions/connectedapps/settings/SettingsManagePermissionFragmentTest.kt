@@ -18,10 +18,15 @@ import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.matcher.ViewMatchers
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsFragment
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsManagePermissionFragment
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
@@ -55,7 +60,7 @@ class SettingsManagePermissionFragmentTest {
     fun test_displaysSections() {
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(listOf<AppMetadata>()) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
+        launchFragment<SettingsManagePermissionFragment>(Bundle())
 
         Espresso.onView(ViewMatchers.withText("Allowed access"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -69,47 +74,54 @@ class SettingsManagePermissionFragmentTest {
 
     @Test
     fun test_allowedApps() {
-        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, isAllowed = true))
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
+        launchFragment<SettingsManagePermissionFragment>(Bundle())
 
         Espresso.onView(ViewMatchers.withText(TEST_APP_NAME))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("No apps allowed"))
-            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withText("No apps allowed")).check(doesNotExist())
     }
 
     @Test
     fun test_deniedApps() {
-        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, isAllowed = false))
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
+        launchFragment<SettingsManagePermissionFragment>(Bundle())
 
         Espresso.onView(ViewMatchers.withText(TEST_APP_NAME))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("No apps denied"))
-            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withText("No apps denied")).check(doesNotExist())
+    }
+
+    @Test
+    fun test_inactiveApp_doesNotShowInactiveApps() {
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
+        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<SettingsManagePermissionFragment>(Bundle())
+        Thread.sleep(10000)
+        Espresso.onView(ViewMatchers.withText(TEST_APP_NAME)).check(doesNotExist())
+        Espresso.onView(ViewMatchers.withText(R.string.inactive_apps)).check(doesNotExist())
     }
 
     @Test
     fun test_all() {
         val connectApp =
             listOf(
-                ConnectedAppMetadata(TEST_APP, isAllowed = false),
-                ConnectedAppMetadata(TEST_APP_2, isAllowed = true))
+                ConnectedAppMetadata(TEST_APP, status = DENIED),
+                ConnectedAppMetadata(TEST_APP_2, status = ALLOWED))
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
+        launchFragment<SettingsManagePermissionFragment>(Bundle())
 
         Espresso.onView(ViewMatchers.withText(TEST_APP_NAME))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(TEST_APP_NAME_2))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("No apps allowed"))
-            .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withText("No apps denied"))
-            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withText("No apps allowed")).check(doesNotExist())
+        Espresso.onView(ViewMatchers.withText("No apps denied")).check(doesNotExist())
     }
 }
