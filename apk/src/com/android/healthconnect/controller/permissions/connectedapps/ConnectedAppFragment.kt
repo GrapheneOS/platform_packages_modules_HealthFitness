@@ -3,6 +3,7 @@ package com.android.healthconnect.controller.permissions.connectedapps
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
@@ -19,6 +20,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
     companion object {
         private const val READ_CATEGORY = "read_permission_category"
         private const val WRITE_CATEGORY = "write_permission_category"
+        private const val DELETE_APP_DATA_PREFERENCE = "delete_app_data"
         @JvmStatic
         fun newInstance(packageName: String) =
             ConnectedAppFragment().apply { mPackageName = packageName }
@@ -35,6 +37,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         preferenceScreen.findPreference(WRITE_CATEGORY)
     }
 
+    private val mDeleteAllDataPreference: Preference? by lazy {
+        preferenceScreen.findPreference(DELETE_APP_DATA_PREFERENCE)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.connected_app_screen, rootKey)
     }
@@ -47,6 +53,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         viewModel.loadForPackage(mPackageName)
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
+        }
+        mDeleteAllDataPreference?.setOnPreferenceClickListener {
+            //TODO(b/246776055) Implement deletion flow for app
+            true
         }
     }
 

@@ -332,6 +332,8 @@
   <string name="permissions_disconnect_all_dialog_title" description="Title for dialog asking the user to confirm they want to remove all permissions for all apps [CHAR_LIMIT=50]">Remove access for all apps?</string>
   <string name="permissions_disconnect_all_dialog_message" description="Text informing the user that all apps will no longer be able to read or write data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">None of your apps will be able to access or add new data to Health&#160;Connect. This doesn’t delete any existing data.</string>
   <string name="permissions_disconnect_all_dialog_disconnect" description="Label for dialog button to confirm removal of all permissions for all apps [CHAR_LIMIT=20]">Remove all</string>
+  <string name="manage_permissions_manage_app_header" description="Title shown for section to manage app [CHAR_LIMIT=40]">Manage app</string>
+  <string name="delete_app_data" description="Label of a button that deletes data written by given app. [CHAR_LIMIT=40]">Delete app data</string>
   <!--endregion-->
 
   <!--region Onboarding -->
