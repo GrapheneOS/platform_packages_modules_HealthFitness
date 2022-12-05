@@ -81,7 +81,8 @@ constructor(
 
     fun revokeAllPermissions(packageName: String) {
         viewModelScope.launch {
-            revokeAllHealthPermissionsUseCase.invoke(packageName, "user")
+            //TODO(b/245514289) move this to a background thread.
+            revokeAllHealthPermissionsUseCase.invoke(packageName)
             loadForPackage(packageName)
         }
     }

@@ -27,6 +27,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.Permission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -46,7 +47,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     private lateinit var packageName: String
     private val viewModel: AppPermissionViewModel by viewModels()
 
-    private val allowAllPreference: SwitchPreference? by lazy {
+    private val allowAllPreference: MainSwitchPreference? by lazy {
         preferenceScreen.findPreference(ALLOW_ALL_PREFERENCE)
     }
 
@@ -84,14 +85,12 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
         }
-        allowAllPreference?.setOnPreferenceChangeListener { _, newValue ->
-            val grant = newValue as Boolean
-            if (grant) {
+        allowAllPreference?.addOnSwitchChangeListener { _, grantAll ->
+            if (grantAll) {
                 viewModel.grantAllPermissions(packageName)
             } else {
                 viewModel.revokeAllPermissions(packageName)
             }
-            true
         }
         viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
             allowAllPreference?.isChecked = isAllGranted
