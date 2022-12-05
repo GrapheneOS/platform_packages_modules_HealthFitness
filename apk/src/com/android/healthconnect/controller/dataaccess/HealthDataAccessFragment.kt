@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -135,7 +136,6 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
     }
 
     private fun updateDataAccess(appInfoMap: Map<DataAccessAppState, List<AppInfo>>) {
-        // TODO(b/245513815): Add inactive apps.
         // TODO(b/245513815): Add empty page.
         mCanReadSection?.removeAll()
         mCanWriteSection?.removeAll()
@@ -182,9 +182,16 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                 })
             appInfoMap[DataAccessAppState.Inactive]!!.forEach { _appInfo ->
                 mInactiveSection?.addPreference(
-                    Preference(requireContext()).also {
+                    InactiveAppPreference(requireContext()).also {
                         it.setTitle(_appInfo.appName)
                         it.setIcon(_appInfo.icon)
+                        it.setOnDeleteButtonClickListener {
+                            val deletionType =
+                                DeletionType.DeletionTypeAppData(
+                                    getString(_appInfo.packageName), getString(_appInfo.appName))
+                            childFragmentManager.setFragmentResult(
+                                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+                        }
                     })
             }
         }
