@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   Copyright (C) 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,8 +32,7 @@
         android:layout_height="@dimen/app_header_icon_size"
         android:scaleType="fitCenter"
         android:antialias="true"
-        tools:src="@drawable/health_connect_logo"
-        />
+        tools:src="@drawable/health_connect_logo" />
 
     <TextView
         android:id="@+id/permission_header_title"
@@ -45,8 +44,7 @@
         android:ellipsize="marquee"
         android:textDirection="locale"
         android:layout_marginVertical="@dimen/spacing_small"
-        tools:text="@string/permgrouplab_health"
-        />
+        tools:text="@string/permgrouplab_health" />
 
     <TextView
         android:id="@+id/permission_header_summary"

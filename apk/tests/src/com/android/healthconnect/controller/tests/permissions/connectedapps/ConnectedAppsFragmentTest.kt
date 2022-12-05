@@ -25,7 +25,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
@@ -98,8 +97,7 @@ class ConnectedAppsFragmentTest {
 
     @Test
     fun test_inactiveApp_showsInactiveApps() {
-        val connectApp =
-            listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
         Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())

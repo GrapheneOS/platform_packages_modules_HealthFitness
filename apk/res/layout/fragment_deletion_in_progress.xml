@@ -21,6 +21,7 @@
     android:paddingHorizontal="@dimen/spacing_small"
     android:paddingVertical="@dimen/spacing_large"
     android:orientation="vertical">
+
     <ProgressBar
         android:id="@+id/deletion_progress_indicator"
         android:indeterminate="true"
@@ -37,6 +38,5 @@
         android:paddingVertical="@dimen/spacing_normal"
         android:gravity="center"
         android:text="@string/delete_progress_indicator"
-        style="@android:style/TextAppearance.Material.Subhead"
-        />
+        style="@android:style/TextAppearance.Material.Subhead" />
 </LinearLayout>
