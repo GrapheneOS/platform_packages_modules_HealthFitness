@@ -22,13 +22,7 @@ import android.content.Context;
 import android.healthconnect.ApplicationInfoResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
-import android.healthconnect.InsertRecordsResponse;
 import android.healthconnect.datatypes.AppInfo;
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.StepsRecord;
-import android.healthconnect.datatypes.units.Power;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
@@ -38,9 +32,6 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -52,88 +43,25 @@ public class GetApplicationInfoTest {
     private static final String TAG = "GetApplicationInfoTest";
 
     /** TODO(b/257796081): Cleanup the database after each test. */
-    @Test
-    public void testEmptyApplicationInfo() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<List<AppInfo>> response = new AtomicReference<>();
-        service.getContributorApplicationsInfo(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ApplicationInfoResponse result) {
-                        response.set(result.getApplicationInfoList());
-                        latch.countDown();
-                    }
 
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-
-        /** TODO(b/257796081): Test the response size after database clean up is implemented */
-        // assertThat(response.get()).hasSize(0);
-    }
+    /** TODO(b/257796081): Test the response size after database clean up is implemented */
+    //    @Test
+    //    public void testEmptyApplicationInfo() throws InterruptedException {
+    //
+    //
+    // List<AppInfo> result = getApplicationInfo();
+    // assertThat(result).hasSize(0);
+    //    }
 
     @Test
     public void testGetApplicationInfo() throws InterruptedException {
-        List<Record> records =
-                new ArrayList<>(
-                        Arrays.asList(
-                                new StepsRecord.Builder(
-                                                new Metadata.Builder().build(),
-                                                Instant.now(),
-                                                Instant.now(),
-                                                10)
-                                        .build(),
-                                new BasalMetabolicRateRecord.Builder(
-                                                new Metadata.Builder().build(),
-                                                Instant.now(),
-                                                Power.fromWatts(100.0))
-                                        .build()));
-
         Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<List<AppInfo>> response = new AtomicReference<>();
-        service.insertRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(InsertRecordsResponse result) {
-                        latch.countDown();
-                    }
+        TestUtils.insertRecords(TestUtils.getTestRecords());
 
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-        service.getContributorApplicationsInfo(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ApplicationInfoResponse result) {
-                        response.set(result.getApplicationInfoList());
-                        latch.countDown();
-                    }
+        List<AppInfo> result = getApplicationInfo();
+        assertThat(result).hasSize(1);
 
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        assertThat(response.get()).hasSize(1);
-
-        AppInfo appInfo = response.get().get(0);
+        AppInfo appInfo = result.get(0);
 
         assertThat(appInfo.getPackageName()).isEqualTo(context.getApplicationInfo().packageName);
         assertThat(appInfo.getName())
@@ -141,5 +69,29 @@ public class GetApplicationInfoTest {
                         context.getPackageManager()
                                 .getApplicationLabel(context.getApplicationInfo()));
         assertThat(appInfo.getIcon()).isNotNull();
+    }
+
+    private List<AppInfo> getApplicationInfo() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        AtomicReference<List<AppInfo>> response = new AtomicReference<>();
+        service.getContributorApplicationsInfo(
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ApplicationInfoResponse result) {
+                        response.set(result.getApplicationInfoList());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        return response.get();
     }
 }
