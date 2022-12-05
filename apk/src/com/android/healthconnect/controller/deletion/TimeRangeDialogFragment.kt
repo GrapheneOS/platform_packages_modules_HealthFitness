@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.deletion.DeletionConstants.TIME_RANGE_SELECTION_EVENT
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Instant
 import java.util.Locale
 
 /** A {@link DialogFragment} for choosing the deletion time range. */
@@ -47,6 +48,7 @@ class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
             .setPositiveButton(R.string.time_range_next_button) { _, _ ->
                 val chosenRange = getChosenRange(radioGroup)
                 viewModel.setChosenRange(chosenRange)
+                viewModel.setEndTime(Instant.now())
                 setFragmentResult(TIME_RANGE_SELECTION_EVENT, Bundle())
             }
             .create()

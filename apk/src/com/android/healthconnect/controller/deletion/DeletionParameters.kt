@@ -17,6 +17,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
+import java.time.Duration.ofDays
+import java.time.Instant
 
 /** Represents deletion parameters chosen by the user in the deletion dialogs. */
 data class DeletionParameters(
@@ -90,6 +92,27 @@ data class DeletionParameters(
         val category = (deletionType as DeletionType.DeletionTypeCategoryData).category
 
         return category.lowercaseTitle
+    }
+
+    fun getStartTimeInstant(): Instant {
+        val endTime = getEndTimeInstant()
+
+        return when (chosenRange) {
+            ChosenRange.DELETE_RANGE_LAST_24_HOURS -> endTime.minus(ofDays(1))
+            ChosenRange.DELETE_RANGE_LAST_7_DAYS -> endTime.minus(ofDays(7))
+            ChosenRange.DELETE_RANGE_LAST_30_DAYS -> endTime.minus(ofDays(30))
+            ChosenRange.DELETE_RANGE_ALL_DATA -> Instant.EPOCH
+        }
+    }
+
+    fun getEndTimeInstant(): Instant {
+        if (chosenRange == ChosenRange.DELETE_RANGE_ALL_DATA) {
+            // Deleting all data should include all time as it's possible for apps
+            // to write data in the future
+            return Instant.ofEpochMilli(Long.MAX_VALUE)
+        }
+
+        return Instant.ofEpochMilli(endTimeMs)
     }
 }
 

@@ -13,12 +13,18 @@
  */
 package com.android.healthconnect.controller.deletion
 
+import android.healthconnect.TimeRangeFilter
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.deletion.api.DeleteAllDataUseCase
+import com.android.healthconnect.controller.deletion.api.DeleteCategoryUseCase
+import com.android.healthconnect.controller.deletion.api.DeleteEntryUseCase
+import com.android.healthconnect.controller.deletion.api.DeletePermissionTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -26,7 +32,9 @@ import kotlinx.coroutines.launch
 class DeletionViewModel
 @Inject
 constructor(
-    private val deleteUseCase: DeleteUseCase,
+    private val deleteAllDataUseCase: DeleteAllDataUseCase,
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val deletePermissionTypeUseCase: DeletePermissionTypeUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase
 ) : ViewModel() {
 
@@ -62,6 +70,11 @@ constructor(
         _deletionParameters.value = _deletionParameters.value?.copy(chosenRange = chosenRange)
     }
 
+    fun setEndTime(endTime: Instant) {
+        _deletionParameters.value =
+            _deletionParameters.value?.copy(endTimeMs = endTime.toEpochMilli())
+    }
+
     private fun setDeletionState(newState: DeletionState) {
         _deletionParameters.value = currentDeletionParameters().copy(deletionState = newState)
     }
@@ -73,12 +86,34 @@ constructor(
 
             try {
                 setDeletionState(DeletionState.STATE_PROGRESS_INDICATOR_STARTED)
+
+                val timeRangeFilter =
+                    TimeRangeFilter.Builder(
+                            currentDeletionParameters().getStartTimeInstant(),
+                            currentDeletionParameters().getEndTimeInstant())
+                        .build()
+
                 when (val deletionType = currentDeletionParameters().deletionType) {
                     is DeletionType.DeleteDataEntry -> {
                         _deletionParameters.value?.let { deleteEntryUseCase.invoke(deletionType) }
                     }
+                    is DeletionType.DeletionTypeAllData -> {
+                        _deletionParameters.value?.let {
+                            deleteAllDataUseCase.invoke(timeRangeFilter)
+                        }
+                    }
+                    is DeletionType.DeletionTypeCategoryData -> {
+                        deletionParameters.value?.let {
+                            deleteCategoryUseCase.invoke(deletionType, timeRangeFilter)
+                        }
+                    }
+                    is DeletionType.DeletionTypeHealthPermissionTypeData -> {
+                        deletionParameters.value?.let {
+                            deletePermissionTypeUseCase.invoke(deletionType, timeRangeFilter)
+                        }
+                    }
                     else -> {
-                        _deletionParameters.value?.let { deleteUseCase.invoke(it) }
+                        // TODO other deletion flows
                     }
                 }
                 setDeletionState(DeletionState.STATE_DELETION_SUCCESSFUL)

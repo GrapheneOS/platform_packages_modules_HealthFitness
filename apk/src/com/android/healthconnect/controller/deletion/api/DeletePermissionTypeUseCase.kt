@@ -11,13 +11,15 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.deletion
+package com.android.healthconnect.controller.deletion.api
 
+import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.RecordIdFilter
+import android.healthconnect.TimeRangeFilter
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.deletion.DeletionType.DeleteDataEntry
+import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,22 +27,27 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 @Singleton
-class DeleteEntryUseCase
+class DeletePermissionTypeUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
-    suspend fun invoke(deleteEntry: DeleteDataEntry) =
-        withContext(dispatcher) {
-            val recordIdFilter =
-                RecordIdFilter.Builder(deleteEntry.dataType.recordClass)
-                    .setId(deleteEntry.id)
-                    .build()
 
+    suspend operator fun invoke(
+        deletePermissionType: DeletionType.DeletionTypeHealthPermissionTypeData,
+        timeRangeFilter: TimeRangeFilter
+    ) {
+        val deleteRequest = DeleteUsingFiltersRequest.Builder().setTimeRangeFilter(timeRangeFilter)
+
+        HealthPermissionToDatatypeMapper.getDataTypes(deletePermissionType.healthPermissionType)
+            .map { recordType -> deleteRequest.addRecordType(recordType) }
+
+        withContext(dispatcher) {
             suspendCancellableCoroutine<Void> { continuation ->
                 healthConnectManager.deleteRecords(
-                    listOf(recordIdFilter), Runnable::run, continuation.asOutcomeReceiver())
+                    deleteRequest.build(), Runnable::run, continuation.asOutcomeReceiver())
             }
         }
+    }
 }
