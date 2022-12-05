@@ -24,13 +24,14 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.DialogTitle
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.AttributeResolver
 
 /** {@link AlertDialog.Builder} wrapper for applying theming attributes. */
-class AlertDialogBuilder(dialogFragment: DialogFragment) {
+class AlertDialogBuilder(fragment: Fragment) {
 
-    private var context: Context = dialogFragment.requireContext()
+    private var context: Context = fragment.requireContext()
     private var alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
     private var customTitleLayout: View =
         LayoutInflater.from(context).inflate(R.layout.dialog_title, null)

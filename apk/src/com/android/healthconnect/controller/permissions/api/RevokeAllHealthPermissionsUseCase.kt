@@ -22,7 +22,7 @@ import javax.inject.Singleton
 class RevokeAllHealthPermissionsUseCase
 @Inject
 constructor(private val healthConnectManager: HealthConnectManager) {
-    operator fun invoke(packageName: String, reason: String) {
+    operator fun invoke(packageName: String, reason: String? = null) {
         healthConnectManager.revokeAllHealthPermissions(packageName, reason)
     }
 }
