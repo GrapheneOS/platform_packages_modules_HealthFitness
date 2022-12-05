@@ -83,6 +83,7 @@ android_library {
         "SettingsLibCollapsingToolbarBaseActivity",
         "SettingsLibFooterPreference",
         "SettingsLibTopIntroPreference",
+        "SettingsLibMainSwitchPreference",
         "androidx.core_core",
         "guava",
         "hilt_android"
