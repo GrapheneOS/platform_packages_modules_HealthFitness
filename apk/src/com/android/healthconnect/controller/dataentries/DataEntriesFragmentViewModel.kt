@@ -18,6 +18,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults.Failed
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import javax.inject.Inject
@@ -36,19 +38,27 @@ constructor(private val loadDataEntriesUseCase: LoadDataEntriesUseCase) : ViewMo
     fun loadData(permissionType: HealthPermissionType, selectedDate: Instant) {
         _dataEntries.postValue(DataEntriesFragmentState.Loading)
         viewModelScope.launch {
-            val entries = loadDataEntriesUseCase.invoke(permissionType, selectedDate)
-            _dataEntries.postValue(
-                if (entries.isEmpty()) {
-                    DataEntriesFragmentState.Empty
-                } else {
-                    DataEntriesFragmentState.WithData(entries)
-                })
+            val input = LoadDataEntriesInput(permissionType, selectedDate)
+            when (val result = loadDataEntriesUseCase.invoke(input)) {
+                is Success -> {
+                    _dataEntries.postValue(
+                        if (result.data.isEmpty()) {
+                            DataEntriesFragmentState.Empty
+                        } else {
+                            DataEntriesFragmentState.WithData(result.data)
+                        })
+                }
+                is Failed -> {
+                    _dataEntries.postValue(DataEntriesFragmentState.LoadingFailed)
+                }
+            }
         }
     }
 
     sealed class DataEntriesFragmentState {
         object Loading : DataEntriesFragmentState()
         object Empty : DataEntriesFragmentState()
+        object LoadingFailed : DataEntriesFragmentState()
         data class WithData(val entries: List<FormattedDataEntry>) : DataEntriesFragmentState()
     }
 }
