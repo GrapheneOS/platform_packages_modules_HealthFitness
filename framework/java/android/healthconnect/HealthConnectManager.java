@@ -777,7 +777,7 @@ public class HealthConnectManager {
         } catch (ArithmeticException
                 | ClassCastException
                 | IllegalArgumentException invalidArgumentException) {
-            throw new IllegalArgumentException(invalidArgumentException.getMessage());
+            throw new IllegalArgumentException(invalidArgumentException);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
