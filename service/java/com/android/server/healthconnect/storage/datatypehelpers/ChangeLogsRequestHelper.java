@@ -38,6 +38,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
@@ -118,16 +119,17 @@ public final class ChangeLogsRequestHelper {
     }
 
     @NonNull
-    public static TokenRequest getRequest(long token) {
+    public static TokenRequest getRequest(@NonNull String packageName, @NonNull String token) {
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(TABLE_NAME)
                         .setWhereClause(
                                 new WhereClauses()
+                                        .addWhereEqualsClause(PRIMARY_COLUMN_NAME, token)
                                         .addWhereEqualsClause(
-                                                PRIMARY_COLUMN_NAME, String.valueOf(token)));
+                                                PACKAGE_NAME_COLUMN_NAME, packageName));
         TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         try (SQLiteDatabase db = transactionManager.getReadableDb();
-             Cursor cursor = transactionManager.read(db, readTableRequest)) {
+                Cursor cursor = transactionManager.read(db, readTableRequest)) {
             if (!cursor.moveToFirst()) {
                 throw new IllegalArgumentException("Invalid token");
             }
@@ -141,11 +143,30 @@ public final class ChangeLogsRequestHelper {
     }
 
     @NonNull
+    public static String getNextPageToken(TokenRequest changeLogTokenRequest, long nextRowId) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(
+                PACKAGES_TO_FILTERS_COLUMN_NAME,
+                String.join(DELIMITER, changeLogTokenRequest.getPackageNamesToFilter()));
+        contentValues.put(
+                RECORD_TYPES_COLUMN_NAME,
+                StorageUtils.flattenIntList(changeLogTokenRequest.getRecordTypes()));
+        contentValues.put(
+                PACKAGE_NAME_COLUMN_NAME, changeLogTokenRequest.getRequestingPackageName());
+        contentValues.put(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, nextRowId);
+
+        return String.valueOf(
+                TransactionManager.getInitialisedInstance()
+                        .insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
+    }
+
+    @NonNull
     public CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(TABLE_NAME, getColumnsInfo());
     }
 
-    public long getToken(
+    @NonNull
+    public String getToken(
             @NonNull String packageName, @NonNull ChangeLogTokenRequestParcel request) {
         ContentValues contentValues = new ContentValues();
 
@@ -167,8 +188,9 @@ public final class ChangeLogsRequestHelper {
                 ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME,
                 ChangeLogsHelper.getInstance().getLatestRowId());
 
-        return TransactionManager.getInitialisedInstance()
-                .insert(new UpsertTableRequest(TABLE_NAME, contentValues));
+        return String.valueOf(
+                TransactionManager.getInitialisedInstance()
+                        .insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
     }
 
     @NonNull

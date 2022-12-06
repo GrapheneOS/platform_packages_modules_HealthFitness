@@ -44,6 +44,7 @@ public class ReadTableRequest {
     private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses();
     private boolean mDistinct = false;
+    private String mLimitClause = "";
 
     public ReadTableRequest(@NonNull String tableName) {
         Objects.requireNonNull(tableName);
@@ -111,6 +112,7 @@ public class ReadTableRequest {
         } else {
             builder.append(mWhereClauses.get(/* withWhereKeyword */ true));
         }
+        builder.append(mLimitClause);
 
         if (Constants.DEBUG) {
             Slog.d(TAG, "read query: " + builder);
@@ -125,5 +127,12 @@ public class ReadTableRequest {
         }
 
         return String.join(DELIMITER, mColumnNames);
+    }
+
+    /** Sets LIMIT size for the read query */
+    @NonNull
+    public ReadTableRequest setLimit(int size) {
+        mLimitClause = " LIMIT " + size;
+        return this;
     }
 }

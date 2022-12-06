@@ -36,6 +36,7 @@ import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.AggregateDataResponseParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
@@ -528,23 +529,24 @@ public class HealthConnectManager {
     /**
      * Get change logs post the time when {@code token} was generated.
      *
-     * @param token The token from {@link HealthConnectManager#getChangeLogToken}.
+     * @param changeLogsRequest The token from {@link HealthConnectManager#getChangeLogToken}.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      *     <p>TODO(b/251194265): User permission checks once available.
-     * @hide
      * @see HealthConnectManager#getChangeLogToken
      */
     public void getChangeLogs(
-            long token,
+            @NonNull ChangeLogsRequest changeLogsRequest,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<ChangeLogsResponse, HealthConnectException> callback) {
+        Objects.requireNonNull(changeLogsRequest);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
+
         try {
             mService.getChangeLogs(
                     mContext.getPackageName(),
-                    token,
+                    new ChangeLogsRequestParcel(changeLogsRequest),
                     new IChangeLogsResponseCallback.Stub() {
                         @Override
                         public void onResult(ChangeLogsResponseParcel parcel) {
@@ -594,14 +596,14 @@ public class HealthConnectManager {
     public void getChangeLogToken(
             @NonNull ChangeLogTokenRequest request,
             @NonNull Executor executor,
-            @NonNull OutcomeReceiver<Long, HealthConnectException> callback) {
+            @NonNull OutcomeReceiver<String, HealthConnectException> callback) {
         try {
             mService.getChangeLogToken(
                     mContext.getPackageName(),
                     new ChangeLogTokenRequestParcel(request),
                     new IGetChangeLogTokenCallback.Stub() {
                         @Override
-                        public void onResult(long token) {
+                        public void onResult(String token) {
                             Binder.clearCallingIdentity();
                             executor.execute(() -> callback.onResult(token));
                         }

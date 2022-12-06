@@ -21,20 +21,27 @@ import android.healthconnect.datatypes.Record;
 
 import java.util.List;
 
-/**
- * Response class for {@link HealthConnectManager#getChangeLogs}
- *
- * @hide
- */
+/** Response class for {@link HealthConnectManager#getChangeLogs} */
 public class ChangeLogsResponse {
     private final List<Record> mUpsertedRecords;
     private final List<String> mDeletedIds;
+    private final String mNextChangesToken;
+    private final boolean mHasMorePages;
 
-    /** Response for {@link HealthConnectManager#getChangeLogs} */
+    /**
+     * Response for {@link HealthConnectManager#getChangeLogs}
+     *
+     * @hide
+     */
     public ChangeLogsResponse(
-            @NonNull List<Record> upsertedRecords, @NonNull List<String> deletedIds) {
+            @NonNull List<Record> upsertedRecords,
+            @NonNull List<String> deletedIds,
+            @NonNull String nextChangesToken,
+            boolean hasMorePages) {
         mUpsertedRecords = upsertedRecords;
         mDeletedIds = deletedIds;
+        mNextChangesToken = nextChangesToken;
+        mHasMorePages = hasMorePages;
     }
 
     /**
@@ -53,5 +60,20 @@ public class ChangeLogsResponse {
     @NonNull
     public List<String> getDeletedRecordIds() {
         return mDeletedIds;
+    }
+
+    /**
+     * @return token for future reads using {@link HealthConnectManager#getChangeLogs}
+     */
+    @NonNull
+    public String getNextChangesToken() {
+        return mNextChangesToken;
+    }
+
+    /**
+     * @return whether there are more pages available for read
+     */
+    public boolean hasMorePages() {
+        return mHasMorePages;
     }
 }

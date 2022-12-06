@@ -9,7 +9,7 @@ import android.healthconnect.aidl.HealthConnectExceptionParcel;
  */
 interface IGetChangeLogTokenCallback {
     // Called on a successful operation
-    oneway void onResult(long token);
+    oneway void onResult(String token);
     // Called when an error is hit
     oneway void onError(in HealthConnectExceptionParcel exception);
 }
