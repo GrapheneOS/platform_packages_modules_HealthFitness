@@ -20,10 +20,12 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.os.OutcomeReceiver
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.LoadDataEntriesInput
 import com.android.healthconnect.controller.dataentries.LoadDataEntriesUseCase
 import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
 import com.android.healthconnect.controller.shared.DataType
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
@@ -71,9 +73,10 @@ class LoadDataEntriesUseCaseTest {
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
 
-        val response = usecase.invoke(HEART_RATE, NOW)
+        val response = usecase.invoke(LoadDataEntriesInput(HEART_RATE, NOW))
 
-        assertThat(response).isEmpty()
+        assertThat(response).isInstanceOf(UseCaseResults.Success::class.java)
+        assertThat((response as UseCaseResults.Success).data).isEmpty()
     }
 
     @Test
@@ -83,10 +86,12 @@ class LoadDataEntriesUseCaseTest {
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
 
-        val response = usecase.invoke(HEART_RATE, NOW)
+        val response = usecase.invoke(LoadDataEntriesInput(HEART_RATE, NOW))
 
-        assertThat(response.size).isEqualTo(1)
-        assertThat(response)
+        assertThat(response).isInstanceOf(UseCaseResults.Success::class.java)
+        val data = (response as UseCaseResults.Success).data
+        assertThat(data.size).isEqualTo(1)
+        assertThat(data)
             .containsExactly(
                 FormattedDataEntry(
                     uuid = records[0].metadata.id,

@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Empty
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
@@ -60,6 +61,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var entriesRecyclerView: RecyclerView
     private lateinit var noDataView: TextView
     private lateinit var loadingView: View
+    private lateinit var errorView: View
     private val adapter = DataEntryAdapter()
     private val menuProvider =
         object : MenuProvider {
@@ -92,6 +94,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         setupMenu()
         dataNavigationView = view.findViewById(R.id.date_navigation_view)
         noDataView = view.findViewById(R.id.no_data_view)
+        errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
         entriesRecyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {
@@ -135,18 +138,27 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 is Loading -> {
                     loadingView.isVisible = true
                     noDataView.isVisible = false
+                    errorView.isVisible = false
                     entriesRecyclerView.isVisible = false
                 }
                 is Empty -> {
                     noDataView.isVisible = true
                     loadingView.isVisible = false
+                    errorView.isVisible = false
                     entriesRecyclerView.isVisible = false
                 }
                 is WithData -> {
                     entriesRecyclerView.isVisible = true
                     adapter.updateData(state.entries)
+                    errorView.isVisible = false
                     noDataView.isVisible = false
                     loadingView.isVisible = false
+                }
+                is LoadingFailed -> {
+                    errorView.isVisible = true
+                    loadingView.isVisible = false
+                    noDataView.isVisible = false
+                    entriesRecyclerView.isVisible = false
                 }
             }
         }

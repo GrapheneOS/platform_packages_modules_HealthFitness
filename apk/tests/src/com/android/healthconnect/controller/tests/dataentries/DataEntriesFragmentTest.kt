@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.dataentries.DataEntriesFragment
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Empty
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
+import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
@@ -71,6 +72,15 @@ class DataEntriesFragmentTest {
         launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
 
         onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataEntriesInit_error_showsNoData() {
+        Mockito.`when`(viewModel.dataEntries).thenReturn(MutableLiveData(LoadingFailed))
+
+        launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
+
+        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
     }
 
     @Test

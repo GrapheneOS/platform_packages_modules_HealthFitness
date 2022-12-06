@@ -18,12 +18,12 @@ import android.healthconnect.ReadRecordsRequestUsingFilters
 import android.healthconnect.ReadRecordsResponse
 import android.healthconnect.TimeRangeFilter
 import android.healthconnect.datatypes.Record
-import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import java.time.Duration.ofDays
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -31,7 +31,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
 class LoadDataEntriesUseCase
@@ -40,20 +39,13 @@ constructor(
     private val healthDataEntryFormatter: HealthDataEntryFormatter,
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) {
-    companion object {
-        private const val TAG = "LoadDataEntriesUseCase"
-    }
+) : BaseUseCase<LoadDataEntriesInput, List<FormattedDataEntry>>(dispatcher) {
 
-    suspend operator fun invoke(
-        permissionType: HealthPermissionType,
-        selectedDate: Instant
-    ): List<FormattedDataEntry> =
-        withContext(dispatcher) {
-            val timeFilterRange = getTimeFilter(selectedDate)
-            val dataTypes = getDataTypes(permissionType)
-            dataTypes.map { dataType -> readDataType(dataType, timeFilterRange) }.flatten()
-        }
+    override suspend fun execute(input: LoadDataEntriesInput): List<FormattedDataEntry> {
+        val timeFilterRange = getTimeFilter(input.selectedDate)
+        val dataTypes = getDataTypes(input.permissionType)
+        return dataTypes.map { dataType -> readDataType(dataType, timeFilterRange) }.flatten()
+    }
 
     private fun getTimeFilter(selectedDate: Instant): TimeRangeFilter {
         val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
@@ -68,16 +60,16 @@ constructor(
         val filter =
             ReadRecordsRequestUsingFilters.Builder(data).setTimeRangeFilter(timeFilterRange).build()
         val records =
-            try {
-                suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
-                        healthConnectManager.readRecords(
-                            filter, Runnable::run, continuation.asOutcomeReceiver())
-                    }
-                    .records
-            } catch (ex: Exception) {
-                Log.e(TAG, "Failed to load records $data", ex)
-                emptyList()
-            }
+            suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
+                    healthConnectManager.readRecords(
+                        filter, Runnable::run, continuation.asOutcomeReceiver())
+                }
+                .records
         return records.map { record -> healthDataEntryFormatter.format(record) }
     }
 }
+
+data class LoadDataEntriesInput(
+    val permissionType: HealthPermissionType,
+    val selectedDate: Instant
+)
