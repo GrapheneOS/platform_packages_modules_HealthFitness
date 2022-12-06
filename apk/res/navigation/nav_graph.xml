@@ -90,7 +90,7 @@
     </fragment>
     <fragment
         android:id="@+id/cantSeeAllYourAppsFragment"
-        android:name="com.android.healthconnect.controller.cantseeallyourapps.CantSeeAllYourAppsFragment"
+        android:name="com.android.healthconnect.controller.permissions.connectedapps.CantSeeAllYourAppsFragment"
         android:label="@string/cant_see_all_your_apps_title">
         <action
             android:id="@+id/action_connected_apps_to_play_store"
