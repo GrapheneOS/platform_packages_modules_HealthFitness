@@ -1,6 +1,7 @@
 package com.android.healthconnect.controller.permissions
 
 import android.os.Bundle
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
@@ -8,6 +9,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Fragment for displaying permission switches. */
@@ -25,7 +27,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
 
     private var permissionMap: MutableMap<HealthPermission, Boolean> = HashMap()
 
-    private val allowAllPreference: SwitchPreference? by lazy {
+    private val allowAllPreference: MainSwitchPreference? by lazy {
         preferenceScreen.findPreference(ALLOW_ALL_PREFERENCE)
     }
 
@@ -50,8 +52,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
     }
 
     private fun setupAllowAll() {
-        allowAllPreference?.setOnPreferenceChangeListener { _, newValue ->
-            val grant = newValue as Boolean
+        allowAllPreference?.addOnSwitchChangeListener { _, grant ->
             (0..(mReadPermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
                 (mReadPermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
             }
@@ -59,7 +60,6 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                 (mWritePermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
             }
             permissionMap.keys.forEach { permission -> permissionMap[permission] = grant }
-            true
         }
     }
 
@@ -71,18 +71,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             val permission = entry.key
             val value = entry.value
             if (permission.permissionsAccessType.equals(PermissionsAccessType.READ)) {
-                mReadPermissionCategory?.addPreference(
-                    SwitchPreference(requireContext()).also {
-                        it.setDefaultValue(value)
-                        it.setTitle(
-                            HealthPermissionStrings.fromPermissionType(
-                                    permission.healthPermissionType)
-                                .uppercaseLabel)
-                        it.setOnPreferenceChangeListener { _, newValue ->
-                            permissionMap[permission] = newValue as Boolean
-                            true
-                        }
-                    })
+                mReadPermissionCategory?.addPreference(getPermissionPreference(value, permission))
             }
         }
 
@@ -90,18 +79,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             val permission = entry.key
             val value = entry.value
             if (permission.permissionsAccessType.equals(PermissionsAccessType.WRITE)) {
-                mWritePermissionCategory?.addPreference(
-                    SwitchPreference(requireContext()).also {
-                        it.setDefaultValue(value)
-                        it.setTitle(
-                            HealthPermissionStrings.fromPermissionType(
-                                    permission.healthPermissionType)
-                                .uppercaseLabel)
-                        it.setOnPreferenceChangeListener { _, newValue ->
-                            permissionMap[permission] = newValue as Boolean
-                            true
-                        }
-                    })
+                mWritePermissionCategory?.addPreference(getPermissionPreference(value, permission))
             }
         }
         if (mReadPermissionCategory?.preferenceCount == 0) {
@@ -109,6 +87,22 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         }
         if (mWritePermissionCategory?.preferenceCount == 0) {
             mWritePermissionCategory?.isVisible = false
+        }
+    }
+
+    private fun getPermissionPreference(
+        defaultValue: Boolean,
+        permission: HealthPermission
+    ): Preference {
+        return SwitchPreference(requireContext()).also {
+            it.setDefaultValue(defaultValue)
+            it.setTitle(
+                HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
+                    .uppercaseLabel)
+            it.setOnPreferenceChangeListener { _, newValue ->
+                permissionMap[permission] = newValue as Boolean
+                true
+            }
         }
     }
 }

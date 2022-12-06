@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
+import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -15,14 +18,21 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class RequestPermissionViewModel
 @Inject
-constructor(private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase) : ViewModel() {
+constructor(
+    private val appInfoReader: AppInfoReader,
+    private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
+    private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase
+) : ViewModel() {
 
     private val permissionSelection: MutableMap<HealthPermission, Boolean> = mutableMapOf()
-    private val grants: MutableMap<HealthPermission, PermissionState> = mutableMapOf()
-    private val _grants = MutableLiveData<Map<HealthPermission, PermissionState>>()
 
+    private val _appMetaData = MutableLiveData<AppMetadata>()
+    val appMetadata: LiveData<AppMetadata>
+        get() = _appMetaData
+
+    private val _permissionResults = MutableLiveData<Map<HealthPermission, PermissionState>>()
     val permissionResults: LiveData<Map<HealthPermission, PermissionState>>
-        get() = _grants
+        get() = _permissionResults
 
     fun getPermissionSelection(): Map<HealthPermission, Boolean> {
         return permissionSelection.toMap()
@@ -32,19 +42,30 @@ constructor(private val grantHealthPermissionUseCase: GrantHealthPermissionUseCa
         permissionSelection.putAll(selections)
     }
 
-    fun request(packageName: String, permissions: Collection<HealthPermission>) {
+    fun loadAppInfo(packageName: String) {
+        viewModelScope.launch { _appMetaData.postValue(appInfoReader.getAppMetadata(packageName)) }
+    }
+
+    fun request(packageName: String, permissions: Map<HealthPermission, Boolean>) {
         viewModelScope.launch {
-            permissions.forEach { permission ->
+            val grants: MutableMap<HealthPermission, PermissionState> = mutableMapOf()
+            permissions.forEach { entry ->
+                val permission = entry.key
                 try {
-                    grantHealthPermissionUseCase.invoke(packageName, permission.toString())
-                    grants[permission] = PermissionState.GRANTED
+                    if (entry.value) {
+                        grantHealthPermissionUseCase.invoke(packageName, permission.toString())
+                        grants[entry.key] = PermissionState.GRANTED
+                    } else {
+                        revokeHealthPermissionUseCase.invoke(packageName, permission.toString())
+                        grants[entry.key] = PermissionState.NOT_GRANTED
+                    }
                 } catch (e: SecurityException) {
-                    grants[permission] = PermissionState.NOT_GRANTED
+                    grants[entry.key] = PermissionState.NOT_GRANTED
                 } catch (e: Exception) {
-                    grants[permission] = PermissionState.ERROR
+                    grants[entry.key] = PermissionState.ERROR
                 }
             }
-            _grants.postValue(grants)
+            _permissionResults.postValue(grants)
         }
     }
 }
