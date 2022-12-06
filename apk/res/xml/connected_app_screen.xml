@@ -33,7 +33,6 @@
         <Preference
             android:key="delete_app_data"
             android:title="@string/delete_app_data"
-            android:icon="?attr/deleteIcon"
-            />
+            android:icon="?attr/deleteIcon" />
     </PreferenceCategory>
 </PreferenceScreen>

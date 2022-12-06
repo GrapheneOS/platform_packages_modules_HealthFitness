@@ -532,6 +532,5 @@
   <string name="export_data_notification_ticker_text" description="The ticker text of the notification that is shown while data for export is being generated, which is read out by screen readers. [CHAR_LIMIT=50]">Exporting Health&#160;Connect data</string>
   <string name="export_data_notification_cancel_button" description="The cancel button on the notification that is shown while data for export is being generated. [CHAR_LIMIT=50]">Cancel</string>
   <string name="export_data_notification_channel_name" description="The channel name for the notification that is shown while data for export is being generated, which is visible to users in system settings. [CHAR_LIMIT=50]">Export Data Progress</string>
-
   <!--  endregion-->
 </resources>
