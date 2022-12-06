@@ -80,6 +80,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                 START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
         }
+        mDeleteAllData?.isEnabled = false
     }
 
     override fun onResume() {
@@ -89,8 +90,13 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.categoriesData.observe(viewLifecycleOwner) { categoriesList ->
-            updateDataList(categoriesList)
+        viewModel.categoriesData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is HealthDataCategoryViewModel.CategoriesFragmentState.Loading -> {}
+                is HealthDataCategoryViewModel.CategoriesFragmentState.WithData -> {
+                    updateDataList(state.categories)
+                }
+            }
         }
     }
 

@@ -14,8 +14,10 @@
 package com.android.healthconnect.controller.permissiontypes
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -30,6 +32,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.START_DEL
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,6 +47,8 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
     }
 
     private lateinit var category: HealthDataCategory
+
+    private val viewModel: HealthPermissionTypesViewModel by viewModels()
 
     private val mPermissionTypes: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(PERMISSION_TYPES)
@@ -65,9 +70,32 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
         }
 
+        mDeleteCategoryData?.title =
+            getString(R.string.delete_category_data_button, getString(category.lowercaseTitle))
+        mDeleteCategoryData?.setOnPreferenceClickListener {
+            val deletionType = DeletionType.DeletionTypeCategoryData(category = category)
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+            true
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.loadData(category)
+        viewModel.permissionTypesData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is HealthPermissionTypesViewModel.PermissionTypesFragmentState.Loading -> {}
+                is HealthPermissionTypesViewModel.PermissionTypesFragmentState.WithData -> {
+                    updatePermissionTypesList(state.permissionTypes)
+                }
+            }
+        }
+    }
+
+    private fun updatePermissionTypesList(permissionTypeList: List<HealthPermissionType>) {
         mPermissionTypes?.removeAll()
-        // TODO(b/245513815): Only show permission types with data.
-        category.healthPermissionTypes.forEach { permissionType ->
+        permissionTypeList.forEach { permissionType ->
             mPermissionTypes?.addPreference(
                 Preference(requireContext()).also {
                     it.setTitle(fromPermissionType(permissionType).uppercaseLabel)
@@ -79,14 +107,6 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
                         true
                     }
                 })
-        }
-        mDeleteCategoryData?.title =
-            getString(R.string.delete_category_data_button, getString(category.lowercaseTitle))
-        mDeleteCategoryData?.setOnPreferenceClickListener {
-            val deletionType = DeletionType.DeletionTypeCategoryData(category = category)
-            childFragmentManager.setFragmentResult(
-                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
-            true
         }
     }
 

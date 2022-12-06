@@ -13,6 +13,7 @@
  */
 package com.android.healthconnect.controller.categories
 
+import android.healthconnect.HealthDataCategory as sdkHealthDataCategory
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
@@ -73,6 +74,19 @@ fun fromName(categoryName: String): HealthDataCategory =
         HealthDataCategory.VITALS.name -> HealthDataCategory.VITALS
         else -> throw IllegalArgumentException("Category name is not supported.")
     }
+
+fun fromSdkHealthDataCategory(sdkCategory: Int): HealthDataCategory {
+    return when (sdkCategory) {
+        sdkHealthDataCategory.UNKNOWN -> throw IllegalArgumentException("Category is UNKNOWN.")
+        sdkHealthDataCategory.ACTIVITY -> HealthDataCategory.ACTIVITY
+        sdkHealthDataCategory.BODY_MEASUREMENTS -> HealthDataCategory.BODY_MEASUREMENTS
+        sdkHealthDataCategory.CYCLE_TRACKING -> HealthDataCategory.CYCLE_TRACKING
+        sdkHealthDataCategory.NUTRITION -> HealthDataCategory.NUTRITION
+        sdkHealthDataCategory.SLEEP -> HealthDataCategory.SLEEP
+        sdkHealthDataCategory.VITALS -> HealthDataCategory.VITALS
+        else -> throw IllegalArgumentException("Category is not supported.")
+    }
+}
 
 /** Represents Category group for HealthConnect data in All Categories screen. */
 data class AllCategoriesScreenHealthDataCategory(

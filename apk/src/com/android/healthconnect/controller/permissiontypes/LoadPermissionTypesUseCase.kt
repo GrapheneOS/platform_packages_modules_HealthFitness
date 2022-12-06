@@ -11,13 +11,16 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.categories
+package com.android.healthconnect.controller.permissiontypes
 
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.RecordTypeInfoResponse
 import android.healthconnect.datatypes.Record
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.categories.HealthDataCategory
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,7 +29,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 @Singleton
-class LoadCategoriesWithDataUseCase
+class LoadPermissionTypesUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
@@ -34,11 +37,11 @@ constructor(
 ) {
 
     companion object {
-        private const val TAG = "GetCategoriesWithData"
+        private const val TAG = "GetPermissionTypesWithData"
     }
 
-    /** Returns list of available data categories. */
-    suspend operator fun invoke(): List<HealthDataCategory> =
+    /** Returns list of available [HealthPermissionType]s within given [HealthDataCategory]. */
+    suspend fun invoke(category: HealthDataCategory): List<HealthPermissionType> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
@@ -46,40 +49,19 @@ constructor(
                         healthConnectManager.queryAllRecordTypesInfo(
                             Runnable::run, continuation.asOutcomeReceiver())
                     }
-                HEALTH_DATA_CATEGORIES.filter { hasData(it, recordTypeInfoMap) }
+                category.healthPermissionTypes.filter { hasData(it, recordTypeInfoMap) }
             } catch (e: Exception) {
-                Log.e(TAG, "GetCategoriesWithDataUseCase", e)
+                Log.e(TAG, "GetPermissionTypesWithDataUseCase", e)
                 emptyList()
             }
         }
 
     private fun hasData(
-        category: HealthDataCategory,
+        permissionType: HealthPermissionType,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
     ): Boolean =
         recordTypeInfoMap.values.firstOrNull {
-            fromSdkHealthDataCategory(it.dataCategory) == category &&
+            fromHealthPermissionCategory(it.permissionCategory) == permissionType &&
                 it.contributingPackages.isNotEmpty()
         } != null
-}
-
-@Singleton
-class LoadCategoriesUseCase
-@Inject
-constructor(private val categoriesUseCase: LoadCategoriesWithDataUseCase) {
-    /** Returns list of data categories that have data. */
-    suspend fun invoke(): List<HealthDataCategory> = categoriesUseCase()
-}
-
-@Singleton
-class LoadAllCategoriesUseCase
-@Inject
-constructor(private val categoriesUseCase: LoadCategoriesWithDataUseCase) {
-    /** Returns list of all available data categories. */
-    suspend fun invoke(): List<AllCategoriesScreenHealthDataCategory> {
-        val categoriesWithData = categoriesUseCase()
-        return HEALTH_DATA_CATEGORIES.map { category ->
-            AllCategoriesScreenHealthDataCategory(category, category !in categoriesWithData)
-        }
-    }
 }

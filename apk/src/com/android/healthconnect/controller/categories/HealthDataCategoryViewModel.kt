@@ -29,13 +29,13 @@ constructor(
     private val loadAllCategoriesUseCase: LoadAllCategoriesUseCase,
 ) : ViewModel() {
 
-    private val _categoriesData = MutableLiveData<List<HealthDataCategory>>()
+    private val _categoriesData = MutableLiveData<CategoriesFragmentState>()
 
     private val _allCategoriesData = MutableLiveData<List<AllCategoriesScreenHealthDataCategory>>()
     /**
      * Provides a list of HealthDataCategories displayed in {@link HealthDataCategoriesFragment}.
      */
-    val categoriesData: LiveData<List<HealthDataCategory>>
+    val categoriesData: LiveData<CategoriesFragmentState>
         get() = _categoriesData
 
     /**
@@ -46,15 +46,17 @@ constructor(
         get() = _allCategoriesData
 
     init {
-        loadDataCategories()
-        loadAllDataCategories()
+        _categoriesData.postValue(CategoriesFragmentState.Loading)
+        viewModelScope.launch {
+            val categories = loadCategoriesUseCase.invoke()
+            val allCategories = loadAllCategoriesUseCase.invoke()
+            _categoriesData.postValue(CategoriesFragmentState.WithData(categories))
+            _allCategoriesData.postValue(allCategories)
+        }
     }
 
-    private fun loadDataCategories() {
-        viewModelScope.launch { _categoriesData.postValue(loadCategoriesUseCase.invoke()) }
-    }
-
-    private fun loadAllDataCategories() {
-        viewModelScope.launch { _allCategoriesData.postValue(loadAllCategoriesUseCase.invoke()) }
+    sealed class CategoriesFragmentState {
+        object Loading : CategoriesFragmentState()
+        data class WithData(val categories: List<HealthDataCategory>) : CategoriesFragmentState()
     }
 }
