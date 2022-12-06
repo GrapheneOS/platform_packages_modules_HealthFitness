@@ -185,24 +185,25 @@ sealed class DeletionType : Parcelable {
         get() {
             return when (this) {
                 is DeletionTypeHealthPermissionTypeData,
-                is DeletionTypeHealthPermissionTypeFromApp -> {
-                    true
-                }
-                else -> {
-                    false
-                }
+                is DeletionTypeHealthPermissionTypeFromApp -> true
+                else -> false
             }
         }
 
     val hasCategory: Boolean
         get() {
             return when (this) {
-                is DeletionTypeCategoryData -> {
-                    true
-                }
-                else -> {
-                    false
-                }
+                is DeletionTypeCategoryData -> true
+                else -> false
+            }
+        }
+
+    val hasAppData: Boolean
+        get() {
+            return when (this) {
+                is DeletionTypeAppData -> true
+                is DeletionTypeHealthPermissionTypeFromApp -> true
+                else -> false
             }
         }
 }

@@ -2,12 +2,19 @@ package com.android.healthconnect.controller.permissions.connectedapps
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
+import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionFragment
+import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.connectedApp.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
@@ -54,6 +61,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.connected_app_screen, rootKey)
+
+        if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
+            childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,7 +87,11 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
             updatePermissions(permissions)
         }
         mDeleteAllDataPreference?.setOnPreferenceClickListener {
-            // TODO(b/246776055) Implement deletion flow for app
+            // TODO handle case when appName not found?
+            val appName = viewModel.appInfo.value?.appName
+            val deletionType = DeletionType.DeletionTypeAppData(mPackageName, appName ?: "")
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
         }
         viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->

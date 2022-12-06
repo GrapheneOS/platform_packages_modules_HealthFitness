@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.permissions.connectedapps
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -143,7 +144,8 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private fun navigateToAppInfoScreen(app: ConnectedAppMetadata) {
         findNavController()
             .navigate(
-                R.id.action_connectedApps_to_connectedApp, getBundle(app.appMetadata.packageName))
+                R.id.action_connectedApps_to_connectedApp,
+                bundleOf("packageName" to app.appMetadata.packageName))
     }
 
     private fun getNoAppsPreference(@StringRes res: Int): Preference {
@@ -165,11 +167,5 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 true
             }
         }
-    }
-
-    private fun getBundle(packageName: String): Bundle {
-        val bundle = Bundle()
-        bundle.putString("packageName", packageName)
-        return bundle
     }
 }

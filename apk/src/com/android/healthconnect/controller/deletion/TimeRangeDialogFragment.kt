@@ -73,8 +73,10 @@ class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
                     getString(deletionParameters.getCategoryLabel()).lowercase(Locale.getDefault())
                 resources.getString(R.string.time_range_message_category, categoryLabel)
             }
-            is DeletionType.DeletionTypeAppData ->
-                resources.getString(R.string.time_range_message_app_data)
+            is DeletionType.DeletionTypeAppData -> {
+                val appName = deletionParameters.getAppName()
+                resources.getString(R.string.time_range_message_app_data, appName)
+            }
             else ->
                 throw UnsupportedOperationException(
                     "This Deletion type does not support configurable time range. DataTypeFromApp automatically" +

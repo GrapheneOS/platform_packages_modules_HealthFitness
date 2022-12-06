@@ -20,6 +20,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.deletion.api.DeleteAllDataUseCase
+import com.android.healthconnect.controller.deletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.deletion.api.DeleteCategoryUseCase
 import com.android.healthconnect.controller.deletion.api.DeleteEntryUseCase
 import com.android.healthconnect.controller.deletion.api.DeletePermissionTypeUseCase
@@ -35,7 +36,8 @@ constructor(
     private val deleteAllDataUseCase: DeleteAllDataUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase,
     private val deletePermissionTypeUseCase: DeletePermissionTypeUseCase,
-    private val deleteEntryUseCase: DeleteEntryUseCase
+    private val deleteEntryUseCase: DeleteEntryUseCase,
+    private val deleteAppDataUseCase: DeleteAppDataUseCase
 ) : ViewModel() {
 
     companion object {
@@ -110,6 +112,11 @@ constructor(
                     is DeletionType.DeletionTypeHealthPermissionTypeData -> {
                         deletionParameters.value?.let {
                             deletePermissionTypeUseCase.invoke(deletionType, timeRangeFilter)
+                        }
+                    }
+                    is DeletionType.DeletionTypeAppData -> {
+                        deletionParameters.value?.let {
+                            deleteAppDataUseCase.invoke(deletionType, timeRangeFilter)
                         }
                     }
                     else -> {
