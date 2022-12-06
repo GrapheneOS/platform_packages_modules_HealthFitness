@@ -14,7 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <com.android.settingslib.widget.TopIntroPreference
         android:key="connected_apps_top_intro"

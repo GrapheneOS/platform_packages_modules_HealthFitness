@@ -41,5 +41,4 @@
     <attr name="textAppearanceOnboardingHeader" format="reference"/>
 
     <attr name="outlinedButton" format="reference"/>
-
 </resources>
