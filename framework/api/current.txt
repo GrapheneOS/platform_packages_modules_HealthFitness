@@ -111,6 +111,7 @@ package android.healthconnect {
     field public static final String READ_HEIGHT = "android.permission.health.READ_HEIGHT";
     field public static final String READ_HIP_CIRCUMFERENCE = "android.permission.health.READ_HIP_CIRCUMFERENCE";
     field public static final String READ_HYDRATION = "android.permission.health.READ_HYDRATION";
+    field public static final String READ_INTERMENSTRUAL_BLEEDING = "android.permission.health.READ_INTERMENSTRUAL_BLEEDING";
     field public static final String READ_LEAN_BODY_MASS = "android.permission.health.READ_LEAN_BODY_MASS";
     field public static final String READ_MENSTRUATION = "android.permission.health.READ_MENSTRUATION";
     field public static final String READ_NUTRITION = "android.permission.health.READ_NUTRITION";
@@ -148,6 +149,7 @@ package android.healthconnect {
     field public static final String WRITE_HEIGHT = "android.permission.health.WRITE_HEIGHT";
     field public static final String WRITE_HIP_CIRCUMFERENCE = "android.permission.health.WRITE_HIP_CIRCUMFERENCE";
     field public static final String WRITE_HYDRATION = "android.permission.health.WRITE_HYDRATION";
+    field public static final String WRITE_INTERMENSTRUAL_BLEEDING = "android.permission.health.WRITE_INTERMENSTRUAL_BLEEDING";
     field public static final String WRITE_LEAN_BODY_MASS = "android.permission.health.WRITE_LEAN_BODY_MASS";
     field public static final String WRITE_MENSTRUATION = "android.permission.health.WRITE_MENSTRUATION";
     field public static final String WRITE_NUTRITION = "android.permission.health.WRITE_NUTRITION";
@@ -365,6 +367,17 @@ package android.healthconnect.datatypes {
     ctor public BodyTemperatureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Temperature);
     method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord build();
     method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class BodyWaterMassRecord extends android.healthconnect.datatypes.InstantRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Mass getBodyWaterMass();
+  }
+
+  public static final class BodyWaterMassRecord.Builder {
+    ctor public BodyWaterMassRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
+    method @NonNull public android.healthconnect.datatypes.BodyWaterMassRecord build();
+    method @NonNull public android.healthconnect.datatypes.BodyWaterMassRecord.Builder clearZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.BodyWaterMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class BoneMassRecord extends android.healthconnect.datatypes.InstantRecord {
@@ -613,6 +626,17 @@ package android.healthconnect.datatypes {
     method @NonNull public java.time.Instant getTime();
   }
 
+  public final class HeartRateVariabilityRmssdRecord extends android.healthconnect.datatypes.InstantRecord {
+    method public double getHeartRateVariabilityMillis();
+  }
+
+  public static final class HeartRateVariabilityRmssdRecord.Builder {
+    ctor public HeartRateVariabilityRmssdRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, double);
+    method @NonNull public android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord build();
+    method @NonNull public android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord.Builder clearZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
   public final class HeightRecord extends android.healthconnect.datatypes.InstantRecord {
     method @NonNull public android.healthconnect.datatypes.units.Length getHeight();
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> HEIGHT_AVG;
@@ -641,6 +665,16 @@ package android.healthconnect.datatypes {
   public abstract class InstantRecord extends android.healthconnect.datatypes.Record {
     method @NonNull public java.time.Instant getTime();
     method @NonNull public java.time.ZoneOffset getZoneOffset();
+  }
+
+  public final class IntermenstrualBleedingRecord extends android.healthconnect.datatypes.InstantRecord {
+  }
+
+  public static final class IntermenstrualBleedingRecord.Builder {
+    ctor public IntermenstrualBleedingRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.datatypes.IntermenstrualBleedingRecord build();
+    method @NonNull public android.healthconnect.datatypes.IntermenstrualBleedingRecord.Builder clearZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.IntermenstrualBleedingRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public abstract class IntervalRecord extends android.healthconnect.datatypes.Record {
@@ -683,6 +717,18 @@ package android.healthconnect.datatypes {
     field public static final int FLOW_LIGHT = 1; // 0x1
     field public static final int FLOW_MEDIUM = 2; // 0x2
     field public static final int FLOW_UNKNOWN = 0; // 0x0
+  }
+
+  public final class MenstruationPeriodRecord extends android.healthconnect.datatypes.IntervalRecord {
+  }
+
+  public static final class MenstruationPeriodRecord.Builder {
+    ctor public MenstruationPeriodRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord build();
+    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class Metadata {
