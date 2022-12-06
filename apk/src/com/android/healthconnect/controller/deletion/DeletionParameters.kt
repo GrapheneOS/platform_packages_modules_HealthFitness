@@ -94,6 +94,17 @@ data class DeletionParameters(
         return category.lowercaseTitle
     }
 
+    fun getAppName(): String {
+        check(deletionType.hasAppData) { "App name not supported for this Deletion parameter" }
+
+        val appName =
+            if (deletionType is DeletionType.DeletionTypeAppData)
+                (deletionType as DeletionType.DeletionTypeAppData).appName
+            else (deletionType as DeletionType.DeletionTypeHealthPermissionTypeFromApp).appName
+
+        return appName
+    }
+
     fun getStartTimeInstant(): Instant {
         val endTime = getEndTimeInstant()
 

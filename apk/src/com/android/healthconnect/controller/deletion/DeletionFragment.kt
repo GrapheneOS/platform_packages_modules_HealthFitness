@@ -68,7 +68,6 @@ class DeletionFragment : Hilt_DeletionFragment() {
 
         // confirmation dialog
         childFragmentManager.setFragmentResultListener(GO_BACK_EVENT, this) { _, _ ->
-            // TODO(magdi) handle cases when time range is no the starter dialog.
             showTimeRagePickerDialog()
         }
 

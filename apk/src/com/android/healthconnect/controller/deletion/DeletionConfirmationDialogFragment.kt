@@ -94,6 +94,19 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
             is DeletionType.DeleteDataEntry -> {
                 return getString(R.string.confirming_question_single_entry)
             }
+            is DeletionType.DeletionTypeAppData -> {
+                val appName = deletionParameters.getAppName()
+                return when (chosenRange) {
+                    ChosenRange.DELETE_RANGE_LAST_24_HOURS ->
+                        getString(R.string.confirming_question_app_data_one_day, appName)
+                    ChosenRange.DELETE_RANGE_LAST_7_DAYS ->
+                        getString(R.string.confirming_question_app_data_one_week, appName)
+                    ChosenRange.DELETE_RANGE_LAST_30_DAYS ->
+                        getString(R.string.confirming_question_app_data_one_month, appName)
+                    ChosenRange.DELETE_RANGE_ALL_DATA ->
+                        getString(R.string.confirming_question_app_data_all, appName)
+                }
+            }
             else -> {
                 // TODO implement other flows
                 throw UnsupportedOperationException("")

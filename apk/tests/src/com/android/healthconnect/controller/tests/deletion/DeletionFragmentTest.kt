@@ -35,6 +35,8 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.DataType
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -140,6 +142,38 @@ class DeletionFragmentTest {
         onView(
                 withText(
                     "This permanently deletes blood glucose data added to Health\u00A0Connect in the chosen" +
+                        " time period"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(withText("Delete last 24 hours")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Delete last 7 days")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Delete last 30 days")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Delete all data")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Next")).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteAppData_timeRangeDialog_showsCorrectText() {
+        val deletionTypeAppData =
+            DeletionType.DeletionTypeAppData(
+                packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME)
+
+        Mockito.`when`(viewModel.deletionParameters).then {
+            MutableLiveData(DeletionParameters(deletionType = deletionTypeAppData))
+        }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(
+                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionTypeAppData))
+        }
+
+        onView(withText("Choose data to delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "This permanently deletes $TEST_APP_NAME data added to Health\u00A0Connect in the chosen" +
                         " time period"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
@@ -483,6 +517,120 @@ class DeletionFragmentTest {
         onView(withText("Next")).inRoot(isDialog()).perform(click())
 
         onView(withText("Permanently delete blood glucose data from all time?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteAppData_confirmationDialogForOneDay_showsCorrectText() {
+        val deletionTypeAppData =
+            DeletionType.DeletionTypeAppData(
+                packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME)
+
+        Mockito.`when`(viewModel.deletionParameters).then {
+            MutableLiveData(
+                DeletionParameters(
+                    deletionType = deletionTypeAppData,
+                    chosenRange = ChosenRange.DELETE_RANGE_LAST_24_HOURS))
+        }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(
+                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionTypeAppData))
+        }
+
+        onView(withId(R.id.radio_button_one_day)).inRoot(isDialog()).perform(click())
+
+        onView(withText("Next")).inRoot(isDialog()).perform(click())
+
+        onView(withText("Permanently delete $TEST_APP_NAME data from the last 24 hours?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteAppData_confirmationDialogForOneWeek_showsCorrectText() {
+        val deletionTypeAppData =
+            DeletionType.DeletionTypeAppData(
+                packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME)
+        Mockito.`when`(viewModel.deletionParameters).then {
+            MutableLiveData(
+                DeletionParameters(
+                    deletionType = deletionTypeAppData,
+                    chosenRange = ChosenRange.DELETE_RANGE_LAST_7_DAYS))
+        }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(
+                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionTypeAppData))
+        }
+
+        onView(withId(R.id.radio_button_one_week)).inRoot(isDialog()).perform(click())
+
+        onView(withText("Next")).inRoot(isDialog()).perform(click())
+
+        onView(withText("Permanently delete $TEST_APP_NAME data from the last 7 days?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteAppData_confirmationDialogForOneMonth_showsCorrectText() {
+        val deletionTypeAppData =
+            DeletionType.DeletionTypeAppData(
+                packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME)
+
+        Mockito.`when`(viewModel.deletionParameters).then {
+            MutableLiveData(
+                DeletionParameters(
+                    deletionType = deletionTypeAppData,
+                    chosenRange = ChosenRange.DELETE_RANGE_LAST_30_DAYS))
+        }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(
+                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionTypeAppData))
+        }
+
+        onView(withId(R.id.radio_button_one_month)).inRoot(isDialog()).perform(click())
+
+        onView(withText("Next")).inRoot(isDialog()).perform(click())
+
+        onView(withText("Permanently delete $TEST_APP_NAME data from the last 30 days?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteAppData_confirmationDialogForAllTime_showsCorrectText() {
+        val deletionTypeAppData =
+            DeletionType.DeletionTypeAppData(
+                packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME)
+        Mockito.`when`(viewModel.deletionParameters).then {
+            MutableLiveData(
+                DeletionParameters(
+                    deletionType = deletionTypeAppData,
+                    chosenRange = ChosenRange.DELETE_RANGE_ALL_DATA))
+        }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(
+                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionTypeAppData))
+        }
+
+        onView(withId(R.id.radio_button_all)).inRoot(isDialog()).perform(click())
+
+        onView(withText("Next")).inRoot(isDialog()).perform(click())
+
+        onView(withText("Permanently delete $TEST_APP_NAME data from all time?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
     }

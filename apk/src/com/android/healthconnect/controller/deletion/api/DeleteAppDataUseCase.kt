@@ -16,38 +16,30 @@ package com.android.healthconnect.controller.deletion.api
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeRangeFilter
+import android.healthconnect.datatypes.DataOrigin
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 @Singleton
-class DeleteCategoryUseCase
+class DeleteAppDataUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
-
     suspend fun invoke(
-        deleteCategory: DeletionType.DeletionTypeCategoryData,
+        deleteAppData: DeletionType.DeletionTypeAppData,
         timeRangeFilter: TimeRangeFilter
     ) {
         val deleteRequest = DeleteUsingFiltersRequest.Builder().setTimeRangeFilter(timeRangeFilter)
-
-        deleteCategory.category.healthPermissionTypes
-            .map { healthPermissionType ->
-                HealthPermissionToDatatypeMapper.getDataTypes(healthPermissionType)
-            }
-            .flatten()
-            .map { recordType -> deleteRequest.addRecordType(recordType) }
-
+        deleteRequest.addDataOrigin(
+            DataOrigin.Builder().setPackageName(deleteAppData.packageName).build())
         withContext(dispatcher) {
             suspendCancellableCoroutine<Void> { continuation ->
                 healthConnectManager.deleteRecords(
