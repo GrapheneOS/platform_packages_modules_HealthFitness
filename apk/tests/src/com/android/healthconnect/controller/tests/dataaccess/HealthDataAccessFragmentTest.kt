@@ -14,25 +14,34 @@
 package com.android.healthconnect.controller.tests.dataaccess
 
 import android.os.Bundle
+import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.dataaccess.HealthDataAccessFragment
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
 
 @HiltAndroidTest
 class HealthDataAccessFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
+    @BindValue
+    val viewModel: HealthDataAccessViewModel = Mockito.mock(HealthDataAccessViewModel::class.java)
 
     @Before
     fun setup() {
@@ -40,11 +49,88 @@ class HealthDataAccessFragmentTest {
     }
 
     @Test
-    fun dataAccessFragment_distance_isDisplayed() {
+    fun dataAccessFragment_noSections_noneDisplayed() {
+        Mockito.`when`(viewModel.appMetadataMap).then {
+            MutableLiveData<Map<HealthDataAccessViewModel.DataAccessAppState, List<AppMetadata>>>(
+                emptyMap())
+        }
+        launchFragment<HealthDataAccessFragment>(distanceBundle())
+
+        onView(withText("Can read distance")).check(doesNotExist())
+        onView(withText("Can write distance")).check(doesNotExist())
+        onView(withText("Inactive apps")).check(doesNotExist())
+        onView(
+                withText(
+                    "These apps can no longer write distance, but still have data stored in Health\u00A0Connect"))
+            .check(doesNotExist())
+        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("See all entries")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Delete this data")).perform(scrollTo()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataAccessFragment_readSection_isDisplayed() {
+        Mockito.`when`(viewModel.appMetadataMap).then {
+            MutableLiveData(
+                mapOf(
+                    HealthDataAccessViewModel.DataAccessAppState.Read to
+                        listOf(AppMetadata("package1", "appName1", null)),
+                    HealthDataAccessViewModel.DataAccessAppState.Write to emptyList(),
+                    HealthDataAccessViewModel.DataAccessAppState.Inactive to emptyList()))
+        }
+        launchFragment<HealthDataAccessFragment>(distanceBundle())
+
+        onView(withText("Can read distance")).check(matches(isDisplayed()))
+        onView(withText("Can write distance")).check(doesNotExist())
+        onView(withText("Inactive apps")).check(doesNotExist())
+        onView(
+                withText(
+                    "These apps can no longer write distance, but still have data stored in Health\u00A0Connect"))
+            .check(doesNotExist())
+        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("See all entries")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Delete this data")).perform(scrollTo()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataAccessFragment_readAndWriteSections_isDisplayed() {
+        Mockito.`when`(viewModel.appMetadataMap).then {
+            MutableLiveData<Map<HealthDataAccessViewModel.DataAccessAppState, List<AppMetadata>>>(
+                mapOf(
+                    HealthDataAccessViewModel.DataAccessAppState.Read to
+                        listOf(AppMetadata("package1", "appName1", null)),
+                    HealthDataAccessViewModel.DataAccessAppState.Write to
+                        listOf(AppMetadata("package1", "appName1", null)),
+                    HealthDataAccessViewModel.DataAccessAppState.Inactive to emptyList()))
+        }
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 
         onView(withText("Can read distance")).check(matches(isDisplayed()))
         onView(withText("Can write distance")).check(matches(isDisplayed()))
+        onView(withText("Inactive apps")).check(doesNotExist())
+        onView(
+                withText(
+                    "These apps can no longer write distance, but still have data stored in Health\u00A0Connect"))
+            .check(doesNotExist())
+        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("See all entries")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Delete this data")).perform(scrollTo()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataAccessFragment_inactiveSection_isDisplayed() {
+        Mockito.`when`(viewModel.appMetadataMap).then {
+            MutableLiveData(
+                mapOf(
+                    HealthDataAccessViewModel.DataAccessAppState.Read to emptyList(),
+                    HealthDataAccessViewModel.DataAccessAppState.Write to emptyList(),
+                    HealthDataAccessViewModel.DataAccessAppState.Inactive to
+                        listOf(AppMetadata("package1", "appName1", null))))
+        }
+        launchFragment<HealthDataAccessFragment>(distanceBundle())
+
+        onView(withText("Can read distance")).check(doesNotExist())
+        onView(withText("Can write distance")).check(doesNotExist())
         onView(withText("Inactive apps")).check(matches(isDisplayed()))
         onView(
                 withText(

@@ -77,7 +77,6 @@ fun fromName(categoryName: String): HealthDataCategory =
 
 fun fromSdkHealthDataCategory(sdkCategory: Int): HealthDataCategory {
     return when (sdkCategory) {
-        sdkHealthDataCategory.UNKNOWN -> throw IllegalArgumentException("Category is UNKNOWN.")
         sdkHealthDataCategory.ACTIVITY -> HealthDataCategory.ACTIVITY
         sdkHealthDataCategory.BODY_MEASUREMENTS -> HealthDataCategory.BODY_MEASUREMENTS
         sdkHealthDataCategory.CYCLE_TRACKING -> HealthDataCategory.CYCLE_TRACKING

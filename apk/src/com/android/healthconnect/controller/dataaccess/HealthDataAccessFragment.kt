@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.TopIntroPreference
@@ -83,6 +84,9 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
             (requireArguments().get(PERMISSION_TYPE_KEY) != null)) {
             permissionType = (requireArguments().get(PERMISSION_TYPE_KEY)!!) as HealthPermissionType
         }
+        mCanReadSection?.isVisible = false
+        mCanWriteSection?.isVisible = false
+        mInactiveSection?.isVisible = false
         maybeShowPermissionTypeDescription()
         mCanReadSection?.title =
             getString(
@@ -130,69 +134,73 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.appInfoMaps.observe(viewLifecycleOwner) { appInfoMap ->
-            updateDataAccess(appInfoMap)
+        viewModel.loadAppMetaDataMap(permissionType)
+        viewModel.appMetadataMap.observe(viewLifecycleOwner) { appMetadataMap ->
+            updateDataAccess(appMetadataMap)
         }
     }
 
-    private fun updateDataAccess(appInfoMap: Map<DataAccessAppState, List<AppInfo>>) {
+    private fun updateDataAccess(appMetadataMap: Map<DataAccessAppState, List<AppMetadata>>) {
         // TODO(b/245513815): Add empty page.
         mCanReadSection?.removeAll()
         mCanWriteSection?.removeAll()
         mInactiveSection?.removeAll()
 
-        if (appInfoMap.containsKey(DataAccessAppState.Read) &&
-            appInfoMap[DataAccessAppState.Read]!!.isEmpty()) {
-            mCanReadSection?.isVisible = false
-        } else {
-            mCanReadSection?.isVisible = true
-            appInfoMap[DataAccessAppState.Write]!!.forEach { _appInfo ->
-                mCanReadSection?.addPreference(
-                    Preference(requireContext()).also {
-                        it.setTitle(_appInfo.appName)
-                        it.setIcon(_appInfo.icon)
-                        // TODO(b/245513815): Navigate to App access page.
-                    })
+        if (appMetadataMap.containsKey(DataAccessAppState.Read)) {
+            if (appMetadataMap[DataAccessAppState.Read]!!.isEmpty()) {
+                mCanReadSection?.isVisible = false
+            } else {
+                mCanReadSection?.isVisible = true
+                appMetadataMap[DataAccessAppState.Read]!!.forEach { _appMetadata ->
+                    mCanReadSection?.addPreference(
+                        Preference(requireContext()).also {
+                            it.title = _appMetadata.appName
+                            it.icon = _appMetadata.icon
+                            // TODO(b/245513815): Navigate to App access page.
+                        })
+                }
             }
         }
-        if (appInfoMap.containsKey(DataAccessAppState.Write) &&
-            appInfoMap[DataAccessAppState.Write]!!.isEmpty()) {
-            mCanWriteSection?.isVisible = false
-        } else {
-            mCanWriteSection?.isVisible = true
-            appInfoMap[DataAccessAppState.Write]!!.forEach { _appInfo ->
-                mCanWriteSection?.addPreference(
-                    Preference(requireContext()).also {
-                        it.setTitle(_appInfo.appName)
-                        it.setIcon(_appInfo.icon)
-                    })
+        if (appMetadataMap.containsKey(DataAccessAppState.Write)) {
+            if (appMetadataMap[DataAccessAppState.Write]!!.isEmpty()) {
+                mCanWriteSection?.isVisible = false
+            } else {
+                mCanWriteSection?.isVisible = true
+                appMetadataMap[DataAccessAppState.Write]!!.forEach { _appMetadata ->
+                    mCanWriteSection?.addPreference(
+                        Preference(requireContext()).also {
+                            it.title = _appMetadata.appName
+                            it.icon = _appMetadata.icon
+                        })
+                }
             }
         }
-        if (appInfoMap.containsKey(DataAccessAppState.Inactive) &&
-            appInfoMap[DataAccessAppState.Inactive]!!.isEmpty()) {
-            mInactiveSection?.isVisible = false
-        } else {
-            mInactiveSection?.isVisible = true
-            mInactiveSection?.addPreference(
-                Preference(requireContext()).also {
-                    it.summary =
-                        getString(
-                            R.string.inactive_apps_message,
-                            getString(fromPermissionType(permissionType).lowercaseLabel))
-                })
-            appInfoMap[DataAccessAppState.Inactive]!!.forEach { _appInfo ->
+        if (appMetadataMap.containsKey(DataAccessAppState.Inactive)) {
+            if (appMetadataMap[DataAccessAppState.Inactive]!!.isEmpty()) {
+                mInactiveSection?.isVisible = false
+            } else {
+                mInactiveSection?.isVisible = true
                 mInactiveSection?.addPreference(
-                    InactiveAppPreference(requireContext()).also {
-                        it.setTitle(_appInfo.appName)
-                        it.setIcon(_appInfo.icon)
-                        it.setOnDeleteButtonClickListener {
-                            val deletionType =
-                                DeletionType.DeletionTypeAppData(
-                                    getString(_appInfo.packageName), getString(_appInfo.appName))
-                            childFragmentManager.setFragmentResult(
-                                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
-                        }
+                    Preference(requireContext()).also {
+                        it.summary =
+                            getString(
+                                R.string.inactive_apps_message,
+                                getString(fromPermissionType(permissionType).lowercaseLabel))
                     })
+                appMetadataMap[DataAccessAppState.Inactive]?.forEach { _appMetadata ->
+                    mInactiveSection?.addPreference(
+                        InactiveAppPreference(requireContext()).also {
+                            it.title = _appMetadata.appName
+                            it.icon = _appMetadata.icon
+                            it.setOnDeleteButtonClickListener {
+                                val deletionType =
+                                    DeletionType.DeletionTypeAppData(
+                                        _appMetadata.packageName, _appMetadata.appName)
+                                childFragmentManager.setFragmentResult(
+                                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+                            }
+                        })
+                }
             }
         }
     }

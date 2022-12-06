@@ -17,17 +17,78 @@
 package com.android.healthconnect.controller.dataaccess
 
 import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessAppState
+import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
+import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 @Singleton
-class LoadDataAccessUseCase @Inject constructor() {
-    /** Temporary mock data, returns a map of apps with read and write permissions. */
-    suspend operator fun invoke(): Map<DataAccessAppState, List<AppInfo>> {
-        val dataAccessMap: MutableMap<DataAccessAppState, List<AppInfo>> = hashMapOf()
-        dataAccessMap[DataAccessAppState.Read] = EXAMPLE_APPS
-        dataAccessMap[DataAccessAppState.Write] = EXAMPLE_APPS
-        dataAccessMap[DataAccessAppState.Inactive] = MORE_EXAMPLE_APPS
-        return dataAccessMap
+class LoadDataAccessUseCase
+@Inject
+constructor(
+    private val loadContributorAppInfoUseCase: GetContributorAppInfoUseCase,
+    private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
+    private val healthPermissionReader: HealthPermissionReader,
+    private val appInfoReader: AppInfoReader,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
+) {
+    /** Returns a map of [DataAccessAppState] to apps. */
+    suspend operator fun invoke(
+        permissionType: HealthPermissionType
+    ): Map<DataAccessAppState, List<AppMetadata>> =
+        withContext(dispatcher) {
+            val appsWithHealthPermissions: List<String> =
+                healthPermissionReader.getAppsWithHealthPermissions()
+            val contributingApps: Map<String, AppMetadata> = loadContributorAppInfoUseCase.invoke()
+            val readAppMetadataSet: MutableSet<AppMetadata> = mutableSetOf()
+            val writeAppMetadataSet: MutableSet<AppMetadata> = mutableSetOf()
+            val writeAppPackageNameSet: MutableSet<String> = mutableSetOf()
+            val inactiveAppMetadataSet: MutableSet<AppMetadata> = mutableSetOf()
+
+            appsWithHealthPermissions.forEach {
+                val permissionsPerPackage: List<String> = loadGrantedHealthPermissionsUseCase(it)
+
+                // Apps that can READ the given healthPermissionType.
+                if (permissionsPerPackage.contains(
+                    HealthPermission(permissionType, PermissionsAccessType.READ).toString())) {
+                    readAppMetadataSet.add(appInfoReader.getAppMetadata(it))
+                }
+                // Apps that can WRITE the given healthPermissionType.
+                if (permissionsPerPackage.contains(
+                    HealthPermission(permissionType, PermissionsAccessType.WRITE).toString())) {
+                    writeAppMetadataSet.add(appInfoReader.getAppMetadata(it))
+                    writeAppPackageNameSet.add(it)
+                }
+            }
+            // Apps that are inactive: can no longer WRITE, but still have data in Health Connect.
+            contributingApps.keys.forEach {
+                if (!writeAppPackageNameSet.contains(it)) {
+                    inactiveAppMetadataSet.add(appInfoReader.getAppMetadata(it))
+                }
+            }
+
+            mapOf(
+                DataAccessAppState.Read to alphabeticallySortedMetadataList(readAppMetadataSet),
+                DataAccessAppState.Write to alphabeticallySortedMetadataList(writeAppMetadataSet),
+                DataAccessAppState.Inactive to
+                    alphabeticallySortedMetadataList(inactiveAppMetadataSet))
+        }
+
+    private fun alphabeticallySortedMetadataList(
+        packageNames: Set<AppMetadata>
+    ): List<AppMetadata> {
+        return packageNames
+            .stream()
+            .sorted(Comparator.comparing { appMetaData -> appMetaData.appName })
+            .toList()
     }
 }

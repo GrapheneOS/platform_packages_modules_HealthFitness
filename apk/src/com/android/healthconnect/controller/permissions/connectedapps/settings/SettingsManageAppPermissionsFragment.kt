@@ -59,7 +59,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         preferenceScreen.findPreference(WRITE_CATEGORY)
     }
 
-    private val header : PermissionHeaderPreference? by lazy {
+    private val header: PermissionHeaderPreference? by lazy {
         preferenceScreen.findPreference(PERMISSION_HEADER)
     }
 
@@ -75,8 +75,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
-            requireArguments().getString(EXTRA_PACKAGE_NAME) != null
-        ) {
+            requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
 
