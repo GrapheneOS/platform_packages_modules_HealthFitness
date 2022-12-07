@@ -14,8 +14,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 /** View model for {@link ConnectedAppFragment} . */
 @HiltViewModel
@@ -57,9 +57,7 @@ constructor(
     }
 
     fun loadAppInfo(packageName: String) {
-        viewModelScope.launch {
-            _appInfo.postValue(appInfoReader.getAppMetadata(packageName))
-        }
+        viewModelScope.launch { _appInfo.postValue(appInfoReader.getAppMetadata(packageName)) }
     }
 
     fun updatePermission(packageName: String, healthPermission: HealthPermission, grant: Boolean) {
@@ -81,7 +79,7 @@ constructor(
 
     fun revokeAllPermissions(packageName: String) {
         viewModelScope.launch {
-            //TODO(b/245514289) move this to a background thread.
+            // TODO(b/245514289) move this to a background thread.
             revokeAllHealthPermissionsUseCase.invoke(packageName)
             loadForPackage(packageName)
         }
