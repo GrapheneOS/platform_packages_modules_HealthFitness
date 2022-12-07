@@ -24,22 +24,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.healthconnect.Constants;
 import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.Constants;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.RecordInternal;
-import android.util.Slog;
 import android.util.ArrayMap;
+import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
-import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -283,7 +281,7 @@ public class TransactionManager {
      *
      * @param request an update request.
      */
-    public void updateAll(@NonNull UpsertTransactionRequest request) throws Exception {
+    public void updateAll(@NonNull UpsertTransactionRequest request) {
         try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
             db.beginTransaction();
             try {
@@ -293,6 +291,39 @@ public class TransactionManager {
             } finally {
                 db.endTransaction();
             }
+        }
+    }
+
+    /**
+     * @return list of distinct packageNames corresponding to the input table name after querying
+     *     the table.
+     */
+    public ArrayList<DataOrigin> getDistinctPackageNamesForRecordTable(RecordHelper<?> recordHelper)
+            throws SQLiteException {
+        try (SQLiteDatabase db = getReadableDb()) {
+            ArrayList<DataOrigin> packageNamesForDatatype = new ArrayList<>();
+            try (Cursor cursorForDistinctPackageNames =
+                    db.rawQuery(
+                            /* sql query */ recordHelper
+                                    .getReadTableRequestWithDistinctAppInfoIds()
+                                    .getReadCommand(),
+                            /* selectionArgs */ null)) {
+                if (cursorForDistinctPackageNames.getCount() > 0) {
+                    AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
+                    while (cursorForDistinctPackageNames.moveToNext()) {
+                        String packageName =
+                                appInfoHelper.getPackageName(
+                                        cursorForDistinctPackageNames.getLong(
+                                                cursorForDistinctPackageNames.getColumnIndex(
+                                                        APP_INFO_ID_COLUMN_NAME)));
+                        if (!packageName.isEmpty()) {
+                            packageNamesForDatatype.add(
+                                    new DataOrigin.Builder().setPackageName(packageName).build());
+                        }
+                    }
+                }
+            }
+            return packageNamesForDatatype;
         }
     }
 
@@ -363,38 +394,5 @@ public class TransactionManager {
                         SQLiteDatabase.CONFLICT_REPLACE);
         request.getChildTableRequests()
                 .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
-    }
-
-    /**
-     * @return list of distinct packageNames corresponding to the input table name after querying
-     *     the table.
-     */
-    public ArrayList<DataOrigin> getDistinctPackageNamesForRecordTable(RecordHelper<?> recordHelper)
-            throws SQLiteException {
-        try (SQLiteDatabase db = getReadableDb()) {
-            ArrayList<DataOrigin> packageNamesForDatatype = new ArrayList<>();
-            try (Cursor cursorForDistinctPackageNames =
-                    db.rawQuery(
-                            /* sql query */ recordHelper
-                                    .getReadTableRequestWithDistinctAppInfoIds()
-                                    .getReadCommand(),
-                            /* selectionArgs */ null)) {
-                if (cursorForDistinctPackageNames.getCount() > 0) {
-                    AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
-                    while (cursorForDistinctPackageNames.moveToNext()) {
-                        String packageName =
-                                appInfoHelper.getPackageName(
-                                        cursorForDistinctPackageNames.getLong(
-                                                cursorForDistinctPackageNames.getColumnIndex(
-                                                        APP_INFO_ID_COLUMN_NAME)));
-                        if (!packageName.isEmpty()) {
-                            packageNamesForDatatype.add(
-                                    new DataOrigin.Builder().setPackageName(packageName).build());
-                        }
-                    }
-                }
-            }
-            return packageNamesForDatatype;
-        }
     }
 }
