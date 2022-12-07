@@ -25,14 +25,17 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsActivity
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.convertTextViewIntoLink
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Permissions activity for Health Connect. */
 @AndroidEntryPoint(FragmentActivity::class)
 class PermissionsActivity : Hilt_PermissionsActivity() {
 
     private val viewModel: RequestPermissionViewModel by viewModels()
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
     private lateinit var appPackageName: String
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,9 +78,11 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
                 findViewById(R.id.privacy_policy),
                 rationaleText,
                 rationaleText.indexOf(policyString),
-                rationaleText.indexOf(policyString) + policyString.length,
-                { // TODO: Link to developer's policy
-                })
+                rationaleText.indexOf(policyString) + policyString.length) {
+                    val startRationaleIntent =
+                        healthPermissionReader.getApplicationRationaleIntent(appPackageName)
+                    startActivity(startRationaleIntent)
+                }
             findViewById<TextView>(R.id.title).text =
                 resources.getString(R.string.request_permissions_header_title, appName)
         }
