@@ -35,10 +35,13 @@ public class PackagePermissionChangesMonitor extends BroadcastReceiver {
     private static final String TAG = "HealthPackageChangesMonitor";
     static final IntentFilter sPackageFilter = buildPackageChangeFilter();
     private final HealthPermissionIntentAppsTracker mPermissionIntentTracker;
+    private final FirstGrantTimeManager mFirstGrantTimeManager;
 
     public PackagePermissionChangesMonitor(
-            HealthPermissionIntentAppsTracker permissionIntentTracker) {
+            HealthPermissionIntentAppsTracker permissionIntentTracker,
+            FirstGrantTimeManager grantTimeManager) {
         mPermissionIntentTracker = permissionIntentTracker;
+        mFirstGrantTimeManager = grantTimeManager;
     }
 
     /**
@@ -60,6 +63,12 @@ public class PackagePermissionChangesMonitor extends BroadcastReceiver {
             return;
         }
         mPermissionIntentTracker.onPackageChanged(packageName, userHandle);
+
+        if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)
+                && !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) {
+            final int uid = intent.getIntExtra(Intent.EXTRA_UID, /* default value= */ -1);
+            mFirstGrantTimeManager.onPackageRemoved(packageName, uid, userHandle);
+        }
     }
 
     private static IntentFilter buildPackageChangeFilter() {

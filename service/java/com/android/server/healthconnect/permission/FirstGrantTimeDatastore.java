@@ -19,16 +19,32 @@ package com.android.server.healthconnect.permission;
 import android.annotation.NonNull;
 import android.os.UserHandle;
 
-/** Class for managing health permissions first grant time datastore. */
-interface FirstGrantTimeDatastore {
-    /** Read {@link UserGrantTimeState for given user}. */
+/**
+ * Class for managing health permissions first grant time datastore.
+ *
+ * @hide
+ */
+public interface FirstGrantTimeDatastore {
+    /**
+     * Read {@link UserGrantTimeState for given user}.
+     *
+     * @hide
+     */
     @NonNull
     UserGrantTimeState readForUser(@NonNull UserHandle user);
 
-    /** Write {@link UserGrantTimeState for given user}. */
+    /**
+     * Write {@link UserGrantTimeState for given user}.
+     *
+     * @hide
+     */
     void writeForUser(@NonNull UserGrantTimeState grantTimesState, @NonNull UserHandle user);
 
-    /** Create instance of the datastore class. */
+    /**
+     * Create instance of the datastore class.
+     *
+     * @hide
+     */
     @NonNull
     static FirstGrantTimeDatastore createInstance() {
         return new FirstGrantTimeDatastoreXmlPersistence();
