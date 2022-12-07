@@ -39,12 +39,14 @@ import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
+import android.healthconnect.aidl.GetPriorityResponseParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
+import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
@@ -54,6 +56,7 @@ import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.aidl.UpdatePriorityRequestParcel;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
@@ -606,6 +609,82 @@ public class HealthConnectManager {
                         public void onResult(String token) {
                             Binder.clearCallingIdentity();
                             executor.execute(() -> callback.onResult(token));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Get the data priority order of the contributing {@link DataOrigin} for {@code dataCategory}.
+     *
+     * @param dataCategory {@link HealthDataCategory} for which to get the priority order
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     *     <p>TODO(b/249583483): Add checks for HEALTH_DATA_MANAGEMENT
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(QUERY_ALL_PACKAGES)
+    public void getDataOriginsInPriorityOrder(
+            @HealthDataCategory.Type int dataCategory,
+            @NonNull Executor executor,
+            @NonNull
+                    OutcomeReceiver<GetDataOriginPriorityOrderResponse, HealthConnectException>
+                            callback) {
+        try {
+            mService.getCurrentPriority(
+                    mContext.getPackageName(),
+                    dataCategory,
+                    new IGetPriorityResponseCallback.Stub() {
+                        @Override
+                        public void onResult(GetPriorityResponseParcel response) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onResult(response.getPriorityResponse()));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Updates the priority order of the apps as per {@code request}
+     *
+     * @param request new priority order update request
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
+     *     <p>TODO(b/249583483): Add checks for HEALTH_DATA_MANAGEMENT
+     * @hide
+     */
+    @SystemApi
+    public void updateDataOriginPriorityOrder(
+            @NonNull UpdateDataOriginPriorityOrderRequest request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        try {
+            mService.updatePriority(
+                    mContext.getPackageName(),
+                    new UpdatePriorityRequestParcel(request),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
                         }
 
                         @Override

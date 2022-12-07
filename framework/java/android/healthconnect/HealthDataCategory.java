@@ -17,6 +17,7 @@
 package android.healthconnect;
 
 import android.annotation.IntDef;
+import android.annotation.SystemApi;
 import android.healthconnect.datatypes.Record;
 
 import java.lang.annotation.Retention;
@@ -26,8 +27,9 @@ import java.lang.annotation.RetentionPolicy;
  * Represents DataCategory for a {@link Record}. A record can only belong to one and only one {@link
  * HealthDataCategory}.
  *
- * <p>@hide
+ * @hide
  */
+@SystemApi
 public class HealthDataCategory {
     public static final int UNKNOWN = 0;
     public static final int ACTIVITY = 1;

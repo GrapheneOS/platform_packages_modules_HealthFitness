@@ -16,6 +16,80 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.HealthPermissions.HEALTH_PERMISSION_GROUP;
+import static android.healthconnect.HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
+import static android.healthconnect.HealthPermissions.READ_BASAL_BODY_TEMPERATURE;
+import static android.healthconnect.HealthPermissions.READ_BASAL_METABOLIC_RATE;
+import static android.healthconnect.HealthPermissions.READ_BLOOD_GLUCOSE;
+import static android.healthconnect.HealthPermissions.READ_BLOOD_PRESSURE;
+import static android.healthconnect.HealthPermissions.READ_BODY_FAT;
+import static android.healthconnect.HealthPermissions.READ_BODY_TEMPERATURE;
+import static android.healthconnect.HealthPermissions.READ_BODY_WATER_MASS;
+import static android.healthconnect.HealthPermissions.READ_BONE_MASS;
+import static android.healthconnect.HealthPermissions.READ_CERVICAL_MUCUS;
+import static android.healthconnect.HealthPermissions.READ_DISTANCE;
+import static android.healthconnect.HealthPermissions.READ_ELEVATION_GAINED;
+import static android.healthconnect.HealthPermissions.READ_EXERCISE;
+import static android.healthconnect.HealthPermissions.READ_FLOORS_CLIMBED;
+import static android.healthconnect.HealthPermissions.READ_HEART_RATE;
+import static android.healthconnect.HealthPermissions.READ_HEART_RATE_VARIABILITY;
+import static android.healthconnect.HealthPermissions.READ_HEIGHT;
+import static android.healthconnect.HealthPermissions.READ_HIP_CIRCUMFERENCE;
+import static android.healthconnect.HealthPermissions.READ_HYDRATION;
+import static android.healthconnect.HealthPermissions.READ_LEAN_BODY_MASS;
+import static android.healthconnect.HealthPermissions.READ_MENSTRUATION;
+import static android.healthconnect.HealthPermissions.READ_NUTRITION;
+import static android.healthconnect.HealthPermissions.READ_OVULATION_TEST;
+import static android.healthconnect.HealthPermissions.READ_OXYGEN_SATURATION;
+import static android.healthconnect.HealthPermissions.READ_POWER;
+import static android.healthconnect.HealthPermissions.READ_RESPIRATORY_RATE;
+import static android.healthconnect.HealthPermissions.READ_RESTING_HEART_RATE;
+import static android.healthconnect.HealthPermissions.READ_SEXUAL_ACTIVITY;
+import static android.healthconnect.HealthPermissions.READ_SLEEP;
+import static android.healthconnect.HealthPermissions.READ_SPEED;
+import static android.healthconnect.HealthPermissions.READ_STEPS;
+import static android.healthconnect.HealthPermissions.READ_TOTAL_CALORIES_BURNED;
+import static android.healthconnect.HealthPermissions.READ_VO2_MAX;
+import static android.healthconnect.HealthPermissions.READ_WAIST_CIRCUMFERENCE;
+import static android.healthconnect.HealthPermissions.READ_WEIGHT;
+import static android.healthconnect.HealthPermissions.READ_WHEELCHAIR_PUSHES;
+import static android.healthconnect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
+import static android.healthconnect.HealthPermissions.WRITE_BASAL_BODY_TEMPERATURE;
+import static android.healthconnect.HealthPermissions.WRITE_BASAL_METABOLIC_RATE;
+import static android.healthconnect.HealthPermissions.WRITE_BLOOD_GLUCOSE;
+import static android.healthconnect.HealthPermissions.WRITE_BLOOD_PRESSURE;
+import static android.healthconnect.HealthPermissions.WRITE_BODY_FAT;
+import static android.healthconnect.HealthPermissions.WRITE_BODY_TEMPERATURE;
+import static android.healthconnect.HealthPermissions.WRITE_BODY_WATER_MASS;
+import static android.healthconnect.HealthPermissions.WRITE_BONE_MASS;
+import static android.healthconnect.HealthPermissions.WRITE_CERVICAL_MUCUS;
+import static android.healthconnect.HealthPermissions.WRITE_DISTANCE;
+import static android.healthconnect.HealthPermissions.WRITE_ELEVATION_GAINED;
+import static android.healthconnect.HealthPermissions.WRITE_EXERCISE;
+import static android.healthconnect.HealthPermissions.WRITE_FLOORS_CLIMBED;
+import static android.healthconnect.HealthPermissions.WRITE_HEART_RATE;
+import static android.healthconnect.HealthPermissions.WRITE_HEART_RATE_VARIABILITY;
+import static android.healthconnect.HealthPermissions.WRITE_HEIGHT;
+import static android.healthconnect.HealthPermissions.WRITE_HIP_CIRCUMFERENCE;
+import static android.healthconnect.HealthPermissions.WRITE_HYDRATION;
+import static android.healthconnect.HealthPermissions.WRITE_LEAN_BODY_MASS;
+import static android.healthconnect.HealthPermissions.WRITE_MENSTRUATION;
+import static android.healthconnect.HealthPermissions.WRITE_NUTRITION;
+import static android.healthconnect.HealthPermissions.WRITE_OVULATION_TEST;
+import static android.healthconnect.HealthPermissions.WRITE_OXYGEN_SATURATION;
+import static android.healthconnect.HealthPermissions.WRITE_POWER;
+import static android.healthconnect.HealthPermissions.WRITE_RESPIRATORY_RATE;
+import static android.healthconnect.HealthPermissions.WRITE_RESTING_HEART_RATE;
+import static android.healthconnect.HealthPermissions.WRITE_SEXUAL_ACTIVITY;
+import static android.healthconnect.HealthPermissions.WRITE_SLEEP;
+import static android.healthconnect.HealthPermissions.WRITE_SPEED;
+import static android.healthconnect.HealthPermissions.WRITE_STEPS;
+import static android.healthconnect.HealthPermissions.WRITE_TOTAL_CALORIES_BURNED;
+import static android.healthconnect.HealthPermissions.WRITE_VO2_MAX;
+import static android.healthconnect.HealthPermissions.WRITE_WAIST_CIRCUMFERENCE;
+import static android.healthconnect.HealthPermissions.WRITE_WEIGHT;
+import static android.healthconnect.HealthPermissions.WRITE_WHEELCHAIR_PUSHES;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
@@ -39,81 +113,80 @@ import java.util.Set;
  */
 @RunWith(AndroidJUnit4.class)
 public class HealthPermissionsPresenceTest {
-
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
-                    HealthPermissions.READ_ACTIVE_CALORIES_BURNED,
-                    HealthPermissions.READ_DISTANCE,
-                    HealthPermissions.READ_ELEVATION_GAINED,
-                    HealthPermissions.READ_EXERCISE,
-                    HealthPermissions.READ_FLOORS_CLIMBED,
-                    HealthPermissions.READ_STEPS,
-                    HealthPermissions.READ_TOTAL_CALORIES_BURNED,
-                    HealthPermissions.READ_VO2_MAX,
-                    HealthPermissions.READ_WHEELCHAIR_PUSHES,
-                    HealthPermissions.READ_POWER,
-                    HealthPermissions.READ_SPEED,
-                    HealthPermissions.READ_BASAL_METABOLIC_RATE,
-                    HealthPermissions.READ_BODY_FAT,
-                    HealthPermissions.READ_BODY_WATER_MASS,
-                    HealthPermissions.READ_BONE_MASS,
-                    HealthPermissions.READ_HEIGHT,
-                    HealthPermissions.READ_HIP_CIRCUMFERENCE,
-                    HealthPermissions.READ_LEAN_BODY_MASS,
-                    HealthPermissions.READ_WAIST_CIRCUMFERENCE,
-                    HealthPermissions.READ_WEIGHT,
-                    HealthPermissions.READ_CERVICAL_MUCUS,
-                    HealthPermissions.READ_MENSTRUATION,
-                    HealthPermissions.READ_OVULATION_TEST,
-                    HealthPermissions.READ_SEXUAL_ACTIVITY,
-                    HealthPermissions.READ_HYDRATION,
-                    HealthPermissions.READ_NUTRITION,
-                    HealthPermissions.READ_SLEEP,
-                    HealthPermissions.READ_BASAL_BODY_TEMPERATURE,
-                    HealthPermissions.READ_BLOOD_GLUCOSE,
-                    HealthPermissions.READ_BLOOD_PRESSURE,
-                    HealthPermissions.READ_BODY_TEMPERATURE,
-                    HealthPermissions.READ_HEART_RATE,
-                    HealthPermissions.READ_HEART_RATE_VARIABILITY,
-                    HealthPermissions.READ_OXYGEN_SATURATION,
-                    HealthPermissions.READ_RESPIRATORY_RATE,
-                    HealthPermissions.READ_RESTING_HEART_RATE,
-                    HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED,
-                    HealthPermissions.WRITE_DISTANCE,
-                    HealthPermissions.WRITE_ELEVATION_GAINED,
-                    HealthPermissions.WRITE_EXERCISE,
-                    HealthPermissions.WRITE_FLOORS_CLIMBED,
-                    HealthPermissions.WRITE_STEPS,
-                    HealthPermissions.WRITE_TOTAL_CALORIES_BURNED,
-                    HealthPermissions.WRITE_VO2_MAX,
-                    HealthPermissions.WRITE_WHEELCHAIR_PUSHES,
-                    HealthPermissions.WRITE_POWER,
-                    HealthPermissions.WRITE_SPEED,
-                    HealthPermissions.WRITE_BASAL_METABOLIC_RATE,
-                    HealthPermissions.WRITE_BODY_FAT,
-                    HealthPermissions.WRITE_BODY_WATER_MASS,
-                    HealthPermissions.WRITE_BONE_MASS,
-                    HealthPermissions.WRITE_HEIGHT,
-                    HealthPermissions.WRITE_HIP_CIRCUMFERENCE,
-                    HealthPermissions.WRITE_LEAN_BODY_MASS,
-                    HealthPermissions.WRITE_WAIST_CIRCUMFERENCE,
-                    HealthPermissions.WRITE_WEIGHT,
-                    HealthPermissions.WRITE_CERVICAL_MUCUS,
-                    HealthPermissions.WRITE_MENSTRUATION,
-                    HealthPermissions.WRITE_OVULATION_TEST,
-                    HealthPermissions.WRITE_SEXUAL_ACTIVITY,
-                    HealthPermissions.WRITE_HYDRATION,
-                    HealthPermissions.WRITE_NUTRITION,
-                    HealthPermissions.WRITE_SLEEP,
-                    HealthPermissions.WRITE_BASAL_BODY_TEMPERATURE,
-                    HealthPermissions.WRITE_BLOOD_GLUCOSE,
-                    HealthPermissions.WRITE_BLOOD_PRESSURE,
-                    HealthPermissions.WRITE_BODY_TEMPERATURE,
-                    HealthPermissions.WRITE_HEART_RATE,
-                    HealthPermissions.WRITE_HEART_RATE_VARIABILITY,
-                    HealthPermissions.WRITE_OXYGEN_SATURATION,
-                    HealthPermissions.WRITE_RESPIRATORY_RATE,
-                    HealthPermissions.WRITE_RESTING_HEART_RATE);
+                    READ_ACTIVE_CALORIES_BURNED,
+                    READ_DISTANCE,
+                    READ_ELEVATION_GAINED,
+                    READ_EXERCISE,
+                    READ_FLOORS_CLIMBED,
+                    READ_STEPS,
+                    READ_TOTAL_CALORIES_BURNED,
+                    READ_VO2_MAX,
+                    READ_WHEELCHAIR_PUSHES,
+                    READ_POWER,
+                    READ_SPEED,
+                    READ_BASAL_METABOLIC_RATE,
+                    READ_BODY_FAT,
+                    READ_BODY_WATER_MASS,
+                    READ_BONE_MASS,
+                    READ_HEIGHT,
+                    READ_HIP_CIRCUMFERENCE,
+                    READ_LEAN_BODY_MASS,
+                    READ_WAIST_CIRCUMFERENCE,
+                    READ_WEIGHT,
+                    READ_CERVICAL_MUCUS,
+                    READ_MENSTRUATION,
+                    READ_OVULATION_TEST,
+                    READ_SEXUAL_ACTIVITY,
+                    READ_HYDRATION,
+                    READ_NUTRITION,
+                    READ_SLEEP,
+                    READ_BASAL_BODY_TEMPERATURE,
+                    READ_BLOOD_GLUCOSE,
+                    READ_BLOOD_PRESSURE,
+                    READ_BODY_TEMPERATURE,
+                    READ_HEART_RATE,
+                    READ_HEART_RATE_VARIABILITY,
+                    READ_OXYGEN_SATURATION,
+                    READ_RESPIRATORY_RATE,
+                    READ_RESTING_HEART_RATE,
+                    WRITE_ACTIVE_CALORIES_BURNED,
+                    WRITE_DISTANCE,
+                    WRITE_ELEVATION_GAINED,
+                    WRITE_EXERCISE,
+                    WRITE_FLOORS_CLIMBED,
+                    WRITE_STEPS,
+                    WRITE_TOTAL_CALORIES_BURNED,
+                    WRITE_VO2_MAX,
+                    WRITE_WHEELCHAIR_PUSHES,
+                    WRITE_POWER,
+                    WRITE_SPEED,
+                    WRITE_BASAL_METABOLIC_RATE,
+                    WRITE_BODY_FAT,
+                    WRITE_BODY_WATER_MASS,
+                    WRITE_BONE_MASS,
+                    WRITE_HEIGHT,
+                    WRITE_HIP_CIRCUMFERENCE,
+                    WRITE_LEAN_BODY_MASS,
+                    WRITE_WAIST_CIRCUMFERENCE,
+                    WRITE_WEIGHT,
+                    WRITE_CERVICAL_MUCUS,
+                    WRITE_MENSTRUATION,
+                    WRITE_OVULATION_TEST,
+                    WRITE_SEXUAL_ACTIVITY,
+                    WRITE_HYDRATION,
+                    WRITE_NUTRITION,
+                    WRITE_SLEEP,
+                    WRITE_BASAL_BODY_TEMPERATURE,
+                    WRITE_BLOOD_GLUCOSE,
+                    WRITE_BLOOD_PRESSURE,
+                    WRITE_BODY_TEMPERATURE,
+                    WRITE_HEART_RATE,
+                    WRITE_HEART_RATE_VARIABILITY,
+                    WRITE_OXYGEN_SATURATION,
+                    WRITE_RESPIRATORY_RATE,
+                    WRITE_RESTING_HEART_RATE);
 
     private PackageManager mPackageManager;
 
@@ -125,9 +198,7 @@ public class HealthPermissionsPresenceTest {
     @Test
     public void testHealthPermissionGroup_isDefined() throws Exception {
         PermissionGroupInfo info =
-                mPackageManager.getPermissionGroupInfo(
-                        HealthPermissions.HEALTH_PERMISSION_GROUP, /* flags= */ 0);
-
+                mPackageManager.getPermissionGroupInfo(HEALTH_PERMISSION_GROUP, /* flags= */ 0);
         assertThat(info).isNotNull();
     }
 

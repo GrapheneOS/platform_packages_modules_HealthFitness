@@ -230,6 +230,26 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Inserts (or updates if the row exists) record into the table in {@code request} into the
+     * HealthConnect database.
+     *
+     * <p>NOTE: PLEASE ONLY USE THIS FUNCTION IF YOU WANT TO UPSERT A SINGLE RECORD. PLEASE DON'T
+     * USE THIS FUNCTION INSIDE A FOR LOOP OR REPEATEDLY: The reason is that this function tries to
+     * insert a record out of a transaction and if you are trying to insert a record before or after
+     * opening up a transaction please rethink if you really want to use this function.
+     *
+     * <p>NOTE: INSERt+WITH_CONFLICT_REPLACE only works on unique columns, else in case of conflict
+     * it leads to abort of the transaction.
+     *
+     * @param request an insert request.
+     */
+    public void insertOrReplace(@NonNull UpsertTableRequest request) {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            insertOrReplaceRecord(db, request);
+        }
+    }
+
     /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
     @NonNull
     public Cursor read(@NonNull SQLiteDatabase db, @NonNull ReadTableRequest request) {
@@ -250,6 +270,12 @@ public class TransactionManager {
     /** Note: it is the responsibility of the requester to manage and close {@code db} */
     public SQLiteDatabase getReadableDb() {
         return mHealthConnectDatabase.getReadableDatabase();
+    }
+
+    public void delete(DeleteTableRequest request) {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.execSQL(request.getDeleteCommand());
+        }
     }
 
     /**
@@ -324,6 +350,19 @@ public class TransactionManager {
             // updated contents.
             insertRecord(db, request);
         }
+    }
+
+    /** Assumes that caller will be closing {@code db} */
+    private void insertOrReplaceRecord(
+            @NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
+        long rowId =
+                db.insertWithOnConflict(
+                        request.getTable(),
+                        null,
+                        request.getContentValues(),
+                        SQLiteDatabase.CONFLICT_REPLACE);
+        request.getChildTableRequests()
+                .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
     }
 
     /**

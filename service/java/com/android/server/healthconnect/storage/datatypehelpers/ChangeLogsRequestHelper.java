@@ -42,9 +42,7 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A class to interact with the DB table that stores the information about the change log requests
@@ -56,50 +54,6 @@ import java.util.stream.Collectors;
  * @hide
  */
 public final class ChangeLogsRequestHelper {
-    /** A class to represent the request corresponding to a token */
-    public static final class TokenRequest {
-        private final List<String> mPackageNamesToFilter;
-        private final List<Integer> mRecordTypes;
-        private final String mRequestingPackageName;
-        private final long mRowIdChangeLogs;
-
-        /**
-         * @param requestingPackageName contributing package name
-         * @param packageNamesToFilter package names to filter
-         * @param recordTypes records to filter
-         * @param rowIdChangeLogs row id of change log table after which the logs are to be fetched
-         */
-        public TokenRequest(
-                @NonNull List<String> packageNamesToFilter,
-                @NonNull List<Integer> recordTypes,
-                @NonNull String requestingPackageName,
-                long rowIdChangeLogs) {
-            mPackageNamesToFilter = packageNamesToFilter;
-            mRecordTypes = recordTypes;
-            mRequestingPackageName = requestingPackageName;
-            mRowIdChangeLogs = rowIdChangeLogs;
-        }
-
-        public long getRowIdChangeLogs() {
-            return mRowIdChangeLogs;
-        }
-
-        @NonNull
-        public String getRequestingPackageName() {
-            return mRequestingPackageName;
-        }
-
-        @NonNull
-        public List<String> getPackageNamesToFilter() {
-            return mPackageNamesToFilter;
-        }
-
-        @NonNull
-        public List<Integer> getRecordTypes() {
-            return mRecordTypes;
-        }
-    }
-
     private static final String TABLE_NAME = "change_log_request_table";
     private static final String PACKAGES_TO_FILTERS_COLUMN_NAME = "packages_to_filter";
     private static final String RECORD_TYPES_COLUMN_NAME = "record_types";
@@ -160,6 +114,11 @@ public final class ChangeLogsRequestHelper {
                         .insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
     }
 
+    // Called on DB update.
+    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
+        // empty by default
+    }
+
     @NonNull
     public CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(TABLE_NAME, getColumnsInfo());
@@ -179,10 +138,7 @@ public final class ChangeLogsRequestHelper {
                 PACKAGES_TO_FILTERS_COLUMN_NAME,
                 String.join(DELIMITER, request.getPackageNamesToFilter()));
         contentValues.put(
-                RECORD_TYPES_COLUMN_NAME,
-                Arrays.stream(request.getRecordTypes())
-                        .mapToObj(String::valueOf)
-                        .collect(Collectors.joining(DELIMITER)));
+                RECORD_TYPES_COLUMN_NAME, StorageUtils.flattenIntArray(request.getRecordTypes()));
         contentValues.put(PACKAGE_NAME_COLUMN_NAME, packageName);
         contentValues.put(
                 ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME,
@@ -203,5 +159,49 @@ public final class ChangeLogsRequestHelper {
         columnInfo.add(new Pair<>(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, INTEGER));
 
         return columnInfo;
+    }
+
+    /** A class to represent the request corresponding to a token */
+    public static final class TokenRequest {
+        private final List<String> mPackageNamesToFilter;
+        private final List<Integer> mRecordTypes;
+        private final String mRequestingPackageName;
+        private final long mRowIdChangeLogs;
+
+        /**
+         * @param requestingPackageName contributing package name
+         * @param packageNamesToFilter package names to filter
+         * @param recordTypes records to filter
+         * @param rowIdChangeLogs row id of change log table after which the logs are to be fetched
+         */
+        public TokenRequest(
+                @NonNull List<String> packageNamesToFilter,
+                @NonNull List<Integer> recordTypes,
+                @NonNull String requestingPackageName,
+                long rowIdChangeLogs) {
+            mPackageNamesToFilter = packageNamesToFilter;
+            mRecordTypes = recordTypes;
+            mRequestingPackageName = requestingPackageName;
+            mRowIdChangeLogs = rowIdChangeLogs;
+        }
+
+        public long getRowIdChangeLogs() {
+            return mRowIdChangeLogs;
+        }
+
+        @NonNull
+        public String getRequestingPackageName() {
+            return mRequestingPackageName;
+        }
+
+        @NonNull
+        public List<String> getPackageNamesToFilter() {
+            return mPackageNamesToFilter;
+        }
+
+        @NonNull
+        public List<Integer> getRecordTypes() {
+            return mRecordTypes;
+        }
     }
 }

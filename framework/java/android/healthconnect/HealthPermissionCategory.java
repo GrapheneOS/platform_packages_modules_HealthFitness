@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package android.healthconnect;
 
 import android.healthconnect.datatypes.Record;
@@ -21,11 +22,12 @@ import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
 /**
- * Represents the permission group of a {@link Record}. A record can only belong to one and only one
- * {@link HealthPermissionCategory}
+ * Represents the permission category of a {@link Record}. A record can only belong to one and only
+ * one {@link HealthPermissionCategory}
  *
- * <p>@hide
+ * @hide
  */
 public class HealthPermissionCategory {
     public static final int UNKNOWN = 0;
@@ -74,6 +76,7 @@ public class HealthPermissionCategory {
     public static final int RESTING_HEART_RATE = 34;
 
     private HealthPermissionCategory() {}
+
     /** @hide */
     @IntDef({
         UNKNOWN,

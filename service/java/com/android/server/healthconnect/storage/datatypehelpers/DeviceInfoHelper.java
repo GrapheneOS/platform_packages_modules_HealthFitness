@@ -31,7 +31,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.datatypes.Device.DeviceType;
 import android.healthconnect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -43,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A class to help with the DB transaction for storing Device Info. {@link DeviceInfoHelper} acts as
@@ -52,6 +52,154 @@ import java.util.Objects;
  * @hide
  */
 public class DeviceInfoHelper {
+    private static final String TABLE_NAME = "device_info_table";
+    private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
+    private static final String MODEL_COLUMN_NAME = "model";
+    private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
+    private static DeviceInfoHelper sDeviceInfoHelper;
+    /** Map to store deviceInfoId -> DeviceInfo mapping for populating record for read */
+    private ConcurrentHashMap<Long, DeviceInfo> mIdDeviceInfoMap;
+    /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
+    private ConcurrentHashMap<DeviceInfo, Long> mDeviceInfoMap;
+
+    public static DeviceInfoHelper getInstance() {
+        if (sDeviceInfoHelper == null) {
+            sDeviceInfoHelper = new DeviceInfoHelper();
+        }
+        return sDeviceInfoHelper;
+    }
+
+    /**
+     * Returns a requests representing the tables that should be created corresponding to this
+     * helper
+     */
+    @NonNull
+    public final CreateTableRequest getCreateTableRequest() {
+        return new CreateTableRequest(TABLE_NAME, getColumnInfo());
+    }
+
+    public String getTableName() {
+        return TABLE_NAME;
+    }
+
+    /** Populates record with deviceInfoId */
+    public void populateDeviceInfoId(@NonNull RecordInternal<?> recordInternal) {
+        String manufacturer = recordInternal.getManufacturer();
+        String model = recordInternal.getModel();
+        int deviceType = recordInternal.getDeviceType();
+        DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
+        long rowId = getDeviceInfoMap().getOrDefault(deviceInfo, DEFAULT_LONG);
+        if (rowId == DEFAULT_LONG) {
+            rowId = insertDeviceInfoAndGetRowId(deviceInfo);
+        }
+        recordInternal.setDeviceInfoId(rowId);
+    }
+
+    /**
+     * Populates record with manufacturer, model and deviceType values
+     *
+     * @param deviceInfoId rowId from {@code device_info_table }
+     * @param record The record to be populated with values
+     */
+    public void populateRecordWithValue(long deviceInfoId, @NonNull RecordInternal<?> record) {
+        DeviceInfo deviceInfo = getIdDeviceInfoMap().get(deviceInfoId);
+        if (deviceInfo != null) {
+            record.setDeviceType(deviceInfo.mDeviceType);
+            record.setManufacturer(deviceInfo.mManufacturer);
+            record.setModel(deviceInfo.mModel);
+        }
+    }
+
+    // Called on DB update.
+    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
+        // empty by default
+    }
+
+    private synchronized void populateDeviceInfoMap() {
+        if (mDeviceInfoMap != null) {
+            return;
+        }
+
+        ConcurrentHashMap<DeviceInfo, Long> deviceInfoMap = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long, DeviceInfo> idDeviceInfoMap = new ConcurrentHashMap<>();
+        final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
+        try (SQLiteDatabase db = transactionManager.getReadableDb();
+                Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
+            while (cursor.moveToNext()) {
+                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                String manufacturer = getCursorString(cursor, MANUFACTURER_COLUMN_NAME);
+                String model = getCursorString(cursor, MODEL_COLUMN_NAME);
+                int deviceType = getCursorInt(cursor, DEVICE_TYPE_COLUMN_NAME);
+                DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
+                deviceInfoMap.put(deviceInfo, rowId);
+                idDeviceInfoMap.put(rowId, deviceInfo);
+            }
+        }
+
+        mDeviceInfoMap = deviceInfoMap;
+        mIdDeviceInfoMap = idDeviceInfoMap;
+    }
+
+    private Map<Long, DeviceInfo> getIdDeviceInfoMap() {
+        if (mIdDeviceInfoMap == null) {
+            populateDeviceInfoMap();
+        }
+        return mIdDeviceInfoMap;
+    }
+
+    private Map<DeviceInfo, Long> getDeviceInfoMap() {
+        if (mDeviceInfoMap == null) {
+            populateDeviceInfoMap();
+        }
+
+        return mDeviceInfoMap;
+    }
+
+    private long insertDeviceInfoAndGetRowId(DeviceInfo deviceInfo) {
+        long rowId =
+                TransactionManager.getInitialisedInstance()
+                        .insert(
+                                new UpsertTableRequest(
+                                        TABLE_NAME,
+                                        getContentValues(
+                                                deviceInfo.mManufacturer,
+                                                deviceInfo.mModel,
+                                                deviceInfo.mDeviceType)));
+        getDeviceInfoMap().put(deviceInfo, rowId);
+        getIdDeviceInfoMap().put(rowId, deviceInfo);
+        return rowId;
+    }
+
+    @NonNull
+    private ContentValues getContentValues(String manufacturer, String model, int deviceType) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MANUFACTURER_COLUMN_NAME, manufacturer);
+        contentValues.put(MODEL_COLUMN_NAME, model);
+        contentValues.put(DEVICE_TYPE_COLUMN_NAME, deviceType);
+
+        return contentValues;
+    }
+
+    /**
+     * This implementation should return the column names with which the table should be created.
+     *
+     * <p>NOTE: New columns can only be added via onUpgrade. Why? Consider what happens if a table
+     * already exists on the device
+     *
+     * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
+     */
+    @NonNull
+    private List<Pair<String, String>> getColumnInfo() {
+        ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY));
+        columnInfo.add(new Pair<>(MANUFACTURER_COLUMN_NAME, TEXT_NULL));
+        columnInfo.add(new Pair<>(MODEL_COLUMN_NAME, TEXT_NULL));
+        columnInfo.add(new Pair<>(DEVICE_TYPE_COLUMN_NAME, INTEGER));
+
+        return columnInfo;
+    }
+
     private static final class DeviceInfo {
         private final String mManufacturer;
         private final String mModel;
@@ -92,128 +240,5 @@ public class DeviceInfoHelper {
 
             return mDeviceType == deviceInfo.mDeviceType;
         }
-    }
-
-    private static final String TABLE_NAME = "device_info_table";
-    private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
-    private static final String MODEL_COLUMN_NAME = "model";
-    private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
-    private static DeviceInfoHelper sDeviceInfoHelper;
-    /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
-    private Map<DeviceInfo, Long> mDeviceInfoMap;
-    /** Map to store deviceInfoId -> DeviceInfo mapping for populating record for read */
-    private final Map<Long, DeviceInfo> mIdDeviceInfoMap = new ArrayMap<>();
-
-    public static DeviceInfoHelper getInstance() {
-        if (sDeviceInfoHelper == null) {
-            sDeviceInfoHelper = new DeviceInfoHelper();
-        }
-        return sDeviceInfoHelper;
-    }
-
-    /**
-     * Returns a requests representing the tables that should be created corresponding to this
-     * helper
-     */
-    @NonNull
-    public final CreateTableRequest getCreateTableRequest() {
-        return new CreateTableRequest(TABLE_NAME, getColumnInfo());
-    }
-
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    /** Populates record with deviceInfoId */
-    public void populateDeviceInfoId(@NonNull RecordInternal<?> recordInternal) {
-        if (Objects.isNull(mDeviceInfoMap)) {
-            populateDeviceInfoMap();
-        }
-
-        String manufacturer = recordInternal.getManufacturer();
-        String model = recordInternal.getModel();
-        int deviceType = recordInternal.getDeviceType();
-        DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
-        long rowId = mDeviceInfoMap.getOrDefault(deviceInfo, DEFAULT_LONG);
-        if (rowId == DEFAULT_LONG) {
-            rowId = insertDeviceInfoAndGetRowId(manufacturer, model, deviceType);
-            mDeviceInfoMap.put(deviceInfo, rowId);
-            mIdDeviceInfoMap.put(rowId, deviceInfo);
-        }
-        recordInternal.setDeviceInfoId(rowId);
-    }
-
-    public void populateDeviceInfoMap() {
-        mDeviceInfoMap = new ArrayMap<>();
-        final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
-            while (cursor.moveToNext()) {
-                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
-                String manufacturer = getCursorString(cursor, MANUFACTURER_COLUMN_NAME);
-                String model = getCursorString(cursor, MODEL_COLUMN_NAME);
-                int deviceType = getCursorInt(cursor, DEVICE_TYPE_COLUMN_NAME);
-                DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
-                mDeviceInfoMap.put(deviceInfo, rowId);
-                mIdDeviceInfoMap.put(rowId, deviceInfo);
-            }
-        }
-    }
-
-    /**
-     * Populates record with manufacturer, model and deviceType values
-     *
-     * @param deviceInfoId rowId from {@code device_info_table }
-     * @param record The record to be populated with values
-     */
-    public void populateRecordWithValue(long deviceInfoId, @NonNull RecordInternal<?> record) {
-        DeviceInfo deviceInfo = mIdDeviceInfoMap.get(deviceInfoId);
-        if (deviceInfo != null) {
-            record.setDeviceType(deviceInfo.mDeviceType);
-            record.setManufacturer(deviceInfo.mManufacturer);
-            record.setModel(deviceInfo.mModel);
-        }
-    }
-
-    // Called on DB update.
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
-        // empty by default
-    }
-
-    private long insertDeviceInfoAndGetRowId(String manufacturer, String model, int deviceType) {
-        return TransactionManager.getInitialisedInstance()
-                .insert(
-                        new UpsertTableRequest(
-                                TABLE_NAME, getContentValues(manufacturer, model, deviceType)));
-    }
-
-    @NonNull
-    private ContentValues getContentValues(String manufacturer, String model, int deviceType) {
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(MANUFACTURER_COLUMN_NAME, manufacturer);
-        contentValues.put(MODEL_COLUMN_NAME, model);
-        contentValues.put(DEVICE_TYPE_COLUMN_NAME, deviceType);
-
-        return contentValues;
-    }
-
-    /**
-     * This implementation should return the column names with which the table should be created.
-     *
-     * <p>NOTE: New columns can only be added via onUpgrade. Why? Consider what happens if a table
-     * already exists on the device
-     *
-     * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
-     */
-    @NonNull
-    private List<Pair<String, String>> getColumnInfo() {
-        ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
-        columnInfo.add(new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY));
-        columnInfo.add(new Pair<>(MANUFACTURER_COLUMN_NAME, TEXT_NULL));
-        columnInfo.add(new Pair<>(MODEL_COLUMN_NAME, TEXT_NULL));
-        columnInfo.add(new Pair<>(DEVICE_TYPE_COLUMN_NAME, INTEGER));
-
-        return columnInfo;
     }
 }
