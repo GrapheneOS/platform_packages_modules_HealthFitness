@@ -33,12 +33,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class PermissionsActivity : Hilt_PermissionsActivity() {
 
     private val viewModel: RequestPermissionViewModel by viewModels()
+    private lateinit var appPackageName: String
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permissions)
 
-        //TODO(b/260629311) replace with new intent
+        // TODO(b/260629311) replace with new intent
         if (!intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
             val newIntent = Intent(intent).setClass(this, SettingsActivity::class.java)
             startActivity(newIntent)
@@ -63,31 +64,30 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
     }
 
     private fun updateAppName(intent: Intent) {
-        // TODO: get the name based on package name.
         val policyString = resources.getString(R.string.request_permissions_privacy_policy)
-        val packageName = intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME).orEmpty()
-        val rationaleText =
-            resources.getString(R.string.request_permissions_rationale, packageName, policyString)
-        convertTextViewIntoLink(
-            findViewById(R.id.privacy_policy),
-            rationaleText,
-            rationaleText.indexOf(policyString),
-            rationaleText.indexOf(policyString) + policyString.length,
-            { // TODO: Link to developer's policy
-            })
-        findViewById<TextView>(R.id.title).text =
-            resources.getString(R.string.request_permissions_header_title, packageName)
+        appPackageName = intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME).orEmpty()
+        viewModel.loadAppInfo(appPackageName)
+        viewModel.appMetadata.observe(this) { appMetadata ->
+            val appName = appMetadata.appName
+            val rationaleText =
+                resources.getString(R.string.request_permissions_rationale, appName, policyString)
+            convertTextViewIntoLink(
+                findViewById(R.id.privacy_policy),
+                rationaleText,
+                rationaleText.indexOf(policyString),
+                rationaleText.indexOf(policyString) + policyString.length,
+                { // TODO: Link to developer's policy
+                })
+            findViewById<TextView>(R.id.title).text =
+                resources.getString(R.string.request_permissions_header_title, appName)
+        }
     }
 
     private fun setupAllowButton() {
         val allowButton: View? = findViewById(R.id.allow)
         allowButton?.setOnClickListener {
-            val permissions =
-                getPermissionsFragment()
-                    .getPermissionAssignments()
-                    .filter { entry -> entry.value }
-                    .keys
-            viewModel.request(packageName, permissions)
+            val permissions = getPermissionsFragment().getPermissionAssignments()
+            viewModel.request(appPackageName, permissions)
             viewModel.permissionResults.observe(this) { results -> handleResults(results) }
         }
     }

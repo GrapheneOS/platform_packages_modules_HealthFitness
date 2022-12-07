@@ -28,6 +28,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.settingslib.widget.MainSwitchPreference
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -202,10 +203,11 @@ class PermissionsFragmentTest {
                     as PermissionsFragment
             val allowAllPreference =
                 fragment.preferenceScreen.findPreference("allow_all_preference")
-                    as SwitchPreference?
-            allowAllPreference
-                ?.onPreferenceChangeListener
-                ?.onPreferenceChange(allowAllPreference, true)
+                    as MainSwitchPreference?
+            allowAllPreference?.isChecked =
+                false // makes sure the preference is on so OnPreferenceChecked is triggered
+
+            allowAllPreference?.isChecked = true
 
             assertThat(fragment.getPermissionAssignments())
                 .isEqualTo(
@@ -243,10 +245,11 @@ class PermissionsFragmentTest {
                     as PermissionsFragment
             val allowAllPreference =
                 fragment.preferenceScreen.findPreference("allow_all_preference")
-                    as SwitchPreference?
-            allowAllPreference
-                ?.onPreferenceChangeListener
-                ?.onPreferenceChange(allowAllPreference, false)
+                    as MainSwitchPreference?
+            allowAllPreference?.isChecked =
+                true // makes sure the preference is on so OnPreferenceChecked is triggered
+
+            allowAllPreference?.isChecked = false
 
             assertThat(fragment.getPermissionAssignments())
                 .isEqualTo(
