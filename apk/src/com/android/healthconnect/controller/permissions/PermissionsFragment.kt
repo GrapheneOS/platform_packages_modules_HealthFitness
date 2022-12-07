@@ -10,6 +10,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.settingslib.widget.MainSwitchPreference
+import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Fragment for displaying permission switches. */
@@ -39,6 +40,17 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         preferenceScreen.findPreference(WRITE_CATEGORY)
     }
 
+    private val onSwitchChangeListener: OnMainSwitchChangeListener =
+        OnMainSwitchChangeListener { _, grant ->
+            (0..(mReadPermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
+                (mReadPermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            }
+            (0..(mWritePermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
+                (mWritePermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            }
+            permissionMap.keys.forEach { permission -> permissionMap[permission] = grant }
+        }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         if (savedInstanceState == null) {
             setPreferencesFromResource(R.xml.permissions_screen, rootKey)
@@ -52,15 +64,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
     }
 
     private fun setupAllowAll() {
-        allowAllPreference?.addOnSwitchChangeListener { _, grant ->
-            (0..(mReadPermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
-                (mReadPermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
-            }
-            (0..(mWritePermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
-                (mWritePermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
-            }
-            permissionMap.keys.forEach { permission -> permissionMap[permission] = grant }
-        }
+        allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
     }
 
     private fun updateDataList() {
@@ -101,6 +105,12 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                     .uppercaseLabel)
             it.setOnPreferenceChangeListener { _, newValue ->
                 permissionMap[permission] = newValue as Boolean
+
+                // does not trigger removing/enabling all permissions
+                allowAllPreference?.removeOnSwitchChangeListener(onSwitchChangeListener)
+                allowAllPreference?.isChecked = !permissionMap.containsValue(false)
+                allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
+
                 true
             }
         }

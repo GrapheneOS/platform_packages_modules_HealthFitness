@@ -35,4 +35,7 @@
             android:title="@string/delete_app_data"
             android:icon="?attr/deleteIcon" />
     </PreferenceCategory>
+    <com.android.settingslib.widget.FooterPreference
+        android:key="connected_app_footer"
+        />
 </PreferenceScreen>

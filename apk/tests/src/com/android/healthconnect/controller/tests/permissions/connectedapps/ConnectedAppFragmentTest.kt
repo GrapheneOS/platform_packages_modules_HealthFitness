@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceCategory
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -34,6 +35,7 @@ import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.settingslib.widget.MainSwitchPreference
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -55,6 +57,7 @@ class ConnectedAppFragmentTest {
         hiltRule.inject()
         val context = InstrumentationRegistry.getInstrumentation().context
         `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
+        `when`(viewModel.atLeastOnePermissionGranted).then { MutableLiveData(false) }
         `when`(viewModel.appInfo).then {
             MutableLiveData(
                 AppMetadata(
@@ -166,5 +169,82 @@ class ConnectedAppFragmentTest {
         }
         onView(withText("Exercise")).check(matches(isDisplayed()))
         onView(withText("Distance")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_allowAllToggleOn_whenAllPermissionsOn() {
+        val writePermission =
+            HealthPermissionStatus(
+                healthPermission = HealthPermission(EXERCISE, WRITE), isGranted = true)
+        val readPermission =
+            HealthPermissionStatus(
+                healthPermission = HealthPermission(DISTANCE, READ), isGranted = true)
+        `when`(viewModel.appPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
+
+        val scenario = launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_PACKAGE_NAME) })
+
+        scenario.onActivity { activity: TestActivity ->
+            val fragment =
+                activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                    as ConnectedAppFragment
+            val mainSwitchPreference =
+                fragment.preferenceScreen.findPreference("allow_all_preference")
+                    as MainSwitchPreference?
+
+            assertThat(mainSwitchPreference?.isChecked).isTrue()
+        }
+    }
+
+    @Test
+    fun test_allowAllToggleOff_whenAtLeastOnePermissionOff() {
+        val writePermission =
+            HealthPermissionStatus(
+                healthPermission = HealthPermission(EXERCISE, WRITE), isGranted = true)
+        val readPermission =
+            HealthPermissionStatus(
+                healthPermission = HealthPermission(DISTANCE, READ), isGranted = false)
+        `when`(viewModel.appPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
+
+        val scenario = launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_PACKAGE_NAME) })
+
+        scenario.onActivity { activity: TestActivity ->
+            val fragment =
+                activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                    as ConnectedAppFragment
+
+            val mainSwitchPreference =
+                fragment.preferenceScreen.findPreference("allow_all_preference")
+                    as MainSwitchPreference?
+
+            assertThat(mainSwitchPreference?.isChecked).isFalse()
+        }
+    }
+
+    @Test
+    fun test_footerIsDisplayed() {
+        val permission = HealthPermission(DISTANCE, READ)
+        `when`(viewModel.appPermissions).then {
+            MutableLiveData(
+                listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
+        }
+
+        launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_PACKAGE_NAME) })
+
+        // TODO (b/261395536) update with the time the first permission was granted
+        onView(
+                withText(
+                    "To manage other Android permissions this app can " +
+                        "access, go to Settings > Apps" +
+                        "\n\n" +
+                        "Data you share with $TEST_APP_NAME is covered by their privacy policy"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 }

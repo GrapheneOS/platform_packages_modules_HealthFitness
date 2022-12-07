@@ -84,11 +84,13 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
         }
-        allowAllPreference?.addOnSwitchChangeListener { _, grantAll ->
-            if (grantAll) {
-                viewModel.grantAllPermissions(packageName)
-            } else {
-                viewModel.revokeAllPermissions(packageName)
+        allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
+            if (preference.isPressed) {
+                if (grantAll) {
+                    viewModel.grantAllPermissions(packageName)
+                } else {
+                    viewModel.revokeAllPermissions(packageName)
+                }
             }
         }
         viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->

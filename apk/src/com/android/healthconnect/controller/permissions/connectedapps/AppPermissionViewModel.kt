@@ -41,6 +41,10 @@ constructor(
     val allAppPermissionsGranted: LiveData<Boolean>
         get() = _allAppPermissionsGranted
 
+    private val _atLeastOnePermissionGranted = MutableLiveData(false)
+    val atLeastOnePermissionGranted: LiveData<Boolean>
+        get() = _atLeastOnePermissionGranted
+
     private val _appInfo = MutableLiveData<AppMetadata>()
     val appInfo: LiveData<AppMetadata>
         get() = _appInfo
@@ -53,6 +57,7 @@ constructor(
                 Log.i(TAG, "loadForPackage: ${it.healthPermission} ${it.isGranted}")
             }
             _allAppPermissionsGranted.postValue(permissions.all { it.isGranted })
+            _atLeastOnePermissionGranted.postValue(permissions.any { it.isGranted })
         }
     }
 
@@ -67,7 +72,7 @@ constructor(
             // TODO(magdi) find revoke permission reasons
             revokePermissionsStatusUseCase.invoke(packageName, healthPermission.toString(), "user")
         }
-        _allAppPermissionsGranted.postValue(_appPermissions.value?.all { it.isGranted })
+        loadForPackage(packageName)
     }
 
     fun grantAllPermissions(packageName: String) {

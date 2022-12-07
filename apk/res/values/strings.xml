@@ -16,7 +16,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health&#160;Connect</string>
 
-  <!-- region HomeScreen -->
+  <!-- region Home screen -->
   <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
   <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Review and manage the health and fitness data on your phone, and control which apps can access it</string>
   <string name="data_title" description="Label for a button that takes the user to the data management screens. [CHAR_LIMIT=40]">Data and access</string>
@@ -37,7 +37,7 @@
   <string name="yesterday_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Yesterday</string>
   <!--endregion-->
 
-  <!--region data categories  -->
+  <!--region Data categories  -->
   <string name="activity_category_uppercase" description="Uppercase name for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
   <string name="activity_category_lowercase" description="Lowercase name for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">activity</string>
 
@@ -337,6 +337,14 @@
   <string name="delete_app_data" description="Label of a button that deletes data written by given app. [CHAR_LIMIT=40]">Delete app data</string>
   <string name="inactive_apps_section_title" description="Title shown for section of inactive apps [CHAR_LIMIT=40]">Inactive apps</string>
   <string name="inactive_apps_section_message" description="Description text shown in the inactive apps section that explains what inactive apps are [CHAR_LIMIT=NONE]">These apps no longer have access, but still have data stored in Health&#160;Connect</string>
+
+  <string name="manage_permissions_time_frame" description="Text describing the time frame of data which an app will be able to access [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can access data added after <xliff:g example="22 January 2022" id="data_access_date">%2$s</xliff:g></string>
+  <string name="other_android_permissions" description="Text that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings > Apps</string>
+  <string name="manage_permissions_rationale" description="Text informing the user that data they share with an app is covered by that app's data privacy policy [CHAR_LIMIT=NONE]">Data you share with <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> is covered by their privacy policy</string>
+  <string name="other_android_permissions_content_description" description="Content description that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings, then tap Apps</string>
+  <string name="manage_permissions_learn_more" description="Link text that open's a third party app's data privacy policy [CHAR_LIMIT=NONE]">Read privacy policy</string>
+
+
   <!--endregion-->
 
   <!--region Onboarding -->
@@ -354,7 +362,7 @@
   <!-- region Deletion -->
   <string name="delete_button_content_description" description="Content description of a button that starts the deletion flow. [CHAR_LIMIT=50]">Delete data</string>
 
-  <!-- region Time range -->
+  <!-- region Dialog fragment time range -->
   <string name="time_range_title" description="Window title where user can choose the time range for data deletion. [CHAR_LIMIT=50]">Choose data to delete</string>
   <string name="time_range_next_button" description="Label of a button that navigates to the next window of the deletion flow. [CHAR_LIMIT=50]">Next</string>
 
@@ -369,7 +377,7 @@
   <string name="time_range_all" description="Item on list of possible deletion time ranges the user can choose. This option deletes all data written during the selected time period. [CHAR_LIMIT=50]">Delete all data </string>
   <!--endregion-->
 
-  <!-- region Confirming question -->
+  <!-- region Dialog fragment confirming question -->
   <string name="confirming_question_all" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from all time?</string>
   <string name="confirming_question_one_day" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 24 hours?</string>
   <string name="confirming_question_one_week" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Permanently delete all data from the last 7 days?</string>
@@ -404,6 +412,23 @@
   <string name="confirming_question_go_back_button" description="Label of a button that goes back to the previous dialog. [CHAR_LIMIT=50]">Go back</string>
   <string name="delete_dialog_success_got_it_button" description="Label of a button that dismisses the pop-up window. [CHAR_LIMIT=50]">Done</string>
   <string name="delete_dialog_failure_close_button" description="Label of a button that closes the window. [CHAR_LIMIT=50]">Close</string>
+
+  <!-- endregion -->
+
+  <string name="delete_dialog_success_title" description="Title of the confirmation window of successful data deletion. [CHAR_LIMIT=50]">Data deleted</string>
+  <string name="delete_dialog_success_message" description="A message that confirms successful data deletion. [CHAR_LIMIT=NONE]">This data is no longer stored in Health&#160;Connect.</string>
+
+  <string name="delete_progress_indicator" description="Label of a message on a loading page with a progress bar during data deletion. [CHAR_LIMIT=100]">Deleting your data</string>
+
+  <string name="delete_dialog_failure_title" description="Title of the window that nforms the user about failed data deletion. [CHAR_LIMIT=50]">Couldn\'t delete data</string>
+  <string name="delete_dialog_failure_message" description="A message that informs the user about failed data deletion. [CHAR_LIMIT=NONE]">Something went wrong and Health&#160;Connect couldn\'t delete your data</string>
+  <string name="delete_dialog_failure_try_again_button" description="Label of a button that closes the window and goes back to the previous one. [CHAR_LIMIT=50]">Try again</string>
+
+  <string name="delete_data_notification_title" description="The title text of the notification that is shown while data is being deleted. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
+  <string name="delete_data_notification_ticker_text" description="The ticker text of the notification that is shown while data is being deleted, which is read out by screen readers. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
+  <string name="delete_data_notification_channel_name" description="The channel name for the notification that is shown while data is being deleted, which is visible to users in system settings. [CHAR_LIMIT=50]">Data deletion</string>
+
+  <!--endregion-->
 
   <!-- region Data entries -->
   <string name="data_entry_header" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
@@ -468,22 +493,6 @@
   <string name="temperature_unit_fahrenheit_label" translation_description="The label for the Fahrenheit option within the weight unit preferences menu. [CHAR LIMIT=19]">Fahrenheit</string>
   <string name="temperature_unit_kelvin_label" translation_description="The label for the Kelvin option within the weight unit preferences menu. [CHAR LIMIT=19]">Kelvin</string>
   <!--endregion-->
-
-  <string name="delete_dialog_success_title" description="Title of the confirmation window of successful data deletion. [CHAR_LIMIT=50]">Data deleted</string>
-  <string name="delete_dialog_success_message" description="A message that confirms successful data deletion. [CHAR_LIMIT=NONE]">This data is no longer stored in Health&#160;Connect.</string>
-
-  <string name="delete_progress_indicator" description="Label of a message on a loading page with a progress bar during data deletion. [CHAR_LIMIT=100]">Deleting your data</string>
-
-  <string name="delete_dialog_failure_title" description="Title of the window that nforms the user about failed data deletion. [CHAR_LIMIT=50]">Couldn\'t delete data</string>
-  <string name="delete_dialog_failure_message" description="A message that informs the user about failed data deletion. [CHAR_LIMIT=NONE]">Something went wrong and Health&#160;Connect couldn\'t delete your data</string>
-  <string name="delete_dialog_failure_try_again_button" description="Label of a button that closes the window and goes back to the previous one. [CHAR_LIMIT=50]">Try again</string>
-
-  <string name="delete_data_notification_title" description="The title text of the notification that is shown while data is being deleted. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
-  <string name="delete_data_notification_ticker_text" description="The ticker text of the notification that is shown while data is being deleted, which is read out by screen readers. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
-  <string name="delete_data_notification_channel_name" description="The channel name for the notification that is shown while data is being deleted, which is visible to users in system settings. [CHAR_LIMIT=50]">Data deletion</string>
-
-  <!--endregion-->
-
 
   <!-- region Can't See All Your Apps -->
   <string name="cant_see_all_your_apps_title" description="Title of can't see all your apps screen">Can’t see all your apps?</string>
