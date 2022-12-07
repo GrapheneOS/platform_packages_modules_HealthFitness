@@ -18,6 +18,6 @@
 <!-- The permissions needed by the com.android.healthconnect.controller app. -->
 <permissions>
     <privapp-permissions package="com.android.healthconnect.controller">
-        <permission name="android.permission.MANAGE_HEALTH_PERMISSIONS"/>
+        <permission name="android.permission.MANAGE_HEALTH_DATA"/>
     </privapp-permissions>
 </permissions>
