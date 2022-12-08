@@ -13,6 +13,7 @@
  */
 package com.android.healthconnect.controller.dataentries
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,10 @@ import kotlinx.coroutines.launch
 class DataEntriesFragmentViewModel
 @Inject
 constructor(private val loadDataEntriesUseCase: LoadDataEntriesUseCase) : ViewModel() {
+
+    companion object {
+        private const val TAG = "DataEntriesFragmentView"
+    }
 
     private val _dataEntries = MutableLiveData<DataEntriesFragmentState>()
     val dataEntries: LiveData<DataEntriesFragmentState>
@@ -49,6 +54,7 @@ constructor(private val loadDataEntriesUseCase: LoadDataEntriesUseCase) : ViewMo
                         })
                 }
                 is Failed -> {
+                    Log.e(TAG, "Load error ", result.exception)
                     _dataEntries.postValue(DataEntriesFragmentState.LoadingFailed)
                 }
             }

@@ -434,6 +434,15 @@
 
   <string name="date_range" translatable="false"><xliff:g example="Oct 30, 2021" id="start_time">%1$s</xliff:g> - <xliff:g example="Nov 11, 2021" id="end_time">%2$s</xliff:g> </string>
   <string name="date_range_long" description="Content description for date interval. [CHAR_LIMIT=NONE]"> from <xliff:g example="October 30, 2021" id="start_time">%1$s</xliff:g> to <xliff:g example="November 11, 2021" id="end_time">%2$s</xliff:g></string>
+
+  <string translation_description="miles formatted. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="distance_miles">{dist, plural, =1 {1 mile} other {# miles}}</string>
+  <string translation_description="Kilometers formatted. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="distance_km">{dist, plural, =1 {1 km} other {# km}}</string>
+  <string translation_description="miles formatted for speech. [ICU SYNTAX][CHAR LIMIT=NONE]"
+      name="distance_miles_long">{dist, plural, =1 {1 mile} other {# miles}}</string>
+  <string translation_description="Kilometers formatted for speech. [ICU SYNTAX][CHAR LIMIT=NONE]"
+      name="distance_km_long">{dist, plural, =1 {1 kilometer} other {# kilometers}}</string>
   <!--endregion-->
 
   <!-- region units -->
