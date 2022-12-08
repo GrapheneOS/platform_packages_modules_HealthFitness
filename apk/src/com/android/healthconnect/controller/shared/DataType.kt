@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.shared
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.HeartRateRecord
+import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
@@ -27,5 +28,6 @@ enum class DataType(val recordClass: Class<out Record>) {
     HEART_RATE(HeartRateRecord::class.java),
     BASAL_METABOLIC_RATE(BasalMetabolicRateRecord::class.java),
     SPEED(SpeedRecord::class.java),
-    DISTANCE(DistanceRecord::class.java)
+    DISTANCE(DistanceRecord::class.java),
+    POWER(PowerRecord::class.java)
 }
