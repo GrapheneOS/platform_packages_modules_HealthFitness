@@ -242,10 +242,9 @@ public final class ChangeLogsHelper {
             Objects.requireNonNull(mPackageName);
 
             List<UpsertTableRequest> requests = new ArrayList<>(mRecordTypeToUUIDMap.size());
+            // TODO(b/261848494): Use correct packageNameId when deletes are from UI APK.
+            // Pass appId in addUUIDs and then we can create upsert requests there itself
             long packageNameId = AppInfoHelper.getInstance().getAppInfoId(mPackageName);
-            if (packageNameId == DEFAULT_INT) {
-                throw new IllegalArgumentException("Invalid package name");
-            }
             mRecordTypeToUUIDMap.forEach(
                     (recordType, uuids) -> {
                         ContentValues contentValues = new ContentValues();
