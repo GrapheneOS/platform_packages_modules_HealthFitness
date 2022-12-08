@@ -68,17 +68,17 @@ public class UpsertTransactionRequest {
                 // already present.
                 StorageUtils.addNameBasedUUIDTo(recordInternal);
                 // Add uuids to change logs
-                changeLogs.addUUID(recordInternal.getRecordType(), recordInternal.getUuid());
+                mUUIDsInOrder.add(recordInternal.getUuid());
             } else {
                 // For update requests, generate uuid if the clientRecordID is present, else use the
                 // uuid passed as input.
                 StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
             }
-            mUUIDsInOrder.add(recordInternal.getUuid());
+            changeLogs.addUUID(recordInternal.getRecordType(), recordInternal.getUuid());
             addRequest(recordInternal);
         }
 
-        // Add commands to update the change log table with all the inserts
+        // Add commands to update the change log table with all the upserts
         mInsertRequests.addAll(changeLogs.getUpsertTableRequests());
     }
 

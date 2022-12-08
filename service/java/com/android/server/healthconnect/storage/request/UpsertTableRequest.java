@@ -38,7 +38,7 @@ public class UpsertTableRequest {
     private List<UpsertTableRequest> mChildTableRequests = Collections.emptyList();
     private String mParentCol;
     private long mRowId = INVALID_ROW_ID;
-    private WhereClauses mWhereClausesForUpdate;
+    private WhereClauses mWhereClausesForUpdate = new WhereClauses();
 
     public UpsertTableRequest(@NonNull String table, @NonNull ContentValues contentValues) {
         mTable = table;
@@ -84,15 +84,6 @@ public class UpsertTableRequest {
         return mChildTableRequests;
     }
 
-    public void setWhereClauses(WhereClauses whereClauses) {
-        mWhereClausesForUpdate = whereClauses;
-    }
-
-    @NonNull
-    public WhereClauses getWhereClauses() {
-        return mWhereClausesForUpdate;
-    }
-
     @NonNull
     public UpsertTableRequest setChildTableRequests(
             @NonNull List<UpsertTableRequest> childTableRequests) {
@@ -100,5 +91,16 @@ public class UpsertTableRequest {
 
         mChildTableRequests = childTableRequests;
         return this;
+    }
+
+    @NonNull
+    public WhereClauses getWhereClauses() {
+        return mWhereClausesForUpdate;
+    }
+
+    public void setWhereClauses(WhereClauses whereClauses) {
+        Objects.requireNonNull(whereClauses);
+
+        mWhereClausesForUpdate = whereClauses;
     }
 }
