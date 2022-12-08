@@ -24,7 +24,10 @@ import android.healthconnect.datatypes.DistanceRecord;
 import android.healthconnect.datatypes.ElevationGainedRecord;
 import android.healthconnect.datatypes.ExerciseEventRecord;
 import android.healthconnect.datatypes.ExerciseLapRecord;
+import android.healthconnect.datatypes.FloorsClimbedRecord;
 import android.healthconnect.datatypes.HeartRateRecord;
+import android.healthconnect.datatypes.HydrationRecord;
+import android.healthconnect.datatypes.NutritionRecord;
 import android.healthconnect.datatypes.PowerRecord;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
@@ -38,7 +41,10 @@ import android.healthconnect.internal.datatypes.DistanceRecordInternal;
 import android.healthconnect.internal.datatypes.ElevationGainedRecordInternal;
 import android.healthconnect.internal.datatypes.ExerciseEventRecordInternal;
 import android.healthconnect.internal.datatypes.ExerciseLapRecordInternal;
+import android.healthconnect.internal.datatypes.FloorsClimbedRecordInternal;
 import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
+import android.healthconnect.internal.datatypes.HydrationRecordInternal;
+import android.healthconnect.internal.datatypes.NutritionRecordInternal;
 import android.healthconnect.internal.datatypes.PowerRecordInternal;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.SpeedRecordInternal;
@@ -50,7 +56,7 @@ import java.util.Map;
 
 /** @hide */
 public final class RecordMapper {
-    private static final int NUM_ENTRIES = 17;
+    private static final int NUM_ENTRIES = 15;
     private static RecordMapper sRecordMapper;
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
@@ -63,6 +69,10 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_STEPS, StepsRecordInternal.class);
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_HEART_RATE, HeartRateRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED, FloorsClimbedRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_HYDRATION, HydrationRecordInternal.class);
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
                 ActiveCaloriesBurnedRecordInternal.class);
@@ -84,6 +94,8 @@ public final class RecordMapper {
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_POWER, PowerRecordInternal.class);
         mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_NUTRITION, NutritionRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_SPEED, SpeedRecordInternal.class);
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, StepsCadenceRecordInternal.class);
@@ -95,6 +107,8 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_HEART_RATE, HeartRateRecord.class);
 
         mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_HYDRATION, HydrationRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
                 ActiveCaloriesBurnedRecord.class);
         mRecordIdToExternalRecordClassMap.put(
@@ -105,6 +119,10 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_EVENT, ExerciseEventRecord.class);
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_DISTANCE, DistanceRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_NUTRITION, NutritionRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED, FloorsClimbedRecord.class);
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE,
                 BasalMetabolicRateRecord.class);

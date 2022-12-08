@@ -70,26 +70,24 @@ package android.healthconnect.datatypes {
     field public static final int RECORD_TYPE_ACTIVE_CALORIES_BURNED = 3; // 0x3
     field public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 22; // 0x16
     field public static final int RECORD_TYPE_CYCLING_PEDALING_CADENCE = 18; // 0x12
-    field public static final int RECORD_TYPE_DISTANCE = 11; // 0xb
-    field public static final int RECORD_TYPE_ELEVATION_GAINED = 6; // 0x6
-    field public static final int RECORD_TYPE_EXERCISE_EVENT = 8; // 0x8
-    field public static final int RECORD_TYPE_EXERCISE_LAP = 16; // 0x10
-    field public static final int RECORD_TYPE_EXERCISE_REPETITIONS = 4; // 0x4
-    field public static final int RECORD_TYPE_EXERCISE_SESSION = 2; // 0x2
-    field public static final int RECORD_TYPE_FLOORS_CLIMBED = 9; // 0x9
+    field public static final int RECORD_TYPE_DISTANCE = 10; // 0xa
+    field public static final int RECORD_TYPE_ELEVATION_GAINED = 5; // 0x5
+    field public static final int RECORD_TYPE_EXERCISE_EVENT = 7; // 0x7
+    field public static final int RECORD_TYPE_EXERCISE_LAP = 2; // 0x2
+    field public static final int RECORD_TYPE_FLOORS_CLIMBED = 8; // 0x8
     field public static final int RECORD_TYPE_HEART_RATE = 17; // 0x11
-    field public static final int RECORD_TYPE_HYDRATION = 5; // 0x5
-    field public static final int RECORD_TYPE_NUTRITION = 13; // 0xd
+    field public static final int RECORD_TYPE_HYDRATION = 4; // 0x4
+    field public static final int RECORD_TYPE_NUTRITION = 12; // 0xc
     field public static final int RECORD_TYPE_POWER = 19; // 0x13
-    field public static final int RECORD_TYPE_SLEEP_SESSION = 12; // 0xc
-    field public static final int RECORD_TYPE_SLEEP_STAGE = 15; // 0xf
+    field public static final int RECORD_TYPE_SLEEP_SESSION = 11; // 0xb
+    field public static final int RECORD_TYPE_SLEEP_STAGE = 14; // 0xe
     field public static final int RECORD_TYPE_SPEED = 20; // 0x14
     field public static final int RECORD_TYPE_STEPS = 1; // 0x1
     field public static final int RECORD_TYPE_STEPS_CADENCE = 21; // 0x15
-    field public static final int RECORD_TYPE_SWIMMING_STROKES = 7; // 0x7
-    field public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 14; // 0xe
+    field public static final int RECORD_TYPE_SWIMMING_STROKES = 6; // 0x6
+    field public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 13; // 0xd
     field public static final int RECORD_TYPE_UNKNOWN = 0; // 0x0
-    field public static final int RECORD_TYPE_WHEELCHAIR_PUSHES = 10; // 0xa
+    field public static final int RECORD_TYPE_WHEELCHAIR_PUSHES = 9; // 0x9
   }
 
 }
