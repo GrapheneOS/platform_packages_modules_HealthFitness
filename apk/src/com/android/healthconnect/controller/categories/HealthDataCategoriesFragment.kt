@@ -28,7 +28,6 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
-import com.android.healthconnect.controller.exportdata.ExportDataDialogFragment
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +38,6 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     companion object {
         const val CATEGORY_NAME_KEY = "category_name_key"
         private const val BROWSE_DATA_CATEGORY = "browse_data_category"
-        private const val EXPORT_DATA_CATEGORY = "export_data_button"
         private const val AUTO_DELETE_BUTTON = "auto_delete_button"
         private const val DELETE_ALL_DATA_BUTTON = "delete_all_data"
     }
@@ -48,9 +46,6 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     private val mBrowseDataCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(BROWSE_DATA_CATEGORY)
-    }
-    private val mExportDataCategory: Preference? by lazy {
-        preferenceScreen.findPreference(EXPORT_DATA_CATEGORY)
     }
     private val mAutoDelete: Preference? by lazy {
         preferenceScreen.findPreference(AUTO_DELETE_BUTTON)
@@ -64,11 +59,6 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
-        }
-
-        mExportDataCategory?.setOnPreferenceClickListener {
-            ExportDataDialogFragment().show(childFragmentManager, ExportDataDialogFragment.TAG)
-            true
         }
         mAutoDelete?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_healthDataCategories_to_autoDelete)
