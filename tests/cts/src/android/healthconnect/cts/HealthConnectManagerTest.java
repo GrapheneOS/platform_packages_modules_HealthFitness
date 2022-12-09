@@ -667,6 +667,17 @@ public class HealthConnectManagerTest {
         assertThat(responseException.get().getClass()).isEqualTo(IllegalArgumentException.class);
     }
 
+    @Test
+    public void testAutoDeleteApis() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        TestUtils.setAutoDeletePeriod(30);
+        assertThat(service.getRecordRetentionPeriodInDays()).isEqualTo(30);
+        TestUtils.setAutoDeletePeriod(0);
+        assertThat(service.getRecordRetentionPeriodInDays()).isEqualTo(0);
+    }
+
     // TODO(b/257796081): Move read tests to respective record type classes, verify that the correct
     // details are being fetched, and add tests for all record type
 

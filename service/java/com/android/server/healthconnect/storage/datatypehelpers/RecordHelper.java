@@ -48,6 +48,8 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -92,6 +94,16 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         HelperFor annotation = this.getClass().getAnnotation(HelperFor.class);
         Objects.requireNonNull(annotation);
         mRecordIdentifier = annotation.recordIdentifier();
+    }
+
+    public DeleteTableRequest getDeleteRequestForAutoDelete(int recordAutoDeletePeriodInDays) {
+        return new DeleteTableRequest(getMainTableName())
+                .setTimeFilter(
+                        getStartTimeColumnName(),
+                        Instant.EPOCH.toEpochMilli(),
+                        Instant.now()
+                                .minus(recordAutoDeletePeriodInDays, ChronoUnit.DAYS)
+                                .toEpochMilli());
     }
 
     @RecordTypeIdentifier.RecordType

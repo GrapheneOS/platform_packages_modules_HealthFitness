@@ -130,6 +130,15 @@ interface IHealthConnectService {
         in UpdatePriorityRequestParcel request,
         in IEmptyResponseCallback callback);
 
+    /** Sets record rention period for HC DB */
+    void setRecordRetentionPeriodInDays(
+        int days,
+        in UserHandle userHandle,
+        in IEmptyResponseCallback callback);
+
+    /** Gets record rention period for HC DB */
+    int getRecordRetentionPeriodInDays(in UserHandle userHandle);
+
     /**
      * Returns information, represented by {@code ApplicationInfoResponse}, for all the
      * packages that have contributed to the health connect DB.

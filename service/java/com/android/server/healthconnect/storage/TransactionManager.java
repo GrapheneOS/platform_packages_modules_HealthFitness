@@ -33,6 +33,8 @@ import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
@@ -42,6 +44,7 @@ import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
@@ -324,6 +327,63 @@ public class TransactionManager {
                 }
             }
             return packageNamesForDatatype;
+        }
+    }
+
+    /**
+     * ONLY DO OPERATIONS IN A SINGLE TRANSACTION HERE
+     *
+     * <p>This is because this function is called from {@link AutoDeleteService}, and we want to
+     * make sure that either all its operation succeed or fail in a single run.
+     */
+    public void deleteStaleRecordEntries(int recordAutoDeletePeriodInDays) {
+        // 0 represents that no period is set, hence don't do anything
+        if (recordAutoDeletePeriodInDays == 0) {
+            return;
+        }
+
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.beginTransaction();
+            try {
+                RecordHelperProvider.getInstance()
+                        .getRecordHelpers()
+                        .values()
+                        .forEach(
+                                (recordHelper) -> {
+                                    DeleteTableRequest request =
+                                            recordHelper.getDeleteRequestForAutoDelete(
+                                                    recordAutoDeletePeriodInDays);
+                                    db.execSQL(request.getDeleteCommand());
+                                });
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+    }
+
+    /**
+     * ONLY DO OPERATIONS IN A SINGLE TRANSACTION HERE
+     *
+     * <p>This is because this function is called from {@link AutoDeleteService}, and we want to
+     * make sure that either all its operation succeed or fail in a single run.
+     */
+    public void deleteStaleChangeLogEntries() {
+        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
+            db.beginTransaction();
+            try {
+                db.execSQL(
+                        ChangeLogsRequestHelper.getInstance()
+                                .getDeleteRequestForAutoDelete()
+                                .getDeleteCommand());
+                db.execSQL(
+                        ChangeLogsHelper.getInstance()
+                                .getDeleteRequestForAutoDelete()
+                                .getDeleteCommand());
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
         }
     }
 

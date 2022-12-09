@@ -20,6 +20,7 @@ import static android.Manifest.permission.QUERY_ALL_PACKAGES;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 import android.annotation.CallbackExecutor;
+import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.RequiresPermission;
@@ -729,6 +730,70 @@ public class HealthConnectManager {
                     });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns currently set auto delete period for this user.
+     *
+     * <p>If you are calling this function for the first time after a user unlock, this might take
+     * some time so consider calling this on a thread.
+     *
+     * <p>TODO(b/251194265): User permission checks once available.
+     *
+     * @throws RuntimeException for internal errors
+     * @return Auto delete period in days, 0 is returned if auto delete period is not set.
+     * @hide
+     */
+    @SystemApi
+    @IntRange(from = 0, to = 7300)
+    public int getRecordRetentionPeriodInDays() {
+        try {
+            return mService.getRecordRetentionPeriodInDays(mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Sets auto delete period (for all the records to be automatically deleted) for this user.
+     *
+     * <p>Note: The max value of auto delete period can be 7300 i.e. ~20 years
+     *
+     * <p>TODO(b/251194265): User permission checks once available.
+     *
+     * @param days Auto period to be set in days. Use 0 to unset this value.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    public void setRecordRetentionPeriodInDays(
+            @IntRange(from = 0, to = 7300) int days,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.setRecordRetentionPeriodInDays(
+                    days,
+                    mContext.getUser(),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            e.rethrowFromSystemServer();
         }
     }
 
