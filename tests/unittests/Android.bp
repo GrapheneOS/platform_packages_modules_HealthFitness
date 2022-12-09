@@ -32,6 +32,7 @@ android_test {
     defaults: ["mts-target-sdk-version-current"],
     static_libs: [
         "service-healthconnect.impl",
+        "framework-healthconnect.impl",
         "androidx.test.runner",
         "mockito-target-extended-minus-junit4",
         "truth-prebuilt",
