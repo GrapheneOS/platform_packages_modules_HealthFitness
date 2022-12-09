@@ -16,6 +16,8 @@ package com.android.healthconnect.controller.tests.deletion.api
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeRangeFilter
+import android.healthconnect.datatypes.DistanceRecord
+import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
@@ -78,7 +80,11 @@ class DeleteCategoryUseCaseTest {
         // TODO update when more records available
         assertThat(filtersCaptor.value.recordTypes)
             .containsExactly(
-                StepsRecord::class.java, StepsCadenceRecord::class.java, SpeedRecord::class.java)
+                DistanceRecord::class.java,
+                StepsRecord::class.java,
+                StepsCadenceRecord::class.java,
+                SpeedRecord::class.java,
+                PowerRecord::class.java)
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

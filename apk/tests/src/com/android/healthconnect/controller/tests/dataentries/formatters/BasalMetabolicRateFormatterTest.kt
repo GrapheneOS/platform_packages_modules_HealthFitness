@@ -14,13 +14,10 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.PowerRecord
-import android.healthconnect.datatypes.units.Power
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.dataentries.formatters.PowerFormatter
+import com.android.healthconnect.controller.dataentries.formatters.BasalMetabolicRateFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
-import com.android.healthconnect.controller.tests.utils.NOW
-import com.android.healthconnect.controller.tests.utils.getMetaData
+import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.*
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -35,11 +32,10 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class PowerFormatterTest {
-
+class BasalMetabolicRateFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @Inject lateinit var formatter: PowerFormatter
+    @Inject lateinit var formatter: BasalMetabolicRateFormatter
     @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
 
@@ -53,14 +49,14 @@ class PowerFormatterTest {
     }
 
     @Test
-    fun formatValue_returnsPowerValue() = runBlocking {
-        val record = getPowerRecord(listOf(10.2))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.2 W")
+    fun formatValue_returnsPowerValue() {
+        val record = getBasalMetabolicRateRecord(10.2)
+        runBlocking { assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.2 W") }
     }
 
     @Test
     fun formatA11yValue_pluralValue_returnsA11yPowerValues() {
-        val record = getPowerRecord(listOf(10.1))
+        val record = getBasalMetabolicRateRecord(10.1)
         runBlocking {
             assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("10.1 watts")
         }
@@ -68,18 +64,9 @@ class PowerFormatterTest {
 
     @Test
     fun formatA11yValue_singleValue_returnsA11yPowerValues() {
-        val record = getPowerRecord(listOf(1.0))
+        val record = getBasalMetabolicRateRecord(1.0)
         runBlocking {
             assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1 watt")
         }
-    }
-
-    private fun getPowerRecord(samples: List<Double>): PowerRecord {
-        return PowerRecord.Builder(
-                getMetaData(),
-                NOW,
-                NOW.plusSeconds(samples.size.toLong()),
-                samples.map { PowerRecord.PowerRecordSample(Power.fromWatts(it), NOW) })
-            .build()
     }
 }

@@ -14,15 +14,17 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.PowerRecord
-import android.healthconnect.datatypes.units.Power
+import android.healthconnect.datatypes.DistanceRecord
+import android.healthconnect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.dataentries.formatters.PowerFormatter
+import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
+import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.google.common.truth.Truth.*
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.ZoneId
@@ -35,51 +37,57 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class PowerFormatterTest {
+class DistanceFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @Inject lateinit var formatter: PowerFormatter
+    @Inject lateinit var formatter: DistanceFormatter
     @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
 
     @Before
     fun setup() {
+        hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-
-        hiltRule.inject()
     }
 
     @Test
-    fun formatValue_returnsPowerValue() = runBlocking {
-        val record = getPowerRecord(listOf(10.2))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.2 W")
+    fun formatValue_metricUnit_returnsCorrectValue() = runBlocking {
+        preferences.setDistanceUnit(KILOMETERS)
+        val record = getDistanceRecord(10087.0)
+
+        assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.087 km")
     }
 
     @Test
-    fun formatA11yValue_pluralValue_returnsA11yPowerValues() {
-        val record = getPowerRecord(listOf(10.1))
-        runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("10.1 watts")
-        }
+    fun formatValue_imperialUnit_returnsCorrectValue() = runBlocking {
+        preferences.setDistanceUnit(MILES)
+        val record = getDistanceRecord(9088.0)
+
+        assertThat(formatter.formatValue(record, preferences)).isEqualTo("5.647 miles")
     }
 
     @Test
-    fun formatA11yValue_singleValue_returnsA11yPowerValues() {
-        val record = getPowerRecord(listOf(1.0))
-        runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1 watt")
-        }
+    fun formatValueA11y_metricUnit_returnsCorrectValue() = runBlocking {
+        preferences.setDistanceUnit(KILOMETERS)
+        val record = getDistanceRecord(1007.0)
+
+        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1.007 kilometers")
     }
 
-    private fun getPowerRecord(samples: List<Double>): PowerRecord {
-        return PowerRecord.Builder(
-                getMetaData(),
-                NOW,
-                NOW.plusSeconds(samples.size.toLong()),
-                samples.map { PowerRecord.PowerRecordSample(Power.fromWatts(it), NOW) })
+    @Test
+    fun formatValueA11y_imperialUnit_returnsCorrectValue() = runBlocking {
+        preferences.setDistanceUnit(MILES)
+        val record = getDistanceRecord(1009.0)
+
+        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("0.627 miles")
+    }
+
+    private fun getDistanceRecord(lengthInMeters: Double): DistanceRecord {
+        return DistanceRecord.Builder(
+                getMetaData(), NOW, NOW.plusSeconds(1), Length.fromMeters(lengthInMeters))
             .build()
     }
 }

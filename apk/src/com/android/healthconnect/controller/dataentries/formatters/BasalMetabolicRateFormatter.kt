@@ -13,38 +13,39 @@
  */
 package com.android.healthconnect.controller.dataentries.formatters
 
-import androidx.annotation.StringRes
 import android.content.Context
-import android.healthconnect.datatypes.PowerRecord
-import android.healthconnect.datatypes.PowerRecord.PowerRecordSample
+import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.icu.text.MessageFormat
+import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** Formatter for printing Power series data. */
+/** Formatter for printing BasalMetabolicRateRecord data. */
 @Singleton
-class PowerFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<PowerRecord>(context) {
-
-    override suspend fun formatValue(
-        record: PowerRecord,
-        unitPreferences: UnitPreferences
-    ): String {
-        return format(R.string.watt_format, record.samples)
-    }
+class BasalMetabolicRateFormatter
+@Inject
+constructor(@ApplicationContext private val context: Context) :
+    DataEntriesFormatter<BasalMetabolicRateRecord>(context) {
 
     override suspend fun formatA11yValue(
-        record: PowerRecord,
+        record: BasalMetabolicRateRecord,
         unitPreferences: UnitPreferences
     ): String {
-        return format(R.string.watt_format_long, record.samples)
+        return format(R.string.watt_format_long, record)
     }
 
-    private fun format(@StringRes res: Int, samples: List<PowerRecordSample>): String {
-        val avrPower = samples.sumOf { it.power.inWatts } / samples.size
-        return MessageFormat.format(context.getString(res), mapOf("value" to avrPower))
+    override suspend fun formatValue(
+        record: BasalMetabolicRateRecord,
+        unitPreferences: UnitPreferences
+    ): String {
+        return format(R.string.watt_format, record)
+    }
+
+    private fun format(@StringRes res: Int, record: BasalMetabolicRateRecord): String {
+        val value = record.basalMetabolicRate.inWatts
+        return MessageFormat.format(context.getString(res), mapOf("value" to value))
     }
 }
