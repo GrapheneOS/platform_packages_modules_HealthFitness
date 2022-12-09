@@ -10,7 +10,7 @@ import android.healthconnect.aidl.HealthConnectExceptionParcel;
  */
 interface IReadRecordsResponseCallback {
     // Called on a successful operation
-    void onResult(in RecordsParcel parcel);
+    oneway void onResult(in RecordsParcel parcel);
     // Called when an error is hit
-    void onError(in HealthConnectExceptionParcel exception);
+    oneway void onError(in HealthConnectExceptionParcel exception);
 }

@@ -29,6 +29,8 @@ import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthDataCategory;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.AggregateDataResponseParcel;
+import android.healthconnect.HealthConnectManager;
+import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
 import android.healthconnect.aidl.ChangeLogsRequestParcel;
@@ -203,17 +205,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
-                        Map<Integer, AggregateRecordsResponse.AggregateResult> results =
-                                mTransactionManager.getAggregations(
-                                        new AggregateTransactionRequest(packageName, request));
                         callback.onResult(
-                                new AggregateDataResponseParcel(
-                                        new AggregateRecordsResponse(results)));
+                                new AggregateTransactionRequest(packageName, request)
+                                        .getAggregateDataResponseParcel());
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
                         tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
                     }
                 });

@@ -23,6 +23,10 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_S
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsGroupedByDurationResponse;
+import android.healthconnect.AggregateRecordsGroupedByPeriodResponse;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.ChangeLogTokenRequest;
 import android.healthconnect.ChangeLogsRequest;
 import android.healthconnect.ChangeLogsResponse;
@@ -48,7 +52,9 @@ import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -93,7 +99,7 @@ public class TestUtils {
         service.insertRecords(
                 records,
                 Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<InsertRecordsResponse, HealthConnectException>() {
+                new OutcomeReceiver<>() {
                     @Override
                     public void onResult(InsertRecordsResponse result) {
                         response.set(result.getRecords());
@@ -182,6 +188,33 @@ public class TestUtils {
                 .build();
     }
 
+    public static HeartRateRecord getHeartRateRecord(int heartRate) {
+        HeartRateRecord.HeartRateSample heartRateSample =
+                new HeartRateRecord.HeartRateSample(heartRate, Instant.now());
+        ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
+        heartRateSamples.add(heartRateSample);
+        heartRateSamples.add(heartRateSample);
+
+        return new HeartRateRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        heartRateSamples)
+                .build();
+    }
+
+    public static HeartRateRecord getHeartRateRecord(int heartRate, Instant instant) {
+        HeartRateRecord.HeartRateSample heartRateSample =
+                new HeartRateRecord.HeartRateSample(heartRate, instant);
+        ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
+        heartRateSamples.add(heartRateSample);
+        heartRateSamples.add(heartRateSample);
+
+        return new HeartRateRecord.Builder(
+                        new Metadata.Builder().build(), instant, instant, heartRateSamples)
+                .build();
+    }
+
     public static BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
         Device device =
                 new Device.Builder()
@@ -202,6 +235,72 @@ public class TestUtils {
                 .build();
     }
 
+    public static <T> AggregateRecordsResponse<T> getAggregateResponse(
+            AggregateRecordsRequest<T> request, List<Record> recordsToInsert)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        insertRecords(recordsToInsert);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<AggregateRecordsResponse<T>> response = new AtomicReference<>();
+        service.aggregate(
+                request,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    response.set(result);
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+
+        return response.get();
+    }
+
+    public static <T>
+            List<AggregateRecordsGroupedByDurationResponse<T>> getAggregateResponseGroupByDuration(
+                    AggregateRecordsRequest<T> request, Duration duration)
+                    throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<List<AggregateRecordsGroupedByDurationResponse<T>>> response =
+                new AtomicReference<>();
+        service.aggregateGroupByDuration(
+                request,
+                duration,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    response.set(result);
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+
+        return response.get();
+    }
+
+    public static <T>
+            List<AggregateRecordsGroupedByPeriodResponse<T>> getAggregateResponseGroupByPeriod(
+                    AggregateRecordsRequest<T> request, Period period) throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<List<AggregateRecordsGroupedByPeriodResponse<T>>> response =
+                new AtomicReference<>();
+        service.aggregateGroupByPeriod(
+                request,
+                period,
+                Executors.newSingleThreadExecutor(),
+                result -> {
+                    response.set(result);
+                    latch.countDown();
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+
+        return response.get();
+    }
+
     public static <T extends Record> List<T> readRecords(ReadRecordsRequestUsingIds<T> request)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -212,7 +311,7 @@ public class TestUtils {
         service.readRecords(
                 request,
                 Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException>() {
+                new OutcomeReceiver<>() {
                     @Override
                     public void onResult(ReadRecordsResponse<T> result) {
                         response.set(result.getRecords());
@@ -258,7 +357,7 @@ public class TestUtils {
         service.readRecords(
                 request,
                 Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException>() {
+                new OutcomeReceiver<>() {
                     @Override
                     public void onResult(ReadRecordsResponse<T> result) {
                         response.set(result.getRecords());

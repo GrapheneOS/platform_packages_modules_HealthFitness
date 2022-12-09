@@ -32,6 +32,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
@@ -134,14 +135,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         AppInfoHelper.getInstance().getAppInfoIds(packageFilter),
                         APP_INFO_ID_COLUMN_NAME)
                 .setTimeFilter(startTime, endTime, params.mTimeColumnName)
-                .setSqlJoin(params.mJoin);
+                .setSqlJoin(params.mJoin)
+                .setAdditionalColumnsToFetch(Collections.singletonList(getZoneOffsetColumnName()));
     }
 
     /**
-     * @return {@link AggregateRecordsResponse.AggregateResult} for {@link AggregationType}
+     * @return {@link AggregateResult} for {@link AggregationType}
      */
-    public AggregateRecordsResponse.AggregateResult getAggregateResult(
-            Cursor cursor, AggregationType<?> aggregationType) {
+    public AggregateResult getAggregateResult(Cursor cursor, AggregationType<?> aggregationType) {
         // returns null by default
         return null;
     }
@@ -249,6 +250,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setEnforcePackageCheck(APP_INFO_ID_COLUMN_NAME, UUID_COLUMN_NAME);
     }
 
+    public abstract String getDurationGroupByColumnName();
+
+    public abstract String getPeriodGroupByColumnName();
+
     public abstract String getStartTimeColumnName();
 
     /**
@@ -333,6 +338,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         .collect(Collectors.toList());
         return new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, ids);
     }
+
+    abstract String getZoneOffsetColumnName();
 
     @NonNull
     private ContentValues getContentValues(@NonNull T recordInternal) {

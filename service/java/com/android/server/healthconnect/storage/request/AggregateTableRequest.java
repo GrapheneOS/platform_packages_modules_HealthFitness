@@ -22,18 +22,26 @@ import static android.healthconnect.datatypes.AggregationType.MIN;
 import static android.healthconnect.datatypes.AggregationType.SUM;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.database.Cursor;
-import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.AggregateResult;
 import android.healthconnect.Constants;
+import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.AggregationType;
+import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.time.Duration;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -43,43 +51,76 @@ import java.util.Objects;
  */
 public class AggregateTableRequest {
     private static final String TAG = "HealthConnectAggregate";
-    private final long DEFAULT_TIME = -1;
+    private static final String GROUP_BY_COLUMN_NAME = "category";
 
+    private final long DEFAULT_TIME = -1;
     private final String mTableName;
-    private final List<String> mColumnNames;
+    private final List<String> mColumnNamesToAggregate;
     private final AggregationType<?> mAggregationType;
     private final RecordHelper<?> mRecordHelper;
+    private final Map<Integer, AggregateResult> mAggregateResults = new ArrayMap<>();
     private List<Long> mPackageFilters;
     private long mStartTime = DEFAULT_TIME;
     private long mEndTime = DEFAULT_TIME;
     private String mPackageColumnName;
     private String mTimeColumnName;
     private SqlJoin mSqlJoin;
+    private long mGroupByStart;
+    private long mGroupByDelta;
+    private String mGroupByColumnName;
+    private long mGroupByEnd;
+    private int mGroupBySize;
+    private List<String> mAdditionalColumnsToFetch;
 
     public AggregateTableRequest(
             @NonNull String tableName,
-            @NonNull List<String> columnNames,
+            @NonNull List<String> columnNamesToAggregate,
             @NonNull AggregationType<?> aggregationType,
             @NonNull RecordHelper<?> recordHelper) {
         Objects.requireNonNull(tableName);
-        Objects.requireNonNull(columnNames);
+        Objects.requireNonNull(columnNamesToAggregate);
         Objects.requireNonNull(aggregationType);
         Objects.requireNonNull(recordHelper);
 
         mTableName = tableName;
-        mColumnNames = columnNames;
+        mColumnNamesToAggregate = columnNamesToAggregate;
         mAggregationType = aggregationType;
         mRecordHelper = recordHelper;
+    }
+
+    /**
+     * @param additionalColumnsToFetch Additional columns to fetch for the matching record
+     */
+    public AggregateTableRequest setAdditionalColumnsToFetch(
+            @Nullable List<String> additionalColumnsToFetch) {
+        mAdditionalColumnsToFetch = additionalColumnsToFetch;
+        return this;
+    }
+
+    /**
+     * @return {@link AggregationType} for this request
+     */
+    public AggregationType<?> getAggregationType() {
+        return mAggregationType;
+    }
+
+    /**
+     * @return results fetched after performing aggregate operation for this class.
+     *     <p>Note: Only available after the call to {@link
+     *     TransactionManager#populateWithAggregation} has been made
+     */
+    public List<AggregateResult<?>> getAggregateResults() {
+        List<AggregateResult<?>> aggregateResults = new ArrayList<>(mGroupBySize);
+        for (int i = 0; i < mGroupBySize; i++) {
+            aggregateResults.add(mAggregateResults.get(i));
+        }
+
+        return aggregateResults;
     }
 
     public AggregateTableRequest setSqlJoin(SqlJoin sqlJoin) {
         mSqlJoin = sqlJoin;
         return this;
-    }
-
-    @NonNull
-    public AggregationType<?> getDataAggregation() {
-        return mAggregationType;
     }
 
     /** Returns SQL statement to perform aggregation operation */
@@ -88,7 +129,7 @@ public class AggregateTableRequest {
         final StringBuilder builder = new StringBuilder("SELECT ");
         String aggCommand = getSqlCommandFor(mAggregationType.getAggregateOperationType());
 
-        for (String columnName : mColumnNames) {
+        for (String columnName : mColumnNamesToAggregate) {
             builder.append(aggCommand)
                     .append("(")
                     .append(columnName)
@@ -97,19 +138,48 @@ public class AggregateTableRequest {
                     .append(columnName)
                     .append(", ");
         }
-        builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
-        builder.append(" FROM ").append(mTableName);
 
+        if (mAdditionalColumnsToFetch != null) {
+            for (String additionalColumnToFetch : mAdditionalColumnsToFetch) {
+                builder.append(additionalColumnToFetch).append(", ");
+            }
+        }
+
+        boolean useGroupBy = false;
+        if (mGroupByColumnName != null) {
+            useGroupBy = true;
+            builder.append(" CASE ");
+            int groupByIndex = 0;
+            for (long i = mGroupByStart; i < mGroupByEnd; i += mGroupByDelta) {
+                builder.append(" WHEN ")
+                        .append(mGroupByColumnName)
+                        .append(" >= ")
+                        .append(i)
+                        .append(" AND ")
+                        .append(mGroupByColumnName)
+                        .append(" < ")
+                        .append(i + mGroupByDelta)
+                        .append(" THEN ")
+                        .append(groupByIndex++);
+            }
+            builder.append(" END " + GROUP_BY_COLUMN_NAME + " ");
+        } else {
+            builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
+        }
+
+        builder.append(" FROM ").append(mTableName);
         if (mSqlJoin != null) {
             builder.append(mSqlJoin.getInnerJoinClause());
         }
 
         WhereClauses whereClauses = new WhereClauses();
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
-        if (mStartTime != DEFAULT_TIME || mEndTime != DEFAULT_TIME) {
-            whereClauses.addWhereBetweenClause(mTimeColumnName, mStartTime, mEndTime);
-        }
+        whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
         builder.append(whereClauses.get(true));
+
+        if (useGroupBy) {
+            builder.append(" GROUP BY " + GROUP_BY_COLUMN_NAME);
+        }
 
         if (Constants.DEBUG) {
             Slog.d(TAG, "Aggregation query: " + builder);
@@ -140,8 +210,36 @@ public class AggregateTableRequest {
         return this;
     }
 
-    public AggregateRecordsResponse.AggregateResult<?> getAggregateResult(Cursor cursor) {
+    public void setGroupBy(String columnName, Period period, TimeRangeFilter timeRangeFilter) {
+        mGroupByColumnName = columnName;
+        mGroupByStart = StorageUtils.getPeriodStart(timeRangeFilter);
+        mGroupByDelta = StorageUtils.getPeriodDelta(period);
+        mGroupByEnd = StorageUtils.getPeriodEnd(timeRangeFilter);
+        setGroupBySize();
+    }
+
+    public void setGroupBy(String columnName, Duration duration, TimeRangeFilter timeRangeFilter) {
+        mGroupByColumnName = columnName;
+        mGroupByStart = StorageUtils.getDurationStart(timeRangeFilter);
+        mGroupByDelta = StorageUtils.getDurationDelta(duration);
+        mGroupByEnd = StorageUtils.getDurationEnd(timeRangeFilter);
+        setGroupBySize();
+    }
+
+    public void onResultsFetched(Cursor cursor) {
+        while (cursor.moveToNext()) {
+            mAggregateResults.put(
+                    StorageUtils.getCursorInt(cursor, GROUP_BY_COLUMN_NAME),
+                    mRecordHelper.getAggregateResult(cursor, mAggregationType));
+        }
+    }
+
+    public AggregateResult<?> getAggregateResult(Cursor cursor) {
         return mRecordHelper.getAggregateResult(cursor, mAggregationType);
+    }
+
+    private void setGroupBySize() {
+        mGroupBySize = (int) ((mGroupByEnd - mGroupByStart) / mGroupByDelta);
     }
 
     private static String getSqlCommandFor(@AggregationType.AggregateOperationType int type) {

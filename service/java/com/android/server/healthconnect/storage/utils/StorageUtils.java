@@ -28,6 +28,7 @@ import android.annotation.StringDef;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.healthconnect.RecordIdFilter;
+import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 
@@ -35,6 +36,14 @@ import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 
 import java.lang.annotation.Retention;
 import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -191,6 +200,42 @@ public final class StorageUtils {
                 + PRIMARY_COLUMN_NAME
                 + " FROM "
                 + tableName;
+    }
+
+    public static long getPeriodStart(TimeRangeFilter timeRangeFilter) {
+        return ChronoUnit.DAYS.between(
+                LocalDate.ofEpochDay(0),
+                LocalDate.ofInstant(timeRangeFilter.getStartTime(), ZoneOffset.MIN));
+    }
+
+    public static long getPeriodEnd(TimeRangeFilter timeRangeFilter) {
+        return ChronoUnit.DAYS.between(
+                LocalDate.ofEpochDay(0),
+                LocalDate.ofInstant(timeRangeFilter.getEndTime(), ZoneOffset.MAX));
+    }
+
+    public static long getPeriodDelta(Period period) {
+        return period.getDays();
+    }
+
+    public static LocalDateTime getPeriodLocalDateTime(long period) {
+        return LocalDateTime.of(LocalDate.ofEpochDay(period), LocalTime.MIN);
+    }
+
+    public static Instant getDurationInstant(long duration) {
+        return Instant.ofEpochMilli(duration);
+    }
+
+    public static long getDurationStart(TimeRangeFilter timeRangeFilter) {
+        return timeRangeFilter.getStartTime().toEpochMilli();
+    }
+
+    public static long getDurationEnd(TimeRangeFilter timeRangeFilter) {
+        return timeRangeFilter.getEndTime().toEpochMilli();
+    }
+
+    public static long getDurationDelta(Duration duration) {
+        return Math.max(duration.toMillis(), 1); // to millis
     }
 
     private static byte[] getUUIDByteBuffer(long appId, byte[] clientIDBlob, int recordId) {

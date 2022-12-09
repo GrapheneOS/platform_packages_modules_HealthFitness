@@ -26,7 +26,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
@@ -54,13 +54,15 @@ public class HeartRateRecordHelper
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     @Override
-    public final AggregateRecordsResponse.AggregateResult<?> getAggregateResult(
+    public final AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case HEART_RATE_RECORD_BPM_MAX:
             case HEART_RATE_RECORD_BPM_MIN:
-                return new AggregateRecordsResponse.AggregateResult<>(
-                        results.getLong(results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME)));
+                return new AggregateResult<>(
+                                results.getLong(
+                                        results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
 
             default:
                 return null;

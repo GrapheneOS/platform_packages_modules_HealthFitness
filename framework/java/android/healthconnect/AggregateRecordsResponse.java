@@ -20,15 +20,13 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
-import android.os.Parcel;
 import android.util.ArrayMap;
 
+import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * A class representing response for {@link HealthConnectManager#aggregate}
- */
+/** A class representing response for {@link HealthConnectManager#aggregate} */
 public final class AggregateRecordsResponse<T> {
     private final Map<AggregationType<T>, AggregateResult<T>> mAggregateResults;
 
@@ -51,23 +49,28 @@ public final class AggregateRecordsResponse<T> {
                                 (AggregateResult<T>) value));
     }
 
-    /**
-     * @return a map of {@link AggregationType} -> {@link AggregateResult}
-     * @hide
-     */
-    @NonNull
-    public Map<AggregationType<T>, AggregateResult<T>> getAggregateResults() {
-        return mAggregateResults;
+    /** @hide */
+    public static <U> ZoneOffset getZoneOffsetInternal(
+            @NonNull AggregationType<U> aggregationType,
+            Map<AggregationType<U>, AggregateResult<U>> mAggregateResults) {
+        Objects.requireNonNull(aggregationType);
+
+        AggregateResult<U> result = mAggregateResults.get(aggregationType);
+
+        if (result == null) {
+            return null;
+        }
+
+        return result.getZoneOffset();
     }
 
-    /**
-     * @return an aggregation result for {@code aggregationType}. *
-     * @param aggregationType {@link AggregationType} for which to get the result
-     */
-    @Nullable
-    public T get(@NonNull AggregationType<T> aggregationType) {
+    /** @hide */
+    public static <U> U getInternal(
+            @NonNull AggregationType<U> aggregationType,
+            Map<AggregationType<U>, AggregateResult<U>> mAggregateResults) {
         Objects.requireNonNull(aggregationType);
-        AggregateResult<T> result = mAggregateResults.get(aggregationType);
+
+        AggregateResult<U> result = mAggregateResults.get(aggregationType);
 
         if (result == null) {
             return null;
@@ -77,30 +80,35 @@ public final class AggregateRecordsResponse<T> {
     }
 
     /**
-     * A class to represent the results of {@link HealthConnectManager} aggregate APIs
-     *
+     * @return a map of {@link AggregationType} -> {@link AggregateResult}
      * @hide
      */
-    public static final class AggregateResult<T> {
-        private final T mResult;
+    @NonNull
+    public Map<Integer, AggregateResult<?>> getAggregateResults() {
+        Map<Integer, AggregateResult<?>> aggregateResultMap = new ArrayMap<>();
+        mAggregateResults.forEach(
+                (key, value) -> {
+                    aggregateResultMap.put(
+                            AggregationTypeIdMapper.getInstance().getIdFor(key), value);
+                });
+        return aggregateResultMap;
+    }
 
-        /** Creates {@link AggregateResult}'s object with a long value */
-        public AggregateResult(T result) {
-            mResult = result;
-        }
+    /**
+     * @return an aggregation result for {@code aggregationType}. *
+     * @param aggregationType {@link AggregationType} for which to get the result
+     */
+    @Nullable
+    public T get(@NonNull AggregationType<T> aggregationType) {
+        return getInternal(aggregationType, mAggregateResults);
+    }
 
-        public void putToParcel(@NonNull Parcel parcel) {
-            if (mResult instanceof Long) {
-                parcel.writeLong((Long) mResult);
-            }
-        }
-
-        /**
-         * @return an Object representing the result of an aggregation.
-         */
-        @NonNull
-        T getResult() {
-            return mResult;
-        }
+    /**
+     * @return {@link ZoneOffset} for the underlying aggregation record, null if the corresponding
+     *     aggregation doesn't exist and or if multiple records were present.
+     */
+    @Nullable
+    public ZoneOffset getZoneOffset(@NonNull AggregationType<T> aggregationType) {
+        return getZoneOffsetInternal(aggregationType, mAggregateResults);
     }
 }
