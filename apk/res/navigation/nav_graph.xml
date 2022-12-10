@@ -118,7 +118,7 @@
         android:id="@+id/connectedAppFragment"
         android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment">
         <argument
-            android:name="packageName"
+            android:name="android.intent.extra.PACKAGE_NAME"
             app:argType="string" />
     </fragment>
     <fragment

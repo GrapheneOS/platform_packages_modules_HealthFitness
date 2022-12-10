@@ -1,5 +1,6 @@
 package com.android.healthconnect.controller.permissions.connectedapps
 
+import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -31,6 +32,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         private const val READ_CATEGORY = "read_permission_category"
         private const val WRITE_CATEGORY = "write_permission_category"
         private const val DELETE_APP_DATA_PREFERENCE = "delete_app_data"
+
         @JvmStatic
         fun newInstance(packageName: String) =
             ConnectedAppFragment().apply { mPackageName = packageName }
@@ -69,8 +71,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (mPackageName.isEmpty()) {
-            mPackageName = arguments?.get("packageName") as String
+        if (mPackageName.isEmpty() && requireArguments().containsKey(EXTRA_PACKAGE_NAME)) {
+            mPackageName =
+                requireArguments().getString(EXTRA_PACKAGE_NAME)
+                    ?: throw IllegalArgumentException("PackageName can't be null!")
         }
         viewModel.loadAppInfo(mPackageName)
         viewModel.loadForPackage(mPackageName)
@@ -122,10 +126,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                 SwitchPreference(requireContext()).also {
                     it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
                     it.isChecked = permissionStatus.isGranted
-                    it.setOnPreferenceChangeListener { preference, newValue ->
-                        val checked = (preference as SwitchPreference).isChecked
+                    it.setOnPreferenceChangeListener { _, newValue ->
+                        val checked = newValue as Boolean
                         viewModel.updatePermission(
-                            mPackageName, permissionStatus.healthPermission, !checked)
+                            mPackageName, permissionStatus.healthPermission, checked)
                         true
                     }
                 })

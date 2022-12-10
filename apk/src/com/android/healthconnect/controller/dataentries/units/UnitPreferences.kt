@@ -14,9 +14,8 @@
 package com.android.healthconnect.controller.dataentries.units
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.preference.PreferenceManager.getDefaultSharedPreferencesName
+import androidx.preference.PreferenceManager
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
 import com.android.healthconnect.controller.dataentries.units.EnergyUnit.CALORIE
 import com.android.healthconnect.controller.dataentries.units.EnergyUnit.valueOf
@@ -47,7 +46,7 @@ class UnitPreferences @Inject constructor(@ApplicationContext private val contex
     }
 
     private val unitSharedPreference: SharedPreferences by lazy {
-        context.getSharedPreferences(getDefaultSharedPreferencesName(context), MODE_PRIVATE)
+        PreferenceManager.getDefaultSharedPreferences(context)
     }
 
     fun getDistanceUnit(): DistanceUnit {

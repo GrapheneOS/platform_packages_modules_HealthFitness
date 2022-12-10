@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.shared
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.ApplicationInfoFlags
 import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -52,15 +53,15 @@ constructor(
         }
     }
 
-    fun isAppInstalled(packageName: String): Boolean {
+    private fun isAppInstalled(packageName: String): Boolean {
         return try {
-            packageManager.getApplicationInfo(packageName, 0).enabled
+            getPackageInfo(packageName).enabled
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
     }
 
     private fun getPackageInfo(packageName: String): ApplicationInfo {
-        return packageManager.getApplicationInfo(packageName, 0 /* flags */)
+        return packageManager.getApplicationInfo(packageName, ApplicationInfoFlags.of(0))
     }
 }

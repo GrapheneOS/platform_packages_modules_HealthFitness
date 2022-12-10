@@ -30,8 +30,8 @@ object LengthConverter {
      */
     fun convertDistanceFromMeters(unit: DistanceUnit, source: Double): Double {
         return when (unit) {
-            MILES -> return source / METERS_PER_MILE
-            KILOMETERS -> return source / METERS_PER_KM
+            MILES -> source / METERS_PER_MILE
+            KILOMETERS -> source / METERS_PER_KM
         }
     }
 }

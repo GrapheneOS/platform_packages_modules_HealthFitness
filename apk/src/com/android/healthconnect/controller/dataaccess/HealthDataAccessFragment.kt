@@ -80,9 +80,10 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.health_data_access_screen, rootKey)
-        if (requireArguments().containsKey(PERMISSION_TYPE_KEY) &&
-            (requireArguments().get(PERMISSION_TYPE_KEY) != null)) {
-            permissionType = (requireArguments().get(PERMISSION_TYPE_KEY)!!) as HealthPermissionType
+        if (requireArguments().containsKey(PERMISSION_TYPE_KEY)) {
+            permissionType =
+                arguments?.getSerializable(PERMISSION_TYPE_KEY, HealthPermissionType::class.java)
+                    ?: throw IllegalArgumentException("PERMISSION_TYPE_KEY can't be null!")
         }
         mCanReadSection?.isVisible = false
         mCanWriteSection?.isVisible = false

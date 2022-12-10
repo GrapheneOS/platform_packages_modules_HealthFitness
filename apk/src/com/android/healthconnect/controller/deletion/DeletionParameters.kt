@@ -37,7 +37,7 @@ data class DeletionParameters(
             parcel.readString() ?: ChosenRange.DELETE_RANGE_LAST_24_HOURS.toString()),
         parcel.readLong(),
         parcel.readLong(),
-        parcel.readParcelable(DeletionType::class.java.classLoader)
+        parcel.readParcelable(DeletionType::class.java.classLoader, DeletionType::class.java)
             ?: DeletionType.DeletionTypeAllData(),
         DeletionState.valueOf(
             parcel.readString() ?: DeletionState.STATE_NO_DELETION_IN_PROGRESS.toString()),

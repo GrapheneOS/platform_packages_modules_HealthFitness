@@ -22,15 +22,14 @@ import com.android.healthconnect.controller.shared.DataType
 /** Represents the types of deletion that the user can perform. */
 sealed class DeletionType : Parcelable {
     class DeletionTypeAllData() : DeletionType() {
+
+        @Suppress(
+            "UNUSED_PARAMETER") // the class has no data to write but inherits from a Parcelable
         constructor(parcel: Parcel) : this() {}
 
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            return
-        }
+        override fun writeToParcel(parcel: Parcel, flags: Int) {}
 
-        override fun describeContents(): Int {
-            return 0
-        }
+        override fun describeContents(): Int = 0
 
         companion object CREATOR : Parcelable.Creator<DeletionTypeAllData> {
             override fun createFromParcel(parcel: Parcel): DeletionTypeAllData {
