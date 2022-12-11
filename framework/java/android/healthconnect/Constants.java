@@ -16,6 +16,11 @@
 
 package android.healthconnect;
 
+import androidx.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Internal constants for health-connect.
  *
@@ -32,4 +37,12 @@ public final class Constants {
     public static final long DEFAULT_LONG = -1;
     public static final int DEFAULT_PAGE_SIZE = 1000;
     public static final int MAXIMUM_PAGE_SIZE = 5000;
+
+    public static final int UPSERT = 0;
+    public static final int DELETE = 1;
+    public static final int READ = 2;
+
+    @IntDef({UPSERT, DELETE, READ})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface OperationType {}
 }

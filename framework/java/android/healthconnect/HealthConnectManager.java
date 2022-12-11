@@ -33,6 +33,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
+import android.healthconnect.aidl.AccessLogsResponseParcel;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.AggregateDataResponseParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
@@ -42,6 +43,7 @@ import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.GetPriorityResponseParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IAccessLogsResponseCallback;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
@@ -149,6 +151,11 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_HEALTH_HOME_SETTINGS =
             "android.healthconnect.action.HEALTH_HOME_SETTINGS";
+
+    /** @hide */
+    @SystemApi
+    public static final String PERMISSION_MANAGE_HEALTH_DATA =
+            "android.permission.MANAGE_HEALTH_DATA";
 
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
@@ -934,6 +941,40 @@ public class HealthConnectManager {
                     });
         } catch (RemoteException e) {
             e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns a list of access logs with package name and its access time for each record type.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PERMISSION_MANAGE_HEALTH_DATA)
+    public void queryAccessLogs(
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<List<AccessLog>, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.queryAccessLogs(
+                    mContext.getPackageName(),
+                    new IAccessLogsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(AccessLogsResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(parcel.getAccessLogs()));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
         }
     }
 

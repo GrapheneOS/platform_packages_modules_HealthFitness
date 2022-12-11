@@ -22,7 +22,9 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_S
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.app.UiAutomation;
 import android.content.Context;
+import android.healthconnect.AccessLog;
 import android.healthconnect.AggregateRecordsGroupedByDurationResponse;
 import android.healthconnect.AggregateRecordsGroupedByPeriodResponse;
 import android.healthconnect.AggregateRecordsRequest;
@@ -51,6 +53,7 @@ import android.os.OutcomeReceiver;
 import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -66,6 +69,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class TestUtils {
+    public static final String MANAGE_HEALTH_DATA = "android.permission.MANAGE_HEALTH_DATA";
     private static final String TAG = "HCTestUtils";
 
     public static String getChangeLogToken(ChangeLogTokenRequest request)
@@ -444,6 +448,29 @@ public class TestUtils {
                                                 .build()))
                         .collect(Collectors.toList());
         verifyDeleteRecords(recordIdFilters);
+    }
+
+    public static List<AccessLog> queryAccessLogs() throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            assertThat(service).isNotNull();
+
+            CountDownLatch latch = new CountDownLatch(1);
+            AtomicReference<List<AccessLog>> response = new AtomicReference<>();
+            service.queryAccessLogs(
+                    Executors.newSingleThreadExecutor(),
+                    result -> {
+                        response.set(result);
+                        latch.countDown();
+                    });
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            return response.get();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
     }
 
     static final class RecordAndIdentifier {

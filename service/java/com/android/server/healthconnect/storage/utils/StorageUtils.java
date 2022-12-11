@@ -61,6 +61,7 @@ public final class StorageUtils {
     public static final String TEXT_NULL = "TEXT";
     public static final String INTEGER = "INTEGER";
     public static final String INTEGER_UNIQUE = "INTEGER UNIQUE";
+    public static final String INTEGER_NOT_NULL = "INTEGER NOT NULL";
     public static final String REAL = "REAL";
     public static final String PRIMARY_AUTOINCREMENT = "INTEGER PRIMARY KEY AUTOINCREMENT";
     public static final String PRIMARY = "INTEGER PRIMARY KEY";

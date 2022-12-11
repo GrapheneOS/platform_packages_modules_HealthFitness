@@ -16,12 +16,15 @@
 
 package com.android.server.healthconnect.storage.request;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.UPSERT;
+import static android.healthconnect.Constants.UPSERT;
 
 import android.annotation.NonNull;
 import android.content.Context;
+import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.util.ArraySet;
 
+import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
@@ -33,6 +36,8 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Refines a request from what the user sent to a format that makes the most sense for the
@@ -48,6 +53,7 @@ public class UpsertTransactionRequest {
     @NonNull private final List<UpsertTableRequest> mInsertRequests = new ArrayList<>();
     @NonNull private final List<String> mUUIDsInOrder = new ArrayList<>();
     @NonNull private final String mPackageName;
+    @RecordTypeIdentifier.RecordType Set<Integer> mRecordTypes = new ArraySet<>();
 
     public UpsertTransactionRequest(
             @NonNull String packageName,
@@ -69,6 +75,7 @@ public class UpsertTransactionRequest {
                 StorageUtils.addNameBasedUUIDTo(recordInternal);
                 // Add uuids to change logs
                 mUUIDsInOrder.add(recordInternal.getUuid());
+                mRecordTypes.add(recordInternal.getRecordType());
             } else {
                 // For update requests, generate uuid if the clientRecordID is present, else use the
                 // uuid passed as input.
@@ -80,6 +87,13 @@ public class UpsertTransactionRequest {
 
         // Add commands to update the change log table with all the upserts
         mInsertRequests.addAll(changeLogs.getUpsertTableRequests());
+        if (!mRecordTypes.isEmpty()) {
+            AccessLogsHelper.getInstance()
+                    .addAccessLog(
+                            packageName,
+                            mRecordTypes.stream().collect(Collectors.toList()),
+                            UPSERT);
+        }
     }
 
     @NonNull

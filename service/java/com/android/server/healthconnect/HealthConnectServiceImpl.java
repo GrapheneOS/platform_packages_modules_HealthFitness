@@ -17,19 +17,19 @@
 package com.android.server.healthconnect;
 
 import static android.Manifest.permission.QUERY_ALL_PACKAGES;
+import static android.healthconnect.Constants.READ;
+import static android.healthconnect.HealthConnectManager.PERMISSION_MANAGE_HEALTH_DATA;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
-import android.healthconnect.AggregateRecordsResponse;
+import android.healthconnect.AccessLog;
 import android.healthconnect.GetDataOriginPriorityOrderResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthDataCategory;
-import android.healthconnect.aidl.AggregateDataRequestParcel;
-import android.healthconnect.aidl.AggregateDataResponseParcel;
-import android.healthconnect.HealthConnectManager;
+import android.healthconnect.aidl.AccessLogsResponseParcel;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
@@ -38,6 +38,7 @@ import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.GetPriorityResponseParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.IAccessLogsResponseCallback;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
@@ -69,6 +70,7 @@ import android.util.Slog;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
@@ -81,6 +83,7 @@ import com.android.server.healthconnect.storage.request.UpsertTransactionRequest
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -242,6 +245,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             List<RecordInternal<?>> recordInternalList =
                                     mTransactionManager.readRecords(
                                             new ReadTransactionRequest(packageName, request));
+                            // TODO(b/260399261): To be moved to a separate thread
+                            AccessLogsHelper.getInstance()
+                                    .addAccessLog(
+                                            packageName,
+                                            Collections.singletonList(request.getRecordType()),
+                                            READ);
                             callback.onResult(new RecordsParcel(recordInternalList));
                         } catch (TypeNotPresentException exception) {
                             // All the requested package names are not present, so simply return
@@ -550,6 +559,38 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /**
+     * @see HealthConnectManager#queryAccessLogs
+     */
+    @Override
+    public void queryAccessLogs(@NonNull String packageName, IAccessLogsResponseCallback callback) {
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        if (!mPermissionHelper.hasDataManagementPermission(uid, pid)) {
+                            throw new SecurityException(
+                                    " Client doesn't hold " + PERMISSION_MANAGE_HEALTH_DATA);
+                        }
+                        final List<AccessLog> accessLogsList =
+                                AccessLogsHelper.getInstance().queryAccessLogs();
+                        callback.onResult(new AccessLogsResponseParcel(accessLogsList));
+                    } catch (SecurityException securityException) {
+                        tryAndThrowException(
+                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_IO);
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(
+                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
     private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {
         Map<Integer, Class<? extends Record>> recordIdToExternalRecordClassMap =
                 RecordMapper.getInstance().getRecordIdToExternalRecordClassMap();
@@ -617,6 +658,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             callback.onError(
                     new HealthConnectExceptionParcel(
                             new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IAccessLogsResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
