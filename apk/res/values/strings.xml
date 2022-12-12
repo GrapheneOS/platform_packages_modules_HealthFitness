@@ -83,7 +83,7 @@
 
   <!-- region framework permissions -->
   <!-- Health data permissions labels and descriptions -->
-  <string name="permgrouplab_health" description="Title of an application permission group, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Health</string>
+  <string name="permgrouplab_health" description="Title of an application permission group, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Health&#160;Connect</string>
   <string name="permgroupdesc_health" description="Description of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=100]">access your health data</string>
 
   <!-- Health data permissions labels and descriptions -->
@@ -329,7 +329,6 @@
   <string name="manage_permissions_write_header" description="Header for list of permissions an app is allowed write access to [CHAR_LIMIT=40]">Allowed to write</string>
   <string name="no_apps_allowed" description="Label when no apps have ben granted access to Health data.[CHAR_LIMIT=40]">No apps allowed</string>
   <string name="no_apps_denied" description="Label when no apps have been denied a health permission [CHAR_LIMIT=40]">No apps denied</string>
-  <string name="health_permissions_title" description="Title for health app permissions screens. [CHAR_LIMIT=40]">Health permissions</string>
   <string name="permissions_disconnect_all_dialog_title" description="Title for dialog asking the user to confirm they want to remove all permissions for all apps [CHAR_LIMIT=50]">Remove access for all apps?</string>
   <string name="permissions_disconnect_all_dialog_message" description="Text informing the user that all apps will no longer be able to read or write data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">None of your apps will be able to access or add new data to Health&#160;Connect. This doesn’t delete any existing data.</string>
   <string name="permissions_disconnect_all_dialog_disconnect" description="Label for dialog button to confirm removal of all permissions for all apps [CHAR_LIMIT=20]">Remove all</string>

@@ -69,7 +69,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.health_permissions_title)
+        setTitle(R.string.app_label)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

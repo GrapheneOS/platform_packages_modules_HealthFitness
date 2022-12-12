@@ -68,7 +68,7 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.permgrouplab_health)
+        setTitle(R.string.app_label)
         viewModel.loadConnectedApps()
     }
 
