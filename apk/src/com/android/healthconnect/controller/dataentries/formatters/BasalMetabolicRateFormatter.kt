@@ -18,6 +18,7 @@ import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.units.PowerConverter.convertCaloriesFromWatts
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -34,18 +35,18 @@ constructor(@ApplicationContext private val context: Context) :
         record: BasalMetabolicRateRecord,
         unitPreferences: UnitPreferences
     ): String {
-        return format(R.string.watt_format_long, record)
+        return format(R.string.calories_long, record)
     }
 
     override suspend fun formatValue(
         record: BasalMetabolicRateRecord,
         unitPreferences: UnitPreferences
     ): String {
-        return format(R.string.watt_format, record)
+        return format(R.string.calories, record)
     }
 
     private fun format(@StringRes res: Int, record: BasalMetabolicRateRecord): String {
-        val value = record.basalMetabolicRate.inWatts
-        return MessageFormat.format(context.getString(res), mapOf("value" to value))
+        val value = convertCaloriesFromWatts(record.basalMetabolicRate.inWatts)
+        return MessageFormat.format(context.getString(res), mapOf("count" to value))
     }
 }

@@ -468,6 +468,12 @@
       name="distance_miles_long">{dist, plural, =1 {1 mile} other {# miles}}</string>
   <string translation_description="Kilometers formatted for speech. [ICU SYNTAX][CHAR LIMIT=NONE]"
       name="distance_km_long">{dist, plural, =1 {1 kilometer} other {# kilometers}}</string>
+
+  <!-- Energy -->
+  <string translation_description="Calories formatted. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="calories_long">{count, plural, =1 {1 calorie} other {# calories}}</string>
+  <string translation_description="Calories formatted. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="calories">{count, plural, =1 {1 Cal} other {# Cal}}</string>
   <!--endregion-->
 
   <!-- region units -->

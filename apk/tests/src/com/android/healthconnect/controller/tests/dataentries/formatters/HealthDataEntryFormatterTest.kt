@@ -85,18 +85,17 @@ class HealthDataEntryFormatterTest {
     }
 
     @Test
-    fun format_formatsBasalMetabolicRateRecord() {
-        val record = getBasalMetabolicRateRecord(11.3)
-        runBlocking {
-            assertThat(formatter.format(record))
-                .isEqualTo(
-                    FormattedDataEntry(
-                        uuid = "test_id",
-                        header = "7:06 AM • Health Connect test app",
-                        headerA11y = "7:06 AM • Health Connect test app",
-                        title = "11.3 W",
-                        titleA11y = "11.3 watts",
-                        dataType = DataType.BASAL_METABOLIC_RATE))
-        }
+    fun format_formatsBasalMetabolicRateRecord() = runBlocking {
+        val record = getBasalMetabolicRateRecord(calories = 1548)
+
+        assertThat(formatter.format(record))
+            .isEqualTo(
+                FormattedDataEntry(
+                    uuid = "test_id",
+                    header = "7:06 AM • Health Connect test app",
+                    headerA11y = "7:06 AM • Health Connect test app",
+                    title = "1,548 Cal",
+                    titleA11y = "1,548 calories",
+                    dataType = DataType.BASAL_METABOLIC_RATE))
     }
 }

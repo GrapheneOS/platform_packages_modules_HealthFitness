@@ -50,23 +50,28 @@ class BasalMetabolicRateFormatterTest {
 
     @Test
     fun formatValue_returnsPowerValue() {
-        val record = getBasalMetabolicRateRecord(10.2)
-        runBlocking { assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.2 W") }
+        val record = getBasalMetabolicRateRecord(calories = 1548)
+
+        runBlocking {
+            assertThat(formatter.formatValue(record, preferences)).isEqualTo("1,548 Cal")
+        }
     }
 
     @Test
     fun formatA11yValue_pluralValue_returnsA11yPowerValues() {
-        val record = getBasalMetabolicRateRecord(10.1)
+        val record = getBasalMetabolicRateRecord(calories = 1720)
+
         runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("10.1 watts")
+            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1,720 calories")
         }
     }
 
     @Test
     fun formatA11yValue_singleValue_returnsA11yPowerValues() {
-        val record = getBasalMetabolicRateRecord(1.0)
+        val record = getBasalMetabolicRateRecord(calories = 1)
+
         runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1 watt")
+            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1 calorie")
         }
     }
 }
