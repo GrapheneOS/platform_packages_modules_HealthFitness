@@ -16,9 +16,13 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.DistanceRecord.DISTANCE_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -41,6 +45,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -287,6 +292,40 @@ public class DistanceRecordTest {
             DistanceRecord other = (DistanceRecord) insertedRecords.get(i);
             assertThat(result.get(i).equals(other)).isTrue();
         }
+    }
+
+    @Test
+    public void testAggregation_DistanceTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        DistanceRecordTest.getBaseDistanceRecord(74.0),
+                        DistanceRecordTest.getBaseDistanceRecord(100.5));
+        AggregateRecordsResponse<Length> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(DISTANCE_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew = Arrays.asList(DistanceRecordTest.getBaseDistanceRecord(100.5));
+        AggregateRecordsResponse<Length> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(DISTANCE_TOTAL)
+                                .build(),
+                        recordNew);
+        Length oldLength = oldResponse.get(DISTANCE_TOTAL);
+        Length newLength = newResponse.get(DISTANCE_TOTAL);
+        assertThat(oldLength).isNotNull();
+        assertThat(newLength).isNotNull();
+        assertThat(newLength.getInMeters() - oldLength.getInMeters()).isEqualTo(100.5);
     }
 
     static DistanceRecord getBaseDistanceRecord() {

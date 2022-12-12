@@ -15,6 +15,15 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_BIOTIN_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CAFFEINE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CALCIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CHLORIDE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CHOLESTEROL_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CHROMIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_COPPER_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_DIETARY_FIBER_TOTAL;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
@@ -25,11 +34,14 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.NutritionRecordInternal;
 import android.util.Pair;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -86,9 +98,80 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
     private static final String SUGAR_COLUMN_NAME = "sugar";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        double aggregateValue;
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case NUTRITION_RECORD_BIOTIN_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(BIOTIN_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_CAFFEINE_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(CAFFEINE_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_CALCIUM_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(CALCIUM_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_CHLORIDE_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(CHLORIDE_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_CHOLESTEROL_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(CHOLESTEROL_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_CHROMIUM_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(CHROMIUM_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_COPPER_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(COPPER_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_DIETARY_FIBER_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(DIETARY_FIBER_COLUMN_NAME));
+                break;
+            default:
+                return null;
+        }
+        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return NUTRITION_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        List<String> columnNames;
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case NUTRITION_RECORD_BIOTIN_TOTAL:
+                columnNames = Collections.singletonList(BIOTIN_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_CAFFEINE_TOTAL:
+                columnNames = Collections.singletonList(CAFFEINE_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_CALCIUM_TOTAL:
+                columnNames = Collections.singletonList(CALCIUM_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_CHLORIDE_TOTAL:
+                columnNames = Collections.singletonList(CHLORIDE_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_CHOLESTEROL_TOTAL:
+                columnNames = Collections.singletonList(CHOLESTEROL_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_CHROMIUM_TOTAL:
+                columnNames = Collections.singletonList(CHROMIUM_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_COPPER_TOTAL:
+                columnNames = Collections.singletonList(COPPER_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_DIETARY_FIBER_TOTAL:
+                columnNames = Collections.singletonList(DIETARY_FIBER_COLUMN_NAME);
+                break;
+            default:
+                return null;
+        }
+        return new AggregateParams(
+                NUTRITION_RECORD_TABLE_NAME, columnNames, START_TIME_COLUMN_NAME);
     }
 
     @Override

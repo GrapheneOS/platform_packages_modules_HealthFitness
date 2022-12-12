@@ -16,9 +16,13 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.StepsRecord.COUNT_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -39,6 +43,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -279,6 +284,34 @@ public class StepsRecordTest {
             StepsRecord other = (StepsRecord) insertedRecords.get(i);
             assertThat(result.get(i).equals(other)).isTrue();
         }
+    }
+
+    @Test
+    public void testAggregation_StepsCountTotal() throws Exception {
+        List<Record> records = Arrays.asList(getStepsRecord(1000), getStepsRecord(1000));
+        AggregateRecordsResponse<Long> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(COUNT_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew = Arrays.asList(getStepsRecord(1000), getStepsRecord(1000));
+        AggregateRecordsResponse<Long> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(COUNT_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(COUNT_TOTAL)).isNotNull();
+        assertThat(newResponse.get(COUNT_TOTAL)).isEqualTo(oldResponse.get(COUNT_TOTAL) + 2000);
     }
 
     static StepsRecord getBaseStepsRecord() {

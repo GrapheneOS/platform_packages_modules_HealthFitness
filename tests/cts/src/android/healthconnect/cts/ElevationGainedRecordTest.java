@@ -16,9 +16,13 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.ElevationGainedRecord.ELEVATION_GAINED_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -41,6 +45,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -307,6 +312,41 @@ public class ElevationGainedRecordTest {
             ElevationGainedRecord other = (ElevationGainedRecord) insertedRecords.get(i);
             assertThat(result.get(i).equals(other)).isTrue();
         }
+    }
+
+    @Test
+    public void testAggregation_ElevationTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        ElevationGainedRecordTest.getElevationGainedRecord(74.0),
+                        ElevationGainedRecordTest.getElevationGainedRecord(100.5));
+        AggregateRecordsResponse<Length> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ELEVATION_GAINED_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(ElevationGainedRecordTest.getElevationGainedRecord(100.5));
+        AggregateRecordsResponse<Length> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ELEVATION_GAINED_TOTAL)
+                                .build(),
+                        recordNew);
+        Length newElevation = newResponse.get(ELEVATION_GAINED_TOTAL);
+        Length oldElevation = oldResponse.get(ELEVATION_GAINED_TOTAL);
+        assertThat(newElevation).isNotNull();
+        assertThat(oldElevation).isNotNull();
+        assertThat(newElevation.getInMeters() - oldElevation.getInMeters()).isEqualTo(100.5);
     }
 
     static ElevationGainedRecord getBaseElevationGainedRecord() {

@@ -15,8 +15,19 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_BIOTIN_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CAFFEINE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CALCIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CHLORIDE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CHOLESTEROL_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CHROMIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_COPPER_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_DIETARY_FIBER_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Energy;
 import android.healthconnect.datatypes.units.Mass;
 
@@ -25,7 +36,7 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 
 /** Captures what nutrients were consumed as part of a meal or a food item. */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_NUTRITION)
+@Identifier(recordIdentifier = RECORD_TYPE_NUTRITION)
 public final class NutritionRecord extends IntervalRecord {
     /** Builder class for {@link NutritionRecord} */
     public static final class Builder {
@@ -658,6 +669,96 @@ public final class NutritionRecord extends IntervalRecord {
                     mSugar);
         }
     }
+
+    /**
+     * Metric identifier to get total biotin using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> BIOTIN_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_BIOTIN_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total caffeine using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> CAFFEINE_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_CAFFEINE_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total calcium using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> CALCIUM_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_CALCIUM_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total chloride using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> CHLORIDE_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_CHLORIDE_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total cholesterol using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> CHOLESTEROL_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_CHOLESTEROL_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total chromium using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> CHROMIUM_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_CHROMIUM_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total copper using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> COPPER_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_COPPER_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total dietary fibre using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> DIETARY_FIBER_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_DIETARY_FIBER_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
 
     private final int mMealType;
     private final Mass mUnsaturatedFat;

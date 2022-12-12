@@ -16,9 +16,15 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
+import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
+import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -40,6 +46,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,7 +56,6 @@ import java.util.List;
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class PowerRecordTest {
-
     private static final String TAG = "PowerRecordTest";
 
     @After
@@ -242,6 +248,38 @@ public class PowerRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompletePowerRecord());
         TestUtils.verifyDeleteRecords(PowerRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, PowerRecord.class);
+    }
+
+    @Test
+    public void testAggregation_power() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<Record> records =
+                Arrays.asList(getPowerRecord(5.0), getPowerRecord(10.0), getPowerRecord(15.0));
+        AggregateRecordsResponse<Power> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Power>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(POWER_MAX)
+                                .addAggregationType(POWER_MIN)
+                                .addAggregationType(POWER_AVG)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        records);
+        Power maxPower = response.get(POWER_MAX);
+        Power minPower = response.get(POWER_MIN);
+        Power avgPower = response.get(POWER_AVG);
+        assertThat(maxPower).isNotNull();
+        assertThat(maxPower.getInWatts()).isEqualTo(15.0);
+        assertThat(minPower).isNotNull();
+        assertThat(minPower.getInWatts()).isEqualTo(5.0);
+        assertThat(avgPower).isNotNull();
+        assertThat(avgPower.getInWatts()).isEqualTo(10.0);
     }
 
     private void testReadPowerRecordIds() throws InterruptedException {

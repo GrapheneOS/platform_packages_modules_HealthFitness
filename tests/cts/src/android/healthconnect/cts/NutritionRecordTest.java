@@ -16,10 +16,24 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.NutritionRecord.BIOTIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CAFFEINE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CALCIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CHLORIDE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CHOLESTEROL_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CHROMIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.COPPER_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.DIETARY_FIBER_TOTAL;
+
+import static com.google.common.truth.Truth.assertThat;
+
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.RecordIdFilter;
 import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
@@ -37,12 +51,24 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class NutritionRecordTest {
     private static final String TAG = "NutritionRecordTest";
+    private List<AggregationType<Mass>> mMassAggregateTypesList =
+            Arrays.asList(
+                    BIOTIN_TOTAL,
+                    CAFFEINE_TOTAL,
+                    CALCIUM_TOTAL,
+                    CHLORIDE_TOTAL,
+                    CHOLESTEROL_TOTAL,
+                    CHROMIUM_TOTAL,
+                    COPPER_TOTAL,
+                    DIETARY_FIBER_TOTAL);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -141,6 +167,59 @@ public class NutritionRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteNutritionRecord());
         TestUtils.verifyDeleteRecords(NutritionRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, NutritionRecord.class);
+    }
+
+    @Test
+    public void testAggregation_NutritionValuesTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        NutritionRecordTest.getCompleteNutritionRecord(),
+                        NutritionRecordTest.getCompleteNutritionRecord());
+        AggregateRecordsResponse<Mass> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BIOTIN_TOTAL)
+                                .addAggregationType(CAFFEINE_TOTAL)
+                                .addAggregationType(CALCIUM_TOTAL)
+                                .addAggregationType(CHLORIDE_TOTAL)
+                                .addAggregationType(CHOLESTEROL_TOTAL)
+                                .addAggregationType(CHROMIUM_TOTAL)
+                                .addAggregationType(COPPER_TOTAL)
+                                .addAggregationType(DIETARY_FIBER_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(
+                        NutritionRecordTest.getCompleteNutritionRecord(),
+                        NutritionRecordTest.getCompleteNutritionRecord());
+        AggregateRecordsResponse<Mass> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BIOTIN_TOTAL)
+                                .addAggregationType(CAFFEINE_TOTAL)
+                                .addAggregationType(CALCIUM_TOTAL)
+                                .addAggregationType(CHLORIDE_TOTAL)
+                                .addAggregationType(CHOLESTEROL_TOTAL)
+                                .addAggregationType(CHROMIUM_TOTAL)
+                                .addAggregationType(COPPER_TOTAL)
+                                .addAggregationType(DIETARY_FIBER_TOTAL)
+                                .build(),
+                        recordNew);
+        for (AggregationType<Mass> type : mMassAggregateTypesList) {
+            Mass newTotal = newResponse.get(type);
+            Mass oldTotal = oldResponse.get(type);
+            assertThat(newTotal).isNotNull();
+            assertThat(oldTotal).isNotNull();
+            assertThat(newTotal.getInKilograms() - oldTotal.getInKilograms()).isEqualTo(20);
+        }
     }
 
     static NutritionRecord getBaseNutritionRecord() {

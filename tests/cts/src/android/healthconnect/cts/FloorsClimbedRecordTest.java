@@ -16,9 +16,13 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.FloorsClimbedRecord.FLOORS_CLIMBED_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.TimeRangeFilter;
@@ -37,6 +41,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -175,6 +180,39 @@ public class FloorsClimbedRecordTest {
         assertThat(newFloorsClimbedRecords.size()).isEqualTo(0);
     }
 
+    @Test
+    public void testAggregation_FloorsClimbedTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(getBaseFloorsClimbedRecord(), getBaseFloorsClimbedRecord());
+        AggregateRecordsResponse<Long> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(FLOORS_CLIMBED_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(getBaseFloorsClimbedRecord(), getBaseFloorsClimbedRecord());
+        AggregateRecordsResponse<Long> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(FLOORS_CLIMBED_TOTAL)
+                                .build(),
+                        recordNew);
+        long newFloorsTotal = newResponse.get(FLOORS_CLIMBED_TOTAL);
+        long oldFloorsTotal = oldResponse.get(FLOORS_CLIMBED_TOTAL);
+        assertThat(newFloorsTotal).isNotNull();
+        assertThat(oldFloorsTotal).isNotNull();
+        assertThat(newFloorsTotal - oldFloorsTotal).isEqualTo(20);
+    }
+
     private void readFloorsClimbedRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<FloorsClimbedRecord> request =
@@ -218,7 +256,6 @@ public class FloorsClimbedRecordTest {
     }
 
     static FloorsClimbedRecord getCompleteFloorsClimbedRecord() {
-
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")

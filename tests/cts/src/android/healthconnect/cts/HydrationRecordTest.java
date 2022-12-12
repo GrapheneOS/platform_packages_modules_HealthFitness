@@ -16,9 +16,13 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.HydrationRecord.VOLUME_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -40,6 +44,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -257,6 +262,39 @@ public class HydrationRecordTest {
         TestUtils.assertRecordNotFound(id, HydrationRecord.class);
     }
 
+    @Test
+    public void testAggregation_VolumeTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(getCompleteHydrationRecord(), getCompleteHydrationRecord());
+        AggregateRecordsResponse<Volume> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Volume>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(VOLUME_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(getCompleteHydrationRecord(), getCompleteHydrationRecord());
+        AggregateRecordsResponse<Volume> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Volume>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(VOLUME_TOTAL)
+                                .build(),
+                        recordNew);
+        Volume newVolume = newResponse.get(VOLUME_TOTAL);
+        Volume oldVolume = oldResponse.get(VOLUME_TOTAL);
+        assertThat(newVolume).isNotNull();
+        assertThat(oldVolume).isNotNull();
+        assertThat(newVolume.getInMilliliters() - oldVolume.getInMilliliters()).isEqualTo(20);
+    }
+
     private void readHydrationRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<HydrationRecord> request =
@@ -302,7 +340,6 @@ public class HydrationRecordTest {
     }
 
     static HydrationRecord getCompleteHydrationRecord() {
-
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")

@@ -16,9 +16,13 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -41,6 +45,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -285,6 +290,41 @@ public class ActiveCaloriesBurnedRecordTest {
     }
 
     @Test
+    public void testAggregation_ActiveCaloriesBurntTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(74.0),
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(100.5));
+        AggregateRecordsResponse<Energy> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ACTIVE_CALORIES_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(45.5));
+        AggregateRecordsResponse<Energy> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ACTIVE_CALORIES_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(ACTIVE_CALORIES_TOTAL)).isNotNull();
+        Energy newEnergy = newResponse.get(ACTIVE_CALORIES_TOTAL);
+        Energy oldEnergy = oldResponse.get(ACTIVE_CALORIES_TOTAL);
+        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(45.5);
+    }
+
+    @Test
     public void testDeleteActiveCaloriesBurnedRecord_time_range() throws InterruptedException {
         TimeRangeFilter timeRangeFilter =
                 new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
@@ -348,7 +388,6 @@ public class ActiveCaloriesBurnedRecordTest {
     }
 
     static ActiveCaloriesBurnedRecord getCompleteActiveCaloriesBurnedRecord() {
-
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")

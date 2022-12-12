@@ -15,12 +15,16 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HYDRATION_RECORD_VOLUME_TOTAL;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.HydrationRecordInternal;
 import android.util.Pair;
@@ -39,6 +43,20 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
     private static final String VOLUME_COLUMN_NAME = "volume";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case HYDRATION_RECORD_VOLUME_TOTAL:
+                return new AggregateResult<>(
+                                results.getDouble(results.getColumnIndex(VOLUME_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return HYDRATION_RECORD_TABLE_NAME;
@@ -48,6 +66,19 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
     void populateSpecificRecordValue(
             @NonNull Cursor cursor, @NonNull HydrationRecordInternal hydrationRecord) {
         hydrationRecord.setVolume(getCursorDouble(cursor, VOLUME_COLUMN_NAME));
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case HYDRATION_RECORD_VOLUME_TOTAL:
+                return new AggregateParams(
+                        HYDRATION_RECORD_TABLE_NAME,
+                        Collections.singletonList(VOLUME_COLUMN_NAME),
+                        START_TIME_COLUMN_NAME);
+            default:
+                return null;
+        }
     }
 
     @Override

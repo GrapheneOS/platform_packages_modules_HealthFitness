@@ -508,7 +508,8 @@ package android.healthconnect.datatypes {
   }
 
   public final class FloorsClimbedRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method public int getFloors();
+    method @IntRange(from=0, to=1000000) public int getFloors();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> FLOORS_CLIMBED_TOTAL;
   }
 
   public static final class FloorsClimbedRecord.Builder {
@@ -550,6 +551,7 @@ package android.healthconnect.datatypes {
 
   public final class HydrationRecord extends android.healthconnect.datatypes.IntervalRecord {
     method @NonNull public android.healthconnect.datatypes.units.Volume getVolume();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Volume> VOLUME_TOTAL;
   }
 
   public static final class HydrationRecord.Builder {
@@ -672,6 +674,14 @@ package android.healthconnect.datatypes {
     method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminE();
     method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminK();
     method @Nullable public android.healthconnect.datatypes.units.Mass getZinc();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> BIOTIN_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CAFFEINE_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CALCIUM_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CHLORIDE_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CHOLESTEROL_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CHROMIUM_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> COPPER_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> DIETARY_FIBER_TOTAL;
   }
 
   public static final class NutritionRecord.Builder {

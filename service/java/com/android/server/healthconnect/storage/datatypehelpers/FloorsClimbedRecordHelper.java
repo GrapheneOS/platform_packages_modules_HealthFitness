@@ -15,12 +15,16 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.FloorsClimbedRecordInternal;
 import android.util.Pair;
@@ -40,9 +44,35 @@ public final class FloorsClimbedRecordHelper
     private static final String FLOORS_COLUMN_NAME = "floors";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL:
+                return new AggregateResult<>(
+                                results.getLong(results.getColumnIndex(FLOORS_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+            default:
+                return null;
+        }
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return FLOORS_CLIMBED_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL:
+                return new AggregateParams(
+                        FLOORS_CLIMBED_RECORD_TABLE_NAME,
+                        Collections.singletonList(FLOORS_COLUMN_NAME),
+                        START_TIME_COLUMN_NAME);
+            default:
+                return null;
+        }
     }
 
     @Override

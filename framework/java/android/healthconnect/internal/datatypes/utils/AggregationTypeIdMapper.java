@@ -20,9 +20,19 @@ import static android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.ACTIVE_
 import static android.healthconnect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
 import static android.healthconnect.datatypes.DistanceRecord.DISTANCE_TOTAL;
 import static android.healthconnect.datatypes.ElevationGainedRecord.ELEVATION_GAINED_TOTAL;
+import static android.healthconnect.datatypes.FloorsClimbedRecord.FLOORS_CLIMBED_TOTAL;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
+import static android.healthconnect.datatypes.HydrationRecord.VOLUME_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.BIOTIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CAFFEINE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CALCIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CHLORIDE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CHOLESTEROL_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.CHROMIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.COPPER_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.DIETARY_FIBER_TOTAL;
 import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
@@ -33,10 +43,14 @@ import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.units.Energy;
 import android.healthconnect.datatypes.units.Length;
+import android.healthconnect.datatypes.units.Mass;
 import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.datatypes.units.Volume;
 import android.os.Parcel;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +60,7 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    private static final int MAP_SIZE = 11;
+    private static final int MAP_SIZE = 21;
     private static AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
@@ -54,58 +68,26 @@ public final class AggregationTypeIdMapper {
 
     private AggregationTypeIdMapper() {
         mIdToAggregateResult = new HashMap<>(MAP_SIZE);
-        mIdToAggregateResult.put(
-                BPM_MAX.getAggregationTypeIdentifier(), result -> getLongResult(result.readLong()));
-        mIdToAggregateResult.put(
-                BPM_MIN.getAggregationTypeIdentifier(), result -> getLongResult(result.readLong()));
-        mIdToAggregateResult.put(
-                COUNT_TOTAL.getAggregationTypeIdentifier(),
-                result -> getLongResult(result.readLong()));
-        mIdToAggregateResult.put(
-                ACTIVE_CALORIES_TOTAL.getAggregationTypeIdentifier(),
-                result -> getEnergyResult(result.readDouble()));
-        mIdToAggregateResult.put(
-                BASAL_CALORIES_TOTAL.getAggregationTypeIdentifier(),
-                result -> getPowerResult(result.readDouble()));
-        mIdToAggregateResult.put(
-                DISTANCE_TOTAL.getAggregationTypeIdentifier(),
-                result -> getLengthResult(result.readDouble()));
-        mIdToAggregateResult.put(
-                ELEVATION_GAINED_TOTAL.getAggregationTypeIdentifier(),
-                result -> getLengthResult(result.readDouble()));
-        mIdToAggregateResult.put(
-                BPM_AVG.getAggregationTypeIdentifier(), result -> getLongResult(result.readLong()));
-        mIdToAggregateResult.put(
-                POWER_MIN.getAggregationTypeIdentifier(),
-                result -> getPowerResult(result.readDouble()));
-        mIdToAggregateResult.put(
-                POWER_MAX.getAggregationTypeIdentifier(),
-                result -> getPowerResult(result.readDouble()));
-        mIdToAggregateResult.put(
-                POWER_AVG.getAggregationTypeIdentifier(),
-                result -> getPowerResult(result.readDouble()));
-
         mIdDataAggregationTypeMap = new HashMap<>(MAP_SIZE);
-
-        mIdDataAggregationTypeMap.put(BPM_MIN.getAggregationTypeIdentifier(), BPM_MIN);
-        mIdDataAggregationTypeMap.put(BPM_MAX.getAggregationTypeIdentifier(), BPM_MAX);
-        mIdDataAggregationTypeMap.put(COUNT_TOTAL.getAggregationTypeIdentifier(), COUNT_TOTAL);
-        mIdDataAggregationTypeMap.put(
-                ACTIVE_CALORIES_TOTAL.getAggregationTypeIdentifier(), ACTIVE_CALORIES_TOTAL);
-        mIdDataAggregationTypeMap.put(
-                BASAL_CALORIES_TOTAL.getAggregationTypeIdentifier(), BASAL_CALORIES_TOTAL);
-        mIdDataAggregationTypeMap.put(
-                DISTANCE_TOTAL.getAggregationTypeIdentifier(), DISTANCE_TOTAL);
-        mIdDataAggregationTypeMap.put(
-                ELEVATION_GAINED_TOTAL.getAggregationTypeIdentifier(), ELEVATION_GAINED_TOTAL);
-        mIdDataAggregationTypeMap.put(BPM_AVG.getAggregationTypeIdentifier(), BPM_AVG);
-        mIdDataAggregationTypeMap.put(POWER_MIN.getAggregationTypeIdentifier(), POWER_MIN);
-        mIdDataAggregationTypeMap.put(POWER_MAX.getAggregationTypeIdentifier(), POWER_MAX);
-        mIdDataAggregationTypeMap.put(POWER_AVG.getAggregationTypeIdentifier(), POWER_AVG);
-
         mDataAggregationTypeIdMap = new HashMap<>(MAP_SIZE);
-        mIdDataAggregationTypeMap.forEach(
-                (key, value) -> mDataAggregationTypeIdMap.put(value, key));
+
+        addLongIdsToAggregateResultMap(
+                Arrays.asList(BPM_MAX, BPM_MIN, COUNT_TOTAL, BPM_AVG, FLOORS_CLIMBED_TOTAL));
+        addPowerIdsToAggregateResultMap(
+                Arrays.asList(BASAL_CALORIES_TOTAL, POWER_MIN, POWER_MAX, POWER_AVG));
+        addEnergyIdsToAggregateResultMap(Arrays.asList(ACTIVE_CALORIES_TOTAL));
+        addVolumeIdsToAggregateResultMap(Arrays.asList(VOLUME_TOTAL));
+        addLengthIdsToAggregateResultMap(Arrays.asList(DISTANCE_TOTAL, ELEVATION_GAINED_TOTAL));
+        addMassIdsToAggregateResultMap(
+                Arrays.asList(
+                        BIOTIN_TOTAL,
+                        CAFFEINE_TOTAL,
+                        CALCIUM_TOTAL,
+                        CHLORIDE_TOTAL,
+                        CHOLESTEROL_TOTAL,
+                        CHROMIUM_TOTAL,
+                        COPPER_TOTAL,
+                        DIETARY_FIBER_TOTAL));
     }
 
     @NonNull
@@ -158,6 +140,83 @@ public final class AggregationTypeIdMapper {
     @NonNull
     private AggregateResult<Length> getLengthResult(double result) {
         return new AggregateResult<>(Length.fromMeters(result));
+    }
+
+    @NonNull
+    private AggregateResult<Volume> getVolumeResult(double result) {
+        return new AggregateResult<>(Volume.fromMilliliters(result));
+    }
+
+    @NonNull
+    private AggregateResult<Mass> getMassResult(double result) {
+        return new AggregateResult<>(Mass.fromKilograms(result));
+    }
+
+    private void addLongIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getLongResult(result.readLong()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void addEnergyIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getEnergyResult(result.readDouble()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void addPowerIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getPowerResult(result.readDouble()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void addLengthIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getLengthResult(result.readDouble()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void addVolumeIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getVolumeResult(result.readDouble()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void addMassIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getMassResult(result.readDouble()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void populateIdDataAggregationType(AggregationType<?> aggregationType) {
+        mIdDataAggregationTypeMap.put(
+                aggregationType.getAggregationTypeIdentifier(), aggregationType);
+        mDataAggregationTypeIdMap.put(
+                aggregationType, aggregationType.getAggregationTypeIdentifier());
     }
 
     /**

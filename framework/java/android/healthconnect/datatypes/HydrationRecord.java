@@ -15,7 +15,11 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HYDRATION_RECORD_VOLUME_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
+
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Volume;
 
 import java.time.Instant;
@@ -23,8 +27,71 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 
 /** Captures the amount of liquids user had in a single drink. */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HYDRATION)
+@Identifier(recordIdentifier = RECORD_TYPE_HYDRATION)
 public final class HydrationRecord extends IntervalRecord {
+    /**
+     * Metric identifier to get hydration total volume using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Volume> VOLUME_TOTAL =
+            new AggregationType<>(
+                    HYDRATION_RECORD_VOLUME_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_HYDRATION,
+                    Volume.class);
+
+    private final Volume mVolume;
+
+    /**
+     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+     * @param startTime Start time of this activity
+     * @param startZoneOffset Zone offset of the user when the activity started
+     * @param endTime End time of this activity
+     * @param endZoneOffset Zone offset of the user when the activity finished
+     * @param volume Volume of this activity
+     */
+    private HydrationRecord(
+            @NonNull Metadata metadata,
+            @NonNull Instant startTime,
+            @NonNull ZoneOffset startZoneOffset,
+            @NonNull Instant endTime,
+            @NonNull ZoneOffset endZoneOffset,
+            @NonNull Volume volume) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+        mVolume = volume;
+    }
+
+    /**
+     * @return hydration volume
+     */
+    @NonNull
+    public Volume getVolume() {
+        return mVolume;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!super.equals(o)) return false;
+        HydrationRecord that = (HydrationRecord) o;
+        return Objects.equals(getVolume(), that.getVolume());
+    }
+
+    /**
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getVolume());
+    }
+
     /** Builder class for {@link HydrationRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
@@ -84,56 +151,5 @@ public final class HydrationRecord extends IntervalRecord {
             return new HydrationRecord(
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mVolume);
         }
-    }
-
-    private final Volume mVolume;
-
-    /**
-     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
-     * @param startTime Start time of this activity
-     * @param startZoneOffset Zone offset of the user when the activity started
-     * @param endTime End time of this activity
-     * @param endZoneOffset Zone offset of the user when the activity finished
-     * @param volume Volume of this activity
-     */
-    private HydrationRecord(
-            @NonNull Metadata metadata,
-            @NonNull Instant startTime,
-            @NonNull ZoneOffset startZoneOffset,
-            @NonNull Instant endTime,
-            @NonNull ZoneOffset endZoneOffset,
-            @NonNull Volume volume) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        mVolume = volume;
-    }
-
-    /**
-     * @return hydration volume
-     */
-    @NonNull
-    public Volume getVolume() {
-        return mVolume;
-    }
-
-    /**
-     * Indicates whether some other object is "equal to" this one.
-     *
-     * @param o the reference object with which to compare.
-     * @return {@code true} if this object is the same as the obj
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!super.equals(o)) return false;
-        HydrationRecord that = (HydrationRecord) o;
-        return Objects.equals(getVolume(), that.getVolume());
-    }
-
-    /**
-     * @return a hash code value for this object.
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getVolume());
     }
 }

@@ -15,15 +15,83 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
+
+import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
 /** Captures the number of floors climbed by the user between the start and end time. */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED)
+@Identifier(recordIdentifier = RECORD_TYPE_FLOORS_CLIMBED)
 public final class FloorsClimbedRecord extends IntervalRecord {
+    /**
+     * Metric identifier to get total floors climbed using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Long> FLOORS_CLIMBED_TOTAL =
+            new AggregationType<>(
+                    FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_FLOORS_CLIMBED,
+                    Long.class);
+
+    private final int mFloors;
+
+    /**
+     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+     * @param startTime Start time of this activity
+     * @param startZoneOffset Zone offset of the user when the activity started
+     * @param endTime End time of this activity
+     * @param endZoneOffset Zone offset of the user when the activity finished
+     * @param floors Number of floors of this activity. Valid range: 0-1000000.
+     */
+    private FloorsClimbedRecord(
+            @NonNull Metadata metadata,
+            @NonNull Instant startTime,
+            @NonNull ZoneOffset startZoneOffset,
+            @NonNull Instant endTime,
+            @NonNull ZoneOffset endZoneOffset,
+            @IntRange(from = 0, to = 1000000) int floors) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+        mFloors = floors;
+    }
+
+    /**
+     * @return number of floors climbed.
+     */
+    @IntRange(from = 0, to = 1000000)
+    public int getFloors() {
+        return mFloors;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!super.equals(o)) return false;
+        FloorsClimbedRecord that = (FloorsClimbedRecord) o;
+        return getFloors() == that.getFloors();
+    }
+
+    /**
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getFloors());
+    }
+
     /** Builder class for {@link FloorsClimbedRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
@@ -81,55 +149,5 @@ public final class FloorsClimbedRecord extends IntervalRecord {
             return new FloorsClimbedRecord(
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mFloors);
         }
-    }
-
-    private final int mFloors;
-
-    /**
-     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
-     * @param startTime Start time of this activity
-     * @param startZoneOffset Zone offset of the user when the activity started
-     * @param endTime End time of this activity
-     * @param endZoneOffset Zone offset of the user when the activity finished
-     * @param floors Floors of this activity
-     */
-    private FloorsClimbedRecord(
-            @NonNull Metadata metadata,
-            @NonNull Instant startTime,
-            @NonNull ZoneOffset startZoneOffset,
-            @NonNull Instant endTime,
-            @NonNull ZoneOffset endZoneOffset,
-            int floors) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        mFloors = floors;
-    }
-
-    /**
-     * @return number of floors climbed.
-     */
-    public int getFloors() {
-        return mFloors;
-    }
-
-    /**
-     * Indicates whether some other object is "equal to" this one.
-     *
-     * @param o the reference object with which to compare.
-     * @return {@code true} if this object is the same as the obj
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!super.equals(o)) return false;
-        FloorsClimbedRecord that = (FloorsClimbedRecord) o;
-        return getFloors() == that.getFloors();
-    }
-
-    /**
-     * @return a hash code value for this object.
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getFloors());
     }
 }

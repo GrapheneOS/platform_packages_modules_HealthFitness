@@ -16,9 +16,13 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -40,6 +44,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -278,6 +283,37 @@ public class BasalMetabolicRateRecordTest {
         TestUtils.assertRecordNotFound(id, BasalMetabolicRateRecord.class);
     }
 
+    @Test
+    public void testAggregation_BasalCaloriesBurntTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(getBasalMetabolicRateRecord(25.5), getBasalMetabolicRateRecord(71.5));
+        AggregateRecordsResponse<Power> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Power>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(3, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BASAL_CALORIES_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew = Arrays.asList(getBasalMetabolicRateRecord(45.5));
+        AggregateRecordsResponse<Power> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Power>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(3, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BASAL_CALORIES_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(BASAL_CALORIES_TOTAL)).isNotNull();
+        Power newPower = newResponse.get(BASAL_CALORIES_TOTAL);
+        Power oldPower = oldResponse.get(BASAL_CALORIES_TOTAL);
+        assertThat(newPower.getInWatts() - oldPower.getInWatts()).isEqualTo(45.5);
+    }
+
     private void readBasalMetabolicRateRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<BasalMetabolicRateRecord> request =
@@ -314,13 +350,13 @@ public class BasalMetabolicRateRecordTest {
         }
     }
 
-    private static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
+    static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
         return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0))
+                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(100.0))
                 .build();
     }
 
-    static Record getBasalMetabolicRateRecord(double power) {
+    static BasalMetabolicRateRecord getBasalMetabolicRateRecord(double power) {
         return new BasalMetabolicRateRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Power.fromWatts(power))
                 .build();
