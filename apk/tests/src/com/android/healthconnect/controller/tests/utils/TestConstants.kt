@@ -20,6 +20,7 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.Metadata
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.units.Power
+import com.android.healthconnect.controller.dataentries.units.PowerConverter
 import com.android.healthconnect.controller.shared.AppMetadata
 import java.time.Instant
 
@@ -38,8 +39,9 @@ fun getStepsRecord(steps: Long, time: Instant = NOW): StepsRecord {
     return StepsRecord.Builder(getMetaData(), time, time.plusSeconds(2), steps).build()
 }
 
-fun getBasalMetabolicRateRecord(record: Double): BasalMetabolicRateRecord {
-    return BasalMetabolicRateRecord.Builder(getMetaData(), NOW, Power.fromWatts(record)).build()
+fun getBasalMetabolicRateRecord(calories: Long): BasalMetabolicRateRecord {
+    val watts = PowerConverter.convertWattsFromCalories(calories)
+    return BasalMetabolicRateRecord.Builder(getMetaData(), NOW, Power.fromWatts(watts)).build()
 }
 
 fun getMetaData(): Metadata {
