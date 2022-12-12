@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -98,8 +99,8 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
         }
     }
 
-    private fun getAppPreference(app: ConnectedAppMetadata): Preference {
-        return Preference(requireContext()).also {
+    private fun getAppPreference(app: ConnectedAppMetadata): AppPreference {
+        return AppPreference(requireContext()).also {
             it.title = app.appMetadata.appName
             it.icon = app.appMetadata.icon
             it.setOnPreferenceClickListener {

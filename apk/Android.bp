@@ -84,6 +84,7 @@ android_library {
         "SettingsLibFooterPreference",
         "SettingsLibTopIntroPreference",
         "SettingsLibMainSwitchPreference",
+        "SettingsLibAppPreference",
         "androidx.core_core",
         "guava",
         "hilt_android"

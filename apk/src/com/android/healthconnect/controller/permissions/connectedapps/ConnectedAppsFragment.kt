@@ -36,6 +36,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Fragment for connected apps screen. */
@@ -182,8 +183,8 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private fun getAppPreference(
         app: ConnectedAppMetadata,
         onClick: (() -> Unit)? = null
-    ): Preference {
-        return Preference(requireContext()).also {
+    ): AppPreference {
+        return AppPreference(requireContext()).also {
             it.title = app.appMetadata.appName
             it.icon = app.appMetadata.icon
             it.setOnPreferenceClickListener {

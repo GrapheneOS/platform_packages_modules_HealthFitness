@@ -15,7 +15,7 @@
   limitations under the License.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.android.healthconnect.controller.permissions.connectedapps.PermissionHeaderPreference
+    <com.android.settingslib.widget.AppHeaderPreference
         android:key="manage_app_permission_header" />
     <com.android.settingslib.widget.MainSwitchPreference
         android:key="allow_all_preference"

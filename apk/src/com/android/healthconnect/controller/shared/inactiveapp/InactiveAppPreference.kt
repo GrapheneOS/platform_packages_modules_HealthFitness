@@ -19,12 +19,12 @@ package com.android.healthconnect.controller.shared.inactiveapp
 import android.content.Context
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
+import com.android.settingslib.widget.AppPreference
 
 /** Custom preference for displaying an inactive app. */
-class InactiveAppPreference constructor(context: Context) : Preference(context) {
+class InactiveAppPreference constructor(context: Context) : AppPreference(context) {
     private var deleteButtonListener: OnClickListener? = null
 
     init {
