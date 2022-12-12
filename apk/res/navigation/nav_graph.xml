@@ -18,6 +18,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_nav_graph"
     app:startDestination="@id/homeFragment">
+
+    <action
+        android:id="@+id/action_deeplink_to_healthDataCategoriesFragment"
+        app:destination="@+id/healthDataCategoriesFragment"
+        app:popUpTo="@+id/healthDataCategoriesFragment"
+        app:popUpToInclusive="true" />
+
     <activity
         android:id="@+id/playstore_activity"
         android:label="@string/playstore_app_title"
