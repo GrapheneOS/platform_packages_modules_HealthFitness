@@ -18,16 +18,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
+import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.deletion.DeletionConstants
+import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
+import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
+import com.android.healthconnect.controller.deletion.DeletionFragment
+import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,6 +82,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             openRemoveAllAppsAccessDialog()
             true
         }
+        if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
+            childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
+        }
     }
 
     private fun openRemoveAllAppsAccessDialog() {
@@ -112,7 +122,20 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             preferenceScreen.removePreference(mInactiveAppsPreference)
         } else {
             appsList.forEach { app ->
-                mInactiveAppsPreference?.addPreference(getAppPreference(app))
+                val inactiveAppPreference =
+                    InactiveAppPreference(requireContext()).also {
+                        it.title = app.appMetadata.appName
+                        it.icon = app.appMetadata.icon
+                        it.setOnDeleteButtonClickListener {
+                            val appDeletionType =
+                                DeletionType.DeletionTypeAppData(
+                                    app.appMetadata.packageName, app.appMetadata.appName)
+                            childFragmentManager.setFragmentResult(
+                                DeletionConstants.START_DELETION_EVENT,
+                                bundleOf(DELETION_TYPE to appDeletionType))
+                        }
+                    }
+                mInactiveAppsPreference?.addPreference(inactiveAppPreference)
             }
         }
     }
