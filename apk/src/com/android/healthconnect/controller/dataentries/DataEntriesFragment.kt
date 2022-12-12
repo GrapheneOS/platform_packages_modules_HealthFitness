@@ -87,9 +87,11 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_data_entries, container, false)
-
-        permissionType =
-            requireArguments().getSerializable(PERMISSION_TYPE_KEY) as HealthPermissionType
+        if (requireArguments().containsKey(PERMISSION_TYPE_KEY)) {
+            permissionType =
+                arguments?.getSerializable(PERMISSION_TYPE_KEY, HealthPermissionType::class.java)
+                    ?: throw IllegalArgumentException("PERMISSION_TYPE_KEY can't be null!")
+        }
         setTitle(fromPermissionType(permissionType).uppercaseLabel)
         setupMenu()
         dataNavigationView = view.findViewById(R.id.date_navigation_view)

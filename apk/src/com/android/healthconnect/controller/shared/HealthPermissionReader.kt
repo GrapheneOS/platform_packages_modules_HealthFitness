@@ -17,6 +17,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
+import android.content.pm.PackageManager.PackageInfoFlags
+import android.content.pm.PackageManager.ResolveInfoFlags
 import android.healthconnect.HealthConnectManager
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,16 +30,23 @@ import javax.inject.Inject
  */
 class HealthPermissionReader @Inject constructor(@ApplicationContext private val context: Context) {
 
+    companion object {
+        private const val RESOLVE_INFO_FLAG: Long = PackageManager.MATCH_ALL.toLong()
+        private const val PACKAGE_INFO_PERMISSIONS_FLAG: Long =
+            PackageManager.GET_PERMISSIONS.toLong()
+    }
+
     suspend fun getAppsWithHealthPermissions(): List<String> {
         return context.packageManager
-            .queryIntentActivities(getRationaleIntent(), 0 or PackageManager.MATCH_ALL)
+            .queryIntentActivities(getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
             .map { it.activityInfo.packageName }
     }
 
     suspend fun getDeclaredPermissions(packageName: String): List<HealthPermission> {
         return try {
             val appInfo =
-                context.packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+                context.packageManager.getPackageInfo(
+                    packageName, PackageInfoFlags.of(PACKAGE_INFO_PERMISSIONS_FLAG))
             val healthPermissions = getHealthPermissions()
             appInfo.requestedPermissions
                 ?.filter { it in healthPermissions }
@@ -51,7 +60,8 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     fun getApplicationRationaleIntent(packageName: String): Intent {
         val intent = getRationaleIntent(packageName)
         val resolvedInfo =
-            context.packageManager.queryIntentActivities(intent, 0 or PackageManager.MATCH_ALL)
+            context.packageManager.queryIntentActivities(
+                intent, ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
         resolvedInfo.forEach { info -> intent.setClassName(packageName, info.activityInfo.name) }
         return intent
     }

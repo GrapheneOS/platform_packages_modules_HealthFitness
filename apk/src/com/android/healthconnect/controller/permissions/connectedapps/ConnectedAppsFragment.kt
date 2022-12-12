@@ -13,6 +13,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
+import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
@@ -145,7 +146,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         findNavController()
             .navigate(
                 R.id.action_connectedApps_to_connectedApp,
-                bundleOf("packageName" to app.appMetadata.packageName))
+                bundleOf(EXTRA_PACKAGE_NAME to app.appMetadata.packageName))
     }
 
     private fun getNoAppsPreference(@StringRes res: Int): Preference {

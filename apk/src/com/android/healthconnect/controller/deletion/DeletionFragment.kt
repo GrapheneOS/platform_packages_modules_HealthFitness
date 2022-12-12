@@ -56,7 +56,7 @@ class DeletionFragment : Hilt_DeletionFragment() {
         // set event listeners
         // start deletion
         parentFragmentManager.setFragmentResultListener(START_DELETION_EVENT, this) { _, bundle ->
-            val deletionType = bundle.getParcelable(DELETION_TYPE) as DeletionType?
+            val deletionType = bundle.getParcelable(DELETION_TYPE, DeletionType::class.java)
             viewModel.setDeletionType(deletionType!!)
             showFirstDialog(deletionType)
         }
