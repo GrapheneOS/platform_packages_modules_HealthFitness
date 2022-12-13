@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -26,11 +28,18 @@ import android.healthconnect.HealthPermissions.READ_STEPS
 import android.healthconnect.HealthPermissions.WRITE_DISTANCE
 import android.healthconnect.HealthPermissions.WRITE_EXERCISE
 import android.widget.Button
+import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
@@ -45,6 +54,9 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.instanceOf
+import org.hamcrest.Matchers.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -140,11 +152,13 @@ class PermissionsActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         context.startActivity(startActivityIntent)
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        Espresso.onIdle()
 
+        onData(allOf(`is`(instanceOf(TextView::class.java)), `is`("")))
         onView(withText("Steps")).check(matches(isDisplayed()))
-        onView(withText("Heart rate")).check(matches(isDisplayed()))
         onView(withText("Distance")).check(matches(isDisplayed()))
-        onView(withText("Exercise")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -159,6 +173,9 @@ class PermissionsActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         context.startActivity(startActivityIntent)
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        Espresso.onIdle()
 
         onView(withText("Steps")).check(matches(isDisplayed()))
         onView(withText("Exercise")).check(matches(isDisplayed()))

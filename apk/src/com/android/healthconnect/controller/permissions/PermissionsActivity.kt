@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -15,10 +17,10 @@ package com.android.healthconnect.controller.permissions
 
 import android.app.Activity
 import android.content.Intent
+import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
@@ -26,7 +28,6 @@ import com.android.healthconnect.controller.permissions.connectedapps.settings.S
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.utils.convertTextViewIntoLink
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -43,49 +44,27 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         setContentView(R.layout.activity_permissions)
 
         // TODO(b/260629311) replace with new intent
-        if (!intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
+        if (!intent.hasExtra(EXTRA_PACKAGE_NAME)) {
             val newIntent = Intent(intent).setClass(this, SettingsActivity::class.java)
             startActivity(newIntent)
             finish()
         }
 
+        appPackageName = intent.getStringExtra(EXTRA_PACKAGE_NAME).orEmpty()
         val permissionSelection = viewModel.getPermissionSelection()
-        val permissions = permissionSelection.ifEmpty { getPermissions().associateWith { true } }
+        val permissions = permissionSelection.ifEmpty { getPermissions().associateWith { false } }
         val permissionsFragment = PermissionsFragment.newInstance(permissions)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.permission_content, permissionsFragment)
             .commit()
 
-        updateAppName(intent)
         setupAllowButton()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.savePermissionSelection(getPermissionsFragment().getPermissionAssignments())
-    }
-
-    private fun updateAppName(intent: Intent) {
-        val policyString = resources.getString(R.string.request_permissions_privacy_policy)
-        appPackageName = intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME).orEmpty()
-        viewModel.loadAppInfo(appPackageName)
-        viewModel.appMetadata.observe(this) { appMetadata ->
-            val appName = appMetadata.appName
-            val rationaleText =
-                resources.getString(R.string.request_permissions_rationale, appName, policyString)
-            convertTextViewIntoLink(
-                findViewById(R.id.privacy_policy),
-                rationaleText,
-                rationaleText.indexOf(policyString),
-                rationaleText.indexOf(policyString) + policyString.length) {
-                    val startRationaleIntent =
-                        healthPermissionReader.getApplicationRationaleIntent(appPackageName)
-                    startActivity(startRationaleIntent)
-                }
-            findViewById<TextView>(R.id.title).text =
-                resources.getString(R.string.request_permissions_header_title, appName)
-        }
     }
 
     private fun setupAllowButton() {
