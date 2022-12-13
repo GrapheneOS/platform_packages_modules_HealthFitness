@@ -30,6 +30,7 @@ constructor(
     private val healthPermissionReader: HealthPermissionReader,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val getContributorAppInfoUseCase: GetContributorAppInfoUseCase,
+    private val queryRecentAccessLogsUseCase: QueryRecentAccessLogsUseCase,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
@@ -38,8 +39,8 @@ constructor(
         withContext(dispatcher) {
             val appsWithHealthPermissions = healthPermissionReader.getAppsWithHealthPermissions()
             val appsWithData = getContributorAppInfoUseCase.invoke()
-
             val connectedApps = mutableListOf<ConnectedAppMetadata>()
+            val recentAccess = queryRecentAccessLogsUseCase.invoke()
 
             connectedApps.addAll(
                 appsWithHealthPermissions.map { packageName ->
@@ -51,7 +52,7 @@ constructor(
                         } else {
                             ConnectedAppStatus.DENIED
                         }
-                    ConnectedAppMetadata(metadata, isConnected)
+                    ConnectedAppMetadata(metadata, isConnected, recentAccess[metadata.packageName])
                 })
 
             val inactiveApps =

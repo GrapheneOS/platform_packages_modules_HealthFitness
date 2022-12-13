@@ -336,14 +336,12 @@
   <string name="delete_app_data" description="Label of a button that deletes data written by given app. [CHAR_LIMIT=40]">Delete app data</string>
   <string name="inactive_apps_section_title" description="Title shown for section of inactive apps [CHAR_LIMIT=40]">Inactive apps</string>
   <string name="inactive_apps_section_message" description="Description text shown in the inactive apps section that explains what inactive apps are [CHAR_LIMIT=NONE]">These apps no longer have access, but still have data stored in Health&#160;Connect</string>
-
   <string name="manage_permissions_time_frame" description="Text describing the time frame of data which an app will be able to access [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can access data added after <xliff:g example="22 January 2022" id="data_access_date">%2$s</xliff:g></string>
   <string name="other_android_permissions" description="Text that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings > Apps</string>
   <string name="manage_permissions_rationale" description="Text informing the user that data they share with an app is covered by that app's data privacy policy [CHAR_LIMIT=NONE]">Data you share with <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> is covered by their privacy policy</string>
   <string name="other_android_permissions_content_description" description="Content description that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings, then tap Apps</string>
   <string name="manage_permissions_learn_more" description="Link text that open's a third party app's data privacy policy [CHAR_LIMIT=NONE]">Read privacy policy</string>
-
-
+  <string name="app_perms_content_provider_24h" description="Summary for showing the last access text for content provider permissions [CHAR LIMIT=70]">Accessed in past 24 hours</string>
   <!--endregion-->
 
   <!--region Onboarding -->
