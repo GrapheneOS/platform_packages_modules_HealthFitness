@@ -65,3 +65,22 @@ android_test_helper_app {
     sdk_version: "system_current",
 
 }
+
+android_test_helper_app {
+    name: "HCSharedUserPermsTestApp",
+    defaults: ["cts_defaults"],
+
+    libs: [
+        "android.test.base",
+        "android.test.runner",
+    ],
+
+    srcs: [":healthconnect-permissions-testapp-srcs"],
+
+    test_suites: [
+        "device-tests",
+        "general-tests",
+    ],
+    manifest: "AndroidManifest_sharedUser.xml",
+    sdk_version: "system_current",
+}

@@ -32,6 +32,8 @@ import android.os.UserHandle;
 
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
+import java.time.Instant;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,11 +45,13 @@ import java.util.Set;
  * @hide
  */
 public final class HealthConnectPermissionHelper {
+    private static final Period GRANT_TIME_TO_START_ACCESS_DATE_PERIOD = Period.ofDays(30);
 
     private final Context mContext;
     private final PackageManager mPackageManager;
     private final Set<String> mHealthPermissions;
     private final HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
+    private final FirstGrantTimeManager mFirstGrantTimeManager;
 
     /**
      * Constructs a {@link HealthConnectPermissionHelper}.
@@ -64,11 +68,13 @@ public final class HealthConnectPermissionHelper {
             Context context,
             PackageManager packageManager,
             Set<String> healthPermissions,
-            HealthPermissionIntentAppsTracker permissionIntentTracker) {
+            HealthPermissionIntentAppsTracker permissionIntentTracker,
+            FirstGrantTimeManager firstGrantTimeManager) {
         mContext = context;
         mPackageManager = packageManager;
         mHealthPermissions = healthPermissions;
         mPermissionIntentAppsTracker = permissionIntentTracker;
+        mFirstGrantTimeManager = firstGrantTimeManager;
     }
 
     /**
@@ -147,6 +153,26 @@ public final class HealthConnectPermissionHelper {
         } finally {
             Binder.restoreCallingIdentity(token);
         }
+    }
+
+    /**
+     * Returns the date from which an app can read / write health data. See {@link
+     * android.healthconnect.HealthConnectManager#getHealthDataHistoricalAccessStartDate}
+     */
+    @Nullable
+    public Instant getHealthDataStartDateAccess(String packageName, UserHandle user)
+            throws IllegalArgumentException {
+        Objects.requireNonNull(packageName);
+        enforceManageHealthPermissions(/* message= */ "getHealthDataStartDateAccess");
+        UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
+        enforceValidPackage(packageName);
+
+        Instant grantTimeDate = mFirstGrantTimeManager.getFirstGrantTime(packageName, checkedUser);
+        if (grantTimeDate == null) {
+            return null;
+        }
+
+        return grantTimeDate.minus(GRANT_TIME_TO_START_ACCESS_DATE_PERIOD);
     }
 
     private void addToPriorityListIfRequired(String packageName, String permissionName) {

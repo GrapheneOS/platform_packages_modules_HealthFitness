@@ -31,6 +31,7 @@
     <queries>
         <package android:name="android.healthconnect.test.app"/>
         <package android:name="android.healthconnect.test.app2"/>
+        <package android:name="android.healthconnect.test.app3"/>
     </queries>
 
     <application android:debuggable="true">

@@ -49,17 +49,18 @@ public class HealthConnectManagerService extends SystemService {
     public HealthConnectManagerService(Context context) {
         super(context);
         mPermissionIntentTracker = new HealthPermissionIntentAppsTracker(context);
-        mPermissionHelper =
-                new HealthConnectPermissionHelper(
-                        context,
-                        context.getPackageManager(),
-                        HealthConnectManager.getHealthPermissions(context),
-                        mPermissionIntentTracker);
         mFirstGrantTimeManager =
                 new FirstGrantTimeManager(
                         context,
                         mPermissionIntentTracker,
                         FirstGrantTimeDatastore.createInstance());
+        mPermissionHelper =
+                new HealthConnectPermissionHelper(
+                        context,
+                        context.getPackageManager(),
+                        HealthConnectManager.getHealthPermissions(context),
+                        mPermissionIntentTracker,
+                        mFirstGrantTimeManager);
         mPackageMonitor =
                 new PackagePermissionChangesMonitor(
                         mPermissionIntentTracker, mFirstGrantTimeManager);

@@ -33,6 +33,10 @@ interface IHealthConnectService {
     void revokeHealthPermission(String packageName, String permissionName, String reason, in UserHandle user);
     void revokeAllHealthPermissions(String packageName, String reason, in UserHandle user);
     List<String> getGrantedHealthPermissions(String packageName, in UserHandle user);
+
+    /* @hide */
+    long getHistoricalAccessStartDateInMilliseconds(String packageName, in UserHandle user);
+
     /**
      * Inserts {@code records} into the HealthConnect database.
      *
