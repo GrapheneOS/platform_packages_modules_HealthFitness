@@ -246,6 +246,16 @@
     <string name="delete_app_data" msgid="2694002637558981031">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‎‏‎‏‎‏‏‎‎‎‏‏‎‎‎‎‎‏‎‏‎‎‏‎‎‎‎‎‎‎‎‏‏‎‏‏‏‎‏‎‏‎‏‏‎‎‏‎‎‎‎‏‏‎‏‎‎‏‏‏‎Delete app data‎‏‎‎‏‎"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‎‏‏‎‎‏‏‏‏‏‎‏‎‎‏‎‎‏‎‎‏‏‎‎‎‏‎‏‏‏‎‎‏‏‎‏‏‏‎‏‎‏‎‎‏‏‎‎‏‎‏‏‏‎‎‏‎‏‏‎‎Inactive apps‎‏‎‎‏‎"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‎‎‎‏‎‏‏‎‎‏‏‎‎‎‎‎‏‏‏‎‎‎‏‏‎‎‎‏‎‎‏‎‏‎‏‏‏‏‎‎‎‎‏‎‎‎‎‎‏‏‏‏‏‏‎‏‏‏‎‎‎These apps no longer have access, but still have data stored in Health Connect‎‏‎‎‏‎"</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‎‎‎‎‏‎‎‏‏‏‏‏‎‏‎‏‏‎‏‎‏‎‏‏‏‎‎‏‏‏‎‎‏‏‏‏‎‎‏‏‏‏‏‎‎‏‏‏‏‎‎‎‎‏‎‎‏‏‏‎Get Started with Health Connect‎‏‎‎‏‎"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‏‎‎‏‏‎‎‏‏‏‏‏‎‎‎‏‎‎‏‎‏‏‎‎‎‎‏‎‎‏‎‏‏‏‎‏‏‎‎‏‎‏‏‎‎‎‎‏‏‎‏‏‎‎‏‏‎‏‎‎‎Health Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone‎‏‎‎‏‎"</string>
     <string name="share_data" msgid="3461840023402996573">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‎‎‎‎‎‎‎‎‏‎‏‎‏‏‏‎‏‏‎‏‎‎‏‎‏‎‎‎‏‏‏‎‎‎‎‎‎‎‏‎‏‎‏‎‎‏‏‎‎‎‏‏‎‏‎‏‏‏‎‏‎Share data with your apps‎‏‎‎‏‎"</string>
@@ -289,6 +299,15 @@
     <string name="confirming_question_go_back_button" msgid="8327737273714344126">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‎‎‏‏‏‎‎‏‎‎‏‎‎‎‎‏‎‎‎‎‏‏‏‎‏‏‎‏‏‎‎‏‏‏‏‎‏‎‎‎‎‏‏‎‎‎‎‎‎‎‎‎‏‎‏‏‏‏‏‎‎Go back‎‏‎‎‏‎"</string>
     <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‎‎‎‎‏‏‏‎‎‏‏‏‎‎‏‏‏‏‎‎‎‎‏‏‎‏‎‎‎‏‏‎‎‎‏‏‏‎‏‎‎‎‎‎‏‏‏‎‎‏‏‏‎‎‏‏‏‏‎‏‏‎Done‎‏‎‎‏‎"</string>
     <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‏‏‎‏‏‎‏‎‏‏‏‏‏‎‏‎‏‏‏‎‎‎‏‏‎‏‏‎‎‎‏‏‏‎‏‎‏‎‎‎‏‏‏‏‎‎‏‎‎‎‎‎‏‎‎‏‏‏‏‎‎Close‎‏‎‎‏‎"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‎‏‏‏‏‏‏‏‏‏‎‎‏‎‏‏‎‏‎‎‎‏‎‏‎‎‏‎‎‎‎‏‏‎‎‎‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‏‎‏‏‏‏‎‏‎Data deleted‎‏‎‎‏‎"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‎‏‏‏‎‎‏‏‎‎‏‏‏‏‏‏‎‎‏‏‏‎‎‏‏‎‎‏‏‏‏‎‎‎‎‏‎‏‎‏‎‎‏‎‏‏‎‎‏‏‏‏‏‎‎‎‏‎‏‎This data is no longer stored in Health Connect.‎‏‎‎‏‎"</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‏‎‎‏‎‏‏‏‎‏‏‏‎‏‏‎‏‎‎‏‎‎‎‏‎‎‏‏‎‏‏‎‎‎‎‎‎‏‏‏‏‏‏‏‎‏‏‎‏‏‏‎‏‎‎‏‏‎‎‎‎Deleting your data‎‏‎‎‏‎"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‎‏‎‏‏‎‎‎‏‏‎‎‎‏‏‎‎‏‎‎‏‎‏‎‎‎‎‏‏‎‏‏‏‏‎‏‎‎‏‎‏‎‏‏‎‎‎‏‎‎‎‏‎‎‎‎‏‏‎‏‎Couldn\'t delete data‎‏‎‎‏‎"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‎‏‎‏‎‎‎‎‎‏‎‎‎‎‏‏‏‎‏‏‏‎‎‎‎‎‎‎‏‏‎‏‏‎‎‎‏‏‎‎‎‏‏‎‎‎‎‎‏‎‏‎‏‏‎‏‎‏‏‏‏‎Something went wrong and Health Connect couldn\'t delete your data‎‏‎‎‏‎"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‏‏‏‏‎‏‎‏‎‎‏‎‎‏‎‏‏‎‎‎‏‎‎‎‎‎‎‎‎‎‎‎‏‏‎‏‏‏‎‏‎‏‏‎‎‏‏‏‏‎‏‎‎‎‏‎‏‎‎Try again‎‏‎‎‏‎"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‏‏‏‎‎‏‎‎‏‎‏‏‏‎‏‏‏‎‎‏‎‎‎‏‎‎‏‏‎‎‏‏‎‎‎‎‎‎‎‎‏‎‎‏‎‏‎‏‎‏‏‏‎‏‎‎‎‏‎Deleting Health Connect data‎‏‎‎‏‎"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‏‏‎‏‎‎‎‏‏‎‏‏‏‎‏‏‏‎‎‎‎‏‏‏‏‏‏‏‎‎‎‎‎‏‎‏‎‏‎‏‏‎‎‎‎‏‏‏‏‎‎‎‎‏‏‎‏‏‎‎‎Deleting Health Connect data‎‏‎‎‏‎"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‎‏‏‎‏‏‎‏‏‎‎‏‎‎‏‏‏‏‎‎‎‏‎‏‏‎‎‏‎‎‎‎‏‏‏‏‎‎‎‏‏‎‎‏‎‎‎‎‎‎‏‏‏‎‏‏‏‎‏‏‏‎Data deletion‎‏‎‎‏‎"</string>
     <string name="data_point_action_content_description" msgid="5272053018514984088">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‎‏‎‎‏‎‏‎‏‎‎‎‎‏‏‎‎‎‎‏‎‎‏‎‎‏‏‎‏‎‏‏‎‏‏‎‎‏‏‏‎‎‏‎‎‎‏‏‎‎‏‎‎‏‏‎‎‎‎Data entry options‎‏‎‎‏‎"</string>
     <string name="delete_data_point" msgid="5665536304875634127">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‏‏‎‏‎‏‎‎‎‎‎‎‎‎‎‎‏‏‏‎‏‎‎‎‎‎‎‏‎‎‎‎‎‏‎‎‎‏‏‎‎‎‎‏‏‏‏‏‏‎‏‏‏‎‎‏‏‏‏‎Delete entry‎‏‎‎‏‎"</string>
     <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‏‎‏‎‎‎‏‎‏‎‏‎‎‎‎‎‏‎‏‎‏‎‎‎‏‏‏‎‎‎‎‏‎‎‏‏‏‎‏‎‎‎‏‎‎‏‎‎‎‎‏‏‏‎‎‎‎‏‎‎‎1 W‎‏‎‎‏‎}other{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‏‎‏‎‎‎‏‎‏‎‏‎‎‎‎‎‏‎‏‎‏‎‎‎‏‏‏‎‎‎‎‏‎‎‏‏‏‎‏‎‎‎‏‎‎‏‎‎‎‎‏‏‏‎‎‎‎‏‎‎‎# W‎‏‎‎‏‎}}"</string>
@@ -304,6 +323,14 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‎‏‎‏‎‎‎‏‏‎‏‎‎‎‏‏‏‏‏‎‏‎‎‏‏‎‎‏‎‎‏‏‎‏‎‏‏‏‏‎‎‏‎‏‏‎‎‎‎‏‏‎‎‎‏‎‏‏‏‏‎‎1 kilometer per hour‎‏‎‎‏‎}other{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‎‏‎‏‎‎‎‏‏‎‏‎‎‎‏‏‏‏‏‎‏‎‎‏‏‎‎‏‎‎‏‏‎‏‎‏‏‏‏‎‎‏‎‏‏‎‎‎‎‏‏‎‎‎‏‎‏‏‏‏‎‎# kilometers per hour‎‏‎‎‏‎}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‏‏‎‎‏‎‎‎‏‏‏‎‎‎‏‎‏‎‏‎‎‏‎‎‎‏‏‎‏‎‎‎‏‎‎‎‏‏‎‎‏‏‏‎‎‎‎‎‏‎‏‎‏‏‏‎‏‏‏‏‎from ‎‏‎‎‏‏‎<xliff:g id="START_TIME">%1$s</xliff:g>‎‏‎‎‏‏‏‎ to ‎‏‎‎‏‏‎<xliff:g id="END_TIME">%2$s</xliff:g>‎‏‎‎‏‏‏‎‎‏‎‎‏‎"</string>
     <string name="date_range_long" msgid="5407008354838746975">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‏‏‎‎‎‎‏‎‎‏‏‎‎‎‏‏‎‏‎‏‏‏‎‎‏‏‎‏‏‏‏‏‏‏‏‎‏‏‏‎‏‏‏‎‎‏‎‏‏‏‎‏‎‏‏‏‏‏‎from ‎‏‎‎‏‏‎<xliff:g id="START_TIME">%1$s</xliff:g>‎‏‎‎‏‏‏‎ to ‎‏‎‎‏‏‎<xliff:g id="END_TIME">%2$s</xliff:g>‎‏‎‎‏‏‏‎‎‏‎‎‏‎"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
     <string name="units_title" msgid="4335002706905375844">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‏‏‎‎‎‎‏‎‏‎‎‏‎‎‎‎‎‏‎‏‏‏‏‏‏‏‏‎‎‏‏‏‏‏‎‏‎‏‏‏‎‎‏‏‏‎‏‎‎‏‎‎‎‏‏‎‎‏‎‎‎Units‎‏‎‎‏‎"</string>
     <string name="set_units_label" msgid="7358440515698876383">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‎‎‏‏‎‎‎‎‏‏‏‏‎‎‏‏‎‏‏‏‎‏‎‏‎‏‎‎‏‏‎‎‎‏‏‏‏‎‎‎‏‎‎‏‎‏‏‎‏‏‏‏‏‏‏‎‏‏‏‏‏‎Set data units‎‏‎‎‏‎"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‏‎‏‎‎‏‏‎‎‏‏‎‏‏‎‏‎‏‏‎‏‏‏‏‎‎‏‏‏‏‏‏‎‏‎‎‎‎‎‎‏‎‏‏‎‎‎‎‏‏‎‎‏‏‎‎‎‎‏‏‎Distance‎‏‎‎‏‎"</string>
@@ -323,15 +350,6 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‏‏‏‏‎‎‏‎‎‏‏‎‎‎‏‎‏‎‎‏‏‎‎‏‎‎‎‏‏‏‏‎‏‎‏‏‎‏‎‎‎‎‏‏‏‏‏‏‏‏‏‏‏‏‏‎‏‎‏‎‎Celsius‎‏‎‎‏‎"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‎‏‏‏‏‎‏‏‎‏‎‎‏‏‏‏‎‎‎‎‎‏‎‎‏‏‏‎‎‎‏‏‏‏‎‏‎‏‎‎‎‎‎‏‎‎‎‎‏‏‎‎‎‏‏‎‎‎‏‎‎‎Fahrenheit‎‏‎‎‏‎"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‎‎‏‏‎‎‏‏‏‎‎‏‎‏‏‏‎‏‏‎‎‏‎‎‏‏‏‏‏‏‎‏‎‏‎‏‏‎‏‎‏‏‎‏‎‏‎‎‏‎‎‎‎‏‎‎‏‏‏‎‎Kelvin‎‏‎‎‏‎"</string>
-    <string name="delete_dialog_success_title" msgid="8645983649329184701">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‎‏‏‏‏‏‏‏‏‏‎‎‏‎‏‏‎‏‎‎‎‏‎‏‎‎‏‎‎‎‎‏‏‎‎‎‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‏‎‏‏‏‏‎‏‎Data deleted‎‏‎‎‏‎"</string>
-    <string name="delete_dialog_success_message" msgid="1412434616763639749">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‎‏‏‏‎‎‏‏‎‎‏‏‏‏‏‏‎‎‏‏‏‎‎‏‏‎‎‏‏‏‏‎‎‎‎‏‎‏‎‏‎‎‏‎‏‏‎‎‏‏‏‏‏‎‎‎‏‎‏‎This data is no longer stored in Health Connect.‎‏‎‎‏‎"</string>
-    <string name="delete_progress_indicator" msgid="6446736923548413592">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‏‎‎‏‎‏‏‏‎‏‏‏‎‏‏‎‏‎‎‏‎‎‎‏‎‎‏‏‎‏‏‎‎‎‎‎‎‏‏‏‏‏‏‏‎‏‏‎‏‏‏‎‏‎‎‏‏‎‎‎‎Deleting your data‎‏‎‎‏‎"</string>
-    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‎‏‎‏‏‎‎‎‏‏‎‎‎‏‏‎‎‏‎‎‏‎‏‎‎‎‎‏‏‎‏‏‏‏‎‏‎‎‏‎‏‎‏‏‎‎‎‏‎‎‎‏‎‎‎‎‏‏‎‏‎Couldn\'t delete data‎‏‎‎‏‎"</string>
-    <string name="delete_dialog_failure_message" msgid="722958589350385071">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‎‏‎‏‎‎‎‎‎‏‎‎‎‎‏‏‏‎‏‏‏‎‎‎‎‎‎‎‏‏‎‏‏‎‎‎‏‏‎‎‎‏‏‎‎‎‎‎‏‎‏‎‏‏‎‏‎‏‏‏‏‎Something went wrong and Health Connect couldn\'t delete your data‎‏‎‎‏‎"</string>
-    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‏‏‏‏‎‏‎‏‎‎‏‎‎‏‎‏‏‎‎‎‏‎‎‎‎‎‎‎‎‎‎‎‏‏‎‏‏‏‎‏‎‏‏‎‎‏‏‏‏‎‏‎‎‎‏‎‏‎‎Try again‎‏‎‎‏‎"</string>
-    <string name="delete_data_notification_title" msgid="5445676878692242897">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‏‏‏‎‎‏‎‎‏‎‏‏‏‎‏‏‏‎‎‏‎‎‎‏‎‎‏‏‎‎‏‏‎‎‎‎‎‎‎‎‏‎‎‏‎‏‎‏‎‏‏‏‎‏‎‎‎‏‎Deleting Health Connect data‎‏‎‎‏‎"</string>
-    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‏‏‎‏‎‎‎‏‏‎‏‏‏‎‏‏‏‎‎‎‎‏‏‏‏‏‏‏‎‎‎‎‎‏‎‏‎‏‎‏‏‎‎‎‎‏‏‏‏‎‎‎‎‏‏‎‏‏‎‎‎Deleting Health Connect data‎‏‎‎‏‎"</string>
-    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‎‏‏‎‏‏‎‏‏‎‎‏‎‎‏‏‏‏‎‎‎‏‎‏‏‎‎‏‎‎‎‎‏‏‏‏‎‎‎‏‏‎‎‏‎‎‎‎‎‎‏‏‏‎‏‏‏‎‏‏‏‎Data deletion‎‏‎‎‏‎"</string>
     <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‎‎‎‎‎‎‏‏‏‏‏‏‎‎‏‎‏‏‎‎‏‎‎‏‎‎‏‏‏‎‎‏‏‎‏‎‎‎‎‏‏‎‎‎‎‏‏‏‏‎‏‎‏‎‏‏‏‏‎‏‎‎Can’t see all your apps?‎‏‎‎‏‎"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‏‎‏‎‏‏‎‏‏‏‎‎‎‏‏‎‎‏‎‎‎‏‎‏‎‎‎‎‏‎‏‎‏‏‏‏‎‏‏‎‎‏‏‎‎‏‏‏‏‎‎‏‎‏‏‎‎‏‏‏‎If you can’t see an installed app, it may not be compatible with Health Connect yet‎‏‎‎‏‎"</string>
     <string name="things_to_try" msgid="5007292603680871491">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‏‎‏‏‏‏‎‏‎‎‎‎‏‎‏‏‏‏‏‏‎‎‎‎‎‏‏‎‏‎‏‏‎‏‏‎‏‎‏‎‎‎‏‎‎‎‎‏‏‎Things to try‎‏‎‎‏‎"</string>

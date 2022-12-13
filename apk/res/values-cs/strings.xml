@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"Oprávnění a data"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"Prohlížejte si a spravujte údaje o zdraví a kondici v telefonu a určete, které aplikace k nim mají přístup"</string>
+    <string name="data_title" msgid="6928287139074878977">"Data a přístup"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"Všechny kategorie"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"Zobrazit všechny kategorie"</string>
+    <string name="no_data" msgid="1120552294863595549">"Žádná data"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"Zobrazení dat a nedávné aktivity v aplikacích"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Oprávnění aplikací"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Spravovat aplikace a oprávnění"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"Nedávný přístup"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"Žádné aplikace ke službě Health Connect v poslední době nepřistupovaly"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"Zobrazit vše"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"Zobrazte, které aplikace měly přístup k vašim datům za posledních 24 hodin"</string>
+    <string name="today_header" msgid="3128127066599449902">"Dnes"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"Včera"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"Aktivita"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"aktivita"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Tělesné míry"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"tělesné míry"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Spánek"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"spánek"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Životní funkce"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"životní funkce"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Sledování cyklu"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"sledování cyklu"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Výživa"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"výživa"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"Procházet data"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"Spravovat data"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"Export dat"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"Smazat všechna data"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Ve službě Health Connect nemáte žádná data"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"Vaše data"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"Priorita aplikací"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"Smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="can_read" msgid="7989669150752961504">"Možnost číst tento typ dat: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="8278769263589284926">"Možnost zapisovat tento typ dat: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"Neaktivní aplikace"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"Tyto aplikace již nemohou zapisovat data typu <xliff:g id="DATA_TYPE">%s</xliff:g>, ale stále mají data uložená ve službě Health Connect"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"Aplikace už nemohou číst ani zapisovat typ dat <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> a v aplikaci Health Connect nejsou uložena žádná data typu <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"Tato data zahrnují informace jako čas aktivity, typ cvičení, počet kol, počet sérií nebo počet plaveckých temp"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"Tato data zahrnují informace jako fáze spánku a období spánku"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"Zobrazit všechny záznamy"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Smazat tato data"</string>
+    <string name="permgrouplab_health" msgid="2551416597744633297">"Zdraví"</string>
+    <string name="permgroupdesc_health" msgid="44553351410718944">"přístup ke zdravotním údajům"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Číst spálené kalorie"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Umožňuje aplikaci číst spálené kalorie"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Kalorie spálené aktivitou"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"kalorie spálené aktivitou"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Číst kalorie spálené aktivitou"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Zapisovat kalorie spálené aktivitou"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Cvičení"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"cvičení"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"Číst cvičení"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"Zapisovat cvičení"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"Vzdálenost"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"vzdálenost"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"Číst vzdálenost"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"Zapisovat vzdálenost"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Zdolané převýšení"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"zdolané převýšení"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Číst zdolané převýšení"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Zapisovat zdolané převýšení"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Vystoupaná poschodí"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"vystoupaná poschodí"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Číst vystoupaná poschodí"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Zapisovat vystoupaná poschodí"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"Výkon"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"výkon"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"Číst výkon"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"Zapisovat výkon"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"Rychlost"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"rychlost"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"Číst rychlost"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"Zapisovat rychlost"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"Kroky"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"kroky"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"Číst kroky"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"Zapisovat kroky"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Celkové spálené kalorie"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"celkové spálené kalorie"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Číst celkové spálené kalorie"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Zapisovat celkové spálené kalorie"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"VO2 max"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"VO2 max"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"Číst VO2 max"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"Zapisovat VO2 max"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Odstrčení invalidního vozíku"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"odstrčení invalidního vozíku"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Číst odstrčení invalidního vozíku"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Zapisovat odstrčení invalidního vozíku"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Bazální metabolismus"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"bazální metabolismus"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Číst bazální metabolismus"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Zapisovat bazální metabolismus"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Tělesný tuk"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"tělesný tuk"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Číst tělesný tuk"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"Zapisovat tělesný tuk"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Objem vody v těle"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"objem vody v těle"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Číst objem vody v těle"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Zapisovat objem vody v těle"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Objem kostí"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"objem kostí"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Číst objem kostí"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Zapisovat objem kostí"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"Výška"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"výška"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"Číst výšku"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"Zapisovat výšku"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Obvod boků"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"obvod boků"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Číst obvod boků"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Zapisovat obvod boků"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Beztuková tělesná hmota"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"beztuková tělesná hmota"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Číst beztukovou tělesnou hmotu"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Zapisovat beztukovou tělesnou hmotu"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Obvod pasu"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"obvod pasu"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Číst obvod pasu"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Zapisovat obvod pasu"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"Hmotnost"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"hmotnost"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"Číst hmotnost"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"Zapisovat hmotnost"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Cervikální hlen"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"cervikální hlen"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Číst cervikální hlen"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Zapisovat cervikální hlen"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruace"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruace"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Číst menstruaci"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Zapisovat menstruaci"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Ovulační test"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"ovulační test"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Číst ovulační test"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Zapisovat ovulační test"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Sexuální aktivita"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"sexuální aktivita"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Číst sexuální aktivitu"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Zapisovat sexuální aktivitu"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"Špinění"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"špinění"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"Číst špinění"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"Zapisovat špinění"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Hydratace"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"hydratace"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"Číst hydrataci"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"Zapisovat hydrataci"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Výživa"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"výživa"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Číst výživu"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Zapisovat výživu"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Spánek"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"spánek"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"Číst spánek"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"Zapisovat spánek"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Bazální teplota"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"bazální teplota"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Číst bazální teplotu"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Zapisovat bazální teplotu"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Glukóza v krvi"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"glukóza v krvi"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Číst glukózu v krvi"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Zapisovat glukózu v krvi"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Krevní tlak"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"krevní tlak"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Číst krevní tlak"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Zapisovat krevní tlak"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Tělesná teplota"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"tělesná teplota"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Číst tělesnou teplotu"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Zapisovat tělesnou teplotu"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Tepová frekvence"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"tepová frekvence"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Číst tepovou frekvenci"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Zapisovat tepovou frekvenci"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Variabilita srdečního tepu"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"variabilita srdečního tepu"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Číst variabilitu srdečního tepu"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Zapisovat variabilitu srdečního tepu"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Saturace kyslíkem"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"saturace kyslíkem"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Číst saturaci kyslíkem"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Zapisovat saturaci kyslíkem"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Dechová frekvence"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"dechová frekvence"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Číst dechovou frekvenci"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Zapisovat dechovou frekvenci"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Srdeční tep v klidu"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"srdeční tep v klidu"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Číst srdeční tep v klidu"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Zapisovat srdeční tep v klidu"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Může číst ze služby Health Connect"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Může zapisovat do služby Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"Zrušit"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"Povolit"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Povolit vše"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Vyberte data, která má tato aplikace číst nebo zapisovat do služby Health Connect"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Pokud aplikaci udělíte přístup pro čtení, bude moci číst nová data a data z posledních 30 dnů"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup ke službě Health Connect?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> zpracovává vaše data, najdete v <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> vývojáře"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"zásadách ochrany soukromí"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"Další den"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"Předchozí den"</string>
+    <string name="default_error" msgid="7047939092442348839">"Něco se pokazilo. Zkuste to znovu."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"Aplikace s tímto oprávněním mohou číst a zapisovat vaše zdravotní údaje."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Určete, které aplikace mají přístup k datům uloženým ve službě Health Connect. Klepnutím na aplikaci zobrazíte data, která může číst nebo zapisovat."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"Povolený přístup"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Nepovolený přístup"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"Nastavení a nápověda"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"Odebrat přístup všem aplikacím"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Nevidíte všechny své aplikace?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Smí číst"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Smí zapisovat"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"Žádné povolené aplikace"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"Žádné zakázané aplikace"</string>
+    <string name="health_permissions_title" msgid="3554702577269590720">"Zdravotní oprávnění"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Odebrat přístup všem aplikacím?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Žádné z vašich aplikací nebudou mít přístup k datům služby Health Connect a nebudou moci přidávat nová. Touto akcí nesmažete žádná existující data."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Odstranit vše"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Spravovat aplikaci"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"Smazat data aplikace"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Neaktivní aplikace"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Tyto aplikace už nemají přístup, ale stále mají uložená data ve službě Health Connect"</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Začínáme s aplikací Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Služba Health Connect slouží k bezpečnému ukládání údajů o zdraví a kondici, což umožňuje jednoduše synchronizovat různé aplikace v telefonu"</string>
+    <string name="share_data" msgid="3461840023402996573">"Sdílejte data se svými aplikacemi"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Vyberte, která data mohou jednotlivé aplikace číst nebo zapisovat ve službě Health Connect"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Spravujte nastavení a ochranu soukromí"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"Kdykoli změňte oprávnění aplikací a spravujte data"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Zpět"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Začít"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"Smazat data"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Vyberte data ke smazání"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"Další"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"Všechna data přidaná do služby Health Connect ve vybraném období budou trvale smazána"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"Všechna data typu <xliff:g id="DATA_TYPE">%s</xliff:g> přidaná do služby Health Connect ve vybraném období budou trvale smazána"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"Všechna data kategorie <xliff:g id="CATEGORY">%s</xliff:g> přidaná do služby Health Connect ve vybraném období budou trvale smazána"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"Všechna data aplikace <xliff:g id="APP_DATA">%s</xliff:g> přidaná do služby Health Connect ve vybraném období budou trvale smazána"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"Smazat posledních 24 hodin"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"Smazat posledních 7 dní"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"Smazat posledních 30 dní"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"Smazat všechna data"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"Trvale smazat všechna data?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Trvale smazat všechna data z posledních 24 hodin?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Trvale smazat všechna data z posledních 7 dní?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Trvale smazat všechna data z posledních 30 dní?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Trvale smazat všechna data typu <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Trvale smazat data typu <xliff:g id="DATA_TYPE">%s</xliff:g> z posledních 24 hodin?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Trvale smazat data typu <xliff:g id="DATA_TYPE">%s</xliff:g> z posledních 7 dní?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Trvale smazat data typu <xliff:g id="DATA_TYPE">%s</xliff:g> z posledních 30 dní?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"Trvale smazat všechna data kategorie <xliff:g id="CATEGORY">%s</xliff:g>?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Trvale smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g> z posledních 24 hodin?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Trvale smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g> z posledních 7 dní?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Trvale smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g> z posledních 30 dní?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Trvale smazat všechna data aplikace <xliff:g id="APP_DATA">%s</xliff:g>?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Trvale smazat data aplikace <xliff:g id="APP_DATA">%s</xliff:g> z posledních 24 hodin?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Trvale smazat data aplikace <xliff:g id="APP_DATA">%s</xliff:g> z posledních 7 dní?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Trvale smazat data aplikace <xliff:g id="APP_DATA">%s</xliff:g> z posledních 30 dní?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Také odebrat všechna oprávnění aplikace <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> z aplikace Health Connect"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Trvale smazat všechna data typu <xliff:g id="DATA_TYPE">%1$s</xliff:g> přidaná aplikací <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Trvale smazat tento záznam?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Připojené aplikace již k těmto datům ze služby Health Connect nebudou mít přístup"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Smazat"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Zpět"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Hotovo"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Zavřít"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Data byla smazána"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Tato data už ve službě Health Connect nejsou uložena."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"Mazání dat"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Data se nepodařilo vymazat"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Něco se pokazilo a službě Health Connect se nepodařilo data vymazat"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Zkusit znovu"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Mazání dat Health Connect"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Mazání dat Health Connect"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Smazání dat"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"Možnosti zadávání dat"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"Smazat záznam"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 W}few{# W}many{# W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 watt}few{# watty}many{# wattu}other{# wattů}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 krok}few{# kroky}many{# kroku}other{# kroků}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 krok/min}few{# kroky/min}many{# kroku/min}other{# kroků/min}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 krok za minutu}few{# kroky za minutu}many{# kroku za minutu}other{# kroků za minutu}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 úder/min}few{# údery/min}many{# úderu/min}other{# úderů/min}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 úder za minutu}few{# údery za minutu}many{# úderu za minutu}other{# úderů za minutu}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 mi/h}few{# mi/h}many{# mi/h}other{# mi/h}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 km/h}few{# km/h}many{# km/h}other{# km/h}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 míle za hodinu}few{# míle za hodinu}many{# míle za hodinu}other{# mil za hodinu}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometr za hodinu}few{# kilometry za hodinu}many{# kilometru za hodinu}other{# kilometrů za hodinu}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"Jednotky"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"Nastavit jednotky dat"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"Vzdálenost"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"Výška"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"Hmotnost"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"Energie"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"Teplota"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometry"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Míle"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Centimetry"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"Stopy a palce"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Libry"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kilogramy"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Kameny"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Kalorie"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Kilojouly"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Stupně Celsia"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Stupně Fahrenheita"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Stupně Kelvina"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Nevidíte všechny své aplikace?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Pokud nějakou nainstalovanou aplikaci nevidíte, zřejmě ještě není kompatibilní se službou Health Connect"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"Co byste mohli vyzkoušet"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"Kontrola dostupnosti aktualizací"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"Ověřte, zda jsou nainstalované aplikace aktuální"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Zobrazit všechny kompatibilní aplikace"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Najít aplikace na Google Play"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"Odeslat zpětnou vazbu"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Sdělte nám, které aplikace pro zdraví a fitness byste se službou Health Connect chtěli používat"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Obchod Play"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"Automatické mazání"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"Automatické mazání"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Naplánujete smazání svých dat ze služby Health Connect a tím určete, jak dlouho budou uložena"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Další informace"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"Automatické mazání dat"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Po # měsíci}few{Po # měsících}many{Po # měsíce}other{Po # měsících}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"Nikdy"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Když tato nastavení změníte, Health Connect odpovídajícím způsobem smažte stávající data"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Automaticky mazat data po # měsíci?}few{Automaticky mazat data po # měsících?}many{Automaticky mazat data po # měsíce?}other{Automaticky mazat data po # měsících?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect automaticky smaže nová data po # měsíci. Když to nastavíte, smažou se také stávající data starší než # měsíc.}few{Health Connect automaticky smaže nová data po # měsících. Když to nastavíte, smažou se také stávající data starší než # měsíce.}many{Health Connect automaticky smaže nová data po # měsíce. Když to nastavíte, smažou se také stávající data starší než # měsíce.}other{Health Connect automaticky smaže nová data po # měsících. Když to nastavíte, smažou se také stávající data starší než # měsíců.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Nastavit automatické mazání"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Stávající data budou vymazána"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect smaže všechna data starší než # měsíc.\nV připojených aplikacích se změny projeví do jednoho dne.}few{Health Connect smaže všechna data starší než # měsíce.\nV připojených aplikacích se změny projeví do jednoho dne.}many{Health Connect smaže všechna data starší než # měsíce.\nV připojených aplikacích se změny projeví do jednoho dne.}other{Health Connect smaže všechna data starší než # měsíců.\nV připojených aplikacích se změny projeví do jednoho dne.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Data ke smazání"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"Hotovo"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Exportovat data Health Connect"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"Vybrat vše"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"Zrušit výběr všech"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"Další"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"Načítání dat pro export"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Exportování dat Health Connect"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Zrušit"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Průběh exportu dat"</string>
+</resources>
