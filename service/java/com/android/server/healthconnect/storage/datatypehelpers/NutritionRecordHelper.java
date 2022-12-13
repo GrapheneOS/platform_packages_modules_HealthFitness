@@ -23,6 +23,16 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_CHROMIUM_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_COPPER_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_DIETARY_FIBER_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_ENERGY_FROM_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_ENERGY_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_FOLATE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_FOLIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_IODINE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_IRON_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_MAGNESIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_MANGANESE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_MOLYBDENUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_MONOUNSATURATED_FAT_TOTAL;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
@@ -127,6 +137,38 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
                 aggregateValue =
                         results.getDouble(results.getColumnIndex(DIETARY_FIBER_COLUMN_NAME));
                 break;
+            case NUTRITION_RECORD_ENERGY_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(ENERGY_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_ENERGY_FROM_FAT_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(ENERGY_FROM_FAT_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_FOLATE_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(FOLATE_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_FOLIC_ACID_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(FOLIC_ACID_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_IODINE_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(IODINE_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_IRON_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(IRON_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_MAGNESIUM_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(MAGNESIUM_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_MANGANESE_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(MANGANESE_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_MOLYBDENUM_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(MOLYBDENUM_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_MONOUNSATURATED_FAT_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(MONOUNSATURATED_FAT_COLUMN_NAME));
+                break;
             default:
                 return null;
         }
@@ -167,6 +209,37 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
             case NUTRITION_RECORD_DIETARY_FIBER_TOTAL:
                 columnNames = Collections.singletonList(DIETARY_FIBER_COLUMN_NAME);
                 break;
+            case NUTRITION_RECORD_ENERGY_TOTAL:
+                columnNames = Collections.singletonList(ENERGY_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_ENERGY_FROM_FAT_TOTAL:
+                columnNames = Collections.singletonList(ENERGY_FROM_FAT_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_FOLATE_TOTAL:
+                columnNames = Collections.singletonList(FOLATE_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_FOLIC_ACID_TOTAL:
+                columnNames = Collections.singletonList(FOLIC_ACID_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_IODINE_TOTAL:
+                columnNames = Collections.singletonList(IODINE_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_IRON_TOTAL:
+                columnNames = Collections.singletonList(IRON_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_MAGNESIUM_TOTAL:
+                columnNames = Collections.singletonList(MAGNESIUM_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_MANGANESE_TOTAL:
+                columnNames = Collections.singletonList(MANGANESE_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_MOLYBDENUM_TOTAL:
+                columnNames = Collections.singletonList(MOLYBDENUM_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_MONOUNSATURATED_FAT_TOTAL:
+                columnNames = Collections.singletonList(MONOUNSATURATED_FAT_COLUMN_NAME);
+                break;
+
             default:
                 return null;
         }

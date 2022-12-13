@@ -33,6 +33,16 @@ import static android.healthconnect.datatypes.NutritionRecord.CHOLESTEROL_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.CHROMIUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.COPPER_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.DIETARY_FIBER_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ENERGY_FROM_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ENERGY_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.FOLATE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.FOLIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.IODINE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.IRON_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MAGNESIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MANGANESE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MOLYBDENUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MONOUNSATURATED_FAT_TOTAL;
 import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
@@ -60,7 +70,7 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    private static final int MAP_SIZE = 21;
+    private static final int MAP_SIZE = 31;
     private static AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
@@ -75,7 +85,8 @@ public final class AggregationTypeIdMapper {
                 Arrays.asList(BPM_MAX, BPM_MIN, COUNT_TOTAL, BPM_AVG, FLOORS_CLIMBED_TOTAL));
         addPowerIdsToAggregateResultMap(
                 Arrays.asList(BASAL_CALORIES_TOTAL, POWER_MIN, POWER_MAX, POWER_AVG));
-        addEnergyIdsToAggregateResultMap(Arrays.asList(ACTIVE_CALORIES_TOTAL));
+        addEnergyIdsToAggregateResultMap(
+                Arrays.asList(ACTIVE_CALORIES_TOTAL, ENERGY_TOTAL, ENERGY_FROM_FAT_TOTAL));
         addVolumeIdsToAggregateResultMap(Arrays.asList(VOLUME_TOTAL));
         addLengthIdsToAggregateResultMap(Arrays.asList(DISTANCE_TOTAL, ELEVATION_GAINED_TOTAL));
         addMassIdsToAggregateResultMap(
@@ -87,7 +98,15 @@ public final class AggregationTypeIdMapper {
                         CHOLESTEROL_TOTAL,
                         CHROMIUM_TOTAL,
                         COPPER_TOTAL,
-                        DIETARY_FIBER_TOTAL));
+                        DIETARY_FIBER_TOTAL,
+                        FOLATE_TOTAL,
+                        FOLIC_ACID_TOTAL,
+                        IODINE_TOTAL,
+                        IRON_TOTAL,
+                        MAGNESIUM_TOTAL,
+                        MANGANESE_TOTAL,
+                        MOLYBDENUM_TOTAL,
+                        MONOUNSATURATED_FAT_TOTAL));
     }
 
     @NonNull

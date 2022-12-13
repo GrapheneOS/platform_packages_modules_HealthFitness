@@ -682,6 +682,16 @@ package android.healthconnect.datatypes {
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CHROMIUM_TOTAL;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> COPPER_TOTAL;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> DIETARY_FIBER_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Energy> ENERGY_FROM_FAT_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Energy> ENERGY_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> FOLATE_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> FOLIC_ACID_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> IODINE_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> IRON_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MAGNESIUM_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MANGANESE_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MOLYBDENUM_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MONOUNSATURATED_FAT_TOTAL;
   }
 
   public static final class NutritionRecord.Builder {
