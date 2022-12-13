@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.permissiontypes.HealthPermissionType
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.settingslib.widget.AppPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -154,7 +155,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                 mCanReadSection?.isVisible = true
                 appMetadataMap[DataAccessAppState.Read]!!.forEach { _appMetadata ->
                     mCanReadSection?.addPreference(
-                        Preference(requireContext()).also {
+                        AppPreference(requireContext()).also {
                             it.title = _appMetadata.appName
                             it.icon = _appMetadata.icon
                             // TODO(b/245513815): Navigate to App access page.
@@ -169,7 +170,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                 mCanWriteSection?.isVisible = true
                 appMetadataMap[DataAccessAppState.Write]!!.forEach { _appMetadata ->
                     mCanWriteSection?.addPreference(
-                        Preference(requireContext()).also {
+                        AppPreference(requireContext()).also {
                             it.title = _appMetadata.appName
                             it.icon = _appMetadata.icon
                         })

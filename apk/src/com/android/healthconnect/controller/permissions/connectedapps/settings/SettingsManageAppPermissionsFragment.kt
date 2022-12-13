@@ -23,10 +23,10 @@ import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedApp.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel
-import com.android.healthconnect.controller.permissions.connectedapps.PermissionHeaderPreference
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,7 +59,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         preferenceScreen.findPreference(WRITE_CATEGORY)
     }
 
-    private val header: PermissionHeaderPreference? by lazy {
+    private val header: AppHeaderPreference? by lazy {
         preferenceScreen.findPreference(PERMISSION_HEADER)
     }
 

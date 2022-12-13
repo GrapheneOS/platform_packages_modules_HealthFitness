@@ -19,6 +19,7 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.connectedApp.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +45,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
     private var mPackageName: String = ""
     private val viewModel: AppPermissionViewModel by viewModels()
 
-    private val header: PermissionHeaderPreference? by lazy {
+    private val header: AppHeaderPreference? by lazy {
         preferenceScreen.findPreference(PERMISSION_HEADER)
     }
 
