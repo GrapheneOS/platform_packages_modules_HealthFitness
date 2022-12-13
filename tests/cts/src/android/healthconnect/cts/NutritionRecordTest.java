@@ -34,6 +34,16 @@ import static android.healthconnect.datatypes.NutritionRecord.MAGNESIUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.MANGANESE_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.MOLYBDENUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.MONOUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.NIACIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PANTOTHENIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PHOSPHORUS_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POLYUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POTASSIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PROTEIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.RIBOFLAVIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SELENIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SODIUM_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -86,7 +96,17 @@ public class NutritionRecordTest {
                     MAGNESIUM_TOTAL,
                     MANGANESE_TOTAL,
                     MOLYBDENUM_TOTAL,
-                    MONOUNSATURATED_FAT_TOTAL);
+                    MONOUNSATURATED_FAT_TOTAL,
+                    NIACIN_TOTAL,
+                    PANTOTHENIC_ACID_TOTAL,
+                    PHOSPHORUS_TOTAL,
+                    POLYUNSATURATED_FAT_TOTAL,
+                    POTASSIUM_TOTAL,
+                    PROTEIN_TOTAL,
+                    RIBOFLAVIN_TOTAL,
+                    SATURATED_FAT_TOTAL,
+                    SELENIUM_TOTAL,
+                    SODIUM_TOTAL);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -214,6 +234,16 @@ public class NutritionRecordTest {
                                 .addAggregationType(MANGANESE_TOTAL)
                                 .addAggregationType(MOLYBDENUM_TOTAL)
                                 .addAggregationType(MONOUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(NIACIN_TOTAL)
+                                .addAggregationType(PANTOTHENIC_ACID_TOTAL)
+                                .addAggregationType(PHOSPHORUS_TOTAL)
+                                .addAggregationType(POTASSIUM_TOTAL)
+                                .addAggregationType(POLYUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(PROTEIN_TOTAL)
+                                .addAggregationType(RIBOFLAVIN_TOTAL)
+                                .addAggregationType(SATURATED_FAT_TOTAL)
+                                .addAggregationType(SELENIUM_TOTAL)
+                                .addAggregationType(SODIUM_TOTAL)
                                 .build(),
                         records);
         List<Record> recordNew =
@@ -241,6 +271,16 @@ public class NutritionRecordTest {
                                 .addAggregationType(MANGANESE_TOTAL)
                                 .addAggregationType(MOLYBDENUM_TOTAL)
                                 .addAggregationType(MONOUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(NIACIN_TOTAL)
+                                .addAggregationType(PANTOTHENIC_ACID_TOTAL)
+                                .addAggregationType(PHOSPHORUS_TOTAL)
+                                .addAggregationType(POTASSIUM_TOTAL)
+                                .addAggregationType(POLYUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(PROTEIN_TOTAL)
+                                .addAggregationType(RIBOFLAVIN_TOTAL)
+                                .addAggregationType(SATURATED_FAT_TOTAL)
+                                .addAggregationType(SELENIUM_TOTAL)
+                                .addAggregationType(SODIUM_TOTAL)
                                 .build(),
                         recordNew);
         for (AggregationType<Mass> type : mMassAggregateTypesList) {

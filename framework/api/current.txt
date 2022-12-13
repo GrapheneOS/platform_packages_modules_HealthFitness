@@ -692,6 +692,16 @@ package android.healthconnect.datatypes {
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MANGANESE_TOTAL;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MOLYBDENUM_TOTAL;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MONOUNSATURATED_FAT_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> NIACIN_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> PANTOTHENIC_ACID_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> PHOSPHORUS_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> POLYUNSATURATED_FAT_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> POTASSIUM_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> PROTEIN_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> RIBOFLAVIN_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> SATURATED_FAT_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> SELENIUM_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> SODIUM_TOTAL;
   }
 
   public static final class NutritionRecord.Builder {

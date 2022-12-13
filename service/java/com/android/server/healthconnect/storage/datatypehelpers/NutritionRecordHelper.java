@@ -33,6 +33,16 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_MANGANESE_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_MOLYBDENUM_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_MONOUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_NIACIN_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_PANTOTHENIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_PHOSPHORUS_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_POLYUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_POTASSIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_PROTEIN_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_RIBOFLAVIN_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SELENIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SODIUM_TOTAL;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
@@ -169,6 +179,39 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
                 aggregateValue =
                         results.getDouble(results.getColumnIndex(MONOUNSATURATED_FAT_COLUMN_NAME));
                 break;
+            case NUTRITION_RECORD_NIACIN_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(NIACIN_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_PANTOTHENIC_ACID_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(PANTOTHENIC_ACID_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_PHOSPHORUS_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(PHOSPHORUS_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_POLYUNSATURATED_FAT_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(POLYUNSATURATED_FAT_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_POTASSIUM_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(POTASSIUM_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_PROTEIN_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(PROTEIN_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_RIBOFLAVIN_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(RIBOFLAVIN_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_SATURATED_FAT_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(SATURATED_FAT_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_SELENIUM_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(SELENIUM_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_SODIUM_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(SODIUM_COLUMN_NAME));
+                break;
             default:
                 return null;
         }
@@ -239,7 +282,36 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
             case NUTRITION_RECORD_MONOUNSATURATED_FAT_TOTAL:
                 columnNames = Collections.singletonList(MONOUNSATURATED_FAT_COLUMN_NAME);
                 break;
-
+            case NUTRITION_RECORD_NIACIN_TOTAL:
+                columnNames = Collections.singletonList(NIACIN_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_PANTOTHENIC_ACID_TOTAL:
+                columnNames = Collections.singletonList(PANTOTHENIC_ACID_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_PHOSPHORUS_TOTAL:
+                columnNames = Collections.singletonList(PHOSPHORUS_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_POLYUNSATURATED_FAT_TOTAL:
+                columnNames = Collections.singletonList(POLYUNSATURATED_FAT_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_POTASSIUM_TOTAL:
+                columnNames = Collections.singletonList(POTASSIUM_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_PROTEIN_TOTAL:
+                columnNames = Collections.singletonList(PROTEIN_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_RIBOFLAVIN_TOTAL:
+                columnNames = Collections.singletonList(RIBOFLAVIN_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_SATURATED_FAT_TOTAL:
+                columnNames = Collections.singletonList(SATURATED_FAT_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_SELENIUM_TOTAL:
+                columnNames = Collections.singletonList(SELENIUM_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_SODIUM_TOTAL:
+                columnNames = Collections.singletonList(SODIUM_COLUMN_NAME);
+                break;
             default:
                 return null;
         }

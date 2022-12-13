@@ -43,6 +43,16 @@ import static android.healthconnect.datatypes.NutritionRecord.MAGNESIUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.MANGANESE_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.MOLYBDENUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.MONOUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.NIACIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PANTOTHENIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PHOSPHORUS_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POLYUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POTASSIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PROTEIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.RIBOFLAVIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SELENIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SODIUM_TOTAL;
 import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
@@ -70,7 +80,7 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    private static final int MAP_SIZE = 31;
+    private static final int MAP_SIZE = 41;
     private static AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
@@ -106,7 +116,17 @@ public final class AggregationTypeIdMapper {
                         MAGNESIUM_TOTAL,
                         MANGANESE_TOTAL,
                         MOLYBDENUM_TOTAL,
-                        MONOUNSATURATED_FAT_TOTAL));
+                        MONOUNSATURATED_FAT_TOTAL,
+                        NIACIN_TOTAL,
+                        PANTOTHENIC_ACID_TOTAL,
+                        PHOSPHORUS_TOTAL,
+                        POLYUNSATURATED_FAT_TOTAL,
+                        POTASSIUM_TOTAL,
+                        PROTEIN_TOTAL,
+                        RIBOFLAVIN_TOTAL,
+                        SATURATED_FAT_TOTAL,
+                        SELENIUM_TOTAL,
+                        SODIUM_TOTAL));
     }
 
     @NonNull
