@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -26,6 +28,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -42,7 +45,9 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionFragment
+import com.android.healthconnect.controller.deletion.DeletionState
 import com.android.healthconnect.controller.deletion.DeletionType
+import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
@@ -55,7 +60,8 @@ import java.time.Instant
 class DataEntriesFragment : Hilt_DataEntriesFragment() {
 
     private lateinit var permissionType: HealthPermissionType
-    private val viewModel: DataEntriesFragmentViewModel by viewModels()
+    private val entriesViewModel: DataEntriesFragmentViewModel by viewModels()
+    private val deletionViewModel: DeletionViewModel by activityViewModels()
 
     private lateinit var dataNavigationView: DateNavigationView
     private lateinit var entriesRecyclerView: RecyclerView
@@ -120,9 +126,9 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter.setOnDeleteEntrySelected(
             object : DataEntryAdapter.OnDeleteEntrySelected {
-                override fun onDeleteEntrySelected(dataEntry: FormattedDataEntry) {
+                override fun onDeleteEntrySelected(dataEntry: FormattedDataEntry, index: Int) {
                     val deletionType =
-                        DeletionType.DeleteDataEntry(dataEntry.uuid, dataEntry.dataType)
+                        DeletionType.DeleteDataEntry(dataEntry.uuid, dataEntry.dataType, index)
                     childFragmentManager.setFragmentResult(
                         START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
                 }
@@ -131,11 +137,23 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         dataNavigationView.setDateChangedListener(
             object : DateNavigationView.OnDateChangedListener {
                 override fun onDateChanged(selectedDate: Instant) {
-                    viewModel.loadData(permissionType, selectedDate)
+                    entriesViewModel.loadData(permissionType, selectedDate)
                 }
             })
-        viewModel.loadData(permissionType, dataNavigationView.getDate())
-        viewModel.dataEntries.observe(viewLifecycleOwner) { state ->
+        entriesViewModel.loadData(permissionType, dataNavigationView.getDate())
+        deletionViewModel.deletionParameters.observe(viewLifecycleOwner) { params ->
+            when (params.deletionState) {
+                DeletionState.STATE_DELETION_SUCCESSFUL -> {
+                    val index = (params.deletionType as DeletionType.DeleteDataEntry).index
+                    adapter.notifyItemRemoved(index)
+                    entriesViewModel.loadData(permissionType, dataNavigationView.getDate())
+                }
+                else -> {
+                    // do nothing
+                }
+            }
+        }
+        entriesViewModel.dataEntries.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Loading -> {
                     loadingView.isVisible = true

@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -73,7 +75,7 @@ class DataEntryAdapter : RecyclerView.Adapter<DataEntryAdapter.DataEntryViewHold
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.delete -> {
-                        listener?.onDeleteEntrySelected(dataEntry)
+                        listener?.onDeleteEntrySelected(dataEntry, bindingAdapterPosition)
                         true
                     }
                     else -> false
@@ -84,6 +86,6 @@ class DataEntryAdapter : RecyclerView.Adapter<DataEntryAdapter.DataEntryViewHold
     }
 
     interface OnDeleteEntrySelected {
-        fun onDeleteEntrySelected(dataEntry: FormattedDataEntry)
+        fun onDeleteEntrySelected(dataEntry: FormattedDataEntry, index: Int)
     }
 }
