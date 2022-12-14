@@ -44,10 +44,8 @@ public final class RecordTypeIdentifier {
     public static final int RECORD_TYPE_FLOORS_CLIMBED = 8;
     public static final int RECORD_TYPE_WHEELCHAIR_PUSHES = 9;
     public static final int RECORD_TYPE_DISTANCE = 10;
-    public static final int RECORD_TYPE_SLEEP_SESSION = 11;
     public static final int RECORD_TYPE_NUTRITION = 12;
     public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 13;
-    public static final int RECORD_TYPE_SLEEP_STAGE = 14;
 
     // Series Records
     public static final int RECORD_TYPE_HEART_RATE = 17;
@@ -78,8 +76,6 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_ELEVATION_GAINED,
         RECORD_TYPE_ACTIVE_CALORIES_BURNED,
         RECORD_TYPE_HYDRATION,
-        RECORD_TYPE_SLEEP_SESSION,
-        RECORD_TYPE_SLEEP_STAGE,
         RECORD_TYPE_EXERCISE_EVENT,
         RECORD_TYPE_EXERCISE_LAP,
         RECORD_TYPE_NUTRITION

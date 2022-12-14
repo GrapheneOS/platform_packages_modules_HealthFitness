@@ -605,6 +605,49 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
+  public final class SwimmingStrokesRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method public long getCount();
+    method public int getType();
+  }
+
+  public static final class SwimmingStrokesRecord.Builder {
+    ctor public SwimmingStrokesRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @IntRange(from=1, to=1000000) long, int);
+    method @NonNull public android.healthconnect.datatypes.SwimmingStrokesRecord build();
+    method @NonNull public android.healthconnect.datatypes.SwimmingStrokesRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.SwimmingStrokesRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public static final class SwimmingStrokesRecord.SwimmingStrokesType {
+    field public static final int SWIMMING_STROKES_TYPE_BACKSTROKE = 2; // 0x2
+    field public static final int SWIMMING_STROKES_TYPE_BREASTSTROKE = 3; // 0x3
+    field public static final int SWIMMING_STROKES_TYPE_BUTTERFLY = 4; // 0x4
+    field public static final int SWIMMING_STROKES_TYPE_FREESTYLE = 1; // 0x1
+    field public static final int SWIMMING_STROKES_TYPE_MIXED = 5; // 0x5
+    field public static final int SWIMMING_STROKES_TYPE_OTHER = 0; // 0x0
+  }
+
+  public final class TotalCaloriesBurnedRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @NonNull public android.healthconnect.datatypes.units.Energy getEnergy();
+  }
+
+  public static final class TotalCaloriesBurnedRecord.Builder {
+    ctor public TotalCaloriesBurnedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Energy);
+    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord build();
+    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  public final class WheelchairPushesRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method public long getCount();
+  }
+
+  public static final class WheelchairPushesRecord.Builder {
+    ctor public WheelchairPushesRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @IntRange(from=1, to=1000000) long);
+    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord build();
+    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
 }
 
 package android.healthconnect.datatypes.units {

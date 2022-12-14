@@ -90,8 +90,6 @@ package android.healthconnect.datatypes {
     field public static final int RECORD_TYPE_HYDRATION = 4; // 0x4
     field public static final int RECORD_TYPE_NUTRITION = 12; // 0xc
     field public static final int RECORD_TYPE_POWER = 19; // 0x13
-    field public static final int RECORD_TYPE_SLEEP_SESSION = 11; // 0xb
-    field public static final int RECORD_TYPE_SLEEP_STAGE = 14; // 0xe
     field public static final int RECORD_TYPE_SPEED = 20; // 0x14
     field public static final int RECORD_TYPE_STEPS = 1; // 0x1
     field public static final int RECORD_TYPE_STEPS_CADENCE = 21; // 0x15
