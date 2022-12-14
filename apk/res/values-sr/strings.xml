@@ -62,7 +62,8 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"Ови подаци обухватају информације попут фаза сна и сесија спавања"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"Прикажи све ставке"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Избриши ове податке"</string>
-    <string name="permgrouplab_health" msgid="2551416597744633297">"Здравље"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
     <string name="permgroupdesc_health" msgid="44553351410718944">"приступ подацима о здрављу"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Читање потрошених калорија"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Дозвољава апликацији да чита потрошене калорије"</string>
@@ -238,7 +239,6 @@
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Дозвољено за писање"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Ниједна апликација нема дозволу"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Није одбијена ниједна апликација"</string>
-    <string name="health_permissions_title" msgid="3554702577269590720">"Дозволе за здравље"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Желите да уклоните приступ за све апликације?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Ниједна апликација неће моћи да приступа подацима Повезивања здравља ни да додаје нове податке. Тиме се не бришу постојећи подаци."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Уклони све"</string>
@@ -255,6 +255,8 @@
     <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
     <skip />
     <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"Започните са Повезивањем здравља"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Повезивање здравља чува ваше податке о здрављу и фитнесу и пружа вам једноставан начин да синхронизујете различите апликације на телефону"</string>
@@ -330,6 +332,10 @@
     <!-- no translation found for distance_miles_long (3754739640134562413) -->
     <skip />
     <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"Јединице"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Подесите јединице података"</string>

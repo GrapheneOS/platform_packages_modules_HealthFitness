@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"הרשאות ונתונים"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"כאן אפשר לבדוק את נתוני הבריאות והכושר בטלפון ולנהל אותם, ולהחליט אילו אפליקציות יכולות לגשת לנתונים"</string>
+    <string name="data_title" msgid="6928287139074878977">"נתונים וגישה"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"כל הקטגוריות"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"הצגת כל הקטגוריות"</string>
+    <string name="no_data" msgid="1120552294863595549">"אין נתונים"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"צפייה בנתונים ובפעילות האחרונה באפליקציה"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"הרשאות הניתנות לאפליקציות"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"ניהול האפליקציות וההרשאות"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"אפליקציות שניגשו לנתונים לאחרונה"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"אף אפליקציה לא ניגשה לאחרונה ל-Health Connect"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"הצגת הכול"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"כאן אפשר לראות אילו אפליקציות ניגשו לנתונים שלך ב-24 השעות האחרונות"</string>
+    <string name="today_header" msgid="3128127066599449902">"היום"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"אתמול"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"פעילות"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"פעילות"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"מדדים גופניים"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"מדדים גופניים"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"שינה"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"שינה"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"סימנים חיוניים"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"סימנים חיוניים"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"מעקב אחר המחזור"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"מעקב אחר המחזור"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"תזונה"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"תזונה"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"עיון בנתונים"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"ניהול הנתונים"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"ייצוא נתונים"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"מחיקת כל הנתונים"</string>
+    <string name="no_categories" msgid="8250090588127237934">"אין לך נתונים ב-Health Connect"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"הנתונים שלך"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"העדיפות של האפליקציות"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"מחיקת נתונים מסוג <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="can_read" msgid="7989669150752961504">"יכולת לקרוא נתונים מסוג <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="8278769263589284926">"יכולת לכתוב נתונים מסוג <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"אפליקציות לא פעילות"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"האפליקציות האלה כבר לא יכולות לכתוב נתונים מסוג <xliff:g id="DATA_TYPE">%s</xliff:g>, אבל הנתונים שלהן עדיין מאוחסנים ב-Health Connect"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"אפליקציות כבר לא יוכלו לקרוא או לכתוב נתונים מסוג <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ואין נתונים מסוג <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> שמאוחסנים ב-Health Connect"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"הנתונים האלה כוללים מידע כמו משך הפעילות, סוג האימון, הקפות, חזרות, סשנים או חתירות בשחייה"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"הנתונים האלה כוללים מידע כמו שלבי השינה וסשנים של שינה"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"לעיון בכל הרשומות"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"מחיקת הנתונים האלה"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"גישה לנתוני הבריאות שלך"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"קריאה של נתוני הקלוריות שנשרפו"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"מאפשרת לאפליקציה לקרוא את נתוני הקלוריות שנשרפו"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"קלוריות שנשרפו בזמן פעילות"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"קלוריות שנשרפו בזמן פעילות"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"קריאה של נתוני הקלוריות שנשרפו בזמן פעילות"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"כתיבה של נתוני הקלוריות שנשרפו בזמן פעילות"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"פעילות גופנית"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"פעילות גופנית"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"קריאה של נתוני הפעילות הגופנית"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"כתיבה של נתוני הפעילות הגופנית"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"מרחק"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"מרחק"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"קריאה של נתוני המרחק"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"כתיבה של נתוני המרחק"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"עליות/ירידות שנצברו"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"עליות/ירידות שנצברו"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"קריאה של נתוני עליות/ירידות שנצברו"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"כתיבה של נתוני עליות/ירידות שנצברו"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"קומות שעלית/ירדת"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"קומות שעלית/ירדת"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"קריאה של נתוני הקומות שעלית/ירדת"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"כתיבה של נתוני הקומות שעלית/ירדת"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"כוח"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"כוח"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"קריאת נתוני הכוח"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"כתיבת נתוני הכוח"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"מהירות"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"מהירות"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"קריאת נתוני המהירות"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"כתיבת נתוני המהירות"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"צעדים"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"צעדים"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"קריאה של נתוני הצעדים"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"כתיבה של נתוני הצעדים"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"סך הקלוריות שנשרפו"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"סך הקלוריות שנשרפו"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"קריאה של סך הקלוריות שנשרפו"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"כתיבה של סך הקלוריות שנשרפו"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"צריכת החמצן המרבית (VO2 max)"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"צריכת החמצן המרבית (VO2 max)"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"קריאה של נתוני צריכת החמצן המרבית (VO2 max)"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"כתיבה של נתוני צריכת החמצן המרבית (VO2 max)"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"דחיפות כיסא גלגלים"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"דחיפות כיסא גלגלים"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"קריאה של נתוני דחיפות כיסא גלגלים"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"כתיבה של נתוני דחיפות כיסא גלגלים"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"קצב חילוף החומרים הבסיסי"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"קצב חילוף החומרים הבסיסי"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"קריאה של נתוני קצב חילוף החומרים הבסיסי"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"כתיבה של נתוני קצב חילוף החומרים הבסיסי"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"אחוז השומן בגוף"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"אחוז השומן בגוף"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"קריאה של נתוני אחוז השומן בגוף"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"כתיבה של נתוני אחוז השומן בגוף"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"מסת המים בגוף"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"מסת המים בגוף"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"קריאה של נתוני מסת המים בגוף"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"כתיבה של נתוני מסת המים בגוף"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"מסת עצם"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"מסת עצם"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"קריאה של נתוני מסת העצם"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"כתיבה של נתוני מסת העצם"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"גובה"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"גובה"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"קריאה של נתוני הגובה"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"כתיבה של נתוני הגובה"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"היקף הירכיים"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"היקף הירכיים"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"קריאה של נתוני היקף הירכיים"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"כתיבה של נתוני היקף הירכיים"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"מסת גוף רזה"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"מסת גוף רזה"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"קריאה של נתוני מסת גוף רזה"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"כתיבה של נתוני מסת גוף רזה"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"היקף המותניים"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"היקף המותניים"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"קריאה של נתוני היקף המותניים"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"כתיבה של נתוני היקף המותניים"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"משקל"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"משקל"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"קריאה של נתוני המשקל"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"כתיבה של נתוני המשקל"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"ריר צוואר הרחם"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"ריר צוואר הרחם"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"קריאה של נתוני ריר צוואר הרחם"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"כתיבה של נתוני ריר צוואר הרחם"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"וסת"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"וסת"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"קריאה של נתוני הווסת"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"כתיבה של נתוני הווסת"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"בדיקת ביוץ"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"בדיקת ביוץ"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"קריאה של בדיקת הביוץ"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"כתיבה של בדיקת הביוץ"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"פעילות מינית"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"פעילות מינית"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"קריאה של נתוני הפעילות המינית"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"כתיבה של נתוני הפעילות המינית"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"הכתמה קלה"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"הכתמה קלה"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"קריאה של נתוני הכתמה קלה"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"כתיבה של נתוני הכתמה קלה"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"מאזן הנוזלים"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"מאזן הנוזלים"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"קריאה של נתוני מאזן הנוזלים"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"כתיבה של נתוני מאזן הנוזלים"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"תזונה"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"תזונה"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"קריאה של נתוני התזונה"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"כתיבה של נתוני התזונה"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"שינה"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"שינה"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"קריאה של נתוני השינה"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"כתיבה של נתוני השינה"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"טמפרטורת הגוף הבסיסית"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"טמפרטורת הגוף הבסיסית"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"קריאה של טמפרטורת הגוף הבסיסית"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"כתיבה של טמפרטורת הגוף הבסיסית"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"סוכר בדם"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"סוכר בדם"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"קריאה של נתוני הסוכר בדם"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"כתיבה של נתוני הסוכר בדם"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"לחץ דם"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"לחץ דם"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"קריאה של נתוני לחץ הדם"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"כתיבה של נתוני לחץ הדם"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"טמפרטורת הגוף"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"טמפרטורת הגוף"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"קריאה של טמפרטורת הגוף"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"כתיבה של טמפרטורת הגוף"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"דופק"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"דופק"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"קריאה של נתוני הדופק"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"כתיבה של נתוני הדופק"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"שונות קצב הלב"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"שונות קצב הלב"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"קריאה של נתוני שונות קצב הלב"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"כתיבה של נתוני שונות קצב הלב"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"רמת החמצן בדם"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"רמת החמצן בדם"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"קריאה של נתוני רמת החמצן בדם"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"כתיבה של נתוני רמת החמצן בדם"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"קצב הנשימה"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"קצב הנשימה"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"קריאה של נתוני קצב הנשימה"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"כתיבה של נתוני קצב הנשימה"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"הדופק במנוחה"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"הדופק במנוחה"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"קריאה של נתוני הדופק במנוחה"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"כתיבה של נתוני הדופק במנוחה"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"יכולת לקרוא נתונים מ-Health Connect"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"יכולה לכתוב נתונים ב-Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"ביטול"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"אישור"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"אישור של הכול"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"כאן ניתן לבחור אילו נתונים האפליקציה הזו תקרא או תכתוב ב-Health Connect"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"הרשאת קריאה מאפשרת לאפליקציה הזו לקרוא נתונים מ-30 הימים האחרונים"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"האם לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> גישה אל Health Connect?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"אפשר לקרוא איך אפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> מטפלת בנתונים שלך ב<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> של המפתח"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"מדיניות הפרטיות"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"מעבר ליום הבא"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"ליום הקודם"</string>
+    <string name="default_error" msgid="7047939092442348839">"משהו השתבש. כדאי לנסות שוב."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"אפליקציות עם ההרשאה הזו יכולות לקרוא ולכתוב את נתוני הבריאות שלך."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"ניתן לקבוע לאילו אפליקציות תהיה הרשאת גישה לנתונים שמאוחסנים ב-Health Connect. יש להקיש על אחת האפליקציות כדי לבדוק את הנתונים שהיא יכולה לכתוב או לקרוא."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"גישה מותרת"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"גישה אסורה"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"הגדרות ועזרה"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"הסרת הרשאת הגישה לכל האפליקציות"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"חסרות אפליקציות?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"אישור לקרוא"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"אישור לכתוב"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"אין אפליקציות שקיבלו הרשאת גישה"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"אין אפליקציות שלא קיבלו הרשאת גישה"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"להסיר את הרשאת הגישה לכל האפליקציות?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"לאף אחת מהאפליקציות שלך לא תהיה אפשרות לגשת לנתונים או להוסיף נתונים חדשים ל-Health Connect. הפעולה הזאת לא תמחק נתונים קיימים."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"הסרת הכול"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"ניהול האפליקציה"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"מחיקת נתוני האפליקציה"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"אפליקציות לא פעילות"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"לאפליקציות האלה כבר אין גישה, אבל עדיין יש להן נתונים מאוחסנים ב-Health Connect"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"לאפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> יש גישה לנתונים שנוספו אחרי <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"כדי לנהל הרשאות Android אחרות שיש לאפליקציה הזו גישה אליהן, עוברים אל \'הגדרות\' &gt; \'אפליקציות\'"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"הנתונים שמשותפים עם אפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> כפופים למדיניות הפרטיות שלה"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"כדי לנהל הרשאות Android אחרות שיש לאפליקציה הזו גישה אליהן, עוברים ל\'הגדרות\' ומקישים על \'אפליקציות\'"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"לעיון במדיניות הפרטיות"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"איך מתחילים להשתמש ב-Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"אפליקציית Health Connect מאחסנת את נתוני הבריאות והכושר שלך, ומאפשרת לך לסנכרן בקלות את האפליקציות השונות בטלפון"</string>
+    <string name="share_data" msgid="3461840023402996573">"שיתוף נתונים עם האפליקציות שלך"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"בחירה בסוגי הנתונים שכל אפליקציה יכולה לקרוא או לכתוב ב-Health Connect"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"ניהול ההגדרות והפרטיות"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"אפשר לשנות את ההרשאות הניתנות לאפליקציה ולנהל את הנתונים בכל שלב"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"הקודם"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"קדימה, מתחילים"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"מחיקת נתונים"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"בחירת נתונים למחיקה"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"הבא"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"הפעולה הזו מוחקת לתמיד את כל הנתונים שנוספו ל-Health Connect בפרק הזמן שנבחר"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"הפעולה הזו מוחקת לתמיד את הנתונים מסוג <xliff:g id="DATA_TYPE">%s</xliff:g> שנוספו ל-Health Connect בפרק הזמן שנבחר"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"הפעולה הזו מוחקת לתמיד את הנתונים בקטגוריית <xliff:g id="CATEGORY">%s</xliff:g> שנוספו ל-Health Connect בפרק הזמן שנבחר"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"הפעולה הזו מוחקת לתמיד את הנתונים של <xliff:g id="APP_DATA">%s</xliff:g> שנוספו ל-Health Connect בפרק הזמן שנבחר"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"מחיקת 24 השעות האחרונות"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"מחיקת 7 הימים האחרונים"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"מחיקת 30 הימים האחרונים"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"מחיקת כל הנתונים"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"למחוק לתמיד את כל הנתונים מכל הזמנים?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"למחוק לתמיד את כל הנתונים מ-24 השעות האחרונות?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"למחוק לתמיד את כל הנתונים מ-7 הימים האחרונים?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"למחוק לתמיד את כל הנתונים מ-30 הימים האחרונים?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"למחוק לתמיד את כל הנתונים מסוג <xliff:g id="DATA_TYPE">%s</xliff:g> מכל הזמנים?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"למחוק לתמיד את כל הנתונים מסוג <xliff:g id="DATA_TYPE">%s</xliff:g> מ-24 השעות האחרונות?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"למחוק לתמיד את כל הנתונים מסוג <xliff:g id="DATA_TYPE">%s</xliff:g> מ-7 הימים האחרונים?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"למחוק לתמיד את כל הנתונים מסוג <xliff:g id="DATA_TYPE">%s</xliff:g> מ-30 הימים האחרונים?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"למחוק לתמיד את כל הנתונים בקטגוריית <xliff:g id="CATEGORY">%s</xliff:g> מכל הזמנים?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"למחוק לתמיד את כל הנתונים בקטגוריית <xliff:g id="CATEGORY">%s</xliff:g> מ-24 השעות האחרונות?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"למחוק לתמיד את כל הנתונים בקטגוריית <xliff:g id="CATEGORY">%s</xliff:g> מ-7 הימים האחרונים?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"למחוק לתמיד את כל הנתונים בקטגוריית <xliff:g id="CATEGORY">%s</xliff:g> מ-30 הימים האחרונים?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"למחוק לתמיד את כל הנתונים של <xliff:g id="APP_DATA">%s</xliff:g> מכל הזמנים?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"למחוק לתמיד את כל הנתונים של <xliff:g id="APP_DATA">%s</xliff:g> מ-24 השעות האחרונות?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"למחוק לתמיד את כל הנתונים של <xliff:g id="APP_DATA">%s</xliff:g> מ-7 הימים האחרונים?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"למחוק לתמיד את כל הנתונים של <xliff:g id="APP_DATA">%s</xliff:g> מ-30 הימים האחרונים?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"צריך להסיר גם את כל ההרשאות של <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> מ-Health Connect"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"למחוק לתמיד את כל הנתונים מסוג <xliff:g id="DATA_TYPE">%1$s</xliff:g> שנוספו על ידי <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"למחוק את הרשומה הזו לתמיד?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"האפליקציות המקושרות כבר לא יוכלו לגשת לנתונים האלה מ-Health Connect"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"מחיקה"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"הקודם"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"סיום"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"סגירה"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"הנתונים נמחקו"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"הנתונים האלה כבר לא מאוחסנים ב-Health Connect."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"הנתונים נמחקים"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"לא ניתן היה למחוק את הנתונים"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"משהו השתבש. מחיקת הנתונים שלך מ-Health Connect נכשלה"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"ניסיון חוזר"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"הנתונים מ-Health Connect נמחקים"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"הנתונים מ-Health Connect נמחקים"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"מחיקת נתונים"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"אפשרויות של רשומת הנתונים"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"מחיקת רשומה"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 ואט}one{# ואט}two{# ואט}other{# ואט}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 ואט}one{# ואט}two{# ואט}other{# ואט}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{צעד אחד}one{# צעדים}two{# צעדים}other{# צעדים}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{צעד אחד בדקה}one{# צעדים בדקה}two{# צעדים בדקה}other{# צעדים בדקה}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{צעד אחד בדקה}one{# צעדים בדקה}two{# צעדים בדקה}other{# צעדים בדקה}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{פעימה אחת בדקה}one{# פעימות בדקה}two{# פעימות בדקה}other{# פעימות בדקה}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{פעימה אחת לדקה}one{# פעימות לדקה}two{# פעימות לדקה}other{# פעימות לדקה}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{מייל אחד לשעה}one{# מייל לשעה}two{# מייל לשעה}other{# מייל לשעה}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{ק\"מ אחד לשעה}one{# קמ\"ש}two{# קמ\"ש}other{# קמ\"ש}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{מייל אחד לשעה}one{# מייל לשעה}two{# מייל לשעה}other{# מייל לשעה}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{קילומטר אחד לשעה}one{# קילומטרים לשעה}two{# קילומטרים לשעה}other{# קילומטרים לשעה}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"מ-<xliff:g id="START_TIME">%1$s</xliff:g> עד <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"מ-<xliff:g id="START_TIME">%1$s</xliff:g> עד <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{מייל אחד}one{# מייל}two{# מייל}other{# מייל}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{ק\"מ אחד}one{# ק\"מ}two{# ק\"מ}other{# ק\"מ}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{מייל אחד}one{# מייל}two{# מייל}other{# מייל}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{קילומטר אחד}one{# קילומטרים}two{# קילומטרים}other{# קילומטרים}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"יחידות"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"הגדרה של יחידות נתונים"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"מרחק"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"גובה"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"משקל"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"אנרגיה"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"טמפרטורה"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"קילומטרים"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"מייל"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"סנטימטרים"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"רגל ואינץ\'"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"פאונד"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"קילוגרמים"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"סטון"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"קלוריות"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"קילוג\'ול"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"צלזיוס"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"פרנהייט"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"קלווין"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"חסרות אפליקציות?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"אם אחת מהאפליקציות שהתקנת לא מוצגת, יכול להיות שהיא עדיין לא תואמת ל-Health Connect"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"פעולות שכדאי לנסות"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"חיפוש עדכונים"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"כדאי לוודא שהאפליקציות המותקנות מעודכנות"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"הצגת כל האפליקציות התואמות"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"חיפוש אפליקציות ב-Google Play"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"שליחת משוב"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"נשמח לשמוע ממך על אפליקציות כושר ובריאות שהיית רוצה שיעבדו עם Health Connect"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"חנות Play"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"מחיקה אוטומטית"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"מחיקה אוטומטית"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"אפשר להחליט כמה זמן הנתונים יאוחסנו ב-Health Connect ולתזמן את המחיקה שלהם לאחר זמן מוגדר מראש"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"מידע נוסף"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"מחיקה אוטומטית של נתונים"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{אחרי חודש אחד}one{אחרי # חודשים}two{אחרי חודשיים}other{אחרי # חודשים}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"אף פעם"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"כשמשנים את ההגדרות האלה, הנתונים הקיימים ב-Health Connect נמחקים כך שישקפו את ההעדפות החדשות"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{למחוק אוטומטית את הנתונים אחרי חודש אחד?}one{למחוק אוטומטית את הנתונים אחרי # חודשים?}two{למחוק אוטומטית את הנתונים אחרי חודשיים?}other{למחוק אוטומטית את הנתונים אחרי # חודשים?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי חודש אחד. ההגדרה הזאת תמחק גם נתונים קיימים מלפני חודש.}one{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי # חודשים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}two{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי חודשיים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}other{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי # חודשים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"הגדרת מחיקה אוטומטית"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"הנתונים הקיימים יימחקו"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{כל הנתונים מלפני חודש ויותר יימחקו מ-Health Connect‏.\nייתכן שיעבור יום עד שהשינויים האלה יופיעו באפליקציות המקושרות שלך.}one{כל הנתונים מלפני # חודשים ויותר יימחקו מ-Health Connect‏.\n ייתכן שיעבור יום עד שהשינויים האלה יופיעו באפליקציות המקושרות שלך.}two{כל הנתונים מלפני חודשיים ויותר יימחקו מ-Health Connect‏.\n ייתכן שיעבור יום עד שהשינויים האלה יופיעו באפליקציות המקושרות שלך.}other{כל הנתונים מלפני # חודשים ויותר יימחקו מ-Health Connect‏.\n ייתכן שיעבור יום עד שהשינויים האלה יופיעו באפליקציות המקושרות שלך.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"הנתונים שיימחקו מהקטגוריות האלה"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"סיום"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"ייצוא נתונים של Health Connect"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"בחירת הכול"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"ביטול הבחירה של הכול"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"הבא"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"אחזור נתונים לייצוא"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"ייצוא נתונים של Health Connect"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"ביטול"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"ההתקדמות של ייצוא הנתונים"</string>
+</resources>

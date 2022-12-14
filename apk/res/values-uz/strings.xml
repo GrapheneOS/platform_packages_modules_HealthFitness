@@ -62,7 +62,8 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"Bunga uyqu bosqichlari va seanslari kabi axborotlar kiradi"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"Barcha kiritilgan axborotlar"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Bu maʼlumotlarni oʻchirib tashlash"</string>
-    <string name="permgrouplab_health" msgid="2551416597744633297">"Salomatlik"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
     <string name="permgroupdesc_health" msgid="44553351410718944">"salomatlik axborotiga kirish"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Sarflangan kaloriyani oʻqish"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Ilovaga sarflangan kaloriyalar miqdorini oʻqish uchun ruxsat beradi"</string>
@@ -238,7 +239,6 @@
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Yozishga ruxsat berilgan"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Hech qanday ilovaga ruxsat berilmagan"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Hech qanday ilovaga taqiqlanmagan"</string>
-    <string name="health_permissions_title" msgid="3554702577269590720">"Salomatlik ruxsatlari"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Barcha ilovalar uchun taqiqlansinmi?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Ilovalardan hech biri Health Connectga kira olmaydi va yangi maʼlumotlarni kirita olmaydi. Hech qanday maʼlumot oʻchirilmaydi."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Hammasini tozalash"</string>
@@ -246,15 +246,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"Ilova maʼlumotlarini oʻchirsih"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"Nofaol ilovalar"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Bu ilovalarda endi ruxsat yoʻq, lekin ularning maʼlumotlari Health Connect ichida saqlanib turadi"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> ilovasi <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> sanasidan keyin kiritilgan maʼlumotlarga kira oladi"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Bu ilova olishi mumkin boʻlgan boshqa Android ruxsatlarini boshqarish uchun Sozlamalar &gt; Ilovalar rukniga kiring"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Axborotlar <xliff:g id="APP_NAME">%1$s</xliff:g> ilovasiga ularning maxfiylik siyosati asosida ulashiladi"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Bu ilova olishi mumkin boʻlgan boshqa Android ruxsatlarini boshqarish uchun Sozlamalar &gt; Ilovalar rukniga kiring"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Maxfiylik siyosatini oʻqish"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect bilan ishlashni boshlash"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect salomatlik va fitnes maʼlumotlaringizni xavfsiz saqlaydi va telefondagi boshqa ilovalarga oson sinxronlash imkonini beradi"</string>
@@ -323,13 +320,13 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{Soatiga 1 kilometr}other{Soatiga # kilometr}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> – <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> – <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 mil}other{# mil}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 mil}other{# mil}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilometr}other{# kilometr}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <!-- no translation found for calories (1646804751247540818) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"Birliklar"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Axborot birliklarini sozlash"</string>

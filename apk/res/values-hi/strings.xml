@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"अनुमतियां और डेटा"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"अपने फ़ोन पर, सेहत और फ़िटनेस से जुड़ा डेटा देखें और उसे मैनेज करें. साथ ही, यह भी कंट्रोल करें कि कौनसे ऐप्लिकेशन इसे ऐक्सेस कर सकते हैं"</string>
+    <string name="data_title" msgid="6928287139074878977">"डेटा और उसका ऐक्सेस"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"सभी कैटगरी"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"सभी कैटगरी देखें"</string>
+    <string name="no_data" msgid="1120552294863595549">"कोई डेटा उपलब्ध नहीं है"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"अपना डेटा और ऐप्लिकेशन में हाल ही में की गई गतिविधि की जानकारी देखें"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"ऐप्लिकेशन अनुमतियां"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"डिवाइस पर मौजूद ऐप्लिकेशन और उन्हें दी गई अनुमतियां मैनेज करें"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"हाल ही में, डेटा ऐक्सेस करने वाले ऐप्लिकेशन"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"हाल ही में, किसी भी ऐप्लिकेशन ने Health Connect का इस्तेमाल नहीं किया"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"सभी देखें"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"देखें कि पिछले 24 घंटों में किन ऐप्लिकेशन ने आपका डेटा ऐक्सेस किया है"</string>
+    <string name="today_header" msgid="3128127066599449902">"आज"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"बीता हुआ कल"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"गतिविधि"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"गतिविधि"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"शरीर की माप का डेटा"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"शरीर की माप का डेटा"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"नींद"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"नींद का डेटा"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"ज़रूरी जानकारी से जुड़ा डेटा"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"ज़रूरी जानकारी से जुड़ा डेटा"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"पीरियड साइकल का डेटा"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"पीरियड साइकल का डेटा"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"पोषण"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"पोषण"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"डेटा ब्राउज़ करें"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"डेटा मैनेज करें"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"डेटा एक्सपोर्ट करें"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"सारा डेटा मिटाएं"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Health Connect में आपका कोई डेटा मौजूद नहीं है"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"आपका डेटा"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"ऐप्लिकेशन की प्राथमिकता का क्रम"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"<xliff:g id="CATEGORY">%s</xliff:g> का डेटा मिटाएं"</string>
+    <string name="can_read" msgid="7989669150752961504">"ये ऐप्लिकेशन, <xliff:g id="PERMISSION_TYPE">%s</xliff:g> का डेटा पढ़ सकते हैं"</string>
+    <string name="can_write" msgid="8278769263589284926">"ये ऐप्लिकेशन, <xliff:g id="PERMISSION_TYPE">%s</xliff:g> का डेटा सेव कर सकते हैं"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"इनऐक्टिव ऐप्लिकेशन"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"ये ऐप्लिकेशन अब <xliff:g id="DATA_TYPE">%s</xliff:g> का डेटा सेव नहीं कर सकते. हालांकि, जो डेटा इन्होंने पहले सेव किया था वह अब भी Health Connect में मौजूद है"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"अब किसी भी ऐप्लिकेशन के पास, <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> का डेटा पढ़ने या उसे सेव करने की अनुमति नहीं है. साथ ही, Health Connect में <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> का कोई डेटा सेव नहीं किया गया है"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"इस डेटा में कई तरह की जानकारी शामिल होती है. जैसे, कसरत का कुल समय, किस तरह की कसरत की गई, कितने लैप किए गए, कसरत कितनी बार दोहराई गई, कितने सेशन या स्विमिंग स्ट्रोक किए"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"इस डेटा में, नींद के चरण और इसके सेशन वगैरह की जानकारी शामिल होती है"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"सभी एंट्री देखें"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"यह डेटा मिटाएं"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"आपके स्वास्थ्य की जानकारी से जुड़ा डेटा ऐक्सेस करने की अनुमति दें"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"खर्च हुई कैलोरी का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"इससे ऐप्लिकेशन को खर्च की गई कैलोरी का डेटा पढ़ने की अनुमति मिलती है"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"शारीरिक गतिविधि के दौरान खर्च हुई कैलोरी का डेटा"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"शारीरिक गतिविधि के दौरान खर्च हुई कैलोरी का डेटा"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"शारीरिक गतिविधि के दौरान खर्च हुई कैलोरी का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"शारीरिक गतिविधि के दौरान खर्च हुई कैलोरी का डेटा सेव करने की अनुमति दें"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"कसरत का डेटा"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"कसरत का डेटा"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"कसरत का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"कसरत का डेटा सेव करने की अनुमति दें"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"दूरी का डेटा"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"दूरी का डेटा"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"तय की गई दूरी का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"तय की गई दूरी का डेटा सेव करने की अनुमति दें"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"तय की गई ऊंचाई का डेटा"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"तय की गई ऊंचाई का डेटा"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"तय की गई ऊंचाई का डेटा देखने की अनुमति दें"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"तय की गई ऊंचाई का डेटा सेव करने की अनुमति दें"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"कितने फ़्लोर चढ़े गए, इसका डेटा"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"कितने फ़्लोर चढ़े गए, इसका डेटा"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"कितने फ़्लोर चढ़े गए, इसका डेटा पढ़ने की अनुमति दें"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"कितने फ़्लोर चढ़े गए, इसका डेटा सेव करने की अनुमति दें"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"शारीरिक गतिविधि से बनी पावर"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"शारीरिक गतिविधि से बनी पावर का डेटा"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"शारीरिक गतिविधि से बनी पावर का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"शारीरिक गतिविधि से बनी पावर का डेटा सेव करने की अनुमति दें"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"शारीरिक गतिविधि की स्पीड का डेटा"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"शारीरिक गतिविधि की स्पीड का डेटा"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"शारीरिक गतिविधि की स्पीड का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"शारीरिक गतिविधि की स्पीड का डेटा सेव करने की अनुमति दें"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"कदमों का डेटा"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"कदमों का डेटा"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"चलते समय लिए गए कदमों का डेटा देखने की अनुमति दें"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"चलते समय लिए गए कदमों का डेटा सेव करने की अनुमति दें"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"खर्च हुई कुल कैलोरी का डेटा"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"खर्च हुई कुल कैलोरी का डेटा"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"खर्च हुई कुल कैलोरी का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"खर्च हुई कुल कैलोरी का डेटा सेव करने की अनुमति दें"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"शारीरिक गतिविधि के दौरान ली गई ज़्यादा से ज़्यादा ऑक्सीजन का डेटा"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"शारीरिक गतिविधि के दौरान ली गई ज़्यादा से ज़्यादा ऑक्सीजन का डेटा"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"शारीरिक गतिविधि के दौरान ली गई ज़्यादा से ज़्यादा ऑक्सीजन का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"शारीरिक गतिविधि के दौरान ली गई ज़्यादा से ज़्यादा ऑक्सीजन का डेटा सेव करने की अनुमति दें"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"व्हीलचेयर ढकेलने से जुड़ा डेटा"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"व्हीलचेयर ढकेलने से जुड़ा डेटा"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"व्हीलचेयर ढकेलने से जुड़ा डेटा पढ़ने की अनुमति दें"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"व्हीलचेयर ढकेलने से जुड़ा डेटा सेव करने की अनुमति दें"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"बेसल मेटाबॉलिक रेट का डेटा"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"बेसल मेटाबॉलिक रेट का डेटा"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"बेसल मेटाबॉलिक रेट का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"बेसल मेटाबॉलिक रेट का डेटा सेव करने की अनुमति दें"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"बॉडी फ़ैट का डेटा"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"बॉडी फ़ैट का डेटा"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"बॉडी फ़ैट का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"बॉडी फ़ैट का डेटा सेव करने की अनुमति दें"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"शरीर में मौजूद पानी की मात्रा का डेटा"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"शरीर में मौजूद पानी की मात्रा का डेटा"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"शरीर में मौजूद पानी की मात्रा का डेटा देखने की अनुमति दें"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"शरीर में मौजूद पानी की मात्रा का डेटा सेव करने की अनुमति दें"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"हड्डियों की मज़बूती का डेटा"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"हड्डियों की मज़बूती का डेटा"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"हड्डियों की मज़बूती का डेटा देखने की अनुमति दें"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"हड्डियों की मज़बूती का डेटा सेव करने की अनुमति दें"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"लंबाई का डेटा"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"लंबाई का डेटा"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"लंबाई का डेटा देखने की अनुमति दें"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"लंबाई का डेटा सेव करने की अनुमति दें"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"कूल्हे की माप का डेटा"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"कूल्हे की माप का डेटा"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"कूल्हे की माप का डेटा देखने की अनुमति दें"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"कूल्हे की माप का डेटा सेव करने की अनुमति दें"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"फ़ैट के बिना, शरीर के वज़न का डेटा"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"फ़ैट के बिना, शरीर के वज़न का डेटा"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"फ़ैट के बिना, शरीर के वज़न का डेटा देखने की अनुमति दें"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"फ़ैट के बिना, शरीर के वज़न का डेटा सेव करने की अनुमति दें"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"कमर की नाप"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"कमर की नाप का डेटा"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"कमर की नाप का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"कमर की नाप का डेटा सेव करने की अनुमति दें"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"वज़न का डेटा"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"वज़न का डेटा"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"वज़न का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"वज़न का डेटा सेव करने की अनुमति दें"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"सर्विकल म्यूकस का डेटा"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"सर्विकल म्यूकस का डेटा"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"सर्विकल म्यूकस का डेटा देखने की अनुमति दें"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"सर्विकल म्यूकस का डेटा सेव करने की अनुमति दें"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"माहवारी का डेटा"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"माहवारी का डेटा"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"माहवारी का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"माहवारी का डेटा सेव करने की अनुमति दें"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"ऑव्युलेशन टेस्ट का डेटा"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"ऑव्युलेशन टेस्ट का डेटा"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"ऑव्युलेशन टेस्ट का डेटा देखने की अनुमति दें"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"ऑव्युलेशन टेस्ट का डेटा सेव करने की अनुमति दें"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"सेक्शुअल गतिविधि का डेटा"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"सेक्शुअल गतिविधि का डेटा"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"सेक्शुअल गतिविधि का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"सेक्शुअल गतिविधि का डेटा सेव करने की अनुमति दें"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"खून के हल्के रिसाव का डेटा"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"खून के हल्के रिसाव का डेटा"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"खून के हल्के रिसाव का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"खून के हल्के रिसाव का डेटा सेव करने की अनुमति दें"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"हाइड्रेशन"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"हाइड्रेशन का डेटा"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"हाइड्रेशन का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"हाइड्रेशन का डेटा सेव करने की अनुमति दें"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"पोषण का डेटा"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"पोषण का डेटा"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"पोषण का डेटा देखने की अनुमति दें"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"पोषण का डेटा सेव करने की अनुमति दें"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"नींद का डेटा"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"नींद का डेटा"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"नींद का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"नींद का डेटा सेव करने की अनुमति दें"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"आराम करते समय शरीर का तापमान"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"आराम करते समय शरीर के तापमान का डेटा"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"आराम करते समय शरीर के तापमान का डेटा देखने की अनुमति दें"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"आराम करते समय शरीर के तापमान का डेटा सेव करने की अनुमति दें"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"ब्लड शुगर"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"ब्लड शुगर का डेटा"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"ब्लड शुगर का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"ब्लड शुगर का डेटा सेव करने की अनुमति दें"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"ब्लड प्रेशर का डेटा"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"ब्लड प्रेशर का डेटा"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"ब्लड प्रेशर का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"ब्लड प्रेशर का डेटा सेव करने की अनुमति दें"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"शरीर के तापमान का डेटा"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"शरीर के तापमान का डेटा"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"शरीर के तापमान का डेटा देखने की अनुमति दें"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"शरीर के तापमान का डेटा सेव करने की अनुमति दें"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"धड़कन की दर का डेटा"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"धड़कन की दर का डेटा"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"धड़कन की दर का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"धड़कन की दर का डेटा सेव करने की अनुमति दें"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"धड़कन की दर में हुए उतार-चढ़ाव"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"धड़कन की दर में हुए उतार-चढ़ाव"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"धड़कन की दर में हुए उतार-चढ़ाव का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"धड़कन की दर में हुए उतार-चढ़ाव का डेटा सेव करने की अनुमति दें"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"ऑक्सीजन की मात्रा का डेटा"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"ऑक्सीजन की मात्रा का डेटा"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"ऑक्सीजन की मात्रा का डेटा देखने की अनुमति दें"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"ऑक्सीजन की मात्रा का डेटा सेव करने की अनुमति दें"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"सांस की दर का डेटा"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"सांस की दर का डेटा"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"सांस की दर का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"सांस की दर का डेटा सेव करने की अनुमति दें"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"आराम करते समय धड़कन की दर का डेटा"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"आराम करते समय धड़कन की दर का डेटा"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"आराम करते समय धड़कन की दर का डेटा पढ़ने की अनुमति दें"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"आराम करते समय धड़कन की दर का डेटा सेव करने की अनुमति दें"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect का डेटा पढ़ने की अनुमति है"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Health Connect का डेटा सेव करने की अनुमति है"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"रद्द करें"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"अनुमति दें"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"सभी को अनुमति दें"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"चुनें कि इस ऐप्लिकेशन को, Health Connect में मौजूद कौनसा डेटा पढ़ने या सेव करने की अनुमति देनी है"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"अगर आपने इस ऐप्लिकेशन को पढ़ने का ऐक्सेस दिया है, तो यह नया और पिछले 30 दिनों का डेटा पढ़ सकता है"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"क्या आपको <xliff:g id="APP_NAME">%1$s</xliff:g> को Health Connect का डेटा ऐक्सेस करने की अनुमति देनी है?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g>, आपके डेटा को कैसे हैंडल करता है इसके बारे में जानने के लिए, डेवलपर की <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> में जाएं"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"निजता नीति"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"अगला दिन"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"पिछला दिन"</string>
+    <string name="default_error" msgid="7047939092442348839">"कोई गड़बड़ी हुई. कृपया फिर से कोशिश करें."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"जिन ऐप्लिकेशन के पास यह अनुमति है वे आपके स्वास्थ्य की जानकारी से जुड़ा डेटा पढ़ सकते हैं और उसे सेव कर सकते हैं."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"कंट्रोल करें कि कौनसे ऐप्लिकेशन, Health Connect में सेव किए गए डेटा को ऐक्सेस कर सकते हैं. कोई ऐप्लिकेशन कौनसा डेटा पढ़ या सेव कर सकता है, यह देखने के लिए उस टैप करें."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"ऐक्सेस करने की अनुमति है"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"ऐक्सेस की अनुमति नहीं है"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"सेटिंग और सहायता"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"सभी ऐप्लिकेशन के लिए ऐक्सेस हटाएं"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"क्या सभी ऐप्लिकेशन नहीं दिख रहे हैं?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"यह जानकारी पढ़ने की अनुमति है"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"यह जानकारी सेव करने की अनुमति है"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"किसी भी ऐप्लिकेशन को अनुमति नहीं है"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"सभी ऐप्लिकेशन को अनुमति दी गई"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"क्या आपको सभी ऐप्लिकेशन के लिए ऐक्सेस हटाना है?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"आपके किसी भी ऐप्लिकेशन को Health Connect में नया डेटा जोड़ने या उसमें मौजूद डेटा को ऐक्सेस करने की अनुमति नहीं होगी. हालांकि, ऐसा करने से कोई मौजूदा डेटा नहीं मिटेगा."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"सभी अनुमतियां हटाएं?"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"ऐप्लिकेशन मैनेज करें"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"ऐप्लिकेशन का डेटा मिटाएं"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"इनऐक्टिव ऐप्लिकेशन"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"ये ऐप्लिकेशन अब Health Connect को ऐक्सेस नहीं कर सकते. हालांकि, जो डेटा इन्होंने पहले सेव किया था वह अब भी Health Connect में मौजूद है"</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Health Connect का इस्तेमाल शुरू करें"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect में, सेहत और फ़िटनेस से जुड़ा आपका डेटा सेव किया जाता है. इससे, अपने फ़ोन में अलग-अलग ऐप्लिकेशन को आसानी से सिंक करने में मदद मिलती है"</string>
+    <string name="share_data" msgid="3461840023402996573">"ऐप्लिकेशन के साथ डेटा शेयर करें"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"यह चुनें कि हर ऐप्लिकेशन, Health Connect में कौनसा डेटा पढ़ या सेव कर सकता है"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"सेटिंग और निजता को मैनेज करें"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"किसी भी समय, ऐप्लिकेशन को दी गई अनुमतियों में बदलाव करें और अपना डेटा मैनेज करें"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"वापस जाएं"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"शुरू करें"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"डेटा मिटाएं"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"डेटा मिटाने के लिए समयसीमा चुनें"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"आगे बढ़ें"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"ऐसा करने पर, चुनी गई समयावधि के दौरान Health Connect में सेव किया गया डेटा हमेशा के लिए मिट जाता है"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"ऐसा करने पर, चुनी गई समयावधि के दौरान Health Connect में <xliff:g id="DATA_TYPE">%s</xliff:g> का सेव किया गया डेटा हमेशा के लिए मिट जाता है"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"ऐसा करने पर, चुनी गई समयावधि के दौरान Health Connect में <xliff:g id="CATEGORY">%s</xliff:g> का सेव किया गया डेटा हमेशा के लिए मिट जाता है"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"ऐसा करने पर, चुनी गई समयावधि के दौरान Health Connect में <xliff:g id="APP_DATA">%s</xliff:g> का सेव किया गया का डेटा हमेशा के लिए मिट जाता है"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"पिछले 24 घंटे का डेटा मिटाएं"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"पिछले सात दिनों का डेटा मिटाएं"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"पिछले 30 दिनों का डेटा मिटाएं"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"सारा डेटा मिटाएं"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"क्या आपको सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"क्या आपको पिछले 24 घंटों का सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"क्या आपको पिछले सात दिनों का सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"क्या आपको पिछले 30 दिनों का सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"क्या आपको <xliff:g id="DATA_TYPE">%s</xliff:g> का सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"क्या आपको <xliff:g id="DATA_TYPE">%s</xliff:g> का पिछले 24 घंटों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"क्या आपको <xliff:g id="DATA_TYPE">%s</xliff:g> का पिछले सात दिनों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"क्या आपको <xliff:g id="DATA_TYPE">%s</xliff:g> का पिछले 30 दिनों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"क्या आपको <xliff:g id="CATEGORY">%s</xliff:g> का सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"क्या आपको <xliff:g id="CATEGORY">%s</xliff:g> का पिछले 24 घंटों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"क्या आपको <xliff:g id="CATEGORY">%s</xliff:g> का पिछले सात दिनों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"क्या आपको <xliff:g id="CATEGORY">%s</xliff:g> का पिछले 30 दिनों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"क्या आपको <xliff:g id="APP_DATA">%s</xliff:g> का सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"क्या आपको <xliff:g id="APP_DATA">%s</xliff:g> का पिछले 24 घंटों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"क्या आपको <xliff:g id="APP_DATA">%s</xliff:g> का पिछले सात दिनों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"क्या आपको <xliff:g id="APP_DATA">%s</xliff:g> का पिछले 30 दिनों का डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"उन सभी अनुमतियों को भी हटाएं जो Health Connect ने <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> को दी थीं"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"क्या आपको <xliff:g id="APP_DATA">%2$s</xliff:g> से सेव किया गया, <xliff:g id="DATA_TYPE">%1$s</xliff:g> का सारा डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"क्या आपको यह डेटा हमेशा के लिए मिटाना है?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"ऐसा करने पर, डिवाइस से जुड़े ऐप्लिकेशन, Health Connect के इस डेटा को ऐक्सेस नहीं कर पाएंगे"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"मिटाएं"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"वापस जाएं"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"हो गया"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"बंद करें"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"डेटा मिटा दिया गया है"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"यह डेटा अब Health Connect में मौजूद नहीं है."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"आपका डेटा मिटाया जा रहा है"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"डेटा मिटाया नहीं जा सका"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"कोई गड़बड़ी हुई. इस वजह से, Health Connect आपके डेटा को मिटा नहीं सका"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"फिर से कोशिश करें"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Health Connect का डेटा मिटाया जा रहा है"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Health Connect का डेटा मिटाया जा रहा है"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"डेटा मिटाना"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"डेटा एंट्री के लिए विकल्प"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"एंट्री मिटाएं"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 वॉट}one{# वॉट}other{# वॉट}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 वॉट}one{# वॉट}other{# वॉट}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 कदम}one{# कदम}other{# कदम}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 कदम/मिनट}one{# कदम/मिनट}other{# कदम/मिनट}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 कदम प्रति मिनट}one{# कदम प्रति मिनट}other{# कदम प्रति मिनट}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 बीपीएम}one{# बीपीएम}other{# बीपीएम}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 धड़कन प्रति मिनट}one{# धड़कन प्रति मिनट}other{# धड़कन प्रति मिनट}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 मील/घं॰}one{# मील/घं॰}other{# मील/घं॰}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 कि॰मी॰/घं॰}one{# कि॰मी॰/घं॰}other{# कि॰मी॰/घं॰}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 मील प्रति घंटा}one{# मील प्रति घंटा}other{# मील प्रति घंटा}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 किलोमीटर प्रति घंटा}one{# किलोमीटर प्रति घंटा}other{# किलोमीटर प्रति घंटा}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> से <xliff:g id="END_TIME">%2$s</xliff:g> तक"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> से <xliff:g id="END_TIME">%2$s</xliff:g> तक"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"इकाइयां"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"डेटा की इकाइयां सेट करें"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"दूरी"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"लंबाई"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"वज़न"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"ऊर्जा"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"तापमान"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"किलोमीटर"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"मील"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"सेंटीमीटर"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"फ़ीट और इंच"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"पाउंड"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"किलोग्राम"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"स्टोन"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"कैलोरी"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"किलोजूल"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"सेल्सियस"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"फ़ैरनहाइट"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"केल्विन"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"क्या आपको सभी ऐप्लिकेशन नहीं दिख रहे हैं?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"अगर आपको इंस्टॉल किया गया कोई ऐप्लिकेशन नहीं दिख रहा है, तो हो सकता है कि वह अब तक Health Connect के साथ काम न करता हो"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"इन तरीकों को आज़माएं"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"अपडेट देखें"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"पक्का करें कि इंस्टॉल किए गए ऐप्लिकेशन अप-टू-डेट हों"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"साथ काम करने वाले सभी ऐप्लिकेशन देखें"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Google Play पर ऐप्लिकेशन ढूंढें"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"सुझाव दें या शिकायत करें"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"हमें बताएं कि आपको Health Connect के साथ, स्वास्थ्य और फ़िटनेस से जुड़े कौनसे ऐप्लिकेशन इस्तेमाल करने हैं"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play Store"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"ऑटोमैटिकली मिटाएं"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"ऑटोमैटिकली मिटाएं"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"यह कंट्रोल करें कि Health Connect में आपका डेटा कितने समय तक सेव करके रखा जाए. इसके लिए, आपको डेटा को तय समय के बाद मिटाने का शेड्यूल सेट करना होगा"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"ज़्यादा जानें"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"डेटा को ऑटोमैटिकली मिटाएं"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{# महीने के बाद}one{# महीने के बाद}other{# महीनों के बाद}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"कभी नहीं"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"इन सेटिंग में बदलाव करने पर, Health Connect आपकी नई सेटिंग के हिसाब से डेटा दिखाने के लिए, मौजूदा डेटा को मिटा देता है"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{क्या आपको # महीने के बाद, डेटा को ऑटोमैटिकली मिटाना है?}one{क्या आपको # महीने के बाद, डेटा को ऑटोमैटिकली मिटाना है?}other{क्या आपको # महीने के बाद, डेटा को ऑटोमैटिकली मिटाना है?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}one{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}other{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"ऑटोमैटिकली मिटाने की सुविधा को सेट करें"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"मौजूदा डेटा मिटा दिया जाएगा"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect, # महीने से पुराना सारा डेटा मिटा देगा.\nइन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}one{Health Connect, # महीने से पुराना सारा डेटा मिटा देगा.\nइन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}other{Health Connect, # महीने से पुराना सारा डेटा मिटा देगा.\nइन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"इन कैटगरी का डेटा मिटा दिया जाएगा"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"हो गया"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Health Connect का डेटा एक्सपोर्ट करें"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"सभी चुनें"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"सभी आइटम से चुने हुए का निशान हटाएं"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"आगे बढ़ें"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"एक्सपोर्ट करने के लिए, डेटा को फ़ेच किया जा रहा है"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect का डेटा एक्सपोर्ट किया जा रहा है"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"रद्द करें"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"एक्सपोर्ट किए जा रहे डेटा की स्थिति"</string>
+</resources>

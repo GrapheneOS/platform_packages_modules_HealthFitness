@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"Mga pahintulot at data"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"Suriin at pamahalaan ang data ng kalusugan at fitness sa iyong telepono, at kontrolin kung aling mga app ang makaka-access dito"</string>
+    <string name="data_title" msgid="6928287139074878977">"Data at access"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"Lahat ng kategorya"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"Tingnan ang lahat ng kategorya"</string>
+    <string name="no_data" msgid="1120552294863595549">"Walang data"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"Tingnan ang iyong data at kamakailang aktibidad sa app"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Mga pahintulot sa app"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Pamahalaan ang iyong mga app at pahintulot"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"Kamakailang na-access"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"Walang app na kamakailangang nag-access ng Health Connect"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"Tingnan lahat"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"Tingnan kung aling mga app ang nag-access ng iyong data sa loob ng nakalipas na 24 na oras"</string>
+    <string name="today_header" msgid="3128127066599449902">"Ngayon"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"Kahapon"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"Aktibidad"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"aktibidad"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Mga sukat ng katawan"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"mga sukat ng katawan"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Pagtulog"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"pagtulog"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Vitals"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"vitals"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Pagsubaybay sa cycle"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"pagsubaybay sa cycle"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Nutrisyon"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"nutrisyon"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"I-browse ang data"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"Pamahalaan ang data"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"Mag-export ng data"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"I-delete ang lahat ng data"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Wala kang anumang data sa Health Connect"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"Ang iyong data"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"Priyoridad ng app"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"I-delete ang data ng <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="can_read" msgid="7989669150752961504">"Puwedeng tumingin ng <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="8278769263589284926">"Puwedeng mag-edit ng <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"Mga hindi aktibong app"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"Hindi na puwedeng i-write ng mga app na ito ang data ng <xliff:g id="DATA_TYPE">%s</xliff:g>, pero maso-store pa rin ang data ng mga ito sa Health Connect"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"Hindi na puwedeng mag-read o mag-write ng <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ang mga app at walang naka-store na data ng <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> sa Health Connect"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"Kasama sa data na ito ang impormasyon tulad ng oras na aktibo, uri ng ehersisyo, mga lap, mga pag-uulit, mga session, o mga swimming stroke"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"Kasama sa data na ito ang impormasyon tulad ng mga yugto ng pagtulog at session ng pagtulog"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"Tingnan ang lahat ng entry"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"I-delete ang data na ito"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"i-access ang iyong data ng kalusugan"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"I-read ang na-burn na calorie"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Pinapayagan ang app na i-read ang mga na-burn na calorie"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Mga calorie na na-burn habang aktibo"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"mga calorie na na-burn habang aktibo"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"I-read ang mga calorie na na-burn habang aktibo"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"I-write ang mga calorie na na-burn habang aktibo"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Ehersisyo"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"ehersisyo"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"I-read ang ehersisyo"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"I-write ang ehersisyo"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"Layo"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"layo"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"I-read ang layo"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"I-write ang layo"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Nadagdag na taas"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"nadagdag na taas"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"I-read ang nadagdag na taas"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"I-write ang nadagdag na taas"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Mga palapag na naakyat"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"mga palapag na naakyat"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"I-read ang mga palapag na naakyat"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"I-write ang mga palapag na naakyat"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"Power"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"power"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"I-read ang power"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"I-write ang power"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"Bilis"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"bilis"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"I-read ang bilis"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"I-write ang bilis"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"Mga Hakbang"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"mga hakbang"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"I-read ang mga hakbang"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"I-write ang mga hakbang"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Kabuuang mga na-burn na calorie"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"kabuuang mga na-burn na calorie"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"I-read ang kabuuang mga na-burn na calorie"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"I-write ang kabuuang mga na-burn na calorie"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"VO2 max"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"VO2 max"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"I-read ang VO2 max"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"I-write ang VO2 max"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Mga pagtulak ng wheelchair"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"mga pagtulak ng wheelchair"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"I-read ang mga pagtulak ng wheelchair"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"I-write ang mga pagtulak ng wheelchair"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Basal metabolic rate"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"basal metabolic rate"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"I-read ang basal metabolic rate"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"I-write ang basal metabolic rate"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Taba sa katawan"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"taba sa katawan"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"I-read ang taba sa katawan"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"I-write ang taba sa katawan"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Mass ng tubig sa katawan"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"mass ng tubig sa katawan"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"I-read ang mass ng tubig sa katawan"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"I-write ang mass ng tubig sa katawan"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Mass ng buto"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"mass ng buto"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"I-read ang mass ng buto"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"I-write ang mass ng buto"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"Tangkad"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"tangkad"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"I-read ang tangkad"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"I-write ang tangkad"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Circumference ng balakang"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"circumference ng balakang"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"I-read ang circumference ng balakang"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"I-write ang circumference ng balakang"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Lean na mass ng katawan"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"lean na mass ng katawan"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"I-read ang lean na mass ng katawan"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"I-write ang lean na mass ng katawan"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Circumference ng baywang"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"circumference ng baywang"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"I-read ang circumference ng baywang"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"I-write ang circumference ng baywang"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"Bigat"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"bigat"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"I-read ang timbang"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"I-write ang timbang"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Mucus sa cervix"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"mucus sa cervix"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"I-read ang mucus sa cervix"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"I-write ang mucus sa cervix"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Regla"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"regla"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"I-read ang regla"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"I-write ang regla"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Pagsusuri sa ovulation"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"pagsusuri sa ovulation"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"I-read ang pagsusuri sa ovulation"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"I-write ang pagsusuri sa ovulation"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Sekswal na aktibidad"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"sekswal na aktibidad"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"I-read ang sekswal na aktibidad"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"I-write ang sekswal na aktibidad"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"Spotting"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"spotting"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"Mag-read ng data sa spotting"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"Mag-write ng data sa spotting"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Hydration"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"hydration"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"I-read ang hydration"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"I-write ang hydration"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Nutrisyon"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"nutrisyon"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"I-read ang nutrisyon"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"I-write ang nutrisyon"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Pagtulog"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"pagtulog"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"I-read ang pagtulog"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"I-write ang pagtulog"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Basal body temperature"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"basal body temperature"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"I-read ang basal body temperature"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"I-write ang basal body temperature"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Glucose sa dugo"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"glucose sa dugo"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"I-read ang glucose sa dugo"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"I-write ang glucose sa dugo"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Presyon ng dugo"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"presyon ng dugo"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"I-read ang presyon ng dugo"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"I-write ang presyon ng dugo"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Temperatura ng katawan"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"temperatura ng katawan"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"I-read ang temperatura ng katawan"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"I-write ang temperatura ng katawan"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Bilis ng tibok ng puso"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"bilis ng tibok ng puso"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"I-read ang bilis ng tibok ng puso"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"I-write ang bilis ng tibok ng puso"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Pagbabago sa bilis ng tibok ng puso"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"pagbabago sa bilis ng tibok ng puso"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"I-read ang pagbabago sa bilis ng tibok ng puso"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"I-write ang pagbabago sa bilis ng tibok ng puso"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Oxygen saturation"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"oxygen saturation"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"I-read ang oxygen saturation"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"I-write ang oxygen saturation"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Bilis ng paghinga"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"bilis ng paghinga"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"I-read ang bilis ng paghinga"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"I-write ang bilis ng paghinga"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Bilis ng tibok ng puso habang nagpapahinga"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"bilis ng tibok ng puso habang nagpapahinga"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"I-read ang bilis ng tibok ng puso habang nagpapahinga"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"I-write ang bilis ng tibok ng puso habang nagpapahinga"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Puwedeng mag-read sa Health Connect"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Puwedeng mag-write sa Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"Kanselahin"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"Payagan"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Payagan ang lahat"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Piliin ang data na gusto mong i-read o i-write ng app na ito sa Health Connect"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Kung magbibigay ka ng access sa pag-read, mari-read ng app na ito ang bagong data at data mula sa nakalipas ng 30 araw"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Payagan ang <xliff:g id="APP_NAME">%1$s</xliff:g> na i-access ang Health Connect?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"Puwede mong alamin kung paano pinapangasiwaan ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang iyong data sa <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> ng developer"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"patakaran sa privacy"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"Kinabukasan"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"Nakaraang araw"</string>
+    <string name="default_error" msgid="7047939092442348839">"Nagkaproblema. Subukan ulit."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"Mari-read at mara-write ng mga app na may ganitong pahintulot ang iyong data ng kalusugan."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Kontrolin kung aling mga app ang makaka-access sa data na naka-store sa Health Connect. Mag-tap ng app para suriin ang data na puwede nitong i-read o i-write."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"Pinapayagan ang access"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Hindi pinapayagan ang access"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"Mga setting at tulong"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"Alisin ang access para sa lahat ng app"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Hindi makita ang lahat ng iyong app?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Pinapayagang i-read"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Pinapayagang i-write"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"Walang pinayagang app"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"Walang tinanggihang app"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Alisin ang access para sa lahat ng app?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Hindi na makaka-access o makakapagdagdag ng bagong data sa Health Connect ang anumang app mo. Hindi nito dine-delete ang anumang kasalukuyang data."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Alisin lahat"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Pamahalaan ang app"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"I-delete ang data ng app"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Mga hindi aktibong app"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Wala nang access ang mga app na ito, pero mayroon pa ring data ang mga ito na naka-store sa Health Connect"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"Maa-access ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang data na idinagdag pagkalipas ng <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Para pamahalaan ang iba pang pahintulot sa Android na maa-access ng app na ito, pumunta sa Mga Setting &gt; Mga App"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Sinasaklaw ang data na ibinabahagi mo sa <xliff:g id="APP_NAME">%1$s</xliff:g> ng patakaran sa privacy ng mga ito"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Para pamahalaan ang iba pang pahintulot sa Android na maa-access ng app na ito, pumunta sa Mga Setting, pagkatapos ay i-tap ang Mga App"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Basahin ang patakaran sa privacy"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Magsimula sa Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Sino-store ng Health Connect ang iyong data ng kalusugan at fitness, na nagbibigay sa iyo ng simpleng paraan para i-sync ang iba\'t ibang app sa telepono mo"</string>
+    <string name="share_data" msgid="3461840023402996573">"Magbahagi ng data sa iyong mga app"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Piliin ang data na puwedeng i-read o i-write ng bawat app sa Health Connect"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Pamahalaan ang iyong mga setting at privacy"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"Baguhin ang mga pahintulot sa app at pamahalaan ang iyong data kahit kailan"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Bumalik"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Magsimula"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"Mag-delete ng data"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Pumili ng data na ide-delete"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"Susunod"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"Permanente nitong ide-delete ang lahat ng data na idaragdag sa Health Connect sa napiling yugto ng panahon"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"Permanente nitong ide-delete ang data ng <xliff:g id="DATA_TYPE">%s</xliff:g> na idaragdag sa Health Connect sa napiling yugto ng panahon"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"Permanente nitong ide-delete ang data ng <xliff:g id="CATEGORY">%s</xliff:g> na idaragdag sa Health Connect sa napiling yugto ng panahon"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"Permanente nitong ide-delete ang data ng <xliff:g id="APP_DATA">%s</xliff:g> na idaragdag sa Health Connect sa napiling yugto ng panahon"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"I-delete ang nakalipas na 24 na oras"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"I-delete ang nakalipas na 7 araw"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"I-delete ang nakalipas na 30 araw"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"I-delete ang lahat ng data"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"Permanenteng i-delete ang lahat ng data mula sa lahat ng panahon?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Permanenteng i-delete ang lahat ng data mula sa nakalipas na 24 na oras?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Permanenteng i-delete ang lahat ng data mula sa nakalipas na 7 araw?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Permanenteng i-delete ang lahat ng data mula sa nakalipas na 30 araw?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Permanenteng i-delete ang data ng <xliff:g id="DATA_TYPE">%s</xliff:g> mula sa lahat ng panahon?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Permanenteng i-delete ang data ng <xliff:g id="DATA_TYPE">%s</xliff:g> mula sa nakalipas na 24 na oras?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Permanenteng i-delete ang data ng <xliff:g id="DATA_TYPE">%s</xliff:g> mula sa nakalipas na 7 araw?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Permanenteng i-delete ang data ng <xliff:g id="DATA_TYPE">%s</xliff:g> mula sa nakalipas na 30 araw?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"Permanenteng i-delete ang data ng <xliff:g id="CATEGORY">%s</xliff:g> mula sa lahat ng panahon?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Permanenteng i-delete ang data ng <xliff:g id="CATEGORY">%s</xliff:g> mula sa nakalipas na 24 na oras?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Permanenteng i-delete ang data ng <xliff:g id="CATEGORY">%s</xliff:g> mula sa nakalipas na 7 araw?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Permanenteng i-delete ang data ng <xliff:g id="CATEGORY">%s</xliff:g> mula sa nakalipas na 30 araw?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Permanenteng i-delete ang data ng <xliff:g id="APP_DATA">%s</xliff:g> mula sa lahat ng panahon?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Permanenteng i-delete ang data ng <xliff:g id="APP_DATA">%s</xliff:g> mula sa nakalipas na 24 na oras?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Permanenteng i-delete ang data ng <xliff:g id="APP_DATA">%s</xliff:g> mula sa nakalipas na 7 araw?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Permanenteng i-delete ang data ng <xliff:g id="APP_DATA">%s</xliff:g> mula sa nakalipas na 30 araw?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Alisin din ang lahat ng pahintulot sa <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> mula sa Health Connect"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Permanenteng i-delete ang lahat ng data ng <xliff:g id="DATA_TYPE">%1$s</xliff:g> na idinagdag ng <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Permanenteng i-delete ang entry na ito?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Hindi na maa-access ng mga nakakonektang app ang data na ito mula sa Health Connect"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"I-delete"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Bumalik"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Tapos na"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Isara"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Na-delete ang data"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Hindi na naka-store ang data na ito sa Health Connect."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"Pag-delete ng iyong data"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Hindi na-delete ang data"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Nagkaroon ng problema at hindi na-delete ng Health Connect ang iyong data"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Subukan ulit"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Dine-delete ang data ng Health Connect"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Dine-delete ang data ng Health Connect"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Pag-delete ng data"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"Mga opsyon sa entry ng data"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"I-delete ang entry"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 W}one{# W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 watt}one{# watts}other{# watts}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 hakbang}one{# hakbang}other{# na hakbang}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 hakbang/min}one{# hakbang/min}other{# na hakbang/min}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 hakbang kada minuto}one{# hakbang kada minuto}other{# na hakbang kada minuto}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 bpm}one{# bpm}other{# bpm}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 tibok ng puso kada minuto (beat per minute o bpm)}one{# tibok ng puso kada minuto (beats per minute o bpm)}other{# na tibok ng puso kada minuto (beats per minute o bpm)}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 mph}one{# mph}other{# mph}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 km/h}one{# km/h}other{# km/h}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 milya kada oras}one{# milya kada oras}other{# na milya kada oras}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometro kada oras}one{# kilometro kada oras}other{# na kilometro kada oras}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"mula <xliff:g id="START_TIME">%1$s</xliff:g> hanggang <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"mula <xliff:g id="START_TIME">%1$s</xliff:g> hanggang <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 milya}one{# milya}other{# na milya}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}one{# km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 milya}one{# milya}other{# na milya}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilometro}one{# kilometro}other{# na kilometro}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"Mga Unit"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"Magtakda ng mga unit ng data"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"Layo"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"Tangkad"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"Bigat"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"Kuryente"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"Temperatura"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometro"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Milya"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Mga Centimeter"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"Mga Talampakan at Pulgada"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Mga Pound"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Mga Kilogram"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Mga Stone"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Mga Calorie"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Mga Kilojoule"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celsius"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Fahrenheit"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Hindi makita ang lahat ng iyong app?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Kung wala kang makitang naka-install na app, posibleng hindi pa ito compatible sa Health Connect."</string>
+    <string name="things_to_try" msgid="5007292603680871491">"Mga dapat subukan"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"Tumingin ng mga update"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"Tiyaking up-to-date ang mga naka-install na app"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Tingnan ang lahat ng compatible na app"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Maghanap ng mga app sa Google Play"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"Magpadala ng feedback"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Sabihin sa amin kung aling health at fitness app ang gusto mong maging bahagi ng Health Connect"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play Store"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"Awtomatikong i-delete"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"Awtomatikong i-delete"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Kontrolin kung gaano katagal iso-store ang iyong data sa Health Connect sa pamamagitan ng pag-iskedyul na i-delete ito pagkalipas ng takdang panahon"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Matuto pa"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"Awtomatikong i-delete ang data"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Pagkalipas ng # buwan}one{Pagkalipas ng # buwan}other{Pagkalipas ng # na buwan}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"Hindi kailanman"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Kapag binago mo ang mga setting na ito, ide-delete ng Health Connect ang kasalukuyang data para mailapat ang iyong mga bagong kagustuhan"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Awtomatikong i-delete ang data pagkalipas ng # buwan?}one{Awtomatikong i-delete ang data pagkalipas ng # buwan?}other{Awtomatikong i-delete ang data pagkalipas ng # na buwan?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Awtomatikong ide-delete ng Health Connect ang bagong data pagkalipas ng # buwan. Kapag itinakda ito, made-delete din ang kasalukuyang data na mas luma sa # buwan.}one{Awtomatikong ide-delete ng Health Connect ang bagong data pagkalipas ng # buwan. Kapag itinakda ito, made-delete din ang kasalukuyang data na mas luma sa # buwan.}other{Awtomatikong ide-delete ng Health Connect ang bagong data pagkalipas ng # na buwan. Kapag itinakda ito, made-delete din ang kasalukuyang data na mas luma sa # na buwan.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Itakda ang awtomatikong i-delete"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Ide-delete ang kasalukuyang data"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Ide-delete ng Health Connect ang lahat ng data na mas luma sa # buwan.\nPosibleng abutin nang isang araw bago lumabas ang mga pagbabagong ito sa iyong mga nakakonektang app.}one{Ide-delete ng Health Connect ang lahat ng data na mas luma sa # buwan.\nPosibleng abutin nang isang araw bago lumabas ang mga pagbabagong ito sa iyong mga nakakonektang app.}other{Ide-delete ng Health Connect ang lahat ng data na mas luma sa # na buwan.\nPosibleng abutin nang isang araw bago lumabas ang mga pagbabagong ito sa iyong mga nakakonektang app.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Made-delete ang data mula sa mga ito"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"Tapos na"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"I-export ang data ng Health Connect"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"Piliin lahat"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"Alisin sa pagkakapili lahat"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"Susunod"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"Kinukuha ang data para sa pag-export"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Ine-export ang data ng Health Connect"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Kanselahin"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Pag-usad ng Pag-export ng Data"</string>
+</resources>

@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"அனுமதிகளும் தரவும்"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"உங்கள் மொபைலில் உள்ள ஆரோக்கியம் மற்றும் உடற்பயிற்சி தொடர்பான தரவை மதிப்பாய்வு செய்யலாம் நிர்வகிக்கலாம். மேலும் அவற்றை எந்த ஆப்ஸ் அணுகலாம் என்பதைக் கட்டுப்படுத்தலாம்"</string>
+    <string name="data_title" msgid="6928287139074878977">"தரவு மற்றும் அணுகல்"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"அனைத்து வகைகளும்"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"அனைத்து வகைகளையும் காட்டு"</string>
+    <string name="no_data" msgid="1120552294863595549">"தரவு எதுவும் இல்லை"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"உங்கள் தரவு, சமீபத்திய ஆப்ஸ் உபயோகம் போன்றவற்றைப் பார்க்கலாம்"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"ஆப்ஸ் அனுமதிகள்"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"உங்கள் ஆப்ஸையும் அனுமதிகளையும் நிர்வகிக்கலாம்"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"சமீபத்திய அணுகல்"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"சமீபத்தில் Health Connect ஆப்ஸை எந்த ஆப்ஸும் அணுகவில்லை"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"அனைத்தையும் காட்டு"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"கடந்த 24 மணிநேரத்தில் எந்தெந்த ஆப்ஸ் உங்கள் தரவை அணுகியுள்ளன என்பதைப் பார்க்கலாம்"</string>
+    <string name="today_header" msgid="3128127066599449902">"இன்று"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"நேற்று"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"செயல்பாடு"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"செயல்பாடு"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"உடல் அளவீடுகள்"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"உடல் அளவீடுகள்"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"உறக்கம்"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"உறக்கம்"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"உடல் இயக்க அளவீடுகள்"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"உடல் இயக்க அளவீடுகள்"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"சுழற்சியைக் கண்காணித்தல்"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"சுழற்சியைக் கண்காணித்தல்"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"ஊட்டச்சத்து"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"ஊட்டச்சத்து"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"தரவை உலாவுதல்"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"தரவை நிர்வகித்தல்"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"தரவைப் பதிவிறக்கு"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"அனைத்துத் தரவையும் நீக்கு"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Health Connectடில் உங்கள் தரவு எதுவும் இல்லை"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"உங்கள் தரவு"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"ஆப்ஸ் முன்னுரிமை"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"<xliff:g id="CATEGORY">%s</xliff:g> தரவை நீக்கு"</string>
+    <string name="can_read" msgid="7989669150752961504">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> தரவைப் படிக்கலாம்"</string>
+    <string name="can_write" msgid="8278769263589284926">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> தரவை எழுதலாம்"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"செயலில் இல்லாத ஆப்ஸ்"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"இந்த ஆப்ஸால் இனி <xliff:g id="DATA_TYPE">%s</xliff:g> தரவை எழுத முடியாது என்றாலும் அவை சேமித்த தரவு இன்னும் Health Connectடில் அப்படியே இருக்கும்"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"<xliff:g id="DATA_TYPE_0">%1$s</xliff:g> தரவை ஆப்ஸால் இனி படிக்கவோ எழுதவோ முடியாது. Health Connect ஆப்ஸில் <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> தரவு எதுவும் சேமிக்கப்படவில்லை"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"செயல்பாட்டு நேரம், உடற்பயிற்சி வகை, சுற்றுகள், மீண்டும் செய்தல், அமர்வுகள், ஸ்விம்மிங் ஸ்ட்ரோக்குகள் போன்ற தகவல்கள் இந்தத் தரவில் உள்ளடங்கும்"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"உறக்க நிலைகள், உறக்கநேர அமர்வுகள் போன்ற தகவல்கள் இந்தத் தரவில் உள்ளடங்கும்"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"அனைத்து உள்ளீடுகளையும் காட்டு"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"இந்தத் தரவை நீக்கு"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"உங்கள் உடல் ஆரோக்கியம் தொடர்பான தரவை அணுகும்"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"எரித்த கலோரிகளை வாசிக்கும்"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"எரிக்கப்பட்ட கலோரிகள் குறித்த தரவை வாசிக்க ஆப்ஸை அனுமதிக்கும்"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"செயல்பாட்டின்போது எரிக்கப்பட்ட கலோரிகள்"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"செயல்பாட்டின் மூலம் எரிக்கப்பட்ட கலோரிகள்"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"செயல்பாட்டின்போது எரிக்கப்பட்ட கலோரிகள் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"செயல்பாட்டின்போது எரிக்கப்பட்ட கலோரிகள் தொடர்பான தரவை எழுதும்"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"உடற்பயிற்சி"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"உடற்பயிற்சி"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"உடற்பயிற்சி தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"உடற்பயிற்சி தொடர்பான தரவை எழுதும்"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"தொலைவு"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"தொலைவு"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"தொலைவு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"தொலைவு தொடர்பான தரவை எழுதும்"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"ஏறிய உயரம்"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"ஏறிய உயரம்"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"ஏறிய உயரம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"ஏறிய உயரம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"ஏறிய தளங்கள்"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"ஏறிய தளங்கள்"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"ஏறிய தளங்கள் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"ஏறிய தளங்கள் தொடர்பான தரவை எழுதும்"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"ஆற்றல்"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"ஆற்றல்"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"ஆற்றல் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"ஆற்றல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"வேகம்"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"வேகம்"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"வேகம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"வேகம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"காலடிகள்"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"காலடிகள்"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"காலடிகள் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"காலடிகள் தொடர்பான தரவை எழுதும்"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"எரிக்கப்பட்ட மொத்தக் கலோரிகள்"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"எரிக்கப்பட்ட மொத்தக் கலோரிகள்"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"எரிக்கப்பட்ட மொத்தக் கலோரிகள் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"எரிக்கப்பட்ட மொத்தக் கலோரிகள் தொடர்பான தரவை எழுதும்"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு தொடர்பான தரவை எழுதும்"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"வீல்ச்சேர் புஷ்கள்"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"வீல்ச்சேர் புஷ்கள்"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"வீல்ச்சேர் புஷ்கள் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"வீல்ச்சேர் புஷ்கள் தொடர்பான தரவை எழுதும்"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"இயல்பான வளர்சிதைமாற்ற வீதம்"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"இயல்பான வளர்சிதைமாற்ற வீதம்"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"இயல்பான வளர்சிதைமாற்ற வீதம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"இயல்பான வளர்சிதைமாற்ற வீதம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"உடலில் இருக்கும் கொழுப்பு"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"உடலில் இருக்கும் கொழுப்பு"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"உடலில் இருக்கும் கொழுப்பு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"உடலில் இருக்கும் கொழுப்பு தொடர்பான தரவை எழுதும்"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"உடலில் இருக்கும் நீரின் அளவு"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"உடலில் இருக்கும் நீரின் அளவு"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"உடலில் இருக்கும் நீரின் அளவு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"உடலில் இருக்கும் நீரின் அளவு தொடர்பான தரவை எழுதும்"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"எலும்பின் அடர்த்தி"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"எலும்பின் அடர்த்தி"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"எலும்பின் அடர்த்தி தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"எலும்பின் அடர்த்தி தொடர்பான தரவை எழுதும்"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"உயரம்"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"உயரம்"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"உயரம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"உயரம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"இடுப்புச் சுற்றளவு"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"இடுப்புச் சுற்றளவு"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"இடுப்புச் சுற்றளவு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"இடுப்புச் சுற்றளவு தொடர்பான தரவை எழுதும்"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"கொழுப்பற்ற உடல் எடை"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"கொழுப்பற்ற உடல் எடை"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"கொழுப்பற்ற உடல் எடை தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"கொழுப்பற்ற உடல் எடை தொடர்பான தரவை எழுதும்"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"இடுப்புச் சுற்றளவு"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"இடுப்புச் சுற்றளவு"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"இடுப்புச் சுற்றளவு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"இடுப்புச் சுற்றளவு தொடர்பான தரவை எழுதும்"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"எடை"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"எடை"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"எடை தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"எடை தொடர்பான தரவை எழுதும்"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"வெள்ளைப்படுதல்"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"வெள்ளைப்படுதல்"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"வெள்ளைப்படுதல் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"வெள்ளைப்படுதல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"மாதவிடாய்"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"மாதவிடாய்"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"மாதவிடாய் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"மாதவிடாய் தொடர்பான தரவை எழுதும்"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"கருமுட்டை விடுபடல் பரிசோதனை"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"கருமுட்டை விடுபடல் பரிசோதனை"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"கருமுட்டை விடுபடல் பரிசோதனை தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"கருமுட்டை விடுபடல் பரிசோதனை தொடர்பான தரவை எழுதும்"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"பாலியல் செயல்பாடு"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"பாலியல்ரீதியான செயல்பாடு"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"பாலியல் செயல்பாடு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"பாலியல் செயல்பாடு தொடர்பான தரவை எழுதும்"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"ஸ்பாட்டிங்"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"ஸ்பாட்டிங்"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"ஸ்பாட்டிங் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"ஸ்பாட்டிங் தொடர்பான தரவை எழுதும்"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"நீரேற்றம்"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"நீரேற்றம்"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"நீரேற்றம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"நீரேற்றம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"ஊட்டச்சத்து"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"ஊட்டச்சத்து"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"ஊட்டச்சத்து தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"ஊட்டச்சத்து தொடர்பான தரவை எழுதும்"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"உறக்கம்"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"உறக்கம்"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"உறக்கம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"உறக்கம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"இயல்பான உடல் வெப்பநிலை"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"இயல்பான உடல் வெப்பநிலை"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"இயல்பான உடல் வெப்பநிலை தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"இயல்பான உடல் வெப்பநிலை தொடர்பான தரவை எழுதும்"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"ரத்தச் சர்க்கரை"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"ரத்தச் சர்க்கரை"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"ரத்தச் சர்க்கரை தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"ரத்தச் சர்க்கரை தொடர்பான தரவை எழுதும்"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"ரத்த அழுத்தம்"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"ரத்த அழுத்தம்"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"ரத்த அழுத்தம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"ரத்த அழுத்தம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"உடல் வெப்பநிலை"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"உடல் வெப்பநிலை"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"உடல் வெப்பநிலை தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"உடல் வெப்பநிலை தொடர்பான தரவை எழுதும்"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"இதயத் துடிப்பு"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"இதயத் துடிப்பு"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"இதயத் துடிப்பு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"இதயத் துடிப்பு தொடர்பான தரவை எழுதும்"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"இதயத் துடிப்பு மாறுபாடு"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"இதயத் துடிப்பு மாறுபாடு"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"இதயத் துடிப்பு மாறுபாடு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"இதயத் துடிப்பு மாறுபாடு தொடர்பான தரவை எழுதும்"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"ஆக்ஸிஜன் செறிவு"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"ஆக்சிஜன் செறிவு"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"ஆக்சிஜன் செறிவு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"ஆக்சிஜன் செறிவு தொடர்பான தரவை எழுதும்"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"சுவாச விகிதம்"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"சுவாச விகிதம்"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"சுவாச விகிதம் தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"சுவாச விகிதம் தொடர்பான தரவை எழுதும்"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"ஓய்வுநிலை இதயத் துடிப்பு"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"ஓய்வுநிலை இதயத் துடிப்பு"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"ஓய்வுநிலை இதயத் துடிப்பு தொடர்பான தரவை வாசிக்கும்"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"ஓய்வுநிலை இதயத் துடிப்பு தொடர்பான தரவை எழுதும்"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect ஆப்ஸில் வாசிக்கலாம்"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Health Connect ஆப்ஸில் எழுதலாம்"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"ரத்துசெய்"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"அனுமதி"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"அனைத்தையும் அனுமதி"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Health Connectடில் இந்த ஆப்ஸ் எந்தத் தரவை வாசிக்க/எழுத வேண்டும் என்பதை நீங்கள் தேர்வுசெய்யவும்"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"வாசிப்பதற்கான அணுகல் வழங்கப்பட்டால், புதிய தரவையும் கடந்த 30 நாட்களில் பெறப்பட்ட தரவையும் இந்த ஆப்ஸால் வாசிக்க முடியும்"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Health Connectடை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்க வேண்டுமா?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸ் உங்கள் தரவை எப்படிக் கையாளுகிறது என்பதை டெவெலப்பரின் <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> பக்கத்தில் நீங்கள் அறிந்துகொள்ளலாம்"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"தனியுரிமைக் கொள்கை"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"அடுத்த நாள்"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"முந்தைய நாள்"</string>
+    <string name="default_error" msgid="7047939092442348839">"ஏதோ தவறாகிவிட்டது. மீண்டும் முயலவும்."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"இந்த அனுமதியுள்ள ஆப்ஸ் உங்கள் உடல் ஆரோக்கியம் குறித்த தரவை எழுதலாம் படிக்கலாம்."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Health Connectடில் சேமிக்கப்பட்ட தரவை எந்தெந்த ஆப்ஸ் அணுக முடியும் என்பதைக் கட்டுப்படுத்தலாம். ஆப்ஸ் படிக்கவோ எழுதவோ கூடிய தரவை மதிப்பாய்வு செய்ய அதன் மீது தட்டவும்."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"அனுமதிக்கப்பட்ட அணுகல்"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"அனுமதிக்கப்படாத அணுகல்"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"அமைப்புகள் &amp; உதவி"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"எல்லா ஆப்ஸுக்கும் அணுகலை அகற்று"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"அனைத்து ஆப்ஸையும் பார்க்க முடியவில்லையா?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"வாசிக்க அனுமதிக்கப்பட்டவை"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"எழுத அனுமதிக்கப்பட்டவை"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"எந்த ஆப்ஸும் அனுமதிக்கப்படவில்லை"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"எந்த ஆப்ஸுக்கும் அனுமதி மறுக்கப்படவில்லை"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"அனைத்து ஆப்ஸுக்கான அணுகலையும் அகற்ற வேண்டுமா?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"எந்தவொரு ஆப்ஸாலும் Health Connectடில் புதிய தரவை அணுகவோ சேர்க்கவோ முடியாது. ஏற்கெனவே உள்ள தரவு எதையும் இது நீக்காது."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"அனைத்தையும் அகற்று"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"ஆப்ஸை நிர்வகித்தல்"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"ஆப்ஸ் தரவை நீக்கு"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"செயலில் இல்லாத ஆப்ஸ்"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"இந்த ஆப்ஸுக்கு இனி அணுகல் இருக்காது என்றாலும் அவை சேமித்த தரவு Health Connectடில் அப்படியே இருக்கும்"</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Health Connect ஆப்ஸைப் பயன்படுத்தத் தொடங்குதல்"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect ஆப்ஸ் உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி தொடர்பான தரவைச் சேமிக்கிறது. இந்த ஆப்ஸ் மூலம் மொபைலிலுள்ள வெவ்வேறு ஆப்ஸை நீங்கள் எளிதாக ஒத்திசைக்கலாம்."</string>
+    <string name="share_data" msgid="3461840023402996573">"ஆப்ஸுடன் தரவைப் பகிர்தல்"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"ஒவ்வொரு ஆப்ஸும் Health Connectடில் வாசிக்க/எழுத வேண்டிய தரவை நீங்கள் தேர்வுசெய்யலாம்."</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"உங்கள் அமைப்புகளையும் தனியுரிமையையும் நிர்வகித்தல்"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"எப்போது வேண்டுமானாலும் ஆப்ஸ் அனுமதிகளை மாற்றலாம் உங்கள் தரவை நிர்வகிக்கலாம்"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"பின்செல்லும்"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"தொடங்கும்"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"தரவை நீக்கும்"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"நீக்குவதற்குத் தரவைத் தேர்வுசெய்யுங்கள்"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"அடுத்து"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"தேர்வுசெய்யப்பட்ட காலகட்டத்தில் Health Connectடில் சேர்க்கப்பட்ட அனைத்துத் தரவையும் இது நிரந்தரமாக நீக்கும்"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"தேர்வுசெய்யப்பட்ட காலகட்டத்தில் Health Connectடில் சேர்க்கப்பட்ட <xliff:g id="DATA_TYPE">%s</xliff:g> தரவை இது நிரந்தரமாக நீக்கும்"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"தேர்வுசெய்யப்பட்ட காலகட்டத்தில் Health Connectடில் சேர்க்கப்பட்ட <xliff:g id="CATEGORY">%s</xliff:g> தரவை இது நிரந்தரமாக நீக்கும்"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"தேர்வுசெய்யப்பட்ட காலகட்டத்தில் Health Connectடில் சேர்க்கப்பட்ட <xliff:g id="APP_DATA">%s</xliff:g> தரவை இது நிரந்தரமாக நீக்கும்"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"கடந்த 24 மணிநேரத்திற்கான தரவை நீக்கு"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"கடந்த 7 நாட்களுக்கான தரவை நீக்கு"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"கடந்த 30 நாட்களுக்கான தரவை நீக்கு"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"அனைத்துத் தரவையும் நீக்கு"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"இதுவரையிலான அனைத்துத் தரவையும் நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"கடந்த 24 மணிநேரத்திற்கான அனைத்துத் தரவையும் நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"கடந்த 7 நாட்களுக்கான அனைத்துத் தரவையும் நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"கடந்த 30 நாட்களுக்கான அனைத்துத் தரவையும் நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"இதுவரையிலான <xliff:g id="DATA_TYPE">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"கடந்த 24 மணிநேரத்திற்கான <xliff:g id="DATA_TYPE">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"கடந்த 7 நாட்களுக்கான <xliff:g id="DATA_TYPE">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"கடந்த 30 நாட்களுக்கான <xliff:g id="DATA_TYPE">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"இதுவரையிலான <xliff:g id="CATEGORY">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"கடந்த 24 மணிநேரத்திற்கான <xliff:g id="CATEGORY">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"கடந்த 7 நாட்களுக்கான <xliff:g id="CATEGORY">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"கடந்த 30 நாட்களுக்கான <xliff:g id="CATEGORY">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"இதுவரையிலான <xliff:g id="APP_DATA">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"கடந்த 24 மணிநேரத்திற்கான <xliff:g id="APP_DATA">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"கடந்த 7 நாட்களுக்கான <xliff:g id="APP_DATA">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"கடந்த 30 நாட்களுக்கான <xliff:g id="APP_DATA">%s</xliff:g> தரவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Health Connectடில் இருந்து <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> அனுமதிகள் அனைத்தையும் அகற்று"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"<xliff:g id="APP_DATA">%2$s</xliff:g> ஆப்ஸால் சேர்க்கப்பட்ட அனைத்து <xliff:g id="DATA_TYPE">%1$s</xliff:g> தரவையும் நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"இந்தப் பதிவை நிரந்தரமாக நீக்க வேண்டுமா?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Health Connectடில் உள்ள இந்தத் தரவை இணைக்கப்பட்ட ஆப்ஸால் இனி அணுக முடியாது"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"நீக்கு"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"பின்செல்"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"முடிந்தது"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"மூடுக"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"தரவு நீக்கப்பட்டது"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"இந்தத் தரவு Health Connectடில் இனி சேமிக்கப்பட்டிருக்காது."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"உங்கள் தரவை நீக்குகிறது"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"தரவை நீக்க முடியவில்லை"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"ஏதோ தவறாகிவிட்டதால் Health Connect ஆப்ஸால் உங்கள் தரவை நீக்க முடியவில்லை"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"மீண்டும் முயல்க"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Health Connect தரவை நீக்குகிறது"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Health Connect தரவை நீக்குகிறது"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"தரவு நீக்கம்"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"தரவு உள்ளீட்டு விருப்பங்கள்"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"உள்ளீட்டை நீக்கு"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 வாட்}other{# வாட்}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 வாட்}other{# வாட்}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 காலடி}other{# காலடிகள்}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 காலடி/நிமி}other{# காலடிகள்/நிமி}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 காலடி/நிமிடம்}other{# காலடிகள்/நிமிடம்}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 bpm}other{# bpm}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 இதயத் துடிப்பு/நிமிடம்}other{# இதயத் துடிப்புகள்/நிமிடம்}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 மை/ம.நே.}other{# மை/ம.நே.}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 கிமீ/ம.நே.}other{# கிமீ/ம.நே.}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 மைல்/மணிநேரம்}other{# மைல்/மணிநேரம்}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 கிலோமீட்டர்/மணிநேரம்}other{# கிலோமீட்டர்/மணிநேரம்}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> முதல் <xliff:g id="END_TIME">%2$s</xliff:g> வரை"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> முதல் <xliff:g id="END_TIME">%2$s</xliff:g> வரை"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"அலகுகள்"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"தரவு அலகுகளை அமைத்தல்"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"தொலைவு"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"உயரம்"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"எடை"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"ஆற்றல்"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"வெப்பநிலை"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"கிலோமீட்டர்"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"மைல்"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"சென்டிமீட்டர்"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"உயரம் &amp; அங்குலம்"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"பவுண்டு"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"கிலோகிராம்"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"ஸ்டோன்கள்"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"கலோரிகள்"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"கிலோஜூல்"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"செல்சியஸ்"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"ஃபாரன்ஹீட்"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"கெல்வின்"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"அனைத்து ஆப்ஸையும் பார்க்க முடியவில்லையா?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"நிறுவப்பட்ட ஆப்ஸ் காட்டப்படவில்லை என்றால் அது Health Connectடுடன் இன்னும் இணங்காமல் இருக்கலாம்."</string>
+    <string name="things_to_try" msgid="5007292603680871491">"பயன்படுத்திப் பார்க்க வேண்டியவை"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"புதுப்பிப்புகளைக் காட்டு"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"நிறுவப்பட்டுள்ள ஆப்ஸ் சமீபத்தியவையாக உள்ளதை உறுதிசெய்யும்"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"இணக்கமான ஆப்ஸ் அனைத்தையும் காட்டு"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Google Playயில் ஆப்ஸைக் கண்டறியும்"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"கருத்தை அனுப்பு"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Health Connect ஆப்ஸுடன் இணைந்து எந்த உடல் ஆரோக்கியம் &amp;amp ஃபிட்னஸ் ஆப்ஸ் செயல்பட வேண்டும் என நீங்கள் விரும்புகிறீர்கள் என்பதை எங்களுடன் பகிரும்"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play Store"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"தானாக நீக்கு"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"தானாக நீக்குதல்"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Health Connectடில் உள்ள உங்கள் தரவைக் குறிப்பிட்ட காலத்திற்குப் பிறகு நீக்கத் திட்டமிடுவதன் மூலம், தரவு எவ்வளவு காலத்திற்குச் சேமிக்கப்பட வேண்டும் என்பதைக் கட்டுப்படுத்தலாம்"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"மேலும் அறிக"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"தரவைத் தானாக நீக்கு"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{# மாதத்திற்குப் பிறகு}other{# மாதங்களுக்குப் பிறகு}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"ஒருபோதும் இல்லை"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"இந்த அமைப்புகளை நீங்கள் மாற்றினால் உங்களின் புதிய விருப்பங்களைச் செயல்படுத்தும் பொருட்டு ஏற்கெனவே உள்ள தரவை Health Connect நீக்கும்"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{# மாதத்திற்குப் பிறகு தரவைத் தானாக நீக்க வேண்டுமா?}other{# மாதங்களுக்குப் பிறகு தரவைத் தானாக நீக்க வேண்டுமா?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{புதிய தரவை # மாதத்திற்குப் பிறகு Health Connect தானாகவே நீக்கும். இதை அமைப்பதன் மூலம் ஏற்கெனவே உள்ள # மாதத்திற்கு முந்தைய தரவையும் நீக்கும்.}other{புதிய தரவை # மாதங்களுக்குப் பிறகு Health Connect தானாகவே நீக்கும். இதை அமைப்பதன் மூலம் ஏற்கெனவே உள்ள # மாதங்களுக்கு முந்தைய தரவையும் நீக்கும்.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"தானாக நீக்குதலை அமை"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"ஏற்கெனவே உள்ள தரவு நீக்கப்படும்"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{# மாதங்களுக்கு முந்தைய அனைத்துத் தரவையும் Health Connect நீக்கும்.\nஇணைக்கப்பட்ட ஆப்ஸில் இந்த மாற்றங்கள் காட்டப்பட ஒருநாள் ஆகலாம்.}other{# மாதங்களுக்கு முந்தைய அனைத்துத் தரவையும் Health Connect நீக்கும்.\nஇணைக்கப்பட்ட ஆப்ஸில் இந்த மாற்றங்கள் காட்டப்பட ஒருநாள் ஆகலாம்.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"இவற்றிலிருந்து தரவு நீக்கப்படும்"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"முடிந்தது"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Health Connect ஆப்ஸ் தரவைப் பதிவிறக்குதல்"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"அனைத்தையும் தேர்ந்தெடு"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"அனைத்தையும் தேர்வுநீக்கு"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"அடுத்து"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"பதிவிறக்கம் செய்ய தரவைப் பெறுதல்"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect ஆப்ஸ் தரவைப் பதிவிறக்குகிறது"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"ரத்துசெய்"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"தரவுச் செயல்நிலையைப் பதிவிறக்குதல்"</string>
+</resources>

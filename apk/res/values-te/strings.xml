@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"అనుమతులు, డేటా"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"మీ ఫోన్‌లోని ఆరోగ్యం, ఫిట్‌నెస్ డేటాను రివ్యూ చేసి, మేనేజ్ చేయండి, అలాగే ఏ యాప్‌లు దీన్ని యాక్సెస్ చేయవచ్చో కంట్రోల్ చేయండి"</string>
+    <string name="data_title" msgid="6928287139074878977">"డేటా, యాక్సెస్"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"అన్ని కేటగిరీలు"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"అన్ని కేటగిరీలను చూడండి"</string>
+    <string name="no_data" msgid="1120552294863595549">"డేటా లేదు"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"మీ డేటా, అలాగే ఇటీవలి యాప్ యాక్టివిటీని చూడండి"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"యాప్ అనుమతులు"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"మీ యాప్‌లు, అలాగే అనుమతులను మేనేజ్ చేయండి"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"ఇటీవలి యాక్సెస్"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"యాప్‌లు ఏవీ ఇటీవల Health Connectను యాక్సెస్ చేయలేదు"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"అన్నింటినీ చూడండి"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"గత 24 గంటల్లో మీ డేటాను ఏయే యాప్‌లు యాక్సెస్ చేశాయో చూడండి"</string>
+    <string name="today_header" msgid="3128127066599449902">"నేడు"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"నిన్న"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"యాక్టివిటీ"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"యాక్టివిటీ"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"శారీరక సమాచారం"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"శారీరక సమాచారం"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"నిద్ర"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"నిద్ర"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"కీలక ఆరోగ్య కొలమానాలు"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"కీలక ఆరోగ్య కొలమానాలు"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"సైకిల్ ట్రాకింగ్"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"సైకిల్ ట్రాకింగ్"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"న్యూట్రిషన్ డేటా"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"న్యూట్రిషన్ డేటా"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"డేటాను బ్రౌజ్ చేయండి"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"డేటాను మేనేజ్ చేయండి"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"డేటాను ఎగుమతి చేయండి"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"మొత్తం డేటాను తొలగించండి"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Health Connectలో మీ వద్ద డేటా ఏదీ లేదు"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"మీ డేటా"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"యాప్ ప్రాధాన్యత"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"<xliff:g id="CATEGORY">%s</xliff:g> డేటాను తొలగించండి"</string>
+    <string name="can_read" msgid="7989669150752961504">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>‌ను చదవగలదు"</string>
+    <string name="can_write" msgid="8278769263589284926">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>‌ను రాయగలదు"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"ఇన్‌యాక్టివ్ యాప్‌లు"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"ఈ యాప్‌లు ఇకపై <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను రాయలేవు, కానీ ఇప్పటికీ Health Connectలో స్టోర్ చేయబడిన డేటాను కలిగి ఉంటాయి"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"యాప్‌లు ఇకపై <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>‌ను చదవలేవు లేదా రాయలేవు, Health Connectలో స్టోర్ చేయబడిన <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> డేటా లేదు"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"ఈ డేటాలో యాక్టివ్ టైమ్, వ్యాయామ రకం, ల్యాప్‌లు, రిపీటిషన్‌లు, సెషన్‌లు, లేదా స్విమ్మింగ్ స్ట్రోక్‌లు వంటి సమాచారం ఉంటుంది"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"ఈ డేటాలో నిద్ర దశలు, నిద్ర సెషన్‌ల వంటి సమాచారం ఉంటుంది"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"అన్ని ఎంట్రీలను చూడండి"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"ఈ డేటాను తొలగించండి"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"మీ ఆరోగ్య డేటాను యాక్సెస్ చేయండి"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"ఖర్చు అయిన కేలరీలను చదువుతుంది"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"ఖర్చు అయిన కేలరీలను చదవడానికి యాప్‌ను అనుమతిస్తుంది"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"ఖర్చు అయిన యాక్టివ్ కేలరీల డేటా"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"ఖర్చు అయిన యాక్టివ్ కేలరీల డేటా"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"ఖర్చు అయిన యాక్టివ్ కేలరీల డేటాను చదువుతుంది"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"ఖర్చు అయిన యాక్టివ్ కేలరీల డేటాను రాస్తుంది"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"వ్యాయామం"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"వ్యాయామం"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"వ్యాయామ డేటాను చదువుతుంది"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"వ్యాయామ డేటాను రాస్తుంది"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"దూరం"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"దూరం"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"దూరం డేటాను చదువుతుంది"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"దూరం డేటాను రాస్తుంది"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"పొందిన ఎలివేషన్ డేటా"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"పొందిన ఎలివేషన్ డేటా"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"పొందిన ఎలివేషన్ డేటాను చదువుతుంది"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"పొందిన ఎలివేషన్ డేటాను రాస్తుంది"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"ఎక్కిన అంతస్తుల డేటా"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"ఎక్కిన అంతస్తుల డేటా"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"ఎక్కిన అంతస్తుల డేటాను చదువుతుంది"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"ఎక్కిన అంతస్తుల డేటాను రాస్తుంది"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"పవర్"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"పవర్"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"పవర్ డేటాను చదువుతుంది"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"పవర్ డేటాను రాస్తుంది"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"వేగం"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"వేగం"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"వేగం డేటాను చదువుతుంది"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"వేగం డేటాను రాస్తుంది"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"అడుగులు"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"అడుగులు"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"అడుగుల డేటాను చదువుతుంది"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"అడుగుల డేటాను రాస్తుంది"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"ఖర్చు అయిన మొత్తం కేలరీల డేటా"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"ఖర్చు అయిన మొత్తం కేలరీల డేటా"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"ఖర్చు అయిన మొత్తం కేలరీల డేటాను చదువుతుంది"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"ఖర్చు అయిన మొత్తం కేలరీల డేటాను రాస్తుంది"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"గరిష్ఠ V02 డేటా"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"గరిష్ఠ V02 డేటా"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"గరిష్ఠ V02 డేటాను చదువుతుంది"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"గరిష్ఠ V02 డేటాను రాస్తుంది"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"వీల్‌చెయిర్ పుష్‌ల డేటా"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"వీల్‌చెయిర్ పుష్‌ల డేటా"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"వీల్‌చెయిర్ పుష్‌ల డేటాను చదువుతుంది"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"వీల్‌చెయిర్ పుష్‌ల డేటాను రాస్తుంది"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"మౌలిక జీవక్రియ రేటు డేటా"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"మౌలిక జీవక్రియ రేటు డేటా"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"మౌలిక జీవక్రియ రేటు డేటాను చదువుతుంది"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"మౌలిక జీవక్రియ రేటు డేటాను రాస్తుంది"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"శరీరంలోని కొవ్వు"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"శరీరంలోని కొవ్వు"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"శరీరంలోని కొవ్వుకు సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"శరీరంలోని కొవ్వుకు సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"శరీరంలోని నీటి బరువు డేటా"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"శరీరంలోని నీటి బరువు డేటా"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"శరీరంలోని నీటి బరువు డేటాను చదువుతుంది"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"శరీరంలోని నీటి బరువు డేటాను రాస్తుంది"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"ఎముకల బరువు డేటా"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"ఎముకల బరువు డేటా"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"ఎముకల బరువు డేటాను చదువుతుంది"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"ఎముకల బరువు డేటాను రాస్తుంది"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"ఎత్తు"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"ఎత్తు"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"ఎత్తు డేటాను చదువుతుంది"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"ఎత్తు డేటాను రాస్తుంది"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"హిప్ చుట్టుకొలత డేటా"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"హిప్ చుట్టుకొలత డేటా"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"హిప్ చుట్టుకొలత డేటాను చదువుతుంది"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"హిప్ చుట్టుకొలత డేటాను రాస్తుంది"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"కొవ్వు లేకుండా, శరీర బరువు డేటా"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"కొవ్వు లేకుండా, శరీర బరువు డేటా"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"కొవ్వు లేకుండా, శరీర బరువు డేటాను చదువుతుంది"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"కొవ్వు లేకుండా, శరీర బరువు డేటాను రాస్తుంది"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"నడుము చుట్టుకొలత డేటా"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"నడుము చుట్టుకొలత డేటా"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"నడుము చుట్టుకొలత డేటాను చదువుతుంది"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"నడుము చుట్టుకొలత డేటాను రాస్తుంది"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"బరువు"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"బరువు"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"బరువు డేటాను చదువుతుంది"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"బరువు డేటా రాస్తుంది"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"గర్భాశయ శ్లేష్మం డేటా"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"గర్భాశయ శ్లేష్మం డేటా"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"గర్భాశయ శ్లేష్మం డేటాను చదువుతుంది"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"గర్భాశయ శ్లేష్మం డేటాను రాస్తుంది"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"రుతు క్రమం డేటా"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"రుతు క్రమం డేటా"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"రుతు క్రమం డేటాను చదువుతుంది"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"రుతు క్రమం డేటాను రాస్తుంది"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"అండోత్సర్గము పరీక్ష డేటా"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"అండోత్సర్గము పరీక్ష డేటా"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"అండోత్సర్గము పరీక్ష డేటాను చదువుతుంది"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"అండోత్సర్గము పరీక్ష డేటాను రాస్తుంది"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"లైంగిక యాక్టివిటీ"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"లైంగిక యాక్టివిటీ"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"లైంగిక యాక్టివిటీ డేటాను చదువుతుంది"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"లైంగిక యాక్టివిటీ డేటాను రాస్తుంది"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"స్పాటింగ్ డేటా"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"స్పాటింగ్ డేటా"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"స్పాటింగ్ డేటాను చదువుతుంది"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"స్పాటింగ్ డేటాను రాస్తుంది"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"హైడ్రేషన్ డేటా"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"హైడ్రేషన్ డేటా"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"హైడ్రేషన్ డేటాను చదువుతుంది"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"హైడ్రేషన్ డేటాను రాస్తుంది"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"న్యూట్రిషన్ డేటా"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"న్యూట్రిషన్ డేటా"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"న్యూట్రిషన్ డేటాను చదువుతుంది"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"న్యూట్రిషన్ డేటాను రాస్తుంది"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"నిద్ర"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"నిద్ర"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"నిద్ర డేటాను చదువుతుంది"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"నిద్ర డేటాను రాస్తుంది"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"మౌలిక శరీర ఉష్ణోగ్రత డేటా"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"మౌలిక శరీర ఉష్ణోగ్రత డేటా"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"మౌలిక శరీర ఉష్ణోగ్రత డేటాను చదువుతుంది"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"మౌలిక శరీర ఉష్ణోగ్రత డేటాను రాస్తుంది"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"రక్తంలో గ్లూకోజ్ డేటా"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"రక్తంలో గ్లూకోజ్ డేటా"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"రక్తంలో గ్లూకోజ్ డేటాను చదువుతుంది"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"రక్తంలో గ్లూకోజ్ డేటాను రాస్తుంది"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"రక్తపోటు"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"రక్తపోటు"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"రక్తపోటు డేటాను చదువుతుంది"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"రక్తపోటు డేటాను రాస్తుంది"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"శరీర ఉష్ణోగ్రత డేటా"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"శరీర ఉష్ణోగ్రత డేటా"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"శరీర ఉష్ణోగ్రత డేటాను చదువుతుంది"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"శరీర ఉష్ణోగ్రత డేటాను రాస్తుంది"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"గుండె స్పందన రేటు"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"గుండె స్పందన రేటు"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"గుండె స్పందన రేటు డేటాను చదువుతుంది"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"గుండె స్పందన రేటు డేటాను రాస్తుంది"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"గుండె స్పందన రేటు వేరియబులిటీ డేటా"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"గుండె స్పందన రేటు వేరియబులిటీ డేటా"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"గుండె స్పందన రేటు వేరియబులిటీ డేటాను చదవండి"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"గుండె స్పందన రేటు వేరియబులిటీ డేటాను రాస్తుంది"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"ఆక్సిజన్ శాచురేషన్"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"ఆక్సిజన్ శాచురేషన్"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"ఆక్సిజన్ శాచురేషన్ డేటాను చదువుతుంది"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"ఆక్సిజన్ శాచురేషన్ డేటాను రాస్తుంది"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"శ్వాస తీసుకునే రేటు"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"శ్వాస తీసుకునే రేటు"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"శ్వాస తీసుకునే రేటు డేటాను చదువుతుంది"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"శ్వాస తీసుకునే రేటు డేటాను రాస్తుంది"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"విశ్రాంతి సమయంలో గుండె స్పందన రేటు"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"విశ్రాంతి సమయంలో గుండె స్పందన రేటు"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"విశ్రాంతి సమయంలో గుండె స్పందన రేటు డేటాను చదువుతుంది"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"విశ్రాంతి సమయంలో గుండె స్పందన రేటు డేటాను రాస్తుంది"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect నుండి చదవగలదు"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Health Connectలో రాయగలదు"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"రద్దు చేయండి"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"అనుమతించండి"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"అన్నీ అనుమతించండి"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Health Connect కోసం ఈ యాప్, ఏ డేటాను చదవాలో లేదా రాయాలో ఎంచుకోండి"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"మీరు చదవగల యాక్సెస్‌ను ఇచ్చినట్లయితే, ఈ యాప్ కొత్త డేటాను, అలాగే గత 30 రోజులకు చెందిన డేటాను చదవగలదు"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Health Connectను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌ను అనుమతించాలా?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"డెవలపర్ తాలూకు <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>‌లో మీ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఎలా హ్యాండిల్ చేస్తుందో మీరు తెలుసుకోవచ్చు"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"గోప్యతా పాలసీ"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"తర్వాతి రోజు"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"మునుపటి రోజు"</string>
+    <string name="default_error" msgid="7047939092442348839">"ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ట్రై చేయండి."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"ఈ అనుమతి ఉన్న యాప్‌లు మీ ఆరోగ్య డేటాను చదవగలవు, రాయగలవు."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Health Connectలో స్టోర్ చేయబడిన డేటాను ఏ యాప్‌లు యాక్సెస్ చేయవచ్చో కంట్రోల్ చేయండి. ఒక యాప్ చదవగలిగే లేదా రాయగల డేటాను రివ్యూ చేయడానికి సదరు యాప్‌ను ట్యాప్ చేయండి."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"యాక్సెస్ అనుమతించబడింది"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"యాక్సెస్ అనుమతించబడలేదు"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"సెట్టింగ్‌లు &amp; సహాయం"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"అన్ని యాప్‌లకు యాక్సెస్‌ను తీసివేయండి"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"మీ అన్ని యాప్‌లను చూడలేకపోతున్నారా?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"చదవడానికి అనుమతించబడింది"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"రాయడానికి అనుమతించబడింది"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"ఏ యాప్‌నకు అనుమతి లేదు"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"యాప్‌లు ఏవీ తిరస్కరించబడలేదు"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"అన్ని యాప్‌లకు యాక్సెస్‌ను తీసివేయాలా?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"మీ యాప్‌లు ఏవీ Health Connectను యాక్సెస్ చేయలేవు లేదా కొత్త డేటాను జోడించలేవు. ఇది ఇప్పటికే ఉన్న డేటా ఏదీ తొలగించదు."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"అన్నీ తీసివేయండి"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"యాప్‌ను మేనేజ్ చేయండి"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"యాప్ డేటాను తొలగించండి"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"ఇన్‌యాక్టివ్ యాప్‌లు"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"ఈ యాప్‌లకు ఇకపై యాక్సెస్ లేదు, కానీ Health Connect‌లో ఇప్పటికీ డేటా స్టోర్ అయ్యి ఉంటుంది"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> తర్వాత జోడించబడిన డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> యాక్సెస్ చేయగలదు"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"ఈ యాప్ యాక్సెస్ చేయగల ఇతర Android అనుమతులను మేనేజ్ చేయడానికి, సెట్టింగ్‌లు &gt; యాప్‌లకు వెళ్లండి"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"మీరు <xliff:g id="APP_NAME">%1$s</xliff:g>తో షేర్ చేసే డేటా వారి గోప్యతా పాలసీ పరిధిలోకి వస్తుంది"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ఈ యాప్ యాక్సెస్ చేయగల ఇతర Android అనుమతులను మేనేజ్ చేయడానికి, సెట్టింగ్‌లకు వెళ్లి, తర్వాత యాప్‌లు ఆప్షన్‌ను ట్యాప్ చేయండి"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"గోప్యతా పాలసీని చదవండి"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Health Connectను ప్రారంభించండి"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను స్టోర్ చేస్తుంది, మీ ఫోన్‌లోని విభిన్న యాప్‌లను సింక్ చేయడానికి మీకు సులభమైన మార్గాన్ని అందిస్తుంది"</string>
+    <string name="share_data" msgid="3461840023402996573">"మీ యాప్‌లతో డేటాను షేర్ చేయండి"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Health Connect కోసం ప్రతి యాప్ చదవగలిగే లేదా రాయగలిగేలా డేటాను ఎంచుకోండి"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"మీ సెట్టింగ్‌లు, గోప్యతను మేనేజ్ చేయండి"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"యాప్ అనుమతులను మార్చి, మీ డేటాను ఎప్పుడైనా మేనేజ్ చేయవచ్చు"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"వెనుకకు వెళ్లండి"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"ప్రారంభించండి"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"డేటాను తొలగించండి"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"తొలగించడానికి డేటాను ఎంచుకోండి"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"తర్వాత"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"ఇది ఎంచుకున్న సమయ వ్యవధిలో Health Connectకు జోడించబడిన మొత్తం డేటాను శాశ్వతంగా తొలగిస్తుంది"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"ఇది ఎంచుకున్న సమయ వ్యవధిలో Health Connectకు జోడించబడిన <xliff:g id="DATA_TYPE">%s</xliff:g>‌ను శాశ్వతంగా తొలగిస్తుంది"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"ఇది ఎంచుకున్న సమయ వ్యవధిలో Health Connectకు జోడించబడిన <xliff:g id="CATEGORY">%s</xliff:g>‌ను శాశ్వతంగా తొలగిస్తుంది"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"ఇది ఎంచుకున్న సమయ వ్యవధిలో Health Connectకు జోడించబడిన <xliff:g id="APP_DATA">%s</xliff:g>‌ను శాశ్వతంగా తొలగిస్తుంది"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"గత 24 గంటల డేటాను తొలగించండి"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"గత 7 రోజుల డేటాను తొలగించండి"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"గత 30 రోజుల డేటాను తొలగించండి"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"మొత్తం డేటాను తొలగించండి"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"మొత్తం సమయానికి సంబంధించి మొత్తం డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"గత 24 గంటలకు సంబంధించి మొత్తం డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"గత 7 రోజుకు సంబంధించి మొత్తం డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"గత 30 రోజులకు సంబంధించి డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"మొత్తం సమయానికి సంబంధించి <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"గత 24 గంటలకు సంబంధించి <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"గత 7 రోజుల <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"గత 30 రోజుల <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"మొత్తం సమయానికి సంబంధించి <xliff:g id="CATEGORY">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"గత 24 గంటలకు సంబంధించి <xliff:g id="CATEGORY">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"గత 7 రోజుల <xliff:g id="CATEGORY">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"గత 30 రోజుల <xliff:g id="CATEGORY">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"మొత్తం సమయానికి సంబంధించి <xliff:g id="APP_DATA">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"గత 24 గంటలకు సంబంధించి <xliff:g id="APP_DATA">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"గత 7 రోజుల <xliff:g id="APP_DATA">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"గత 30 రోజుల <xliff:g id="APP_DATA">%s</xliff:g> డేటాను శాశ్వతంగా తొలగించమంటారా?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Health Connect నుండి అన్ని <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> అనుమతులను కూడా తీసివేయండి"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"<xliff:g id="APP_DATA">%2$s</xliff:g> ద్వారా జోడించబడిన మొత్తం <xliff:g id="DATA_TYPE">%1$s</xliff:g> డేటాను శాశ్వతంగా తొలగించాలా?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"ఈ ఎంట్రీని శాశ్వతంగా తొలగించాలా?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"కనెక్ట్ చేయబడిన యాప్‌లు ఇకపై Health Connect నుండి ఈ డేటాను యాక్సెస్ చేయలేవు"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"తొలగించండి"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"వెనుకకు వెళ్లండి"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"పూర్తయింది"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"మూసివేయండి"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"డేటా తొలగించబడింది"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"ఈ డేటా ఇకపై Health Connectలో స్టోర్ చేయబడదు."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"మీ డేటాను తొలగిస్తోంది"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"డేటాను తొలగించడం సాధ్యపడలేదు"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"ఏదో పొరపాటు జరిగి, Health Connect మీ డేటాను తొలగించలేకపోయింది"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"మళ్లీ ట్రై చేయండి"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Health Connect డేటాను తొలగిస్తోంది"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Health Connect డేటాను తొలగిస్తోంది"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"డేటా తొలగింపు"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"డేటా ఎంట్రీ ఆప్షన్‌లు"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"ఎంట్రీని తొలగించండి"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 వా}other{# వా}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 వాట్}other{# వాట్‌లు}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 అడుగు}other{# అడుగులు}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 అడుగు/నిమి.}other{# అడుగులు/నిమి.}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{ఒక నిమిషానికి 1 అడుగు}other{ఒక నిమిషానికి # అడుగులు}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 bpm}other{# bpm}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 బీట్ పర్ మినిట్}other{# బీట్స్ పర్ మినిట్}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 mph}other{# mph}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 కి.మీ/గం}other{# కి.మీ/గం}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{గంటకు 1 మైలు}other{గంటకు # మైళ్లు}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{గంటకు 1 కిలోమీటర్}other{గంటకు # కిలోమీటర్‌లు}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> నుండి <xliff:g id="END_TIME">%2$s</xliff:g> వరకు"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> నుండి <xliff:g id="END_TIME">%2$s</xliff:g> వరకు"</string>
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 మైలు}other{# మైళ్లు}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 కి.మీ.}other{# కి.మీ.}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 మైలు}other{# మైళ్లు}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 కిలోమీటర్}other{# కిలోమీటర్లు}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"యూనిట్‌లు"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"డేటా యూనిట్‌లను సెట్ చేయండి"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"దూరం"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"ఎత్తు"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"బరువు"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"ఎనర్జీ"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"ఉష్ణోగ్రత"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"కిలోమీటర్‌లు"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"మైళ్లు"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"సెంటీమీటర్‌లు"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"అడుగులు &amp; అంగుళాలు"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"పౌండ్‌లు"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"కిలోగ్రామ్‌లు"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"స్టోన్‌లు"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"కేలరీలు"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"కిలోజౌల్స్"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"సెల్సియస్"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"ఫారెన్‌హీట్"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"కెల్విన్"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"మీ అన్ని యాప్‌లను చూడలేకపోతున్నారా?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"మీరు ఇన్‌స్టాల్ చేసిన యాప్ కనపడకపోతే, అది ఇంకా Health Connect యాప్‌నకు అనుకూలంగా ఉండకపోవచ్చు"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"ట్రై చేయాల్సిన అంశాలు"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"అప్‌డేట్‌ల కోసం చెక్ చేయండి"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"ఇన్‌స్టాల్ చేసిన యాప్‌లు అప్‌డేట్ అయ్యి ఉన్నాయని నిర్ధారించుకోండి"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"అన్ని అనుకూల యాప్‌లను చూడండి"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Google Playలో యాప్‌లను కనుగొనండి"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"ఫీడ్‌బ్యాక్‌ను పంపండి"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"ఏ ఆరోగ్యం &amp; ఫిట్‌నెస్ యాప్‌లు Health Connectతో పని చేయాలని మీరు అనుకుంటున్నారో మాకు తెలియజేయండి"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play Store"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"ఆటోమేటిక్ తొలగింపు"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"ఆటోమేటిక్ తొలగింపు"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"నిర్ణీత సమయం తర్వాత మీ డేటాను తొలగించడానికి షెడ్యూల్ చేయడం ద్వారా, Health Connectలో అది ఎంతకాలం స్టోర్ చేయబడుతుందో కంట్రోల్ చేయండి"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"మరింత తెలుసుకోండి"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"ఆటోమేటిక్ తొలగింపు డేటా"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{# నెల తర్వాత}other{# నెలల తర్వాత}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"ఎప్పుడూ వద్దు"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"మీరు ఈ సెట్టింగ్‌లను మార్చినప్పుడు, Health Connect మీ కొత్త ప్రాధాన్యతలను ప్రతిబింబించేలా ఇప్పటికే ఉన్న డేటాను తొలగిస్తుంది"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{# నెల తర్వాత డేటాను ఆటోమేటిక్‌గా తొలగించాలా?}other{# నెలల తర్వాత డేటాను ఆటోమేటిక్‌గా తొలగించాలా?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{# నెల తర్వాత Health Connect కొత్త డేటాను ఆటోమేటిక్‌గా తొలగిస్తుంది. దీన్ని సెట్ చేయడం వలన ఇప్పటికే ఉన్న # నెల కంటే పాత డేటా కూడా తొలగించబడుతుంది.}other{# నెలల తర్వాత Health Connect కొత్త డేటాను ఆటోమేటిక్‌గా తొలగిస్తుంది. దీన్ని సెట్ చేయడం వలన ఇప్పటికే ఉన్న # నెలల కంటే పాత డేటా కూడా తొలగించబడుతుంది.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"ఆటోమేటిక్ తొలగింపును సెట్ చేయండి"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"ఇప్పటికే ఉన్న డేటా తొలగించబడుతుంది"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect # నెలల కంటే పాత డేటా మొత్తాన్ని తొలగిస్తుంది.\nమీ కనెక్ట్ చేయబడిన యాప్‌లలో ఈ మార్పులు కనిపించడానికి ఒక రోజు పట్టవచ్చు.}other{Health Connect # నెలల కంటే పాత డేటా మొత్తాన్ని తొలగిస్తుంది.\nమీ కనెక్ట్ చేయబడిన యాప్‌లలో ఈ మార్పులు కనిపించడానికి ఒక రోజు పట్టవచ్చు.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"ఈ కింద ఉన్న వాటి నుండి తొలగించాల్సిన డేటా"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"పూర్తయింది"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Health Connect డేటాను ఎగుమతి చేయండి"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"అన్నింటినీ ఎంచుకోండి"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"అన్నింటి ఎంపికను తీసివేయండి"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"తర్వాత"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"ఎగుమతి చేయడం కోసం డేటాను పొందుతోంది"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect డేటాను ఎగుమతి చేస్తోంది"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"రద్దు చేయండి"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"ఎగుమతి డేటా ప్రోగ్రెస్"</string>
+</resources>

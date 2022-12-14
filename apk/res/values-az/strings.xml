@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"İcazələr və data"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"Telefonunuzda sağlamlıq və fitnes datasını nəzərdən keçirin və idarə edin və hansı tətbiqlərin ona daxil ola biləcəyinə nəzarət edin"</string>
+    <string name="data_title" msgid="6928287139074878977">"Data və giriş"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"Bütün kateqoriyalar"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"Bütün kateqoriyalara baxın"</string>
+    <string name="no_data" msgid="1120552294863595549">"Məlumat yoxdur"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"Datanıza və son tətbiq fəaliyyətinizə baxın"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Tətbiq icazələri"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Tətbiqlərinizi və icazələrinizi idarə edin"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"Son giriş"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"Bu yaxınlarda heç bir tətbiq Health Connect-ə giriş etməyib"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"Hamısına baxın"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"Son 24 saat ərzində hansı tətbiqlərin məlumatlarınıza giriş etdiyinə baxın"</string>
+    <string name="today_header" msgid="3128127066599449902">"Bu gün"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"Dünən"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"Fəaliyyət"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"fəaliyyət"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Bədən ölçüləri"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"bədən ölçüləri"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Yatma"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"yatma"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Sağlamlıq göstəriciləri"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"sağlamlıq göstəriciləri"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Dövrün izlənməsi"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"dövrün izlənməsi"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Qidalanma"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"qidalanma"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"Datanı axtarın"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"Datanı idarə edin"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"Datanı eksport edin"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"Bütün datanı silin"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Health Connect\'də heç bir datanız yoxdur"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"Datanız"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"Tətbiq prioriteti"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"<xliff:g id="CATEGORY">%s</xliff:g> datasını silin"</string>
+    <string name="can_read" msgid="7989669150752961504">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> datasını oxuya bilər"</string>
+    <string name="can_write" msgid="8278769263589284926">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> datasını yaza bilər"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"İnaktiv tətbiqlər"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"Bu tətbiqlər artıq <xliff:g id="DATA_TYPE">%s</xliff:g> datasını yaza bilmir, lakin hələ də Health Connect\'də saxlanılan dataya malikdir"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"Tətbiqlər artıq <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> datasını oxuya və ya yaza bilmir və Health Connect\'də saxlanılan <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> datası yoxdur"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"Bu dataya aktiv vaxt, məşq növü, dövrələr, təkrarlar, seanslar və ya üzgüçülük məşqləri kimi məlumatlar daxildir."</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"Bu dataya yuxu mərhələləri və yuxu seansları kimi məlumatlar daxildir"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"Bütün daxiletmələrə baxın"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Bu datanı silin"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"sağlamlıq datanıza giriş"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Sərf edilmiş kalorini oxumaq"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Tətbiqə sərf edilmiş kaloriləri oxumağa imkan verir"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Sərf edilmiş aktiv kalori"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"sərf edilmiş aktiv kalori"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Sərf edilmiş aktiv kalorini oxumaq"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Sərf edilmiş aktiv kalorini yazmaq"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Məşq"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"məşq"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"Məşqi oxumaq"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"Məşqi yazmaq"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"Məsafə"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"məsafə"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"Məsafəni oxumaq"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"Məsafəni yazmaq"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Qət edilmiş yüksəklik"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"qət edilmiş yüksəklik"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Qət edilmiş yüksəkliyi oxumaq"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Qət edilmiş yüksəkliyi yazmaq"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Çıxılmış mərtəbələr"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"çıxılmış mərtəbələr"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Çıxılmış mərtəbələri oxumaq"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Çıxılmış mərtəbələri yazmaq"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"Güc"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"güc"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"Gücü oxumaq"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"Gücü yazmaq"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"Sürət"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"sürət"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"Sürəti oxumaq"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"Sürəti yazmaq"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"Addımlar"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"addımlar"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"Addımları oxumaq"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"Addımları yazmaq"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Yandırılmış cəmi kalori"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"yandırılmış cəmi kalori"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Yandırılmış cəmi kalorini oxumaq"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Yandırılmış cəmi kalorini yazmaq"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"VO2 maks"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"VO2 maks"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"VO2 maks göstəricisini oxumaq"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"VO2 maks göstəricisini yazmaq"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Əlil arabası təkanı"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"əlil arabası təkanı"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Əlil arabası təkanını oxumaq"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Əlil arabası təkanını yazmaq"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Əsas metabolik səviyyə"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"əsas metabolik səviyyə"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Bazal metabolik dərəcəni oxumaq"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Bazal metabolik dərəcəni yazmaq"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Bədəndəki yağ"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"bədəndəki yağ"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Bədəndəki yağı oxumaq"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"Bədəndəki yağı yazmaq"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Bədəndəki su kütləsi"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"bədəndəki su kütləsi"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Bədəndəki su kütləsini oxumaq"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Bədəndəki su kütləsini yazmaq"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Sümük kütləsi"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"sümük kütləsi"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Sümük kütləsini oxumaq"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Sümük kütləsini yazmaq"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"Boy"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"boy"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"Boyu oxumaq"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"Boyu yazmaq"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Qalça çevrəsi"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"qalça çevrəsi"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Qalça çevrəsini oxumaq"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Qalça çevrəsini yazmaq"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Bədəndəki əzələ kütləsi"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"bədəndəki əzələ kütləsi"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Bədəndəki əzələ kütləsini oxumaq"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Bədəndəki əzələ kütləsini yazmaq"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Bel çevrəsi"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"bel çevrəsi"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Bel çevrəsini oxumaq"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Bel çevrəsini yazmaq"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"Çəki"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"çəki"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"Çəkini oxumaq"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"Çəkini yazmaq"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Uşaqlıq boynu axıntısı"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"uşaqlıq boynu axıntısı"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Uşaqlıq boynu axıntısı göstəricisini oxumaq"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Uşaqlıq boynu axıntısı göstəricisini yazmaq"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruasiya"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruasiya"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Menstruasiyanı oxumaq"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Menstruasiyanı yazmaq"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Ovulyasiya testi"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"ovulyasiya testi"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Ovulyasiya testini oxumaq"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Ovulyasiya testini yazmaq"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Cinsi fəaliyyət"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"cinsi fəaliyyət"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Cinsi fəaliyyəti oxumaq"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Cinsi fəaliyyəti yazmaq"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"Cüzi"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"cüzi"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"Menstruasiya datasını oxumaq"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"Menstruasiya datasını yazmaq"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Su içimi"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"su içimi"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"Hidrasiyanı oxumaq"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"Hidrasiyanı yazmaq"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Qidalanma"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"qidalanma"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Qidalanmanı oxumaq"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Qidalanmanı yazmaq"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Yatma"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"yatma"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"Yuxunu oxumaq"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"Yuxunu yazmaq"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Əsas bədən temperaturu"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"əsas bədən temperaturu"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Bazal bədən temperaturunu oxumaq"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Bazal bədən temperaturunu yazmaq"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Qan şəkəri"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"qan şəkəri"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Qan şəkərini oxumaq"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Qan şəkərini yazmaq"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Qan təzyiqi"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"qan təzyiqi"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Qan təzyiqini oxumaq"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Qan təzyiqini yazmaq"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Bədən temperaturu"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"bədən temperaturu"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Bədən temperaturunu oxumaq"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Bədən temperaturunu yazmaq"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Ürək döyüntüsü"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"ürək döyüntüsü"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Ürək döyüntüsünü oxumaq"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Ürək döyüntüsünü yazmaq"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Ürək döyüntüsünün dəyişkənliyi"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"ürək döyüntüsünün dəyişkənliyi"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Ürək döyüntüsünün dəyişkənliyini oxumaq"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Ürək döyüntüsünün dəyişkənliyini yazmaq"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Oksigen dolğunluğu"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"oksigen dolğunluğu"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Oksigen dolğunluğunu oxumaq"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Oksigen dolğunluğunu yazmaq"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Tənəffüs tempi"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"tənəffüs tempi"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Tənəffüs tempini oxumaq"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Tənəffüs tempini yazmaq"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"İstirahət zamanı ürək döyüntüsü"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"istirahət zamanı ürək döyüntüsü"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"İstirahət zamanı ürək döyüntüsünü oxumaq"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"İstirahət zamanı ürək döyüntüsünü yazmaq"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect\'dən oxuya bilər"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Health Connect\'ə yaza bilər"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"Ləğv edin"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"İcazə verin"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Hamısına icazə verin"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Bu tətbiqin Health Connect\'də oxumasını və ya yazmasını istədiyiniz datanı seçin"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Oxumaq icazəsi versəniz, bu tətbiq son 30 günə aid yeni datanı oxuya bilər"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinə Health Connect\'ə giriş icazəsi verilsin?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"Tərtibatçının <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> bölməsində <xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin məlumatlarınızı necə idarə etdiyini öyrənə bilərsiniz"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"məxfilik siyasəti"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"Növbəti gün"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"Əvvəlki gün"</string>
+    <string name="default_error" msgid="7047939092442348839">"Xəta oldu. Yenidən cəhd edin."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"Bu icazəyə malik tətbiqlər sağlamlıq datanızı oxuya və yaza bilər."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Health Connect\'də saxlanılan dataya hansı tətbiqlərin giriş edə biləcəyinə nəzarət edin. Tətbiqin oxuya və ya yaza biləcəyi məlumatları nəzərdən keçirmək üçün ona toxunun."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"Girişə icazə verilib"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Girişə icazə verilməyib"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"Ayarlar &amp; yardım"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"Bütün tətbiqlər üçün girişi silin"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Bütün tətbiqlərinizi görə bilmirsiniz?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Oxumağa icazə verilib"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Yazmağa icazə verilib"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"İcazəli tətbiq yoxdur"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"Rədd edilən tətbiq yoxdur"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Bütün tətbiqlər üçün giriş silinsin?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Tətbiqlərinizin heç biri Health Connect\'ə giriş edə və ya yeni data əlavə edə bilməyəcək. Mövcud data silinməyəcək."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Hamısını silin"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Tətbiqi idarə edin"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"Tətbiq datasını silin"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"İnaktiv tətbiqlər"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Bu tətbiqlərin artıq girişi yoxdur, lakin hələ də Health Connect\'də data saxlayırlar"</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Health Connect ilə başlayın"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect sağlamlıq və fitnes datanızı saxlayaraq, telefonunuzdakı müxtəlif tətbiqləri sinxronlaşdırmaq üçün sadə yol təqdim edir"</string>
+    <string name="share_data" msgid="3461840023402996573">"Tətbiqlərinizlə data paylaşın"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Hər bir tətbiqin Health Connect\'də oxuya və ya yaza biləcəyi datanı seçin"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Ayarlarınızı və məxfiliyinizi idarə edin"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"İstənilən vaxt tətbiq icazələrini dəyişdirin və datanızı idarə edin"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Geri qayıdın"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Başlayın"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"Datanı silin"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Silinəcək datanı seçin"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"Növbəti"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"Bununla seçilmiş müddət ərzində Health Connect\'ə əlavə edilmiş bütün data həmişəlik silnəcək"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"Bununla seçilmiş müddət ərzində Health Connect\'ə əlavə edilmiş <xliff:g id="DATA_TYPE">%s</xliff:g> datası həmişəlik silnəcək"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"Bununla seçilmiş müddət ərzində Health Connect\'ə əlavə edilmiş <xliff:g id="CATEGORY">%s</xliff:g> datası həmişəlik silnəcək"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"Bununla seçilmiş müddət ərzində Health Connect\'ə əlavə edilmiş <xliff:g id="APP_DATA">%s</xliff:g> datası həmişəlik silnəcək"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"Son 24 saatı silin"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"Son 7 günü silin"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"Son 30 günü silin"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"Bütün datanı silin"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"Bütün dövrlərə aid bütün data həmişəlik silinsin?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Son 24 saat ərzində olan bütün data həmişəlik silinsin?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Son 7 gün ərzində olan bütün data həmişəlik silinsin?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Son 30 gün ərzində olan bütün data həmişəlik silinsin?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Bütün dövrlərə aid <xliff:g id="DATA_TYPE">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Son 24 saat ərzində olan <xliff:g id="DATA_TYPE">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Son 7 gün ərzində olan <xliff:g id="DATA_TYPE">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Son 30 gün ərzində olan <xliff:g id="DATA_TYPE">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"Bütün dövrlərə aid <xliff:g id="CATEGORY">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Son 24 saat ərzində olan <xliff:g id="CATEGORY">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Son 7 gün ərzində olan <xliff:g id="CATEGORY">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Son 30 gün ərzində olan <xliff:g id="CATEGORY">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Bütün dövrlərə aid <xliff:g id="APP_DATA">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Son 24 saat ərzində olan <xliff:g id="APP_DATA">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Son 7 gün ərzində olan <xliff:g id="APP_DATA">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Son 30 gün ərzində olan <xliff:g id="APP_DATA">%s</xliff:g> datası həmişəlik silinsin?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Həmçinin bütün <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> icazələrini Health Connect\'dən silin"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"<xliff:g id="APP_DATA">%2$s</xliff:g> tərəfindən əlavə edilmiş bütün <xliff:g id="DATA_TYPE">%1$s</xliff:g> datası birdəfəlik silinsin?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Bu daxiletmə həmişəlik silinsin?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Qoşulmuş tətbiqlər artıq Health Connect\'dən bu dataya giriş edə bilməyəcək"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Silin"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Geri qayıdın"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Hazırdır"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Bağlayın"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Data silindi"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Bu data artıq Health Connect\'də saxlanmır."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"Datanız silinir"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Datanı silmək mümkün olmadı"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Xəta baş verdi və Health Connect datanızı silə bilmədi"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Yenə sınayın"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Health Connect datasının silinməsi"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Health Connect datasının silinməsi"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Datanın silinməsi"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"Data daxiletmə seçimləri"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"Daxiletməni silin"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 V}other{# V}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 vat}other{# vat}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 addım}other{# addım}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 addım/dəq}other{# addım/dəq}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 addım/dəqiqə}other{# addım/dəqiqə}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 döy/dəq}other{# döy/dəq}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 döyüntü/dəqiqə}other{# döyüntü/dəqiqə}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 mil/s}other{# mil/s}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 km/s}other{# km/s}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 mil/saat}other{# mil/saat}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometr/saat}other{# kilometr/saat}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> - <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> - <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"Vahidlər"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"Data vahidlərini ayarlayın"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"Məsafə"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"Boy"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"Çəki"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"Enerji"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"Temperatur"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometr"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Mil"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Santimetr"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"Fut &amp; Düym"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Funt"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kiloqram"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Stoun"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Kalori"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Kilocul"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Selsi"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Farenhayt"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Bütün tətbiqlərinizi görə bilmirsiniz?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Quraşdırılmış tətbiqi görə bilmirsinizsə, o, hələ Health Connect ilə uyğun olmaya bilər"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"Görüləcək tədbirlər"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"Güncəlləmələri yoxlayın"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"Quraşdırılmış tətbiqlərin güncəl olduğuna əmin olun"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Bütün uyğun tətbiqlərə baxın"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Google Play\'də tətbiqləri tapın"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"Rəy göndərin"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Hansı sağlamlıq &amp; fitnes tətbiqlərinin Health Connect ilə işləməsini istədiyinizi bildirin"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play Market"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"Avtomatik silin"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"Avtomatik silin"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Müəyyən edilmiş vaxtdan sonra silinməsini planlaşdırmaqla, datanızın Health Connect\'də saxlanma müddətinə nəzarət edin"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Ətraflı məlumat"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"Datanı avtomatik silin"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{# ay sonra}other{# ay sonra}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"Heç vaxt"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Bu ayarları dəyişdiyiniz zaman Health Connect yeni tərcihlərinizi əks etdirmək üçün mövcud datanı silir"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Data # ay sonra avtomatik silinsin?}other{Data # ay sonra avtomatik silinsin?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect # ay sonra yeni datanı avtomatik siləcək. Bunu ayarladıqda, # aydan köhnə data da silinəcək.}other{Health Connect # ay sonra yeni datanı avtomatik siləcək. Bunu ayarladıqda, # aydan köhnə data da silinəcək.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Avtomatik silmə ayarlayın"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Mövcud data silinəcək"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect # aydan köhnə bütün datanı siləcək.\nBu dəyişikliklərin qoşulmuş tətbiqlərinizdə görünməsi bir gün çəkə bilər.}other{Health Connect # aydan köhnə bütün datanı siləcək.\nBu dəyişikliklərin qoşulmuş tətbiqlərinizdə görünməsi bir gün çəkə bilər.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Bu bölmələrdən silinəcək data:"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"Hazırdır"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Health Connect datasını eksport edin"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"Hamısını seçin"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"Bütün seçimləri silin"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"Növbəti"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"Eksport üçün data əldə edilir"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect datası eksport edilir"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Ləğv edin"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Data Eksport İrəliləyişi"</string>
+</resources>
