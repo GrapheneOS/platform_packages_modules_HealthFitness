@@ -103,6 +103,11 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
         return AppPreference(requireContext()).also {
             it.title = app.appMetadata.appName
             it.icon = app.appMetadata.icon
+            if (app.healthUsageLastAccess != null) {
+                it.setSummary(R.string.app_perms_content_provider_24h)
+            } else {
+                it.summary = null
+            }
             it.setOnPreferenceClickListener {
                 findNavController()
                     .navigate(
