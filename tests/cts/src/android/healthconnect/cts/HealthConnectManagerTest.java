@@ -17,15 +17,11 @@ package android.healthconnect.cts;
 
 import static android.Manifest.permission.CAMERA;
 import static android.healthconnect.HealthConnectManager.isHealthPermission;
-import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
-import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.AggregateRecordsRequest;
-import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
@@ -366,8 +362,11 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
+            throws InterruptedException,
+                    InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    NoSuchMethodException {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -435,8 +434,11 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_invalidInputRecords_noChangeInDataBase()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
+            throws InterruptedException,
+                    InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    NoSuchMethodException {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -509,8 +511,11 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_recordWithInvalidPackageName_noChangeInDataBase()
-            throws InterruptedException, InvocationTargetException, InstantiationException,
-                    IllegalAccessException, NoSuchMethodException {
+            throws InterruptedException,
+                    InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    NoSuchMethodException {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -749,6 +754,23 @@ public class HealthConnectManagerTest {
                 .build();
     }
 
+    private StepsRecord getStepsRecord(int count) {
+        Device device =
+                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        return new StepsRecord.Builder(
+                        new Metadata.Builder()
+                                .setDevice(device)
+                                .setDataOrigin(dataOrigin)
+                                .setClientRecordId("SR" + Math.random())
+                                .build(),
+                        Instant.now(),
+                        Instant.now(),
+                        count)
+                .build();
+    }
+
     private HeartRateRecord getHeartRateRecord() {
         return getHeartRateRecord(true);
     }
@@ -793,6 +815,26 @@ public class HealthConnectManagerTest {
         }
         return new BasalMetabolicRateRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Power.fromWatts(100.0))
+                .build();
+    }
+
+    private BasalMetabolicRateRecord getBasalMetabolicRateRecord(double watts) {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        return new BasalMetabolicRateRecord.Builder(
+                        new Metadata.Builder()
+                                .setDevice(device)
+                                .setDataOrigin(dataOrigin)
+                                .setClientRecordId("BMR" + Math.random())
+                                .build(),
+                        Instant.now(),
+                        Power.fromWatts(watts))
                 .build();
     }
 }

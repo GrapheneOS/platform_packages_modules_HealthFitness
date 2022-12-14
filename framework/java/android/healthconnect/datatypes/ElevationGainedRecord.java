@@ -15,7 +15,11 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.ELEVATION_RECORD_ELEVATION_GAINED_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
+
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Length;
 
 import java.time.Instant;
@@ -85,6 +89,18 @@ public final class ElevationGainedRecord extends IntervalRecord {
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mElevation);
         }
     }
+
+    /**
+     * Metric identifier to get total elevation gained using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Length> ELEVATION_GAINED_TOTAL =
+            new AggregationType<>(
+                    ELEVATION_RECORD_ELEVATION_GAINED_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_ELEVATION_GAINED,
+                    Length.class);
 
     private final Length mElevation;
 

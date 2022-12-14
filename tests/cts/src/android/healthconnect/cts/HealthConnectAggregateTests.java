@@ -16,8 +16,17 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL;
+import static android.healthconnect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
+import static android.healthconnect.datatypes.DistanceRecord.DISTANCE_TOTAL;
+import static android.healthconnect.datatypes.ElevationGainedRecord.ELEVATION_GAINED_TOTAL;
+import static android.healthconnect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
+import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
+import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
+import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
+import static android.healthconnect.datatypes.StepsRecord.COUNT_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -29,6 +38,9 @@ import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
+import android.healthconnect.datatypes.units.Energy;
+import android.healthconnect.datatypes.units.Length;
+import android.healthconnect.datatypes.units.Power;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -64,6 +76,7 @@ public class HealthConnectAggregateTests {
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
+                                .addAggregationType(BPM_AVG)
                                 .build(),
                         records);
         assertThat(response.get(BPM_MAX)).isNotNull();
@@ -73,6 +86,10 @@ public class HealthConnectAggregateTests {
         assertThat(response.get(BPM_MIN)).isNotNull();
         assertThat(response.get(BPM_MIN)).isEqualTo(71);
         assertThat(response.getZoneOffset(BPM_MIN))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        assertThat(response.get(BPM_AVG)).isNotNull();
+        assertThat(response.get(BPM_AVG)).isEqualTo(72);
+        assertThat(response.getZoneOffset(BPM_AVG))
                 .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
     }
 
@@ -246,6 +263,211 @@ public class HealthConnectAggregateTests {
             assertThat(response.getZoneOffset(BPM_MIN))
                     .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
         }
+    }
+
+    @Test
+    public void testAggregation_StepsCountTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        StepsRecordTest.getStepsRecord(1000), StepsRecordTest.getStepsRecord(1000));
+        AggregateRecordsResponse<Long> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(COUNT_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(
+                        StepsRecordTest.getStepsRecord(1000), StepsRecordTest.getStepsRecord(1000));
+        AggregateRecordsResponse<Long> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(COUNT_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(COUNT_TOTAL)).isNotNull();
+        assertThat(newResponse.get(COUNT_TOTAL)).isEqualTo(oldResponse.get(COUNT_TOTAL) + 2000);
+    }
+
+    @Test
+    public void testAggregation_BasalCaloriesBurntTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        BasalMetabolicRateRecordTest.getBasalMetabolicRateRecord(25.5),
+                        BasalMetabolicRateRecordTest.getBasalMetabolicRateRecord(71.5));
+        AggregateRecordsResponse<Power> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Power>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(3, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BASAL_CALORIES_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(BasalMetabolicRateRecordTest.getBasalMetabolicRateRecord(45.5));
+        AggregateRecordsResponse<Power> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Power>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(3, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BASAL_CALORIES_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(BASAL_CALORIES_TOTAL)).isNotNull();
+        Power newPower = newResponse.get(BASAL_CALORIES_TOTAL);
+        Power oldPower = oldResponse.get(BASAL_CALORIES_TOTAL);
+        assertThat(newPower.getInWatts() - oldPower.getInWatts()).isEqualTo(45.5);
+    }
+
+    @Test
+    public void testAggregation_ActiveCaloriesBurntTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(74.0),
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(100.5));
+        AggregateRecordsResponse<Energy> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ACTIVE_CALORIES_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(45.5));
+        AggregateRecordsResponse<Energy> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ACTIVE_CALORIES_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(ACTIVE_CALORIES_TOTAL)).isNotNull();
+        Energy newEnergy = newResponse.get(ACTIVE_CALORIES_TOTAL);
+        Energy oldEnergy = oldResponse.get(ACTIVE_CALORIES_TOTAL);
+        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(45.5);
+    }
+
+    @Test
+    public void testAggregation_power() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<Record> records =
+                Arrays.asList(
+                        PowerRecordTest.getBasePowerRecord(5.0),
+                        PowerRecordTest.getBasePowerRecord(10.0),
+                        PowerRecordTest.getBasePowerRecord(15.0));
+        AggregateRecordsResponse<Power> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Power>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(POWER_MAX)
+                                .addAggregationType(POWER_MIN)
+                                .addAggregationType(POWER_AVG)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        records);
+        Power maxPower = response.get(POWER_MAX);
+        Power minPower = response.get(POWER_MIN);
+        Power avgPower = response.get(POWER_AVG);
+        assertThat(maxPower).isNotNull();
+        assertThat(maxPower.getInWatts()).isEqualTo(15.0);
+        assertThat(minPower).isNotNull();
+        assertThat(minPower.getInWatts()).isEqualTo(5.0);
+        assertThat(avgPower).isNotNull();
+        assertThat(avgPower.getInWatts()).isEqualTo(10.0);
+    }
+
+    @Test
+    public void testAggregation_DistanceTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        DistanceRecordTest.getBaseDistanceRecord(74.0),
+                        DistanceRecordTest.getBaseDistanceRecord(100.5));
+        AggregateRecordsResponse<Length> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(DISTANCE_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew = Arrays.asList(DistanceRecordTest.getBaseDistanceRecord(100.5));
+        AggregateRecordsResponse<Length> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(DISTANCE_TOTAL)
+                                .build(),
+                        recordNew);
+        Length oldLength = oldResponse.get(DISTANCE_TOTAL);
+        Length newLength = newResponse.get(DISTANCE_TOTAL);
+        assertThat(oldLength).isNotNull();
+        assertThat(newLength).isNotNull();
+        assertThat(newLength.getInMeters() - oldLength.getInMeters()).isEqualTo(100.5);
+    }
+
+    @Test
+    public void testAggregation_ElevationTotal() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        ElevationGainedRecordTest.getBaseElevationGainedRecord(74.0),
+                        ElevationGainedRecordTest.getBaseElevationGainedRecord(100.5));
+        AggregateRecordsResponse<Length> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ELEVATION_GAINED_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(ElevationGainedRecordTest.getBaseElevationGainedRecord(100.5));
+        AggregateRecordsResponse<Length> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ELEVATION_GAINED_TOTAL)
+                                .build(),
+                        recordNew);
+        Length newElevation = newResponse.get(ELEVATION_GAINED_TOTAL);
+        Length oldElevation = oldResponse.get(ELEVATION_GAINED_TOTAL);
+        assertThat(newElevation).isNotNull();
+        assertThat(oldElevation).isNotNull();
+        assertThat(newElevation.getInMeters() - oldElevation.getInMeters()).isEqualTo(100.5);
     }
 
     private void insertHeartRateRecordsWithDelay(long delayInMillis, int times)

@@ -55,6 +55,12 @@ public class StepsRecordTest {
                 .build();
     }
 
+    static StepsRecord getStepsRecord(int count) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), count)
+                .build();
+    }
+
     static StepsRecord getCompleteStepsRecord() {
         return new StepsRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)

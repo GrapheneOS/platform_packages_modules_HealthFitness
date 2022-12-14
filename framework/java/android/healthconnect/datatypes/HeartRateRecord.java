@@ -16,6 +16,7 @@
 
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_AVG;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MAX;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MIN;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
@@ -32,7 +33,7 @@ import java.util.Objects;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
 public class HeartRateRecord extends IntervalRecord {
     /**
-     * Query param for to get max heart rate in beats per minute using aggregate APIs in {@link
+     * Metric identifier to get max heart rate in beats per minute using aggregate APIs in {@link
      * HealthConnectManager}
      */
     @NonNull
@@ -43,7 +44,7 @@ public class HeartRateRecord extends IntervalRecord {
                     RECORD_TYPE_HEART_RATE,
                     Long.class);
     /**
-     * Query param for to get min heart rate in beats per minute using aggregate APIs in {@link
+     * Metric identifier to get min heart rate in beats per minute using aggregate APIs in {@link
      * HealthConnectManager}
      */
     @NonNull
@@ -51,6 +52,17 @@ public class HeartRateRecord extends IntervalRecord {
             new AggregationType<>(
                     HEART_RATE_RECORD_BPM_MIN,
                     AggregationType.MIN,
+                    RECORD_TYPE_HEART_RATE,
+                    Long.class);
+
+    /**
+     * Metric identifier to get avg heart rate using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Long> BPM_AVG =
+            new AggregationType<>(
+                    HEART_RATE_RECORD_BPM_AVG,
+                    AggregationType.AVG,
                     RECORD_TYPE_HEART_RATE,
                     Long.class);
 

@@ -15,7 +15,11 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.DISTANCE_RECORD_DISTANCE_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
+
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Length;
 
 import java.time.Instant;
@@ -93,6 +97,17 @@ public final class DistanceRecord extends IntervalRecord {
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mDistance);
         }
     }
+
+    /**
+     * Metric identifier to get total distance using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Length> DISTANCE_TOTAL =
+            new AggregationType<>(
+                    DISTANCE_RECORD_DISTANCE_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_DISTANCE,
+                    Length.class);
 
     private final Length mDistance;
 

@@ -16,6 +16,10 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_AVG;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
@@ -25,11 +29,16 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.PowerRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.utils.SqlJoin;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,8 +56,45 @@ public class PowerRecordHelper
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     @Override
+    public final AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case POWER_RECORD_POWER_MIN:
+            case POWER_RECORD_POWER_MAX:
+            case POWER_RECORD_POWER_AVG:
+                return new AggregateResult<>(
+                                results.getDouble(results.getColumnIndex(POWER_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
     String getMainTableName() {
         return TABLE_NAME;
+    }
+
+    @Override
+    final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case POWER_RECORD_POWER_MIN:
+            case POWER_RECORD_POWER_MAX:
+            case POWER_RECORD_POWER_AVG:
+                return new AggregateParams(
+                                SERIES_TABLE_NAME,
+                                Collections.singletonList(POWER_COLUMN_NAME),
+                                START_TIME_COLUMN_NAME)
+                        .setJoin(
+                                new SqlJoin(
+                                        SERIES_TABLE_NAME,
+                                        TABLE_NAME,
+                                        PARENT_KEY_COLUMN_NAME,
+                                        PRIMARY_COLUMN_NAME));
+            default:
+                return null;
+        }
     }
 
     @Override

@@ -15,12 +15,16 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.ELEVATION_RECORD_ELEVATION_GAINED_TOTAL;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.ElevationGainedRecordInternal;
 import android.util.Pair;
@@ -41,9 +45,36 @@ public final class ElevationGainedRecordHelper
     private static final String ELEVATION_COLUMN_NAME = "elevation";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case ELEVATION_RECORD_ELEVATION_GAINED_TOTAL:
+                return new AggregateResult<>(
+                                results.getDouble(results.getColumnIndex(ELEVATION_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return ELEVATION_GAINED_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case ELEVATION_RECORD_ELEVATION_GAINED_TOTAL:
+                return new AggregateParams(
+                        ELEVATION_GAINED_RECORD_TABLE_NAME,
+                        Collections.singletonList(ELEVATION_COLUMN_NAME),
+                        START_TIME_COLUMN_NAME);
+            default:
+                return null;
+        }
     }
 
     @Override

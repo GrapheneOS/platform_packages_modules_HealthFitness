@@ -16,6 +16,10 @@
 
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.BMR_RECORD_BASAL_CALORIES_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
+
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Power;
 
 import androidx.annotation.NonNull;
@@ -67,6 +71,18 @@ public class BasalMetabolicRateRecord extends InstantRecord {
             return new BasalMetabolicRateRecord(mMetadata, mTime, mZoneOffset, mBasalMetabolicRate);
         }
     }
+
+    /**
+     * Metric identifier get total basal calories burnt using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Power> BASAL_CALORIES_TOTAL =
+            new AggregationType<>(
+                    BMR_RECORD_BASAL_CALORIES_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_BASAL_METABOLIC_RATE,
+                    Power.class);
 
     private final Power mBasalMetabolicRate;
 
