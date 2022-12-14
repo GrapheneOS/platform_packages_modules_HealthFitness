@@ -47,6 +47,11 @@ import java.util.Set;
 public final class HealthConnectPermissionHelper {
     private static final Period GRANT_TIME_TO_START_ACCESS_DATE_PERIOD = Period.ofDays(30);
 
+    private static final int MASK_PERMISSION_FLAGS =
+            PackageManager.FLAG_PERMISSION_USER_SET
+                    | PackageManager.FLAG_PERMISSION_USER_FIXED
+                    | PackageManager.FLAG_PERMISSION_AUTO_REVOKED;
+
     private final Context mContext;
     private final PackageManager mPackageManager;
     private final Set<String> mHealthPermissions;
@@ -96,6 +101,12 @@ public final class HealthConnectPermissionHelper {
         final long token = Binder.clearCallingIdentity();
         try {
             mPackageManager.grantRuntimePermission(packageName, permissionName, checkedUser);
+            mPackageManager.updatePermissionFlags(
+                    permissionName,
+                    packageName,
+                    MASK_PERMISSION_FLAGS,
+                    PackageManager.FLAG_PERMISSION_USER_SET,
+                    user);
             addToPriorityListIfRequired(packageName, permissionName);
 
         } finally {
@@ -117,8 +128,24 @@ public final class HealthConnectPermissionHelper {
         enforceValidPackage(packageName);
         final long token = Binder.clearCallingIdentity();
         try {
-            mPackageManager.revokeRuntimePermission(
-                    packageName, permissionName, checkedUser, reason);
+            boolean isAlreadyDenied =
+                    mPackageManager.checkPermission(permissionName, packageName)
+                            == PackageManager.PERMISSION_DENIED;
+            int permissionFlags =
+                    mPackageManager.getPermissionFlags(permissionName, packageName, user);
+            if (!isAlreadyDenied) {
+                mPackageManager.revokeRuntimePermission(
+                        packageName, permissionName, checkedUser, reason);
+            }
+            if (isAlreadyDenied
+                    && (permissionFlags & PackageManager.FLAG_PERMISSION_USER_SET) != 0) {
+                permissionFlags = permissionFlags | PackageManager.FLAG_PERMISSION_USER_FIXED;
+            } else {
+                permissionFlags = permissionFlags | PackageManager.FLAG_PERMISSION_USER_SET;
+            }
+            permissionFlags = permissionFlags & ~PackageManager.FLAG_PERMISSION_AUTO_REVOKED;
+            mPackageManager.updatePermissionFlags(
+                    permissionName, packageName, MASK_PERMISSION_FLAGS, permissionFlags, user);
             removeFromPriorityListIfRequired(packageName, permissionName);
         } finally {
             Binder.restoreCallingIdentity(token);
@@ -235,6 +262,12 @@ public final class HealthConnectPermissionHelper {
                 getGrantedHealthPermissionsUnchecked(packageName, user);
         for (String perm : grantedHealthPermissions) {
             mPackageManager.revokeRuntimePermission(packageName, perm, user, reason);
+            mPackageManager.updatePermissionFlags(
+                    perm,
+                    packageName,
+                    MASK_PERMISSION_FLAGS,
+                    PackageManager.FLAG_PERMISSION_USER_SET,
+                    user);
             removeFromPriorityListIfRequired(packageName, perm);
         }
     }
