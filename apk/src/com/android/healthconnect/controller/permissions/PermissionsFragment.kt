@@ -1,6 +1,10 @@
 package com.android.healthconnect.controller.permissions
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
@@ -9,9 +13,12 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.permissions.requestpermissions.RequestPermissionHeaderPreference
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.settingslib.widget.MainSwitchPreference
 import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment for displaying permission switches. */
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
@@ -21,12 +28,19 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         private const val ALLOW_ALL_PREFERENCE = "allow_all_preference"
         private const val READ_CATEGORY = "read_permission_category"
         private const val WRITE_CATEGORY = "write_permission_category"
+        private const val HEADER = "request_permissions_header"
         @JvmStatic
         fun newInstance(permissions: Map<HealthPermission, Boolean>) =
             PermissionsFragment().apply { permissionMap = permissions.toMutableMap() }
     }
 
+    private val viewModel: RequestPermissionViewModel by viewModels()
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
     private var permissionMap: MutableMap<HealthPermission, Boolean> = HashMap()
+
+    private val header: RequestPermissionHeaderPreference? by lazy {
+        preferenceScreen.findPreference(HEADER)
+    }
 
     private val allowAllPreference: MainSwitchPreference? by lazy {
         preferenceScreen.findPreference(ALLOW_ALL_PREFERENCE)
@@ -52,10 +66,21 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        if (savedInstanceState == null) {
-            setPreferencesFromResource(R.xml.permissions_screen, rootKey)
-            updateDataList()
-            setupAllowAll()
+        setPreferencesFromResource(R.xml.permissions_screen, rootKey)
+        updateDataList()
+        setupAllowAll()
+        viewModel.loadAppInfo(
+            requireActivity().intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME).orEmpty())
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.appMetadata.observe(viewLifecycleOwner) { app ->
+            header?.bind(app.appName) {
+                val startRationaleIntent =
+                    healthPermissionReader.getApplicationRationaleIntent(app.packageName)
+                startActivity(startRationaleIntent)
+            }
         }
     }
 

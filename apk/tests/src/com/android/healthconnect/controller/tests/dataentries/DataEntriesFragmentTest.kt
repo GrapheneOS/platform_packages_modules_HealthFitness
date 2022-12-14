@@ -112,7 +112,7 @@ class DataEntriesFragmentTest {
 
         launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
 
-        onView(withIndex(withId(R.id.item_data_entry_menu), 0)).check(matches(isDisplayed()))
+                onView(withIndex(withId(R.id.item_data_entry_menu), 0)).check(matches(isDisplayed()))
     }
 
     @Test
