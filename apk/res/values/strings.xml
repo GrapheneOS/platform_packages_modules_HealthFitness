@@ -345,14 +345,14 @@
   <!--endregion-->
 
   <!--region Onboarding -->
-  <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time" translatable="true">Get Started with Health&#160;Connect</string>
-  <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page" translatable="true">Health&#160;Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone</string>
-  <string name="share_data" description="Label used to show how the user can share data with apps" translatable="true">Share data with your apps</string>
-  <string name="share_data_description" description="Content description for how the user can share data with apps" translatable="true">Choose the data each app can read or write to Health&#160;Connect</string>
-  <string name="manage_your_settings" description="Label used to show how the user can manage settings and privacy" translatable="true">Manage your settings and privacy</string>
-  <string name="manage_your_settings_description" description="Content description for how the user can change app permissions and manage data" translatable="true">Change app permissions and manage your data at any time</string>
-  <string name="onboarding_go_back_button_text" description="Content description for button to exit from onboarding page" translatable="true">Go back</string>
-  <string name="onboarding_get_started_button_text" description="Content description for button to get started with Health Connect app" translatable="true">Get started</string>
+  <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time">Get Started with Health&#160;Connect</string>
+  <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page">Health&#160;Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone</string>
+  <string name="share_data" description="Label used to show how the user can share data with apps">Share data with your apps</string>
+  <string name="share_data_description" description="Content description for how the user can share data with apps">Choose the data each app can read or write to Health&#160;Connect</string>
+  <string name="manage_your_settings" description="Label used to show how the user can manage settings and privacy">Manage your settings and privacy</string>
+  <string name="manage_your_settings_description" description="Content description for how the user can change app permissions and manage data">Change app permissions and manage your data at any time</string>
+  <string name="onboarding_go_back_button_text" description="Content description for button to exit from onboarding page">Go back</string>
+  <string name="onboarding_get_started_button_text" description="Content description for button to get started with Health Connect app">Get started</string>
   <string name="previously_opened" description="Label used as key to track if user has opened Health Connected previously" translatable="false">Previously Opened</string>
   <!--endregion-->
 
@@ -401,7 +401,6 @@
 
   <string name="confirming_question_single_entry" description="Description of what permanent deletion of a single data point means. [CHAR_LIMIT=NONE]">Permanently delete this entry?</string>
   <string name="confirming_question_message" description="Description of what permanent deletion of some data means. [CHAR_LIMIT=NONE]">Connected apps will no longer be able to access this data from Health&#160;Connect</string>
-
   <!--endregion-->
 
   <!-- region Dialog buttons -->
@@ -409,7 +408,6 @@
   <string name="confirming_question_go_back_button" description="Label of a button that goes back to the previous dialog. [CHAR_LIMIT=50]">Go back</string>
   <string name="delete_dialog_success_got_it_button" description="Label of a button that dismisses the pop-up window. [CHAR_LIMIT=50]">Done</string>
   <string name="delete_dialog_failure_close_button" description="Label of a button that closes the window. [CHAR_LIMIT=50]">Close</string>
-
   <!-- endregion -->
 
   <string name="delete_dialog_success_title" description="Title of the confirmation window of successful data deletion. [CHAR_LIMIT=50]">Data deleted</string>
@@ -424,7 +422,6 @@
   <string name="delete_data_notification_title" description="The title text of the notification that is shown while data is being deleted. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
   <string name="delete_data_notification_ticker_text" description="The ticker text of the notification that is shown while data is being deleted, which is read out by screen readers. [CHAR_LIMIT=50]">Deleting Health&#160;Connect data</string>
   <string name="delete_data_notification_channel_name" description="The channel name for the notification that is shown while data is being deleted, which is visible to users in system settings. [CHAR_LIMIT=50]">Data deletion</string>
-
   <!--endregion-->
 
   <!-- region Data entries -->
