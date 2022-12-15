@@ -14,7 +14,6 @@
 package com.android.healthconnect.controller.permissions.connectedapps.settings
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
-import android.healthconnect.HealthConnectManager
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
@@ -34,16 +33,11 @@ class SettingsActivity : Hilt_SettingsActivity() {
 
     override fun onStart() {
         super.onStart()
-        when (intent.action) {
-            HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS_AND_DATA -> {
-                findNavController(R.id.nav_host_fragment)
-                    .navigate(
-                        R.id.action_deeplink_to_settingsManageAppPermissionsFragment,
-                        bundleOf(EXTRA_PACKAGE_NAME to intent.getStringExtra(EXTRA_PACKAGE_NAME)))
-            }
-            else -> {
-                // do nothing
-            }
+        if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
+            findNavController(R.id.nav_host_fragment)
+                .navigate(
+                    R.id.action_deeplink_to_settingsManageAppPermissionsFragment,
+                    bundleOf(EXTRA_PACKAGE_NAME to intent.getStringExtra(EXTRA_PACKAGE_NAME)))
         }
     }
 

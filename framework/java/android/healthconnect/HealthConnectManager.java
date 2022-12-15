@@ -120,26 +120,28 @@ public class HealthConnectManager {
      * <p>Input: {@link android.content.Intent#EXTRA_PACKAGE_NAME} string extra with the name of the
      * app requesting the action. Optional: Adding package name extras launches a UI to manager
      * (e.g. grant/revoke) for this app.
-     *
-     * @hide
      */
-    @SystemApi
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_MANAGE_HEALTH_PERMISSIONS =
             "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
     /**
-     * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions and
-     * health data (e.g. delete) for an app.
+     * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions.
      *
      * <p>Input: {@link android.content.Intent#EXTRA_PACKAGE_NAME} string extra with the name of the
      * app requesting the action must be present. An app can open only its own page.
+     *
+     * <p>Input: caller must provide `String[]` extra [EXTRA_PERMISSIONS]
+     *
+     * <p>Result will be delivered via [Activity.onActivityResult] with `String[]`
+     * [EXTRA_PERMISSIONS] and `int[]` [EXTRA_PERMISSION_GRANT_RESULTS], similar to
+     * [Activity.onRequestPermissionsResult]
      *
      * @hide
      */
     @SystemApi
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
-    public static final String ACTION_MANAGE_HEALTH_PERMISSIONS_AND_DATA =
-            "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS_AND_DATA";
+    public static final String ACTION_REQUEST_HEALTH_PERMISSIONS =
+            "android.healthconnect.action.REQUEST_HEALTH_PERMISSIONS";
     /**
      * Activity action: Launch UI to health connect home settings screen.
      *
@@ -152,6 +154,19 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_HEALTH_HOME_SETTINGS =
             "android.healthconnect.action.HEALTH_HOME_SETTINGS";
+
+    /**
+     * Activity action: Launch UI to show and manage (e.g. delete/export) health data.
+     *
+     * <p>shows a list of health data categories and actions to manage (e.g. delete/export) health
+     * data.
+     *
+     * @hide
+     */
+    @SystemApi
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_MANAGE_HEALTH_DATA =
+            "android.healthconnect.action.MANAGE_HEALTH_DATA";
 
     /** @hide */
     @SystemApi

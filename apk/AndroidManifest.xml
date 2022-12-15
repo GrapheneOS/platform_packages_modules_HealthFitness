@@ -40,20 +40,24 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.INFO" />
             </intent-filter>
-            <!-- Deeplink to Home Screen -->
+            <!-- Deeplink to Home screen -->
             <intent-filter>
                 <action android:name="android.healthconnect.action.HEALTH_HOME_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- Deeplink to Data and access screen -->
+            <intent-filter>
+                <action android:name="android.healthconnect.action.MANAGE_HEALTH_DATA" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".permissions.connectedapps.settings.SettingsActivity"
-            android:permission="android.permission.GRANT_RUNTIME_PERMISSIONS"
             android:exported="true">
-            <!-- Deeplink to App Access screen -->
+            <!-- Deeplink to Allowed Apps and App Access screen -->
             <intent-filter>
-                <action android:name="android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS_AND_DATA" />
+                <action android:name="android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -64,7 +68,7 @@
             android:exported="true"
             android:permission="android.permission.GRANT_RUNTIME_PERMISSIONS">
             <intent-filter android:priority="1">
-                <action android:name="android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS" />
+                <action android:name="android.healthconnect.action.REQUEST_HEALTH_PERMISSIONS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

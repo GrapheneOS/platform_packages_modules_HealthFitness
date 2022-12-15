@@ -15,6 +15,7 @@ package com.android.healthconnect.controller
 
 import android.content.Context
 import android.content.Intent
+import android.healthconnect.HealthConnectManager
 import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -40,6 +41,14 @@ class MainActivity : Hilt_MainActivity() {
             editor.apply()
             val intent = Intent(this, OnboardingActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (intent.action == HealthConnectManager.ACTION_MANAGE_HEALTH_DATA) {
+            findNavController(R.id.nav_host_fragment)
+                .navigate(R.id.action_deeplink_to_healthDataCategoriesFragment)
         }
     }
 

@@ -20,11 +20,11 @@ import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsActivity
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -35,6 +35,10 @@ import javax.inject.Inject
 @AndroidEntryPoint(FragmentActivity::class)
 class PermissionsActivity : Hilt_PermissionsActivity() {
 
+    companion object {
+        private const val TAG = "PermissionsActivity"
+    }
+
     private val viewModel: RequestPermissionViewModel by viewModels()
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
     private lateinit var appPackageName: String
@@ -43,10 +47,8 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permissions)
 
-        // TODO(b/260629311) replace with new intent
-        if (!intent.hasExtra(EXTRA_PACKAGE_NAME)) {
-            val newIntent = Intent(intent).setClass(this, SettingsActivity::class.java)
-            startActivity(newIntent)
+        if (!intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
+            Log.e(TAG, "Invalid Intent Extras, finishing")
             finish()
         }
 
