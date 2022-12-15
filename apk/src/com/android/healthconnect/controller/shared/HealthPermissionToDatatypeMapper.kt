@@ -13,6 +13,7 @@
  */
 package com.android.healthconnect.controller.shared
 
+import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.HeartRateRecord
@@ -22,6 +23,7 @@ import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ACTIVE_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BASAL_METABOLIC_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
@@ -38,7 +40,8 @@ object HealthPermissionToDatatypeMapper {
             BASAL_METABOLIC_RATE to listOf(BasalMetabolicRateRecord::class.java),
             SPEED to listOf(SpeedRecord::class.java),
             DISTANCE to listOf(DistanceRecord::class.java),
-            POWER to listOf(PowerRecord::class.java))
+            POWER to listOf(PowerRecord::class.java),
+            ACTIVE_CALORIES_BURNED to listOf(ActiveCaloriesBurnedRecord::class.java))
 
     fun getDataTypes(permissionType: HealthPermissionType): List<Class<out Record>> {
         return map[permissionType].orEmpty()

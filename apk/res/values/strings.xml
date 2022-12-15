@@ -468,6 +468,10 @@
       name="calories_long">{count, plural, =1 {1 calorie} other {# calories}}</string>
   <string translation_description="Calories formatted. [ICU SYNTAX][CHAR LIMIT=60]"
       name="calories">{count, plural, =1 {1 Cal} other {# Cal}}</string>
+  <string translation_description="KiloJoules (the energy unit) formatted. [ICU SYNTAX][CHAR LIMIT=20]"
+      name="kj">{count, plural, =1 {1 kJ} other {# kJ}}</string>
+  <string translation_description="KiloJoules (the energy unit) formatted to be spoken aloud. [ICU SYNTAX][CHAR LIMIT=20]"
+      name="kj_long">{count, plural, =1 {1 kilojoule} other {# kilojoules}}</string>
   <!--endregion-->
 
   <!-- region units -->
