@@ -26,11 +26,11 @@ import java.time.Instant
 
 val NOW: Instant = Instant.parse("2022-10-20T07:06:05.432Z")
 
-fun getHeartRateRecord(heartRateValues: List<Long>): HeartRateRecord {
+fun getHeartRateRecord(heartRateValues: List<Long>, startTime: Instant = NOW): HeartRateRecord {
     return HeartRateRecord.Builder(
             getMetaData(),
-            NOW,
-            NOW.plusSeconds(2),
+            startTime,
+            startTime.plusSeconds(2),
             heartRateValues.map { HeartRateRecord.HeartRateSample(it, NOW) })
         .build()
 }

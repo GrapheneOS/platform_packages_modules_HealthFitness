@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.DataType
+import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.withIndex
 import dagger.hilt.android.testing.BindValue
@@ -112,7 +113,7 @@ class DataEntriesFragmentTest {
 
         launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
 
-                onView(withIndex(withId(R.id.item_data_entry_menu), 0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.item_data_entry_menu), 0)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -135,11 +136,13 @@ private val FORMATTED_STEPS_LIST =
             headerA11y = "from 7:06 AM to 7:06 AM • TEST_APP_NAME",
             title = "12 steps",
             titleA11y = "12 steps",
-            dataType = DataType.STEPS),
+            dataType = DataType.STEPS,
+            startTime = NOW),
         FormattedDataEntry(
             uuid = "test_id",
             header = "8:06 AM - 8:06 AM • TEST_APP_NAME",
             headerA11y = "from 8:06 AM to 8:06 AM • TEST_APP_NAME",
             title = "15 steps",
             titleA11y = "15 steps",
-            dataType = DataType.STEPS))
+            dataType = DataType.STEPS,
+            startTime = NOW))

@@ -14,6 +14,7 @@
 package com.android.healthconnect.controller.dataentries
 
 import com.android.healthconnect.controller.shared.DataType
+import java.time.Instant
 
 data class FormattedDataEntry(
     val uuid: String,
@@ -21,5 +22,6 @@ data class FormattedDataEntry(
     val headerA11y: String,
     val title: String,
     val titleA11y: String,
-    val dataType: DataType
+    val dataType: DataType,
+    val startTime: Instant
 )

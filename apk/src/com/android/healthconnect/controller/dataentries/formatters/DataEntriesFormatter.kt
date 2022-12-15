@@ -22,6 +22,7 @@ import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import java.time.Instant
 
 abstract class DataEntriesFormatter<T : Record>(private val context: Context) {
 
@@ -35,7 +36,8 @@ abstract class DataEntriesFormatter<T : Record>(private val context: Context) {
             headerA11y = getHeaderA11y(record, appName),
             title = formatValue(record, unitPreferences),
             titleA11y = formatA11yValue(record, unitPreferences),
-            dataType = getDataType(record))
+            dataType = getDataType(record),
+            startTime = getStartTime(record))
     }
 
     abstract suspend fun formatValue(record: T, unitPreferences: UnitPreferences): String
@@ -58,6 +60,14 @@ abstract class DataEntriesFormatter<T : Record>(private val context: Context) {
         return when (record) {
             is IntervalRecord -> timeFormatter.formatTimeRange(record.startTime, record.endTime)
             is InstantRecord -> timeFormatter.formatTime(record.time)
+            else -> throw IllegalArgumentException("${record::class.java} Not supported!")
+        }
+    }
+
+    private fun getStartTime(record: T): Instant {
+        return when (record) {
+            is IntervalRecord -> record.startTime
+            is InstantRecord -> record.time
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }
