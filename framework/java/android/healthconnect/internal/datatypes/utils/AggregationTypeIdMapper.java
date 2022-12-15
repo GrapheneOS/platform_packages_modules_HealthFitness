@@ -53,6 +53,18 @@ import static android.healthconnect.datatypes.NutritionRecord.RIBOFLAVIN_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.SATURATED_FAT_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.SELENIUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.SODIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SUGAR_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.THIAMIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.UNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_A_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B12_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B6_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_C_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_D_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_E_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_K_TOTAL;
 import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
@@ -80,7 +92,7 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    private static final int MAP_SIZE = 41;
+    private static final int MAP_SIZE = 53;
     private static AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
@@ -126,7 +138,19 @@ public final class AggregationTypeIdMapper {
                         RIBOFLAVIN_TOTAL,
                         SATURATED_FAT_TOTAL,
                         SELENIUM_TOTAL,
-                        SODIUM_TOTAL));
+                        SODIUM_TOTAL,
+                        SUGAR_TOTAL,
+                        THIAMIN_TOTAL,
+                        TOTAL_CARBOHYDRATE_TOTAL,
+                        TOTAL_FAT_TOTAL,
+                        UNSATURATED_FAT_TOTAL,
+                        VITAMIN_A_TOTAL,
+                        VITAMIN_B12_TOTAL,
+                        VITAMIN_B6_TOTAL,
+                        VITAMIN_C_TOTAL,
+                        VITAMIN_D_TOTAL,
+                        VITAMIN_E_TOTAL,
+                        VITAMIN_K_TOTAL));
     }
 
     @NonNull

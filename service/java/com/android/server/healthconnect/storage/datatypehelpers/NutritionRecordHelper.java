@@ -43,6 +43,18 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SATURATED_FAT_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SELENIUM_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SODIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SUGAR_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_THIAMIN_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TOTAL_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_UNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_A_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_B12_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_B6_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_C_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_D_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_E_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_K_TOTAL;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
@@ -212,6 +224,44 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
             case NUTRITION_RECORD_SODIUM_TOTAL:
                 aggregateValue = results.getDouble(results.getColumnIndex(SODIUM_COLUMN_NAME));
                 break;
+            case NUTRITION_RECORD_SUGAR_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(SUGAR_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_THIAMIN_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(THIAMIN_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(TOTAL_CARBOHYDRATE_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_TOTAL_FAT_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(TOTAL_FAT_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_UNSATURATED_FAT_TOTAL:
+                aggregateValue =
+                        results.getDouble(results.getColumnIndex(UNSATURATED_FAT_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_VITAMIN_A_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_A_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_VITAMIN_B12_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_B12_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_VITAMIN_B6_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_B6_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_VITAMIN_C_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_C_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_VITAMIN_D_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_D_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_VITAMIN_E_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_E_COLUMN_NAME));
+                break;
+            case NUTRITION_RECORD_VITAMIN_K_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_K_COLUMN_NAME));
+                break;
             default:
                 return null;
         }
@@ -311,6 +361,42 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
                 break;
             case NUTRITION_RECORD_SODIUM_TOTAL:
                 columnNames = Collections.singletonList(SODIUM_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_SUGAR_TOTAL:
+                columnNames = Collections.singletonList(SUGAR_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_THIAMIN_TOTAL:
+                columnNames = Collections.singletonList(THIAMIN_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL:
+                columnNames = Collections.singletonList(TOTAL_CARBOHYDRATE_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_TOTAL_FAT_TOTAL:
+                columnNames = Collections.singletonList(TOTAL_FAT_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_UNSATURATED_FAT_TOTAL:
+                columnNames = Collections.singletonList(UNSATURATED_FAT_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_VITAMIN_A_TOTAL:
+                columnNames = Collections.singletonList(VITAMIN_A_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_VITAMIN_B12_TOTAL:
+                columnNames = Collections.singletonList(VITAMIN_B12_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_VITAMIN_B6_TOTAL:
+                columnNames = Collections.singletonList(VITAMIN_B6_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_VITAMIN_C_TOTAL:
+                columnNames = Collections.singletonList(VITAMIN_C_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_VITAMIN_D_TOTAL:
+                columnNames = Collections.singletonList(VITAMIN_D_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_VITAMIN_E_TOTAL:
+                columnNames = Collections.singletonList(VITAMIN_E_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_VITAMIN_K_TOTAL:
+                columnNames = Collections.singletonList(VITAMIN_K_COLUMN_NAME);
                 break;
             default:
                 return null;

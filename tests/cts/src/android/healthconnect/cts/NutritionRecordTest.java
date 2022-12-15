@@ -44,6 +44,18 @@ import static android.healthconnect.datatypes.NutritionRecord.RIBOFLAVIN_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.SATURATED_FAT_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.SELENIUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.SODIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SUGAR_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.THIAMIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.UNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_A_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B12_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B6_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_C_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_D_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_E_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_K_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -106,7 +118,19 @@ public class NutritionRecordTest {
                     RIBOFLAVIN_TOTAL,
                     SATURATED_FAT_TOTAL,
                     SELENIUM_TOTAL,
-                    SODIUM_TOTAL);
+                    SODIUM_TOTAL,
+                    SUGAR_TOTAL,
+                    THIAMIN_TOTAL,
+                    TOTAL_CARBOHYDRATE_TOTAL,
+                    TOTAL_FAT_TOTAL,
+                    UNSATURATED_FAT_TOTAL,
+                    VITAMIN_A_TOTAL,
+                    VITAMIN_B12_TOTAL,
+                    VITAMIN_B6_TOTAL,
+                    VITAMIN_C_TOTAL,
+                    VITAMIN_D_TOTAL,
+                    VITAMIN_E_TOTAL,
+                    VITAMIN_K_TOTAL);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -244,6 +268,18 @@ public class NutritionRecordTest {
                                 .addAggregationType(SATURATED_FAT_TOTAL)
                                 .addAggregationType(SELENIUM_TOTAL)
                                 .addAggregationType(SODIUM_TOTAL)
+                                .addAggregationType(SUGAR_TOTAL)
+                                .addAggregationType(THIAMIN_TOTAL)
+                                .addAggregationType(TOTAL_CARBOHYDRATE_TOTAL)
+                                .addAggregationType(TOTAL_FAT_TOTAL)
+                                .addAggregationType(UNSATURATED_FAT_TOTAL)
+                                .addAggregationType(VITAMIN_A_TOTAL)
+                                .addAggregationType(VITAMIN_B12_TOTAL)
+                                .addAggregationType(VITAMIN_B6_TOTAL)
+                                .addAggregationType(VITAMIN_C_TOTAL)
+                                .addAggregationType(VITAMIN_D_TOTAL)
+                                .addAggregationType(VITAMIN_E_TOTAL)
+                                .addAggregationType(VITAMIN_K_TOTAL)
                                 .build(),
                         records);
         List<Record> recordNew =
@@ -281,6 +317,18 @@ public class NutritionRecordTest {
                                 .addAggregationType(SATURATED_FAT_TOTAL)
                                 .addAggregationType(SELENIUM_TOTAL)
                                 .addAggregationType(SODIUM_TOTAL)
+                                .addAggregationType(SUGAR_TOTAL)
+                                .addAggregationType(THIAMIN_TOTAL)
+                                .addAggregationType(TOTAL_CARBOHYDRATE_TOTAL)
+                                .addAggregationType(TOTAL_FAT_TOTAL)
+                                .addAggregationType(UNSATURATED_FAT_TOTAL)
+                                .addAggregationType(VITAMIN_A_TOTAL)
+                                .addAggregationType(VITAMIN_B12_TOTAL)
+                                .addAggregationType(VITAMIN_B6_TOTAL)
+                                .addAggregationType(VITAMIN_C_TOTAL)
+                                .addAggregationType(VITAMIN_D_TOTAL)
+                                .addAggregationType(VITAMIN_E_TOTAL)
+                                .addAggregationType(VITAMIN_K_TOTAL)
                                 .build(),
                         recordNew);
         for (AggregationType<Mass> type : mMassAggregateTypesList) {

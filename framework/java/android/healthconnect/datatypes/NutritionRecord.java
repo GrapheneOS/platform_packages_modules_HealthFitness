@@ -43,6 +43,18 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SATURATED_FAT_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SELENIUM_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SODIUM_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_SUGAR_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_THIAMIN_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TOTAL_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_UNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_A_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_B12_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_B6_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_C_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_D_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_E_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_K_TOTAL;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 
 import android.annotation.NonNull;
@@ -1003,6 +1015,138 @@ public final class NutritionRecord extends IntervalRecord {
     public static final AggregationType<Mass> SODIUM_TOTAL =
             new AggregationType<>(
                     NUTRITION_RECORD_SODIUM_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /** Metric identifier to get total sugar using aggregate APIs in {@link HealthConnectManager} */
+    @NonNull
+    public static final AggregationType<Mass> SUGAR_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_SUGAR_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total thiamin using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> THIAMIN_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_THIAMIN_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total carbohydrate using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> TOTAL_CARBOHYDRATE_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /** Metric identifier to get total fat using aggregate APIs in {@link HealthConnectManager} */
+    @NonNull
+    public static final AggregationType<Mass> TOTAL_FAT_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_TOTAL_FAT_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total unsaturated fat using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> UNSATURATED_FAT_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_UNSATURATED_FAT_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total Vitamin A using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> VITAMIN_A_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_VITAMIN_A_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total Vitamin B12 using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> VITAMIN_B12_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_VITAMIN_B12_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total Vitamin B6 using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> VITAMIN_B6_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_VITAMIN_B6_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total Vitamin C using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> VITAMIN_C_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_VITAMIN_C_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total Vitamin D using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> VITAMIN_D_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_VITAMIN_D_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total Vitamin E using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> VITAMIN_E_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_VITAMIN_E_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
+     * Metric identifier to get total Vitamin K using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> VITAMIN_K_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_VITAMIN_K_TOTAL,
                     AggregationType.SUM,
                     RECORD_TYPE_NUTRITION,
                     Mass.class);
