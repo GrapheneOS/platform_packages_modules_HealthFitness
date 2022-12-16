@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"ຂໍ້ມູນນີ້ຮວມມີຂໍ້ມູນຕ່າງໆ ເຊັ່ນ: ໄລຍະການນອນຫຼັບ ແລະ ຊ່ວງເວລານອນຕ່າງໆ"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"ເບິ່ງລາຍການຂໍ້ມູນທັງໝົດ"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"ລຶບຂໍ້ມູນນີ້ອອກ"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"ເຂົ້າເຖິງຂໍ້ມູນສຸຂະພາບຂອງທ່ານ"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"ອ່ານຂໍ້ມູນແຄລໍຣີທີ່ໃຊ້ໄປ"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"ອະນຸຍາດໃຫ້ແອັບອ່ານຂໍ້ມູນແຄລໍຣີທີ່ໃຊ້ໄປ"</string>
@@ -246,16 +245,11 @@
     <string name="delete_app_data" msgid="2694002637558981031">"ລຶບຂໍ້ມູນແອັບ"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"ແອັບທີ່ບໍ່ເຄື່ອນໄຫວ"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"ແອັບເຫຼົ່ານີ້ບໍ່ມີສິດເຂົ້າເຖິງອີກຕໍ່ໄປແລ້ວ, ແຕ່ຍັງຄົງມີຂໍ້ມູນທີ່ຈັດເກັບໄວ້ໃນ Health Connect ຢູ່"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> ສາມາດເຂົ້າເຖິງຂໍ້ມູນທີ່ເພີ່ມໄດ້ຫຼັງຈາກ <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"ເພື່ອຈັດການການອະນຸຍາດ Android ອື່ນທີ່ແອັບນີ້ສາມາດເຂົ້າເຖິງໄດ້, ໃຫ້ເຂົ້າໄປການຕັ້ງຄ່າ &gt; ແອັບ"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"ຂໍ້ມູນທີ່ທ່ານແບ່ງປັນກັບ <xliff:g id="APP_NAME">%1$s</xliff:g> ແມ່ນຢູ່ພາຍໃຕ້ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວຂອງເຂົາເຈົ້າ"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ເພື່ອຈັດການການອະນຸຍາດອື່ນໆຂອງ Android ທີ່ແອັບນີ້ສາມາດເຂົ້າເຖິງໄດ້, ໃຫ້ເຂົ້າໄປການຕັ້ງຄ່າ, ຈາກນັ້ນແຕະແອັບ"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ອ່ານນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ"</string>
     <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"ເລີ່ມຕົ້ນການນຳໃຊ້ Health Connect"</string>
@@ -325,18 +319,12 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 ກິໂລແມັດຕໍ່ຊົ່ວໂມງ}other{# ກິໂລແມັດຕໍ່ຊົ່ວໂມງ}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"ຕັ້ງແຕ່ <xliff:g id="START_TIME">%1$s</xliff:g> ຫາ <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"ຕັ້ງແຕ່ <xliff:g id="START_TIME">%1$s</xliff:g> ຫາ <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
-    <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
-    <!-- no translation found for calories_long (3636635044382367818) -->
-    <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
-    <skip />
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 ໄມລ໌}other{# ໄມລ໌}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 ກມ}other{# ກມ}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 ໄມລ໌}other{# ໄມລ໌}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 ກິໂລແມັດ}other{# ກິໂລແມັດ}}"</string>
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 ແຄລໍຣີ}other{# ແຄລໍຣີ}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 ແຄລ}other{# ແຄລ}}"</string>
     <string name="units_title" msgid="4335002706905375844">"ຫົວໜ່ວຍ"</string>
     <string name="set_units_label" msgid="7358440515698876383">"ຕັ້ງຫົວໜ່ວຍຂໍ້ມູນ"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"ໄລຍະທາງ"</string>

@@ -246,16 +246,11 @@
     <string name="delete_app_data" msgid="2694002637558981031">"លុប​ទិន្នន័យ​កម្មវិធី"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"កម្មវិធីអសកម្ម"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"កម្មវិធីទាំងនេះ​លែង​មាន​សិទ្ធិ​ចូល​ប្រើប្រាស់​ទៀតហើយ ប៉ុន្តែ​នៅតែ​រក្សាទុក​ទិន្នន័យ​នៅក្នុង Health Connect ដដែល"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> អាចចូលប្រើទិន្នន័យដែលបញ្ចូលនៅក្រោយថ្ងៃទី <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"ដើម្បីគ្រប់គ្រងការអនុញ្ញាត Android ផ្សេងទៀតដែលកម្មវិធីនេះអាចចូលប្រើប្រាស់ សូមចូលទៅកាន់ការកំណត់ &gt; កម្មវិធី"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"ទិន្នន័យដែលអ្នកចែករំលែកជាមួយ <xliff:g id="APP_NAME">%1$s</xliff:g> ត្រូវអនុលោមតាមគោលការណ៍ឯកជនភាពរបស់វា"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ដើម្បីគ្រប់គ្រងការអនុញ្ញាត Android ផ្សេងទៀតដែលកម្មវិធីនេះអាចចូលប្រើប្រាស់ សូមចូលទៅកាន់ការកំណត់ រួចចុចកម្មវិធី"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"អានគោលការណ៍ឯកជនភាព"</string>
     <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"ចាប់ផ្ដើមជាមួយ Health Connect"</string>
@@ -325,14 +320,10 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 គីឡូម៉ែត្រក្នុងមួយម៉ោង}other{# គីឡូម៉ែត្រក្នុងមួយម៉ោង}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"ពី​ម៉ោង <xliff:g id="START_TIME">%1$s</xliff:g> ដល់​ម៉ោង <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"ពី​ម៉ោង <xliff:g id="START_TIME">%1$s</xliff:g> ដល់​ម៉ោង <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
-    <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 ម៉ាយល៍}other{# ម៉ាយល៍}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 ម៉ាយល៍}other{# ម៉ាយល៍}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 គីឡូម៉ែត្រ}other{# គីឡូម៉ែត្រ}}"</string>
     <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
     <!-- no translation found for calories (1646804751247540818) -->

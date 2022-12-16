@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"Ovi podaci uključuju informacije kao što su faze spavanja i sesije spavanja"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"Pogledajte sve unose"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Izbriši ove podatke"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"pristup podacima o zdravlju"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Očitavanje potrošenih kalorija"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Aplikaciji omogućuje očitavanje podataka o potrošenim kalorijama"</string>
@@ -324,10 +323,8 @@
     <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}one{# km}few{# km}other{# km}}"</string>
     <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 milja}one{# milja}few{# milje}other{# milja}}"</string>
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilometar}one{# kilometar}few{# kilometra}other{# kilometara}}"</string>
-    <!-- no translation found for calories_long (3636635044382367818) -->
-    <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
-    <skip />
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 kalorija}one{# kalorija}few{# kalorije}other{# kalorija}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 cal}one{# cal}few{# cal}other{# cal}}"</string>
     <string name="units_title" msgid="4335002706905375844">"Jedinice"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Postavi jedinice za podatke"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"Udaljenost"</string>

@@ -246,16 +246,11 @@
     <string name="delete_app_data" msgid="2694002637558981031">"Supprimer les données de l\'appli"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"Applis inactives"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Ces applis n\'ont plus accès à Santé Connect, mais ont encore des données qui y sont stockées"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder aux données ajoutées après le <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Pour gérer d\'autres autorisations Android concernant cette appli, sélectionnez Paramètres &gt; Applis"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Les données que vous partagez avec l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g> sont soumises à ses règles de confidentialité."</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Pour gérer d\'autres autorisations Android concernant cette appli, sélectionnez \"Paramètres\", puis appuyez sur \"Applis\""</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Lire les règles de confidentialité"</string>
     <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"Premiers pas avec Santé Connect"</string>
@@ -325,14 +320,10 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilomètre par heure}one{# kilomètre par heure}other{# kilomètres par heure}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"de <xliff:g id="START_TIME">%1$s</xliff:g> à <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"de <xliff:g id="START_TIME">%1$s</xliff:g> à <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
-    <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 mile}one{# mile}other{# miles}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}one{# km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 mile}one{# mile}other{# miles}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilomètre}one{# kilomètre}other{# kilomètres}}"</string>
     <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
     <!-- no translation found for calories (1646804751247540818) -->

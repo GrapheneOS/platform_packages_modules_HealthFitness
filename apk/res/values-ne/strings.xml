@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"यस डेटामा निद्राका चरण र निद्राका सत्र जस्ता जानकारी समावेश गरिन्छ"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"सबै इन्ट्रीहरू हेर्नुहोस्"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"यो डेटा मेटाउनुहोस्"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"आफ्नो स्वास्थ्यसम्बन्धी डेटा हेर्ने तथा प्रयोग गर्ने अनुमति दिनुहोस्"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"खर्च गरिएको क्यालोरीसम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"एपलाई खर्च गरिएको क्यालोरीसम्बन्धी डेटा रिड गर्ने अनुमति दिन्छ"</string>
@@ -333,10 +332,8 @@
     <skip />
     <!-- no translation found for distance_km_long (1702836391705517609) -->
     <skip />
-    <!-- no translation found for calories_long (3636635044382367818) -->
-    <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
-    <skip />
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{१ क्यालोरी}other{# क्यालोरी}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{१ क्यालोरी}other{# क्यालोरी}}"</string>
     <string name="units_title" msgid="4335002706905375844">"एकाइहरू"</string>
     <string name="set_units_label" msgid="7358440515698876383">"डेटाको एकाइ सेट गर्नुहोस्"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"दूरी"</string>

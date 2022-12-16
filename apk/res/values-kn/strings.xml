@@ -246,16 +246,11 @@
     <string name="delete_app_data" msgid="2694002637558981031">"ಆ್ಯಪ್ ಡೇಟಾ ಅಳಿಸಿ"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"ನಿಷ್ಕ್ರಿಯ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"ಈ ಆ್ಯಪ್‌ಗಳು ಇನ್ನು ಮುಂದೆ ಆ್ಯಕ್ಸೆಸ್ ಹೊಂದಿರುವುದಿಲ್ಲ ಆದರೆ ಈಗಲೂ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾ ಇರುತ್ತದೆ"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> ರ ನಂತರ ಸೇರಿಸುವ ಡೇಟಾವನ್ನು <xliff:g id="APP_NAME">%1$s</xliff:g> ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"ಈ ಆ್ಯಪ್ ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದಾದ ಇತರ Android ಅನುಮತಿಗಳನ್ನು ನಿರ್ವಹಿಸುವುದಕ್ಕಾಗಿ, ಸೆಟ್ಟಿಂಗ್‌ಗಳು &gt; ಆ್ಯಪ್‌ಗಳು ಎಂಬಲ್ಲಿಗೆ ಹೋಗಿ"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"<xliff:g id="APP_NAME">%1$s</xliff:g> ನೊಂದಿಗೆ ನೀವು ಹಂಚಿಕೊಳ್ಳುವ ಡೇಟಾ ಅದರ ಗೌಪ್ಯತೆ ನೀತಿಗೆ ಒಳಪಟ್ಟಿರುತ್ತದೆ"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ಈ ಆ್ಯಪ್ ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದಾದ ಇತರ Android ಅನುಮತಿಗಳನ್ನು ನಿರ್ವಹಿಸುವುದಕ್ಕಾಗಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ ಹೋಗಿ, ನಂತರ ಆ್ಯಪ್‌ಗಳು ಎಂಬುದನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ಗೌಪ್ಯತೆ ನೀತಿಯನ್ನು ಓದಿ"</string>
     <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect ಬಳಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ"</string>
@@ -325,14 +320,10 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{ಪ್ರತಿ ಗಂಟೆಗೆ 1 ಕಿಲೋಮೀಟರ್}one{ಪ್ರತಿ ಗಂಟೆಗೆ # ಕಿಲೋಮೀಟರ್‌ಗಳು}other{ಪ್ರತಿ ಗಂಟೆಗೆ # ಕಿಲೋಮೀಟರ್‌ಗಳು}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> ರಿಂದ <xliff:g id="END_TIME">%2$s</xliff:g> ರವರೆಗೆ"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> ರಿಂದ <xliff:g id="END_TIME">%2$s</xliff:g> ರವರೆಗೆ"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
-    <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 ಮೈಲಿ}one{# ಮೈಲಿಗಳು}other{# ಮೈಲಿಗಳು}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 ಕಿ.ಮೀ}one{# ಕಿ.ಮೀ}other{# ಕಿ.ಮೀ}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 ಮೈಲಿ}one{# ಮೈಲಿಗಳು}other{# ಮೈಲಿಗಳು}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 ಕಿಲೋಮೀಟರ್}one{# ಕಿಲೋಮೀಟರ್‌ಗಳು}other{# ಕಿಲೋಮೀಟರ್‌ಗಳು}}"</string>
     <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
     <!-- no translation found for calories (1646804751247540818) -->
