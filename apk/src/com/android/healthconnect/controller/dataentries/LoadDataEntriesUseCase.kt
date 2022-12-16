@@ -24,7 +24,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
-import java.time.Duration.ofDays
+import java.time.Duration.ofHours
+import java.time.Duration.ofMinutes
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -49,7 +50,7 @@ constructor(
 
     private fun getTimeFilter(selectedDate: Instant): TimeRangeFilter {
         val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
-        val end = start.plus(ofDays(1))
+        val end = start.plus(ofHours(23)).plus(ofMinutes(59))
         return TimeRangeFilter.Builder(start, end).build()
     }
 
@@ -65,7 +66,9 @@ constructor(
                         filter, Runnable::run, continuation.asOutcomeReceiver())
                 }
                 .records
-        return records.map { record -> healthDataEntryFormatter.format(record) }
+        return records
+            .map { record -> healthDataEntryFormatter.format(record) }
+            .sortedBy { it.startTime }
     }
 }
 

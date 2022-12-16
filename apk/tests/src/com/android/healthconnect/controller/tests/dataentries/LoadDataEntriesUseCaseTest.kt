@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -33,6 +35,7 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Duration
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
@@ -80,9 +83,13 @@ class LoadDataEntriesUseCaseTest {
     }
 
     @Test
-    fun invoke_withData_returnsCorrectList() = runTest {
-        val records = listOf(getHeartRateRecord(listOf(100)))
-        doAnswer(prepareAnswer(records))
+    fun invoke_withData_returnsSortedList() = runTest {
+        val unorderedRecords =
+            listOf(
+                getHeartRateRecord(listOf(100), NOW.plus(Duration.ofMinutes(2))),
+                getHeartRateRecord(listOf(90), NOW.plus(Duration.ofMinutes(0))),
+            )
+        doAnswer(prepareAnswer(unorderedRecords))
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
 
@@ -90,16 +97,24 @@ class LoadDataEntriesUseCaseTest {
 
         assertThat(response).isInstanceOf(UseCaseResults.Success::class.java)
         val data = (response as UseCaseResults.Success).data
-        assertThat(data.size).isEqualTo(1)
         assertThat(data)
             .containsExactly(
                 FormattedDataEntry(
-                    uuid = records[0].metadata.id,
+                    uuid = unorderedRecords[1].metadata.id,
                     header = "7:06 AM - 7:06 AM • Health Connect test app",
                     headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
+                    title = "90 bpm",
+                    titleA11y = "90 beats per minute",
+                    dataType = DataType.HEART_RATE,
+                    startTime = unorderedRecords[1].startTime),
+                FormattedDataEntry(
+                    uuid = unorderedRecords[0].metadata.id,
+                    header = "7:08 AM - 7:08 AM • Health Connect test app",
+                    headerA11y = "from 7:08 AM to 7:08 AM • Health Connect test app",
                     title = "100 bpm",
                     titleA11y = "100 beats per minute",
-                    dataType = DataType.HEART_RATE),
+                    dataType = DataType.HEART_RATE,
+                    startTime = unorderedRecords[0].startTime),
             )
     }
 
