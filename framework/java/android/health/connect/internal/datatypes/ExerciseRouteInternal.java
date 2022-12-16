@@ -115,11 +115,15 @@ public class ExerciseRouteInternal {
         return getRouteLocations().equals(that.getRouteLocations());
     }
 
+    /** Add location to the route */
+    void addLocation(LocationInternal location) {
+        mRouteExerciseRouteLocations.add(location);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(mRouteExerciseRouteLocations);
     }
-
     /**
      * @see ExerciseRoute.Location
      * @hide

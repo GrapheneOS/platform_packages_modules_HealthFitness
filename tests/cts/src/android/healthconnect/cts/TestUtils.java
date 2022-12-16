@@ -99,6 +99,12 @@ public class TestUtils {
         return insertRecords(Collections.singletonList(record)).get(0).getMetadata().getId();
     }
 
+    /**
+     * Inserts records to the database.
+     *
+     * @param records records to insert
+     * @return inserted records
+     */
     public static List<Record> insertRecords(List<Record> records) throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);

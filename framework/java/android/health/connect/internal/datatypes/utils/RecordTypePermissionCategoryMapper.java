@@ -29,6 +29,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD;
@@ -135,6 +136,7 @@ public final class RecordTypePermissionCategoryMapper {
                         put(
                                 RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
                                 HealthPermissionCategory.INTERMENSTRUAL_BLEEDING);
+                        put(RECORD_TYPE_EXERCISE_SESSION, HealthPermissionCategory.EXERCISE);
                     }
                 };
     }

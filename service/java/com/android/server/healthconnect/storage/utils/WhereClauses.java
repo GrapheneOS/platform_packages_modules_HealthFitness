@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,6 +92,16 @@ public final class WhereClauses {
                         + " IN ("
                         + values.stream().map(String::valueOf).collect(Collectors.joining(", "))
                         + ")");
+
+        return this;
+    }
+
+    /**
+     * Creates IN clause, where in range is another SQL request. Returns instance with extra clauses
+     * set.
+     */
+    public WhereClauses addWhereInSQLRequestClause(String columnName, ReadTableRequest inRequest) {
+        mClauses.add(columnName + " IN (" + inRequest.getReadCommand() + ") ");
 
         return this;
     }

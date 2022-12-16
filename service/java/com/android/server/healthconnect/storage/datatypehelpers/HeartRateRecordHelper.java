@@ -34,7 +34,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.HeartRateRecordInternal;
 import android.util.Pair;
 
-import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.SqlInnerJoin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,7 +90,7 @@ public class HeartRateRecordHelper
                                 Collections.singletonList(BEATS_PER_MINUTE_COLUMN_NAME),
                                 START_TIME_COLUMN_NAME)
                         .setJoin(
-                                new SqlJoin(
+                                new SqlInnerJoin(
                                         SERIES_TABLE_NAME,
                                         TABLE_NAME,
                                         PARENT_KEY_COLUMN_NAME,
