@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"Atļaujas un dati"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"Pārskatiet un pārvaldiet veselības un fizisko aktivitāšu datus savā tālrunī un kontrolējiet, kuras lietotnes tiem var piekļūt."</string>
+    <string name="data_title" msgid="6928287139074878977">"Dati un piekļuve"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"Visas kategorijas"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"Skatīt visas kategorijas"</string>
+    <string name="no_data" msgid="1120552294863595549">"Nav datu"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"Skatīt savus datus un pēdējās darbības lietotnēs"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Lietotnes atļaujas"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Pārvaldīt lietotnes un atļaujas"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"Nesena piekļuve"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"Neviena lietotne pēdējā laikā nav piekļuvusi platformai Health Connect"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"Skatīt visas"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"Uzziniet, kuras lietotnes ir piekļuvušas jūsu datiem pēdējo 24 h laikā"</string>
+    <string name="today_header" msgid="3128127066599449902">"Šodien"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"Vakar"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"Aktivitāte"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"aktivitāte"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Ķermeņa rādītāji"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"ķermeņa rādītāji"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Miegs"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"miegs"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Veselības rādījumi"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"veselības rādījumi"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Cikla uzskaite"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"cikla uzskaite"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Uzturvielas"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"uzturvielas"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"Datu pārlūkošana"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"Datu pārvaldība"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"Eksportēt datus"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"Dzēst visus datus"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Jums nav nekādu datu platformā Health Connect."</string>
+    <string name="permission_types_title" msgid="449264809407468231">"Jūsu dati"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"Lietotņu prioritāte"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"Dzēst šādus datus: <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="can_read" msgid="7989669150752961504">"Var lasīt šāda veida datus: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="8278769263589284926">"Var rakstīt šāda veida datus: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"Neaktīvās lietotnes"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"Šīs lietotnes vairs nevar rakstīt šī veida datus (<xliff:g id="DATA_TYPE">%s</xliff:g>), taču dati joprojām tiek glabāti platformā Health Connect."</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"Lietotnes vairs nevar lasīt un rakstīt šī veida datus (<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>), kā arī platformā Health Connect nav saglabāti šī veida dati (<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>)."</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"Šie dati ietver tādu informāciju kā aktivitātes ilgums, treniņa veids, apļu skaits, atkārtojumi, sesijas vai peldēšanas vēzieni."</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"Šie dati ietver tādu informāciju kā miega fāzes un miega sesijas."</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"Skatīt visus ierakstus"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Dzēst šos datus"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"piekļuve jūsu veselības rādītāju datiem"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Lasīt patērēto kaloriju datus"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Atļauj lietotnei lasīt patērēto kaloriju datus"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Aktivitātēs patērētās kalorijas"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"aktivitātēs patērētās kalorijas"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Lasīt aktivitātēs patērēto kaloriju datus"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Rakstīt aktivitātēs patērēto kaloriju datus"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Fiziskās aktivitātes"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"fiziskās aktivitātes"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"Lasīt fizisko aktivitāšu datus"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"Rakstīt fizisko aktivitāšu datus"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"Attālums"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"attālums"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"Lasīt attāluma datus"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"Rakstīt attāluma datus"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Sasniegtais pacēlums"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"sasniegtais pacēlums"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Lasīt sasniegtā pacēluma datus"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Rakstīt sasniegtā pacēluma datus"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Uzkāptie stāvi"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"uzkāptie stāvi"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Lasīt uzkāpto stāvu datus"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Rakstīt uzkāpto stāvu datus"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"Jauda"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"jauda"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"Lasīt jaudas datus"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"Rakstīt jaudas datus"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"Ātrums"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"ātrums"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"Lasīt ātruma datus"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"Rakstīt ātruma datus"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"Soļi"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"soļi"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"Lasīt soļu datus"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"Rakstīt soļu datus"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Patērēto kaloriju kopējais skaits"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"patērēto kaloriju kopējais skaits"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Lasīt patērēto kaloriju kopējo skaitu"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Rakstīt patērēto kaloriju kopējo skaitu"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"Maksimālā skābekļa piesaiste (VO2)"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"Maksimālā skābekļa piesaiste (VO2)"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"Lasīt maksimālās skābekļa piesaistes (VO2) datus"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"Rakstīt maksimālās skābekļa piesaistes (VO2) datus"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Ratiņkrēsla stūmieni"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"ratiņkrēsla stūmieni"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Lasīt ratiņkrēsla stūmienu datus"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Rakstīt ratiņkrēsla stūmienu datus"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Bazālās vielmaiņas intensitāte"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"bazālās vielmaiņas intensitāte"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Lasīt bazālās vielmaiņas intensitātes datus"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Rakstīt bazālās vielmaiņas intensitātes datus"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Ķermeņa tauku masa"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"ķermeņa tauku masa"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Lasīt ķermeņa tauku masas datus"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"Rakstīt ķermeņa tauku masas datus"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Ķermeņa ūdens daudzums"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"ķermeņa ūdens daudzums"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Lasīt ķermeņa ūdens daudzuma datus"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Rakstīt ķermeņa ūdens daudzuma datus"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Kaulu masa"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"kaulu masa"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Lasīt kaulu masas datus"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Rakstīt kaulu masas datus"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"Auguma garums"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"auguma garums"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"Lasīt auguma garuma datus"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"Rakstīt auguma garuma datus"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Gurnu apkārtmērs"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"gurnu apkārtmērs"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Lasīt gurnu apkārtmēra datus"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Rakstīt gurnu apkārtmēra datus"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Ķermeņa muskuļu masa"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"ķermeņa muskuļu masa"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Lasīt ķermeņa muskuļu masas datus"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Rakstīt ķermeņa muskuļu masas datus"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Vidukļa apkārtmērs"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"vidukļa apkārtmērs"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Lasīt vidukļa apkārtmēra datus"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Rakstīt vidukļa apkārtmēra datus"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"Svars"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"svars"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"Lasīt svara datus"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"Rakstīt svara datus"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Dzemdes kakla gļotas"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"dzemdes kakla gļotas"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Lasīt dzemdes kakla gļotu datus"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Rakstīt dzemdes kakla gļotu datus"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruācijas"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruācijas"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Lasīt menstruāciju datus"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Rakstīt menstruāciju datus"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Ovulācijas tests"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"ovulācijas tests"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Lasīt ovulācijas testa datus"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Rakstīt ovulācijas testa datus"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Seksuālā aktivitāte"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"seksuālā aktivitāte"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Lasīt seksuālās aktivitātes datus"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Rakstīt seksuālās aktivitātes datus"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"Smērēšanās"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"smērēšanās"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"Lasīt datus par smērēšanos"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"Rakstīt datus par smērēšanos"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Hidratācija"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"hidratācija"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"Lasīt hidratācijas datus"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"Rakstīt hidratācijas datus"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Uzturvielas"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"uzturvielas"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Lasīt uzturvielu datus"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Rakstīt uzturvielu datus"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Miegs"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"miegs"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"Lasīt miega datus"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"Rakstīt miega datus"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Ķermeņa bazālā temperatūra"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"ķermeņa bazālā temperatūra"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Lasīt ķermeņa bazālās temperatūras datus"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Rakstīt ķermeņa bazālās temperatūras datus"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Glikozes līmenis asinīs"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"glikozes līmenis asinīs"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Lasīt datus par glikozes līmeni asinīs"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Rakstīt datus par glikozes līmeni asinīs"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Asinsspiediens"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"asinsspiediens"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Lasīt asinsspiediena datus"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Rakstīt asinsspiediena datus"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Ķermeņa temperatūra"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"ķermeņa temperatūra"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Lasīt ķermeņa temperatūras datus"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Rakstīt ķermeņa temperatūras datus"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Sirdsdarbības ātrums"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"sirdsdarbības ātrums"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Lasīt sirdsdarbības ātruma datus"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Rakstīt sirdsdarbības ātruma datus"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Sirdsdarbības ātruma variabilitāte"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"sirdsdarbības ātruma variabilitāte"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Lasīt sirdsdarbības ātruma variabilitātes datus"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Rakstīt sirdsdarbības ātruma variabilitātes datus"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Skābekļa piesātinājums"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"skābekļa piesātinājums"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Lasīt skābekļa piesātinājuma datus"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Rakstīt skābekļa piesātinājuma datus"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Elpošanas ātrums"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"elpošanas ātrums"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Lasīt elpošanas ātruma datus"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Rakstīt elpošanas ātruma datus"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Sirdsdarbības ātrums miera stāvoklī"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"sirdsdarbības ātrums miera stāvoklī"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Lasīt sirdsdarbības ātrumu miera stāvoklī"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Rakstīt sirdsdarbības ātrumu miera stāvoklī"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Var lasīt platformā Health Connect"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Var rakstīt platformā Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"Atcelt"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"Atļaut"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Atļaut visu"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Izvēlieties, kādus datus šī lietotne drīkst lasīt vai rakstīt platformā Health Connect"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Ja piešķirsiet lasīšanas piekļuvi, šī lietotne varēs lasīt jaunus datus, kā arī datus, kas pievienoti pēdējo 30 dienu laikā."</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Vai atļaut lietotnei <xliff:g id="APP_NAME">%1$s</xliff:g> piekļūt platformai Health Connect?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"Lai uzzinātu, kā lietotnē <xliff:g id="APP_NAME">%1$s</xliff:g> tiek apstrādāti jūsu dati, skatiet izstrādātāja <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>."</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"konfidencialitātes politiku"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"Nākamā diena"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"Iepriekšējā diena"</string>
+    <string name="default_error" msgid="7047939092442348839">"Radās kļūda. Lūdzu, mēģiniet vēlreiz."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"Lietotnes, kurām ir šī atļauja, var lasīt un rakstīt jūsu veselības rādītāju datus."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Kontrolējiet, kuras lietotnes var piekļūt platformā Health Connect glabātajiem datiem. Lai pārskatītu, kādus datus noteikta lietotne drīkst rakstīt vai lasīt, pieskarieties lietotnei."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"Atļauta piekļuve"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Nav atļauta piekļuve"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"Iestatījumi un palīdzība"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"Noņemt piekļuves atļauju visām lietotnēm"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Vai nav redzamas visas jūsu lietotnes?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Atļauta lasīšana"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Atļauta rakstīšana"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"Nav atļauta neviena lietotne"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"Nav noraidīta neviena lietotne"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Vai noņemt piekļuves atļauju visām lietotnēm?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Neviena no jūsu lietotnēm nevarēs piekļūt datiem vai pievienot jaunus datus platformā Health Connect. Esošie dati netiek dzēsti."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Noņemt visas"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Lietotnes pārvaldība"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"Dzēst lietotnes datus"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Neaktīvās lietotnes"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Šīm lietotnēm vairs nav piekļuves, taču to dati joprojām tiek glabāti platformā Health Connect."</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Darba sākšana ar Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Platformā Health Connect tiek glabāti jūsu veselības un fizisko aktivitāšu dati, tādējādi varat vienkāršā veidā sinhronizēt dažādas lietotnes savā tālrunī."</string>
+    <string name="share_data" msgid="3461840023402996573">"Datu kopīgošana ar lietotnēm"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Izvēlieties, kādus datus katra lietotne var lasīt vai rakstīt platformā Health Connect."</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Iestatījumu un konfidencialitātes pārvaldība"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"Jebkurā laikā varat mainīt lietotņu atļaujas un pārvaldīt savus datus."</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Atpakaļ"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Sākt darbu"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"Dzēst datus"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Dzēšamo datu izvēle"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"Tālāk"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"Tiks neatgriezeniski dzēsti visi dati, kas izvēlētajā periodā ir pievienoti platformā Health Connect"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"Tiks neatgriezeniski dzēsti dati (<xliff:g id="DATA_TYPE">%s</xliff:g>), kas izvēlētajā periodā ir pievienoti platformā Health Connect"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"Tiks neatgriezeniski dzēsti dati (<xliff:g id="CATEGORY">%s</xliff:g>), kas izvēlētajā periodā ir pievienoti platformā Health Connect"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"Tiks neatgriezeniski dzēsti dati (<xliff:g id="APP_DATA">%s</xliff:g>), kas izvēlētajā periodā ir pievienoti platformā Health Connect"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"Dzēst pēdējo 24 stundu datus"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"Dzēst pēdējo septiņu dienu datus"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"Dzēst pēdējo 30 dienu datus"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"Dzēst visus datus"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"Vai neatgriezeniski dzēst visus datus par visu periodu?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Vai neatgriezeniski dzēst visus datus par pēdējām 24 stundām?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Vai neatgriezeniski dzēst visus datus par pēdējām septiņām dienām?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Vai neatgriezeniski dzēst visus datus par pēdējām 30 dienām?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="DATA_TYPE">%s</xliff:g>) par visu periodu?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="DATA_TYPE">%s</xliff:g>) par pēdējām 24 stundām?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="DATA_TYPE">%s</xliff:g>) par pēdējām septiņām dienām?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="DATA_TYPE">%s</xliff:g>) par pēdējām 30 dienām?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="CATEGORY">%s</xliff:g>) par visu periodu?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="CATEGORY">%s</xliff:g>) par pēdējām 24 stundām?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="CATEGORY">%s</xliff:g>) par pēdējām septiņām dienām?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="CATEGORY">%s</xliff:g>) par pēdējām 30 dienām?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="APP_DATA">%s</xliff:g>) par visu periodu?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="APP_DATA">%s</xliff:g>) par pēdējām 24 stundām?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="APP_DATA">%s</xliff:g>) par pēdējām septiņām dienām?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Vai neatgriezeniski dzēst šos datus (<xliff:g id="APP_DATA">%s</xliff:g>) par pēdējām 30 dienām?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Noņemt arī visas <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> atļaujas no Health Connect"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Vai neatgriezeniski dzēst visus šī veida datus (<xliff:g id="DATA_TYPE">%1$s</xliff:g>), kas pievienoti no lietotnes <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Vai vēlaties neatgriezeniski dzēst šo ierakstu?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Pievienotās lietotnes vairs nevarēs piekļūt šiem datiem no platformas Health Connect."</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Dzēst"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Atpakaļ"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Gatavs"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Aizvērt"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Dati ir izdzēsti"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Šie dati vairs nav saglabāti platformā Health Connect."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"Notiek datu dzēšana."</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Nevarēja izdzēst datus"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Radās problēma, un Health Connect nevarēja izdzēst jūsu datus"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Mēģināt vēlreiz"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Notiek Health Connect datu dzēšana"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Notiek Health Connect datu dzēšana"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Datu dzēšana"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"Datu ieraksta opcijas"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"Dzēst ierakstu"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 W}zero{# W}one{# W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 vats}zero{# vatu}one{# vats}other{# vati}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 solis}zero{# soļu}one{# solis}other{# soļi}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 solis/min}zero{# soļu/min}one{# solis/min}other{# soļi/min}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 solis minūtē}zero{# soļu minūtē}one{# solis minūtē}other{# soļi minūtē}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 sit./min}zero{# sit./min}one{# sit./min}other{# sit./min}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 sitiens minūtē}zero{# sitienu minūtē}one{# sitiens minūtē}other{# sitieni minūtē}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 jūdze/h}zero{# jūdžu/h}one{# jūdze/h}other{# jūdzes/h}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 km/h}zero{# km/h}one{# km/h}other{# km/h}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 jūdze stundā}zero{# jūdžu stundā}one{# jūdze stundā}other{# jūdžu stundā}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometrs stundā}zero{# kilometru stundā}one{# kilometrs stundā}other{# kilometri stundā}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"No <xliff:g id="START_TIME">%1$s</xliff:g> līdz <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g>–<xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"Mērvienības"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"Datu mērvienību iestatīšana"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"Attālums"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"Auguma garums"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"Svars"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"Enerģijas mērvienība"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"Temperatūra"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometri"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Jūdzes"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Centimetri"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"Pēdas un collas"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Mārciņas"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kilogrami"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Stoni"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Kalorijas"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Kilodžouli"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celsija skala"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Fārenheita skala"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvina skala"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Vai nav redzamas visas jūsu lietotnes?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Ja neredzat kādu instalētu lietotni, iespējams, tā pagaidām nav saderīga ar Health Connect"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"Ieteikumi"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"Pārbaudīt, vai ir pieejami atjauninājumi"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"Pārliecinieties, ka instalētās lietotnes ir atjauninātas"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Skatīt visas saderīgās lietotnes"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Meklēt lietotnes pakalpojumā Google Play"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"Sūtīt atsauksmes"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Norādiet, kuras veselības un fizisko aktivitāšu lietotnes jūs vēlētos izmantot kopā ar platformu Health Connect"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play veikals"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"Dzēst automātiski"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"Automātiska dzēšana"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Varat kontrolēt, cik ilgi jūsu dati tiek glabāti platformā Health Connect, ieplānojot to dzēšanu pēc noteikta laika"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Uzzināt vairāk"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"Automātiska datu dzēšana"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Pēc # mēneša}zero{Pēc # mēnešiem}one{Pēc # mēneša}other{Pēc # mēnešiem}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"Nekad"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Ja maināt šos iestatījumus, esošie dati platformā Health Connect tiek dzēsti atbilstoši jūsu jaunajām preferencēm"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Vai vēlaties automātiski dzēst datus pēc # mēneša?}zero{Vai vēlaties automātiski dzēst datus pēc # mēnešiem?}one{Vai vēlaties automātiski dzēst datus pēc # mēneša?}other{Vai vēlaties automātiski dzēst datus pēc # mēnešiem?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēneša. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnesi.}zero{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēnešiem. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnešiem.}one{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēneša. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnesi.}other{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēnešiem. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnešiem.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Iestatīt automātisku dzēšanu"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Tiks dzēsti noteikti iepriekš saglabāti dati"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Platformā Health Connect tiks izdzēsti visi dati, kas vecāki par # mēnesi.\nŠo izmaiņu ieviešana pievienotajās lietotnēs var ilgt vienu dienu.}zero{Platformā Health Connect tiks izdzēsti visi dati, kas vecāki par # mēnešiem.\nŠo izmaiņu ieviešana pievienotajās lietotnēs var ilgt vienu dienu.}one{Platformā Health Connect tiks izdzēsti visi dati, kas vecāki par # mēnesi.\nŠo izmaiņu ieviešana pievienotajās lietotnēs var ilgt vienu dienu.}other{Platformā Health Connect tiks izdzēsti visi dati, kas vecāki par # mēnešiem.\nŠo izmaiņu ieviešana pievienotajās lietotnēs var ilgt vienu dienu.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Dzēšamo datu kategorijas"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"Gatavs"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Health Connect datu eksportēšana"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"Atlasīt visus"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"Noņemt visu atlasi"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"Tālāk"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"Notiek datu izgūšana eksportēšanai"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Notiek Health Connect datu eksportēšana"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Atcelt"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Notiek datu ģenerēšana eksportēšanai"</string>
+</resources>

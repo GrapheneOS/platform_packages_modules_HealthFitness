@@ -62,7 +62,8 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"このデータには、睡眠ステージ、睡眠セッションなどの情報が含まれます"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"すべてのエントリを表示"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"このデータを削除"</string>
-    <string name="permgrouplab_health" msgid="2551416597744633297">"健康"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
     <string name="permgroupdesc_health" msgid="44553351410718944">"健康に関するデータにアクセスします"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"消費カロリーの読み取り"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"消費カロリーの読み取りをアプリに許可します"</string>
@@ -238,7 +239,6 @@
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"書き込みの許可"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"許可されているアプリはありません"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"許可されていないアプリはありません"</string>
-    <string name="health_permissions_title" msgid="3554702577269590720">"ヘルスアプリの権限"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"すべてのアプリのアクセス権を削除しますか？"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"すべてのアプリがヘルスコネクトへのアクセスやデータの追加を行えなくなります。既存のデータは削除されません。"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"すべて削除"</string>
@@ -246,15 +246,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"アプリデータを削除"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"休止中のアプリ"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"これらのアプリはアクセスできなくなりましたが、ヘルスコネクトからデータが削除されることはありません"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> は、<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>以降に追加されたデータにアクセスできます"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"このアプリがアクセスできるその他の Android 権限を管理するには、[設定] &gt; [アプリ] に移動してください"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"<xliff:g id="APP_NAME">%1$s</xliff:g> と共有するデータには、そのアプリのプライバシー ポリシーが適用されます"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"このアプリがアクセスできるその他の Android 権限を管理するには、[設定] に移動し、[アプリ] をタップしてください"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"プライバシー ポリシーを読む"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"ヘルスコネクトを使ってみる"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"ヘルスコネクトを利用すると、健康状態やフィットネスのデータを保存し、スマートフォン上のさまざまなアプリを簡単に同期することができます"</string>
@@ -323,13 +320,13 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 km/時}other{# km/時}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g>～<xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g>～<xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 マイル}other{# マイル}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 マイル}other{# マイル}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 キロメートル}other{# キロメートル}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <!-- no translation found for calories (1646804751247540818) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"単位"</string>
     <string name="set_units_label" msgid="7358440515698876383">"データの単位を設定"</string>

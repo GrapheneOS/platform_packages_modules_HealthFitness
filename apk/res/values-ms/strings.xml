@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"Kebenaran dan data"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"Semak dan urus data kesihatan dan kecergasan pada telefon anda dan kawal apl yang boleh mengakses data tersebut"</string>
+    <string name="data_title" msgid="6928287139074878977">"Data dan akses"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"Semua kategori"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"Lihat semua kategori"</string>
+    <string name="no_data" msgid="1120552294863595549">"Tiada data"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"Lihat data anda dan aktiviti apl terbaharu"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Kebenaran apl"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Urus apl dan kebenaran anda"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"Akses terbaharu"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"Tiada apl yang mengakses Health Connect baru-baru ini"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"Lihat semua"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"Lihat apl yang telah mengakses data anda dalam tempoh 24 jam yang lalu"</string>
+    <string name="today_header" msgid="3128127066599449902">"Hari ini"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"Semalam"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"Aktiviti"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"aktiviti"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Ukuran badan"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"ukuran badan"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Tidur"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"tidur"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Tanda vital"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"tanda vital"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Penjejakan kitaran"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"penjejakan kitaran"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Pemakanan"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"pemakanan"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"Semak imbas data"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"Urus data"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"Eksport data"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"Padamkan semua data"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Anda tidak mempunyai apa-apa data dalam Health Connect"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"Data anda"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"Keutamaan apl"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"Padam data <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="can_read" msgid="7989669150752961504">"Boleh membaca <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="8278769263589284926">"Boleh menulis <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"Apl yang tidak aktif"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"Apl ini tidak lagi boleh menulis <xliff:g id="DATA_TYPE">%s</xliff:g>, tetapi masih menyimpan data dalam Health Connect"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"Apl tidak lagi dapat membaca atau menulis <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> dan tiada data <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> yang disimpan dalam Health Connect"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"Data ini mengandungi maklumat seperti masa aktif, jenis senaman, pusingan, ulangan, sesi atau kuak renang."</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"Data ini mengandungi maklumat seperti peringkat tidur dan sesi tidur."</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"Lihat semua entri"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Padamkan data ini"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"akses data kesihatan anda"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Baca kalori yang dibakar"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Benarkan apl membaca kalori yang dibakar"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Kalori aktif yang dibakar"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"kalori aktif yang dibakar"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Baca kalori aktif yang dibakar"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Tulis kalori aktif yang dibakar"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Senaman"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"senaman"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"Baca data senaman"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"Tulis data senaman"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"Jarak"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"jarak"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"Baca jarak"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"Tulis jarak"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Ketinggian diperoleh"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"ketinggian diperoleh"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Baca ketinggian diperoleh"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Tulis ketinggian diperoleh"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Tingkat yang dipanjat"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"tingkat yang dipanjat"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Baca tingkat yang dipanjat"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Tulis tingkat yang dipanjat"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"Tenaga"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"tenaga"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"Baca tenaga"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"Tulis tenaga"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"Kelajuan"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"kelajuan"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"Baca kelajuan"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"Tulis kelajuan"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"Langkah"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"langkah"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"Baca langkah"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"Tulis langkah"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Jumlah kalori yang dibakar"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"jumlah kalori yang dibakar"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Baca jumlah kalori yang dibakar"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Tulis jumlah kalori yang dibakar"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"Maksimum VO2"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"Maksimum VO2"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"Baca maksimum VO2"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"Tulis maksimum VO2"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Tolakan kerusi roda"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"tolakan kerusi roda"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Baca tolakan kerusi roda"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Tulis tolakan kerusi roda"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Kadar metabolisme asas"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"kadar metabolisme asas"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Baca kadar metabolisme asas"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Tulis kadar metabolisme asas"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Lemak badan"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"lemak badan"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Baca lemak badan"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"Tulis lemak badan"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Jisim air badan"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"jisim air badan"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Baca jisim air badan"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Tulis jisim air badan"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Jisim tulang"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"jisim tulang"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Baca jisim tulang"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Tulis jisim tulang"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"Tinggi"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"tinggi"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"Baca ketinggian"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"Tulis ketinggian"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Lilitan pinggul"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"lilitan pinggul"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Baca lilitan pinggul"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Tulis lilitan pinggul"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Jisim badan tanpa lemak"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"jisim badan tanpa lemak"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Baca jisim badan tanpa lemak"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Tulis jisim badan tanpa lemak"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Lilitan pinggang"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"lilitan pinggang"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Baca lilitan pinggang"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Tulis lilitan pinggang"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"Berat"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"berat"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"Baca berat"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"Tulis berat"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Mukus serviks"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"mukus serviks"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Baca mukus serviks"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Tulis mukus serviks"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Haid"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"haid"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Baca data haid"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Tulis data haid"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Ujian ovulasi"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"ujian ovulasi"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Baca ujian ovulasi"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Tulis ujian ovulasi"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Aktiviti seksual"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"aktiviti seksual"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Baca aktiviti seksual"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Tulis aktiviti seksual"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"Pendarahan ringan"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"pendarahan ringan"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"Baca pendarahan ringan"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"Tulis pendarahan ringan"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Penghidratan"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"penghidratan"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"Baca penghidratan"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"Tulis penghidratan"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Pemakanan"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"pemakanan"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Baca pemakanan"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Tulis pemakanan"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Tidur"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"tidur"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"Baca data tidur"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"Tulis data tidur"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Suhu badan asas"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"suhu badan asas"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Baca suhu badan asas"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Tulis suhu badan asas"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Glukosa darah"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"glukosa darah"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Baca glukosa darah"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Tulis glukosa darah"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Tekanan darah"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"tekanan darah"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Baca tekanan darah"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Tulis tekanan darah"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Suhu badan"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"suhu badan"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Baca suhu badan"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Tulis suhu badan"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Kadar denyut jantung"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"kadar denyut jantung"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Baca kadar denyut jantung"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Tulis kadar denyut jantung"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Keberubahan kadar denyut jantung"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"keberubahan kadar denyut jantung"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Baca keberubahan kadar denyut jantung"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Tulis keberubahan kadar denyut jantung"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Ketepuan oksigen"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"ketepuan oksigen"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Baca ketepuan oksigen"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Tulis ketepuan oksigen"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Kadar pernafasan"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"kadar pernafasan"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Baca kadar pernafasan"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Tulis kadar pernafasan"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Kadar denyut jantung rehat"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"kadar denyut jantung rehat"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Baca kadar denyut jantung rehat"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Tulis kadar denyut jantung rehat"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Boleh membaca daripada Health Connect"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Boleh tulis pada Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"Batal"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"Benarkan"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Benarkan semua"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Pilih data yang anda ingin dibaca oleh apl atau tuliskan kepada Health Connect"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Jika anda memberikan akses baca, apl ini boleh membaca data baharu dan data dari 30 hari lalu"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses Health Connect?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"Anda boleh mengetahui cara <xliff:g id="APP_NAME">%1$s</xliff:g> mengendalikan data anda dalam <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> pembangun"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"dasar privasi"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"Hari berikutnya"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"Hari sebelumnya"</string>
+    <string name="default_error" msgid="7047939092442348839">"Kesilapan telah berlaku. Sila cuba lagi."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"Apl dengan kebenaran ini boleh membaca dan menulis data kesihatan anda."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Kawal jenis apl yang boleh mengakses data yang disimpan dalam Health Connect. Ketik apl untuk menyemak data yang boleh dibaca atau ditulis oleh apl itu."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"Akses yang dibenarkan"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Akses yang tidak dibenarkan"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"Tetapan &amp; bantuan"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"Alih keluar akses untuk semua apl"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Tidak dapat melihat semua apl anda?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Dibenarkan untuk membaca"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Dibenarkan untuk menulis"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"Tiada apl dibenarkan"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"Tiada apl ditolak"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Alih keluar akses untuk semua apl?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Tiada apl anda yang boleh mengakses atau menambahkan data baharu pada Health Connect. Tindakan ini tidak memadamkan mana-mana data sedia ada."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Alih keluar semua"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Urus apl"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"Padamkan data apl"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Apl yang tidak aktif"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Apl ini tidak lagi mempunyai akses, tetapi masih mempunyai data yang disimpan dalam Health Connect"</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Bermula dengan Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect menyimpan data kesihatan dan kecergasan anda, menyediakan cara yang mudah untuk menyegerakkan pelbagai apl pada telefon anda"</string>
+    <string name="share_data" msgid="3461840023402996573">"Kongsi data dengan apl anda"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Pilih data yang boleh dibaca atau ditulis oleh setiap apl pada Health Connect"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Urus tetapan dan privasi anda"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"Tukar kebenaran apl dan urus data anda pada bila-bila masa"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Kembali"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Mulakan"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"Padamkan data"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Pilih data untuk dipadamkan"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"Seterusnya"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"Tindakan ini akan memadamkan semua data yang ditambahkan pada Health Connect dalam tempoh masa yang dipilih secara kekal"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"Tindakan ini akan memadamkan data <xliff:g id="DATA_TYPE">%s</xliff:g> yang ditambahkan pada Health Connect dalam tempoh masa yang dipilih secara kekal"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"Tindakan ini akan memadamkan data <xliff:g id="CATEGORY">%s</xliff:g> yang ditambahkan pada Health Connect dalam tempoh masa yang dipilih secara kekal"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"Tindakan ini akan memadamkan data <xliff:g id="APP_DATA">%s</xliff:g> yang ditambahkan pada Health Connect dalam tempoh masa yang dipilih secara kekal"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"Padam data 24 jam yang lalu"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"Padam data 7 hari yang lalu"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"Padam data 30 hari yang lalu"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"Padamkan semua data"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"Padam semua data dari setiap masa secara kekal?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Padam semua data dari 24 jam yang lalu secara kekal?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Padam semua data dari 7 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Padam semua data dari 30 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Padam data <xliff:g id="DATA_TYPE">%s</xliff:g> dari setiap masa secara kekal?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Padam data <xliff:g id="DATA_TYPE">%s</xliff:g> dalam tempoh 24 jam lalu secara kekal?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Padam data <xliff:g id="DATA_TYPE">%s</xliff:g> dari 7 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Padam data <xliff:g id="DATA_TYPE">%s</xliff:g> dari 30 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"Padam data <xliff:g id="CATEGORY">%s</xliff:g> dari setiap masa secara kekal?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Padam data <xliff:g id="CATEGORY">%s</xliff:g> dalam tempoh 24 jam lalu secara kekal?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Padam data <xliff:g id="CATEGORY">%s</xliff:g> dari 7 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Padam data <xliff:g id="CATEGORY">%s</xliff:g> dari 30 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Padam data <xliff:g id="APP_DATA">%s</xliff:g> dari setiap masa secara kekal?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Padam data <xliff:g id="APP_DATA">%s</xliff:g> dalam tempoh 24 jam lalu secara kekal?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Padam data <xliff:g id="APP_DATA">%s</xliff:g> dari 7 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Padam data <xliff:g id="APP_DATA">%s</xliff:g> dari 30 hari yang lalu secara kekal?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Alih keluar juga semua kebenaran <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> daripada Health Connect"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Padamkan semua data <xliff:g id="DATA_TYPE">%1$s</xliff:g> yang ditambah oleh <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Padam entri ini secara kekal?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Apl yang disambungkan tidak akan boleh mengakses data ini lagi daripada Health Connect"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Padam"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Kembali"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Selesai"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Tutup"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Data dipadamkan"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Data ini tidak lagi disimpan dalam Health Connect."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"Memadamkan data anda"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Tidak dapat memadamkan data"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Kesilapan telah berlaku dan Health Connect tidak dapat memadamkan data anda"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Cuba lagi"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Memadamkan data Health Connect"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Memadamkan data Health Connect"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Pemadaman data"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"Pilihan entri data"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"Padam entri"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 watt}other{# watt}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 langkah}other{# langkah}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 langkah/min}other{# langkah/min}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 langkah seminit}other{# langkah seminit}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 bpm}other{# bpm}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 degupan seminit}other{# degupan seminit}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 bsj}other{# bsj}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 km/j}other{# km/j}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 batu sejam}other{# batu sejam}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometer sejam}other{# kilometer sejam}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"dari <xliff:g id="START_TIME">%1$s</xliff:g> hingga <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"dari <xliff:g id="START_TIME">%1$s</xliff:g> hingga <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"Unit"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"Tetapkan unit data"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"Jarak"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"Tinggi"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"Berat"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"Tenaga"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"Suhu"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometer"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Batu"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Sentimeter"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"Kaki &amp; Inci"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Paun"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kilogram"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Ston"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Kalori"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Kilojoule"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celsius"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Fahrenheit"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Tidak nampak semua apl anda?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Jika anda tidak dapat melihat apl yang dipasang, apl tersebut mungkin belum serasi dengan Health Connect"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"Perkara untuk dicuba"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"Semak kemaskinian"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"Pastikan apl yang dipasang adalah yang terkini"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Lihat semua apl yang serasi"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Cari apl pada Google Play"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"Hantar maklum balas"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Beritahu kami apl kesihatan &amp; kecergasan yang ingin anda berikan akses kepada Health Connect"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play Store"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"Autopadam"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"Autopadam"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Kawal tempoh data anda disimpan dalam Health Connect dengan menjadualkan pemadaman data tersebut selepas masa yang ditetapkan"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Ketahui lebih lanjut"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"Autopadam data"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Selepas # bulan}other{Selepas # bulan}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"Tidak sekali-kali"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Apabila anda mengubah tetapan ini, Health Connect memadamkan data sedia ada untuk memaparkan pilihan baharu anda"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Autopadam data selepas # bulan?}other{Autopadam data selepas # bulan?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect akan autopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}other{Health Connect akan autopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Tetapkan autopadam"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Data sedia ada akan dipadamkan"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect akan memadamkan semua data yang melebihi # bulan.\nPerubahan ini mungkin mengambil masa sehari untuk dipaparkan dalam apl anda yang disambungkan.}other{Health Connect akan memadamkan semua data yang melebihi # bulan.\nPerubahan ini mungkin mengambil masa sehari untuk dipaparkan dalam apl anda yang disambungkan.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Data akan dipadamkan daripada kategori berikut"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"Selesai"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Eksport data Health Connect"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"Pilih semua"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"Nyahpilih semua"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"Seterusnya"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"Mengambil data untuk eksport"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Mengeksport data Health Connect"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Batal"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Kemajuan Eksport Data"</string>
+</resources>

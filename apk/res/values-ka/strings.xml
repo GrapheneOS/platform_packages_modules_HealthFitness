@@ -62,7 +62,8 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"ეს მონაცემები მოიცავს ინფორმაციას, როგორიცაა ძილის ეტაპები და ძილის სესიები"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"ყველა მონაცემის ნახვა"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"ამ მონაცემების წაშლა"</string>
-    <string name="permgrouplab_health" msgid="2551416597744633297">"ჯანმრთელობა"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
     <string name="permgroupdesc_health" msgid="44553351410718944">"თქვენს ჯანმრთელობის მონაცემებზე წვდომა"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"დამწვარი კალორიების წაკითხვა"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"საშუალებას აძლევს აპს, წაიკითხოს დამწვარი კალორიები"</string>
@@ -238,7 +239,6 @@
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"წერა ნებადართულია"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"დაშვებული აპები არ არის"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"უარყოფილი აპები არ არის"</string>
-    <string name="health_permissions_title" msgid="3554702577269590720">"ჯანმრთელობის აპების ნებართვები"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"გსურთ ყველა აპისთვის წვდომის გაუქმება?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"ვერცერთი თქვენი აპი ვერ შეძლებს Health Connect-ზე წვდომას ან ახალი მონაცემების დამატებას. ეს არ წაშლის არსებულ მონაცემებს."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"ყველას წაშლა"</string>
@@ -246,15 +246,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"აპის მონაცემების წაშლა"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"უმოქმედო აპები"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"ამ აპებს აღარ აქვთ წვდომა, მაგრამ Health Connect-ში ჯერ კიდევ აქვთ შენახული მონაცემები"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g>-ს შეიძლება წვდომა ჰქონდეს <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>-ის შემდეგ დამატებულ მონაცემებზე"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Android-ის იმ სხვა ნებართვების სამართავად, რომლებზე წვდომაც ამ აპს აქვს, გადადით სექციაზე პარამტრები და აპები"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"<xliff:g id="APP_NAME">%1$s</xliff:g>-თან გაზიარებულ მონაცემებზე ვრცელდება ამ აპის კონფიდენციალურობის დებულება"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Android-ის იმ სხვა ნებართვების სამართავად, რომლებზე წვდომაც ამ აპს აქვს, გადადით სექციაზე პარამტრები, შემდეგ შეეხეთ აპებს"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"კონფიდენციალურობის დებულების წაკითხვა"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"დაიწყეთ Health Connect-ით"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect ინახავს თქვენს ჯანმრთელობასა და ფიტნესთან დაკავშირებულ მონაცემებს და გაძლევთ საშუალებას, მარტივად დაასინქრონოთ სხვადასხვა აპი თქვენს ტელფონში"</string>
@@ -323,13 +320,13 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 კილომეტრი საათში}other{# კილომეტრი საათში}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g>-დან <xliff:g id="END_TIME">%2$s</xliff:g>-მდე"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g>-დან <xliff:g id="END_TIME">%2$s</xliff:g>-მდე"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 მილი}other{# მილი}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 კმ}other{# კმ}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 მილი}other{# მილი}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 კილომეტრი}other{# კილომეტრი}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <!-- no translation found for calories (1646804751247540818) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"ერთეულები"</string>
     <string name="set_units_label" msgid="7358440515698876383">"მონაცემთა ერთეულების დაყენება"</string>

@@ -62,7 +62,8 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"මෙම දත්තවලට නින්දේ අදියර සහ නින්ද සැසි වැනි තොරතුරු ඇතුළත් වේ"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"සියලු ඇතුළත් කිරීම් බලන්න"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"මෙම දත්ත මකන්න"</string>
-    <string name="permgrouplab_health" msgid="2551416597744633297">"සෞඛ්‍යය"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
     <string name="permgroupdesc_health" msgid="44553351410718944">"ඔබේ සෞඛ්‍ය දත්ත වෙත ප්‍රවේශය"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"දහනය කරන ලද කැලරි කියවන්න"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"යෙදුමට දහන කරන ලද කැලරි කියවීමට ඉඩ දෙයි"</string>
@@ -238,7 +239,6 @@
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"ලිවීමට ඉඩ දුන්නා"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"යෙදුම් කිසිවකට ඉඩ නොදුන්නා"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"යෙදුම් කිසිවක් ප්‍රතික්‍ෂේප නොකෙරේ"</string>
-    <string name="health_permissions_title" msgid="3554702577269590720">"සෞඛ්‍ය අවසර"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"සියලු යෙදුම් සඳහා ප්‍රවේශය ඉවත් කරන්නද?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"ඔබගේ කිසිදු යෙදුමකට Health Connect වෙත ප්‍රවේශ වීමට හෝ නව දත්ත එක් කිරීමට නොහැකි වෙයි. මෙය පවතින දත්ත කිසිවක් නොමකයි."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"සියල්ල ඉවත් කරන්න"</string>
@@ -255,6 +255,8 @@
     <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
     <skip />
     <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect සමග පටන් ගන්න"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect ඔබට ඔබේ දුරකථනයේ විවිධ යෙදුම් සමමුහූර්ත කිරීමට සරල ක්‍රමයක් ලබා දෙමින්, ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත ගබඩා කරයි"</string>
@@ -330,6 +332,10 @@
     <!-- no translation found for distance_miles_long (3754739640134562413) -->
     <skip />
     <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"ඒකක"</string>
     <string name="set_units_label" msgid="7358440515698876383">"දත්ත ඒකක සකසන්න"</string>

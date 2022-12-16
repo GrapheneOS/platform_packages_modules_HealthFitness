@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"權限和資料"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"查看及管理手機上的健康與健身資料，並控管哪些應用程式可以存取這類資料"</string>
+    <string name="data_title" msgid="6928287139074878977">"資料和存取權"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"所有類別"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"顯示所有類別"</string>
+    <string name="no_data" msgid="1120552294863595549">"沒有資料"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"查看你的資料和近期應用程式活動"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"應用程式權限"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"管理應用程式和權限"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"近期存取記錄"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"最近沒有任何應用程式存取 Health Connect"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"全部顯示"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"查看過去 24 小時內有哪些應用程式曾存取你的資料"</string>
+    <string name="today_header" msgid="3128127066599449902">"今天"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"昨天"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"活動"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"活動"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"身體測量資料"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"身體測量資料"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"睡眠"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"睡眠"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"生命徵象"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"生命徵象"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"經期追蹤"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"經期追蹤"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"營養"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"營養"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"瀏覽資料"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"管理資料"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"匯出資料"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"刪除所有資料"</string>
+    <string name="no_categories" msgid="8250090588127237934">"你在 Health Connect 中沒有任何資料"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"你的資料"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"應用程式優先順序"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"刪除<xliff:g id="CATEGORY">%s</xliff:g>資料"</string>
+    <string name="can_read" msgid="7989669150752961504">"可以讀取<xliff:g id="PERMISSION_TYPE">%s</xliff:g>資料"</string>
+    <string name="can_write" msgid="8278769263589284926">"可以寫入<xliff:g id="PERMISSION_TYPE">%s</xliff:g>資料"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"已停用的應用程式"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"這些應用程式無法再寫入<xliff:g id="DATA_TYPE">%s</xliff:g>資料，但仍有資料儲存在 Health Connect 中"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"應用程式無法再讀取或寫入<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>資料，而且 Health Connect 也未儲存<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>資料。"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"這類資料包括活動時間、運動類型、圈數、重複次數、時段或泳姿等資訊"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"這類資料包括睡眠階段和睡眠時段"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"查看所有資料"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"刪除這類資料"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"存取你的健康資料"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"讀取卡路里燃燒量資料"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"允許應用程式讀取卡路里燃燒量資料"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"活動卡路里燃燒量"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"活動卡路里燃燒量"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"讀取活動卡路里燃燒量資料"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"寫入活動卡路里燃燒量資料"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"運動"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"運動"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"讀取運動資料"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"寫入運動資料"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"距離"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"距離"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"讀取距離資料"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"寫入距離資料"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"爬升高度"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"爬升高度"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"讀取爬升高度資料"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"寫入爬升高度資料"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"已爬樓層數"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"已爬樓層數"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"讀取已爬樓層數資料"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"寫入已爬樓層數資料"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"功率"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"功率"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"讀取功率資料"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"寫入功率資料"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"速度"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"速度"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"讀取速度資料"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"寫入速度資料"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"步數"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"步數"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"讀取步數資料"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"寫入步數資料"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"卡路里燃燒總量"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"卡路里燃燒總量"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"讀取卡路里燃燒總量資料"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"寫入卡路里燃燒總量資料"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"最大攝氧量"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"最大攝氧量"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"讀取最大攝氧量資料"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"寫入最大攝氧量資料"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"推動輪椅次數"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"推動輪椅次數"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"讀取推動輪椅次數資料"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"寫入推動輪椅次數資料"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"基礎代謝率"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"基礎代謝率"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"讀取基礎代謝率資料"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"寫入基礎代謝率資料"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"體脂肪"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"體脂肪"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"讀取體脂肪資料"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"寫入體脂肪資料"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"身體水含量"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"身體水含量"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"讀取身體水含量資料"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"寫入身體水含量資料"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"骨質密度"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"骨質密度"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"讀取骨質密度資料"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"寫入骨質密度資料"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"身高"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"身高"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"讀取身高資料"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"寫入身高資料"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"臀圍"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"臀圍"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"讀取臀圍資料"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"寫入臀圍資料"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"淨體重"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"淨體重"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"讀取淨體重資料"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"寫入淨體重資料"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"腰圍"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"腰圍"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"讀取腰圍資料"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"寫入腰圍資料"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"體重"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"體重"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"讀取體重資料"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"寫入體重資料"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"子宮頸黏液"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"子宮頸黏液"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"讀取子宮頸黏液資料"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"寫入子宮頸黏液資料"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"經期"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"經期"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"讀取經期資料"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"寫入經期資料"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"排卵檢測"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"排卵檢測"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"讀取排卵檢測資料"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"寫入排卵檢測資料"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"性活動"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"性活動"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"讀取性活動資料"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"寫入性活動資料"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"點狀出血"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"點狀出血"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"讀取點狀出血資料"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"寫入點狀出血資料"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"飲水量"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"飲水量"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"讀取飲水量資料"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"寫入飲水量資料"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"營養"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"營養"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"讀取營養資料"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"寫入營養資料"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"睡眠"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"睡眠"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"讀取睡眠資料"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"寫入睡眠資料"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"基礎體溫"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"基礎體溫"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"讀取基礎體溫資料"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"寫入基礎體溫資料"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"血糖"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"血糖"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"讀取血糖資料"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"寫入血糖資料"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"血壓"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"血壓"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"讀取血壓資料"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"寫入血壓資料"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"體溫"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"體溫"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"讀取體溫資料"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"寫入體溫資料"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"心率"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"心率"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"讀取心率資料"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"寫入心率資料"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"心率變異"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"心率變異"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"讀取心率變異資料"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"寫入心率變異資料"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"血氧濃度"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"血氧濃度"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"讀取血氧濃度資料"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"寫入血氧濃度資料"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"呼吸速率"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"呼吸速率"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"讀取呼吸速率資料"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"寫入呼吸速率資料"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"靜止心率"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"靜止心率"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"讀取靜止心率資料"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"寫入靜止心率資料"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"可從 Health Connect 讀取資料"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"可將資料寫入 Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"取消"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"允許"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"全部允許"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"選擇要讓這個應用程式讀取或寫入 Health Connect 的資料"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"如果授予讀取權限，這個應用程式將可讀取新資料和過去 30 天內的資料"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取 Health Connect 嗎？"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"你可以參考「<xliff:g id="APP_NAME">%1$s</xliff:g>」開發人員的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，瞭解該應用程式如何處理你的資料"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"隱私權政策"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"後一天"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"前一天"</string>
+    <string name="default_error" msgid="7047939092442348839">"發生錯誤，請再試一次。"</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"具有這項權限的應用程式可讀取及寫入你的健康資料。"</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"控制哪些應用程式可以存取 Health Connect 中儲存的資料。輕觸應用程式即可查看該應用程式可讀取或寫入的資料。"</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"已允許存取"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"不允許存取"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"設定與說明"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"移除所有應用程式的存取權"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"沒有看到全部的應用程式嗎？"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"允許讀取"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"允許寫入"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"未允許任何應用程式"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"未拒絕任何應用程式"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"要移除所有應用程式的存取權嗎？"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"所有應用程式都將無法存取 Health Connect，也無法在當中新增資料。請注意，這麼做不會刪除任何現有的資料。"</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"全部移除"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"管理應用程式"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"刪除應用程式資料"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"已停用的應用程式"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"這些應用程式已無存取權，但仍有資料儲存在 Health Connect 中"</string>
+    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
+    <skip />
+    <!-- no translation found for other_android_permissions (3408425226133353014) -->
+    <skip />
+    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
+    <skip />
+    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
+    <skip />
+    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <skip />
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"開始使用 Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect 會儲存健康與健身資料，方便你在手機上同步不同應用程式的資料"</string>
+    <string name="share_data" msgid="3461840023402996573">"與應用程式分享資料"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"選擇每個應用程式可讀取或寫入 Health Connect 的資料"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"管理設定和隱私權"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"你隨時可以變更應用程式權限及管理資料"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"返回"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"開始使用"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"刪除資料"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"選擇要刪除的資料"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"繼續"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"這麼做會永久刪除在指定時間範圍內新增到 Health Connect 的所有資料"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"這麼做會永久刪除在指定時間範圍內新增到 Health Connect 的<xliff:g id="DATA_TYPE">%s</xliff:g>資料"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"這麼做會永久刪除在指定時間範圍內新增到 Health Connect 的<xliff:g id="CATEGORY">%s</xliff:g>資料"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"這麼做會永久刪除在指定時間範圍內新增到 Health Connect 的「<xliff:g id="APP_DATA">%s</xliff:g>」資料"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"刪除過去 24 小時的資料"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"刪除過去 7 天的資料"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"刪除過去 30 天的資料"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"刪除所有資料"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"要永久刪除所有時間範圍內的所有資料嗎？"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"要永久刪除過去 24 小時的所有資料嗎？"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"要永久刪除過去 7 天的所有資料嗎？"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"要永久刪除過去 30 天的所有資料嗎？"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"要永久刪除所有時間範圍內的<xliff:g id="DATA_TYPE">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"要永久刪除過去 24 小時的<xliff:g id="DATA_TYPE">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"要永久刪除過去 7 天的<xliff:g id="DATA_TYPE">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"要永久刪除過去 30 天的<xliff:g id="DATA_TYPE">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"要永久刪除所有時間範圍內的<xliff:g id="CATEGORY">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"要永久刪除過去 24 小時的<xliff:g id="CATEGORY">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"要永久刪除過去 7 天的<xliff:g id="CATEGORY">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"要永久刪除過去 30 天的<xliff:g id="CATEGORY">%s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"要永久刪除所有時間範圍內的「<xliff:g id="APP_DATA">%s</xliff:g>」資料嗎？"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"要永久刪除過去 24 小時的「<xliff:g id="APP_DATA">%s</xliff:g>」資料嗎？"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"要永久刪除過去 7 天的「<xliff:g id="APP_DATA">%s</xliff:g>」資料嗎？"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"要永久刪除過去 30 天的「<xliff:g id="APP_DATA">%s</xliff:g>」資料嗎？"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"一併移除「<xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g>」在 Health Connect 中的所有權限"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"要永久刪除「<xliff:g id="APP_DATA">%2$s</xliff:g>」新增的所有<xliff:g id="DATA_TYPE">%1$s</xliff:g>資料嗎？"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"要永久刪除這個項目嗎？"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"連結的應用程式將無法再透過 Health Connect 存取這類資料"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"刪除"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"返回"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"完成"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"關閉"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"資料已刪除"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Health Connect 中已經沒有這類資料。"</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"正在刪除資料"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"無法刪除資料"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"發生錯誤，Health Connect 無法刪除資料"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"再試一次"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"正在刪除 Health Connect 資料"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"正在刪除 Health Connect 資料"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"資料刪除"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"資料項目選項"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"刪除項目"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 步}other{# 步}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 步/分鐘}other{# 步/分鐘}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{每分鐘 1 步}other{每分鐘 # 步}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 bpm}other{# bpm}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{每分鐘心跳數為 1 下}other{每分鐘心跳數為 # 下}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 英里/小時}other{# 英里/小時}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 公里/小時}other{# 公里/小時}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{每小時 1 英里}other{每小時 # 英里}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{每小時 1 公里}other{每小時 # 公里}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"從 <xliff:g id="START_TIME">%1$s</xliff:g> 到 <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"從 <xliff:g id="START_TIME">%1$s</xliff:g>到 <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <skip />
+    <!-- no translation found for distance_km (411871319039389297) -->
+    <skip />
+    <!-- no translation found for distance_miles_long (3754739640134562413) -->
+    <skip />
+    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <skip />
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"單位"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"設定資料單位"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"距離"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"身高"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"體重"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"能量"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"溫度"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"公里"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"英里"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"公分"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"英尺與英寸"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"磅"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"公斤"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"英石"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"卡路里"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"千焦耳"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"攝氏"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"華氏"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"克耳文"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"沒有看到全部的應用程式嗎？"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"如果沒看到已安裝的應用程式，可能是該應用程式與 Health Connect 尚不相容"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"試試其他選項"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"檢查更新"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"確認所有安裝的應用程式均為最新版本"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"顯示所有相容的應用程式"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"在 Google Play 上搜尋應用程式"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"提供意見"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"告訴我們你希望哪些健康與健身應用程式可搭配 Health Connect 使用"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play 商店"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"自動刪除"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"自動刪除"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"如要控制 Health Connect 的資料保留期限，可以安排系統在一段時間後刪除資料"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"瞭解詳情"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"自動刪除資料"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{# 個月後}other{# 個月後}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"永不"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"如果變更這些設定，Health Connect 將根據新的偏好設定刪除現有資料"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{要在 # 個月後自動刪除資料嗎？}other{要在 # 個月後自動刪除資料嗎？}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect 將在 # 個月後自動刪除新資料。如果選擇這項設定，系統將一併刪除 # 個月前的現有資料。}other{Health Connect 將在 # 個月後自動刪除新資料。如果選擇這項設定，系統將一併刪除 # 個月前的現有資料。}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"設定自動刪除功能"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"系統將刪除現有資料"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect 將刪除 # 個月前的所有資料。\n系統可能需要一天的時間，才會在連結的應用程式中顯示這些變更。}other{Health Connect 將刪除 # 個月前的所有資料。\n系統可能需要一天的時間，才會在連結的應用程式中顯示這些變更。}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"系統會刪除以下類別的資料"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"完成"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"匯出 Health Connect 的資料"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"全選"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"取消全選"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"繼續"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"正在擷取要匯出的資料"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"正在匯出 Health Connect 資料"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"取消"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"資料匯出進度"</string>
+</resources>

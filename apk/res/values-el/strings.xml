@@ -62,7 +62,8 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"Αυτά τα δεδομένα περιλαμβάνουν πληροφορίες όπως είναι τα στάδια του ύπνου και οι περίοδοι ύπνου"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"Εμφάνιση όλων των καταχωρίσεων"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Διαγραφή αυτών των δεδομένων"</string>
-    <string name="permgrouplab_health" msgid="2551416597744633297">"Υγεία"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
     <string name="permgroupdesc_health" msgid="44553351410718944">"πρόσβαση σε δεδομένα υγείας"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Ανάγνωση θερμίδων που κάηκαν"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Επιτρέπει στην εφαρμογή να διαβάζει τις θερμίδες που καίγονται"</string>
@@ -238,7 +239,6 @@
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Επιτρέπεται η εγγραφή"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Δεν επιτρέπονται εφαρμογές"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Δεν υπάρχουν εφαρμογές που απαγορεύονται"</string>
-    <string name="health_permissions_title" msgid="3554702577269590720">"Άδειες πρόσβασης σε δεδομένα υγείας"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Κατάργηση πρόσβασης όλων των εφαρμογών;"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Καμία από τις εφαρμογές σας δεν θα μπορεί να αποκτήσει πρόσβαση στα δεδομένα του Health Connect ή να προσθέσει νέα δεδομένα. Με αυτήν την ενέργεια δεν διαγράφονται τυχόν υπάρχοντα δεδομένα."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Κατάργηση όλων"</string>
@@ -246,15 +246,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"Διαγραφή δεδομένων εφαρμογής"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"Ανενεργές εφαρμογές"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Αυτές οι εφαρμογές δεν έχουν πλέον πρόσβαση, αλλά έχουν ακόμη αποθηκευμένα δεδομένα στο Health Connect"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"Η εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> μπορεί να αποκτήσει πρόσβαση σε δεδομένα που προστέθηκαν μετά την/τις<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Για να διαχειριστείτε άλλες άδειες Android στις οποίες μπορεί να έχει πρόσβαση αυτή η εφαρμογή, μεταβείτε στην επιλογή Ρυθμίσεις &gt; Εφαρμογές"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Τα δεδομένα που κοινοποιείτε στην εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> καλύπτονται από την πολιτική απορρήτου της"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Για να διαχειριστείτε άλλες άδειες Android στις οποίες έχει πρόσβαση αυτή η εφαρμογή, μεταβείτε στις Ρυθμίσεις και πατήστε Εφαρμογές"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Ανάγνωση πολιτικής απορρήτου"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"Ξεκινήστε με το Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Το Health Connect αποθηκεύει τα δεδομένα υγείας και φυσικής κατάστασής σας, προσφέροντας έναν απλό τρόπο συγχρονισμού των διαφορετικών εφαρμογών στο τηλέφωνό σας"</string>
@@ -323,13 +320,13 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 χιλιόμετρο ανά ώρα}other{# χιλιόμετρα ανά ώρα}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"από <xliff:g id="START_TIME">%1$s</xliff:g> έως <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"από <xliff:g id="START_TIME">%1$s</xliff:g> έως <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 μίλι}other{# μίλια}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 χλμ.}other{# χλμ.}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 μίλι}other{# μίλια}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 χιλιόμετρο}other{# χιλιόμετρα}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
+    <!-- no translation found for calories (1646804751247540818) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"Μονάδες"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Ορισμός μονάδων δεδομένων"</string>

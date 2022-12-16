@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"Разрешения и данни"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"Преглеждайте и управлявайте данните за здравословното състояние и физическата активност в телефона си и контролирайте кои приложения да имат достъп до тях"</string>
+    <string name="data_title" msgid="6928287139074878977">"Данни и достъп"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"Всички категории"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"Преглед на всички категории"</string>
+    <string name="no_data" msgid="1120552294863595549">"Няма данни"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"Вижте данните си и скорошната активност в приложението"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Разрешения за приложенията"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Управление на приложенията и разрешенията"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"Скорошен достъп"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"Няма наскоро осъществили достъп до Health Connect приложения"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"Преглед на всички"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"Вижте кои приложения са осъществили достъп до данните ви през последните 24 часа"</string>
+    <string name="today_header" msgid="3128127066599449902">"Днес"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"Вчера"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"Активност"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"активност"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Мерки на тялото"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"мерки на тялото"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Сън"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"сън"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Жизнени показатели"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"жизнени показатели"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Проследяване на месечния цикъл"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"проследяване на месечния цикъл"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Хранене"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"хранене"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"Разглеждане на данните"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"Управление на данните"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"Експортиране на данни"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"Изтриване на всички данни"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Нямате данни в Health Connect"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"Вашите данни"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"Приоритет на приложението"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"Изтриване на данните от „<xliff:g id="CATEGORY">%s</xliff:g>“"</string>
+    <string name="can_read" msgid="7989669150752961504">"Може да чете данни от типа „<xliff:g id="PERMISSION_TYPE">%s</xliff:g>“"</string>
+    <string name="can_write" msgid="8278769263589284926">"Може да записва данни от типа „<xliff:g id="PERMISSION_TYPE">%s</xliff:g>“"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"Неактивни приложения"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"Тези приложения вече не могат да записват данни от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“, но техни данни все още се съхраняват в Health Connect"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"Приложенията вече не могат да четат или да записват данни от типа „<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>“ и в Health Connect няма съхранени данни от типа „<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>“"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"Тези данни включват различна информация, като например времето на активност, типа на упражненията, обиколките, повторенията, сесиите или загребванията при плуване"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"Тези данни включват различна информация, като например фазите и сесиите, свързани със съня"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"Преглед на всички записи"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Изтриване на тези данни"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"достъп до здравните ви данни"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Четене на изгорените калории"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Разрешава на приложението да чете изгорените калории"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Изгорени калории от активност"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"изгорени калории от активност"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Четене на изгорените калории от активност"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Записване на изгорените калории от активност"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Упражнения"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"упражнения"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"Четене на упражненията"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"Записване на упражнения"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"Разстояние"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"разстояние"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"Четене на разстоянието"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"Записване на разстоянието"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Достигната височина"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"достигната височина"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Четене на достигнатата височина"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Записване на достигнатата височина"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Изкачени етажи"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"изкачени етажи"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Четене на изкачените етажи"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Записване на изкачените етажи"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"Сила"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"сила"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"Четене на данните за силата"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"Записване на данни за силата"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"Скорост"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"скорост"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"Четене на скоростта"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"Записване на скоростта"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"Крачки"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"крачки"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"Четене на крачките"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"Записване на крачките"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Общ брой изгорени калории"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"общ брой изгорени калории"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Четене на общия брой изгорени калории"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Записване на общия брой изгорени калории"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"Максимална кислородна консумация"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"Максимална кислородна консумация"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"Четене на данните за максималната кислородна консумация"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"Записване на данните за максималната кислородна консумация"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Бутания на инвалидна количка"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"бутания на инвалидна количка"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Четене на бутанията на инвалидна количка"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Записване на бутанията на инвалидна количка"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Основна обмяна на веществата"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"основна обмяна на веществата"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Четене на данните за основната обмяна на веществата"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Записване на данни за основната обмяна на веществата"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Мазнини"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"мазнини"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Четене на данните за мазнините"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"Записване на данните за мазнините"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Водно съдържание в телесната маса"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"водно съдържание в телесната маса"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Четене на данните за водното съдържание в телесната маса"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Записване на данни за водното съдържание в телесната маса"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Костна маса"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"костна маса"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Четене на данните за костната маса"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Записване на данни за костната маса"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"Ръст"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"ръст"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"Четене на ръста"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"Записване на ръста"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Обиколка на ханша"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"обиколка на ханша"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Четене на обиколката на ханша"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Записване на обиколката на ханша"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Чиста телесна маса"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"чиста телесна маса"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Четене на данните за чистата телесна маса"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Записване на данни за чистата телесна маса"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Обиколка на талията"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"обиколка на талията"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Четене на обиколката на талията"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Записване на обиколката на талията"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"Тегло"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"тегло"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"Четене на теглото"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"Записване на теглото"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Цервикална слуз"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"цервикална слуз"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Четене на данните за цервикалната слуз"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Записване на данни за цервикалната слуз"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Менструация"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"менструация"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Четене на данните за менструацията"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Записване на данни за менструацията"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Тест за овулация"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"тест за овулация"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Четене на данните за теста за овулация"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Записване на данни за теста за овулация"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Сексуална активност"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"сексуална активност"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Четене на данните за сексуалната активност"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Записване на данни за сексуалната активност"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"Кафяво течение"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"кафяво течение"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"Четене на данните за кафявото течение"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"Записване на данни за кафявото течение"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Хидратация"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"хидратация"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"Четене на данните за хидратацията"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"Записване на данни за хидратацията"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Хранене"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"хранене"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Четене на данните за храненето"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Записване на данни за храненето"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Сън"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"сън"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"Четене на данните за съня"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"Записване на данни за съня"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Основна телесна температура"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"основна телесна температура"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Четене на основната телесна температура"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Записване на основната телесна температура"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Кръвна захар"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"кръвна захар"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Четене на данните за кръвната захар"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Записване на данни за кръвната захар"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Кръвно налягане"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"кръвно налягане"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Четене на данните за кръвното налягане"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Записване на данни за кръвното налягане"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Телесна температура"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"телесна температура"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Четене на телесната температура"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Записване на телесната температура"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Сърдечен ритъм"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"сърдечен ритъм"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Четене на сърдечния ритъм"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Записване на данни за сърдечния ритъм"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Вариабилност на сърдечния ритъм"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"вариабилност на сърдечния ритъм"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Четене на данните за вариабилността на сърдечния ритъм"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Записване на данни за вариабилността на сърдечния ритъм"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Насищане с кислород"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"насищане с кислород"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Четене на данните за насищането с кислород"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Записване на данни за насищането с кислород"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Дихателна честота"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"дихателна честота"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Четене на данните за дихателната честота"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Записване на данни за дихателната честота"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Сърдечен ритъм при покой"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"сърдечен ритъм при покой"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Четене на сърдечния ритъм при покой"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Записване на сърдечния ритъм при покой"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Може да чете от Health Connect"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Може да записва в Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"Отказ"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"Разрешаване"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Разреш. на всичко"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Изберете данните, които искате да чете или записва това приложение в Health Connect"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Ако предоставите достъп за четене, това приложение ще може да чете новите данни и тези от последните 30 дни"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Да се разреши ли на <xliff:g id="APP_NAME">%1$s</xliff:g> достъп до Health Connect?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"В <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> на програмиста можете да научите как <xliff:g id="APP_NAME">%1$s</xliff:g> обработва данните ви"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"декларацията за поверителност"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"Следващият ден"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"Предишният ден"</string>
+    <string name="default_error" msgid="7047939092442348839">"Нещо се обърка. Моля, опитайте отново."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"Приложенията с това разрешение могат да четат здравните ви данни и да записват такива."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Контролирайте кои приложения да имат достъп до съхраняваните в Health Connect данни. Докоснете дадено приложение, за да прегледате какви данни може да чете и записва."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"С разрешен достъп"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Без разрешен достъп"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"Настройки и помощ"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"Спиране на достъпа на всички приложения"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Не виждате всичките си приложения?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"С разрешение за четене"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"С разрешение за записване"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"Няма разрешени приложения"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"Няма отказани приложения"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Да се премахне ли достъпът за всички приложения?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Нито едно от приложенията ви няма да има достъп до Health Connect, нито ще може да добавя нови данни. Това действие няма да изтрие съществуващите данни."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Премахване на всички"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Управление на приложението"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"Изтриване на данните от приложението"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Неактивни приложения"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Тези приложения вече нямат достъп, но техни данни все още се съхраняват в Health Connect"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> може да осъществява достъп до данните, добавени след <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"За да управлявате други разрешения за Android, до които това приложение има достъп, отворете „Настройки &gt; Приложения“"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Данните, които споделяте с приложението <xliff:g id="APP_NAME">%1$s</xliff:g>, се обхващат от декларацията му за поверителност"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"За да управлявате другите разрешения за Android, до които това приложение има достъп, отворете „Настройки“ и след това „Приложения“"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Прочетете декларацията за поверителност"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Първи стъпки с Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect съхранява данните за здравословното ви състояние и физическата ви активност и ви предоставя лесен начин да синхронизирате различните приложения на телефона си"</string>
+    <string name="share_data" msgid="3461840023402996573">"Споделяне на данни с приложенията ви"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Изберете типовете данни, които отделните приложения да четат или записват в Health Connect"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Настройки и поверителност"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"Променяйте разрешенията за приложението и управлявайте данните си"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Назад"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Начало"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"Изтриване на данните"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Изберете данните, които да се изтрият"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"Напред"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"Това действие ще изтрие за постоянно всички данни, добавени към Health Connect през избрания период от време"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"Това действие ще изтрие за постоянно данните от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“, добавени към Health Connect през избрания период от време"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"Това действие ще изтрие за постоянно данните от „<xliff:g id="CATEGORY">%s</xliff:g>“, добавени към Health Connect през избрания период от време"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"Това действие ще изтрие за постоянно данните от <xliff:g id="APP_DATA">%s</xliff:g>, добавени към Health Connect през избрания период от време"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"Изтриване на данните от последните 24 часа"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"Изтриване на данните от последните 7 дни"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"Изтриване на данните от последните 30 дни"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"Изтриване на всички данни"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"Да се изтрият ли за постоянно всички данни за цялото време?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Да се изтрият ли за постоянно всички данни от последните 24 часа?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Да се изтрият ли за постоянно всички данни от последните 7 дни?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Да се изтрият ли за постоянно всички данни от последните 30 дни?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Да се изтрият ли за постоянно данните от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“ за цялото време?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Да се изтрият ли за постоянно данните от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“ от последните 24 часа?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Да се изтрият ли за постоянно данните от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“ от последните 7 дни?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Да се изтрият ли за постоянно данните от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“ от последните 30 дни?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"Да се изтрият ли за постоянно данните от „<xliff:g id="CATEGORY">%s</xliff:g>“ за цялото време?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Да се изтрият ли за постоянно данните от „<xliff:g id="CATEGORY">%s</xliff:g>“ от последните 24 часа?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Да се изтрият ли за постоянно данните от „<xliff:g id="CATEGORY">%s</xliff:g>“ от последните 7 дни?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Да се изтрият ли за постоянно данните от „<xliff:g id="CATEGORY">%s</xliff:g>“ от последните 30 дни?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Да се изтрият ли за постоянно данните от <xliff:g id="APP_DATA">%s</xliff:g> за цялото време?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Да се изтрият ли за постоянно данните от <xliff:g id="APP_DATA">%s</xliff:g> от последните 24 часа?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Да се изтрият ли за постоянно данните от <xliff:g id="APP_DATA">%s</xliff:g> от последните 7 дни?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Да се изтрият ли за постоянно данните от <xliff:g id="APP_DATA">%s</xliff:g> от последните 30 дни?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Всички разрешения за <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> също да се премахнат от Health Connect"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Да се изтрият ли за постоянно данните от типа „<xliff:g id="DATA_TYPE">%1$s</xliff:g>“, добавени от <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Искате ли да изтриете този запис за постоянно?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Свързаните приложения вече няма да могат да осъществяват достъп до тези данни от Health Connect"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Изтриване"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Назад"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Готово"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Затваряне"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Данните бяха изтрити"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Тези данни вече не се съхраняват в Health Connect."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"Данните ви се изтриват"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Данните не бяха изтрити"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Нещо се обърка и Health Connect не успя да изтрие данните ви"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Нов опит"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Данните в Health Connect се изтриват"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Данните в Health Connect се изтриват"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Изтриване на данни"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"Опции за записа с данни"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"Изтриване на записа"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 ват}other{# вата}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 крачка}other{# крачки}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 крачка/мин}other{# крачки/мин}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 крачка в минута}other{# крачки в минута}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 bpm}other{# bpm}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 удар в минута}other{# удара в минута}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 миля/ч}other{# мили/ч}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 км/ч}other{# км/ч}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 миля в час}other{# мили в час}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 километър в час}other{# километра в час}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"от <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"от <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 миля}other{# мили}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 км}other{# км}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 миля}other{# мили}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 километър}other{# километра}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"Единици"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"Задаване на единици за данните"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"Разстояние"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"Ръст"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"Тегло"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"Енергия"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"Температура"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Километри"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Мили"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Сантиметри"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"Футове и инчове"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Фунтове"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Килограми"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Стоуни"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Калории"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Килоджаули"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Целзий"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Фаренхайт"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Келвин"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Не виждате всичките си приложения?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Ако не виждате дадено инсталирано приложение, то може още да не е съвместимо с Health Connect"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"Неща, които да опитате"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"Проверка за актуализации"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"Уверете се, че инсталираните приложения са актуални"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Преглед на съвместимите приложения"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Намиране на приложения в Google Play"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"Изпращане на отзиви"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Посочете кои приложения за здраве и физическа активност да работят с Health Connect"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Google Play Магазин"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"Автоматично изтриване"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"Автоматично изтриване"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Управлявайте колко дълго да се съхраняват данните ви в Health Connect, като насрочите изтриването им след зададен от вас период от време"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Научете повече"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"Автоматично изтриване на данните"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{След # месец}other{След # месеца}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"Никога"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Когато промените тези настройки, Health Connect ще изтрие част от съществуващите данни, така че да бъдат отразени новите ви предпочитания"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Данните да се изтриват ли автоматично след # месец?}other{Данните да се изтриват ли автоматично след # месеца?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect ще изтрива автоматично новите данни след # месец. Ако зададете тази опция, ще се изтрият и съществуващите данни, които са по-стари от # месец.}other{Health Connect ще изтрива автоматично новите данни след # месеца. Ако зададете тази опция, ще се изтрият и съществуващите данни, които са по-стари от # месеца.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Настройване на автоматичното изтриване"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Съществуващи данни ще бъдат изтрити"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect ще изтрие всички данни, които са по-стари от # месец.\nМоже да мине един ден, преди тези промени да се покажат в свързаните ви приложения.}other{Health Connect ще изтрие всички данни, които са по-стари от # месеца.\nМоже да мине един ден, преди тези промени да се покажат в свързаните ви приложения.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Данни, които ще бъдат изтрити от тези"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"Готово"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Експортиране на данните в Health Connect"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"Избиране на всички"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"Премахване на избора за всички"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"Напред"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"Данните за експортиране се извличат"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Данните в Health Connect се експортират"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Отказ"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Напредък на експортирането на данните"</string>
+</resources>
