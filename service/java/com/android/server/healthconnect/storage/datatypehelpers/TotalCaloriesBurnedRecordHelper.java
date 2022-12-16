@@ -15,12 +15,16 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.util.Pair;
@@ -41,9 +45,37 @@ public final class TotalCaloriesBurnedRecordHelper
     private static final String ENERGY_COLUMN_NAME = "energy";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        double aggregateValue;
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(ENERGY_COLUMN_NAME));
+                break;
+            default:
+                return null;
+        }
+        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        List<String> columnNames;
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL:
+                columnNames = Collections.singletonList(ENERGY_COLUMN_NAME);
+                break;
+            default:
+                return null;
+        }
+        return new AggregateParams(
+                TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME, columnNames, START_TIME_COLUMN_NAME);
     }
 
     @Override

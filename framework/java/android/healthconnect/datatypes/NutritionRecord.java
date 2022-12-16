@@ -55,6 +55,7 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_D_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_E_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_K_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_ZINC_TOTAL;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 
 import android.annotation.NonNull;
@@ -1147,6 +1148,15 @@ public final class NutritionRecord extends IntervalRecord {
     public static final AggregationType<Mass> VITAMIN_K_TOTAL =
             new AggregationType<>(
                     NUTRITION_RECORD_VITAMIN_K_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /** Metric identifier to get total Zinc using aggregate APIs in {@link HealthConnectManager} */
+    @NonNull
+    public static final AggregationType<Mass> ZINC_TOTAL =
+            new AggregationType<>(
+                    NUTRITION_RECORD_ZINC_TOTAL,
                     AggregationType.SUM,
                     RECORD_TYPE_NUTRITION,
                     Mass.class);

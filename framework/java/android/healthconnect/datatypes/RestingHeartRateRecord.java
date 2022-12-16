@@ -15,7 +15,12 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_MIN;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE;
+
 import android.annotation.IntRange;
+import android.healthconnect.HealthConnectManager;
 
 import androidx.annotation.NonNull;
 
@@ -27,10 +32,34 @@ import java.util.Objects;
  * Captures the user's resting heart rate. Each record represents a single instantaneous
  * measurement.
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE)
+@Identifier(recordIdentifier = RECORD_TYPE_RESTING_HEART_RATE)
 public final class RestingHeartRateRecord extends InstantRecord {
 
     private final long mBeatsPerMinute;
+
+    /**
+     * Metric identifier to get max resting heart rate in beats per minute using aggregate APIs in
+     * {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Long> BPM_MAX =
+            new AggregationType<>(
+                    RESTING_HEART_RATE_RECORD_BPM_MAX,
+                    AggregationType.MAX,
+                    RECORD_TYPE_RESTING_HEART_RATE,
+                    Long.class);
+
+    /**
+     * Metric identifier to get min resting heart rate in beats per minute using aggregate APIs in
+     * {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Long> BPM_MIN =
+            new AggregationType<>(
+                    RESTING_HEART_RATE_RECORD_BPM_MIN,
+                    AggregationType.MIN,
+                    RECORD_TYPE_RESTING_HEART_RATE,
+                    Long.class);
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.

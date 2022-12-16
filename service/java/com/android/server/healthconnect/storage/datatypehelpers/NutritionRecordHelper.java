@@ -55,6 +55,7 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_D_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_E_TOTAL;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_K_TOTAL;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_ZINC_TOTAL;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
@@ -262,6 +263,9 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
             case NUTRITION_RECORD_VITAMIN_K_TOTAL:
                 aggregateValue = results.getDouble(results.getColumnIndex(VITAMIN_K_COLUMN_NAME));
                 break;
+            case NUTRITION_RECORD_ZINC_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(ZINC_COLUMN_NAME));
+                break;
             default:
                 return null;
         }
@@ -397,6 +401,9 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
                 break;
             case NUTRITION_RECORD_VITAMIN_K_TOTAL:
                 columnNames = Collections.singletonList(VITAMIN_K_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_ZINC_TOTAL:
+                columnNames = Collections.singletonList(ZINC_COLUMN_NAME);
                 break;
             default:
                 return null;

@@ -16,12 +16,20 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.HeightRecord.HEIGHT_AVG;
+import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MAX;
+import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MIN;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.HeightRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
@@ -37,7 +45,9 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -47,19 +57,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class HeightRecordTest {
     private static final String TAG = "HeightRecordTest";
-
-    static HeightRecord getBaseHeightRecord() {
-        return new HeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0))
-                .build();
-    }
-
-    static HeightRecord getCompleteHeightRecord() {
-        return new HeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
 
     @Test
     public void testInsertHeightRecord() throws InterruptedException {
@@ -88,5 +85,59 @@ public class HeightRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    @Test
+    public void testAggregation_Height() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<Record> records =
+                Arrays.asList(
+                        getBaseHeightRecord(5.0),
+                        getBaseHeightRecord(10.0),
+                        getBaseHeightRecord(15.0));
+        AggregateRecordsResponse<Length> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(HEIGHT_MAX)
+                                .addAggregationType(HEIGHT_MIN)
+                                .addAggregationType(HEIGHT_AVG)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        records);
+        Length maxHeight = response.get(HEIGHT_MAX);
+        Length minHeight = response.get(HEIGHT_MIN);
+        Length avgHeight = response.get(HEIGHT_AVG);
+        assertThat(maxHeight).isNotNull();
+        assertThat(maxHeight.getInMeters()).isEqualTo(15.0);
+        assertThat(minHeight).isNotNull();
+        assertThat(minHeight.getInMeters()).isEqualTo(5.0);
+        assertThat(avgHeight).isNotNull();
+        assertThat(avgHeight.getInMeters()).isEqualTo(10.0);
+    }
+
+    static HeightRecord getBaseHeightRecord() {
+        return new HeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0))
+                .build();
+    }
+
+    static HeightRecord getBaseHeightRecord(double height) {
+        return new HeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(height))
+                .build();
+    }
+
+    static HeightRecord getCompleteHeightRecord() {
+        return new HeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

@@ -15,6 +15,12 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEIGHT_RECORD_HEIGHT_AVG;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEIGHT_RECORD_HEIGHT_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEIGHT_RECORD_HEIGHT_MIN;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEIGHT;
+
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Length;
 
 import androidx.annotation.NonNull;
@@ -28,6 +34,39 @@ import java.util.Objects;
 public final class HeightRecord extends InstantRecord {
 
     private final Length mHeight;
+
+    /**
+     * Metric identifier to get average height using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Length> HEIGHT_AVG =
+            new AggregationType<>(
+                    HEIGHT_RECORD_HEIGHT_AVG,
+                    AggregationType.AVG,
+                    RECORD_TYPE_HEIGHT,
+                    Length.class);
+
+    /**
+     * Metric identifier to get minimum height using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Length> HEIGHT_MIN =
+            new AggregationType<>(
+                    HEIGHT_RECORD_HEIGHT_MIN,
+                    AggregationType.MIN,
+                    RECORD_TYPE_HEIGHT,
+                    Length.class);
+
+    /**
+     * Metric identifier to get maximum height using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Length> HEIGHT_MAX =
+            new AggregationType<>(
+                    HEIGHT_RECORD_HEIGHT_MAX,
+                    AggregationType.MAX,
+                    RECORD_TYPE_HEIGHT,
+                    Length.class);
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.

@@ -541,6 +541,9 @@ package android.healthconnect.datatypes {
 
   public final class HeightRecord extends android.healthconnect.datatypes.InstantRecord {
     method @NonNull public android.healthconnect.datatypes.units.Length getHeight();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> HEIGHT_AVG;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> HEIGHT_MAX;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> HEIGHT_MIN;
   }
 
   public static final class HeightRecord.Builder {
@@ -714,6 +717,7 @@ package android.healthconnect.datatypes {
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_D_TOTAL;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_E_TOTAL;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_K_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> ZINC_TOTAL;
   }
 
   public static final class NutritionRecord.Builder {
@@ -830,6 +834,8 @@ package android.healthconnect.datatypes {
 
   public final class RestingHeartRateRecord extends android.healthconnect.datatypes.InstantRecord {
     method public long getBeatsPerMinute();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
   }
 
   public static final class RestingHeartRateRecord.Builder {
@@ -923,6 +929,7 @@ package android.healthconnect.datatypes {
 
   public final class TotalCaloriesBurnedRecord extends android.healthconnect.datatypes.IntervalRecord {
     method @NonNull public android.healthconnect.datatypes.units.Energy getEnergy();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Energy> ENERGY_TOTAL;
   }
 
   public static final class TotalCaloriesBurnedRecord.Builder {
@@ -954,6 +961,9 @@ package android.healthconnect.datatypes {
 
   public final class WeightRecord extends android.healthconnect.datatypes.InstantRecord {
     method @NonNull public android.healthconnect.datatypes.units.Mass getWeight();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> WEIGHT_AVG;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> WEIGHT_MAX;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> WEIGHT_MIN;
   }
 
   public static final class WeightRecord.Builder {
@@ -964,6 +974,7 @@ package android.healthconnect.datatypes {
 
   public final class WheelchairPushesRecord extends android.healthconnect.datatypes.IntervalRecord {
     method public long getCount();
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> COUNT_TOTAL;
   }
 
   public static final class WheelchairPushesRecord.Builder {

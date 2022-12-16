@@ -19,9 +19,12 @@ package android.healthconnect.cts;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RestingHeartRateRecord;
@@ -37,6 +40,7 @@ import org.junit.runner.RunWith;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -46,17 +50,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class RestingHeartRateRecordTest {
     private static final String TAG = "RestingHeartRateRecordTest";
-
-    static RestingHeartRateRecord getBaseRestingHeartRateRecord() {
-        return new RestingHeartRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
-                .build();
-    }
-
-    static RestingHeartRateRecord getCompleteRestingHeartRateRecord() {
-        return new RestingHeartRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
 
     @Test
     public void testInsertRestingHeartRateRecord() throws InterruptedException {
@@ -85,5 +78,49 @@ public class RestingHeartRateRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    @Test
+    public void testBpmAggregation_timeRange_all() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        getBaseRestingHeartRateRecord(1),
+                        getBaseRestingHeartRateRecord(5),
+                        getBaseRestingHeartRateRecord(10));
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                .build())
+                                .addAggregationType(RestingHeartRateRecord.BPM_MAX)
+                                .addAggregationType(RestingHeartRateRecord.BPM_MIN)
+                                .build(),
+                        records);
+        assertThat(response.get(RestingHeartRateRecord.BPM_MAX)).isNotNull();
+        assertThat(response.get(RestingHeartRateRecord.BPM_MAX)).isEqualTo(10);
+        assertThat(response.getZoneOffset(RestingHeartRateRecord.BPM_MAX))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        assertThat(response.get(RestingHeartRateRecord.BPM_MIN)).isNotNull();
+        assertThat(response.get(RestingHeartRateRecord.BPM_MIN)).isEqualTo(1);
+        assertThat(response.getZoneOffset(RestingHeartRateRecord.BPM_MIN))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+    }
+
+    static RestingHeartRateRecord getBaseRestingHeartRateRecord() {
+        return new RestingHeartRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
+                .build();
+    }
+
+    static RestingHeartRateRecord getBaseRestingHeartRateRecord(int beats) {
+        return new RestingHeartRateRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), beats)
+                .build();
+    }
+
+    static RestingHeartRateRecord getCompleteRestingHeartRateRecord() {
+        return new RestingHeartRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

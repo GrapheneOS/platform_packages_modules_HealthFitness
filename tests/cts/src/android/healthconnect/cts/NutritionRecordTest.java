@@ -56,6 +56,7 @@ import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_C_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_D_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_E_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_K_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ZINC_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -130,7 +131,8 @@ public class NutritionRecordTest {
                     VITAMIN_C_TOTAL,
                     VITAMIN_D_TOTAL,
                     VITAMIN_E_TOTAL,
-                    VITAMIN_K_TOTAL);
+                    VITAMIN_K_TOTAL,
+                    ZINC_TOTAL);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -280,6 +282,7 @@ public class NutritionRecordTest {
                                 .addAggregationType(VITAMIN_D_TOTAL)
                                 .addAggregationType(VITAMIN_E_TOTAL)
                                 .addAggregationType(VITAMIN_K_TOTAL)
+                                .addAggregationType(ZINC_TOTAL)
                                 .build(),
                         records);
         List<Record> recordNew =
@@ -329,6 +332,7 @@ public class NutritionRecordTest {
                                 .addAggregationType(VITAMIN_D_TOTAL)
                                 .addAggregationType(VITAMIN_E_TOTAL)
                                 .addAggregationType(VITAMIN_K_TOTAL)
+                                .addAggregationType(ZINC_TOTAL)
                                 .build(),
                         recordNew);
         for (AggregationType<Mass> type : mMassAggregateTypesList) {

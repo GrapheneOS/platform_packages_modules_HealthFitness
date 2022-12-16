@@ -19,9 +19,13 @@ package android.healthconnect.cts;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord;
@@ -37,7 +41,9 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -47,26 +53,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class TotalCaloriesBurnedRecordTest {
     private static final String TAG = "TotalCaloriesBurnedRecordTest";
-
-    static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord() {
-        return new TotalCaloriesBurnedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Energy.fromJoules(10.0))
-                .build();
-    }
-
-    static TotalCaloriesBurnedRecord getCompleteTotalCaloriesBurnedRecord() {
-        return new TotalCaloriesBurnedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Energy.fromJoules(10.0))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
 
     @Test
     public void testInsertTotalCaloriesBurnedRecord() throws InterruptedException {
@@ -95,5 +81,69 @@ public class TotalCaloriesBurnedRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    @Test
+    public void testAggregation_totalCalriesBurnt() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<Record> records =
+                Arrays.asList(
+                        getBaseTotalCaloriesBurnedRecord(), getBaseTotalCaloriesBurnedRecord());
+        AggregateRecordsResponse<Energy> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        records);
+        List<Record> newRecords =
+                Arrays.asList(
+                        getBaseTotalCaloriesBurnedRecord(), getBaseTotalCaloriesBurnedRecord());
+        AggregateRecordsResponse<Energy> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        newRecords);
+        Energy totEnergyBefore = oldResponse.get(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
+        Energy totEnergyAfter = newResponse.get(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
+        assertThat(totEnergyBefore).isNotNull();
+        assertThat(totEnergyAfter).isNotNull();
+        assertThat(totEnergyAfter.getInJoules()).isEqualTo(totEnergyBefore.getInJoules() + 20.0);
+    }
+
+    static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord() {
+        return new TotalCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Energy.fromJoules(10.0))
+                .build();
+    }
+
+    static TotalCaloriesBurnedRecord getCompleteTotalCaloriesBurnedRecord() {
+        return new TotalCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Energy.fromJoules(10.0))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }
