@@ -670,7 +670,7 @@ class DeletionFragmentTest {
 
     @Test
     fun deleteAllData_confirmationDialogForEntry_showsCorrectText() {
-        val deletionEntry = DeletionType.DeleteDataEntry("test_id", DataType.STEPS)
+        val deletionEntry = DeletionType.DeleteDataEntry("test_id", DataType.STEPS, 0)
 
         Mockito.`when`(viewModel.deletionParameters).then {
             MutableLiveData(DeletionParameters(deletionType = deletionEntry))
