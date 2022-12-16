@@ -153,7 +153,6 @@ public final class Metadata {
     public int hashCode() {
         return Objects.hash(
                 getDevice(),
-                this,
                 getDataOrigin(),
                 getId(),
                 getClientRecordId(),

@@ -19,7 +19,7 @@
           package="android.healthconnect.cts"
           android:targetSandboxVersion="2">
 
-    <application>
+    <application android:debuggable="true">
         <uses-library android:name="android.test.runner"/>
     </application>
 

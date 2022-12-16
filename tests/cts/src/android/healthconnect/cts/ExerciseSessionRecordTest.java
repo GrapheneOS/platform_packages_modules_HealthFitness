@@ -41,7 +41,7 @@ public class ExerciseSessionRecordTest {
     public void testExerciseSession_buildSession_buildCorrectObject() {
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
-                                buildMetadata(),
+                                generateMetadata(),
                                 START_TIME,
                                 END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
@@ -55,13 +55,33 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test
+    public void testExerciseSession_buildEqualSessions_equalsReturnsTrue() {
+        Metadata metadata = generateMetadata();
+        ExerciseSessionRecord record =
+                new ExerciseSessionRecord.Builder(
+                                metadata,
+                                START_TIME,
+                                END_TIME,
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                        .build();
+        ExerciseSessionRecord record2 =
+                new ExerciseSessionRecord.Builder(
+                                metadata,
+                                START_TIME,
+                                END_TIME,
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                        .build();
+        assertThat(record).isEqualTo(record2);
+    }
+
+    @Test
     public void testExerciseSession_buildSessionWithAllFields_buildCorrectObject() {
         ExerciseRoute route = TestUtils.buildExerciseRoute();
         CharSequence notes = "rain";
         CharSequence title = "Morning training";
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
-                                buildMetadata(),
+                                generateMetadata(),
                                 START_TIME,
                                 END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
@@ -79,7 +99,7 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getTitle()).isEqualTo(title);
     }
 
-    private static Metadata buildMetadata() {
+    private static Metadata generateMetadata() {
         return new Metadata.Builder()
                 .setDevice(buildDevice())
                 .setClientRecordId("ExerciseSession" + Math.random())
