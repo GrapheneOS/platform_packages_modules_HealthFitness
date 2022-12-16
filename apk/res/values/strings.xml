@@ -552,4 +552,12 @@
   <string name="export_data_notification_cancel_button" description="The cancel button on the notification that is shown while data for export is being generated. [CHAR_LIMIT=50]">Cancel</string>
   <string name="export_data_notification_channel_name" description="The channel name for the notification that is shown while data for export is being generated, which is visible to users in system settings. [CHAR_LIMIT=50]">Export Data Progress</string>
   <!--  endregion-->
+
+  <!--  region Search Indexable-->
+  <string name="search_keywords_home" description="A list of search terms used to search Health Connect in the Settings app. The terms aren’t shown to users. [CHAR LIMIT=NONE]">fitness, wellness</string>
+  <string name="search_keywords_permissions" description="A list of search terms used to search Health Connect in the Settings app. The terms aren’t shown to users. [CHAR LIMIT=NONE]">permissions</string>
+  <string name="search_keywords_data" description="A list of search terms used to search Health Connect in the Settings app. The terms aren’t shown to users. [CHAR LIMIT=NONE]">health connect, health data, health categories, data access, activity, body measurements, cycle tracking, nutrition, sleep, vitals</string>
+  <string name="search_breadcrumbs_permissions" description="The path to find permissions screen in Settings, shown in search results. [CHAR LIMIT=70]">Health Connect > App permissions</string>
+  <string name="search_breadcrumbs_data" description="The path to find data and access screen in Settings, shown in search results. [CHAR LIMIT=70]">Health Connect > Data and access</string>
+  <!--  endregion-->
 </resources>
