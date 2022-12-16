@@ -40,12 +40,16 @@ public class ReadTransactionRequest {
     private final List<ReadTableRequest> mReadTableRequests;
 
     public ReadTransactionRequest(
-            String packageName, ReadRecordsRequestParcel request, boolean enforceSelfRead) {
+            String packageName,
+            ReadRecordsRequestParcel request,
+            boolean enforceSelfRead,
+            Map<String, Boolean> extraReadPermsMapping) {
         RecordHelper<?> recordHelper =
                 RecordHelperProvider.getInstance().getRecordHelper(request.getRecordType());
         mReadTableRequests =
                 Collections.singletonList(
-                        recordHelper.getReadTableRequest(request, packageName, enforceSelfRead));
+                        recordHelper.getReadTableRequest(
+                                request, packageName, enforceSelfRead, extraReadPermsMapping));
     }
 
     public ReadTransactionRequest(Map<Integer, List<String>> recordTypeToUuids) {
