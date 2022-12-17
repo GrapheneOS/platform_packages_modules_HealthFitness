@@ -560,4 +560,13 @@
   <string name="search_breadcrumbs_permissions" description="The path to find permissions screen in Settings, shown in search results. [CHAR LIMIT=70]">Health Connect > App permissions</string>
   <string name="search_breadcrumbs_data" description="The path to find data and access screen in Settings, shown in search results. [CHAR LIMIT=70]">Health Connect > Data and access</string>
   <!--  endregion-->
+
+  <!--  region Search -->
+  <string name="search_connected_apps" description="Hint shown on search input field">Search apps</string>
+  <string name="no_results" description="Content shown when there is no search result">No Results</string>
+  <!--  endregion-->
+
+  <!--  region Menu Items -->
+  <string name="help" description="Menu option for accessing help [CHAR LIMIT=50]">Help</string>
+  <!--  endregion-->
 </resources>

@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -62,10 +64,13 @@ const val TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app"
 const val TEST_APP_PACKAGE_NAME_2 = "android.healthconnect.controller.test.app2"
 const val TEST_APP_NAME = "Health Connect test app"
 const val TEST_APP_NAME_2 = "Health Connect test app 2"
+const val TEST_APP_NAME_3 = "Health Connect test app 3"
 
 val TEST_APP =
     AppMetadata(packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME, icon = null)
 val TEST_APP_2 =
     AppMetadata(packageName = TEST_APP_PACKAGE_NAME_2, appName = TEST_APP_NAME_2, icon = null)
+val TEST_APP_3 =
+    AppMetadata(packageName = TEST_APP_PACKAGE_NAME_2, appName = TEST_APP_NAME_3, icon = null)
 
 // endregion

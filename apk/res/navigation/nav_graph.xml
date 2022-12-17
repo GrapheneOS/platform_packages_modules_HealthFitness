@@ -94,6 +94,16 @@
         <action
             android:id="@+id/action_connectedApps_to_connectedApp"
             app:destination="@id/connectedAppFragment" />
+        <action
+            android:id="@+id/action_connectedApps_to_searchApps"
+            app:destination="@id/searchConnectedApps" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchConnectedApps"
+        android:name="com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchAppsFragment" >
+        <action
+            android:id="@+id/action_searchApps_to_connectedApp"
+            app:destination="@id/connectedAppFragment" />
     </fragment>
     <fragment
         android:id="@+id/cantSeeAllYourAppsFragment"
