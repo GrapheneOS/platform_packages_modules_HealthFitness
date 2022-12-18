@@ -49,26 +49,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class StepsRecordTest {
     private static final String TAG = "StepsRecordTest";
 
-    static StepsRecord getBaseStepsRecord() {
-        return new StepsRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
-                .build();
-    }
-
-    static StepsRecord getStepsRecord(int count) {
-        return new StepsRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), count)
-                .build();
-    }
-
-    static StepsRecord getCompleteStepsRecord() {
-        return new StepsRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     @Test
     public void testInsertStepsRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -96,5 +76,25 @@ public class StepsRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static StepsRecord getBaseStepsRecord() {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
+                .build();
+    }
+
+    static StepsRecord getStepsRecord(int count) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), count)
+                .build();
+    }
+
+    static StepsRecord getCompleteStepsRecord() {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

@@ -18,7 +18,6 @@ package com.android.server.healthconnect.permission;
 
 import static android.Manifest.permission.INTERACT_ACROSS_USERS_FULL;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static android.healthconnect.HealthConnectManager.PERMISSION_MANAGE_HEALTH_DATA;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -219,16 +218,6 @@ public final class HealthConnectPermissionHelper {
                             this,
                             mContext.getUser());
         }
-    }
-
-    /**
-     * Checks if android.permission.MANAGE_HEALTH_DATA permission is granted.
-     *
-     * @return true if permission is granted and false otherwise.
-     */
-    public boolean hasDataManagementPermission(int uid, int pid) {
-        return mContext.checkPermission(PERMISSION_MANAGE_HEALTH_DATA, pid, uid)
-                == PERMISSION_GRANTED;
     }
 
     private List<String> getGrantedHealthPermissionsUnchecked(String packageName, UserHandle user) {

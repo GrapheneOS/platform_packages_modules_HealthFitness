@@ -35,6 +35,7 @@ import android.healthconnect.ChangeLogsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
+import android.healthconnect.HealthPermissions;
 import android.healthconnect.InsertRecordsResponse;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
@@ -69,7 +70,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class TestUtils {
-    public static final String MANAGE_HEALTH_DATA = "android.permission.MANAGE_HEALTH_DATA";
+    public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     private static final String TAG = "HCTestUtils";
 
     public static String getChangeLogToken(ChangeLogTokenRequest request)
@@ -100,6 +101,7 @@ public class TestUtils {
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
         AtomicReference<List<Record>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
         service.insertRecords(
                 records,
                 Executors.newSingleThreadExecutor(),
@@ -113,12 +115,44 @@ public class TestUtils {
                     @Override
                     public void onError(HealthConnectException exception) {
                         Log.e(TAG, exception.getMessage());
+                        exceptionAtomicReference.set(exception);
+                        latch.countDown();
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
         assertThat(response.get()).hasSize(records.size());
 
         return response.get();
+    }
+
+    public static void updateRecords(List<Record> records) throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        service.updateRecords(
+                records,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        exceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
     }
 
     public static ChangeLogsResponse getChangeLogs(ChangeLogsRequest changeLogsRequest)
@@ -129,14 +163,29 @@ public class TestUtils {
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
         service.getChangeLogs(
                 changeLogsRequest,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    response.set(result);
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ChangeLogsResponse result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+
         return response.get();
     }
 
@@ -153,10 +202,11 @@ public class TestUtils {
     }
 
     public static StepsRecord getStepsRecord() {
+        Context context = ApplicationProvider.getApplicationContext();
         Device device =
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+                new DataOrigin.Builder().setPackageName(context.getPackageName()).build();
         return new StepsRecord.Builder(
                         new Metadata.Builder()
                                 .setDevice(device)
@@ -170,6 +220,8 @@ public class TestUtils {
     }
 
     public static HeartRateRecord getHeartRateRecord() {
+        Context context = ApplicationProvider.getApplicationContext();
+
         HeartRateRecord.HeartRateSample heartRateSample =
                 new HeartRateRecord.HeartRateSample(72, Instant.now());
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
@@ -178,7 +230,7 @@ public class TestUtils {
         Device device =
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+                new DataOrigin.Builder().setPackageName(context.getPackageName()).build();
 
         return new HeartRateRecord.Builder(
                         new Metadata.Builder()
@@ -220,6 +272,7 @@ public class TestUtils {
     }
 
     public static BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
+        Context context = ApplicationProvider.getApplicationContext();
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
@@ -227,7 +280,7 @@ public class TestUtils {
                         .setType(2)
                         .build();
         DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+                new DataOrigin.Builder().setPackageName(context.getPackageName()).build();
         return new BasalMetabolicRateRecord.Builder(
                         new Metadata.Builder()
                                 .setDevice(device)
@@ -248,14 +301,28 @@ public class TestUtils {
         assertThat(service).isNotNull();
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<AggregateRecordsResponse<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
         service.aggregate(
                 request,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    response.set(result);
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(AggregateRecordsResponse<T> result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        healthConnectExceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
 
         return response.get();
     }
@@ -270,16 +337,30 @@ public class TestUtils {
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<List<AggregateRecordsGroupedByDurationResponse<T>>> response =
                 new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
         service.aggregateGroupByDuration(
                 request,
                 duration,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    response.set(result);
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(
+                            List<AggregateRecordsGroupedByDurationResponse<T>> result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        healthConnectExceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
-
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
         return response.get();
     }
 
@@ -292,15 +373,29 @@ public class TestUtils {
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<List<AggregateRecordsGroupedByPeriodResponse<T>>> response =
                 new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
         service.aggregateGroupByPeriod(
                 request,
                 period,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    response.set(result);
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(List<AggregateRecordsGroupedByPeriodResponse<T>> result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        healthConnectExceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
 
         return response.get();
     }
@@ -358,6 +453,8 @@ public class TestUtils {
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(service).isNotNull();
         AtomicReference<List<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
         service.readRecords(
                 request,
                 Executors.newSingleThreadExecutor(),
@@ -370,10 +467,14 @@ public class TestUtils {
 
                     @Override
                     public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
         return response.get();
     }
 
@@ -382,13 +483,26 @@ public class TestUtils {
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(service).isNotNull();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
         service.setRecordRetentionPeriodInDays(
                 period,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        exceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
     }
 
     public static void verifyDeleteRecords(DeleteUsingFiltersRequest request)
@@ -396,14 +510,27 @@ public class TestUtils {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
         assertThat(service).isNotNull();
         service.deleteRecords(
                 request,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        exceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
     }
 
     public static void verifyDeleteRecords(List<RecordIdFilter> request)
@@ -411,14 +538,27 @@ public class TestUtils {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
         assertThat(service).isNotNull();
         service.deleteRecords(
                 request,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        exceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
     }
 
     public static void verifyDeleteRecords(
@@ -428,14 +568,28 @@ public class TestUtils {
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(service).isNotNull();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+
         service.deleteRecords(
                 recordType,
                 timeRangeFilter,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        exceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
     }
 
     public static void deleteRecords(List<Record> records) throws InterruptedException {

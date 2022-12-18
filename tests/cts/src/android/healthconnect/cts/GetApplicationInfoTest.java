@@ -16,8 +16,11 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
+
 import static com.google.common.truth.Truth.assertThat;
 
+import android.app.UiAutomation;
 import android.content.Context;
 import android.healthconnect.ApplicationInfoResponse;
 import android.healthconnect.HealthConnectException;
@@ -27,9 +30,11 @@ import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
 import android.util.Log;
 
+import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,34 +48,98 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class GetApplicationInfoTest {
     private static final String TAG = "GetApplicationInfoTest";
+    private static final UiAutomation sUiAutomation =
+            InstrumentationRegistry.getInstrumentation().getUiAutomation();
 
     /** TODO(b/257796081): Cleanup the database after each test. */
+    @Test
+    public void testEmptyApplicationInfo() throws InterruptedException {
+        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
 
-    /** TODO(b/257796081): Test the response size after database clean up is implemented */
-    //    @Test
-    //    public void testEmptyApplicationInfo() throws InterruptedException {
-    //
-    //
-    // List<AppInfo> result = getApplicationInfo();
-    // assertThat(result).hasSize(0);
-    //    }
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            CountDownLatch latch = new CountDownLatch(1);
+            assertThat(service).isNotNull();
+            AtomicReference<List<AppInfo>> response = new AtomicReference<>();
+            service.getContributorApplicationsInfo(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(ApplicationInfoResponse result) {
+                            response.set(result.getApplicationInfoList());
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(HealthConnectException exception) {
+                            Log.e(TAG, exception.getMessage());
+                        }
+                    });
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        } finally {
+            sUiAutomation.dropShellPermissionIdentity();
+        }
+
+        /** TODO(b/257796081): Test the response size after database clean up is implemented */
+        // assertThat(response.get()).hasSize(0);
+    }
+
+    @Test
+    public void testEmptyApplicationInfo_no_perm() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        AtomicReference<List<AppInfo>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        try {
+            service.getContributorApplicationsInfo(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(ApplicationInfoResponse result) {
+                            response.set(result.getApplicationInfoList());
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(HealthConnectException exception) {
+                            healthConnectExceptionAtomicReference.set(exception);
+                            latch.countDown();
+                        }
+                    });
+            Assert.fail();
+        } catch (SecurityException exception) {
+            assertThat(true).isTrue();
+            assertThat(exception).isNotNull();
+        }
+    }
 
     @Test
     public void testGetApplicationInfo() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        TestUtils.insertRecords(TestUtils.getTestRecords());
+        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
 
-        List<AppInfo> result = getApplicationInfo();
-        assertThat(result).hasSize(1);
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            TestUtils.insertRecords(TestUtils.getTestRecords());
 
-        AppInfo appInfo = result.get(0);
+            List<AppInfo> result = getApplicationInfo();
+            assertThat(result).hasSize(1);
 
-        assertThat(appInfo.getPackageName()).isEqualTo(context.getApplicationInfo().packageName);
-        assertThat(appInfo.getName())
-                .isEqualTo(
-                        context.getPackageManager()
-                                .getApplicationLabel(context.getApplicationInfo()));
-        assertThat(appInfo.getIcon()).isNotNull();
+            AppInfo appInfo = result.get(0);
+
+            assertThat(appInfo.getPackageName())
+                    .isEqualTo(context.getApplicationInfo().packageName);
+            assertThat(appInfo.getName())
+                    .isEqualTo(
+                            context.getPackageManager()
+                                    .getApplicationLabel(context.getApplicationInfo()));
+            assertThat(appInfo.getIcon()).isNotNull();
+        } finally {
+            sUiAutomation.dropShellPermissionIdentity();
+        }
     }
 
     private List<AppInfo> getApplicationInfo() throws InterruptedException {

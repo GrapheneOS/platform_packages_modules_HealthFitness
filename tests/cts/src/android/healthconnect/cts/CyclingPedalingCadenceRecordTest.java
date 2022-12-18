@@ -49,24 +49,6 @@ public class CyclingPedalingCadenceRecordTest {
 
     private static final String TAG = "CyclingPedalingCadenceRecordTest";
 
-    static CyclingPedalingCadenceRecord getBaseCyclingPedalingCadenceRecord() {
-        CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
-                cyclingPedalingCadenceRecord =
-                        new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
-                                10, Instant.now());
-        ArrayList<CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>
-                cyclingPedalingCadenceRecords = new ArrayList<>();
-        cyclingPedalingCadenceRecords.add(cyclingPedalingCadenceRecord);
-        cyclingPedalingCadenceRecords.add(cyclingPedalingCadenceRecord);
-
-        return new CyclingPedalingCadenceRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        cyclingPedalingCadenceRecords)
-                .build();
-    }
-
     @Test
     public void testInsertCyclingPedalingCadenceRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -93,5 +75,23 @@ public class CyclingPedalingCadenceRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static CyclingPedalingCadenceRecord getBaseCyclingPedalingCadenceRecord() {
+        CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
+                cyclingPedalingCadenceRecord =
+                        new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
+                                10, Instant.now());
+        ArrayList<CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>
+                cyclingPedalingCadenceRecords = new ArrayList<>();
+        cyclingPedalingCadenceRecords.add(cyclingPedalingCadenceRecord);
+        cyclingPedalingCadenceRecords.add(cyclingPedalingCadenceRecord);
+
+        return new CyclingPedalingCadenceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        cyclingPedalingCadenceRecords)
+                .build();
     }
 }

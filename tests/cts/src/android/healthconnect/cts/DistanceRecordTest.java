@@ -50,35 +50,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DistanceRecordTest {
     private static final String TAG = "DistanceRecordTest";
 
-    static DistanceRecord getBaseDistanceRecord() {
-        return new DistanceRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Length.fromMeters(10.0))
-                .build();
-    }
-
-    static DistanceRecord getBaseDistanceRecord(double distance) {
-        return new DistanceRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Length.fromMeters(distance))
-                .build();
-    }
-
-    static DistanceRecord getCompleteDistanceRecord() {
-        return new DistanceRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Length.fromMeters(10.0))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     @Test
     public void testInsertDistanceRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -106,5 +77,34 @@ public class DistanceRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static DistanceRecord getBaseDistanceRecord() {
+        return new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(10.0))
+                .build();
+    }
+
+    static DistanceRecord getBaseDistanceRecord(double distance) {
+        return new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(distance))
+                .build();
+    }
+
+    static DistanceRecord getCompleteDistanceRecord() {
+        return new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(10.0))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

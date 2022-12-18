@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage.request;
 import static android.healthconnect.Constants.DELETE;
 
 import android.annotation.NonNull;
+import android.content.Context;
 import android.healthconnect.Constants;
 import android.healthconnect.RecordIdFilter;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
@@ -46,8 +47,10 @@ public final class DeleteTransactionRequest {
     private final List<DeleteTableRequest> mDeleteTableRequests;
     private final ChangeLogsHelper.ChangeLogs mChangeLogs;
     private final long mRequestingPackageNameId;
+    private boolean mHasHealthDataManagementPermission;
 
-    public DeleteTransactionRequest(String packageName, DeleteUsingFiltersRequestParcel request) {
+    public DeleteTransactionRequest(
+            String packageName, DeleteUsingFiltersRequestParcel request, Context context) {
         Objects.requireNonNull(packageName);
         mDeleteTableRequests = new ArrayList<>(request.getRecordTypeFilters().size());
         mChangeLogs = new ChangeLogsHelper.ChangeLogs(DELETE, packageName);
@@ -126,11 +129,21 @@ public final class DeleteTransactionRequest {
     }
 
     public void enforcePackageCheck(String uuid, long appInfoId) {
-        // TODO(b/261164812): Remove later
-        return;
-        // if (mRequestingPackageNameId != appInfoId) {
-        //     throw new IllegalArgumentException(
-        //             mRequestingPackageNameId + " is not the owner for " + uuid);
-        // }
+        if (mHasHealthDataManagementPermission) {
+            // Skip this check if the caller has data management permission
+            return;
+        }
+
+        if (mRequestingPackageNameId != appInfoId) {
+            throw new IllegalArgumentException(
+                    mRequestingPackageNameId + " is not the owner for " + uuid);
+        }
+    }
+
+    public DeleteTransactionRequest setHasManageHealthDataPermission(
+            boolean hasHealthDataManagementPermission) {
+        mHasHealthDataManagementPermission = hasHealthDataManagementPermission;
+
+        return this;
     }
 }

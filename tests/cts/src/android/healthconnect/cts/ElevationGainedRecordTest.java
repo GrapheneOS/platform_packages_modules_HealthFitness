@@ -50,35 +50,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ElevationGainedRecordTest {
     private static final String TAG = "ElevationGainedRecordTest";
 
-    static ElevationGainedRecord getBaseElevationGainedRecord() {
-        return new ElevationGainedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Length.fromMeters(10.0))
-                .build();
-    }
-
-    static ElevationGainedRecord getBaseElevationGainedRecord(double elevation) {
-        return new ElevationGainedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Length.fromMeters(elevation))
-                .build();
-    }
-
-    static ElevationGainedRecord getCompleteElevationGainedRecord() {
-        return new ElevationGainedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Length.fromMeters(10.0))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     @Test
     public void testInsertElevationGainedRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -106,5 +77,34 @@ public class ElevationGainedRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static ElevationGainedRecord getBaseElevationGainedRecord() {
+        return new ElevationGainedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(10.0))
+                .build();
+    }
+
+    static ElevationGainedRecord getBaseElevationGainedRecord(double elevation) {
+        return new ElevationGainedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(elevation))
+                .build();
+    }
+
+    static ElevationGainedRecord getCompleteElevationGainedRecord() {
+        return new ElevationGainedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(10.0))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

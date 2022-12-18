@@ -17,6 +17,7 @@
 package android.healthconnect;
 
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.healthconnect.datatypes.DataOrigin;
 
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.List;
  *
  * @hide
  */
+@SystemApi
 public class RecordTypeInfoResponse {
     @HealthPermissionCategory.Type private final int mPermissionCategory;
     @HealthDataCategory.Type private final int mDataCategory;

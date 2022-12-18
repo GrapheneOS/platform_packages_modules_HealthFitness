@@ -50,21 +50,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ExerciseLapRecordTest {
     private static final String TAG = "ExerciseLapRecordTest";
 
-    static ExerciseLapRecord getBaseExerciseLapRecord() {
-        return new ExerciseLapRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now())
-                .build();
-    }
-
-    static ExerciseLapRecord getCompleteExerciseLapRecord() {
-        return new ExerciseLapRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now())
-                .setLength(Length.fromMeters(10.0))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     @Test
     public void testInsertExerciseLapRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -92,5 +77,20 @@ public class ExerciseLapRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static ExerciseLapRecord getBaseExerciseLapRecord() {
+        return new ExerciseLapRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now())
+                .build();
+    }
+
+    static ExerciseLapRecord getCompleteExerciseLapRecord() {
+        return new ExerciseLapRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now())
+                .setLength(Length.fromMeters(10.0))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

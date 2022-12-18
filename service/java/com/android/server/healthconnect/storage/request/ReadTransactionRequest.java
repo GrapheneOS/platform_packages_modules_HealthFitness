@@ -39,11 +39,13 @@ public class ReadTransactionRequest {
     public static final String TYPE_NOT_PRESENT_PACKAGE_NAME = "package_name";
     private final List<ReadTableRequest> mReadTableRequests;
 
-    public ReadTransactionRequest(String packageName, ReadRecordsRequestParcel request) {
+    public ReadTransactionRequest(
+            String packageName, ReadRecordsRequestParcel request, boolean enforceSelfRead) {
         RecordHelper<?> recordHelper =
                 RecordHelperProvider.getInstance().getRecordHelper(request.getRecordType());
         mReadTableRequests =
-                Collections.singletonList(recordHelper.getReadTableRequest(request, packageName));
+                Collections.singletonList(
+                        recordHelper.getReadTableRequest(request, packageName, enforceSelfRead));
     }
 
     public ReadTransactionRequest(Map<Integer, List<String>> recordTypeToUuids) {

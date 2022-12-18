@@ -50,30 +50,6 @@ public class PowerRecordTest {
 
     private static final String TAG = "PowerRecordTest";
 
-    static PowerRecord getBasePowerRecord() {
-        PowerRecord.PowerRecordSample powerRecord =
-                new PowerRecord.PowerRecordSample(Power.fromWatts(10.0), Instant.now());
-        ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
-        powerRecords.add(powerRecord);
-        powerRecords.add(powerRecord);
-
-        return new PowerRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), powerRecords)
-                .build();
-    }
-
-    static PowerRecord getBasePowerRecord(double power) {
-        PowerRecord.PowerRecordSample powerRecord =
-                new PowerRecord.PowerRecordSample(Power.fromWatts(power), Instant.now());
-        ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
-        powerRecords.add(powerRecord);
-        powerRecords.add(powerRecord);
-
-        return new PowerRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), powerRecords)
-                .build();
-    }
-
     @Test
     public void testInsertPowerRecord() throws InterruptedException {
         List<Record> records = new ArrayList<>();
@@ -100,5 +76,29 @@ public class PowerRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    static PowerRecord getBasePowerRecord() {
+        PowerRecord.PowerRecordSample powerRecord =
+                new PowerRecord.PowerRecordSample(Power.fromWatts(10.0), Instant.now());
+        ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
+        powerRecords.add(powerRecord);
+        powerRecords.add(powerRecord);
+
+        return new PowerRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), powerRecords)
+                .build();
+    }
+
+    static PowerRecord getBasePowerRecord(double power) {
+        PowerRecord.PowerRecordSample powerRecord =
+                new PowerRecord.PowerRecordSample(Power.fromWatts(power), Instant.now());
+        ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
+        powerRecords.add(powerRecord);
+        powerRecords.add(powerRecord);
+
+        return new PowerRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), powerRecords)
+                .build();
     }
 }
