@@ -518,7 +518,7 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public class HeartRateRecord extends android.healthconnect.datatypes.IntervalRecord {
+  public final class HeartRateRecord extends android.healthconnect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample> getSamples();
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_AVG;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
