@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"ခွင့်ပြုချက်များနှင့် ဒေတာ"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"သင့်ဖုန်းရှိ ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို ကြည့်ရှုစီမံပြီး သုံးခွင့်ပေးမည့် အက်ပ်ကို သတ်မှတ်နိုင်သည်"</string>
+    <string name="data_title" msgid="6928287139074878977">"ဒေတာနှင့် သုံးခွင့်"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"အမျိုးအစားအားလုံး"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"အမျိုးအစားအားလုံး ကြည့်ရန်"</string>
+    <string name="no_data" msgid="1120552294863595549">"ဒေတာမရှိပါ"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"သင့်ဒေတာနှင့် လတ်တလောအက်ပ် အသုံးပြုမှုကို ကြည့်နိုင်သည်"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"အက်ပ်ခွင့်ပြုချက်များ"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"သင့်အက်ပ်နှင့် ခွင့်ပြုချက်များကို စီမံရန်"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"မကြာသေးမီက သုံးခွင့်"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"မည်သည်အက်ပ်မျှ Health Connect ကို မကြာသေးမီကသုံးမထားပါ"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"အားလုံးကြည့်ခြင်း"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"ပြီးခဲ့သော ၂၄ နာရီတွင် မည်သည့်အက်ပ်က သင့်ဒေတာကိုသုံးထားကြောင်း ကြည့်နိုင်သည်"</string>
+    <string name="today_header" msgid="3128127066599449902">"ယနေ့"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"မနေ့က"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"လှုပ်ရှားမှု"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"လှုပ်ရှားမှု"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"ခန္ဓာကိုယ် တိုင်းတာချက်များ"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"ခန္ဓာကိုယ် တိုင်းတာချက်များ"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"အိပ်စက်ခြင်း"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"အိပ်စက်ခြင်း"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"အဓိကကိုယ်တွင်းအင်္ဂါအခြေအနေ"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"အဓိကကိုယ်တွင်းအင်္ဂါအခြေအနေ"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"ရာသီသွေးဆင်းမှု မှတ်တမ်း"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"ရာသီသွေးဆင်းမှု မှတ်တမ်း"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"အာဟာရ"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"အာဟာရ"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"ဒေတာကြည့်ရှုခြင်း"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"ဒေတာစီမံခြင်း"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"ဒေတာထုတ်ယူရန်"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"ဒေတာအားလုံး ဖျက်ရန်"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Health Connect တွင် သင့်ဒေတာမရှိပါ"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"သင်၏ဒေတာ"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"ဦးစားပေးအက်ပ်"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"<xliff:g id="CATEGORY">%s</xliff:g> ဒေတာကို ဖျက်ရန်"</string>
+    <string name="can_read" msgid="7989669150752961504">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ဖတ်နိုင်သည်"</string>
+    <string name="can_write" msgid="8278769263589284926">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ရေးနိုင်သည်"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"အသုံးမပြုသော အက်ပ်များ"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"ဤအက်ပ်များက <xliff:g id="DATA_TYPE">%s</xliff:g> ကို ရေးမထည့်နိုင်တော့သော်လည်း Health Connect တွင် ဒေတာများ သိမ်းထားသေးသည်"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"အက်ပ်များသည် <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ကို ဖတ်နိုင် (သို့) ရေးနိုင်တော့မည်မဟုတ်ပါ။ Health Connect တွင် <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ဒေတာများ သိမ်းထားခြင်းမရှိပါ"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"ဤဒေတာတွင် လှုပ်ရှားချိန်၊ လေ့ကျင့်ခန်းအမျိုးအစား၊ အကြိမ်ရေ၊ အကျော့ရေ၊ စက်ရှင် (သို့) ရေကူးခပ်သည့် အရေအတွက်များကဲ့သို့ အချက်အလက်များပါဝင်သည်"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"ဤဒေတာတွင် အိပ်စက်မှုဆိုင်ရာ အဆင့်နှင့် စက်ရှင်များကဲ့သို့ အချက်အလက်များပါဝင်သည်"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"ထည့်သွင်းမှုအားလုံးကြည့်ရန်"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"ဤဒေတာကို ဖျက်ရန်"</string>
+    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
+    <skip />
+    <string name="permgroupdesc_health" msgid="44553351410718944">"ကျန်းမာရေးဒေတာကို သုံးနိုင်သည်"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"လောင်ကျွမ်းသောကယ်လိုရီဖတ်ခြင်း"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"အက်ပ်ကို လောင်ကျွမ်းသွားသော ကယ်လိုရီများ ဖတ်ခွင့်ပေးသည်"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီကို ဖတ်ရန်"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီကို ရေးရန်"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"လေ့ကျင့်ခန်း"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"လေ့ကျင့်ခန်း"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"လေ့ကျင့်ခန်း ဖတ်ရန်"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"လေ့ကျင့်ခန်း ရေးရန်"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"အကွာအဝေး"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"အကွာအဝေး"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"အကွာအဝေးကို ဖတ်ရန်"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"အကွာအဝေးကို ရေးရန်"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"တက်ရောက်သည့်အမြင့်"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"တက်ရောက်သည့်အမြင့်"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"တက်ရောက်သည့်အမြင့်ကို ဖတ်ရန်"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"တက်ရောက်သည့်အမြင့်ကို ရေးရန်"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"တက်ပြီးသည့် တိုက်အထပ်"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"တက်ပြီးသည့် တိုက်အထပ်"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"တက်ပြီးသည့် တိုက်အထပ်ကို ဖတ်ရန်"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"တက်ပြီးသည့် တိုက်အထပ်ကို ရေးရန်"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"ပါဝါ"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"ပါဝါ"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"ပါဝါကို ဖတ်ရန်"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"ပါဝါကို ရေးရန်"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"မြန်နှုန်း"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"မြန်နှုန်း"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"မြန်နှုန်းကို ဖတ်ရန်"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"မြန်နှုန်းကို ရေးရန်"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"ခြေလှမ်းများ"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"ခြေလှမ်းများ"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"ခြေလှမ်းများ ဖတ်ရန်"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"ခြေလှမ်းများ ရေးရန်"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"လောင်ကျွမ်းသည့် ကယ်လိုရီစုစုပေါင်း"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"လောင်ကျွမ်းသည့် ကယ်လိုရီစုစုပေါင်း"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"လောင်ကျွမ်းသည့် ကယ်လိုရီစုစုပေါင်းကို ဖတ်ရန်"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"လောင်ကျွမ်းသည့် ကယ်လိုရီစုစုပေါင်းကို ရေးရန်"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"အများဆုံး VO2"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"အများဆုံး VO2"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"အများဆုံး VO2 ကို ဖတ်ရန်"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"အများဆုံး VO2 ကို ရေးရန်"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"ဘီးတပ်ခုံတွန်းသည့် အရေအတွက်"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"ဘီးတပ်ခုံတွန်းသည့် အရေအတွက်"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"ဘီးတပ်ခုံတွန်းသည့် အရေအတွက်ကို ဖတ်ရန်"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"ဘီးတပ်ခုံ တွန်းသည့်အရေအတွက်ကို ရေးရန်"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"နားနေစဉ် ဇီဝတွင်း ဖြစ်ပျက်မှုနှုန်း"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"နားနေစဉ် ဇီဝတွင်း ဖြစ်ပျက်မှုနှုန်း"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"နားနေစဉ် ဇီဝတွင်း ဖြစ်ပျက်မှုနှုန်းကို ဖတ်ရန်"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"နားနေစဉ် ဇီဝတွင်း ဖြစ်ပျက်မှုနှုန်းကို ရေးရန်"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"ကိုယ်တွင်းအဆီ"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"ကိုယ်တွင်းအဆီ"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"ကိုယ်တွင်းအဆီကို ဖတ်ရန်"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"ကိုယ်တွင်းအဆီကို ရေးရန်"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"ကိုယ်တွင်းရေထုပါဝင်မှု"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"ကိုယ်တွင်းရေထုပါဝင်မှု"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"ကိုယ်တွင်းရေထုပါဝင်မှုကို ဖတ်ရန်"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"ကိုယ်တွင်းရေထုပါဝင်မှုကို ရေးရန်"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"အရိုးအလေးချိန်"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"အရိုးအလေးချိန်"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"အရိုးအလေးချိန်ကို ဖတ်ရန်"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"အရိုးအလေးချိန်ကို ရေးရန်"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"အရပ်"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"အရပ်"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"အရပ်ကို ဖတ်ရန်"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"အရပ်ကို ရေးရန်"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"တင်ပါးပတ်လည်"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"တင်ပါးပတ်လည်"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"တင်ပါးပတ်လည်ကို ဖတ်ရန်"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"တင်ပါးပတ်လည်ကို ရေးရန်"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"အဆီမပါသည့် ကိုယ်အလေးချိန်"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"အဆီမပါသည့် ကိုယ်အလေးချိန်"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"အဆီမပါသည့် ကိုယ်အလေးချိန်ကို ဖတ်ရန်"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"အဆီမပါသည့် ကိုယ်အလေးချိန်ကို ရေးရန်"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"ခါးပတ်လည်"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"ခါးပတ်လည်"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"ခါးပတ်လည်ကို ဖတ်ရန်"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"ခါးပတ်လည်ကို ရေးရန်"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"အလေးချိန်"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"အလေးချိန်"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"အလေးချိန်ကို ဖတ်ရန်"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"အလေးချိန်ကို ရေးရန်"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"သားအိမ်ခေါင်းမှထွက်သည့် အကျိအချွဲ"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"သားအိမ်ခေါင်းမှထွက်သည့် အကျိအချွဲ"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"သားအိမ်ခေါင်းမှထွက်သည့် အကျိအချွဲကို ဖတ်ရန်"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"သားအိမ်ခေါင်းမှထွက်သည့် အကျိအချွဲကို ရေးရန်"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"ဓမ္မတာလာခြင်း"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"ဓမ္မတာလာခြင်း"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"ဓမ္မတာလာခြင်းကို ဖတ်ရန်"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"ဓမ္မတာလာခြင်းကို ရေးရန်"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"သားဥကြွေမှု စစ်ဆေးချက်"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"သားဥကြွေမှု စစ်ဆေးချက်"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"သားဥကြွေမှု စစ်ဆေးချက်ကို ဖတ်ရန်"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"သားဥကြွေမှု စစ်ဆေးချက်ကို ရေးရန်"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"လိင်ဆက်ဆံမှု"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"လိင်ဆက်ဆံမှု"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"လိင်ဆက်ဆံမှုကို ဖတ်ရန်"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"လိင်ဆက်ဆံမှုကို ရေးရန်"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"ကြားရက်သွေးဆင်းမှု"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"ကြားရက်သွေးဆင်းမှု"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"ကြားရက်သွေးဆင်းမှုကို ဖတ်ရန်"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"ကြားရက်သွေးဆင်းမှုကို ရေးရန်"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"ကိုယ်တွင်းရေဓာတ်"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"ကိုယ်တွင်းရေဓာတ်"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"ကိုယ်တွင်းရေဓာတ်ကို ဖတ်ရန်"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"ကိုယ်တွင်းရေဓာတ်ကို ရေးရန်"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"အာဟာရ"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"အာဟာရ"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"အာဟာရကို ဖတ်ရန်"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"အာဟာရကို ရေးရန်"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"အိပ်စက်မှု"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"အိပ်စက်မှု"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"အိပ်စက်မှု ဖတ်ရန်"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"အိပ်စက်မှု ရေးရန်"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"နားနေစဉ် ခန္ဓာကိုယ်အပူချိန်"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"နားနေစဉ် ခန္ဓာကိုယ်အပူချိန်"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"နားနေစဉ် ခန္ဓာကိုယ်အပူချိန်ကို ဖတ်ရန်"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"နားနေစဉ် ခန္ဓာကိုယ်အပူချိန်ကို ရေးရန်"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"သွေးတွင်းသကြားဓာတ်"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"သွေးတွင်းသကြားဓာတ်"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"သွေးတွင်းသကြားဓာတ်ကို ဖတ်ရန်"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"သွေးတွင်းသကြားဓာတ်ကို ရေးရန်"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"သွေးပေါင်ချိန်"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"သွေးပေါင်ချိန်"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"သွေးပေါင်ချိန်ကို ဖတ်ရန်"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"သွေးပေါင်ချိန်ကို ရေးရန်"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"ခန္ဓာကိုယ်အပူချိန်"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"ခန္ဓာကိုယ်အပူချိန်"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"ခန္ဓာကိုယ်အပူချိန်ကို ဖတ်ရန်"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"ခန္ဓာကိုယ်အပူချိန်ကို ရေးရန်"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"နှလုံးခုန်နှုန်း"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"နှလုံးခုန်နှုန်း"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"နှလုံးခုန်နှုန်းကို ဖတ်ရန်"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"နှလုံးခုန်နှုန်းကို ရေးရန်"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"နှလုံးခုန်နှုန်း ပြောင်းလဲမှု"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"နှလုံးခုန်နှုန်း ပြောင်းလဲမှု"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"နှလုံးခုန်နှုန်း ပြောင်းလဲမှု ဖတ်ရန်"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"နှလုံးခုန်နှုန်း ပြောင်းလဲမှု ရေးရန်"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"သွေးတွင်း အောက်ဆီဂျင်ပါဝင်မှုနှုန်း"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"သွေးတွင်း အောက်ဆီဂျင်ပါဝင်မှုနှုန်း"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"သွေးတွင်း အောက်ဆီဂျင်ပါဝင်မှုနှုန်းကို ဖတ်ရန်"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"သွေးတွင်း အောက်ဆီဂျင်ပါဝင်မှုနှုန်းကို ရေးရန်"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"အသက်ရှူနှုန်း"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"အသက်ရှူနှုန်း"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"အသက်ရှူနှုန်းကို ဖတ်ရန်"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"အသက်ရှူနှုန်းကို ရေးရန်"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"နားနေချိန် နှလုံးခုန်နှုန်း"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"နားနေချိန် နှလုံးခုန်နှုန်း"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"နားနေချိန် နှလုံးခုန်နှုန်းကို ဖတ်ရန်"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"နားနေချိန် နှလုံးခုန်နှုန်းကို ရေးရန်"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect မှတစ်ဆင့် ဖတ်နိုင်သည်"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Health Connect တွင် ရေးနိုင်သည်"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"မလုပ်တော့"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"ခွင့်ပြုရန်"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"အားလုံး ခွင့်ပြုရန်"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Health Connect တွင် ဤအက်ပ်ကို ဖတ်စေ (သို့) ရေးထည့်စေလိုသော ဒေတာ ရွေးပါ"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"ဖတ်ခွင့်ပေးထားပါက ဤအက်ပ်သည် ဒေတာအသစ်နှင့် ပြီးခဲ့သော ရက် ၃၀ မှ ဒေတာများကို ဖတ်နိုင်သည်"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို Health Connect သုံးခွင့်ပေးမလား။"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာအား စီမံဆောင်ရွက်ပုံကို ဆော့ဖ်ဝဲရေးသူ၏ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> တွင် လေ့လာနိုင်သည်"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"နောက်ရက်"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"ယခင်ရက်"</string>
+    <string name="default_error" msgid="7047939092442348839">"တစ်ခုခုမှားသွားသည်။ ထပ်စမ်းကြည့်ပါ။"</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"ဤခွင့်ပြုချက်ရှိသည့် အက်ပ်များသည် သင့်ကျန်းမာရေးဒေတာကို ဖတ်ပြီး ရေးနိုင်သည်။"</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Health Connect တွင် သိမ်းထားသောဒေတာကို မည်သည့်အက်ပ်က သုံးနိုင်ကြောင်း သတ်မှတ်နိုင်သည်။ အက်ပ်ကဖတ်နိုင် (သို့) ရေးနိုင်သော ဒေတာများ ပြန်ကြည့်ရန် ၎င်းကိုတို့ပါ။"</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"ခွင့်ပြုထားသည်များ"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"သုံးခွင့်မပေးထားသည်များ"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"ဆက်တင်များနှင့် အကူအညီ"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"အက်ပ်အားလုံးအတွက် သုံးခွင့် ဖယ်ရှားရန်"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"အက်ပ်အားလုံးကို မမြင်ရဘူးလား။"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"ဖတ်ခွင့်ပေးထားသည်များ"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"ရေးခွင့်ပေးထားသည်များ"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"ခွင့်ပြုထားသည့် အက်ပ်မရှိပါ"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"ငြင်းပယ်ထားသည့် အက်ပ်မရှိပါ"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"အက်ပ်အားလုံးအတွက် သုံးခွင့် ဖယ်ရှားမလား။"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"သင့်အက်ပ်အားလုံးသည် Health Connect တွင် ဒေတာဖတ်ခြင်း၊ ထည့်သွင်းခြင်း ပြုလုပ်နိုင်တော့မည် မဟုတ်ပါ။ ၎င်းက လက်ရှိဒေတာကို မဖျက်ပါ။"</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"အားလုံး ဖယ်ရှားရန်"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"အက်ပ်စီမံခြင်း"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"အက်ပ်ဒေတာ ဖျက်ရန်"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"အသုံးမပြုသော အက်ပ်များ"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"ဤအက်ပ်များက သုံးခွင့်မရှိတော့သော်လည်း Health Connect တွင် ဒေတာများ သိမ်းထားသေးသည်"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> နောက်ပိုင်း ထည့်သွင်းသောဒေတာကို ဝင်သုံးနိုင်သည်"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"ဤအက်ပ်ဝင်သုံးနိုင်သော အခြား Android ခွင့်ပြုချက်များ စီမံရန် ‘ဆက်တင်များ &gt; အက်ပ်များ’ သို့ သွားနိုင်သည်"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"<xliff:g id="APP_NAME">%1$s</xliff:g> နှင့် မျှဝေသောဒေတာကို ၎င်း၏ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒဖြင့် ကာကွယ်ထားသည်"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ဤအက်ပ်ဝင်သုံးနိုင်သော အခြား Android ခွင့်ပြုချက်များ စီမံရန် ဆက်တင်များသို့သွားပြီး အက်ပ်များကို တို့နိုင်သည်"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒကို ဖတ်ရန်"</string>
+    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
+    <skip />
+    <string name="onboarding_title" msgid="1175348642301557799">"Health Connect စတင်အသုံးပြုခြင်း"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect သည် သင့်ဖုန်းပေါ်ရှိ အက်ပ်အမျိုးမျိုး ရိုးရှင်းစွာစင့်ခ်လုပ်နည်းကို ပေးပြီး သင်၏ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို သိမ်းသည်"</string>
+    <string name="share_data" msgid="3461840023402996573">"သင့်အက်ပ်များနှင့် ဒေတာမျှဝေရန်"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Health Connect တွင် အက်ပ်တစ်ခုစီ ဖတ်နိုင် (သို့) ရေးနိုင်သည့် ဒေတာကို သင်ကရွေးနိုင်သည်"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"သင့်ဆက်တင်များနှင့် ကိုယ်ရေးအချက်အလက်လုံခြုံမှုကို စီမံရန်"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"အက်ပ်ခွင့်ပြုချက်များပြောင်းပြီး သင့်ဒေတာကို အချိန်မရွေးစီမံနိုင်သည်"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"နောက်သို့"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"စတင်ရန်"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"ဒေတာဖျက်ရန်"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"ဖျက်မည့်ဒေတာ ရွေးခြင်း"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"ရှေ့သို့"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"၎င်းက ရွေးချယ်ထားသည့်အချိန်ကာလအတွင်း Health Connect တွင် ထည့်ထားသည့် ဒေတာအားလုံးကို အပြီးဖျက်သည်"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"၎င်းက ရွေးချယ်ထားသည့်အချိန်ကာလအတွင်း Health Connect တွင် ထည့်ထားသည့် <xliff:g id="DATA_TYPE">%s</xliff:g> ဒေတာကို အပြီးဖျက်သည်"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"၎င်းက ရွေးချယ်ထားသည့်အချိန်ကာလအတွင်း Health Connect တွင် ထည့်ထားသည့် <xliff:g id="CATEGORY">%s</xliff:g> ဒေတာကို အပြီးဖျက်သည်"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"၎င်းက ရွေးချယ်ထားသည့်အချိန်ကာလအတွင်း Health Connect တွင် ထည့်ထားသည့် <xliff:g id="APP_DATA">%s</xliff:g> ဒေတာကို အပြီးဖျက်သည်"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"ပြီးခဲ့သော ၂၄ နာရီစာ ဖျက်ရန်"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"ပြီးခဲ့သော ၇ ရက်စာ ဖျက်ရန်"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"ပြီးခဲ့သော ရက် ၃၀ စာ ဖျက်ရန်"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"ဒေတာအားလုံး ဖျက်ရန်"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"ယခင်ရှိသမျှ ဒေတာအားလုံးကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"လွန်ခဲ့သည့် ၂၄ နာရီအတွင်းရှိ ဒေတာအားလုံးကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"လွန်ခဲ့သည့် ၇ ရက်အတွင်းရှိ ဒေတာအားလုံးကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"လွန်ခဲ့သည့် ရက် ၃၀ အတွင်းရှိ ဒေတာအားလုံးကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"ယခင်ရှိသမျှ <xliff:g id="DATA_TYPE">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"လွန်ခဲ့သည့် ၂၄ နာရီအတွင်းရှိ <xliff:g id="DATA_TYPE">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"လွန်ခဲ့သည့် ၇ ရက်အတွင်းရှိ <xliff:g id="DATA_TYPE">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"လွန်ခဲ့သည့် ရက် ၃၀ အတွင်းရှိ <xliff:g id="DATA_TYPE">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"ယခင်ရှိသမျှ <xliff:g id="CATEGORY">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"လွန်ခဲ့သည့် ၂၄ နာရီအတွင်းရှိ <xliff:g id="CATEGORY">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"လွန်ခဲ့သည့် ၇ ရက်အတွင်းရှိ <xliff:g id="CATEGORY">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"လွန်ခဲ့သည့် ရက် ၃၀ အတွင်းရှိ <xliff:g id="CATEGORY">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"ယခင်ရှိသမျှ <xliff:g id="APP_DATA">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"လွန်ခဲ့သည့် ၂၄ နာရီအတွင်းရှိ <xliff:g id="APP_DATA">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"လွန်ခဲ့သည့် ၇ ရက်အတွင်းရှိ <xliff:g id="APP_DATA">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"လွန်ခဲ့သည့် ရက် ၃၀ အတွင်းရှိ <xliff:g id="APP_DATA">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"<xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> ခွင့်ပြုချက် အားလုံးကိုလည်း Health Connect မှ ဖယ်ရှားရန်"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"<xliff:g id="APP_DATA">%2$s</xliff:g> က ထည့်ထားသော <xliff:g id="DATA_TYPE">%1$s</xliff:g> ဒေတာအားလုံးကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"ဤထည့်သွင်းမှုကို အပြီးဖျက်မလား။"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"ချိတ်ဆက်ထားသည့်အက်ပ်များက Health Connect မှ ဤဒေတာကို သုံးနိုင်တော့မည်မဟုတ်ပါ"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"ဖျက်ရန်"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"နောက်သို့"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"ပြီးပြီ"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"ပိတ်ရန်"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"ဒေတာ ဖျက်ပြီးပြီ"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Health Connect တွင် ဤဒေတာကို မသိမ်းတော့ပါ။"</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"သင့်ဒေတာကို ဖျက်နေသည်"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"ဒေတာကို ဖျက်၍မရပါ"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"တစ်ခုခုမှားသွားသဖြင့် Health Connect က သင့်ဒေတာကို ဖျက်၍မရပါ"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"ထပ်စမ်းကြည့်ရန်"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Health Connect ဒေတာ ဖျက်နေသည်"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Health Connect ဒေတာ ဖျက်နေသည်"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"ဒေတာဖျက်ခြင်း"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"ဒေတာထည့်သွင်းမှု ရွေးစရာများ"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"ထည့်သွင်းမှု ဖျက်ရန်"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{၁ W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{၁ ဝပ်}other{# ဝပ်}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{ခြေလှမ်း ၁ လှမ်း}other{ခြေလှမ်း # လှမ်း}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{၁ လှမ်း/မိနစ်}other{# လှမ်း/မိနစ်}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{တစ်မိနစ်လျှင် ၁ လှမ်း}other{တစ်မိနစ်လျှင် # လှမ်း}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{၁ bpm}other{# bpm}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{တစ်မိနစ် နှလုံးခုန်နှုန်း ၁ ကြိမ်}other{တစ်မိနစ် နှလုံးခုန်နှုန်း # ကြိမ်}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{၁ mph}other{# mph}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{၁ km/h}other{# km/h}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{တစ်နာရီလျှင် ၁ မိုင်}other{တစ်နာရီလျှင် # မိုင်}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{တစ်နာရီလျှင် ၁ ကီလိုမီတာ}other{တစ်နာရီလျှင် # ကီလိုမီတာ}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> မှ <xliff:g id="END_TIME">%2$s</xliff:g> အထိ"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> မှ <xliff:g id="END_TIME">%2$s</xliff:g> အထိ"</string>
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{၁ မိုင်}other{# မိုင်}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{၁ km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{၁ မိုင်}other{# မိုင်}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{၁ ကီလိုမီတာ}other{# ကီလိုမီတာ}}"</string>
+    <!-- no translation found for calories_long (3636635044382367818) -->
+    <skip />
+    <!-- no translation found for calories (1646804751247540818) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"ယူနစ်"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"ဒေတာယူနစ် သတ်မှတ်ရန်"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"အကွာအဝေး"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"အရပ်"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"အလေးချိန်"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"စွမ်းအင်"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"အပူချိန်"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"ကီလိုမီတာ"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"မိုင်"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"စင်တီမီတာ"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"ပေနှင့် လက်မ"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"ပေါင်"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"ကီလိုဂရမ်"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"စတုံ"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"ကယ်လိုရီ"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"ကီလိုဂျိုး"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"စင်တီဂရိတ်"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"ဖာရင်ဟိုက်"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"ကယ်ဗင်"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"အက်ပ်အားလုံးကို မမြင်ရဘူးလား။"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"ထည့်သွင်းထားသောအက်ပ်ကို မတွေ့လျှင် ၎င်းသည် Health Connect နှင့် တွဲသုံး၍ မရနိုင်သေးပါ"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"စမ်းကြည့်စရာများ"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"အပ်ဒိတ် ရှာရန်"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"ထည့်သွင်းထားသောအက်ပ်များ အပ်ဒိတ်ဖြစ်ကြောင်း သေချာပါစေ"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"တွဲသုံးနိုင်သော အက်ပ်အားလုံးကို ကြည့်ရန်"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Google Play တွင် အက်ပ်ရှာရန်"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"အကြံပြုချက်ပို့ရန်"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Health Connect နှင့် တွဲဖက်လုပ်ဆောင်စေလိုသည့် ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးအက်ပ်များကို ပြောပြပါ"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play Store"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"အလိုအလျောက်ဖျက်ရန်"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"အလိုအလျောက်ဖျက်ရန်"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"သတ်မှတ်ချိန်နောက်ပိုင်းတွင် ဖျက်ရန် စီစဉ်ထားခြင်းဖြင့် Health Connect တွင် သင်၏ဒေတာ မည်မျှကြာသိမ်းမည်ကို သတ်မှတ်နိုင်သည်"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"ပိုမိုလေ့လာရန်"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"ဒေတာ အလိုအလျောက်ဖျက်ရန်"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{# လ နောက်ပိုင်း}other{# လ နောက်ပိုင်း}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"မည်သည့်အခါမှ"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"ဤဆက်တင်များပြောင်းပါက Health Connect သည် သင်၏သတ်မှတ်ချက်အသစ်များအရ လက်ရှိဒေတာကို ဖျက်သည်"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}other{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect သည် # လ နောက်ပိုင်းတွင် ဒေတာအသစ်ကို အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}other{Health Connect သည် # လ နောက်ပိုင်းတွင် ဒေတာအသစ်ကို အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"အလိုအလျောက်ဖျက်ခြင်း သတ်မှတ်ရန်"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"လက်ရှိဒေတာကို ဖျက်မည်"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect သည် # လအထက် ဒေတာအားလုံးကို ဖျက်မည်။\nချိတ်ဆက်ထားသောအက်ပ်များတွင် ဤအပြောင်းအလဲများ ပြသရန် တစ်ရက်ကြာနိုင်သည်။}other{Health Connect သည် # လအထက် ဒေတာအားလုံးကို ဖျက်မည်။\nချိတ်ဆက်ထားသောအက်ပ်များတွင် ဤအပြောင်းအလဲများ ပြသရန် တစ်ရက်ကြာနိုင်သည်။}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"၎င်းတို့မှဖျက်ရန် ဒေတာ"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"ပြီးပြီ"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Health Connect ဒေတာ ထုတ်ယူခြင်း"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"အားလုံး ရွေးရန်"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"အားလုံးကို ပြန်ဖြုတ်ရန်"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"ရှေ့သို့"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"ထုတ်ယူရန် ဒေတာရယူခြင်း"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect ဒေတာ ထုတ်ယူနေသည်"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"မလုပ်တော့"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"ဒေတာထုတ်ယူမှု အခြေအနေ"</string>
+</resources>

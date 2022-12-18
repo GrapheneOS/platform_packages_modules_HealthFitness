@@ -246,16 +246,11 @@
     <string name="delete_app_data" msgid="2694002637558981031">"ઍપનો ડેટા ડિલીટ કરો"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"નિષ્ક્રિય ઍપ"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"આ બધી ઍપ હવે કોઈ ઍક્સેસ ધરાવતી નથી, પરંતુ હજી પણ Health Connectમાં તેનો ડેટા સ્ટોર કરેલો છે"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> પછી ઉમેરવામાં આવેલા ડેટાને <xliff:g id="APP_NAME">%1$s</xliff:g> ઍક્સેસ કરી શકે છે"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"આ ઍપ ઍક્સેસ કરી શકે તેવી અન્ય Android પરવાનગીઓ મેનેજ કરવા માટે, સેટિંગ &gt; ઍપ પર જાઓ"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"<xliff:g id="APP_NAME">%1$s</xliff:g> સાથે તમે જે ડેટા શેર કરો છો, તે તેમની પ્રાઇવસી પૉલિસીમાં આવરી લેવામાં આવ્યો છે"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"આ ઍપ ઍક્સેસ કરી શકે તેવી અન્ય Android પરવાનગીઓ મેનેજ કરવા માટે, સેટિંગ પર જાઓ, પછી ઍપ પર ટૅપ કરો"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"પ્રાઇવસી પૉલિસી વાંચો"</string>
     <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
     <skip />
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect સાથે શરુ કરો"</string>
@@ -325,14 +320,10 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 કિલોમીટર પ્રતિ કલાક}one{# કિલોમીટર પ્રતિ કલાક}other{# કિલોમીટર પ્રતિ કલાક}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g>થી <xliff:g id="END_TIME">%2$s</xliff:g> સુધી"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g>થી <xliff:g id="END_TIME">%2$s</xliff:g> સુધી"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
-    <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 માઇલ}one{# માઇલ}other{# માઇલ}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 કિલોમીટર}one{# કિલોમીટર}other{# કિલોમીટર}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 માઇલ}one{# માઇલ}other{# માઇલ}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 કિલોમીટર}one{# કિલોમીટર}other{# કિલોમીટર}}"</string>
     <!-- no translation found for calories_long (3636635044382367818) -->
     <skip />
     <!-- no translation found for calories (1646804751247540818) -->
