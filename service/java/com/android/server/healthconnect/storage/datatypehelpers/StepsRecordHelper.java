@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.StepsRecordInternal;
 import android.util.Pair;
 
@@ -41,6 +42,12 @@ import java.util.List;
 public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInternal> {
     private static final String STEPS_TABLE_NAME = "steps_record_table";
     private static final String COUNT_COLUMN_NAME = "count";
+
+    @NonNull
+    @Override
+    public RecordInternal<?> newInternalRecord() {
+        return new StepsRecordInternal();
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

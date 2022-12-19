@@ -106,13 +106,12 @@ public final class PowerRecord extends IntervalRecord {
          * @return {@code true} if this object is the same as the obj
          */
         @Override
-        public boolean equals(@NonNull Object object) {
-            if (super.equals(object) && object instanceof PowerRecordSample) {
-                PowerRecordSample other = (PowerRecordSample) object;
-                return getPower().equals(other.getPower())
-                        && getTime().toEpochMilli() == other.getTime().toEpochMilli();
-            }
-            return false;
+        public boolean equals(Object object) {
+            if (this == object) return true;
+            if (!(object instanceof PowerRecordSample)) return false;
+            PowerRecordSample that = (PowerRecordSample) object;
+            return Objects.equals(mPower, that.mPower)
+                    && (mTime.toEpochMilli() == that.mTime.toEpochMilli());
         }
 
         /**

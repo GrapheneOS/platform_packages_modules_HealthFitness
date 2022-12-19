@@ -26,6 +26,8 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.content.Context;
@@ -66,7 +68,7 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public class AppInfoHelper {
+public final class AppInfoHelper {
     private static final String TABLE_NAME = "application_info_table";
     private static final String APPLICATION_COLUMN_NAME = "app_name";
     private static final String PACKAGE_COLUMN_NAME = "package_name";
@@ -97,6 +99,19 @@ public class AppInfoHelper {
         return sAppInfoHelper;
     }
 
+    @NonNull
+    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp =
+                Bitmap.createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
+    }
+
     /**
      * Returns a requests representing the tables that should be created corresponding to this
      * helper
@@ -111,14 +126,26 @@ public class AppInfoHelper {
     }
 
     /** Populates record with appInfoId */
-    public void populateAppInfoId(@NonNull RecordInternal<?> recordInternal, Context context) {
-        String packageName = recordInternal.getPackageName();
+    public void populateAppInfoId(
+            @NonNull RecordInternal<?> record, @NonNull Context context, boolean requireAllFields) {
+        final String packageName = requireNonNull(record.getPackageName());
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
 
         if (appInfo == null) {
-            appInfo = insertAndGetAppInfo(packageName, context);
+            try {
+                appInfo = getAppInfo(packageName, context);
+            } catch (NameNotFoundException e) {
+                if (requireAllFields) {
+                    throw new IllegalArgumentException("Could not find package info", e);
+                }
+
+                appInfo = new AppInfoInternal(DEFAULT_LONG, packageName, record.getAppName(), null);
+            }
+
+            insertAppInfo(packageName, appInfo);
         }
-        recordInternal.setAppInfoId(appInfo.getId());
+
+        record.setAppInfoId(appInfo.getId());
     }
 
     /**
@@ -183,7 +210,7 @@ public class AppInfoHelper {
         packageIds.forEach(
                 (packageId) -> {
                     String packageName = getIdPackageNameMap().get(packageId);
-                    Objects.requireNonNull(packageName);
+                    requireNonNull(packageName);
 
                     packageNames.add(packageName);
                 });
@@ -198,11 +225,18 @@ public class AppInfoHelper {
                 .collect(Collectors.toList());
     }
 
-    public long getOrInsertAppInfoId(String packageName, Context context) {
+    /** Returns AppInfo id for the provided {@code packageName}, creating it if needed. */
+    public long getOrInsertAppInfoId(@NonNull String packageName, @NonNull Context context) {
         AppInfoInternal appInfoInternal = getAppInfoMap().get(packageName);
 
         if (appInfoInternal == null) {
-            appInfoInternal = insertAndGetAppInfo(packageName, context);
+            try {
+                appInfoInternal = getAppInfo(packageName, context);
+            } catch (NameNotFoundException e) {
+                throw new IllegalArgumentException("Could not find package info for package", e);
+            }
+
+            insertAppInfo(packageName, appInfoInternal);
         }
 
         return appInfoInternal.getId();
@@ -249,24 +283,19 @@ public class AppInfoHelper {
         return mIdPackageNameMap;
     }
 
-    private AppInfoInternal getAppInfo(String packageName, Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            ApplicationInfo info =
-                    packageManager.getApplicationInfo(
-                            packageName, PackageManager.ApplicationInfoFlags.of(0));
-            String appName = packageManager.getApplicationLabel(info).toString();
-            Drawable icon = packageManager.getApplicationIcon(info);
-            Bitmap bitmap = getBitmapFromDrawable(icon);
-            return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap);
-        } catch (NameNotFoundException exception) {
-            throw new IllegalArgumentException(
-                    "Could not find package info for package", exception);
-        }
+    private AppInfoInternal getAppInfo(@NonNull String packageName, @NonNull Context context)
+            throws NameNotFoundException {
+        PackageManager packageManager = context.getPackageManager();
+        ApplicationInfo info =
+                packageManager.getApplicationInfo(
+                        packageName, PackageManager.ApplicationInfoFlags.of(0));
+        String appName = packageManager.getApplicationLabel(info).toString();
+        Drawable icon = packageManager.getApplicationIcon(info);
+        Bitmap bitmap = getBitmapFromDrawable(icon);
+        return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap);
     }
 
-    private AppInfoInternal insertAndGetAppInfo(String packageName, Context context) {
-        AppInfoInternal appInfo = getAppInfo(packageName, context);
+    private void insertAppInfo(@NonNull String packageName, @NonNull AppInfoInternal appInfo) {
         long rowId =
                 TransactionManager.getInitialisedInstance()
                         .insert(
@@ -275,7 +304,6 @@ public class AppInfoHelper {
         appInfo.setId(rowId);
         getAppInfoMap().put(packageName, appInfo);
         getIdPackageNameMap().put(appInfo.getId(), packageName);
-        return appInfo;
     }
 
     @NonNull
@@ -314,18 +342,5 @@ public class AppInfoHelper {
         columnInfo.add(new Pair<>(APP_ICON_COLUMN_NAME, BLOB));
 
         return columnInfo;
-    }
-
-    @NonNull
-    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
-        final Bitmap bmp =
-                Bitmap.createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bmp);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bmp;
     }
 }

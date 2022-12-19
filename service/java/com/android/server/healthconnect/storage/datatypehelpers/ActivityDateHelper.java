@@ -110,7 +110,7 @@ public final class ActivityDateHelper {
                                 new UpsertTableRequest(
                                         TABLE_NAME, getContentValues(recordTypeId, dates))));
 
-        transactionManager.insertAll(upsertTableRequests);
+        transactionManager.insertOrReplaceAll(upsertTableRequests);
     }
 
     /** Returns a list of all dates with database writes for the given record types */

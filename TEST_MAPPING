@@ -28,6 +28,9 @@
     },
     {
       "name": "HealthConnectUnitTests"
+    },
+    {
+      "name": "DataMigrationTests"
     }
   ]
 }

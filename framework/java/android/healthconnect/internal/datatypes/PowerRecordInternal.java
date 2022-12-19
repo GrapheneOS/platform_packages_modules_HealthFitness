@@ -16,11 +16,17 @@
 
 package android.healthconnect.internal.datatypes;
 
+import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireDouble;
+import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireLong;
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_POWER_WATTS;
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_SAMPLE_TIME;
+
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.PowerRecord;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.units.Power;
+import android.os.Bundle;
 import android.os.Parcel;
 
 import java.time.Instant;
@@ -88,6 +94,18 @@ public class PowerRecordInternal
             parcel.writeDouble(powerRecordSample.getPower());
             parcel.writeLong(powerRecordSample.getEpochMillis());
         }
+    }
+
+    @Override
+    void populateSamplesFrom(@NonNull List<Bundle> payloads) {
+        mPowerRecordSamples = payloads.stream().map(this::parseSample).toList();
+    }
+
+    @NonNull
+    private PowerRecordInternal.PowerRecordSample parseSample(@NonNull Bundle bundle) {
+        return new PowerRecordInternal.PowerRecordSample(
+                requireDouble(bundle, DM_RECORD_POWER_WATTS),
+                requireLong(bundle, DM_RECORD_SAMPLE_TIME));
     }
 
     private List<PowerRecord.PowerRecordSample> getExternalSamples() {

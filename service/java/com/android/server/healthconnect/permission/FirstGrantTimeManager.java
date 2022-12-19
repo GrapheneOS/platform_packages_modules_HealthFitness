@@ -124,6 +124,27 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         }
     }
 
+    /**
+     * Sets the provided first grant time for the given {@code packageName}, if it's not set yet.
+     */
+    public void setFirstGrantTime(
+            @NonNull String packageName, @NonNull Instant time, @NonNull UserHandle user) {
+        final Integer uid = mPackageInfoHelper.getPackageUid(packageName, user);
+        if (uid == null) {
+            throw new IllegalArgumentException(
+                    "Package name "
+                            + packageName
+                            + " of user "
+                            + user.getIdentifier()
+                            + " not found.");
+        }
+
+        synchronized (mGrantTimeLock) {
+            mUidToGrantTimeCache.put(uid, time);
+            mDatastore.writeForUser(mUidToGrantTimeCache.extractUserGrantTimeState(user), user);
+        }
+    }
+
     @Override
     public void onPermissionsChanged(int uid) {
         String[] packageNames = mPackageManager.getPackagesForUid(uid);

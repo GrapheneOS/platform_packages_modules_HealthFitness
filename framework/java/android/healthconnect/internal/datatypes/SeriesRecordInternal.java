@@ -16,8 +16,13 @@
 
 package android.healthconnect.internal.datatypes;
 
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_SAMPLES;
+
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.IntervalRecord;
+import android.os.Bundle;
 
 import java.util.List;
 
@@ -35,6 +40,18 @@ public abstract class SeriesRecordInternal<T extends IntervalRecord, U>
 
     @NonNull
     public abstract SeriesRecordInternal setSamples(List<? extends Sample> samples);
+
+    @Override
+    final void populateIntervalRecordFrom(@NonNull Bundle payload) {
+        final List<Bundle> samples =
+                requireNonNull(payload.getParcelableArrayList(DM_RECORD_SAMPLES, Bundle.class));
+        populateSamplesFrom(samples);
+    }
+
+    /** Populates samples using the provided data migration payloads. */
+    void populateSamplesFrom(@NonNull List<Bundle> payloads) {
+        // TODO(b/263571058): Make abstract when implemented for all records
+    }
 
     /** Base class for the series data stored in {@link SeriesRecordInternal} types */
     public interface Sample {}
