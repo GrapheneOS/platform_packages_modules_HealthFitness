@@ -19,64 +19,314 @@ package android.healthconnect.cts;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.DeleteUsingFiltersRequest;
+import android.healthconnect.ReadRecordsRequestUsingFilters;
+import android.healthconnect.ReadRecordsRequestUsingIds;
+import android.healthconnect.RecordIdFilter;
+import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord;
+import android.healthconnect.datatypes.DataOrigin;
+import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.units.Energy;
-import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
-import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class ActiveCaloriesBurnedRecordTest {
     private static final String TAG = "ActiveCaloriesBurnedRecordTest";
 
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                ActiveCaloriesBurnedRecord.class,
+                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+    }
+
     @Test
     public void testInsertActiveCaloriesBurnedRecord() throws InterruptedException {
-        List<Record> records = new ArrayList<>();
-        records.add(getBaseActiveCaloriesBurnedRecord());
-        records.add(getCompleteActiveCaloriesBurnedRecord());
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<List<Record>> response = new AtomicReference<>();
-        service.insertRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(InsertRecordsResponse result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
+        List<Record> records =
+                List.of(
+                        getBaseActiveCaloriesBurnedRecord(),
+                        getCompleteActiveCaloriesBurnedRecord());
+        TestUtils.insertRecords(records);
+    }
 
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        assertThat(response.get()).hasSize(records.size());
+    @Test
+    public void testReadActiveCaloriesBurnedRecord_usingIds() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getCompleteActiveCaloriesBurnedRecord(),
+                        getCompleteActiveCaloriesBurnedRecord());
+        readActiveCaloriesBurnedRecordUsingIds(recordList);
+    }
+
+    @Test
+    public void testReadActiveCaloriesBurnedRecord_invalidIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<ActiveCaloriesBurnedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ActiveCaloriesBurnedRecord.class)
+                        .addId("abc")
+                        .build();
+        List<ActiveCaloriesBurnedRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadActiveCaloriesBurnedRecord_usingClientRecordIds()
+            throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getCompleteActiveCaloriesBurnedRecord(),
+                        getCompleteActiveCaloriesBurnedRecord());
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        readActiveCaloriesBurnedRecordUsingClientId(insertedRecords);
+    }
+
+    @Test
+    public void testReadActiveCaloriesBurnedRecord_invalidClientRecordIds()
+            throws InterruptedException {
+        ReadRecordsRequestUsingIds<ActiveCaloriesBurnedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ActiveCaloriesBurnedRecord.class)
+                        .addClientRecordId("abc")
+                        .build();
+        List<ActiveCaloriesBurnedRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadActiveCaloriesBurnedRecordUsingFilters_default()
+            throws InterruptedException {
+        List<ActiveCaloriesBurnedRecord> oldActiveCaloriesBurnedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(
+                                        ActiveCaloriesBurnedRecord.class)
+                                .build());
+        ActiveCaloriesBurnedRecord testRecord = getCompleteActiveCaloriesBurnedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<ActiveCaloriesBurnedRecord> newActiveCaloriesBurnedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(
+                                        ActiveCaloriesBurnedRecord.class)
+                                .build());
+        assertThat(newActiveCaloriesBurnedRecords.size())
+                .isEqualTo(oldActiveCaloriesBurnedRecords.size() + 1);
+        assertThat(
+                        newActiveCaloriesBurnedRecords
+                                .get(newActiveCaloriesBurnedRecords.size() - 1)
+                                .equals(testRecord))
+                .isTrue();
+    }
+
+    @Test
+    public void testReadActiveCaloriesBurnedRecordUsingFilters_timeFilter()
+            throws InterruptedException {
+        TimeRangeFilter filter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        ActiveCaloriesBurnedRecord testRecord = getCompleteActiveCaloriesBurnedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<ActiveCaloriesBurnedRecord> newActiveCaloriesBurnedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(
+                                        ActiveCaloriesBurnedRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .build());
+        assertThat(newActiveCaloriesBurnedRecords.size()).isEqualTo(1);
+        assertThat(
+                        newActiveCaloriesBurnedRecords
+                                .get(newActiveCaloriesBurnedRecords.size() - 1)
+                                .equals(testRecord))
+                .isTrue();
+    }
+
+    @Test
+    public void testReadActiveCaloriesBurnedRecordUsingFilters_dataFilter_correct()
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<ActiveCaloriesBurnedRecord> oldActiveCaloriesBurnedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(
+                                        ActiveCaloriesBurnedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        ActiveCaloriesBurnedRecord testRecord = getCompleteActiveCaloriesBurnedRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<ActiveCaloriesBurnedRecord> newActiveCaloriesBurnedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(
+                                        ActiveCaloriesBurnedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        assertThat(newActiveCaloriesBurnedRecords.size() - oldActiveCaloriesBurnedRecords.size())
+                .isEqualTo(1);
+        ActiveCaloriesBurnedRecord newRecord =
+                newActiveCaloriesBurnedRecords.get(newActiveCaloriesBurnedRecords.size() - 1);
+        assertThat(newRecord.equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadActiveCaloriesBurnedRecordUsingFilters_dataFilter_incorrect()
+            throws InterruptedException {
+        TestUtils.insertRecords(Collections.singletonList(getCompleteActiveCaloriesBurnedRecord()));
+        List<ActiveCaloriesBurnedRecord> newActiveCaloriesBurnedRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(
+                                        ActiveCaloriesBurnedRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder().setPackageName("abc").build())
+                                .build());
+        assertThat(newActiveCaloriesBurnedRecords.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testDeleteActiveCaloriesBurnedRecord_no_filters() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteActiveCaloriesBurnedRecord());
+        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        TestUtils.assertRecordNotFound(id, ActiveCaloriesBurnedRecord.class);
+    }
+
+    @Test
+    public void testDeleteActiveCaloriesBurnedRecord_time_filters() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteActiveCaloriesBurnedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(ActiveCaloriesBurnedRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id, ActiveCaloriesBurnedRecord.class);
+    }
+
+    @Test
+    public void testDeleteActiveCaloriesBurnedRecord_recordId_filters()
+            throws InterruptedException {
+        List<Record> records =
+                List.of(
+                        getBaseActiveCaloriesBurnedRecord(),
+                        getCompleteActiveCaloriesBurnedRecord());
+        TestUtils.insertRecords(records);
+
+        for (Record record : records) {
+            TestUtils.verifyDeleteRecords(
+                    new DeleteUsingFiltersRequest.Builder()
+                            .addRecordType(record.getClass())
+                            .build());
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteActiveCaloriesBurnedRecord_dataOrigin_filters()
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        String id = TestUtils.insertRecordAndGetId(getCompleteActiveCaloriesBurnedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build())
+                        .build());
+        TestUtils.assertRecordNotFound(id, ActiveCaloriesBurnedRecord.class);
+    }
+
+    @Test
+    public void testDeleteActiveCaloriesBurnedRecord_dataOrigin_filter_incorrect()
+            throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteActiveCaloriesBurnedRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(new DataOrigin.Builder().setPackageName("abc").build())
+                        .build());
+        TestUtils.assertRecordFound(id, ActiveCaloriesBurnedRecord.class);
+    }
+
+    @Test
+    public void testDeleteActiveCaloriesBurnedRecord_usingIds() throws InterruptedException {
+        List<Record> records =
+                List.of(
+                        getBaseActiveCaloriesBurnedRecord(),
+                        getCompleteActiveCaloriesBurnedRecord());
+        List<Record> insertedRecord = TestUtils.insertRecords(records);
+        List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
+        for (Record record : insertedRecord) {
+            recordIds.add(
+                    new RecordIdFilter.Builder(record.getClass())
+                            .setId(record.getMetadata().getId())
+                            .build());
+        }
+
+        TestUtils.verifyDeleteRecords(recordIds);
+        for (Record record : records) {
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteActiveCaloriesBurnedRecord_time_range() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteActiveCaloriesBurnedRecord());
+        TestUtils.verifyDeleteRecords(ActiveCaloriesBurnedRecord.class, timeRangeFilter);
+        TestUtils.assertRecordNotFound(id, ActiveCaloriesBurnedRecord.class);
+    }
+
+    private void readActiveCaloriesBurnedRecordUsingClientId(List<Record> insertedRecord)
+            throws InterruptedException {
+        ReadRecordsRequestUsingIds.Builder<ActiveCaloriesBurnedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ActiveCaloriesBurnedRecord.class);
+        for (Record record : insertedRecord) {
+            request.addClientRecordId(record.getMetadata().getClientRecordId());
+        }
+        List<ActiveCaloriesBurnedRecord> result = TestUtils.readRecords(request.build());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            ActiveCaloriesBurnedRecord other = (ActiveCaloriesBurnedRecord) insertedRecord.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
+    }
+
+    private void readActiveCaloriesBurnedRecordUsingIds(List<Record> recordList)
+            throws InterruptedException {
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        ReadRecordsRequestUsingIds.Builder<ActiveCaloriesBurnedRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ActiveCaloriesBurnedRecord.class);
+        for (Record record : insertedRecords) {
+            request.addId(record.getMetadata().getId());
+        }
+        List<ActiveCaloriesBurnedRecord> result = TestUtils.readRecords(request.build());
+        assertThat(result).hasSize(insertedRecords.size());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            ActiveCaloriesBurnedRecord other = (ActiveCaloriesBurnedRecord) insertedRecords.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
     }
 
     static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord() {
@@ -98,8 +348,21 @@ public class ActiveCaloriesBurnedRecordTest {
     }
 
     static ActiveCaloriesBurnedRecord getCompleteActiveCaloriesBurnedRecord() {
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setClientRecordId("ACBR" + Math.random());
+
         return new ActiveCaloriesBurnedRecord.Builder(
-                        new Metadata.Builder().build(),
+                        testMetadataBuilder.build(),
                         Instant.now(),
                         Instant.now(),
                         Energy.fromJoules(10.0))

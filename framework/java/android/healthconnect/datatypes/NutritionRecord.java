@@ -810,11 +810,6 @@ public final class NutritionRecord extends IntervalRecord {
             @Nullable Mass folicAcid,
             @Nullable Mass sugar) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
         mUnsaturatedFat = unsaturatedFat;
         mPotassium = potassium;
         mThiamin = thiamin;
@@ -1216,110 +1211,110 @@ public final class NutritionRecord extends IntervalRecord {
     /**
      * Indicates whether some other object is "equal to" this one.
      *
-     * @param object the reference object with which to compare.
-     * @return {@code true} if this object is the same as the object argument; {@code false}
-     *     otherwise.
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof NutritionRecord) {
-            NutritionRecord other = (NutritionRecord) object;
-            return Objects.equals(this.getUnsaturatedFat(), other.getUnsaturatedFat())
-                    && Objects.equals(this.getPotassium(), other.getPotassium())
-                    && Objects.equals(this.getThiamin(), other.getThiamin())
-                    && this.getMealType() == other.getMealType()
-                    && Objects.equals(this.getTransFat(), other.getTransFat())
-                    && Objects.equals(this.getManganese(), other.getManganese())
-                    && Objects.equals(this.getEnergyFromFat(), other.getEnergyFromFat())
-                    && Objects.equals(this.getCaffeine(), other.getCaffeine())
-                    && Objects.equals(this.getDietaryFiber(), other.getDietaryFiber())
-                    && Objects.equals(this.getSelenium(), other.getSelenium())
-                    && Objects.equals(this.getVitaminB6(), other.getVitaminB6())
-                    && Objects.equals(this.getProtein(), other.getProtein())
-                    && Objects.equals(this.getChloride(), other.getChloride())
-                    && Objects.equals(this.getCholesterol(), other.getCholesterol())
-                    && Objects.equals(this.getCopper(), other.getCopper())
-                    && Objects.equals(this.getIodine(), other.getIodine())
-                    && Objects.equals(this.getVitaminB12(), other.getVitaminB12())
-                    && Objects.equals(this.getZinc(), other.getZinc())
-                    && Objects.equals(this.getRiboflavin(), other.getRiboflavin())
-                    && Objects.equals(this.getEnergy(), other.getEnergy())
-                    && Objects.equals(this.getMolybdenum(), other.getMolybdenum())
-                    && Objects.equals(this.getPhosphorus(), other.getPhosphorus())
-                    && Objects.equals(this.getChromium(), other.getChromium())
-                    && Objects.equals(this.getTotalFat(), other.getTotalFat())
-                    && Objects.equals(this.getCalcium(), other.getCalcium())
-                    && Objects.equals(this.getVitaminC(), other.getVitaminC())
-                    && Objects.equals(this.getVitaminE(), other.getVitaminE())
-                    && Objects.equals(this.getBiotin(), other.getBiotin())
-                    && Objects.equals(this.getVitaminD(), other.getVitaminD())
-                    && Objects.equals(this.getNiacin(), other.getNiacin())
-                    && Objects.equals(this.getMagnesium(), other.getMagnesium())
-                    && Objects.equals(this.getTotalCarbohydrate(), other.getTotalCarbohydrate())
-                    && Objects.equals(this.getVitaminK(), other.getVitaminK())
-                    && Objects.equals(this.getPolyunsaturatedFat(), other.getPolyunsaturatedFat())
-                    && Objects.equals(this.getSaturatedFat(), other.getSaturatedFat())
-                    && Objects.equals(this.getSodium(), other.getSodium())
-                    && Objects.equals(this.getFolate(), other.getFolate())
-                    && Objects.equals(this.getMonounsaturatedFat(), other.getMonounsaturatedFat())
-                    && Objects.equals(this.getPantothenicAcid(), other.getPantothenicAcid())
-                    && Objects.equals(this.getMealName(), other.getMealName())
-                    && Objects.equals(this.getIron(), other.getIron())
-                    && Objects.equals(this.getVitaminA(), other.getVitaminA())
-                    && Objects.equals(this.getFolicAcid(), other.getFolicAcid())
-                    && Objects.equals(this.getSugar(), other.getSugar());
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!super.equals(o)) return false;
+        NutritionRecord that = (NutritionRecord) o;
+        return getMealType() == that.getMealType()
+                && Objects.equals(getUnsaturatedFat(), that.getUnsaturatedFat())
+                && Objects.equals(getPotassium(), that.getPotassium())
+                && Objects.equals(getThiamin(), that.getThiamin())
+                && Objects.equals(getTransFat(), that.getTransFat())
+                && Objects.equals(getManganese(), that.getManganese())
+                && Objects.equals(getEnergyFromFat(), that.getEnergyFromFat())
+                && Objects.equals(getCaffeine(), that.getCaffeine())
+                && Objects.equals(getDietaryFiber(), that.getDietaryFiber())
+                && Objects.equals(getSelenium(), that.getSelenium())
+                && Objects.equals(getVitaminB6(), that.getVitaminB6())
+                && Objects.equals(getProtein(), that.getProtein())
+                && Objects.equals(getChloride(), that.getChloride())
+                && Objects.equals(getCholesterol(), that.getCholesterol())
+                && Objects.equals(getCopper(), that.getCopper())
+                && Objects.equals(getIodine(), that.getIodine())
+                && Objects.equals(getVitaminB12(), that.getVitaminB12())
+                && Objects.equals(getZinc(), that.getZinc())
+                && Objects.equals(getRiboflavin(), that.getRiboflavin())
+                && Objects.equals(getEnergy(), that.getEnergy())
+                && Objects.equals(getMolybdenum(), that.getMolybdenum())
+                && Objects.equals(getPhosphorus(), that.getPhosphorus())
+                && Objects.equals(getChromium(), that.getChromium())
+                && Objects.equals(getTotalFat(), that.getTotalFat())
+                && Objects.equals(getCalcium(), that.getCalcium())
+                && Objects.equals(getVitaminC(), that.getVitaminC())
+                && Objects.equals(getVitaminE(), that.getVitaminE())
+                && Objects.equals(getBiotin(), that.getBiotin())
+                && Objects.equals(getVitaminD(), that.getVitaminD())
+                && Objects.equals(getNiacin(), that.getNiacin())
+                && Objects.equals(getMagnesium(), that.getMagnesium())
+                && Objects.equals(getTotalCarbohydrate(), that.getTotalCarbohydrate())
+                && Objects.equals(getVitaminK(), that.getVitaminK())
+                && Objects.equals(getPolyunsaturatedFat(), that.getPolyunsaturatedFat())
+                && Objects.equals(getSaturatedFat(), that.getSaturatedFat())
+                && Objects.equals(getSodium(), that.getSodium())
+                && Objects.equals(getFolate(), that.getFolate())
+                && Objects.equals(getMonounsaturatedFat(), that.getMonounsaturatedFat())
+                && Objects.equals(getPantothenicAcid(), that.getPantothenicAcid())
+                && Objects.equals(getMealName(), that.getMealName())
+                && Objects.equals(getIron(), that.getIron())
+                && Objects.equals(getVitaminA(), that.getVitaminA())
+                && Objects.equals(getFolicAcid(), that.getFolicAcid())
+                && Objects.equals(getSugar(), that.getSugar());
     }
 
-    /** Returns a hash code value for the object. */
+    /**
+     * @return a hash code value for this object.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(
                 super.hashCode(),
-                this.getUnsaturatedFat(),
-                this.getPotassium(),
-                this.getThiamin(),
-                this.getMealType(),
-                this.getTransFat(),
-                this.getManganese(),
-                this.getEnergyFromFat(),
-                this.getCaffeine(),
-                this.getDietaryFiber(),
-                this.getSelenium(),
-                this.getVitaminB6(),
-                this.getProtein(),
-                this.getChloride(),
-                this.getCholesterol(),
-                this.getCopper(),
-                this.getIodine(),
-                this.getVitaminB12(),
-                this.getZinc(),
-                this.getRiboflavin(),
-                this.getEnergy(),
-                this.getMolybdenum(),
-                this.getPhosphorus(),
-                this.getChromium(),
-                this.getTotalFat(),
-                this.getCalcium(),
-                this.getVitaminC(),
-                this.getVitaminE(),
-                this.getBiotin(),
-                this.getVitaminD(),
-                this.getNiacin(),
-                this.getMagnesium(),
-                this.getTotalCarbohydrate(),
-                this.getVitaminK(),
-                this.getPolyunsaturatedFat(),
-                this.getSaturatedFat(),
-                this.getSodium(),
-                this.getFolate(),
-                this.getMonounsaturatedFat(),
-                this.getPantothenicAcid(),
-                this.getMealName(),
-                this.getIron(),
-                this.getVitaminA(),
-                this.getFolicAcid(),
-                this.getSugar());
+                getMealType(),
+                getUnsaturatedFat(),
+                getPotassium(),
+                getThiamin(),
+                getTransFat(),
+                getManganese(),
+                getEnergyFromFat(),
+                getCaffeine(),
+                getDietaryFiber(),
+                getSelenium(),
+                getVitaminB6(),
+                getProtein(),
+                getChloride(),
+                getCholesterol(),
+                getCopper(),
+                getIodine(),
+                getVitaminB12(),
+                getZinc(),
+                getRiboflavin(),
+                getEnergy(),
+                getMolybdenum(),
+                getPhosphorus(),
+                getChromium(),
+                getTotalFat(),
+                getCalcium(),
+                getVitaminC(),
+                getVitaminE(),
+                getBiotin(),
+                getVitaminD(),
+                getNiacin(),
+                getMagnesium(),
+                getTotalCarbohydrate(),
+                getVitaminK(),
+                getPolyunsaturatedFat(),
+                getSaturatedFat(),
+                getSodium(),
+                getFolate(),
+                getMonounsaturatedFat(),
+                getPantothenicAcid(),
+                getMealName(),
+                getIron(),
+                getVitaminA(),
+                getFolicAcid(),
+                getSugar());
     }
 }

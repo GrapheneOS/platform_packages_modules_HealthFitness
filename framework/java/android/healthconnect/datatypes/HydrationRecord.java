@@ -104,12 +104,6 @@ public final class HydrationRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull Volume volume) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
-        Objects.requireNonNull(volume);
         mVolume = volume;
     }
 
@@ -124,22 +118,22 @@ public final class HydrationRecord extends IntervalRecord {
     /**
      * Indicates whether some other object is "equal to" this one.
      *
-     * @param object the reference object with which to compare.
-     * @return {@code true} if this object is the same as the object argument; {@code false}
-     *     otherwise.
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof HydrationRecord) {
-            HydrationRecord other = (HydrationRecord) object;
-            return this.getVolume().equals(other.getVolume());
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!super.equals(o)) return false;
+        HydrationRecord that = (HydrationRecord) o;
+        return Objects.equals(getVolume(), that.getVolume());
     }
 
-    /** Returns a hash code value for the object. */
+    /**
+     * @return a hash code value for this object.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getVolume());
+        return Objects.hash(super.hashCode(), getVolume());
     }
 }

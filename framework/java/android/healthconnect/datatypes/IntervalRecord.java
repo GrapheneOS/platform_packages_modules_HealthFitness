@@ -43,6 +43,10 @@ public abstract class IntervalRecord extends Record {
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset) {
         super(metadata);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(startZoneOffset);
+        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(endZoneOffset);
         mStartTime = startTime;
         mStartZoneOffset = startZoneOffset;
         mEndTime = endTime;
@@ -89,12 +93,12 @@ public abstract class IntervalRecord extends Record {
      */
     @Override
     public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof IntervalRecord) {
+        if (super.equals(object)) {
             IntervalRecord other = (IntervalRecord) object;
-            return this.getStartTime().equals(other.getStartTime())
-                    && this.getEndTime().equals(other.getEndTime())
-                    && this.getStartZoneOffset().equals(other.getStartZoneOffset())
-                    && this.getEndZoneOffset().equals(other.getEndZoneOffset());
+            return getStartTime().toEpochMilli() == other.getStartTime().toEpochMilli()
+                    && getEndTime().toEpochMilli() == other.getEndTime().toEpochMilli()
+                    && getStartZoneOffset().equals(other.getStartZoneOffset())
+                    && getEndZoneOffset().equals(other.getEndZoneOffset());
         }
         return false;
     }
@@ -108,9 +112,9 @@ public abstract class IntervalRecord extends Record {
     public int hashCode() {
         return Objects.hash(
                 super.hashCode(),
-                this.getStartTime(),
-                this.getStartZoneOffset(),
-                this.getEndTime(),
-                this.getEndZoneOffset());
+                getStartTime(),
+                getStartZoneOffset(),
+                getEndTime(),
+                getEndZoneOffset());
     }
 }

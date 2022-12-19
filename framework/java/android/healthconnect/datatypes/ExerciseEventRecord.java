@@ -52,11 +52,6 @@ public final class ExerciseEventRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @ExerciseEventType.ExerciseEventTypes int eventType) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
         mEventType = eventType;
     }
 
@@ -129,54 +124,50 @@ public final class ExerciseEventRecord extends IntervalRecord {
     }
 
     /**
-     * Types of exercise event as returned by {@link
-     * ExerciseEventRecord#getEventType()}.
+     * Types of exercise event as returned by {@link ExerciseEventRecord#getEventType()}.
      *
-     * They can be either explicitly requested by a user or auto-detected by a tracking app.
+     * <p>They can be either explicitly requested by a user or auto-detected by a tracking app.
      */
     public static final class ExerciseEventType {
         public static final int EXERCISE_EVENT_TYPE_UNKNOWN = 0;
         /**
-         * Explicit pause during a workout, requested by the user (by clicking a pause button in
-         * the session UI). Movement happening during pause should not contribute to session
-         * metrics.
+         * Explicit pause during a workout, requested by the user (by clicking a pause button in the
+         * session UI). Movement happening during pause should not contribute to session metrics.
          */
         public static final int EXERCISE_EVENT_TYPE_PAUSE = 1;
         /**
-         * Auto-detected periods of rest during a workout. There should be no user movement
-         * detected during rest and any movement detected should finish rest event.
+         * Auto-detected periods of rest during a workout. There should be no user movement detected
+         * during rest and any movement detected should finish rest event.
          */
         public static final int EXERCISE_EVENT_TYPE_REST = 2;
 
-        private ExerciseEventType() {
-        }
+        private ExerciseEventType() {}
 
         /** @hide */
         @IntDef({EXERCISE_EVENT_TYPE_UNKNOWN, EXERCISE_EVENT_TYPE_PAUSE, EXERCISE_EVENT_TYPE_REST})
         @Retention(RetentionPolicy.SOURCE)
-        public @interface ExerciseEventTypes {
-        }
+        public @interface ExerciseEventTypes {}
     }
 
     /**
      * Indicates whether some other object is "equal to" this one.
      *
-     * @param object the reference object with which to compare.
-     * @return {@code true} if this object is the same as the object argument; {@code false}
-     *     otherwise.
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof ExerciseEventRecord) {
-            ExerciseEventRecord other = (ExerciseEventRecord) object;
-            return this.getEventType() == other.getEventType();
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!super.equals(o)) return false;
+        ExerciseEventRecord that = (ExerciseEventRecord) o;
+        return getEventType() == that.getEventType();
     }
 
-    /** Returns a hash code value for the object. */
+    /**
+     * @return a hash code value for this object.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getEventType());
+        return Objects.hash(super.hashCode(), getEventType());
     }
 }

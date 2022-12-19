@@ -479,62 +479,77 @@ public class TestUtils {
     }
 
     public static void setAutoDeletePeriod(int period) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        service.setRecordRetentionPeriodInDays(
-                period,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            CountDownLatch latch = new CountDownLatch(1);
+            assertThat(service).isNotNull();
+            AtomicReference<HealthConnectException> exceptionAtomicReference =
+                    new AtomicReference<>();
+            service.setRecordRetentionPeriodInDays(
+                    period,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
 
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        exceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
+                        @Override
+                        public void onError(HealthConnectException healthConnectException) {
+                            exceptionAtomicReference.set(healthConnectException);
+                            latch.countDown();
+                        }
+                    });
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+            if (exceptionAtomicReference.get() != null) {
+                throw exceptionAtomicReference.get();
+            }
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
         }
     }
 
     public static void verifyDeleteRecords(DeleteUsingFiltersRequest request)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        assertThat(service).isNotNull();
-        service.deleteRecords(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            CountDownLatch latch = new CountDownLatch(1);
+            AtomicReference<HealthConnectException> exceptionAtomicReference =
+                    new AtomicReference<>();
+            assertThat(service).isNotNull();
+            service.deleteRecords(
+                    request,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
 
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        exceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
+                        @Override
+                        public void onError(HealthConnectException healthConnectException) {
+                            exceptionAtomicReference.set(healthConnectException);
+                            latch.countDown();
+                        }
+                    });
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            if (exceptionAtomicReference.get() != null) {
+                throw exceptionAtomicReference.get();
+            }
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
         }
     }
 
     public static void verifyDeleteRecords(List<RecordIdFilter> request)
             throws InterruptedException {
+
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);

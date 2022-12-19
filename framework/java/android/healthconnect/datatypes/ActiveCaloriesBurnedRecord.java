@@ -122,11 +122,6 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull Energy energy) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        Objects.requireNonNull(metadata);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(energy);
         mEnergy = energy;
     }
@@ -142,22 +137,22 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
     /**
      * Indicates whether some other object is "equal to" this one.
      *
-     * @param object the reference object with which to compare.
-     * @return {@code true} if this object is the same as the object argument; {@code false}
-     *     otherwise.
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
-        if (super.equals(object) && object instanceof ActiveCaloriesBurnedRecord) {
-            ActiveCaloriesBurnedRecord other = (ActiveCaloriesBurnedRecord) object;
-            return this.getEnergy().equals(other.getEnergy());
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!super.equals(o)) return false;
+        ActiveCaloriesBurnedRecord that = (ActiveCaloriesBurnedRecord) o;
+        return getEnergy().equals(that.getEnergy());
     }
 
-    /** Returns a hash code value for the object. */
+    /**
+     * @return a hash code value for this object.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getEnergy());
+        return Objects.hash(super.hashCode(), getEnergy());
     }
 }
