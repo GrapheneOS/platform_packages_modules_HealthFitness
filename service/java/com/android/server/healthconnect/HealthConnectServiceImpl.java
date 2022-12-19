@@ -231,7 +231,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             String packageName,
             AggregateDataRequestParcel request,
             IAggregateRecordsResponseCallback callback) {
-        int uid = Binder.getCallingUid();
         List<Integer> recordTypesToTest = new ArrayList<>();
         for (int aggregateId : request.getAggregateIds()) {
             recordTypesToTest.addAll(
@@ -239,7 +238,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             .getAggregationTypeFor(aggregateId)
                             .getApplicableRecordTypeIds());
         }
-        enforceRecordReadPermission(recordTypesToTest, uid);
+        int uid = Binder.getCallingUid();
+        try {
+            mContext.enforcePermission(
+                    MANAGE_HEALTH_DATA_PERMISSION, Binder.getCallingPid(), uid, null);
+        } catch (SecurityException exception) {
+            enforceRecordReadPermission(recordTypesToTest, uid);
+        }
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
@@ -275,9 +280,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull ReadRecordsRequestParcel request,
             @NonNull IReadRecordsResponseCallback callback) {
         int uid = Binder.getCallingUid();
-        boolean enforceSelfRead =
-                enforceRecordReadPermission(uid, request.getRecordType(), callback);
-
+        int pid = Binder.getCallingPid();
+        boolean enforceSelfRead = enforceRecordReadPermission(uid, pid, request.getRecordType());
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
@@ -747,16 +751,24 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         }
     }
 
-    private boolean enforceRecordReadPermission(
-            int uid, int recordTypeId, @NonNull IReadRecordsResponseCallback callback) {
+    private boolean enforceRecordReadPermission(int uid, int pid, int recordTypeId) {
         boolean enforceSelfRead = false;
         try {
-            enforceRecordReadPermission(recordTypeId, uid);
-        } catch (SecurityException securityException) {
-            enforceRecordWritePermission(Collections.singletonList(recordTypeId), uid);
-            // Apps are always allowed to read self data if they have insert
-            // permission.
-            enforceSelfRead = true;
+            // UI must be able to read records with MANAGE_HEALTH_DATA_PERMISSION
+            mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+        } catch (SecurityException exception) {
+            try {
+                enforceRecordReadPermission(recordTypeId, uid);
+            } catch (SecurityException readSecurityException) {
+                try {
+                    enforceRecordWritePermission(Collections.singletonList(recordTypeId), uid);
+                    // Apps are always allowed to read self data if they have insert
+                    // permission.
+                    enforceSelfRead = true;
+                } catch (SecurityException writeSecurityException) {
+                    throw readSecurityException;
+                }
+            }
         }
         return enforceSelfRead;
     }
