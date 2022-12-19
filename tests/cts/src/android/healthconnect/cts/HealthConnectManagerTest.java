@@ -37,10 +37,14 @@ import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.StepsRecord;
 import android.healthconnect.datatypes.units.Power;
+import android.healthconnect.restore.StageRemoteDataException;
 import android.os.OutcomeReceiver;
+import android.os.ParcelFileDescriptor;
 import android.platform.test.annotations.AppModeFull;
+import android.util.ArrayMap;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
@@ -48,12 +52,16 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -416,6 +424,273 @@ public class HealthConnectManagerTest {
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
+    }
+
+    @Test
+    public void testStageRemoteData_withValidInput_noExceptionsReturned() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            File dataDir = context.getDataDir();
+            File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+            File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+            assertThat(testRestoreFile1.exists()).isTrue();
+            assertThat(testRestoreFile2.exists()).isTrue();
+
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(
+                    testRestoreFile1.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+            pfdsByFileName.put(
+                    testRestoreFile2.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA");
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {}
+                    });
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating / writing to test files.", e);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testStageRemoteData_whenNotReadMode_errorIoReturned() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<Map<String, HealthConnectException>> observedExceptionsByFileName =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            File dataDir = context.getDataDir();
+            File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+            File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+            assertThat(testRestoreFile1.exists()).isTrue();
+            assertThat(testRestoreFile2.exists()).isTrue();
+
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(
+                    testRestoreFile1.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile1, ParcelFileDescriptor.MODE_WRITE_ONLY));
+            pfdsByFileName.put(
+                    testRestoreFile2.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA");
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void unused) {}
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {
+                            observedExceptionsByFileName.set(error.getExceptionsByFileNames());
+                            latch.countDown();
+                        }
+                    });
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating / writing to test files.", e);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(observedExceptionsByFileName.get()).isNotNull();
+        assertThat(observedExceptionsByFileName.get().size()).isEqualTo(1);
+        assertThat(
+                        observedExceptionsByFileName.get().entrySet().stream()
+                                .findFirst()
+                                .get()
+                                .getKey())
+                .isEqualTo("testRestoreFile1");
+        assertThat(
+                        observedExceptionsByFileName.get().entrySet().stream()
+                                .findFirst()
+                                .get()
+                                .getValue()
+                                .getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_IO);
+
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testStageRemoteData_whenStagingStagedData_noExceptionsReturned() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch retryLatch = new CountDownLatch(1);
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            File dataDir = context.getDataDir();
+            File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+            File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+            assertThat(testRestoreFile1.exists()).isTrue();
+            assertThat(testRestoreFile2.exists()).isTrue();
+
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(
+                    testRestoreFile1.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+            pfdsByFileName.put(
+                    testRestoreFile2.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA");
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {}
+                    });
+            assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+
+            // send the files again
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            retryLatch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {}
+                    });
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating / writing to test files.", e);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(retryLatch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testStageRemoteData_withoutPermission_throwsSecurityException() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            File dataDir = context.getDataDir();
+            File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+            File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+            assertThat(testRestoreFile1.exists()).isTrue();
+            assertThat(testRestoreFile2.exists()).isTrue();
+
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(
+                    testRestoreFile1.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+            pfdsByFileName.put(
+                    testRestoreFile2.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {}
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {}
+                    });
+        } catch (SecurityException e) {
+            /* pass */
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating / writing to test files.", e);
+        }
+
+        deleteAllStagedRemoteData();
+    }
+
+    private void deleteAllStagedRemoteData()
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            assertThat(service).isNotNull();
+
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
+            // TODO(b/241542162): Avoid using reflection as a workaround once test apis can be
+            //  run in CTS tests.
+            service.getClass().getMethod("deleteAllStagedRemoteData").invoke(service);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+    }
+
+    private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
+        File file = new File(dir, fileName);
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write("Contents of file " + fileName);
+        fileWriter.close();
+        return file;
     }
 
     private List<Record> getTestRecords(boolean isSetClientRecordId) {

@@ -8,6 +8,7 @@ import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.IAccessLogsResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
+import android.healthconnect.aidl.IDataStagingFinishedCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
@@ -23,6 +24,7 @@ import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.migration.MigrationEntity;
+import android.healthconnect.restore.StageRemoteDataRequest;
 
 import android.os.UserHandle;
 
@@ -205,4 +207,26 @@ interface IHealthConnectService {
      * operation.
      */
     void writeMigrationData(in List<MigrationEntity> entities, in IMigrationCallback callback);
+
+    /**
+     * Stages all HealthConnect remote data and returns any errors in a callback. Errors encountered
+     * for all the files are shared in the provided callback.
+     *
+     * @param pfdsByFileName The map of file names and their {@link ParcelFileDescriptor}s.
+     * @param executor       The {@link Executor} on which to invoke the callback.
+     * @param callback       The callback which will receive the outcome of this call.
+     * @throws NullPointerException if null is passed for any of the required {@link NonNull}
+     *                              parameters.
+     * @hide
+     */
+    void stageAllHealthConnectRemoteData(in StageRemoteDataRequest stageRemoteDataRequest,
+            in UserHandle userHandle, in IDataStagingFinishedCallback callback);
+
+    /**
+     * Deletes all previously staged HealthConnect data from the disk.
+     * For testing purposes only.
+     *
+     * @hide
+     */
+    void deleteAllStagedRemoteData(in UserHandle userHandle);
 }

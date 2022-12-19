@@ -1,0 +1,176 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.android.server.healthconnect;
+
+import static com.google.common.truth.Truth.assertThat;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import android.content.Context;
+import android.healthconnect.aidl.IDataStagingFinishedCallback;
+import android.healthconnect.restore.StageRemoteDataRequest;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.os.UserHandle;
+import android.util.ArrayMap;
+
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
+
+import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
+import com.android.server.healthconnect.storage.TransactionManager;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
+
+/** Unit test class for {@link HealthConnectServiceImpl} */
+@RunWith(AndroidJUnit4.class)
+public class HealthConnectServiceImplTest {
+    @Mock private TransactionManager mTransactionManager;
+    @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
+    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
+    @Mock private Context mContext;
+    @Mock private Context mServiceContext;
+
+    private HealthConnectServiceImpl mHealthConnectService;
+    private MockitoSession mStaticMockSession;
+    private UserHandle mUserHandle = UserHandle.of(UserHandle.myUserId());
+    private File mMockDataDirectory;
+
+    @Before
+    public void setUp() throws Exception {
+        mStaticMockSession =
+                ExtendedMockito.mockitoSession()
+                        .mockStatic(Environment.class)
+                        .strictness(Strictness.LENIENT)
+                        .startMocking();
+        MockitoAnnotations.initMocks(this);
+        mContext = InstrumentationRegistry.getInstrumentation().getContext();
+        mMockDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
+        when(Environment.getDataDirectory()).thenReturn(mMockDataDirectory);
+
+        mHealthConnectService =
+                new HealthConnectServiceImpl(
+                        mTransactionManager,
+                        mHealthConnectPermissionHelper,
+                        mFirstGrantTimeManager,
+                        mServiceContext);
+    }
+
+    @After
+    public void tearDown() {
+        mStaticMockSession.finishMocking();
+        deleteDir(mMockDataDirectory);
+        mHealthConnectService.deleteAllStagedRemoteData(mUserHandle);
+    }
+
+    @Test
+    public void testStageRemoteData_withValidInput_allFilesStaged() throws Exception {
+        File dataDir = mContext.getDataDir();
+        File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+        File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+        assertThat(testRestoreFile1.exists()).isTrue();
+        assertThat(testRestoreFile2.exists()).isTrue();
+
+        Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+        pfdsByFileName.put(
+                testRestoreFile1.getName(),
+                ParcelFileDescriptor.open(testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+        pfdsByFileName.put(
+                testRestoreFile2.getName(),
+                ParcelFileDescriptor.open(testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+        final IDataStagingFinishedCallback callback = mock(IDataStagingFinishedCallback.class);
+        mHealthConnectService.stageAllHealthConnectRemoteData(
+                new StageRemoteDataRequest(pfdsByFileName), mUserHandle, callback);
+
+        verify(callback, timeout(5000).times(1)).onResult();
+        var stagedFileNames =
+                mHealthConnectService.getStagedRemoteFileNames(mUserHandle.getIdentifier());
+        assertThat(stagedFileNames.size()).isEqualTo(2);
+        assertThat(stagedFileNames.contains(testRestoreFile1.getName())).isTrue();
+        assertThat(stagedFileNames.contains(testRestoreFile2.getName())).isTrue();
+    }
+
+    @Test
+    public void testStageRemoteData_withNotReadMode_onlyValidFilesStaged() throws Exception {
+        File dataDir = mContext.getDataDir();
+        File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+        File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+        assertThat(testRestoreFile1.exists()).isTrue();
+        assertThat(testRestoreFile2.exists()).isTrue();
+
+        Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+        pfdsByFileName.put(
+                testRestoreFile1.getName(),
+                ParcelFileDescriptor.open(testRestoreFile1, ParcelFileDescriptor.MODE_WRITE_ONLY));
+        pfdsByFileName.put(
+                testRestoreFile2.getName(),
+                ParcelFileDescriptor.open(testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+        final IDataStagingFinishedCallback callback = mock(IDataStagingFinishedCallback.class);
+        mHealthConnectService.stageAllHealthConnectRemoteData(
+                new StageRemoteDataRequest(pfdsByFileName), mUserHandle, callback);
+
+        verify(callback, timeout(5000).times(1)).onError(any());
+        var stagedFileNames =
+                mHealthConnectService.getStagedRemoteFileNames(mUserHandle.getIdentifier());
+        assertThat(stagedFileNames.size()).isEqualTo(1);
+        assertThat(stagedFileNames.contains(testRestoreFile2.getName())).isTrue();
+    }
+
+    private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
+        File file = new File(dir, fileName);
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write("Contents of file " + fileName);
+        fileWriter.close();
+        return file;
+    }
+
+    private static void deleteDir(File dir) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (var file : files) {
+                if (file.isDirectory()) {
+                    deleteDir(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        assertThat(dir.delete()).isTrue();
+    }
+}

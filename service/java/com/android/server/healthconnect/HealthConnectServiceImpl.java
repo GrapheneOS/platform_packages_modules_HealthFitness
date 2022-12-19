@@ -51,6 +51,7 @@ import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
+import android.healthconnect.aidl.IDataStagingFinishedCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
@@ -76,7 +77,11 @@ import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.healthconnect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
 import android.healthconnect.migration.MigrationEntity;
 import android.healthconnect.migration.MigrationException;
+import android.healthconnect.restore.StageRemoteDataException;
+import android.healthconnect.restore.StageRemoteDataRequest;
 import android.os.Binder;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
@@ -86,6 +91,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.migration.DataMigrationManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -105,6 +111,13 @@ import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -118,6 +131,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * IHealthConnectService's implementation
@@ -129,6 +143,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final int MIN_BACKGROUND_EXECUTOR_THREADS = 2;
     private static final long KEEP_ALIVE_TIME = 60L;
     private static final boolean DEBUG = false;
+
+    // Permission for test api for deleting staged data
+    private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
+            "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA";
+
     // In order to unblock the binder queue all the async should be scheduled on SHARED_EXECUTOR, as
     // soon as they come.
     private static final Executor SHARED_EXECUTOR =
@@ -829,6 +848,150 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
                     }
                 });
+    }
+
+    /**
+     * @see HealthConnectManager#stageAllHealthConnectRemoteData
+     */
+    @Override
+    public void stageAllHealthConnectRemoteData(
+            @NonNull StageRemoteDataRequest stageRemoteDataRequest,
+            @NonNull UserHandle userHandle,
+            @NonNull IDataStagingFinishedCallback callback) {
+        mContext.enforceCallingPermission(
+                Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
+        Map<String, ParcelFileDescriptor> origPfdsByFileName =
+                stageRemoteDataRequest.getPfdsByFileName();
+        Map<String, HealthConnectException> exceptionsByFileName =
+                new ArrayMap<>(origPfdsByFileName.size());
+        Map<String, ParcelFileDescriptor> pfdsByFileName =
+                new ArrayMap<>(origPfdsByFileName.size());
+        for (var entry : origPfdsByFileName.entrySet()) {
+            try {
+                pfdsByFileName.put(entry.getKey(), entry.getValue().dup());
+            } catch (IOException e) {
+                exceptionsByFileName.put(
+                        entry.getKey(),
+                        new HealthConnectException(
+                                HealthConnectException.ERROR_IO, e.getMessage()));
+            }
+        }
+
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    File stagedRemoteDataDir =
+                            getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier());
+                    try {
+                        stagedRemoteDataDir.mkdirs();
+
+                        // Now that we have the dir we can try to copy all the data.
+                        // Any exceptions we face will be collected and shared with the caller.
+                        pfdsByFileName.forEach(
+                                (fileName, pfd) -> {
+                                    File destination = new File(stagedRemoteDataDir, fileName);
+                                    try (FileInputStream inputStream =
+                                            new FileInputStream(pfd.getFileDescriptor())) {
+                                        Path destinationPath =
+                                                FileSystems.getDefault()
+                                                        .getPath(destination.getAbsolutePath());
+                                        Files.copy(
+                                                inputStream,
+                                                destinationPath,
+                                                StandardCopyOption.REPLACE_EXISTING);
+                                    } catch (IOException e) {
+                                        destination.delete();
+                                        exceptionsByFileName.put(
+                                                fileName,
+                                                new HealthConnectException(
+                                                        HealthConnectException.ERROR_IO,
+                                                        e.getMessage()));
+                                    } catch (SecurityException e) {
+                                        destination.delete();
+                                        exceptionsByFileName.put(
+                                                fileName,
+                                                new HealthConnectException(
+                                                        HealthConnectException.ERROR_SECURITY,
+                                                        e.getMessage()));
+                                    } finally {
+                                        try {
+                                            pfd.close();
+                                        } catch (IOException e) {
+                                            exceptionsByFileName.put(
+                                                    fileName,
+                                                    new HealthConnectException(
+                                                            HealthConnectException.ERROR_IO,
+                                                            e.getMessage()));
+                                        }
+                                    }
+                                });
+                    } finally {
+                        // Share the result / exception with the caller.
+                        try {
+                            if (exceptionsByFileName.isEmpty()) {
+                                callback.onResult();
+                            } else {
+                                callback.onError(
+                                        new StageRemoteDataException(exceptionsByFileName));
+                            }
+                        } catch (RemoteException e) {
+                            Log.e(TAG, "Restore response could not be sent to the caller.", e);
+                        } catch (SecurityException e) {
+                            Log.e(
+                                    TAG,
+                                    "Restore response could not be sent due to conflicting AIDL "
+                                            + "definitions",
+                                    e);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * @see HealthConnectManager#deleteAllStagedRemoteData
+     */
+    @Override
+    public void deleteAllStagedRemoteData(@NonNull UserHandle userHandle) {
+        mContext.enforceCallingPermission(
+                DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
+        deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
+    }
+
+    @VisibleForTesting
+    Set<String> getStagedRemoteFileNames(int userId) {
+        return Stream.of(getStagedRemoteDataDirectoryForUser(userId).listFiles())
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .collect(Collectors.toSet());
+    }
+
+    // TODO(b/264794517) Refactor pure util methods out into a separate class
+    private static void deleteDir(File dir) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (var file : files) {
+                if (file.isDirectory()) {
+                    deleteDir(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        dir.delete();
+    }
+
+    // TODO(b/264794517) Refactor pure util methods out into a separate class
+    private static File getStagedRemoteDataDirectoryForUser(int userId) {
+        File hcDirectoryForUser = getDataSystemCeHCDirectoryForUser(userId);
+        return new File(hcDirectoryForUser, "remote_staged");
+    }
+
+    // TODO(b/264794517) Refactor pure util methods out into a separate class
+    private static File getDataSystemCeHCDirectoryForUser(int userId) {
+        // Duplicates the implementation of Environment#getDataSystemCeDirectory
+        // TODO(b/191059409): Unhide Environment#getDataSystemCeDirectory and switch to it.
+        File systemCeDir = new File(Environment.getDataDirectory(), "system_ce");
+        File systemCeUserDir = new File(systemCeDir, String.valueOf(userId));
+        return new File(systemCeUserDir, "healthconnect");
     }
 
     @NonNull
