@@ -18,6 +18,7 @@ package android.healthconnect;
 
 import android.annotation.NonNull;
 import android.annotation.SuppressLint;
+import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.os.OutcomeReceiver;
@@ -28,13 +29,13 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 /**
- * A request class to represent request for {@link
- * android.healthconnect.HealthConnectManager#readRecords(ReadRecordsRequestUsingIds, Executor,
+ * A request class to represent request based on id filters with ids for {@link
+ * android.healthconnect.HealthConnectManager#readRecords(ReadRecordsRequest, Executor,
  * OutcomeReceiver)}
  *
  * @param <T> the type of the Record for the request
  */
-public class ReadRecordsRequestUsingIds<T extends Record> {
+public final class ReadRecordsRequestUsingIds<T extends Record> extends ReadRecordsRequest<T> {
     /** Builder class for {@link ReadRecordsRequestUsingIds} */
     public static final class Builder<T extends Record> {
         private final Class<T> mRecordType;
@@ -56,7 +57,7 @@ public class ReadRecordsRequestUsingIds<T extends Record> {
         @NonNull
         @SuppressLint("MissingGetterMatchingBuilder")
         public Builder<T> addId(@NonNull String id) {
-            mRecordIdFiltersList.add(new RecordIdFilter.Builder(mRecordType).setId(id).build());
+            mRecordIdFiltersList.add(RecordIdFilter.fromId(mRecordType, id));
             return this;
         }
 
@@ -68,9 +69,7 @@ public class ReadRecordsRequestUsingIds<T extends Record> {
         @NonNull
         public Builder<T> addClientRecordId(@NonNull String clientRecordId) {
             mRecordIdFiltersList.add(
-                    new RecordIdFilter.Builder(mRecordType)
-                            .setClientRecordId(clientRecordId)
-                            .build());
+                    RecordIdFilter.fromClientRecordId(mRecordType, clientRecordId));
             return this;
         }
 
@@ -88,9 +87,6 @@ public class ReadRecordsRequestUsingIds<T extends Record> {
         }
     }
 
-    /** Record class for record type identifier of the RecordIdFilter */
-    private final Class<T> mRecordType;
-
     /** List of {@link RecordIdFilter} */
     private final List<RecordIdFilter> mRecordIdFiltersList;
 
@@ -98,17 +94,10 @@ public class ReadRecordsRequestUsingIds<T extends Record> {
      * @see Builder
      */
     private ReadRecordsRequestUsingIds(
-            Class<T> recordType, List<RecordIdFilter> recordIdFiltersList) {
-        mRecordType = recordType;
+            @NonNull Class<T> recordType, @NonNull List<RecordIdFilter> recordIdFiltersList) {
+        super(recordType);
+        Objects.requireNonNull(recordIdFiltersList);
         mRecordIdFiltersList = recordIdFiltersList;
-    }
-
-    /**
-     * @return Record class for this identifier
-     */
-    @NonNull
-    public Class<T> getRecordType() {
-        return mRecordType;
     }
 
     /**
@@ -117,5 +106,15 @@ public class ReadRecordsRequestUsingIds<T extends Record> {
     @NonNull
     public List<RecordIdFilter> getRecordIdFilters() {
         return mRecordIdFiltersList;
+    }
+
+    /**
+     * Returns an object of ReadRecordsRequestParcel to carry read request
+     *
+     * @hide
+     */
+    @NonNull
+    public ReadRecordsRequestParcel toReadRecordsRequestParcel() {
+        return new ReadRecordsRequestParcel(this);
     }
 }

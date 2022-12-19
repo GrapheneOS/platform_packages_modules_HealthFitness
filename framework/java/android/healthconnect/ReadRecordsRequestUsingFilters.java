@@ -18,6 +18,7 @@ package android.healthconnect;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
 import android.os.OutcomeReceiver;
@@ -28,10 +29,12 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 
 /**
- * Class to represent a request for {@link
- * HealthConnectManager#readRecords(ReadRecordsRequestUsingFilters, Executor, OutcomeReceiver)}
+ * Class to represent a request based on time range and data origin filters for {@link
+ * HealthConnectManager#readRecords(ReadRecordsRequest, Executor, OutcomeReceiver)}
+ *
+ * @param <T> the type of the Record for the request
  */
-public final class ReadRecordsRequestUsingFilters<T extends Record> {
+public final class ReadRecordsRequestUsingFilters<T extends Record> extends ReadRecordsRequest<T> {
     /** Builder class for {@link ReadRecordsRequestUsingFilters} */
     public static final class Builder<T extends Record> {
         private final Class<T> mRecordType;
@@ -42,6 +45,8 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> {
          * @param recordType Class object of {@link Record} type that needs to be read
          */
         public Builder(@NonNull Class<T> recordType) {
+            Objects.requireNonNull(recordType);
+
             mRecordType = recordType;
         }
 
@@ -80,7 +85,6 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> {
     }
 
     private final TimeRangeFilter mTimeRangeFilter;
-    private final Class<T> mRecordType;
     private final Set<DataOrigin> mDataOrigins;
 
     /**
@@ -90,20 +94,11 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> {
             @NonNull TimeRangeFilter timeRangeFilter,
             @NonNull Class<T> recordType,
             @NonNull Set<DataOrigin> dataOrigins) {
-        Objects.requireNonNull(recordType);
+        super(recordType);
         Objects.requireNonNull(dataOrigins);
 
         mTimeRangeFilter = timeRangeFilter;
-        mRecordType = recordType;
         mDataOrigins = dataOrigins;
-    }
-
-    /**
-     * @return record type on which read is to be performed
-     */
-    @NonNull
-    public Class<T> getRecordType() {
-        return mRecordType;
     }
 
     /**
@@ -120,5 +115,15 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> {
     @NonNull
     public Set<DataOrigin> getDataOrigins() {
         return mDataOrigins;
+    }
+
+    /**
+     * Returns an object of ReadRecordsRequestParcel to carry read request
+     *
+     * @hide
+     */
+    @NonNull
+    public ReadRecordsRequestParcel toReadRecordsRequestParcel() {
+        return new ReadRecordsRequestParcel(this);
     }
 }

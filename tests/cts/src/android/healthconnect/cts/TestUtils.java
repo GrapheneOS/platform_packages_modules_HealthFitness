@@ -38,7 +38,7 @@ import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.InsertRecordsResponse;
-import android.healthconnect.ReadRecordsRequestUsingFilters;
+import android.healthconnect.ReadRecordsRequest;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.ReadRecordsResponse;
 import android.healthconnect.RecordIdFilter;
@@ -425,13 +425,15 @@ public class TestUtils {
         return response.get();
     }
 
-    public static <T extends Record> List<T> readRecords(ReadRecordsRequestUsingIds<T> request)
+    public static <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(service).isNotNull();
         AtomicReference<List<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
         service.readRecords(
                 request,
                 Executors.newSingleThreadExecutor(),
@@ -448,6 +450,9 @@ public class TestUtils {
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
         return response.get();
     }
 
@@ -469,38 +474,6 @@ public class TestUtils {
                                         .addId(uuid)
                                         .build()))
                 .isNotEmpty();
-    }
-
-    public static <T extends Record> List<T> readRecords(ReadRecordsRequestUsingFilters<T> request)
-            throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<List<T>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.readRecords(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ReadRecordsResponse<T> result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-        return response.get();
     }
 
     public static void setAutoDeletePeriod(int period) throws InterruptedException {
@@ -637,9 +610,8 @@ public class TestUtils {
                 records.stream()
                         .map(
                                 (record ->
-                                        new RecordIdFilter.Builder(record.getClass())
-                                                .setId(record.getMetadata().getId())
-                                                .build()))
+                                        RecordIdFilter.fromId(
+                                                record.getClass(), record.getMetadata().getId())))
                         .collect(Collectors.toList());
         verifyDeleteRecords(recordIdFilters);
     }

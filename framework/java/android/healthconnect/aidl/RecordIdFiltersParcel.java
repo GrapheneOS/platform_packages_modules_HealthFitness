@@ -50,14 +50,25 @@ public final class RecordIdFiltersParcel implements Parcelable {
         int size = in.readInt();
         mRecordIdFilters = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            mRecordIdFilters.add(
-                    new RecordIdFilter.Builder(
-                                    RecordMapper.getInstance()
-                                            .getRecordIdToExternalRecordClassMap()
-                                            .get(in.readInt()))
-                            .setId(in.readString())
-                            .setClientRecordId(in.readString())
-                            .build());
+            String id = in.readString();
+            String clientRecordId = in.readString();
+            // A RecordId Filter can be built either only with an id or client record id and the
+            // other will be null.
+            if (id != null) {
+                mRecordIdFilters.add(
+                        RecordIdFilter.fromId(
+                                RecordMapper.getInstance()
+                                        .getRecordIdToExternalRecordClassMap()
+                                        .get(in.readInt()),
+                                id));
+            } else {
+                mRecordIdFilters.add(
+                        RecordIdFilter.fromClientRecordId(
+                                RecordMapper.getInstance()
+                                        .getRecordIdToExternalRecordClassMap()
+                                        .get(in.readInt()),
+                                clientRecordId));
+            }
         }
     }
 
@@ -75,10 +86,10 @@ public final class RecordIdFiltersParcel implements Parcelable {
         dest.writeInt(mRecordIdFilters.size());
         mRecordIdFilters.forEach(
                 (recordId -> {
-                    dest.writeInt(
-                            RecordMapper.getInstance().getRecordType(recordId.getRecordType()));
                     dest.writeString(recordId.getId());
                     dest.writeString(recordId.getClientRecordId());
+                    dest.writeInt(
+                            RecordMapper.getInstance().getRecordType(recordId.getRecordType()));
                 }));
     }
 }

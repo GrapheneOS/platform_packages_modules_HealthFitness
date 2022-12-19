@@ -232,10 +232,7 @@ public class StepsRecordTest {
         List<Record> insertedRecord = TestUtils.insertRecords(records);
         List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
         for (Record record : insertedRecord) {
-            recordIds.add(
-                    new RecordIdFilter.Builder(record.getClass())
-                            .setId(record.getMetadata().getId())
-                            .build());
+            recordIds.add(RecordIdFilter.fromId(record.getClass(), record.getMetadata().getId()));
         }
 
         TestUtils.verifyDeleteRecords(recordIds);

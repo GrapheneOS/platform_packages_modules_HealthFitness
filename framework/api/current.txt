@@ -87,8 +87,7 @@ package android.healthconnect {
     method public void getChangeLogToken(@NonNull android.healthconnect.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ChangeLogTokenResponse,android.healthconnect.HealthConnectException>);
     method public void getChangeLogs(@NonNull android.healthconnect.ChangeLogsRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ChangeLogsResponse,android.healthconnect.HealthConnectException>);
     method public void insertRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.InsertRecordsResponse,android.healthconnect.HealthConnectException>);
-    method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequestUsingIds<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
-    method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequestUsingFilters<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
+    method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
     method public void updateRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
     field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS = "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
     field public static final String CATEGORY_HEALTH_PERMISSIONS = "android.intent.category.HEALTH_PERMISSIONS";
@@ -174,9 +173,12 @@ package android.healthconnect {
     method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getRecords();
   }
 
-  public final class ReadRecordsRequestUsingFilters<T extends android.healthconnect.datatypes.Record> {
-    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins();
+  public abstract class ReadRecordsRequest<T extends android.healthconnect.datatypes.Record> {
     method @NonNull public Class<T> getRecordType();
+  }
+
+  public final class ReadRecordsRequestUsingFilters<T extends android.healthconnect.datatypes.Record> extends android.healthconnect.ReadRecordsRequest<T> {
+    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins();
     method @Nullable public android.healthconnect.TimeRangeFilter getTimeRangeFilter();
   }
 
@@ -187,9 +189,8 @@ package android.healthconnect {
     method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setTimeRangeFilter(@Nullable android.healthconnect.TimeRangeFilter);
   }
 
-  public class ReadRecordsRequestUsingIds<T extends android.healthconnect.datatypes.Record> {
+  public final class ReadRecordsRequestUsingIds<T extends android.healthconnect.datatypes.Record> extends android.healthconnect.ReadRecordsRequest<T> {
     method @NonNull public java.util.List<android.healthconnect.RecordIdFilter> getRecordIdFilters();
-    method @NonNull public Class<T> getRecordType();
   }
 
   public static final class ReadRecordsRequestUsingIds.Builder<T extends android.healthconnect.datatypes.Record> {
@@ -204,16 +205,11 @@ package android.healthconnect {
   }
 
   public class RecordIdFilter {
+    method @NonNull public static android.healthconnect.RecordIdFilter fromClientRecordId(@NonNull Class<? extends android.healthconnect.datatypes.Record>, @NonNull String);
+    method @NonNull public static android.healthconnect.RecordIdFilter fromId(@NonNull Class<? extends android.healthconnect.datatypes.Record>, @NonNull String);
     method @Nullable public String getClientRecordId();
     method @Nullable public String getId();
     method @NonNull public Class<? extends android.healthconnect.datatypes.Record> getRecordType();
-  }
-
-  public static final class RecordIdFilter.Builder {
-    ctor public RecordIdFilter.Builder(@NonNull Class<? extends android.healthconnect.datatypes.Record>);
-    method @NonNull public android.healthconnect.RecordIdFilter build();
-    method @NonNull public android.healthconnect.RecordIdFilter.Builder setClientRecordId(@Nullable String);
-    method @NonNull public android.healthconnect.RecordIdFilter.Builder setId(@Nullable String);
   }
 
   public final class TimeRangeFilter {

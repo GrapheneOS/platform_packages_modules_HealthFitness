@@ -60,7 +60,6 @@ import android.healthconnect.aidl.IMigrationCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
-import android.healthconnect.aidl.ReadRecordsRequestParcel;
 import android.healthconnect.aidl.RecordIdFiltersParcel;
 import android.healthconnect.aidl.RecordTypeInfoResponseParcel;
 import android.healthconnect.aidl.RecordsParcel;
@@ -1046,15 +1045,16 @@ public class HealthConnectManager {
     }
 
     /**
-     * API to read records based on {@link RecordIdFilter}.
+     * API to read records based on {@link ReadRecordsRequestUsingFilters} or {@link
+     * ReadRecordsRequestUsingIds}
      *
-     * @param request ReadRecordsRequestUsingIds request containing a list of {@link RecordIdFilter}
-     *     and recordType to perform read operation.
+     * @param request Read request based on {@link ReadRecordsRequestUsingFilters} or {@link
+     *     ReadRecordsRequestUsingIds}
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      */
     public <T extends Record> void readRecords(
-            @NonNull ReadRecordsRequestUsingIds<T> request,
+            @NonNull ReadRecordsRequest<T> request,
             @NonNull Executor executor,
             @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
         Objects.requireNonNull(request);
@@ -1063,31 +1063,7 @@ public class HealthConnectManager {
         try {
             mService.readRecords(
                     mContext.getPackageName(),
-                    new ReadRecordsRequestParcel(request),
-                    getReadCallback(executor, callback));
-        } catch (RemoteException remoteException) {
-            remoteException.rethrowFromSystemServer();
-        }
-    }
-
-    /**
-     * API to read records based on {@link ReadRecordsRequestUsingFilters}.
-     *
-     * @param request Read request based on {@link ReadRecordsRequestUsingFilters}
-     * @param executor Executor on which to invoke the callback.
-     * @param callback Callback to receive result of performing this operation.
-     */
-    public <T extends Record> void readRecords(
-            @NonNull ReadRecordsRequestUsingFilters<T> request,
-            @NonNull Executor executor,
-            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
-        Objects.requireNonNull(request);
-        Objects.requireNonNull(executor);
-        Objects.requireNonNull(callback);
-        try {
-            mService.readRecords(
-                    mContext.getPackageName(),
-                    new ReadRecordsRequestParcel(request),
+                    request.toReadRecordsRequestParcel(),
                     getReadCallback(executor, callback));
         } catch (RemoteException remoteException) {
             remoteException.rethrowFromSystemServer();
