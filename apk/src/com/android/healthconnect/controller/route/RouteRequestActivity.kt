@@ -18,6 +18,8 @@ package com.android.healthconnect.controller.route
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.healthconnect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
+import android.healthconnect.HealthConnectManager.EXTRA_SESSION_ID
 import android.healthconnect.datatypes.ExerciseRoute
 import android.os.Bundle
 import android.util.Log
@@ -60,8 +62,6 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
     companion object {
         private const val TAG = "RouteRequestActivity"
-        private const val EXTRA_SESSION_ID = "android.healthconnect.extra.SESSION_ID"
-        private const val EXTRA_EXERCISE_ROUTE = "android.healthconnect.extra.EXERCISE_ROUTE"
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {

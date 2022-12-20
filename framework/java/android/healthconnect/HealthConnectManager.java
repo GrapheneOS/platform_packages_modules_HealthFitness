@@ -129,6 +129,7 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.INTENT_CATEGORY)
     public static final String CATEGORY_HEALTH_PERMISSIONS =
             "android.intent.category.HEALTH_PERMISSIONS";
+
     /**
      * Activity action: Launch UI to manage (e.g. grant/revoke) health permissions.
      *
@@ -141,6 +142,34 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_MANAGE_HEALTH_PERMISSIONS =
             "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
+
+    /**
+     * Activity action: Launch UI to share the route associated with an exercise session.
+     *
+     * <p>Input: caller must provide `String` extra EXTRA_SESSION_ID
+     *
+     * <p>Result will be delivered via [Activity.onActivityResult] with `ExerciseRoute`
+     * EXTRA_EXERCISE_ROUTE.
+     */
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_REQUEST_EXERCISE_ROUTE =
+            "android.healthconnect.action.REQUEST_EXERCISE_ROUTE";
+
+    /**
+     * A string ID of a session to be used with {@link #ACTION_REQUEST_EXERCISE_ROUTE}.
+     *
+     * <p>This is used to specify route of which exercise session we want to request.
+     */
+    public static final String EXTRA_SESSION_ID = "android.healthconnect.extra.SESSION_ID";
+
+    /**
+     * An exercise route requested via {@link #ACTION_REQUEST_EXERCISE_ROUTE}.
+     *
+     * <p>This is returned when for a successful request to access a route associated with an
+     * exercise session.
+     */
+    public static final String EXTRA_EXERCISE_ROUTE = "android.healthconnect.extra.EXERCISE_ROUTE";
+
     /**
      * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions.
      *
@@ -159,6 +188,7 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_REQUEST_HEALTH_PERMISSIONS =
             "android.healthconnect.action.REQUEST_HEALTH_PERMISSIONS";
+
     /**
      * Activity action: Launch UI to health connect home settings screen.
      *
