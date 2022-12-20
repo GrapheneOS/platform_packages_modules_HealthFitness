@@ -20,6 +20,7 @@ import android.healthconnect.datatypes.IntervalRecord;
 import android.os.Parcel;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 /**
@@ -121,6 +122,15 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
     public IntervalRecordInternal<T> setEndZoneOffset(int endZoneOffset) {
         mEndZoneOffset = endZoneOffset;
         return this;
+    }
+
+    /**
+     * @return the {@link LocalDate} object of this activity start time.
+     */
+    @Override
+    @NonNull
+    public LocalDate getLocalDate() {
+        return LocalDate.ofInstant(this.getStartTime(), this.getStartZoneOffset());
     }
 
     /**

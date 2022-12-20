@@ -33,6 +33,8 @@ import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthDataCategory;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.aidl.AccessLogsResponseParcel;
+import android.healthconnect.aidl.ActivityDatesRequestParcel;
+import android.healthconnect.aidl.ActivityDatesResponseParcel;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
@@ -42,6 +44,7 @@ import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.GetPriorityResponseParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IAccessLogsResponseCallback;
+import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
@@ -79,6 +82,7 @@ import com.android.server.healthconnect.permission.HealthConnectPermissionHelper
 import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
@@ -91,6 +95,7 @@ import com.android.server.healthconnect.storage.request.UpsertTransactionRequest
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -208,6 +213,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 mContext,
                                                 /* isInsertRequest */ true));
                         finishDataDeliveryWriteRecords(recordInternals, uid);
+
+                        // TODO(260399261): Debug and update the insertion to use a separate thread.
+                        ActivityDateHelper.getInstance()
+                                .insertRecordDate(recordsParcel.getRecords());
+
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
@@ -386,8 +396,45 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#getChangeLogs
+     * Returns a list of unique dates for which the database has at least one entry
+     *
+     * @param activityDatesRequestParcel Parcel request containing records classes
+     * @param callback Callback to receive result of performing this operation. The results are
+     *     returned in {@link List<LocalDate>} . In case of an error or a permission failure the
+     *     HealthConnect service, {@link IActivityDatesResponseCallback#onError} will be invoked
+     *     with a {@link HealthConnectExceptionParcel}.
+     */
+    @Override
+    public void getActivityDates(
+            @NonNull ActivityDatesRequestParcel activityDatesRequestParcel,
+            IActivityDatesResponseCallback callback) {
+
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
+        mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        List<LocalDate> localDates =
+                                ActivityDateHelper.getInstance()
+                                        .getActivityDates(
+                                                activityDatesRequestParcel.getRecordTypes());
+
+                        callback.onResult(new ActivityDatesResponseParcel(localDates));
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SqlException: ", sqLiteException);
+                        tryAndThrowException(
+                                callback, sqLiteException, HealthConnectException.ERROR_SECURITY);
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
+                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
      * @hide
+     * @see HealthConnectManager#getChangeLogs
      */
     @Override
     public void getChangeLogs(
@@ -836,6 +883,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private static void tryAndThrowException(
             @NonNull IReadRecordsResponseCallback callback,
+            @NonNull Exception exception,
+            @HealthConnectException.ErrorCode int errorCode) {
+        try {
+            callback.onError(
+                    new HealthConnectExceptionParcel(
+                            new HealthConnectException(errorCode, exception.getMessage())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IActivityDatesResponseCallback callback,
             @NonNull Exception exception,
             @HealthConnectException.ErrorCode int errorCode) {
         try {

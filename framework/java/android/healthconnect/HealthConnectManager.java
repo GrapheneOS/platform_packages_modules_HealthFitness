@@ -34,6 +34,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.healthconnect.aidl.AccessLogsResponseParcel;
+import android.healthconnect.aidl.ActivityDatesRequestParcel;
+import android.healthconnect.aidl.ActivityDatesResponseParcel;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.AggregateDataResponseParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
@@ -44,6 +46,7 @@ import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
 import android.healthconnect.aidl.GetPriorityResponseParcel;
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
 import android.healthconnect.aidl.IAccessLogsResponseCallback;
+import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
@@ -73,6 +76,7 @@ import android.util.Log;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -344,6 +348,7 @@ public class HealthConnectManager {
      * @param records list of records to be inserted.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
+     *     <p>TODO(b/251194265): User permission checks once available.
      * @throws RuntimeException for internal errors
      */
     public void insertRecords(
@@ -1216,6 +1221,51 @@ public class HealthConnectManager {
                 returnError(executor, exception, callback);
             }
         };
+    }
+
+    /**
+     * Returns a list of unique dates for which the DB has at least one entry.
+     *
+     * @param recordTypes List of record types classes for which to get the activity dates.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @throws java.lang.IllegalArgumentException If the record types list is empty.
+     * @hide
+     */
+    @NonNull
+    @SystemApi
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public void queryActivityDates(
+            @NonNull List<Class<? extends Record>> recordTypes,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<List<LocalDate>, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        Objects.requireNonNull(recordTypes);
+
+        if (recordTypes.isEmpty()) {
+            throw new IllegalArgumentException("Record types list can not be empty");
+        }
+
+        try {
+            mService.getActivityDates(
+                    new ActivityDatesRequestParcel(recordTypes),
+                    new IActivityDatesResponseCallback.Stub() {
+                        @Override
+                        public void onResult(ActivityDatesResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(parcel.getDates()));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+
+        } catch (RemoteException exception) {
+            exception.rethrowFromSystemServer();
+        }
     }
 
     private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {
