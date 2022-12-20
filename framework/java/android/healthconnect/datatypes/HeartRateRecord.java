@@ -31,7 +31,7 @@ import java.util.Objects;
 
 /** Captures the user's heart rate. Each record represents a series of measurements. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
-public class HeartRateRecord extends IntervalRecord {
+public final class HeartRateRecord extends IntervalRecord {
     /**
      * Metric identifier to get max heart rate in beats per minute using aggregate APIs in {@link
      * HealthConnectManager}
