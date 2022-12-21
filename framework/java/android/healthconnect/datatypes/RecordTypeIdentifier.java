@@ -72,6 +72,7 @@ public final class RecordTypeIdentifier {
     public static final int RECORD_TYPE_RESPIRATORY_RATE = 37;
     public static final int RECORD_TYPE_BONE_MASS = 38;
     public static final int RECORD_TYPE_RESTING_HEART_RATE = 39;
+    public static final int RECORD_TYPE_EXERCISE_SESSION = 40;
 
     private RecordTypeIdentifier() {}
 
@@ -112,7 +113,8 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_LEAN_BODY_MASS,
         RECORD_TYPE_SEXUAL_ACTIVITY,
         RECORD_TYPE_BODY_TEMPERATURE,
-        RECORD_TYPE_OVULATION_TEST
+        RECORD_TYPE_OVULATION_TEST,
+        RECORD_TYPE_EXERCISE_SESSION
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}

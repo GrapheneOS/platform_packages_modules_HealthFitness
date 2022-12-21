@@ -141,6 +141,7 @@ package android.healthconnect.datatypes {
     field public static final int RECORD_TYPE_ELEVATION_GAINED = 5; // 0x5
     field public static final int RECORD_TYPE_EXERCISE_EVENT = 7; // 0x7
     field public static final int RECORD_TYPE_EXERCISE_LAP = 2; // 0x2
+    field public static final int RECORD_TYPE_EXERCISE_SESSION = 40; // 0x28
     field public static final int RECORD_TYPE_FLOORS_CLIMBED = 8; // 0x8
     field public static final int RECORD_TYPE_HEART_RATE = 17; // 0x11
     field public static final int RECORD_TYPE_HEIGHT = 30; // 0x1e

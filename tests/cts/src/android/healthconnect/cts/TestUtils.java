@@ -45,6 +45,7 @@ import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
+import android.healthconnect.datatypes.ExerciseRoute;
 import android.healthconnect.datatypes.HeartRateRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
@@ -199,6 +200,14 @@ public class TestUtils {
                 new RecordAndIdentifier(RECORD_TYPE_HEART_RATE, getHeartRateRecord()),
                 new RecordAndIdentifier(
                         RECORD_TYPE_BASAL_METABOLIC_RATE, getBasalMetabolicRateRecord()));
+    }
+
+    public static ExerciseRoute.Location buildLocationTimePoint() {
+        return new ExerciseRoute.Location.Builder(Instant.ofEpochMilli((long) 1e10), 10, 5).build();
+    }
+
+    public static ExerciseRoute buildExerciseRoute() {
+        return new ExerciseRoute(List.of(buildLocationTimePoint()));
     }
 
     public static StepsRecord getStepsRecord() {
