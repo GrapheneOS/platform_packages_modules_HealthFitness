@@ -71,7 +71,10 @@ public final class RecordTypeIdentifier {
     public static final int RECORD_TYPE_RESPIRATORY_RATE = 37;
     public static final int RECORD_TYPE_BONE_MASS = 38;
     public static final int RECORD_TYPE_RESTING_HEART_RATE = 39;
+
+    // Session records
     public static final int RECORD_TYPE_EXERCISE_SESSION = 40;
+    public static final int RECORD_TYPE_SLEEP_SESSION = 41;
 
     private RecordTypeIdentifier() {}
 

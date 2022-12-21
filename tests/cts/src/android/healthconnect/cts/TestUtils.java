@@ -190,6 +190,21 @@ public class TestUtils {
         return response.get();
     }
 
+    public static Metadata generateMetadata() {
+        return new Metadata.Builder()
+                .setDevice(buildDevice())
+                .setClientRecordId("ExerciseSession" + Math.random())
+                .build();
+    }
+
+    public static Device buildDevice() {
+        return new Device.Builder()
+                .setManufacturer("google")
+                .setModel("Pixel4a")
+                .setType(2)
+                .build();
+    }
+
     public static List<Record> getTestRecords() {
         return Arrays.asList(getStepsRecord(), getHeartRateRecord(), getBasalMetabolicRateRecord());
     }

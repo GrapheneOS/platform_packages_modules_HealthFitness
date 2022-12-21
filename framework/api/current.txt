@@ -963,6 +963,40 @@ package android.healthconnect.datatypes {
     field public static final int PROTECTION_USED_UNPROTECTED = 2; // 0x2
   }
 
+  public final class SleepSessionRecord extends android.healthconnect.datatypes.IntervalRecord {
+    method @Nullable public CharSequence getNotes();
+    method @NonNull public java.util.List<android.healthconnect.datatypes.SleepSessionRecord.Stage> getStages();
+    method @Nullable public CharSequence getTitle();
+  }
+
+  public static final class SleepSessionRecord.Builder {
+    ctor public SleepSessionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.SleepSessionRecord.Stage>);
+    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder addStage(@NonNull android.healthconnect.datatypes.SleepSessionRecord.Stage);
+    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord build();
+    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setNotes(@Nullable CharSequence);
+    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setTitle(@Nullable CharSequence);
+  }
+
+  public static class SleepSessionRecord.Stage {
+    ctor public SleepSessionRecord.Stage(@NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    method @NonNull public java.time.Instant getEndTime();
+    method public int getStage();
+    method @NonNull public java.time.Instant getStartTime();
+  }
+
+  public static final class SleepSessionRecord.StageType {
+    field public static final int STAGE_TYPE_AWAKE = 1; // 0x1
+    field public static final int STAGE_TYPE_AWAKE_IN_BED = 7; // 0x7
+    field public static final int STAGE_TYPE_AWAKE_OUT_OF_BED = 3; // 0x3
+    field public static final int STAGE_TYPE_SLEEPING = 2; // 0x2
+    field public static final int STAGE_TYPE_SLEEPING_DEEP = 5; // 0x5
+    field public static final int STAGE_TYPE_SLEEPING_LIGHT = 4; // 0x4
+    field public static final int STAGE_TYPE_SLEEPING_REM = 6; // 0x6
+    field public static final int STAGE_TYPE_UNKNOWN = 0; // 0x0
+  }
+
   public final class SpeedRecord extends android.healthconnect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.healthconnect.datatypes.SpeedRecord.SpeedRecordSample> getSamples();
   }

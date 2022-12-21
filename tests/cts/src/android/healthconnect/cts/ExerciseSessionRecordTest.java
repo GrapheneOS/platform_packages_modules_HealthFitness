@@ -18,7 +18,6 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.ExerciseRoute;
 import android.healthconnect.datatypes.ExerciseSessionRecord;
 import android.healthconnect.datatypes.ExerciseSessionType;
@@ -41,7 +40,7 @@ public class ExerciseSessionRecordTest {
     public void testExerciseSession_buildSession_buildCorrectObject() {
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
-                                generateMetadata(),
+                                TestUtils.generateMetadata(),
                                 START_TIME,
                                 END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
@@ -56,7 +55,7 @@ public class ExerciseSessionRecordTest {
 
     @Test
     public void testExerciseSession_buildEqualSessions_equalsReturnsTrue() {
-        Metadata metadata = generateMetadata();
+        Metadata metadata = TestUtils.generateMetadata();
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
                                 metadata,
@@ -81,7 +80,7 @@ public class ExerciseSessionRecordTest {
         CharSequence title = "Morning training";
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
-                                generateMetadata(),
+                                TestUtils.generateMetadata(),
                                 START_TIME,
                                 END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
@@ -99,20 +98,5 @@ public class ExerciseSessionRecordTest {
                 .isEqualTo(ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN);
         assertThat(record.getNotes()).isEqualTo(notes);
         assertThat(record.getTitle()).isEqualTo(title);
-    }
-
-    private static Metadata generateMetadata() {
-        return new Metadata.Builder()
-                .setDevice(buildDevice())
-                .setClientRecordId("ExerciseSession" + Math.random())
-                .build();
-    }
-
-    private static Device buildDevice() {
-        return new Device.Builder()
-                .setManufacturer("google")
-                .setModel("Pixel4a")
-                .setType(2)
-                .build();
     }
 }
