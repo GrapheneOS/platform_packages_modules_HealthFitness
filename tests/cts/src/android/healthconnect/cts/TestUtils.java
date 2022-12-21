@@ -30,6 +30,7 @@ import android.healthconnect.AggregateRecordsGroupedByPeriodResponse;
 import android.healthconnect.AggregateRecordsRequest;
 import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.ChangeLogTokenRequest;
+import android.healthconnect.ChangeLogTokenResponse;
 import android.healthconnect.ChangeLogsRequest;
 import android.healthconnect.ChangeLogsResponse;
 import android.healthconnect.DeleteUsingFiltersRequest;
@@ -74,13 +75,13 @@ public class TestUtils {
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     private static final String TAG = "HCTestUtils";
 
-    public static String getChangeLogToken(ChangeLogTokenRequest request)
+    public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
         CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<String> response = new AtomicReference<>();
+        AtomicReference<ChangeLogTokenResponse> response = new AtomicReference<>();
         service.getChangeLogToken(
                 request,
                 Executors.newSingleThreadExecutor(),

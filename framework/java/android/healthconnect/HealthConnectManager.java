@@ -40,6 +40,7 @@ import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.AggregateDataResponseParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogTokenResponseParcel;
 import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
@@ -804,16 +805,17 @@ public class HealthConnectManager {
     public void getChangeLogToken(
             @NonNull ChangeLogTokenRequest request,
             @NonNull Executor executor,
-            @NonNull OutcomeReceiver<String, HealthConnectException> callback) {
+            @NonNull OutcomeReceiver<ChangeLogTokenResponse, HealthConnectException> callback) {
         try {
             mService.getChangeLogToken(
                     mContext.getPackageName(),
                     new ChangeLogTokenRequestParcel(request),
                     new IGetChangeLogTokenCallback.Stub() {
                         @Override
-                        public void onResult(String token) {
+                        public void onResult(ChangeLogTokenResponseParcel parcel) {
                             Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(token));
+                            executor.execute(
+                                    () -> callback.onResult(parcel.getChangeLogTokenResponse()));
                         }
 
                         @Override
@@ -947,8 +949,8 @@ public class HealthConnectManager {
      * <p>If you are calling this function for the first time after a user unlock, this might take
      * some time so consider calling this on a thread.
      *
-     * @throws RuntimeException for internal errors
      * @return Auto delete period in days, 0 is returned if auto delete period is not set.
+     * @throws RuntimeException for internal errors
      * @hide
      */
     @SystemApi

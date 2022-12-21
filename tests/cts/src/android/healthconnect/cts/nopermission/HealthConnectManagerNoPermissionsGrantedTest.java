@@ -23,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.healthconnect.AggregateRecordsRequest;
 import android.healthconnect.ChangeLogTokenRequest;
+import android.healthconnect.ChangeLogTokenResponse;
 import android.healthconnect.ChangeLogsRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.TimeRangeFilter;
@@ -107,12 +108,13 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
     public void testChangeLogsNotAllowed() throws InterruptedException {
         for (Record testRecord : TestUtils.getTestRecords()) {
             try {
-                String token =
+                ChangeLogTokenResponse tokenResponse =
                         TestUtils.getChangeLogToken(
                                 new ChangeLogTokenRequest.Builder()
                                         .addRecordType(testRecord.getClass())
                                         .build());
-                TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
+                TestUtils.getChangeLogs(
+                        new ChangeLogsRequest.Builder(tokenResponse.getToken()).build());
                 Assert.fail();
             } catch (SecurityException securityException) {
                 assertThat(true).isTrue();
