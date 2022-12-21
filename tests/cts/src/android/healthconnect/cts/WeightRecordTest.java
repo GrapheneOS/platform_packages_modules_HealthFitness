@@ -25,17 +25,18 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.healthconnect.AggregateRecordsRequest;
 import android.healthconnect.AggregateRecordsResponse;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.DeleteUsingFiltersRequest;
+import android.healthconnect.ReadRecordsRequestUsingFilters;
+import android.healthconnect.ReadRecordsRequestUsingIds;
+import android.healthconnect.RecordIdFilter;
 import android.healthconnect.TimeRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
+import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.WeightRecord;
 import android.healthconnect.datatypes.units.Mass;
-import android.os.OutcomeReceiver;
-import android.util.Log;
+import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
@@ -48,43 +49,120 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
+@AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class WeightRecordTest {
     private static final String TAG = "WeightRecordTest";
 
     @Test
     public void testInsertWeightRecord() throws InterruptedException {
-        List<Record> records = new ArrayList<>();
-        records.add(getBaseWeightRecord());
-        records.add(getCompleteWeightRecord());
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<List<Record>> response = new AtomicReference<>();
-        service.insertRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(InsertRecordsResponse result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
+        List<Record> records = List.of(getBaseWeightRecord(), getCompleteWeightRecord());
+        TestUtils.insertRecords(records);
+    }
 
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        assertThat(response.get()).hasSize(records.size());
+    @Test
+    public void testReadWeightRecord_usingIds() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(getCompleteWeightRecord(), getCompleteWeightRecord());
+        readWeightRecordUsingIds(recordList);
+    }
+
+    @Test
+    public void testReadWeightRecord_invalidIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<WeightRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(WeightRecord.class).addId("abc").build();
+        List<WeightRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadWeightRecord_usingClientRecordIds() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(getCompleteWeightRecord(), getCompleteWeightRecord());
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        readWeightRecordUsingClientId(insertedRecords);
+    }
+
+    @Test
+    public void testReadWeightRecord_invalidClientRecordIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<WeightRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(WeightRecord.class)
+                        .addClientRecordId("abc")
+                        .build();
+        List<WeightRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadWeightRecordUsingFilters_default() throws InterruptedException {
+        List<WeightRecord> oldWeightRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(WeightRecord.class).build());
+        WeightRecord testRecord = getCompleteWeightRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<WeightRecord> newWeightRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(WeightRecord.class).build());
+        assertThat(newWeightRecords.size()).isEqualTo(oldWeightRecords.size() + 1);
+        assertThat(newWeightRecords.get(newWeightRecords.size() - 1).equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadWeightRecordUsingFilters_timeFilter() throws InterruptedException {
+        TimeRangeFilter filter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        WeightRecord testRecord = getCompleteWeightRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<WeightRecord> newWeightRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(WeightRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .build());
+        assertThat(newWeightRecords.size()).isEqualTo(1);
+        assertThat(newWeightRecords.get(newWeightRecords.size() - 1).equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadWeightRecordUsingFilters_dataFilter_correct() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<WeightRecord> oldWeightRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(WeightRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        WeightRecord testRecord = getCompleteWeightRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<WeightRecord> newWeightRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(WeightRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        assertThat(newWeightRecords.size() - oldWeightRecords.size()).isEqualTo(1);
+        WeightRecord newRecord = newWeightRecords.get(newWeightRecords.size() - 1);
+        assertThat(newRecord.equals(testRecord)).isTrue();
+    }
+
+    @Test
+    public void testReadWeightRecordUsingFilters_dataFilter_incorrect()
+            throws InterruptedException {
+        TestUtils.insertRecords(Collections.singletonList(getCompleteWeightRecord()));
+        List<WeightRecord> newWeightRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(WeightRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder().setPackageName("abc").build())
+                                .build());
+        assertThat(newWeightRecords.size()).isEqualTo(0);
     }
 
     @Test
@@ -122,7 +200,127 @@ public class WeightRecordTest {
         assertThat(avgWeight.getInKilograms()).isEqualTo(10.0);
     }
 
-    static WeightRecord getBaseWeightRecord() {
+    @Test
+    public void testDeleteWeightRecord_no_filters() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
+        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        TestUtils.assertRecordNotFound(id, WeightRecord.class);
+    }
+
+    @Test
+    public void testDeleteWeightRecord_time_filters() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(WeightRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id, WeightRecord.class);
+    }
+
+    @Test
+    public void testDeleteWeightRecord_recordId_filters() throws InterruptedException {
+        List<Record> records = List.of(getBaseWeightRecord(), getCompleteWeightRecord());
+        TestUtils.insertRecords(records);
+
+        for (Record record : records) {
+            TestUtils.verifyDeleteRecords(
+                    new DeleteUsingFiltersRequest.Builder()
+                            .addRecordType(record.getClass())
+                            .build());
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteWeightRecord_dataOrigin_filters() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build())
+                        .build());
+        TestUtils.assertRecordNotFound(id, WeightRecord.class);
+    }
+
+    @Test
+    public void testDeleteWeightRecord_dataOrigin_filter_incorrect() throws InterruptedException {
+        String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(new DataOrigin.Builder().setPackageName("abc").build())
+                        .build());
+        TestUtils.assertRecordFound(id, WeightRecord.class);
+    }
+
+    @Test
+    public void testDeleteWeightRecord_usingIds() throws InterruptedException {
+        List<Record> records = List.of(getBaseWeightRecord(), getCompleteWeightRecord());
+        List<Record> insertedRecord = TestUtils.insertRecords(records);
+        List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
+        for (Record record : insertedRecord) {
+            recordIds.add(
+                    new RecordIdFilter.Builder(record.getClass())
+                            .setId(record.getMetadata().getId())
+                            .build());
+        }
+
+        TestUtils.verifyDeleteRecords(recordIds);
+        for (Record record : records) {
+            TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteWeightRecord_time_range() throws InterruptedException {
+        TimeRangeFilter timeRangeFilter =
+                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
+        TestUtils.verifyDeleteRecords(WeightRecord.class, timeRangeFilter);
+        TestUtils.assertRecordNotFound(id, WeightRecord.class);
+    }
+
+    private void readWeightRecordUsingClientId(List<Record> insertedRecord)
+            throws InterruptedException {
+        ReadRecordsRequestUsingIds.Builder<WeightRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(WeightRecord.class);
+        for (Record record : insertedRecord) {
+            request.addClientRecordId(record.getMetadata().getClientRecordId());
+        }
+        List<WeightRecord> result = TestUtils.readRecords(request.build());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            WeightRecord other = (WeightRecord) insertedRecord.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
+    }
+
+    private void readWeightRecordUsingIds(List<Record> recordList) throws InterruptedException {
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        ReadRecordsRequestUsingIds.Builder<WeightRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(WeightRecord.class);
+        for (Record record : insertedRecords) {
+            request.addId(record.getMetadata().getId());
+        }
+        List<WeightRecord> result = TestUtils.readRecords(request.build());
+        assertThat(result).hasSize(insertedRecords.size());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            WeightRecord other = (WeightRecord) insertedRecords.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
+    }
+
+    private static WeightRecord getBaseWeightRecord() {
         return new WeightRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
                 .build();
@@ -134,9 +332,21 @@ public class WeightRecordTest {
                 .build();
     }
 
-    static WeightRecord getCompleteWeightRecord() {
+    private static WeightRecord getCompleteWeightRecord() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setClientRecordId("WR" + Math.random());
+
         return new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
+                        testMetadataBuilder.build(), Instant.now(), Mass.fromKilograms(10.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
