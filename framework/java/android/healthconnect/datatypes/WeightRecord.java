@@ -15,6 +15,12 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WEIGHT_RECORD_WEIGHT_AVG;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WEIGHT_RECORD_WEIGHT_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WEIGHT_RECORD_WEIGHT_MIN;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
+
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Mass;
 
 import androidx.annotation.NonNull;
@@ -24,9 +30,33 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 
 /** Captures the user's weight. */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_WEIGHT)
+@Identifier(recordIdentifier = RECORD_TYPE_WEIGHT)
 public final class WeightRecord extends InstantRecord {
     private final Mass mWeight;
+
+    /**
+     * Metric identifier to get average weight using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Mass> WEIGHT_AVG =
+            new AggregationType<>(
+                    WEIGHT_RECORD_WEIGHT_AVG, AggregationType.AVG, RECORD_TYPE_WEIGHT, Mass.class);
+
+    /**
+     * Metric identifier to get maximum weight using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Mass> WEIGHT_MAX =
+            new AggregationType<>(
+                    WEIGHT_RECORD_WEIGHT_MAX, AggregationType.MAX, RECORD_TYPE_WEIGHT, Mass.class);
+
+    /**
+     * Metric identifier to get minimum weight using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Mass> WEIGHT_MIN =
+            new AggregationType<>(
+                    WEIGHT_RECORD_WEIGHT_MIN, AggregationType.MIN, RECORD_TYPE_WEIGHT, Mass.class);
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.

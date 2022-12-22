@@ -15,17 +15,24 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WEIGHT_RECORD_WEIGHT_AVG;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WEIGHT_RECORD_WEIGHT_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WEIGHT_RECORD_WEIGHT_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.WeightRecordInternal;
 import android.util.Pair;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,9 +46,40 @@ public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordIn
     private static final String WEIGHT_COLUMN_NAME = "weight";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        double aggregateValue;
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case WEIGHT_RECORD_WEIGHT_AVG:
+            case WEIGHT_RECORD_WEIGHT_MAX:
+            case WEIGHT_RECORD_WEIGHT_MIN:
+                aggregateValue = results.getDouble(results.getColumnIndex(WEIGHT_COLUMN_NAME));
+                break;
+            default:
+                return null;
+        }
+        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return WEIGHT_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        List<String> columnNames;
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case WEIGHT_RECORD_WEIGHT_AVG:
+            case WEIGHT_RECORD_WEIGHT_MAX:
+            case WEIGHT_RECORD_WEIGHT_MIN:
+                columnNames = Collections.singletonList(WEIGHT_COLUMN_NAME);
+                break;
+            default:
+                return null;
+        }
+        return new AggregateParams(WEIGHT_RECORD_TABLE_NAME, columnNames, TIME_COLUMN_NAME);
     }
 
     @Override

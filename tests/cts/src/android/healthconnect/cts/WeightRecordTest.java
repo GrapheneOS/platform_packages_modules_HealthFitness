@@ -16,12 +16,20 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.WeightRecord.WEIGHT_AVG;
+import static android.healthconnect.datatypes.WeightRecord.WEIGHT_MAX;
+import static android.healthconnect.datatypes.WeightRecord.WEIGHT_MIN;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
+import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.WeightRecord;
@@ -37,7 +45,9 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -47,19 +57,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class WeightRecordTest {
     private static final String TAG = "WeightRecordTest";
-
-    static WeightRecord getBaseWeightRecord() {
-        return new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
-                .build();
-    }
-
-    static WeightRecord getCompleteWeightRecord() {
-        return new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
 
     @Test
     public void testInsertWeightRecord() throws InterruptedException {
@@ -88,5 +85,59 @@ public class WeightRecordTest {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
         assertThat(response.get()).hasSize(records.size());
+    }
+
+    @Test
+    public void testAggregation_weight() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<Record> records =
+                Arrays.asList(
+                        getBaseWeightRecord(5.0),
+                        getBaseWeightRecord(10.0),
+                        getBaseWeightRecord(15.0));
+        AggregateRecordsResponse<Mass> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(WEIGHT_AVG)
+                                .addAggregationType(WEIGHT_MAX)
+                                .addAggregationType(WEIGHT_MIN)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        records);
+        Mass maxWeight = response.get(WEIGHT_MAX);
+        Mass minWeight = response.get(WEIGHT_MIN);
+        Mass avgWeight = response.get(WEIGHT_AVG);
+        assertThat(maxWeight).isNotNull();
+        assertThat(maxWeight.getInKilograms()).isEqualTo(15.0);
+        assertThat(minWeight).isNotNull();
+        assertThat(minWeight.getInKilograms()).isEqualTo(5.0);
+        assertThat(avgWeight).isNotNull();
+        assertThat(avgWeight.getInKilograms()).isEqualTo(10.0);
+    }
+
+    static WeightRecord getBaseWeightRecord() {
+        return new WeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
+                .build();
+    }
+
+    static WeightRecord getBaseWeightRecord(double weight) {
+        return new WeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(weight))
+                .build();
+    }
+
+    static WeightRecord getCompleteWeightRecord() {
+        return new WeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
     }
 }

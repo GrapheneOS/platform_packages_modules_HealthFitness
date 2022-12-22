@@ -15,7 +15,11 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
+
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Energy;
 
 import java.time.Instant;
@@ -26,10 +30,22 @@ import java.util.Objects;
  * Total energy burned by the user in {@link Energy}, including active & basal energy burned (BMR).
  * Each record represents the total kilocalories burned over a time interval.
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED)
+@Identifier(recordIdentifier = RECORD_TYPE_TOTAL_CALORIES_BURNED)
 public final class TotalCaloriesBurnedRecord extends IntervalRecord {
 
     private final Energy mEnergy;
+
+    /**
+     * Metric identifier to get total energy from total calories burned using aggregate APIs in
+     * {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Energy> ENERGY_TOTAL =
+            new AggregationType<>(
+                    TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_TOTAL_CALORIES_BURNED,
+                    Energy.class);
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.

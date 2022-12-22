@@ -15,12 +15,16 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.WheelchairPushesRecordInternal;
 import android.util.Pair;
@@ -41,9 +45,37 @@ public final class WheelchairPushesRecordHelper
     private static final String COUNT_COLUMN_NAME = "count";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        long aggregateValue;
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
+                aggregateValue = results.getLong(results.getColumnIndex(COUNT_COLUMN_NAME));
+                break;
+            default:
+                return null;
+        }
+        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return WHEELCHAIR_PUSHES_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        List<String> columnNames;
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
+                columnNames = Collections.singletonList(COUNT_COLUMN_NAME);
+                break;
+            default:
+                return null;
+        }
+        return new AggregateParams(
+                WHEELCHAIR_PUSHES_RECORD_TABLE_NAME, columnNames, START_TIME_COLUMN_NAME);
     }
 
     @Override

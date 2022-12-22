@@ -24,6 +24,9 @@ import static android.healthconnect.datatypes.FloorsClimbedRecord.FLOORS_CLIMBED
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
+import static android.healthconnect.datatypes.HeightRecord.HEIGHT_AVG;
+import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MAX;
+import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MIN;
 import static android.healthconnect.datatypes.HydrationRecord.VOLUME_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.BIOTIN_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.CAFFEINE_TOTAL;
@@ -33,14 +36,53 @@ import static android.healthconnect.datatypes.NutritionRecord.CHOLESTEROL_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.CHROMIUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.COPPER_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.DIETARY_FIBER_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ENERGY_FROM_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ENERGY_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.FOLATE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.FOLIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.IODINE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.IRON_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MAGNESIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MANGANESE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MOLYBDENUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MONOUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.NIACIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PANTOTHENIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PHOSPHORUS_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POLYUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POTASSIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PROTEIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.RIBOFLAVIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SELENIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SODIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SUGAR_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.THIAMIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.UNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_A_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B12_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B6_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_C_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_D_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_E_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_K_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ZINC_TOTAL;
 import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
 import static android.healthconnect.datatypes.StepsRecord.COUNT_TOTAL;
+import static android.healthconnect.datatypes.WeightRecord.WEIGHT_AVG;
+import static android.healthconnect.datatypes.WeightRecord.WEIGHT_MAX;
+import static android.healthconnect.datatypes.WeightRecord.WEIGHT_MIN;
 
 import android.annotation.NonNull;
 import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
+import android.healthconnect.datatypes.RestingHeartRateRecord;
+import android.healthconnect.datatypes.TotalCaloriesBurnedRecord;
+import android.healthconnect.datatypes.WheelchairPushesRecord;
 import android.healthconnect.datatypes.units.Energy;
 import android.healthconnect.datatypes.units.Length;
 import android.healthconnect.datatypes.units.Mass;
@@ -60,7 +102,7 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    private static final int MAP_SIZE = 21;
+    private static final int MAP_SIZE = 64;
     private static AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
@@ -72,12 +114,31 @@ public final class AggregationTypeIdMapper {
         mDataAggregationTypeIdMap = new HashMap<>(MAP_SIZE);
 
         addLongIdsToAggregateResultMap(
-                Arrays.asList(BPM_MAX, BPM_MIN, COUNT_TOTAL, BPM_AVG, FLOORS_CLIMBED_TOTAL));
+                Arrays.asList(
+                        BPM_MAX,
+                        BPM_MIN,
+                        COUNT_TOTAL,
+                        BPM_AVG,
+                        FLOORS_CLIMBED_TOTAL,
+                        RestingHeartRateRecord.BPM_MAX,
+                        RestingHeartRateRecord.BPM_MIN,
+                        WheelchairPushesRecord.COUNT_TOTAL));
         addPowerIdsToAggregateResultMap(
                 Arrays.asList(BASAL_CALORIES_TOTAL, POWER_MIN, POWER_MAX, POWER_AVG));
-        addEnergyIdsToAggregateResultMap(Arrays.asList(ACTIVE_CALORIES_TOTAL));
+        addEnergyIdsToAggregateResultMap(
+                Arrays.asList(
+                        ACTIVE_CALORIES_TOTAL,
+                        ENERGY_TOTAL,
+                        ENERGY_FROM_FAT_TOTAL,
+                        TotalCaloriesBurnedRecord.ENERGY_TOTAL));
         addVolumeIdsToAggregateResultMap(Arrays.asList(VOLUME_TOTAL));
-        addLengthIdsToAggregateResultMap(Arrays.asList(DISTANCE_TOTAL, ELEVATION_GAINED_TOTAL));
+        addLengthIdsToAggregateResultMap(
+                Arrays.asList(
+                        DISTANCE_TOTAL,
+                        ELEVATION_GAINED_TOTAL,
+                        HEIGHT_AVG,
+                        HEIGHT_MAX,
+                        HEIGHT_MIN));
         addMassIdsToAggregateResultMap(
                 Arrays.asList(
                         BIOTIN_TOTAL,
@@ -87,7 +148,41 @@ public final class AggregationTypeIdMapper {
                         CHOLESTEROL_TOTAL,
                         CHROMIUM_TOTAL,
                         COPPER_TOTAL,
-                        DIETARY_FIBER_TOTAL));
+                        DIETARY_FIBER_TOTAL,
+                        FOLATE_TOTAL,
+                        FOLIC_ACID_TOTAL,
+                        IODINE_TOTAL,
+                        IRON_TOTAL,
+                        MAGNESIUM_TOTAL,
+                        MANGANESE_TOTAL,
+                        MOLYBDENUM_TOTAL,
+                        MONOUNSATURATED_FAT_TOTAL,
+                        NIACIN_TOTAL,
+                        PANTOTHENIC_ACID_TOTAL,
+                        PHOSPHORUS_TOTAL,
+                        POLYUNSATURATED_FAT_TOTAL,
+                        POTASSIUM_TOTAL,
+                        PROTEIN_TOTAL,
+                        RIBOFLAVIN_TOTAL,
+                        SATURATED_FAT_TOTAL,
+                        SELENIUM_TOTAL,
+                        SODIUM_TOTAL,
+                        SUGAR_TOTAL,
+                        THIAMIN_TOTAL,
+                        TOTAL_CARBOHYDRATE_TOTAL,
+                        TOTAL_FAT_TOTAL,
+                        UNSATURATED_FAT_TOTAL,
+                        VITAMIN_A_TOTAL,
+                        VITAMIN_B12_TOTAL,
+                        VITAMIN_B6_TOTAL,
+                        VITAMIN_C_TOTAL,
+                        VITAMIN_D_TOTAL,
+                        VITAMIN_E_TOTAL,
+                        VITAMIN_K_TOTAL,
+                        ZINC_TOTAL,
+                        WEIGHT_AVG,
+                        WEIGHT_MAX,
+                        WEIGHT_MIN));
     }
 
     @NonNull

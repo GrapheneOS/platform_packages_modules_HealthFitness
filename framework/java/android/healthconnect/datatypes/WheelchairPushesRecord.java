@@ -15,8 +15,12 @@
  */
 package android.healthconnect.datatypes;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES;
+
 import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.healthconnect.HealthConnectManager;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -27,10 +31,21 @@ import java.util.Objects;
  * once so records shouldn't have overlapping time. The start time of each record should represent
  * the start of the interval in which pushes were made.
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES)
+@Identifier(recordIdentifier = RECORD_TYPE_WHEELCHAIR_PUSHES)
 public final class WheelchairPushesRecord extends IntervalRecord {
 
     private final long mCount;
+
+    /**
+     * Metric identifier to get minimum weight using aggregate APIs in {@link HealthConnectManager}
+     */
+    @android.annotation.NonNull
+    public static final AggregationType<Long> COUNT_TOTAL =
+            new AggregationType<>(
+                    WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_WHEELCHAIR_PUSHES,
+                    Long.class);
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.

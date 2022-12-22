@@ -15,17 +15,24 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEIGHT_RECORD_HEIGHT_AVG;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEIGHT_RECORD_HEIGHT_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEIGHT_RECORD_HEIGHT_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.HeightRecordInternal;
 import android.util.Pair;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,9 +46,40 @@ public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordIn
     private static final String HEIGHT_COLUMN_NAME = "height";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        double aggregateValue;
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case HEIGHT_RECORD_HEIGHT_AVG:
+            case HEIGHT_RECORD_HEIGHT_MAX:
+            case HEIGHT_RECORD_HEIGHT_MIN:
+                aggregateValue = results.getDouble(results.getColumnIndex(HEIGHT_COLUMN_NAME));
+                break;
+            default:
+                return null;
+        }
+        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return HEIGHT_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        List<String> columnNames;
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case HEIGHT_RECORD_HEIGHT_AVG:
+            case HEIGHT_RECORD_HEIGHT_MAX:
+            case HEIGHT_RECORD_HEIGHT_MIN:
+                columnNames = Collections.singletonList(HEIGHT_COLUMN_NAME);
+                break;
+            default:
+                return null;
+        }
+        return new AggregateParams(HEIGHT_RECORD_TABLE_NAME, columnNames, TIME_COLUMN_NAME);
     }
 
     @Override

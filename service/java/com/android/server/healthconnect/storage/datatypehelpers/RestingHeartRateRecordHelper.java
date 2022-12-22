@@ -15,17 +15,23 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_MAX;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.healthconnect.AggregateResult;
+import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RestingHeartRateRecordInternal;
 import android.util.Pair;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,9 +47,40 @@ public final class RestingHeartRateRecordHelper
     private static final String BEATS_PER_MINUTE_COLUMN_NAME = "beats_per_minute";
 
     @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        long aggregateValue;
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case RESTING_HEART_RATE_RECORD_BPM_MAX:
+            case RESTING_HEART_RATE_RECORD_BPM_MIN:
+                aggregateValue =
+                        results.getLong(results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME));
+                break;
+            default:
+                return null;
+        }
+        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+    }
+
+    @Override
     @NonNull
     public String getMainTableName() {
         return RESTING_HEART_RATE_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        List<String> columnNames;
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case RESTING_HEART_RATE_RECORD_BPM_MAX:
+            case RESTING_HEART_RATE_RECORD_BPM_MIN:
+                columnNames = Collections.singletonList(BEATS_PER_MINUTE_COLUMN_NAME);
+                break;
+            default:
+                return null;
+        }
+        return new AggregateParams(
+                RESTING_HEART_RATE_RECORD_TABLE_NAME, columnNames, TIME_COLUMN_NAME);
     }
 
     @Override

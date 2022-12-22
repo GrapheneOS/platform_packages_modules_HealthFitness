@@ -24,6 +24,39 @@ import static android.healthconnect.datatypes.NutritionRecord.CHOLESTEROL_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.CHROMIUM_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.COPPER_TOTAL;
 import static android.healthconnect.datatypes.NutritionRecord.DIETARY_FIBER_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ENERGY_FROM_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ENERGY_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.FOLATE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.FOLIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.IODINE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.IRON_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MAGNESIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MANGANESE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MOLYBDENUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.MONOUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.NIACIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PANTOTHENIC_ACID_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PHOSPHORUS_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POLYUNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.POTASSIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.PROTEIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.RIBOFLAVIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SELENIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SODIUM_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.SUGAR_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.THIAMIN_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.TOTAL_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.UNSATURATED_FAT_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_A_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B12_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_B6_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_C_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_D_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_E_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.VITAMIN_K_TOTAL;
+import static android.healthconnect.datatypes.NutritionRecord.ZINC_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -68,7 +101,38 @@ public class NutritionRecordTest {
                     CHOLESTEROL_TOTAL,
                     CHROMIUM_TOTAL,
                     COPPER_TOTAL,
-                    DIETARY_FIBER_TOTAL);
+                    DIETARY_FIBER_TOTAL,
+                    FOLATE_TOTAL,
+                    FOLIC_ACID_TOTAL,
+                    IODINE_TOTAL,
+                    IRON_TOTAL,
+                    MAGNESIUM_TOTAL,
+                    MANGANESE_TOTAL,
+                    MOLYBDENUM_TOTAL,
+                    MONOUNSATURATED_FAT_TOTAL,
+                    NIACIN_TOTAL,
+                    PANTOTHENIC_ACID_TOTAL,
+                    PHOSPHORUS_TOTAL,
+                    POLYUNSATURATED_FAT_TOTAL,
+                    POTASSIUM_TOTAL,
+                    PROTEIN_TOTAL,
+                    RIBOFLAVIN_TOTAL,
+                    SATURATED_FAT_TOTAL,
+                    SELENIUM_TOTAL,
+                    SODIUM_TOTAL,
+                    SUGAR_TOTAL,
+                    THIAMIN_TOTAL,
+                    TOTAL_CARBOHYDRATE_TOTAL,
+                    TOTAL_FAT_TOTAL,
+                    UNSATURATED_FAT_TOTAL,
+                    VITAMIN_A_TOTAL,
+                    VITAMIN_B12_TOTAL,
+                    VITAMIN_B6_TOTAL,
+                    VITAMIN_C_TOTAL,
+                    VITAMIN_D_TOTAL,
+                    VITAMIN_E_TOTAL,
+                    VITAMIN_K_TOTAL,
+                    ZINC_TOTAL);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -172,9 +236,7 @@ public class NutritionRecordTest {
     @Test
     public void testAggregation_NutritionValuesTotal() throws Exception {
         List<Record> records =
-                Arrays.asList(
-                        NutritionRecordTest.getCompleteNutritionRecord(),
-                        NutritionRecordTest.getCompleteNutritionRecord());
+                Arrays.asList(getCompleteNutritionRecord(), getCompleteNutritionRecord());
         AggregateRecordsResponse<Mass> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Mass>(
@@ -190,12 +252,41 @@ public class NutritionRecordTest {
                                 .addAggregationType(CHROMIUM_TOTAL)
                                 .addAggregationType(COPPER_TOTAL)
                                 .addAggregationType(DIETARY_FIBER_TOTAL)
+                                .addAggregationType(FOLATE_TOTAL)
+                                .addAggregationType(FOLIC_ACID_TOTAL)
+                                .addAggregationType(IODINE_TOTAL)
+                                .addAggregationType(IRON_TOTAL)
+                                .addAggregationType(MAGNESIUM_TOTAL)
+                                .addAggregationType(MANGANESE_TOTAL)
+                                .addAggregationType(MOLYBDENUM_TOTAL)
+                                .addAggregationType(MONOUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(NIACIN_TOTAL)
+                                .addAggregationType(PANTOTHENIC_ACID_TOTAL)
+                                .addAggregationType(PHOSPHORUS_TOTAL)
+                                .addAggregationType(POTASSIUM_TOTAL)
+                                .addAggregationType(POLYUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(PROTEIN_TOTAL)
+                                .addAggregationType(RIBOFLAVIN_TOTAL)
+                                .addAggregationType(SATURATED_FAT_TOTAL)
+                                .addAggregationType(SELENIUM_TOTAL)
+                                .addAggregationType(SODIUM_TOTAL)
+                                .addAggregationType(SUGAR_TOTAL)
+                                .addAggregationType(THIAMIN_TOTAL)
+                                .addAggregationType(TOTAL_CARBOHYDRATE_TOTAL)
+                                .addAggregationType(TOTAL_FAT_TOTAL)
+                                .addAggregationType(UNSATURATED_FAT_TOTAL)
+                                .addAggregationType(VITAMIN_A_TOTAL)
+                                .addAggregationType(VITAMIN_B12_TOTAL)
+                                .addAggregationType(VITAMIN_B6_TOTAL)
+                                .addAggregationType(VITAMIN_C_TOTAL)
+                                .addAggregationType(VITAMIN_D_TOTAL)
+                                .addAggregationType(VITAMIN_E_TOTAL)
+                                .addAggregationType(VITAMIN_K_TOTAL)
+                                .addAggregationType(ZINC_TOTAL)
                                 .build(),
                         records);
         List<Record> recordNew =
-                Arrays.asList(
-                        NutritionRecordTest.getCompleteNutritionRecord(),
-                        NutritionRecordTest.getCompleteNutritionRecord());
+                Arrays.asList(getCompleteNutritionRecord(), getCompleteNutritionRecord());
         AggregateRecordsResponse<Mass> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Mass>(
@@ -211,6 +302,37 @@ public class NutritionRecordTest {
                                 .addAggregationType(CHROMIUM_TOTAL)
                                 .addAggregationType(COPPER_TOTAL)
                                 .addAggregationType(DIETARY_FIBER_TOTAL)
+                                .addAggregationType(FOLATE_TOTAL)
+                                .addAggregationType(FOLIC_ACID_TOTAL)
+                                .addAggregationType(IODINE_TOTAL)
+                                .addAggregationType(IRON_TOTAL)
+                                .addAggregationType(MAGNESIUM_TOTAL)
+                                .addAggregationType(MANGANESE_TOTAL)
+                                .addAggregationType(MOLYBDENUM_TOTAL)
+                                .addAggregationType(MONOUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(NIACIN_TOTAL)
+                                .addAggregationType(PANTOTHENIC_ACID_TOTAL)
+                                .addAggregationType(PHOSPHORUS_TOTAL)
+                                .addAggregationType(POTASSIUM_TOTAL)
+                                .addAggregationType(POLYUNSATURATED_FAT_TOTAL)
+                                .addAggregationType(PROTEIN_TOTAL)
+                                .addAggregationType(RIBOFLAVIN_TOTAL)
+                                .addAggregationType(SATURATED_FAT_TOTAL)
+                                .addAggregationType(SELENIUM_TOTAL)
+                                .addAggregationType(SODIUM_TOTAL)
+                                .addAggregationType(SUGAR_TOTAL)
+                                .addAggregationType(THIAMIN_TOTAL)
+                                .addAggregationType(TOTAL_CARBOHYDRATE_TOTAL)
+                                .addAggregationType(TOTAL_FAT_TOTAL)
+                                .addAggregationType(UNSATURATED_FAT_TOTAL)
+                                .addAggregationType(VITAMIN_A_TOTAL)
+                                .addAggregationType(VITAMIN_B12_TOTAL)
+                                .addAggregationType(VITAMIN_B6_TOTAL)
+                                .addAggregationType(VITAMIN_C_TOTAL)
+                                .addAggregationType(VITAMIN_D_TOTAL)
+                                .addAggregationType(VITAMIN_E_TOTAL)
+                                .addAggregationType(VITAMIN_K_TOTAL)
+                                .addAggregationType(ZINC_TOTAL)
                                 .build(),
                         recordNew);
         for (AggregationType<Mass> type : mMassAggregateTypesList) {
@@ -220,6 +342,44 @@ public class NutritionRecordTest {
             assertThat(oldTotal).isNotNull();
             assertThat(newTotal.getInKilograms() - oldTotal.getInKilograms()).isEqualTo(20);
         }
+    }
+
+    @Test
+    public void testAggregation_NutritionEnergyValuesTotal() throws Exception {
+        List<Record> records = Arrays.asList(getCompleteNutritionRecord());
+        AggregateRecordsResponse<Energy> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ENERGY_TOTAL)
+                                .addAggregationType(ENERGY_FROM_FAT_TOTAL)
+                                .build(),
+                        records);
+        List<Record> newRecords = Arrays.asList(getCompleteNutritionRecord());
+        AggregateRecordsResponse<Energy> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(ENERGY_TOTAL)
+                                .addAggregationType(ENERGY_FROM_FAT_TOTAL)
+                                .build(),
+                        newRecords);
+        Energy newEnergy = newResponse.get(ENERGY_TOTAL);
+        Energy oldEnergy = oldResponse.get(ENERGY_TOTAL);
+        Energy newFatEnergy = newResponse.get(ENERGY_FROM_FAT_TOTAL);
+        Energy oldFatEnergy = oldResponse.get(ENERGY_FROM_FAT_TOTAL);
+        assertThat(newEnergy).isNotNull();
+        assertThat(oldEnergy).isNotNull();
+        assertThat(newFatEnergy).isNotNull();
+        assertThat(oldFatEnergy).isNotNull();
+        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(10);
+        assertThat(newFatEnergy.getInJoules() - oldFatEnergy.getInJoules()).isEqualTo(10);
     }
 
     static NutritionRecord getBaseNutritionRecord() {
