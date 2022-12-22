@@ -12,7 +12,7 @@ package android.healthconnect {
     method @NonNull public java.util.List<android.healthconnect.datatypes.AppInfo> getApplicationInfoList();
   }
 
-  public class DeleteUsingFiltersRequest {
+  public final class DeleteUsingFiltersRequest {
     method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins();
     method @NonNull public java.util.Set<java.lang.Class<? extends android.healthconnect.datatypes.Record>> getRecordTypes();
     method @Nullable public android.healthconnect.TimeRangeFilter getTimeRangeFilter();

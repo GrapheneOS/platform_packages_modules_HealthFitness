@@ -33,7 +33,7 @@ import java.util.Set;
  * @hide
  */
 @SystemApi
-public class DeleteUsingFiltersRequest {
+public final class DeleteUsingFiltersRequest {
     private final TimeRangeFilter mTimeRangeFilter;
     private final Set<Class<? extends Record>> mRecordTypes;
     private final Set<DataOrigin> mDataOrigins;
