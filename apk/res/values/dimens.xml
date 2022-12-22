@@ -45,4 +45,8 @@
     <dimen name="onboarding_title_text_size">28sp</dimen>
     <dimen name="onboarding_description_text_size">16sp</dimen>
     <dimen name="onboarding_item_view_text_size">16sp</dimen>
+
+    <dimen name="list_item_min_height">64dp</dimen>
+    <dimen name="recent_access_item_min_height">56dp</dimen>
+
 </resources>

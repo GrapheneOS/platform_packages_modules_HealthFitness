@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.healthconnect.controller.recentaccess
 
-package com.android.healthconnect.controller.home
+import android.content.Context
+import androidx.preference.Preference
+import com.android.healthconnect.controller.R
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+class DividerPreference constructor(context: Context) : Preference(context) {
 
-@HiltViewModel class HomeFragmentViewModel @Inject constructor() : ViewModel() {}
+    init {
+        layoutResource = R.layout.widget_recent_access_entry_divider
+        isSelectable = false
+    }
+}

@@ -14,6 +14,7 @@
   limitations under the License.
 -->
 <resources>
+
     <style name="Base.Theme.HealthConnect" parent="@style/Theme.SubSettingsBase">
         <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
         <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
@@ -53,6 +54,16 @@
         <item name="android:checkboxStyle">@style/Widget.HealthConnect.CheckBox</item>
         <item name="chipStyle">@style/Widget.HealthConnect.RadioButton.Chip</item>
         <item name="checkIcon">@drawable/quantum_gm_ic_check_vd_theme_24</item>
+
+        <!--    Dimensions -->
+        <item name="listItemPaddingTop">@dimen/spacing_small</item>
+        <item name="listItemPaddingBottom">@dimen/spacing_small</item>
+        <item name="largeListItemPaddingTop">@dimen/spacing_normal</item>
+        <item name="largeListItemPaddingBottom">@dimen/spacing_normal</item>
+        <item name="listItemMinHeight">@dimen/list_item_min_height</item>
+        <item name="recentAccessTimelineDividerHeight">@dimen/timeline_divider_height</item>
+        <item name="recentAccessTimelineDividerDrawable">@drawable/timeline_divider</item>
+
     </style>
 
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />

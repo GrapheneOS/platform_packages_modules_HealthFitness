@@ -40,6 +40,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionStr
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
+import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.MainSwitchPreference
@@ -227,5 +228,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         mConnectedAppFooter?.setLearnMoreText(getString(R.string.manage_permissions_learn_more))
         // TODO (b/262060317) add link to app privacy policy
         mConnectedAppFooter?.setLearnMoreAction {}
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setTitle(R.string.app_access_title)
     }
 }

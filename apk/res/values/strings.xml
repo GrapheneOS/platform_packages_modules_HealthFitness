@@ -28,14 +28,18 @@
   <string name="connected_apps_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]">Manage your apps and permissions</string>
   <!--  endregion -->
 
-  <!-- region  Recent access -->
-  <string name="recent_access_header" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">Recent access</string>
-  <string name="no_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">No apps recently accessed Health&#160;Connect</string>
-  <string name="see_all_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">See all</string>
-  <string name="recent_access_screen_description" description="Description of Recent access screen, placed at the top. [CHAR LIMIT=NONE]">See which apps have accessed your data in the past 24 hours</string>
-  <string name="today_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Today</string>
-  <string name="yesterday_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Yesterday</string>
-  <!--endregion-->
+    <!-- region  Recent access -->
+    <string name="recent_access_header" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">Recent access</string>
+    <string name="no_recent_access" description="Header for section showing apps that have recently accessed health data [CHAR_LIMIT=NONE]">No apps recently accessed Health&#160;Connect</string>
+    <string name="show_recent_access_entries_button_title" description="Label on a button leading to another screen showing all the writes and reads performed by connected apps in the last 24 hours. [CHAR LIMIT=50]">See all recent access</string>
+    <string name="recent_access_screen_description" description="Description of Recent access screen, placed at the top. [CHAR LIMIT=NONE]">See which apps have accessed your data in the past 24 hours</string>
+    <string name="today_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Today</string>
+    <string name="yesterday_header" description="Header in the list of data access entries to differentiate between entries from today and yesterday. [CHAR LIMIT=50]">Yesterday</string>
+    <string name="read_data_access_label" description="Label used to indicate that app performed read access to specified data types (as opposed to writing the data), as in 'Read: Steps, Heart rate'. [CHAR_LIMIT=NONE]">Read: %s</string>
+    <string name="write_data_access_label" description="Label used to indicate that app performed write (insertion, deletion or update) access to specified data types (as opposed to reading the data), as in 'Write: Steps, Heart rate'. [CHAR_LIMIT=NONE]">Write: %s</string>
+    <string name="data_type_separator" description="Separator (comma and whitespace in English) for a potentially long list of data type names listed in data access entry, as in 'Write: Steps, Distance, Calories'. [CHAR_LIMIT=NONE]">,\u0020</string>
+
+    <!--endregion-->
 
   <!--region Data categories  -->
   <string name="activity_category_uppercase" description="Uppercase name for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
@@ -333,32 +337,34 @@
   <string name="default_error" description="Label shown when a user initiated action fails (e.g. deleting data) [CHAR_LIMIT=NONE]">Something went wrong. Please try again.</string>
   <!-- endregion -->
 
-  <!-- region Connected apps -->
-  <string name="health_permission_header_description" description="Description text shown on screen for managing which apps have access to health and fitness data. Note: Health Connect is the brand [CHAR_LIMIT=NONE]">Apps with this permission can read and write your health data.</string>
-  <string name="connected_apps_text" description="Description text shown on screen for managing which apps have access to health and fitness data. Note: Health Connect is the brand [CHAR_LIMIT=NONE]">Control which apps can access data stored in Health&#160;Connect. Tap an app to review the data it can read or write.</string>
-  <string name="connected_apps_section_title" description="Title of section containing all the connected apps [CHAR_LIMIT=40]">Allowed access</string>
-  <string name="not_connected_apps_section_title" description="Title of section containing all the not-connected apps [CHAR_LIMIT=40]">Not allowed access</string>
-  <string name="settings_and_help_header" description="Title shown for the section of settings and help [CHAR_LIMIT=70]">Settings &amp; help</string>
-  <string name="disconnect_all_apps" description="Button text for removing access to health and fitness data for all apps [CHAR_LIMIT=40]">Remove access for all apps</string>
-  <string name="cant_see_all_your_apps_button" description="Button text for navigating to a help page of advice about connecting more apps [CHAR_LIMIT=40]">Can\'t see all your apps?</string>
-  <string name="manage_permissions_read_header" description="Header for list of permissions an app is allowed read access to [CHAR_LIMIT=40]">Allowed to read</string>
-  <string name="manage_permissions_write_header" description="Header for list of permissions an app is allowed write access to [CHAR_LIMIT=40]">Allowed to write</string>
-  <string name="no_apps_allowed" description="Label when no apps have ben granted access to Health data.[CHAR_LIMIT=40]">No apps allowed</string>
-  <string name="no_apps_denied" description="Label when no apps have been denied a health permission [CHAR_LIMIT=40]">No apps denied</string>
-  <string name="permissions_disconnect_all_dialog_title" description="Title for dialog asking the user to confirm they want to remove all permissions for all apps [CHAR_LIMIT=50]">Remove access for all apps?</string>
-  <string name="permissions_disconnect_all_dialog_message" description="Text informing the user that all apps will no longer be able to read or write data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">None of your apps will be able to access or add new data to Health&#160;Connect. This doesn’t delete any existing data.</string>
-  <string name="permissions_disconnect_all_dialog_disconnect" description="Label for dialog button to confirm removal of all permissions for all apps [CHAR_LIMIT=20]">Remove all</string>
-  <string name="manage_permissions_manage_app_header" description="Title shown for section to manage app [CHAR_LIMIT=40]">Manage app</string>
-  <string name="delete_app_data" description="Label of a button that deletes data written by given app. [CHAR_LIMIT=40]">Delete app data</string>
-  <string name="inactive_apps_section_title" description="Title shown for section of inactive apps [CHAR_LIMIT=40]">Inactive apps</string>
-  <string name="inactive_apps_section_message" description="Description text shown in the inactive apps section that explains what inactive apps are [CHAR_LIMIT=NONE]">These apps no longer have access, but still have data stored in Health&#160;Connect</string>
-  <string name="manage_permissions_time_frame" description="Text describing the time frame of data which an app will be able to access [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can access data added after <xliff:g example="22 January 2022" id="data_access_date">%2$s</xliff:g></string>
-  <string name="other_android_permissions" description="Text that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings > Apps</string>
-  <string name="manage_permissions_rationale" description="Text informing the user that data they share with an app is covered by that app's data privacy policy [CHAR_LIMIT=NONE]">Data you share with <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> is covered by their privacy policy</string>
-  <string name="other_android_permissions_content_description" description="Content description that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings, then tap Apps</string>
-  <string name="manage_permissions_learn_more" description="Link text that open's a third party app's data privacy policy [CHAR_LIMIT=NONE]">Read privacy policy</string>
-  <string name="app_perms_content_provider_24h" description="Summary for showing the last access text for content provider permissions [CHAR LIMIT=70]">Accessed in past 24 hours</string>
-  <!--endregion-->
+    <!-- region Connected apps -->
+    <string name="health_permission_header_description" description="Description text shown on screen for managing which apps have access to health and fitness data. Note: Health Connect is the brand [CHAR_LIMIT=NONE]">Apps with this permission can read and write your health data.</string>
+    <string name="connected_apps_text" description="Description text shown on screen for managing which apps have access to health and fitness data. Note: Health Connect is the brand [CHAR_LIMIT=NONE]">Control which apps can access data stored in Health&#160;Connect. Tap an app to review the data it can read or write.</string>
+    <string name="connected_apps_section_title" description="Title of section containing all the connected apps [CHAR_LIMIT=40]">Allowed access</string>
+    <string name="not_connected_apps_section_title" description="Title of section containing all the not-connected apps [CHAR_LIMIT=40]">Not allowed access</string>
+    <string name="settings_and_help_header" description="Title shown for the section of settings and help [CHAR_LIMIT=70]">Settings &amp; help</string>
+    <string name="disconnect_all_apps" description="Button text for removing access to health and fitness data for all apps [CHAR_LIMIT=40]">Remove access for all apps</string>
+    <string name="cant_see_all_your_apps_button" description="Button text for navigating to a help page of advice about connecting more apps [CHAR_LIMIT=40]">Can\'t see all your apps?</string>
+    <string name="manage_permissions_read_header" description="Header for list of permissions an app is allowed read access to [CHAR_LIMIT=40]">Allowed to read</string>
+    <string name="manage_permissions_write_header" description="Header for list of permissions an app is allowed write access to [CHAR_LIMIT=40]">Allowed to write</string>
+    <string name="no_apps_allowed" description="Label when no apps have ben granted access to Health data.[CHAR_LIMIT=40]">No apps allowed</string>
+    <string name="no_apps_denied" description="Label when no apps have been denied a health permission [CHAR_LIMIT=40]">No apps denied</string>
+    <string name="permissions_disconnect_all_dialog_title" description="Title for dialog asking the user to confirm they want to remove all permissions for all apps [CHAR_LIMIT=50]">Remove access for all apps?</string>
+    <string name="permissions_disconnect_all_dialog_message" description="Text informing the user that all apps will no longer be able to read or write data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">None of your apps will be able to access or add new data to Health&#160;Connect. This doesn’t delete any existing data.</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" description="Label for dialog button to confirm removal of all permissions for all apps [CHAR_LIMIT=20]">Remove all</string>
+    <string name="manage_permissions_manage_app_header" description="Title shown for section to manage app [CHAR_LIMIT=40]">Manage app</string>
+    <string name="delete_app_data" description="Label of a button that deletes data written by given app. [CHAR_LIMIT=40]">Delete app data</string>
+    <string name="inactive_apps_section_title" description="Title shown for section of inactive apps [CHAR_LIMIT=40]">Inactive apps</string>
+    <string name="inactive_apps_section_message" description="Description text shown in the inactive apps section that explains what inactive apps are [CHAR_LIMIT=NONE]">These apps no longer have access, but still have data stored in Health&#160;Connect</string>
+    <string name="manage_permissions_time_frame" description="Text describing the time frame of data which an app will be able to access [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can access data added after <xliff:g example="22 January 2022" id="data_access_date">%2$s</xliff:g></string>
+    <string name="other_android_permissions" description="Text that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings > Apps</string>
+    <string name="manage_permissions_rationale" description="Text informing the user that data they share with an app is covered by that app's data privacy policy [CHAR_LIMIT=NONE]">Data you share with <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> is covered by their privacy policy</string>
+    <string name="other_android_permissions_content_description" description="Content description that describes how users can change other android permissions through the system settings [CHAR_LIMIT=NONE]">To manage other Android permissions this app can access, go to Settings, then tap Apps</string>
+    <string name="manage_permissions_learn_more" description="Link text that open's a third party app's data privacy policy [CHAR_LIMIT=NONE]">Read privacy policy</string>
+    <string name="app_perms_content_provider_24h" description="Summary for showing the last access text for content provider permissions [CHAR LIMIT=70]">Accessed in past 24 hours</string>
+    <string name="app_access_title" description="Title of screen for a user to manage the health and fitness data a particular app has access to [CHAR_LIMIT=40]">App access</string>
+
+    <!--endregion-->
 
   <!--region Denied Apps -->
   <string name="denied_apps_banner_title" description="Title of a banner that provides information about apps that have been denied, in other words their permissions have been removed. [CHAR_LIMIT=100]">Removed app permissions</string>

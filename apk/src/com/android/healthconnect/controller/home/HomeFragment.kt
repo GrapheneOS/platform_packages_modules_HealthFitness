@@ -15,17 +15,21 @@
  */
 package com.android.healthconnect.controller.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.recentaccess.RecentAccessApp
+import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants
+import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
 import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu
+import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,7 +45,7 @@ class HomeFragment : Hilt_HomeFragment() {
         @JvmStatic fun newInstance() = HomeFragment()
     }
 
-    private val viewModel: HomeFragmentViewModel by viewModels()
+    private val viewModel: RecentAccessViewModel by viewModels()
 
     private val mDataAndAccessPreference: Preference? by lazy {
         preferenceScreen.findPreference(DATA_AND_ACCESS_PREFERENCE_KEY)
@@ -76,24 +80,36 @@ class HomeFragment : Hilt_HomeFragment() {
         super.onViewCreated(view, savedInstanceState)
         SendFeedbackAndHelpMenu.setupMenu(this, viewLifecycleOwner)
 
+        viewModel.loadRecentAccessApps(maxNumEntries = 3)
         viewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
             updateRecentApps(recentApps)
         }
     }
 
-    private fun updateRecentApps(recentAppsList: List<RecentAccessApp>) {
+    private fun updateRecentApps(recentAppsList: List<RecentAccessEntry>) {
         mRecentAccessPreference?.removeAll()
         if (recentAppsList.isEmpty()) {
             mRecentAccessPreference?.addPreference(
                 Preference(requireContext()).also { it.setSummary(R.string.no_recent_access) })
         } else {
             recentAppsList.forEach { recentApp ->
-                mRecentAccessPreference?.addPreference(
-                    RecentAccessPreference(requireContext(), recentApp, false, false))
+                val newRecentAccessPreference =
+                    RecentAccessPreference(requireContext(), recentApp, false).also {
+                        it.setOnPreferenceClickListener {
+                            findNavController()
+                                .navigate(
+                                    R.id.action_homeFragment_to_connectedAppFragment,
+                                    bundleOf(
+                                        Intent.EXTRA_PACKAGE_NAME to recentApp.metadata.packageName,
+                                        Constants.EXTRA_APP_NAME to recentApp.metadata.appName))
+                            true
+                        }
+                    }
+                mRecentAccessPreference?.addPreference(newRecentAccessPreference)
             }
             val seeAllPreference =
                 Preference(requireContext()).also {
-                    it.setTitle(R.string.see_all_recent_access)
+                    it.setTitle(R.string.show_recent_access_entries_button_title)
                     it.setIcon(R.drawable.ic_arrow_forward)
                 }
             seeAllPreference.setOnPreferenceClickListener {

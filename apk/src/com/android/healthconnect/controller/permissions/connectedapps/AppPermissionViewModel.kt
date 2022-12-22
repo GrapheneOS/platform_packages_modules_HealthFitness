@@ -27,12 +27,12 @@ import com.android.healthconnect.controller.permissions.connectedApps.HealthPerm
 import com.android.healthconnect.controller.permissions.connectedApps.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.settings.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.AppInfoReader
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import java.time.Instant
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 /** View model for {@link ConnectedAppFragment} . */
 @HiltViewModel
@@ -110,7 +110,7 @@ constructor(
         viewModelScope.launch {
             val appData = DeletionType.DeletionTypeAppData(packageName, appName)
             val timeRangeFilter =
-                    TimeRangeFilter.Builder(Instant.EPOCH, Instant.ofEpochMilli(Long.MAX_VALUE)).build()
+                TimeRangeFilter.Builder(Instant.EPOCH, Instant.ofEpochMilli(Long.MAX_VALUE)).build()
             deleteAppDataUseCase.invoke(appData, timeRangeFilter)
         }
     }
