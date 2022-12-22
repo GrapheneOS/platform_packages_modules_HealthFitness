@@ -22,6 +22,7 @@ import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
+import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.shared.AppInfoReader
 import javax.inject.Inject
@@ -39,7 +40,8 @@ constructor(
     private val speedFormatter: SpeedFormatter,
     private val distanceFormatter: DistanceFormatter,
     private val powerFormatter: PowerFormatter,
-    private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter
+    private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter,
+    private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter
 ) {
 
     suspend fun format(record: Record): FormattedDataEntry {
@@ -53,6 +55,7 @@ constructor(
             is DistanceRecord -> distanceFormatter.format(record, appName)
             is PowerRecord -> powerFormatter.format(record, appName)
             is ActiveCaloriesBurnedRecord -> activeCaloriesBurnedFormatter.format(record, appName)
+            is TotalCaloriesBurnedRecord -> totalCaloriesBurnedFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

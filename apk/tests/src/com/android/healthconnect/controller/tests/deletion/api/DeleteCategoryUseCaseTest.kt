@@ -22,6 +22,7 @@ import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
+import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
 import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.deletion.DeletionType
@@ -81,6 +82,7 @@ class DeleteCategoryUseCaseTest {
         // TODO update when more records available
         assertThat(filtersCaptor.value.recordTypes)
             .containsExactly(
+                TotalCaloriesBurnedRecord::class.java,
                 ActiveCaloriesBurnedRecord::class.java,
                 DistanceRecord::class.java,
                 StepsRecord::class.java,
