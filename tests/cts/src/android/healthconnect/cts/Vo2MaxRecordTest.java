@@ -23,7 +23,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
@@ -105,8 +105,11 @@ public class Vo2MaxRecordTest {
 
     @Test
     public void testReadVo2MaxRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         Vo2MaxRecord testRecord = getCompleteVo2MaxRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<Vo2MaxRecord> newVo2MaxRecords =
@@ -204,8 +207,11 @@ public class Vo2MaxRecordTest {
 
     @Test
     public void testDeleteVo2MaxRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteVo2MaxRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -270,8 +276,11 @@ public class Vo2MaxRecordTest {
 
     @Test
     public void testDeleteVo2MaxRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteVo2MaxRecord());
         TestUtils.verifyDeleteRecords(Vo2MaxRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, Vo2MaxRecord.class);

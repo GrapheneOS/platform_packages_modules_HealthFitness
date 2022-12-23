@@ -27,7 +27,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.ElevationGainedRecord;
@@ -62,7 +62,10 @@ public class ElevationGainedRecordTest {
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 ElevationGainedRecord.class,
-                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
@@ -132,8 +135,11 @@ public class ElevationGainedRecordTest {
 
     @Test
     public void testReadElevationGainedRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         ElevationGainedRecord testRecord = getCompleteElevationGainedRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<ElevationGainedRecord> newElevationGainedRecords =
@@ -200,8 +206,11 @@ public class ElevationGainedRecordTest {
 
     @Test
     public void testDeleteElevationGainedRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteElevationGainedRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -269,8 +278,11 @@ public class ElevationGainedRecordTest {
 
     @Test
     public void testDeleteElevationGainedRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteElevationGainedRecord());
         TestUtils.verifyDeleteRecords(ElevationGainedRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, ElevationGainedRecord.class);
@@ -324,9 +336,9 @@ public class ElevationGainedRecordTest {
         AggregateRecordsResponse<Length> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(ELEVATION_GAINED_TOTAL)
                                 .build(),
@@ -336,9 +348,9 @@ public class ElevationGainedRecordTest {
         AggregateRecordsResponse<Length> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(ELEVATION_GAINED_TOTAL)
                                 .build(),

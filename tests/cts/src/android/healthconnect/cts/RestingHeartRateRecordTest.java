@@ -25,7 +25,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
@@ -123,8 +123,11 @@ public class RestingHeartRateRecordTest {
     @Test
     public void testReadRestingHeartRateRecordUsingFilters_timeFilter()
             throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         RestingHeartRateRecord testRecord = getCompleteRestingHeartRateRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<RestingHeartRateRecord> newRestingHeartRateRecords =
@@ -230,8 +233,11 @@ public class RestingHeartRateRecordTest {
 
     @Test
     public void testDeleteRestingHeartRateRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteRestingHeartRateRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -299,8 +305,11 @@ public class RestingHeartRateRecordTest {
 
     @Test
     public void testDeleteRestingHeartRateRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteRestingHeartRateRecord());
         TestUtils.verifyDeleteRecords(RestingHeartRateRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, RestingHeartRateRecord.class);
@@ -316,9 +325,9 @@ public class RestingHeartRateRecordTest {
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(RestingHeartRateRecord.BPM_MAX)
                                 .addAggregationType(RestingHeartRateRecord.BPM_MIN)

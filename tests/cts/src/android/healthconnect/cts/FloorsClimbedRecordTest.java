@@ -25,7 +25,7 @@ import android.healthconnect.AggregateRecordsRequest;
 import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.FloorsClimbedRecord;
@@ -56,7 +56,10 @@ public class FloorsClimbedRecordTest {
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 FloorsClimbedRecord.class,
-                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
@@ -123,8 +126,11 @@ public class FloorsClimbedRecordTest {
 
     @Test
     public void testReadFloorsClimbedRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         FloorsClimbedRecord testRecord = getCompleteFloorsClimbedRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<FloorsClimbedRecord> newFloorsClimbedRecords =
@@ -188,9 +194,9 @@ public class FloorsClimbedRecordTest {
         AggregateRecordsResponse<Long> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(FLOORS_CLIMBED_TOTAL)
                                 .build(),
@@ -200,9 +206,9 @@ public class FloorsClimbedRecordTest {
         AggregateRecordsResponse<Long> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(FLOORS_CLIMBED_TOTAL)
                                 .build(),

@@ -29,7 +29,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
@@ -114,8 +114,11 @@ public class WeightRecordTest {
 
     @Test
     public void testReadWeightRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         WeightRecord testRecord = getCompleteWeightRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<WeightRecord> newWeightRecords =
@@ -177,9 +180,9 @@ public class WeightRecordTest {
         AggregateRecordsResponse<Mass> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Mass>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(WEIGHT_AVG)
                                 .addAggregationType(WEIGHT_MAX)
@@ -214,8 +217,11 @@ public class WeightRecordTest {
 
     @Test
     public void testDeleteWeightRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -280,8 +286,11 @@ public class WeightRecordTest {
 
     @Test
     public void testDeleteWeightRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
         TestUtils.verifyDeleteRecords(WeightRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, WeightRecord.class);

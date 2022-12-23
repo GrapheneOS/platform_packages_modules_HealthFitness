@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,69 +16,9 @@
 
 package android.healthconnect;
 
-import android.annotation.NonNull;
-
-import java.time.Instant;
-import java.util.Objects;
-
-/** Specification of time range for read and delete requests. */
-public final class TimeRangeFilter {
-    private final Instant mStartTime;
-    private final Instant mEndTime;
-
-    /**
-     * Sets startTime and endTime of the time range filter which are inclusive
-     *
-     * @param startTime represents start time of this filter
-     * @param endTime end time of this filter
-     */
-    private TimeRangeFilter(@NonNull Instant startTime, @NonNull Instant endTime) {
-        Objects.requireNonNull(startTime);
-        Objects.requireNonNull(endTime);
-
-        mStartTime = startTime;
-        mEndTime = endTime;
-    }
-
-    /**
-     * @return start time of this filter
-     */
-    @NonNull
-    public Instant getStartTime() {
-        return mStartTime;
-    }
-
-    /**
-     * @return end time of this filter
-     */
-    @NonNull
-    public Instant getEndTime() {
-        return mEndTime;
-    }
-
-    /**
-     * @see TimeRangeFilter
-     */
-    public static final class Builder {
-        private final Instant mStartTime;
-        private final Instant mEndTime;
-
-        /**
-         * @param startTime represents start time of this filter
-         * @param endTime end time of this filter
-         */
-        public Builder(@NonNull Instant startTime, @NonNull Instant endTime) {
-            Objects.requireNonNull(startTime);
-            Objects.requireNonNull(endTime);
-
-            mStartTime = startTime;
-            mEndTime = endTime;
-        }
-
-        /** Build and return {@link TimeRangeFilter} object */
-        @NonNull
-        public TimeRangeFilter build() {
-            return new TimeRangeFilter(mStartTime, mEndTime);
-        }
-    }
-}
+/**
+ * A Base class to represent a request for time range for read and delete requests. Internally
+ * represents a SQLLite * argument that specifies start and end time to put in as SQLLite
+ * parameters.
+ */
+public interface TimeRangeFilter {}

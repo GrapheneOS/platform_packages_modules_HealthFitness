@@ -32,7 +32,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.HeartRateRecord;
@@ -69,7 +69,10 @@ public class HeartRateRecordTest {
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 HeartRateRecord.class,
-                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
@@ -130,8 +133,11 @@ public class HeartRateRecordTest {
 
     @Test
     public void testReadHeartRateRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         HeartRateRecord testRecord = getCompleteHeartRateRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<HeartRateRecord> newHeartRateRecords =
@@ -253,8 +259,11 @@ public class HeartRateRecordTest {
 
     @Test
     public void testDeleteHeartRateRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteHeartRateRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -320,8 +329,11 @@ public class HeartRateRecordTest {
 
     @Test
     public void testDeleteHeartRateRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteHeartRateRecord());
         TestUtils.verifyDeleteRecords(HeartRateRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, HeartRateRecord.class);
@@ -446,9 +458,9 @@ public class HeartRateRecordTest {
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
@@ -491,9 +503,9 @@ public class HeartRateRecordTest {
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.now().plusMillis(1000),
-                                                        Instant.now().plusMillis(2000))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.now().plusMillis(1000))
+                                                .setEndTime(Instant.now().plusMillis(2000))
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
@@ -519,9 +531,9 @@ public class HeartRateRecordTest {
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
@@ -556,9 +568,9 @@ public class HeartRateRecordTest {
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
@@ -583,7 +595,10 @@ public class HeartRateRecordTest {
         List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
                 TestUtils.getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(start, end).build())
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(start)
+                                                .setEndTime(end)
+                                                .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
                                 .addAggregationType(BPM_AVG)
@@ -617,7 +632,10 @@ public class HeartRateRecordTest {
         List<AggregateRecordsGroupedByPeriodResponse<Long>> responses =
                 TestUtils.getAggregateResponseGroupByPeriod(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(start, end).build())
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(start)
+                                                .setEndTime(end)
+                                                .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
                                 .build(),
@@ -681,9 +699,9 @@ public class HeartRateRecordTest {
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(HEART_MEASUREMENTS_COUNT)
                                 .addAggregationType(BPM_MAX)
@@ -697,9 +715,9 @@ public class HeartRateRecordTest {
         AggregateRecordsResponse<Long> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(HEART_MEASUREMENTS_COUNT)
                                 .build(),

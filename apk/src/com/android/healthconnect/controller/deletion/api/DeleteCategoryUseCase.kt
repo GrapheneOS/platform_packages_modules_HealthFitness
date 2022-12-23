@@ -15,7 +15,7 @@ package com.android.healthconnect.controller.deletion.api
 
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.service.IoDispatcher
@@ -37,7 +37,7 @@ constructor(
 
     suspend fun invoke(
         deleteCategory: DeletionType.DeletionTypeCategoryData,
-        timeRangeFilter: TimeRangeFilter
+        timeRangeFilter: TimeInstantRangeFilter
     ) {
         val deleteRequest = DeleteUsingFiltersRequest.Builder().setTimeRangeFilter(timeRangeFilter)
 

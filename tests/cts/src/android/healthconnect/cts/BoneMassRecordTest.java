@@ -23,7 +23,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.BoneMassRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -107,8 +107,11 @@ public class BoneMassRecordTest {
 
     @Test
     public void testReadBoneMassRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         BoneMassRecord testRecord = getCompleteBoneMassRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<BoneMassRecord> newBoneMassRecords =
@@ -208,8 +211,11 @@ public class BoneMassRecordTest {
 
     @Test
     public void testDeleteBoneMassRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBoneMassRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -274,8 +280,11 @@ public class BoneMassRecordTest {
 
     @Test
     public void testDeleteBoneMassRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBoneMassRecord());
         TestUtils.verifyDeleteRecords(BoneMassRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, BoneMassRecord.class);

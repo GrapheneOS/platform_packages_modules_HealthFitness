@@ -18,7 +18,7 @@ package com.android.healthconnect.controller.dataentries
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.ReadRecordsRequestUsingFilters
 import android.healthconnect.ReadRecordsResponse
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
@@ -50,31 +50,34 @@ constructor(
         return dataTypes.map { dataType -> readDataType(dataType, timeFilterRange) }.flatten()
     }
 
-    private fun getTimeFilter(selectedDate: Instant): TimeRangeFilter {
+    private fun getTimeFilter(selectedDate: Instant): TimeInstantRangeFilter {
         val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
         val end = start.plus(ofHours(23)).plus(ofMinutes(59))
-        return TimeRangeFilter.Builder(start, end).build()
+        return TimeInstantRangeFilter.Builder()
+                .setStartTime(start)
+                .setEndTime(end)
+                .build()
     }
 
     private suspend fun readDataType(
-        data: Class<out Record>,
-        timeFilterRange: TimeRangeFilter
+            data: Class<out Record>,
+            timeFilterRange: TimeInstantRangeFilter
     ): List<FormattedEntry> {
         val filter =
-            ReadRecordsRequestUsingFilters.Builder(data).setTimeRangeFilter(timeFilterRange).build()
+                ReadRecordsRequestUsingFilters.Builder(data).setTimeRangeFilter(timeFilterRange).build()
         val records =
-            suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
+                suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
                     healthConnectManager.readRecords(
-                        filter, Runnable::run, continuation.asOutcomeReceiver())
+                            filter, Runnable::run, continuation.asOutcomeReceiver())
                 }
-                .records
+                        .records
         return records
-            .map { record -> healthDataEntryFormatter.format(record) }
-            .sortedBy { it.startTime }
+                .map { record -> healthDataEntryFormatter.format(record) }
+                .sortedBy { it.startTime }
     }
 }
 
 data class LoadDataEntriesInput(
-    val permissionType: HealthPermissionType,
-    val selectedDate: Instant
+        val permissionType: HealthPermissionType,
+        val selectedDate: Instant
 )

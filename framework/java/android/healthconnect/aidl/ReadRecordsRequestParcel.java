@@ -22,6 +22,7 @@ import static android.healthconnect.Constants.DEFAULT_LONG;
 import android.annotation.NonNull;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
+import android.healthconnect.TimeRangeFilterHelper;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
@@ -97,8 +98,8 @@ public class ReadRecordsRequestParcel implements Parcelable {
             mStartTime = DEFAULT_LONG;
             mEndTime = DEFAULT_LONG;
         } else {
-            mStartTime = request.getTimeRangeFilter().getStartTime().toEpochMilli();
-            mEndTime = request.getTimeRangeFilter().getEndTime().toEpochMilli();
+            mStartTime = TimeRangeFilterHelper.getDurationStart(request.getTimeRangeFilter());
+            mEndTime = TimeRangeFilterHelper.getDurationEnd(request.getTimeRangeFilter());
         }
         mRecordType = RecordMapper.getInstance().getRecordType(request.getRecordType());
         mPageSize = request.getPageSize();

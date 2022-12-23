@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.tests.deletion.api
 
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
@@ -78,13 +78,18 @@ class DeleteCategoryUseCaseTest {
 
         val deleteCategory = DeletionType.DeletionTypeCategoryData(HealthDataCategory.ACTIVITY)
 
-        useCase.invoke(deleteCategory, TimeRangeFilter.Builder(startTime, endTime).build())
+        useCase.invoke(deleteCategory, TimeInstantRangeFilter.Builder()
+                .setStartTime(startTime)
+                .setEndTime(endTime)
+                .build())
 
         Mockito.verify(manager, Mockito.times(1))
             .deleteRecords(filtersCaptor.capture(), any(), any())
 
-        assertThat(filtersCaptor.value.timeRangeFilter.startTime).isEqualTo(startTime)
-        assertThat(filtersCaptor.value.timeRangeFilter.endTime).isEqualTo(endTime)
+        assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
+            .isEqualTo(startTime)
+        assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
+            .isEqualTo(endTime)
         assertThat(filtersCaptor.value.dataOrigins).isEmpty()
         assertThat(filtersCaptor.value.recordTypes)
             .containsExactly(

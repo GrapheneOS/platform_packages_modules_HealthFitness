@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.tests.deletion.api
 
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.DataOrigin
 import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.deletion.DeletionType
@@ -66,12 +66,17 @@ class DeleteAppDataUseCaseTest {
         val deleteAppData =
             DeletionType.DeletionTypeAppData(packageName = "package.name", appName = "APP_NAME")
 
-        useCase.invoke(deleteAppData, TimeRangeFilter.Builder(startTime, endTime).build())
+        useCase.invoke(deleteAppData, TimeInstantRangeFilter.Builder()
+                .setStartTime(startTime)
+                .setEndTime(endTime)
+                .build())
 
         Mockito.verify(manager, Mockito.times(1))
             .deleteRecords(filtersCaptor.capture(), Mockito.any(), Mockito.any())
-        Truth.assertThat(filtersCaptor.value.timeRangeFilter.startTime).isEqualTo(startTime)
-        Truth.assertThat(filtersCaptor.value.timeRangeFilter.endTime).isEqualTo(endTime)
+        Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
+            .isEqualTo(startTime)
+        Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
+            .isEqualTo(endTime)
         Truth.assertThat(filtersCaptor.value.dataOrigins)
             .containsExactly(DataOrigin.Builder().setPackageName("package.name").build())
         Truth.assertThat(filtersCaptor.value.recordTypes).isEmpty()

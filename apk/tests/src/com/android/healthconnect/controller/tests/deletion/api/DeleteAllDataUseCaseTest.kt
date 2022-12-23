@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.tests.deletion.api
 
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.deletion.api.DeleteAllDataUseCase
 import com.google.common.truth.Truth.assertThat
@@ -63,11 +63,16 @@ class DeleteAllDataUseCaseTest {
         val startTime = Instant.now().minusSeconds(10)
         val endTime = Instant.now()
 
-        useCase.invoke(TimeRangeFilter.Builder(startTime, endTime).build())
+        useCase.invoke(TimeInstantRangeFilter.Builder()
+                .setStartTime(startTime)
+                .setEndTime(endTime)
+                .build())
 
         verify(manager, times(1)).deleteRecords(filtersCaptor.capture(), any(), any())
-        assertThat(filtersCaptor.value.timeRangeFilter.startTime).isEqualTo(startTime)
-        assertThat(filtersCaptor.value.timeRangeFilter.endTime).isEqualTo(endTime)
+        assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
+            .isEqualTo(startTime)
+        assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
+            .isEqualTo(endTime)
         assertThat(filtersCaptor.value.dataOrigins).isEmpty()
         assertThat(filtersCaptor.value.recordTypes).isEmpty()
     }

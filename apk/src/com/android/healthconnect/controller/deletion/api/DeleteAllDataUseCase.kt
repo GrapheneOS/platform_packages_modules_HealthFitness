@@ -15,7 +15,7 @@ package com.android.healthconnect.controller.deletion.api
 
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject
@@ -32,7 +32,7 @@ constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun invoke(timeRangeFilter: TimeRangeFilter) =
+    suspend fun invoke(timeRangeFilter: TimeInstantRangeFilter) =
         withContext(dispatcher) {
             suspendCancellableCoroutine<Void> { continuation ->
                 healthConnectManager.deleteRecords(

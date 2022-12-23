@@ -30,6 +30,7 @@ import android.database.Cursor;
 import android.healthconnect.AggregateResult;
 import android.healthconnect.Constants;
 import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeRangeFilterHelper;
 import android.healthconnect.datatypes.AggregationType;
 import android.util.ArrayMap;
 import android.util.Slog;
@@ -181,19 +182,21 @@ public class AggregateTableRequest {
         return this;
     }
 
+    /** Sets group by fields. */
     public void setGroupBy(String columnName, Period period, TimeRangeFilter timeRangeFilter) {
         mGroupByColumnName = columnName;
-        mGroupByStart = StorageUtils.getPeriodStart(timeRangeFilter);
+        mGroupByStart = TimeRangeFilterHelper.getPeriodStart(timeRangeFilter);
         mGroupByDelta = StorageUtils.getPeriodDelta(period);
-        mGroupByEnd = StorageUtils.getPeriodEnd(timeRangeFilter);
+        mGroupByEnd = TimeRangeFilterHelper.getPeriodEnd(timeRangeFilter);
         setGroupBySize();
     }
 
+    /** Sets group by fields. */
     public void setGroupBy(String columnName, Duration duration, TimeRangeFilter timeRangeFilter) {
         mGroupByColumnName = columnName;
-        mGroupByStart = StorageUtils.getDurationStart(timeRangeFilter);
+        mGroupByStart = TimeRangeFilterHelper.getDurationStart(timeRangeFilter);
         mGroupByDelta = StorageUtils.getDurationDelta(duration);
-        mGroupByEnd = StorageUtils.getDurationEnd(timeRangeFilter);
+        mGroupByEnd = TimeRangeFilterHelper.getDurationEnd(timeRangeFilter);
         setGroupBySize();
     }
 

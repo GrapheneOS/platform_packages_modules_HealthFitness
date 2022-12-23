@@ -23,7 +23,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.Metadata;
@@ -57,7 +57,10 @@ public class SpeedRecordTest {
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 SpeedRecord.class,
-                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
@@ -111,8 +114,11 @@ public class SpeedRecordTest {
 
     @Test
     public void testReadSpeedRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         SpeedRecord testRecord = getCompleteSpeedRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<SpeedRecord> newSpeedRecords =
@@ -170,8 +176,11 @@ public class SpeedRecordTest {
 
     @Test
     public void testDeleteSpeedRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -236,8 +245,11 @@ public class SpeedRecordTest {
 
     @Test
     public void testDeleteSpeedRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
         TestUtils.verifyDeleteRecords(SpeedRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, SpeedRecord.class);

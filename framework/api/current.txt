@@ -171,6 +171,19 @@ package android.healthconnect {
     method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getRecords();
   }
 
+  public final class LocalTimeRangeFilter implements android.healthconnect.TimeRangeFilter {
+    method @Nullable public java.time.LocalDateTime getEndTime();
+    method @Nullable public java.time.LocalDateTime getStartTime();
+    method @NonNull public boolean isBounded();
+  }
+
+  public static final class LocalTimeRangeFilter.Builder {
+    ctor public LocalTimeRangeFilter.Builder();
+    method @NonNull public android.healthconnect.LocalTimeRangeFilter build();
+    method @NonNull public android.healthconnect.LocalTimeRangeFilter.Builder setEndTime(@Nullable java.time.LocalDateTime);
+    method @NonNull public android.healthconnect.LocalTimeRangeFilter.Builder setStartTime(@Nullable java.time.LocalDateTime);
+  }
+
   public abstract class ReadRecordsRequest<T extends android.healthconnect.datatypes.Record> {
     method @NonNull public Class<T> getRecordType();
   }
@@ -217,14 +230,20 @@ package android.healthconnect {
     method @NonNull public Class<? extends android.healthconnect.datatypes.Record> getRecordType();
   }
 
-  public final class TimeRangeFilter {
-    method @NonNull public java.time.Instant getEndTime();
-    method @NonNull public java.time.Instant getStartTime();
+  public final class TimeInstantRangeFilter implements android.healthconnect.TimeRangeFilter {
+    method @Nullable public java.time.Instant getEndTime();
+    method @Nullable public java.time.Instant getStartTime();
+    method @NonNull public boolean isBounded();
   }
 
-  public static final class TimeRangeFilter.Builder {
-    ctor public TimeRangeFilter.Builder(@NonNull java.time.Instant, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.TimeRangeFilter build();
+  public static final class TimeInstantRangeFilter.Builder {
+    ctor public TimeInstantRangeFilter.Builder();
+    method @NonNull public android.healthconnect.TimeInstantRangeFilter build();
+    method @NonNull public android.healthconnect.TimeInstantRangeFilter.Builder setEndTime(@Nullable java.time.Instant);
+    method @NonNull public android.healthconnect.TimeInstantRangeFilter.Builder setStartTime(@Nullable java.time.Instant);
+  }
+
+  public interface TimeRangeFilter {
   }
 
 }

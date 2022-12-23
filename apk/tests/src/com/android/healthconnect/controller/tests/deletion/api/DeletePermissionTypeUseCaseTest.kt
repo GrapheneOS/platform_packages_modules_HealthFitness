@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.tests.deletion.api
 
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.os.OutcomeReceiver
@@ -69,13 +69,18 @@ class DeletePermissionTypeUseCaseTest {
         val deletePermissionType =
             DeletionType.DeletionTypeHealthPermissionTypeData(HealthPermissionType.STEPS)
 
-        useCase.invoke(deletePermissionType, TimeRangeFilter.Builder(startTime, endTime).build())
+        useCase.invoke(deletePermissionType, TimeInstantRangeFilter.Builder()
+                .setStartTime(startTime)
+                .setEndTime(endTime)
+                .build())
 
         Mockito.verify(manager, Mockito.times(1))
             .deleteRecords(filtersCaptor.capture(), any(), any())
 
-        Truth.assertThat(filtersCaptor.value.timeRangeFilter.startTime).isEqualTo(startTime)
-        Truth.assertThat(filtersCaptor.value.timeRangeFilter.endTime).isEqualTo(endTime)
+        Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
+            .isEqualTo(startTime)
+        Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
+            .isEqualTo(endTime)
         Truth.assertThat(filtersCaptor.value.dataOrigins).isEmpty()
         // TODO update when more records available
         Truth.assertThat(filtersCaptor.value.recordTypes)

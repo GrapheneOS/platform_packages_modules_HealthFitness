@@ -23,7 +23,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.IntermenstrualBleedingRecord;
@@ -54,7 +54,10 @@ public class IntermenstrualBleedingRecordTest {
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 IntermenstrualBleedingRecord.class,
-                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
@@ -134,8 +137,11 @@ public class IntermenstrualBleedingRecordTest {
     @Test
     public void testReadIntermenstrualBleedingRecordUsingFilters_timeFilter()
             throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         IntermenstrualBleedingRecord testRecord = getCompleteIntermenstrualBleedingRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<IntermenstrualBleedingRecord> newIntermenstrualBleedingRecords =
@@ -209,8 +215,11 @@ public class IntermenstrualBleedingRecordTest {
 
     @Test
     public void testDeleteIntermenstrualBleedingRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteIntermenstrualBleedingRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -284,8 +293,11 @@ public class IntermenstrualBleedingRecordTest {
 
     @Test
     public void testDeleteIntermenstrualBleedingRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteIntermenstrualBleedingRecord());
         TestUtils.verifyDeleteRecords(IntermenstrualBleedingRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, IntermenstrualBleedingRecord.class);

@@ -23,7 +23,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.BloodGlucoseRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -112,8 +112,11 @@ public class BloodGlucoseRecordTest {
 
     @Test
     public void testReadBloodGlucoseRecordUsingFilters_timeFilter() throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         BloodGlucoseRecord testRecord = getCompleteBloodGlucoseRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<BloodGlucoseRecord> newBloodGlucoseRecords =
@@ -215,8 +218,11 @@ public class BloodGlucoseRecordTest {
 
     @Test
     public void testDeleteBloodGlucoseRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBloodGlucoseRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -284,8 +290,11 @@ public class BloodGlucoseRecordTest {
 
     @Test
     public void testDeleteBloodGlucoseRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBloodGlucoseRecord());
         TestUtils.verifyDeleteRecords(BloodGlucoseRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, BloodGlucoseRecord.class);

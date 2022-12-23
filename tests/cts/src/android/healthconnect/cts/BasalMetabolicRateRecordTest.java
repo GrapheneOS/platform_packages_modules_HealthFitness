@@ -27,7 +27,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -62,7 +62,10 @@ public class BasalMetabolicRateRecordTest {
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 BasalMetabolicRateRecord.class,
-                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
@@ -137,8 +140,11 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testReadBasalMetabolicRateRecordUsingFilters_timeFilter()
             throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         BasalMetabolicRateRecord testRecord = getCompleteBasalMetabolicRateRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<BasalMetabolicRateRecord> newBasalMetabolicRateRecords =
@@ -205,8 +211,11 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testDeleteBasalMetabolicRateRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBasalMetabolicRateRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -275,8 +284,11 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testDeleteBasalMetabolicRateRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBasalMetabolicRateRecord());
         TestUtils.verifyDeleteRecords(BasalMetabolicRateRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, BasalMetabolicRateRecord.class);
@@ -289,9 +301,9 @@ public class BasalMetabolicRateRecordTest {
         AggregateRecordsResponse<Power> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Power>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(3, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(3, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BASAL_CALORIES_TOTAL)
                                 .build(),
@@ -300,9 +312,9 @@ public class BasalMetabolicRateRecordTest {
         AggregateRecordsResponse<Power> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Power>(
-                                        new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0),
-                                                        Instant.now().plus(3, ChronoUnit.DAYS))
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(3, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BASAL_CALORIES_TOTAL)
                                 .build(),

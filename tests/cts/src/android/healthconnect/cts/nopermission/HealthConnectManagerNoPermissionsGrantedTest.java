@@ -26,7 +26,7 @@ import android.healthconnect.ChangeLogTokenRequest;
 import android.healthconnect.ChangeLogTokenResponse;
 import android.healthconnect.ChangeLogsRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.cts.TestUtils;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
@@ -95,7 +95,10 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             try {
                 TestUtils.verifyDeleteRecords(
                         testRecord.getClass(),
-                        new TimeRangeFilter.Builder(Instant.now(), Instant.now()).build());
+                        new TimeInstantRangeFilter.Builder()
+                                .setStartTime(Instant.now())
+                                .setEndTime(Instant.now())
+                                .build());
                 Assert.fail();
             } catch (SecurityException securityException) {
                 assertThat(true).isTrue();
@@ -148,8 +151,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                             TestUtils.getHeartRateRecord(73));
             TestUtils.getAggregateResponse(
                     new AggregateRecordsRequest.Builder<Long>(
-                                    new TimeRangeFilter.Builder(
-                                                    Instant.ofEpochMilli(0), Instant.now())
+                                    new TimeInstantRangeFilter.Builder()
+                                            .setStartTime(Instant.ofEpochMilli(0))
+                                            .setEndTime(Instant.now())
                                             .build())
                             .addAggregationType(BPM_MAX)
                             .addAggregationType(BPM_MIN)
@@ -171,7 +175,10 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             Instant end = Instant.now().plusMillis(2500);
             TestUtils.getAggregateResponseGroupByDuration(
                     new AggregateRecordsRequest.Builder<Long>(
-                                    new TimeRangeFilter.Builder(start, end).build())
+                                    new TimeInstantRangeFilter.Builder()
+                                            .setStartTime(start)
+                                            .setEndTime(end)
+                                            .build())
                             .addAggregationType(BPM_MAX)
                             .addAggregationType(BPM_MIN)
                             .build(),
@@ -190,7 +197,10 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             Instant end = start.plus(3, ChronoUnit.DAYS);
             TestUtils.getAggregateResponseGroupByPeriod(
                     new AggregateRecordsRequest.Builder<Long>(
-                                    new TimeRangeFilter.Builder(start, end).build())
+                                    new TimeInstantRangeFilter.Builder()
+                                            .setStartTime(start)
+                                            .setEndTime(end)
+                                            .build())
                             .addAggregationType(BPM_MAX)
                             .addAggregationType(BPM_MIN)
                             .build(),

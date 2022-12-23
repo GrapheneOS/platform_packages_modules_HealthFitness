@@ -22,7 +22,9 @@ import static android.healthconnect.Constants.DEFAULT_LONG;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.AggregateRecordsRequest;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeRangeFilterHelper;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.os.Parcel;
@@ -59,8 +61,8 @@ public class AggregateDataRequestParcel implements Parcelable {
     private Period mPeriod;
 
     public AggregateDataRequestParcel(AggregateRecordsRequest<?> request) {
-        mStartTime = request.getTimeRangeFilter().getStartTime().toEpochMilli();
-        mEndTime = request.getTimeRangeFilter().getEndTime().toEpochMilli();
+        mStartTime = TimeRangeFilterHelper.getDurationStart(request.getTimeRangeFilter());
+        mEndTime = TimeRangeFilterHelper.getDurationEnd(request.getTimeRangeFilter());
         mAggregateIds = new int[request.getAggregationTypes().size()];
 
         int i = 0;
@@ -155,8 +157,9 @@ public class AggregateDataRequestParcel implements Parcelable {
 
     @NonNull
     public TimeRangeFilter getTimeRangeFilter() {
-        return new TimeRangeFilter.Builder(
-                        Instant.ofEpochMilli(mStartTime), Instant.ofEpochMilli(mEndTime))
+        return new TimeInstantRangeFilter.Builder()
+                .setStartTime(Instant.ofEpochMilli(mStartTime))
+                .setEndTime(Instant.ofEpochMilli(mEndTime))
                 .build();
     }
 }

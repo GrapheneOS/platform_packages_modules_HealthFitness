@@ -17,17 +17,17 @@
   -->
 
 <configuration description="Runs unit tests for HealthConnect APEX.">
-    <option name="test-tag" value="HealthConnectUnitTests" />
+    <option name="test-tag" value="HealthConnectUnitTests"/>
 
     <!-- Install test -->
     <target_preparer class="com.android.tradefed.targetprep.TestAppInstallSetup">
-        <option name="test-file-name" value="HealthConnectUnitTests.apk" />
-        <option name="cleanup-apks" value="true" />
+        <option name="test-file-name" value="HealthConnectUnitTests.apk"/>
+        <option name="cleanup-apks" value="true"/>
     </target_preparer>
 
-    <test class="com.android.tradefed.testtype.AndroidJUnitTest" >
-        <option name="package" value="com.android.healthconnect.unittests" />
-        <option name="runner" value="androidx.test.runner.AndroidJUnitRunner" />
+    <test class="com.android.tradefed.testtype.AndroidJUnitTest">
+        <option name="package" value="com.android.healthconnect.unittests"/>
+        <option name="runner" value="androidx.test.runner.AndroidJUnitRunner"/>
     </test>
 
     <object type="module_controller"

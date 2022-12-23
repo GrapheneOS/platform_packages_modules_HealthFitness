@@ -23,7 +23,7 @@ import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -56,7 +56,10 @@ public class CyclingPedalingCadenceRecordTest {
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 CyclingPedalingCadenceRecord.class,
-                new TimeRangeFilter.Builder(Instant.EPOCH, Instant.now()).build());
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
@@ -131,8 +134,11 @@ public class CyclingPedalingCadenceRecordTest {
     @Test
     public void testReadCyclingPedalingCadenceRecordUsingFilters_timeFilter()
             throws InterruptedException {
-        TimeRangeFilter filter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(3000)).build();
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
         CyclingPedalingCadenceRecord testRecord = getCompleteCyclingPedalingCadenceRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<CyclingPedalingCadenceRecord> newCyclingPedalingCadenceRecords =
@@ -208,8 +214,11 @@ public class CyclingPedalingCadenceRecordTest {
 
     @Test
     public void testDeleteCyclingPedalingCadenceRecord_time_filters() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteCyclingPedalingCadenceRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -283,8 +292,11 @@ public class CyclingPedalingCadenceRecordTest {
 
     @Test
     public void testDeleteCyclingPedalingCadenceRecord_time_range() throws InterruptedException {
-        TimeRangeFilter timeRangeFilter =
-                new TimeRangeFilter.Builder(Instant.now(), Instant.now().plusMillis(1000)).build();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(1000))
+                        .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteCyclingPedalingCadenceRecord());
         TestUtils.verifyDeleteRecords(CyclingPedalingCadenceRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, CyclingPedalingCadenceRecord.class);

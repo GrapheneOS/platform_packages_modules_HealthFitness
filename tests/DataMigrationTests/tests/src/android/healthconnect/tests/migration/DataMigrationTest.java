@@ -37,7 +37,7 @@ import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsResponse;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
 import android.healthconnect.datatypes.HeightRecord;
@@ -217,7 +217,10 @@ public class DataMigrationTest {
         mManager.readRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(clazz)
                         .setTimeRangeFilter(
-                                new TimeRangeFilter.Builder(mStartTime, mEndTime).build())
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(mStartTime)
+                                        .setEndTime(mEndTime)
+                                        .build())
                         .build(),
                 Executors.newSingleThreadExecutor(),
                 callback);

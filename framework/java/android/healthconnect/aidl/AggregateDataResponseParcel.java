@@ -25,7 +25,10 @@ import android.healthconnect.AggregateRecordsGroupedByDurationResponse;
 import android.healthconnect.AggregateRecordsGroupedByPeriodResponse;
 import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.AggregateResult;
+import android.healthconnect.LocalTimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeRangeFilterHelper;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.os.Parcel;
@@ -39,7 +42,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,8 +111,9 @@ public class AggregateDataResponseParcel implements Parcelable {
         long endTime = in.readLong();
         if (startTime != DEFAULT_LONG && endTime != DEFAULT_LONG) {
             mTimeRangeFilter =
-                    new TimeRangeFilter.Builder(
-                                    Instant.ofEpochMilli(startTime), Instant.ofEpochMilli(endTime))
+                    new TimeInstantRangeFilter.Builder()
+                            .setStartTime(Instant.ofEpochMilli(startTime))
+                            .setEndTime(Instant.ofEpochMilli(endTime))
                             .build();
         }
     }
@@ -148,7 +151,7 @@ public class AggregateDataResponseParcel implements Parcelable {
 
         List<AggregateRecordsGroupedByDurationResponse<?>>
                 aggregateRecordsGroupedByDurationResponse = new ArrayList<>();
-        long mStartTime = getDurationStart(mTimeRangeFilter);
+        long mStartTime = TimeRangeFilterHelper.getDurationStart(mTimeRangeFilter);
         long mDelta = getDurationDelta(mDuration);
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
             aggregateRecordsGroupedByDurationResponse.add(
@@ -171,7 +174,7 @@ public class AggregateDataResponseParcel implements Parcelable {
 
         List<AggregateRecordsGroupedByPeriodResponse<?>> aggregateRecordsGroupedByPeriodResponses =
                 new ArrayList<>();
-        long mStartTime = getPeriodStart(mTimeRangeFilter);
+        long mStartTime = TimeRangeFilterHelper.getPeriodStart(mTimeRangeFilter);
         long mDelta = getPeriodDelta(mPeriod);
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
             aggregateRecordsGroupedByPeriodResponses.add(
@@ -242,8 +245,8 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
 
         if (mTimeRangeFilter != null) {
-            dest.writeLong(mTimeRangeFilter.getStartTime().toEpochMilli());
-            dest.writeLong(mTimeRangeFilter.getEndTime().toEpochMilli());
+            dest.writeLong(TimeRangeFilterHelper.getDurationStart(mTimeRangeFilter));
+            dest.writeLong(TimeRangeFilterHelper.getDurationEnd(mTimeRangeFilter));
         } else {
             dest.writeLong(DEFAULT_LONG);
             dest.writeLong(DEFAULT_LONG);
@@ -261,17 +264,31 @@ public class AggregateDataResponseParcel implements Parcelable {
     }
 
     private LocalDateTime getPeriodStartLocalDateTime(TimeRangeFilter timeRangeFilter) {
-        return LocalDateTime.ofInstant(timeRangeFilter.getStartTime(), ZoneOffset.systemDefault());
+        if (timeRangeFilter instanceof TimeInstantRangeFilter) {
+            return LocalDateTime.ofInstant(
+                    ((TimeInstantRangeFilter) timeRangeFilter).getStartTime(),
+                    ZoneOffset.systemDefault());
+        } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
+            return ((LocalTimeRangeFilter) timeRangeFilter).getStartTime();
+        } else {
+            throw new IllegalArgumentException(
+                    "Invalid time filter object. Object should be either "
+                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
+        }
     }
 
     private LocalDateTime getPeriodEndLocalDateTime(TimeRangeFilter timeRangeFilter) {
-        return LocalDateTime.ofInstant(timeRangeFilter.getEndTime(), ZoneOffset.systemDefault());
-    }
-
-    private long getPeriodStart(TimeRangeFilter timeRangeFilter) {
-        return ChronoUnit.DAYS.between(
-                LocalDate.ofEpochDay(0),
-                LocalDate.ofInstant(timeRangeFilter.getStartTime(), ZoneOffset.MIN));
+        if (timeRangeFilter instanceof TimeInstantRangeFilter) {
+            return LocalDateTime.ofInstant(
+                    ((TimeInstantRangeFilter) timeRangeFilter).getEndTime(),
+                    ZoneOffset.systemDefault());
+        } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
+            return ((LocalTimeRangeFilter) timeRangeFilter).getEndTime();
+        } else {
+            throw new IllegalArgumentException(
+                    "Invalid time filter object. Object should be either "
+                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
+        }
     }
 
     private long getPeriodDelta(Period period) {
@@ -284,10 +301,6 @@ public class AggregateDataResponseParcel implements Parcelable {
 
     private Instant getDurationInstant(long duration) {
         return Instant.ofEpochMilli(duration);
-    }
-
-    private long getDurationStart(TimeRangeFilter timeRangeFilter) {
-        return timeRangeFilter.getStartTime().toEpochMilli();
     }
 
     private long getDurationDelta(Duration duration) {

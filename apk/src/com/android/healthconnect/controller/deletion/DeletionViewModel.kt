@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.deletion
 
-import android.healthconnect.TimeRangeFilter
+import android.healthconnect.TimeInstantRangeFilter
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,11 +35,11 @@ import kotlinx.coroutines.launch
 class DeletionViewModel
 @Inject
 constructor(
-    private val deleteAllDataUseCase: DeleteAllDataUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase,
-    private val deletePermissionTypeUseCase: DeletePermissionTypeUseCase,
-    private val deleteEntryUseCase: DeleteEntryUseCase,
-    private val deleteAppDataUseCase: DeleteAppDataUseCase
+        private val deleteAllDataUseCase: DeleteAllDataUseCase,
+        private val deleteCategoryUseCase: DeleteCategoryUseCase,
+        private val deletePermissionTypeUseCase: DeletePermissionTypeUseCase,
+        private val deleteEntryUseCase: DeleteEntryUseCase,
+        private val deleteAppDataUseCase: DeleteAppDataUseCase
 ) : ViewModel() {
 
     companion object {
@@ -58,16 +58,16 @@ constructor(
 
     fun setDeletionType(deletionType: DeletionType) {
         val showTimeRangePickerDialog =
-            when (deletionType) {
-                is DeletionType.DeleteDataEntry -> false
-                // TODO (teog) cover other flows
-                else -> true
-            }
+                when (deletionType) {
+                    is DeletionType.DeleteDataEntry -> false
+                    // TODO (teog) cover other flows
+                    else -> true
+                }
         _deletionParameters.value =
-            currentDeletionParameters()
-                .copy(
-                    showTimeRangePickerDialog = showTimeRangePickerDialog,
-                    deletionType = deletionType)
+                currentDeletionParameters()
+                        .copy(
+                                showTimeRangePickerDialog = showTimeRangePickerDialog,
+                                deletionType = deletionType)
     }
 
     fun setChosenRange(chosenRange: ChosenRange) {
@@ -76,7 +76,7 @@ constructor(
 
     fun setEndTime(endTime: Instant) {
         _deletionParameters.value =
-            _deletionParameters.value?.copy(endTimeMs = endTime.toEpochMilli())
+                _deletionParameters.value?.copy(endTimeMs = endTime.toEpochMilli())
     }
 
     private var _categoriesReloadNeeded = MutableLiveData(false)
@@ -98,10 +98,10 @@ constructor(
                 setDeletionState(DeletionState.STATE_PROGRESS_INDICATOR_STARTED)
 
                 val timeRangeFilter =
-                    TimeRangeFilter.Builder(
-                            currentDeletionParameters().getStartTimeInstant(),
-                            currentDeletionParameters().getEndTimeInstant())
-                        .build()
+                        TimeInstantRangeFilter.Builder().setStartTime(
+                                currentDeletionParameters().getStartTimeInstant()).setEndTime(
+                                currentDeletionParameters().getEndTimeInstant())
+                                .build()
 
                 when (val deletionType = currentDeletionParameters().deletionType) {
                     is DeletionType.DeleteDataEntry -> {

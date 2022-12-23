@@ -42,7 +42,7 @@ import android.healthconnect.ReadRecordsRequest;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.ReadRecordsResponse;
 import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.TimeInstantRangeFilter;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Device;
@@ -611,7 +611,7 @@ public class TestUtils {
     }
 
     public static void verifyDeleteRecords(
-            Class<? extends Record> recordType, TimeRangeFilter timeRangeFilter)
+            Class<? extends Record> recordType, TimeInstantRangeFilter timeRangeFilter)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);

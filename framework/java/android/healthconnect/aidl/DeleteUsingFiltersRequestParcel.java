@@ -20,6 +20,7 @@ import static android.healthconnect.Constants.DEFAULT_LONG;
 
 import android.annotation.NonNull;
 import android.healthconnect.DeleteUsingFiltersRequest;
+import android.healthconnect.TimeRangeFilterHelper;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.os.Parcel;
@@ -79,8 +80,8 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
             mStartTime = DEFAULT_LONG;
             mEndTime = DEFAULT_LONG;
         } else {
-            mStartTime = request.getTimeRangeFilter().getStartTime().toEpochMilli();
-            mEndTime = request.getTimeRangeFilter().getEndTime().toEpochMilli();
+            mStartTime = TimeRangeFilterHelper.getDurationStart(request.getTimeRangeFilter());
+            mEndTime = TimeRangeFilterHelper.getDurationEnd(request.getTimeRangeFilter());
         }
         mRecordIdFiltersParcel = new RecordIdFiltersParcel(Collections.emptyList());
     }
