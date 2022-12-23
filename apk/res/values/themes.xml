@@ -14,36 +14,45 @@
   limitations under the License.
 -->
 <resources>
-  <style name="Base.Theme.HealthConnect" parent="@style/Theme.SubSettingsBase">
-    <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
-    <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
-    <item name="alertDialogTheme">@style/Theme.HealthConnect.Dialog.Alert</item>
-    <item name="deleteSettingsIcon">@drawable/ic_deletion_settings</item>
-    <item name="deleteIcon">@drawable/quantum_gm_ic_delete_vd_theme_24</item>
-    <item name="successIcon">@drawable/quantum_gm_ic_check_circle_vd_theme_24</item>
-    <item name="failureIcon">@drawable/quantum_ic_cancel_vd_theme_24</item>
-    <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
-    <item name="disconnectAllIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
-    <item name="dialogGravity">@integer/dialog_gravity</item>
-    <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
-    <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>
-    <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>
 
-    <!--    Text styles -->
-    <item name="textAppearancePageTitle">@style/TextAppearance.HealthConnect.PageTitle</item>
-    <item name="textAppearanceTitle">@style/TextAppearance.PreferenceTitle.SettingsLib</item>
-    <item name="textAppearanceTitleSecondary">@style/TextAppearance.HealthConnect.TitleSecondary</item>
-    <item name="textAppearanceSectionTitle">@style/PreferenceCategoryTitleTextStyle</item>
-    <item name="textAppearanceSummary">@style/TextAppearance.PreferenceSummary.SettingsLib</item>
-    <item name="textAppearanceItem">@style/TextAppearance.PreferenceTitle.SettingsLib</item>
-    <item name="textAppearanceItemSummary">@style/TextAppearance.PreferenceSummary.SettingsLib</item>
-    <item name="textAppearanceOnboardingDescription">?attr/textAppearanceSummary</item>
-    <item name="textAppearanceOnboardingHeader">@style/TextAppearance.HealthConnect.OnboardingHeader</item>
+    <style name="Base.Theme.HealthConnect" parent="@style/Theme.SubSettingsBase">
+        <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
+        <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
+        <item name="alertDialogTheme">@style/Theme.HealthConnect.Dialog.Alert</item>
+        <item name="deleteSettingsIcon">@drawable/ic_deletion_settings</item>
+        <item name="deleteIcon">@drawable/quantum_gm_ic_delete_vd_theme_24</item>
+        <item name="successIcon">@drawable/quantum_gm_ic_check_circle_vd_theme_24</item>
+        <item name="failureIcon">@drawable/quantum_ic_cancel_vd_theme_24</item>
+        <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
+        <item name="disconnectAllIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
+        <item name="dialogGravity">@integer/dialog_gravity</item>
+        <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
+        <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>
+        <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>
 
-    <item name="outlinedButton">@style/Widget.HealthConnect.Button</item>
+        <!--    Text styles -->
+        <item name="textAppearancePageTitle">@style/TextAppearance.HealthConnect.PageTitle</item>
+        <item name="textAppearanceTitle">@style/TextAppearance.PreferenceTitle.SettingsLib</item>
+        <item name="textAppearanceTitleSecondary">
+            @style/TextAppearance.HealthConnect.TitleSecondary
+        </item>
+        <item name="textAppearanceSectionTitle">@style/HealthConnectSectionTitle</item>
+        <item name="textAppearanceSummary">@style/TextAppearance.PreferenceSummary.SettingsLib
+        </item>
+        <item name="textAppearanceItem">@style/TextAppearance.PreferenceTitle.SettingsLib</item>
+        <item name="textAppearanceItemSummary">@style/TextAppearance.PreferenceSummary.SettingsLib
+        </item>
+        <item name="textAppearanceOnboardingDescription">?attr/textAppearanceSummary</item>
+        <item name="textAppearanceOnboardingHeader">
+            @style/TextAppearance.HealthConnect.OnboardingHeader
+        </item>
 
-    <item name="android:checkboxStyle">@style/Widget.HealthConnect.CheckBox</item>
-  </style>
+        <item name="outlinedButton">@style/Widget.HealthConnect.Button</item>
 
-  <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />
+        <item name="android:checkboxStyle">@style/Widget.HealthConnect.CheckBox</item>
+        <item name="chipStyle">@style/Widget.HealthConnect.RadioButton.Chip</item>
+        <item name="checkIcon">@drawable/quantum_gm_ic_check_vd_theme_24</item>
+    </style>
+
+    <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />
 </resources>

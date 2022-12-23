@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -78,6 +80,32 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
                 START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
         }
+
+        // TODO add filters here if more than one contributing app
+        //        val APP_1 =
+        //            AppMetadata(
+        //                "package.name1",
+        //                "App name A",
+        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
+        //        val APP_2 =
+        //            AppMetadata(
+        //                "package.name2",
+        //                "App name B",
+        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
+        //        val APP_3 =
+        //            AppMetadata(
+        //                "package.name3",
+        //                "App name C",
+        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
+        //        val APP_4 =
+        //            AppMetadata(
+        //                "package.name4",
+        //                "App name D",
+        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
+        //        val appData = listOf(APP_1, APP_2, APP_3, APP_4)
+        //        val newPreference = ChipPreference(requireContext(), appData).also { it.order = 1
+        // }
+        //        preferenceScreen.addPreference(newPreference)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

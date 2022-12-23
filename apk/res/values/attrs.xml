@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,22 +22,25 @@
     <attr name="disconnectAllIcon" format="reference" />
     <!-- Gravity for dialogs. Uses Android gravity values defined at
        https://developer.android.com/reference/android/view/Gravity#constants_1 -->
-    <attr name="dialogGravity" format="integer"/>
-    <attr name="alertDialogTitleGravity" format="reference"/>
-    <attr name="alertDialogTitleTextAlignment" format="reference"/>
-    <attr name="alertDialogTitleIconVisibility" format="reference"/>
+    <attr name="dialogGravity" format="integer" />
+    <attr name="alertDialogTitleGravity" format="reference" />
+    <attr name="alertDialogTitleTextAlignment" format="reference" />
+    <attr name="alertDialogTitleIconVisibility" format="reference" />
 
-    <attr name="textAppearancePageTitle" format="reference"/>
-    <attr name="textAppearanceTitle" format="reference"/>
-    <attr name="textAppearanceTitleSecondary" format="reference"/>
-    <attr name="textAppearanceSectionTitle" format="reference"/>
-    <attr name="textAppearanceSummary" format="reference"/>
-    <attr name="textAppearanceItem" format="reference"/>
-    <attr name="textAppearanceItemSummary" format="reference"/>
-    <attr name="textAppearanceLabel" format="reference"/>
-    <attr name="textAppearanceLabelLarge" format="reference"/>
-    <attr name="textAppearanceOnboardingDescription" format="reference"/>
-    <attr name="textAppearanceOnboardingHeader" format="reference"/>
+    <attr name="textAppearancePageTitle" format="reference" />
+    <attr name="textAppearanceTitle" format="reference" />
+    <attr name="textAppearanceTitleSecondary" format="reference" />
+    <attr name="textAppearanceSectionTitle" format="reference" />
+    <attr name="textAppearanceSummary" format="reference" />
+    <attr name="textAppearanceItem" format="reference" />
+    <attr name="textAppearanceItemSummary" format="reference" />
+    <attr name="textAppearanceLabel" format="reference" />
+    <attr name="textAppearanceLabelLarge" format="reference" />
+    <attr name="textAppearanceOnboardingDescription" format="reference" />
+    <attr name="textAppearanceOnboardingHeader" format="reference" />
 
-    <attr name="outlinedButton" format="reference"/>
+    <attr name="outlinedButton" format="reference" />
+
+    <attr name="chipStyle" format="reference" />
+    <attr name="checkIcon" format="reference" />
 </resources>
