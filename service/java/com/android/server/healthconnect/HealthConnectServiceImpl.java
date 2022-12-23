@@ -508,13 +508,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         .getRecordIdToExternalRecordClassMap()
                                         .keySet());
 
-        List<String> packageFilters = request.getPackageNameFilters();
-        if (packageFilters.size() != 1 || !packageFilters.contains(packageName)) {
-            // Only packages with MANAGE_HEALTH_DATA_PERMISSION_NAME are allowed to
-            // delete other package's data
+        try {
             mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+        } catch (SecurityException exception) {
+            enforceRecordWritePermission(recordTypeIdsToDelete, uid);
         }
-        enforceRecordWritePermission(recordTypeIdsToDelete, uid);
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
