@@ -141,6 +141,7 @@ package android.healthconnect {
     field public static final String WRITE_DISTANCE = "android.permission.health.WRITE_DISTANCE";
     field public static final String WRITE_ELEVATION_GAINED = "android.permission.health.WRITE_ELEVATION_GAINED";
     field public static final String WRITE_EXERCISE = "android.permission.health.WRITE_EXERCISE";
+    field public static final String WRITE_EXERCISE_ROUTE = "android.permission.health.WRITE_EXERCISE_ROUTE";
     field public static final String WRITE_FLOORS_CLIMBED = "android.permission.health.WRITE_FLOORS_CLIMBED";
     field public static final String WRITE_HEART_RATE = "android.permission.health.WRITE_HEART_RATE";
     field public static final String WRITE_HEART_RATE_VARIABILITY = "android.permission.health.WRITE_HEART_RATE_VARIABILITY";

@@ -75,6 +75,8 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getRoute()).isEqualTo(route);
         assertThat(record.getEndZoneOffset()).isEqualTo(ZoneOffset.MAX);
         assertThat(record.getStartZoneOffset()).isEqualTo(ZoneOffset.MIN);
+        assertThat(record.getExerciseType())
+                .isEqualTo(ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN);
         assertThat(record.getNotes()).isEqualTo(notes);
         assertThat(record.getTitle()).isEqualTo(title);
     }

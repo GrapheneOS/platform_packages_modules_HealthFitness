@@ -66,6 +66,7 @@ import static android.healthconnect.HealthPermissions.WRITE_CERVICAL_MUCUS;
 import static android.healthconnect.HealthPermissions.WRITE_DISTANCE;
 import static android.healthconnect.HealthPermissions.WRITE_ELEVATION_GAINED;
 import static android.healthconnect.HealthPermissions.WRITE_EXERCISE;
+import static android.healthconnect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 import static android.healthconnect.HealthPermissions.WRITE_FLOORS_CLIMBED;
 import static android.healthconnect.HealthPermissions.WRITE_HEART_RATE;
 import static android.healthconnect.HealthPermissions.WRITE_HEART_RATE_VARIABILITY;
@@ -97,7 +98,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.healthconnect.HealthConnectManager;
-import android.healthconnect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
@@ -155,6 +155,7 @@ public class HealthPermissionsPresenceTest {
                     WRITE_DISTANCE,
                     WRITE_ELEVATION_GAINED,
                     WRITE_EXERCISE,
+                    WRITE_EXERCISE_ROUTE,
                     WRITE_FLOORS_CLIMBED,
                     WRITE_STEPS,
                     WRITE_TOTAL_CALORIES_BURNED,

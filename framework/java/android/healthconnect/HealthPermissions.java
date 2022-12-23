@@ -364,11 +364,19 @@ public final class HealthPermissions {
     public static final String WRITE_ELEVATION_GAINED =
             "android.permission.health.WRITE_ELEVATION_GAINED";
     /**
-     * Allows an application to write the user's exercise data.
+     * Allows an application to write the user's exercise data. Additional permission {@link
+     * HealthPermissions#WRITE_EXERCISE_ROUTE} is required to write user's exercise route.
      *
      * <p>Protection level: dangerous.
      */
     public static final String WRITE_EXERCISE = "android.permission.health.WRITE_EXERCISE";
+    /**
+     * Allows an application to write the user's exercise route.
+     *
+     * <p>Protection level: dangerous.
+     */
+    public static final String WRITE_EXERCISE_ROUTE =
+            "android.permission.health.WRITE_EXERCISE_ROUTE";
     /**
      * Allows an application to write the user's floors climbed data.
      *

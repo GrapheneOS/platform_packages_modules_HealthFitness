@@ -272,6 +272,12 @@
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
+        android:name="android.permission.health.WRITE_EXERCISE_ROUTE"
+        android:label="@string/exercise_route_write_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
         android:name="android.permission.health.WRITE_FLOORS_CLIMBED"
         android:label="@string/floors_climbed_write_content_description"
         android:protectionLevel="dangerous"

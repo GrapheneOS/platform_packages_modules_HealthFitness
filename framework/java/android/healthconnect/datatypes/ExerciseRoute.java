@@ -29,7 +29,11 @@ import java.util.Objects;
 public final class ExerciseRoute {
     private final List<Location> mRouteLocations;
 
-    /** Creates {@link ExerciseRoute} instance */
+    /**
+     * Creates {@link ExerciseRoute} instance
+     *
+     * @param routeLocations list of locations with timestamps that make up the route
+     */
     public ExerciseRoute(@NonNull List<Location> routeLocations) {
         Objects.requireNonNull(routeLocations);
         mRouteLocations = routeLocations;
