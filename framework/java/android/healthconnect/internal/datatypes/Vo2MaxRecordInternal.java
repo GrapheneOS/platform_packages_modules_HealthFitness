@@ -15,13 +15,12 @@
  */
 package android.healthconnect.internal.datatypes;
 
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.Vo2MaxRecord;
 import android.healthconnect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod;
 import android.os.Parcel;
-
-import androidx.annotation.NonNull;
 
 /**
  * @see Vo2MaxRecord

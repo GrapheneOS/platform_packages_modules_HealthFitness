@@ -16,11 +16,10 @@
 
 package android.healthconnect.aidl;
 
+import android.annotation.NonNull;
 import android.healthconnect.ChangeLogsRequest;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 /** @hide */
 public class ChangeLogsRequestParcel implements Parcelable {

@@ -15,6 +15,7 @@
  */
 package android.healthconnect.internal.datatypes;
 
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.BloodGlucoseRecord;
 import android.healthconnect.datatypes.BloodGlucoseRecord.RelationToMealType.RelationToMealTypes;
 import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SpecimenSourceType;
@@ -23,8 +24,6 @@ import android.healthconnect.datatypes.MealType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.units.BloodGlucose;
 import android.os.Parcel;
-
-import androidx.annotation.NonNull;
 
 /**
  * @see BloodGlucoseRecord

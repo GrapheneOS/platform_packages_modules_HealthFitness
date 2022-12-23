@@ -15,10 +15,9 @@
  */
 package android.healthconnect.datatypes;
 
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations;
 import android.healthconnect.datatypes.units.Temperature;
-
-import androidx.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;

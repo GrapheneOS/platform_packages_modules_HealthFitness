@@ -19,6 +19,7 @@ package android.healthconnect.aidl;
 import static android.healthconnect.Constants.DEFAULT_INT;
 import static android.healthconnect.Constants.DEFAULT_LONG;
 
+import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.AggregateRecordsRequest;
 import android.healthconnect.TimeRangeFilter;
@@ -26,8 +27,6 @@ import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.DataOrigin;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.time.Duration;
 import java.time.Instant;

@@ -16,12 +16,11 @@
 
 package android.healthconnect.aidl;
 
+import android.annotation.NonNull;
 import android.healthconnect.ChangeLogsResponse;
 import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

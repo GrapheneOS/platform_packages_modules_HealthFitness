@@ -15,14 +15,13 @@
  */
 package android.healthconnect.internal.datatypes;
 
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.CervicalMucusRecord;
 import android.healthconnect.datatypes.CervicalMucusRecord.CervicalMucusAppearance;
 import android.healthconnect.datatypes.CervicalMucusRecord.CervicalMucusSensation;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
-
-import androidx.annotation.NonNull;
 
 /**
  * @see CervicalMucusRecord

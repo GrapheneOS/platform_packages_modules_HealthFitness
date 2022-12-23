@@ -16,7 +16,7 @@
 
 package android.healthconnect.datatypes;
 
-import androidx.annotation.IntDef;
+import android.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -16,12 +16,11 @@
 
 package android.healthconnect.aidl;
 
+import android.annotation.NonNull;
 import android.healthconnect.RecordIdFilter;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;

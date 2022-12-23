@@ -20,10 +20,9 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEIGHT_RECORD_HEIGHT_MIN;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEIGHT;
 
+import android.annotation.NonNull;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Length;
-
-import androidx.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;

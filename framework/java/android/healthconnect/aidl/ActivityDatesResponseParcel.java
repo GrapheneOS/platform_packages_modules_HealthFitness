@@ -16,10 +16,9 @@
 
 package android.healthconnect.aidl;
 
+import android.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -18,6 +18,7 @@ package android.healthconnect.aidl;
 
 import static android.healthconnect.Constants.DEFAULT_LONG;
 
+import android.annotation.NonNull;
 import android.healthconnect.ReadRecordsRequestUsingFilters;
 import android.healthconnect.ReadRecordsRequestUsingIds;
 import android.healthconnect.datatypes.DataOrigin;
@@ -25,8 +26,6 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.List;

@@ -16,13 +16,12 @@
 
 package android.healthconnect.internal.datatypes;
 
+import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.datatypes.HeartRateRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
-
-import androidx.annotation.NonNull;
 
 import java.time.Instant;
 import java.util.ArrayList;

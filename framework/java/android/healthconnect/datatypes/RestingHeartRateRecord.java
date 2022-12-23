@@ -20,9 +20,8 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE;
 
 import android.annotation.IntRange;
+import android.annotation.NonNull;
 import android.healthconnect.HealthConnectManager;
-
-import androidx.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
