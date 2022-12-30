@@ -229,4 +229,16 @@ interface IHealthConnectService {
      * @hide
      */
     void deleteAllStagedRemoteData(in UserHandle userHandle);
+
+    /**
+     * Updates the download state of the Health Connect data.
+     *
+     * @param downloadState The download state which needs to be purely one of:
+     *                      {@link HealthConnectManager#CLOUD_DOWNLOAD_STARTED}, {@link
+     *                      HealthConnectManager#CLOUD_DOWNLOAD_RETRY}, {@link
+     *                      HealthConnectManager#CLOUD_DOWNLOAD_FAILED}, {@link
+     *                      HealthConnectManager#CLOUD_DOWNLOAD_COMPLETE}
+     * @hide
+     */
+     void updateDataDownloadState(int downloadState, in UserHandle userHandle);
 }

@@ -16,11 +16,19 @@
 
 package com.android.server.healthconnect;
 
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
+
+import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_DOWNLOAD_STATE_KEY;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,6 +47,7 @@ import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -62,6 +71,7 @@ public class HealthConnectServiceImplTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private Context mContext;
     @Mock private Context mServiceContext;
+    @Mock private PreferenceHelper mPreferenceHelper;
 
     private HealthConnectServiceImpl mHealthConnectService;
     private MockitoSession mStaticMockSession;
@@ -73,12 +83,14 @@ public class HealthConnectServiceImplTest {
         mStaticMockSession =
                 ExtendedMockito.mockitoSession()
                         .mockStatic(Environment.class)
+                        .mockStatic(PreferenceHelper.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         mMockDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
         when(Environment.getDataDirectory()).thenReturn(mMockDataDirectory);
+        when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -90,9 +102,11 @@ public class HealthConnectServiceImplTest {
 
     @After
     public void tearDown() {
-        mStaticMockSession.finishMocking();
+        mHealthConnectService.updateDataDownloadState(DATA_DOWNLOAD_STATE_UNKNOWN, mUserHandle);
         deleteDir(mMockDataDirectory);
         mHealthConnectService.deleteAllStagedRemoteData(mUserHandle);
+        clearInvocations(mPreferenceHelper);
+        mStaticMockSession.finishMocking();
     }
 
     @Test
@@ -150,6 +164,14 @@ public class HealthConnectServiceImplTest {
                 mHealthConnectService.getStagedRemoteFileNames(mUserHandle.getIdentifier());
         assertThat(stagedFileNames.size()).isEqualTo(1);
         assertThat(stagedFileNames.contains(testRestoreFile2.getName())).isTrue();
+    }
+
+    @Test
+    public void testUpdateDataDownloadState_settingValidState_setsState() {
+        mHealthConnectService.updateDataDownloadState(DATA_DOWNLOAD_STARTED, mUserHandle);
+        verify(mPreferenceHelper, times(1))
+                .insertPreference(
+                        eq(DATA_DOWNLOAD_STATE_KEY), eq(String.valueOf(DATA_DOWNLOAD_STARTED)));
     }
 
     private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {

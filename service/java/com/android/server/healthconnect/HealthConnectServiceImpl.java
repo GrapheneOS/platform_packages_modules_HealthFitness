@@ -19,6 +19,9 @@ package com.android.server.healthconnect;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.healthconnect.Constants.DEFAULT_LONG;
 import static android.healthconnect.Constants.READ;
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE;
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
 import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
 import android.Manifest;
@@ -32,6 +35,7 @@ import android.healthconnect.Constants;
 import android.healthconnect.FetchDataOriginsPriorityOrderResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
+import android.healthconnect.HealthConnectManager.DataDownloadState;
 import android.healthconnect.HealthDataCategory;
 import android.healthconnect.HealthPermissions;
 import android.healthconnect.aidl.AccessLogsResponseParcel;
@@ -104,6 +108,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
@@ -166,6 +171,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final Context mContext;
     private final PermissionManager mPermissionManager;
+
+    // Key for storing the current data download state
+    @VisibleForTesting static final String DATA_DOWNLOAD_STATE_KEY = "DATA_DOWNLOAD_STATE_KEY";
 
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
@@ -956,12 +964,50 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
     }
 
+    /**
+     * @see HealthConnectManager#updateDataDownloadState
+     */
+    @Override
+    public void updateDataDownloadState(
+            @DataDownloadState int downloadState, @NonNull UserHandle userHandle) {
+        mContext.enforceCallingPermission(
+                Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
+
+        @DataDownloadState
+        int currentDownloadState = getDataDownloadState(userHandle.getIdentifier());
+        if (currentDownloadState == DATA_DOWNLOAD_FAILED
+                || currentDownloadState == DATA_DOWNLOAD_COMPLETE) {
+            Slog.w(TAG, "HC data download already in terminal state.");
+            return;
+        }
+        // TODO(b/264070899) Store on a per user basis when we have per user db
+        PreferenceHelper.getInstance()
+                .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
+    }
+
     @VisibleForTesting
     Set<String> getStagedRemoteFileNames(int userId) {
         return Stream.of(getStagedRemoteDataDirectoryForUser(userId).listFiles())
                 .filter(file -> !file.isDirectory())
                 .map(File::getName)
                 .collect(Collectors.toSet());
+    }
+
+    @DataDownloadState
+    private int getDataDownloadState(int userId) {
+        // TODO(b/264070899) Get on a per user basis when we have per user db
+        String downloadStateOnDisk =
+                PreferenceHelper.getInstance().getPreference(DATA_DOWNLOAD_STATE_KEY);
+        @DataDownloadState int currentDownloadState = DATA_DOWNLOAD_STATE_UNKNOWN;
+        if (downloadStateOnDisk == null) {
+            return currentDownloadState;
+        }
+        try {
+            currentDownloadState = Integer.parseInt(downloadStateOnDisk);
+        } catch (Exception e) {
+            Slog.e(TAG, "Exception parsing downloadStateOnDisk " + downloadStateOnDisk, e);
+        }
+        return currentDownloadState;
     }
 
     // TODO(b/264794517) Refactor pure util methods out into a separate class

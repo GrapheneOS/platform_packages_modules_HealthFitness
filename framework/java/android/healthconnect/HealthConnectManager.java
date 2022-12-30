@@ -21,6 +21,7 @@ import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 
 import android.Manifest;
 import android.annotation.CallbackExecutor;
+import android.annotation.IntDef;
 import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -83,6 +84,8 @@ import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.util.Log;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
@@ -188,6 +191,62 @@ public class HealthConnectManager {
     private final Context mContext;
     private final IHealthConnectService mService;
     private final InternalExternalRecordConverter mInternalExternalRecordConverter;
+
+    /** @hide */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+        DATA_DOWNLOAD_STATE_UNKNOWN,
+        DATA_DOWNLOAD_STARTED,
+        DATA_DOWNLOAD_RETRY,
+        DATA_DOWNLOAD_FAILED,
+        DATA_DOWNLOAD_COMPLETE
+    })
+    public @interface DataDownloadState {}
+
+    /**
+     * Unknown download state considered to be the default download state.
+     *
+     * <p>See also {@link #updateDataDownloadState}
+     *
+     * @hide
+     */
+    @SystemApi public static final int DATA_DOWNLOAD_STATE_UNKNOWN = 0;
+
+    /**
+     * Indicates that the download has started.
+     *
+     * <p>See also {@link #updateDataDownloadState}
+     *
+     * @hide
+     */
+    @SystemApi public static final int DATA_DOWNLOAD_STARTED = 1;
+
+    /**
+     * Indicates that the download is being retried.
+     *
+     * <p>See also {@link #updateDataDownloadState}
+     *
+     * @hide
+     */
+    @SystemApi public static final int DATA_DOWNLOAD_RETRY = 2;
+
+    /**
+     * Indicates that the download has failed.
+     *
+     * <p>See also {@link #updateDataDownloadState}
+     *
+     * @hide
+     */
+    @SystemApi public static final int DATA_DOWNLOAD_FAILED = 3;
+
+    /**
+     * Indicates that the download has completed.
+     *
+     * <p>See also {@link HealthConnectManager#updateDataDownloadState}
+     *
+     * @hide
+     */
+    @SystemApi public static final int DATA_DOWNLOAD_COMPLETE = 4;
 
     /** @hide */
     HealthConnectManager(@NonNull Context context, @NonNull IHealthConnectService service) {
@@ -1215,6 +1274,9 @@ public class HealthConnectManager {
      * are duplicated and the originals may be closed by the application at any time after this API
      * returns.
      *
+     * <p>The caller should update the data download states using {@link #updateDataDownloadState}
+     * before calling this API.
+     *
      * @param pfdsByFileName The map of file names and their {@link ParcelFileDescriptor}s.
      * @param executor The {@link Executor} on which to invoke the callback.
      * @param callback The callback which will receive the outcome of this call.
@@ -1268,6 +1330,46 @@ public class HealthConnectManager {
     public void deleteAllStagedRemoteData() throws NullPointerException {
         try {
             mService.deleteAllStagedRemoteData(mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Updates the download state of the Health Connect data.
+     *
+     * <p>The data should've been downloaded and the corresponding download states updated before
+     * the app calls {@link #stageAllHealthConnectRemoteData}. Once {@link
+     * #stageAllHealthConnectRemoteData} has been called the downloaded state becomes {@link
+     * #DATA_DOWNLOAD_COMPLETE} and future attempts to update the download state are ignored.
+     *
+     * <p>The only valid order of state transition are:
+     *
+     * <ul>
+     *   <li>{@link #DATA_DOWNLOAD_STARTED} to {@link #DATA_DOWNLOAD_COMPLETE}
+     *   <li>{@link #DATA_DOWNLOAD_STARTED} to {@link #DATA_DOWNLOAD_RETRY} to {@link
+     *       #DATA_DOWNLOAD_COMPLETE}
+     *   <li>{@link #DATA_DOWNLOAD_STARTED} to {@link #DATA_DOWNLOAD_FAILED}
+     *   <li>{@link #DATA_DOWNLOAD_STARTED} to {@link #DATA_DOWNLOAD_RETRY} to {@link
+     *       #DATA_DOWNLOAD_RETRY}
+     * </ul>
+     *
+     * <p>Note that it's okay if some states are missing in of the sequences above but the order has
+     * to be one of the above.
+     *
+     * <p>Only one app will have the permission to call this API so it is assured that no one else
+     * will be able to update this state.
+     *
+     * @param downloadState The download state which needs to be purely from {@link
+     *     DataDownloadState}
+     * @hide
+     */
+    @SystemApi
+    @UserHandleAware
+    @RequiresPermission(Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA)
+    public void updateDataDownloadState(@DataDownloadState int downloadState) {
+        try {
+            mService.updateDataDownloadState(downloadState, mContext.getUser());
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
