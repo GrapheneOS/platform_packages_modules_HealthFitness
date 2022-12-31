@@ -868,6 +868,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IDataStagingFinishedCallback callback) {
         mContext.enforceCallingPermission(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
+
+        setDataDownloadState(DATA_DOWNLOAD_COMPLETE, userHandle.getIdentifier(), false /* force */);
+
         Map<String, ParcelFileDescriptor> origPfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
         Map<String, HealthConnectException> exceptionsByFileName =
@@ -962,6 +965,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingPermission(
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
         deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
+        setDataDownloadState(
+                DATA_DOWNLOAD_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
     }
 
     /**
@@ -972,17 +977,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @DataDownloadState int downloadState, @NonNull UserHandle userHandle) {
         mContext.enforceCallingPermission(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
-
-        @DataDownloadState
-        int currentDownloadState = getDataDownloadState(userHandle.getIdentifier());
-        if (currentDownloadState == DATA_DOWNLOAD_FAILED
-                || currentDownloadState == DATA_DOWNLOAD_COMPLETE) {
-            Slog.w(TAG, "HC data download already in terminal state.");
-            return;
-        }
-        // TODO(b/264070899) Store on a per user basis when we have per user db
-        PreferenceHelper.getInstance()
-                .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
+        setDataDownloadState(downloadState, userHandle.getIdentifier(), false /* force */);
     }
 
     @VisibleForTesting
@@ -1008,6 +1003,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             Slog.e(TAG, "Exception parsing downloadStateOnDisk " + downloadStateOnDisk, e);
         }
         return currentDownloadState;
+    }
+
+    private void setDataDownloadState(
+            @DataDownloadState int downloadState, int userId, boolean force) {
+        @DataDownloadState int currentDownloadState = getDataDownloadState(userId);
+        if (!force
+                && (currentDownloadState == DATA_DOWNLOAD_FAILED
+                        || currentDownloadState == DATA_DOWNLOAD_COMPLETE)) {
+            Slog.w(TAG, "HC data download already in terminal state.");
+            return;
+        }
+        // TODO(b/264070899) Store on a per user basis when we have per user db
+        PreferenceHelper.getInstance()
+                .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
     }
 
     // TODO(b/264794517) Refactor pure util methods out into a separate class
