@@ -38,10 +38,33 @@ package android.healthconnect {
     method @NonNull public java.util.List<android.healthconnect.datatypes.DataOrigin> getDataOriginsPriorityOrder();
   }
 
+  public final class HealthConnectDataState implements android.os.Parcelable {
+    method public int describeContents();
+    method public int getDataMigrationState();
+    method public int getDataRestoreError();
+    method public int getDataRestoreState();
+    method public void writeToParcel(@NonNull android.os.Parcel, int);
+    field @NonNull public static final android.os.Parcelable.Creator<android.healthconnect.HealthConnectDataState> CREATOR;
+    field public static final int MIGRATION_STATE_ALLOWED = 4; // 0x4
+    field public static final int MIGRATION_STATE_APP_UPGRADE_REQUIRED = 1; // 0x1
+    field public static final int MIGRATION_STATE_COMPLETE = 5; // 0x5
+    field public static final int MIGRATION_STATE_IDLE = 0; // 0x0
+    field public static final int MIGRATION_STATE_IN_PROGRESS = 3; // 0x3
+    field public static final int MIGRATION_STATE_UPGRADE_REQUIRED = 2; // 0x2
+    field public static final int RESTORE_ERROR_FETCHING_DATA = 2; // 0x2
+    field public static final int RESTORE_ERROR_NONE = 0; // 0x0
+    field public static final int RESTORE_ERROR_UNKNOWN = 1; // 0x1
+    field public static final int RESTORE_ERROR_VERSION_DIFF = 3; // 0x3
+    field public static final int RESTORE_STATE_IDLE = 0; // 0x0
+    field public static final int RESTORE_STATE_IN_PROGRESS = 2; // 0x2
+    field public static final int RESTORE_STATE_PENDING = 1; // 0x1
+  }
+
   public class HealthConnectManager {
     method @RequiresPermission(android.healthconnect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS) public void deleteRecords(@NonNull android.healthconnect.DeleteUsingFiltersRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
     method @RequiresPermission(android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void fetchDataOriginsPriorityOrder(int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.FetchDataOriginsPriorityOrderResponse,android.healthconnect.HealthConnectException>);
     method @NonNull @RequiresPermission(android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void getContributorApplicationsInfo(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ApplicationInfoResponse,android.healthconnect.HealthConnectException>);
+    method @NonNull @RequiresPermission(anyOf={android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION, android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA}) public void getHealthConnectDataState(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.HealthConnectDataState,android.healthconnect.HealthConnectException>);
     method @NonNull public static java.util.Set<java.lang.String> getHealthPermissions(@NonNull android.content.Context);
     method @IntRange(from=0, to=7300) @RequiresPermission(android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public int getRecordRetentionPeriodInDays();
     method public static boolean isHealthPermission(@NonNull android.content.Context, @NonNull String);

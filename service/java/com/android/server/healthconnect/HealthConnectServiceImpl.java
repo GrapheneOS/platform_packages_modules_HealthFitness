@@ -19,6 +19,12 @@ package com.android.server.healthconnect;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.healthconnect.Constants.DEFAULT_LONG;
 import static android.healthconnect.Constants.READ;
+import static android.healthconnect.HealthConnectDataState.MIGRATION_STATE_IDLE;
+import static android.healthconnect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
+import static android.healthconnect.HealthConnectDataState.RESTORE_ERROR_NONE;
+import static android.healthconnect.HealthConnectDataState.RESTORE_STATE_IDLE;
+import static android.healthconnect.HealthConnectDataState.RESTORE_STATE_IN_PROGRESS;
+import static android.healthconnect.HealthConnectDataState.RESTORE_STATE_PENDING;
 import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE;
 import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
 import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
@@ -34,6 +40,7 @@ import android.database.sqlite.SQLiteException;
 import android.healthconnect.AccessLog;
 import android.healthconnect.Constants;
 import android.healthconnect.FetchDataOriginsPriorityOrderResponse;
+import android.healthconnect.HealthConnectDataState;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthConnectManager.DataDownloadState;
@@ -59,6 +66,7 @@ import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IDataStagingFinishedCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
+import android.healthconnect.aidl.IGetHealthConnectDataStateCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -145,36 +153,33 @@ import java.util.stream.Stream;
 final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // Key for storing the current data download state
     @VisibleForTesting static final String DATA_DOWNLOAD_STATE_KEY = "DATA_DOWNLOAD_STATE_KEY";
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+        INTERNAL_RESTORE_STATE_UNKNOWN,
+        INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
+        INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
+        INTERNAL_RESTORE_STATE_STAGING_DONE,
+        INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS,
+        INTERNAL_RESTORE_STATE_MERGING_DONE
+    })
+    @interface InternalRestoreState {}
+
+    // The below values for the IntDef are defined in chronological order of the restore process.
+    static final int INTERNAL_RESTORE_STATE_UNKNOWN = 0;
+    static final int INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING = 1;
+    static final int INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS = 2;
+    static final int INTERNAL_RESTORE_STATE_STAGING_DONE = 3;
+    static final int INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS = 4;
+    static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 5;
     private static final String TAG = "HealthConnectService";
     // Permission for test api for deleting staged data
     private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
             "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA";
-
     // Key for storing the current data restore state on disk.
-    private static final String DATA_RESTORE_STATE_KEY = "DATA_RESTORE_STATE_KEY";
-    // Key for storing whether there was any error during the whole data "restore" phase.
-    // The "restore" phase includes downloading, staging, and merging.
-    private static final String WAS_DATA_RESTORE_ERROR_ENCOUNTERED =
-            "WAS_DATA_RESTORE_ERROR_ENCOUNTERED";
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-        DATA_RESTORE_STATE_UNKNOWN,
-        DATA_RESTORE_WAITING_FOR_STAGING,
-        DATA_RESTORE_STAGING_IN_PROGRESS,
-        DATA_RESTORE_STAGING_DONE,
-        DATA_RESTORE_MERGING_IN_PROGRESS,
-        DATA_RESTORE_MERGING_DONE
-    })
-    @interface DataRestoreState {}
-
-    // The below values for the IntDef are defined in chronological order of the restore process.
-    static final int DATA_RESTORE_STATE_UNKNOWN = 0;
-    static final int DATA_RESTORE_WAITING_FOR_STAGING = 1;
-    static final int DATA_RESTORE_STAGING_IN_PROGRESS = 2;
-    static final int DATA_RESTORE_STAGING_DONE = 3;
-    static final int DATA_RESTORE_MERGING_IN_PROGRESS = 4;
-    static final int DATA_RESTORE_MERGING_DONE = 5;
+    private static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
+    // Key for storing the error restoring HC data.
+    private static final String DATA_RESTORE_ERROR_KEY = "data_restore_error_key";
 
     private final TransactionManager mTransactionManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
@@ -894,9 +899,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
 
         setDataDownloadState(DATA_DOWNLOAD_COMPLETE, userHandle.getIdentifier(), false /* force */);
-        @DataRestoreState int curDataRestoreState = getDataRestoreState(userHandle.getIdentifier());
-        if (curDataRestoreState >= DATA_RESTORE_STAGING_IN_PROGRESS) {
-            if (curDataRestoreState >= DATA_RESTORE_STAGING_DONE) {
+        @InternalRestoreState
+        int curDataRestoreState = getDataRestoreState(userHandle.getIdentifier());
+        if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
+            if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_DONE) {
                 Slog.w(TAG, "Staging is already done. Cur state " + curDataRestoreState);
             } else {
                 // Maybe the caller died and is trying to stage the data again.
@@ -913,7 +919,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             return;
         }
         setDataRestoreState(
-                DATA_RESTORE_STAGING_IN_PROGRESS, userHandle.getIdentifier(), false /* force */);
+                INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
+                userHandle.getIdentifier(),
+                false /* force */);
 
         Map<String, ParcelFileDescriptor> origPfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
@@ -984,18 +992,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         // Even if we encountered any exception we still say that we are "done" as
                         // we don't expect the caller to retry and see different results.
                         setDataRestoreState(
-                                DATA_RESTORE_STAGING_DONE,
+                                INTERNAL_RESTORE_STATE_STAGING_DONE,
                                 userHandle.getIdentifier(),
                                 false /* force */);
 
                         // Share the result / exception with the caller.
                         try {
                             if (exceptionsByFileName.isEmpty()) {
-                                setWasDataRestoreErrorEncountered(
-                                        false, userHandle.getIdentifier());
                                 callback.onResult();
                             } else {
-                                setWasDataRestoreErrorEncountered(true, userHandle.getIdentifier());
+                                setDataRestoreError(
+                                        RESTORE_ERROR_FETCHING_DATA, userHandle.getIdentifier());
                                 callback.onError(
                                         new StageRemoteDataException(exceptionsByFileName));
                             }
@@ -1023,8 +1030,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         setDataDownloadState(
                 DATA_DOWNLOAD_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
         setDataRestoreState(
-                DATA_RESTORE_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
-        setWasDataRestoreErrorEncountered(false, userHandle.getIdentifier());
+                INTERNAL_RESTORE_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
+        setDataRestoreError(RESTORE_ERROR_NONE, userHandle.getIdentifier());
     }
 
     /**
@@ -1039,14 +1046,84 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         if (downloadState == DATA_DOWNLOAD_COMPLETE) {
             setDataRestoreState(
-                    DATA_RESTORE_WAITING_FOR_STAGING,
+                    INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
                     userHandle.getIdentifier(),
                     false /* force */);
         } else if (downloadState == DATA_DOWNLOAD_FAILED) {
             setDataRestoreState(
-                    DATA_RESTORE_MERGING_DONE, userHandle.getIdentifier(), false /* force */);
-            setWasDataRestoreErrorEncountered(true, userHandle.getIdentifier());
+                    INTERNAL_RESTORE_STATE_MERGING_DONE,
+                    userHandle.getIdentifier(),
+                    false /* force */);
+            setDataRestoreError(RESTORE_ERROR_FETCHING_DATA, userHandle.getIdentifier());
         }
+    }
+
+    /**
+     * @see HealthConnectManager#getHealthConnectDataState
+     */
+    @Override
+    public void getHealthConnectDataState(
+            @NonNull UserHandle userHandle, @NonNull IGetHealthConnectDataStateCallback callback) {
+        enforceAnyOfPermissions(
+                MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        @HealthConnectDataState.DataRestoreError
+                        int dataRestoreError = getDataRestoreError(userHandle.getIdentifier());
+                        @HealthConnectDataState.DataRestoreState
+                        int dataRestoreState = RESTORE_STATE_IDLE;
+
+                        @InternalRestoreState
+                        int currentRestoreState = getDataRestoreState(userHandle.getIdentifier());
+
+                        if (currentRestoreState == INTERNAL_RESTORE_STATE_MERGING_DONE) {
+                            // already with correct values.
+                        } else if (currentRestoreState
+                                == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+                            dataRestoreState = RESTORE_STATE_IN_PROGRESS;
+                        } else if (currentRestoreState != INTERNAL_RESTORE_STATE_UNKNOWN) {
+                            dataRestoreState = RESTORE_STATE_PENDING;
+                        }
+
+                        @DataDownloadState
+                        int currentDownloadState = getDataDownloadState(userHandle.getIdentifier());
+                        if (currentDownloadState == DATA_DOWNLOAD_FAILED) {
+                            // already with correct values.
+                        } else if (currentDownloadState != DATA_DOWNLOAD_STATE_UNKNOWN) {
+                            dataRestoreState = RESTORE_STATE_PENDING;
+                        }
+
+                        try {
+                            callback.onResult(
+                                    new HealthConnectDataState(
+                                            dataRestoreState,
+                                            dataRestoreError,
+                                            MIGRATION_STATE_IDLE));
+                        } catch (RemoteException remoteException) {
+                            Log.e(
+                                    TAG,
+                                    "HealthConnectDataState could not be sent to the caller.",
+                                    remoteException);
+                        }
+                    } catch (RuntimeException e) {
+                        // exception getting the state from the disk
+                        try {
+                            callback.onError(
+                                    new HealthConnectExceptionParcel(
+                                            new HealthConnectException(
+                                                    HealthConnectException.ERROR_IO,
+                                                    e.getMessage())));
+                        } catch (RemoteException remoteException) {
+                            Log.e(
+                                    TAG,
+                                    "Exception for getHealthConnectDataState could not be sent to"
+                                            + " the caller.",
+                                    remoteException);
+                        }
+                    }
+                });
     }
 
     @VisibleForTesting
@@ -1057,8 +1134,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 .collect(Collectors.toSet());
     }
 
-    void setDataRestoreState(@DataRestoreState int dataRestoreState, int userID, boolean force) {
-        @DataRestoreState int currentRestoreState = getDataRestoreState(userID);
+    void setDataRestoreState(
+            @InternalRestoreState int dataRestoreState, int userID, boolean force) {
+        @InternalRestoreState int currentRestoreState = getDataRestoreState(userID);
         if (!force && currentRestoreState >= dataRestoreState) {
             Slog.w(
                     TAG,
@@ -1073,12 +1151,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 .insertPreference(DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
     }
 
-    @DataRestoreState
+    @InternalRestoreState
     int getDataRestoreState(int userId) {
         // TODO(b/264070899) Get on a per user basis when we have per user db
         String restoreStateOnDisk =
                 PreferenceHelper.getInstance().getPreference(DATA_RESTORE_STATE_KEY);
-        @DataRestoreState int currentRestoreState = DATA_RESTORE_STATE_UNKNOWN;
+        @InternalRestoreState int currentRestoreState = INTERNAL_RESTORE_STATE_UNKNOWN;
         if (restoreStateOnDisk == null) {
             return currentRestoreState;
         }
@@ -1123,17 +1201,24 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     // Creating a separate single line method to keep this code close to the rest of the code that
     // uses PreferenceHelper to keep data on the disk.
-    private void setWasDataRestoreErrorEncountered(boolean value, int userId) {
+    private void setDataRestoreError(
+            @HealthConnectDataState.DataRestoreError int dataRestoreError, int userId) {
         // TODO(b/264070899) Store on a per user basis when we have per user db
         PreferenceHelper.getInstance()
-                .insertPreference(WAS_DATA_RESTORE_ERROR_ENCOUNTERED, Boolean.toString(value));
+                .insertPreference(DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
     }
 
-    private boolean wasDataRestoreErrorEncountered(int userId) {
+    private @HealthConnectDataState.DataRestoreError int getDataRestoreError(int userId) {
         // TODO(b/264070899) Get on a per user basis when we have per user db
-        String wasDataRestoreErrorEncountered =
-                PreferenceHelper.getInstance().getPreference(WAS_DATA_RESTORE_ERROR_ENCOUNTERED);
-        return Boolean.toString(true).equalsIgnoreCase(wasDataRestoreErrorEncountered);
+        @HealthConnectDataState.DataRestoreError int dataRestoreError = RESTORE_ERROR_NONE;
+        String restoreErrorOnDisk =
+                PreferenceHelper.getInstance().getPreference(DATA_RESTORE_ERROR_KEY);
+        try {
+            dataRestoreError = Integer.parseInt(restoreErrorOnDisk);
+        } catch (Exception e) {
+            Slog.e(TAG, "Exception parsing restoreErrorOnDisk " + restoreErrorOnDisk, e);
+        }
+        return dataRestoreError;
     }
 
     @NonNull
@@ -1168,6 +1253,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             recordTypeInfoResponses.put(recordType, packages);
                         });
         return recordTypeInfoResponses;
+    }
+
+    private void enforceAnyOfPermissions(@NonNull String... permissions) {
+        for (var permission : permissions) {
+            if (mContext.checkCallingPermission(permission) == PERMISSION_GRANTED) {
+                return;
+            }
+        }
+        throw new SecurityException(
+                "Caller requires one of the following permissions: "
+                        + String.join(", ", permissions));
     }
 
     private void enforceRecordWritePermissionForRecords(

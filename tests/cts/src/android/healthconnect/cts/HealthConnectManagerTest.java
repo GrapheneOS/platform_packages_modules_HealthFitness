@@ -16,6 +16,14 @@
 package android.healthconnect.cts;
 
 import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
+import static android.healthconnect.HealthConnectDataState.MIGRATION_STATE_IDLE;
+import static android.healthconnect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
+import static android.healthconnect.HealthConnectDataState.RESTORE_ERROR_NONE;
+import static android.healthconnect.HealthConnectDataState.RESTORE_STATE_IDLE;
+import static android.healthconnect.HealthConnectDataState.RESTORE_STATE_PENDING;
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE;
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
 import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 import static android.healthconnect.HealthConnectManager.isHealthPermission;
 import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
@@ -27,6 +35,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
 import android.content.Context;
+import android.healthconnect.HealthConnectDataState;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthPermissions;
@@ -673,6 +682,511 @@ public class HealthConnectManagerTest {
 
         try {
             service.updateDataDownloadState(DATA_DOWNLOAD_STARTED);
+        } catch (SecurityException e) {
+            /* pass */
+        }
+    }
+
+    @Test
+    public void testGetHealthConnectDataState_beforeDownload_returnsIdleState() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreState())
+                .isEqualTo(RESTORE_STATE_IDLE);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void
+            testGetHealthConnectDataState_beforeDownload_withMigrationPermission_returnsIdleState()
+                    throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(MIGRATE_HEALTH_CONNECT_DATA);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreState())
+                .isEqualTo(RESTORE_STATE_IDLE);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetHealthConnectDataState_duringDownload_returnsRestorePendingState()
+            throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA",
+                            MANAGE_HEALTH_DATA);
+            service.updateDataDownloadState(DATA_DOWNLOAD_STARTED);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreState())
+                .isEqualTo(RESTORE_STATE_PENDING);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetHealthConnectDataState_whenDownloadDone_returnsRestorePendingState()
+            throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA",
+                            MANAGE_HEALTH_DATA);
+            service.updateDataDownloadState(DATA_DOWNLOAD_COMPLETE);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreState())
+                .isEqualTo(RESTORE_STATE_PENDING);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetHealthConnectDataState_whenDownloadFailed_returnsIdleState()
+            throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA",
+                            MANAGE_HEALTH_DATA);
+            service.updateDataDownloadState(DATA_DOWNLOAD_FAILED);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreState())
+                .isEqualTo(RESTORE_STATE_IDLE);
+
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetHealthConnectDataState_afterStaging_returnsRestorePendingState()
+            throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch stateLatch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            File dataDir = context.getDataDir();
+            File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+            File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+            assertThat(testRestoreFile1.exists()).isTrue();
+            assertThat(testRestoreFile2.exists()).isTrue();
+
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(
+                    testRestoreFile1.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+            pfdsByFileName.put(
+                    testRestoreFile2.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA",
+                            MANAGE_HEALTH_DATA);
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {}
+                    });
+            assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            stateLatch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating / writing to test files.", e);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+        assertThat(stateLatch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreState())
+                .isEqualTo(RESTORE_STATE_PENDING);
+
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetDataRestoreError_onErrorDuringStaging_returnsErrorFetching()
+            throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch stateLatch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            File dataDir = context.getDataDir();
+            File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+            File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+            assertThat(testRestoreFile1.exists()).isTrue();
+            assertThat(testRestoreFile2.exists()).isTrue();
+
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(
+                    testRestoreFile1.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile1, ParcelFileDescriptor.MODE_WRITE_ONLY));
+            pfdsByFileName.put(
+                    testRestoreFile2.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA",
+                            MANAGE_HEALTH_DATA);
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {}
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {
+                            latch.countDown();
+                        }
+                    });
+            assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            stateLatch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating / writing to test files.", e);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(stateLatch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreError())
+                .isEqualTo(RESTORE_ERROR_FETCHING_DATA);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetDataRestoreError_onDownloadFailed_returnsErrorFetching() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA",
+                            MANAGE_HEALTH_DATA);
+            service.updateDataDownloadState(DATA_DOWNLOAD_FAILED);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreError())
+                .isEqualTo(RESTORE_ERROR_FETCHING_DATA);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetDataRestoreError_onNoErrorDuringRestore_returnsNoError() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch stateLatch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            File dataDir = context.getDataDir();
+            File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+            File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+            assertThat(testRestoreFile1.exists()).isTrue();
+            assertThat(testRestoreFile2.exists()).isTrue();
+
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(
+                    testRestoreFile1.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+            pfdsByFileName.put(
+                    testRestoreFile2.getName(),
+                    ParcelFileDescriptor.open(
+                            testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(
+                            "android.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA",
+                            MANAGE_HEALTH_DATA);
+            service.stageAllHealthConnectRemoteData(
+                    pfdsByFileName,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull StageRemoteDataException error) {}
+                    });
+            assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            stateLatch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating / writing to test files.", e);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+
+        assertThat(stateLatch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataRestoreError())
+                .isEqualTo(RESTORE_ERROR_NONE);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testDataMigrationState_byDefault_returnsIdleState() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            returnedHealthConnectDataState.set(healthConnectDataState);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {}
+                    });
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedHealthConnectDataState.get().getDataMigrationState())
+                .isEqualTo(MIGRATION_STATE_IDLE);
+        deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testGetHealthConnectDataState_withoutPermission_throwsSecurityException() {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            service.getHealthConnectDataState(
+                    Executors.newSingleThreadExecutor(), healthConnectDataState -> {});
         } catch (SecurityException e) {
             /* pass */
         }
