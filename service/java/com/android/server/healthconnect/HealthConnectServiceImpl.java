@@ -25,6 +25,7 @@ import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNK
 import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
 import android.Manifest;
+import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.AttributionSource;
@@ -119,6 +120,8 @@ import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -152,6 +155,32 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // Permission for test api for deleting staged data
     private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
             "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA";
+
+    // Key for storing the current data restore state on disk.
+    private static final String DATA_RESTORE_STATE_KEY = "DATA_RESTORE_STATE_KEY";
+    // Key for storing whether there was any error during the whole data "restore" phase.
+    // The "restore" phase includes downloading, staging, and merging.
+    private static final String WAS_DATA_RESTORE_ERROR_ENCOUNTERED =
+            "WAS_DATA_RESTORE_ERROR_ENCOUNTERED";
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+        DATA_RESTORE_STATE_UNKNOWN,
+        DATA_RESTORE_WAITING_FOR_STAGING,
+        DATA_RESTORE_STAGING_IN_PROGRESS,
+        DATA_RESTORE_STAGING_DONE,
+        DATA_RESTORE_MERGING_IN_PROGRESS,
+        DATA_RESTORE_MERGING_DONE
+    })
+    @interface DataRestoreState {}
+
+    // The below values for the IntDef are defined in chronological order of the restore process.
+    static final int DATA_RESTORE_STATE_UNKNOWN = 0;
+    static final int DATA_RESTORE_WAITING_FOR_STAGING = 1;
+    static final int DATA_RESTORE_STAGING_IN_PROGRESS = 2;
+    static final int DATA_RESTORE_STAGING_DONE = 3;
+    static final int DATA_RESTORE_MERGING_IN_PROGRESS = 4;
+    static final int DATA_RESTORE_MERGING_DONE = 5;
 
     // In order to unblock the binder queue all the async should be scheduled on SHARED_EXECUTOR, as
     // soon as they come.
@@ -870,6 +899,26 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
 
         setDataDownloadState(DATA_DOWNLOAD_COMPLETE, userHandle.getIdentifier(), false /* force */);
+        @DataRestoreState int curDataRestoreState = getDataRestoreState(userHandle.getIdentifier());
+        if (curDataRestoreState >= DATA_RESTORE_STAGING_IN_PROGRESS) {
+            if (curDataRestoreState >= DATA_RESTORE_STAGING_DONE) {
+                Slog.w(TAG, "Staging is already done. Cur state " + curDataRestoreState);
+            } else {
+                // Maybe the caller died and is trying to stage the data again.
+                Slog.w(TAG, "Already in the process of staging.");
+            }
+            SHARED_EXECUTOR.execute(
+                    () -> {
+                        try {
+                            callback.onResult();
+                        } catch (RemoteException e) {
+                            Log.e(TAG, "Restore response could not be sent to the caller.", e);
+                        }
+                    });
+            return;
+        }
+        setDataRestoreState(
+                DATA_RESTORE_STAGING_IN_PROGRESS, userHandle.getIdentifier(), false /* force */);
 
         Map<String, ParcelFileDescriptor> origPfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
@@ -936,11 +985,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     }
                                 });
                     } finally {
+                        // We are done staging all the remote data, update the data restore state.
+                        // Even if we encountered any exception we still say that we are "done" as
+                        // we don't expect the caller to retry and see different results.
+                        setDataRestoreState(
+                                DATA_RESTORE_STAGING_DONE,
+                                userHandle.getIdentifier(),
+                                false /* force */);
+
                         // Share the result / exception with the caller.
                         try {
                             if (exceptionsByFileName.isEmpty()) {
+                                setWasDataRestoreErrorEncountered(
+                                        false, userHandle.getIdentifier());
                                 callback.onResult();
                             } else {
+                                setWasDataRestoreErrorEncountered(true, userHandle.getIdentifier());
                                 callback.onError(
                                         new StageRemoteDataException(exceptionsByFileName));
                             }
@@ -967,6 +1027,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
         setDataDownloadState(
                 DATA_DOWNLOAD_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
+        setDataRestoreState(
+                DATA_RESTORE_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
+        setWasDataRestoreErrorEncountered(false, userHandle.getIdentifier());
     }
 
     /**
@@ -978,6 +1041,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingPermission(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
         setDataDownloadState(downloadState, userHandle.getIdentifier(), false /* force */);
+
+        if (downloadState == DATA_DOWNLOAD_COMPLETE) {
+            setDataRestoreState(
+                    DATA_RESTORE_WAITING_FOR_STAGING,
+                    userHandle.getIdentifier(),
+                    false /* force */);
+        } else if (downloadState == DATA_DOWNLOAD_FAILED) {
+            setDataRestoreState(
+                    DATA_RESTORE_MERGING_DONE, userHandle.getIdentifier(), false /* force */);
+            setWasDataRestoreErrorEncountered(true, userHandle.getIdentifier());
+        }
     }
 
     @VisibleForTesting
@@ -986,6 +1060,39 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 .filter(file -> !file.isDirectory())
                 .map(File::getName)
                 .collect(Collectors.toSet());
+    }
+
+    void setDataRestoreState(@DataRestoreState int dataRestoreState, int userID, boolean force) {
+        @DataRestoreState int currentRestoreState = getDataRestoreState(userID);
+        if (!force && currentRestoreState >= dataRestoreState) {
+            Slog.w(
+                    TAG,
+                    "Attempt to update data restore state in wrong order from "
+                            + currentRestoreState
+                            + " to "
+                            + dataRestoreState);
+            return;
+        }
+        // TODO(b/264070899) Store on a per user basis when we have per user db
+        PreferenceHelper.getInstance()
+                .insertPreference(DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
+    }
+
+    @DataRestoreState
+    int getDataRestoreState(int userId) {
+        // TODO(b/264070899) Get on a per user basis when we have per user db
+        String restoreStateOnDisk =
+                PreferenceHelper.getInstance().getPreference(DATA_RESTORE_STATE_KEY);
+        @DataRestoreState int currentRestoreState = DATA_RESTORE_STATE_UNKNOWN;
+        if (restoreStateOnDisk == null) {
+            return currentRestoreState;
+        }
+        try {
+            currentRestoreState = Integer.parseInt(restoreStateOnDisk);
+        } catch (Exception e) {
+            Slog.e(TAG, "Exception parsing restoreStateOnDisk: " + restoreStateOnDisk, e);
+        }
+        return currentRestoreState;
     }
 
     @DataDownloadState
@@ -1017,6 +1124,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         // TODO(b/264070899) Store on a per user basis when we have per user db
         PreferenceHelper.getInstance()
                 .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
+    }
+
+    // Creating a separate single line method to keep this code close to the rest of the code that
+    // uses PreferenceHelper to keep data on the disk.
+    private void setWasDataRestoreErrorEncountered(boolean value, int userId) {
+        // TODO(b/264070899) Store on a per user basis when we have per user db
+        PreferenceHelper.getInstance()
+                .insertPreference(WAS_DATA_RESTORE_ERROR_ENCOUNTERED, Boolean.toString(value));
+    }
+
+    private boolean wasDataRestoreErrorEncountered(int userId) {
+        // TODO(b/264070899) Get on a per user basis when we have per user db
+        String wasDataRestoreErrorEncountered =
+                PreferenceHelper.getInstance().getPreference(WAS_DATA_RESTORE_ERROR_ENCOUNTERED);
+        return Boolean.toString(true).equalsIgnoreCase(wasDataRestoreErrorEncountered);
     }
 
     // TODO(b/264794517) Refactor pure util methods out into a separate class
