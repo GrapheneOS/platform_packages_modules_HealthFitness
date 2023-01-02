@@ -18,9 +18,12 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps
 import android.healthconnect.HealthConnectManager
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
@@ -120,6 +123,9 @@ class ConnectedAppsFragmentTest {
         onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
         onView(withText("No apps allowed")).check(doesNotExist())
         onView(withText("No apps denied")).check(doesNotExist())
+
+        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Inactive apps")).check(doesNotExist())
     }
 }
