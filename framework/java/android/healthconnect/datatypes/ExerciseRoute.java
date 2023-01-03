@@ -44,6 +44,19 @@ public final class ExerciseRoute {
         return mRouteLocations;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ExerciseRoute)) return false;
+        ExerciseRoute that = (ExerciseRoute) o;
+        return getRouteLocations().equals(that.getRouteLocations());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRouteLocations());
+    }
+
     /** Point in the time and space. Used in {@link ExerciseRoute}. */
     public static final class Location {
         // Values are used for FloatRange annotation in latitude/longitude getters and constructor.

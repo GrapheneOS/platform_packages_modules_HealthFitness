@@ -103,8 +103,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         if (!super.equals(o)) return false;
         ExerciseSessionRecord that = (ExerciseSessionRecord) o;
         return getExerciseType() == that.getExerciseType()
-                && (CharSequence.compare(getNotes(), that.getNotes()) == 0)
-                && (CharSequence.compare(getTitle(), that.getTitle()) == 0)
+                && RecordUtils.isEqualNullableCharSequences(getNotes(), that.getNotes())
+                && RecordUtils.isEqualNullableCharSequences(getTitle(), that.getTitle())
                 && Objects.equals(getRoute(), that.getRoute());
     }
 
