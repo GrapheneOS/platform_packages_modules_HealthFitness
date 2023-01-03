@@ -13,11 +13,13 @@
  */
 package com.android.healthconnect.controller.tests.shared
 
+import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ACTIVE_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BASAL_METABOLIC_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SPEED
@@ -48,5 +50,11 @@ class HealthPermissionToDatatypeMapperTest {
     @Test
     fun getDataTypes_speed_returnsCorrectRecords() {
         assertThat(getDataTypes(SPEED)).containsExactly(SpeedRecord::class.java)
+    }
+
+    @Test
+    fun getDataTypes_activeCaloriesBurned_returnsCorrectRecords() {
+        assertThat(getDataTypes(ACTIVE_CALORIES_BURNED))
+            .containsExactly(ActiveCaloriesBurnedRecord::class.java)
     }
 }
