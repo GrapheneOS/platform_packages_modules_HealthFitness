@@ -53,6 +53,7 @@ import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
+import android.healthconnect.aidl.IMigrationExceptionCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
@@ -69,6 +70,7 @@ import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.healthconnect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
+import android.healthconnect.migration.MigrationDataEntity;
 import android.os.Binder;
 import android.os.RemoteException;
 import android.os.UserHandle;
@@ -721,6 +723,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback, exception, HealthConnectException.ERROR_INTERNAL);
                     }
                 });
+    }
+
+    @Override
+    public void startMigration() {
+        // Mark the start of the migration.
+    }
+
+    @Override
+    public void finishMigration() {
+        // Mark the end of the migration.
+
+    }
+
+    @Override
+    public void writeMigrationData(
+            List<MigrationDataEntity> entities, IMigrationExceptionCallback callback) {
+        // Write data.
     }
 
     private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {
