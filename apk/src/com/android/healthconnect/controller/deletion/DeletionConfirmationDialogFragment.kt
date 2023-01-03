@@ -3,8 +3,8 @@ package com.android.healthconnect.controller.deletion
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMATION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint(DialogFragment::class)
 class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragment() {
 
-    private val viewModel: DeletionViewModel by viewModels({ requireParentFragment() })
+    private val viewModel: DeletionViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
