@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"Це дані про фази та сеанси сну тощо"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"Переглянути всі записи"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Видалити ці дані"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"доступ до даних про здоров’я"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Зчитувати спалені калорії"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Дозволяє додатку зчитувати дані про спалені калорії"</string>
@@ -75,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"тренування"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"Зчитувати дані про тренування"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"Записувати дані про тренування"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Маршрут тренування"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"маршрут тренування"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Записувати маршрут тренування"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Відстань"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"відстань"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Зчитувати відстань"</string>
@@ -246,18 +248,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"Видалити дані додатка"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"Неактивні додатки"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Ці додатки більше не мають доступу, однак їх дані досі зберігаються в Health Connect"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> матиме доступ до даних, які було збережено після <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Щоб керувати іншими дозволами Android для цього додатка, виберіть \"Налаштування\" &gt; \"Додатки\""</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"На дані, які ви надсилаєте в додаток <xliff:g id="APP_NAME">%1$s</xliff:g>, поширюється його політика конфіденційності"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Щоб керувати іншими дозволами Android для цього додатка, виберіть \"Налаштування &gt; Додатки\""</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Переглянути політику конфіденційності"</string>
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Доступ отримано протягом останніх 24 годин"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Початок роботи з Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Сервіс Health Connect зберігає ваші дані про здоров’я та фізичну активність, а також дає змогу легко синхронізувати їх із різними додатками на вашому телефоні"</string>
     <string name="share_data" msgid="3461840023402996573">"Діліться даними з додатками"</string>
@@ -325,17 +321,15 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 кілометр на годину}one{# кілометр на годину}few{# кілометри на годину}many{# кілометрів на годину}other{# кілометра на годину}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"від <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"від <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 миля}one{# миля}few{# милі}many{# миль}other{# милі}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 км}one{# км}few{# км}many{# км}other{# км}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 миля}one{# миля}few{# милі}many{# миль}other{# милі}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 кілометр}one{# кілометр}few{# кілометри}many{# кілометрів}other{# кілометра}}"</string>
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 калорія}one{# калорія}few{# калорії}many{# калорій}other{# калорії}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 кал.}one{# кал.}few{# кал.}many{# кал.}other{# кал.}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
     <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
-    <!-- no translation found for calories_long (3636635044382367818) -->
-    <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
+    <!-- no translation found for kj_long (516247759297999467) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"Одиниці вимірювання"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Вибрати одиниці вимірювання"</string>
@@ -389,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Триває експорт даних Health Connect"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Скасувати"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Перебіг експорту даних"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"фітнес, оздоровлення"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"дозволи"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"health connect, дані про здоров’я, категорії стану здоров’я, доступ до даних, активність, параметри тіла, відстеження циклу, харчування, сон, життєві показники"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; Дозволи для додатків"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; Дані та доступ"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"Пошук додатків"</string>
+    <string name="no_results" msgid="4935646951230345730">"Результатів немає"</string>
+    <string name="help" msgid="6096599033945360524">"Довідка"</string>
 </resources>

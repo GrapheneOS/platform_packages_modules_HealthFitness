@@ -74,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"การออกกำลังกาย"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"อ่านข้อมูลการออกกำลังกาย"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"เขียนข้อมูลการออกกำลังกาย"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"เส้นทางออกกำลังกาย"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"เส้นทางออกกำลังกาย"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"เขียนเส้นทางออกกำลังกาย"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"ระยะทาง"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"ระยะทาง"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"อ่านข้อมูลระยะทาง"</string>
@@ -245,18 +248,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"ลบข้อมูลแอป"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"แอปที่ไม่ได้ใช้งาน"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"แอปเหล่านี้ไม่มีสิทธิ์เข้าถึงอีกต่อไป แต่จะยังคงมีข้อมูลจัดเก็บอยู่ใน Health Connect"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> สามารถเข้าถึงข้อมูลที่เพิ่มหลังวันที่ <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"หากต้องการจัดการสิทธิ์อื่นๆ ใน Android ที่แอปนี้เข้าถึงได้ ให้ไปที่การตั้งค่า &gt; แอป"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"ข้อมูลที่แชร์กับ <xliff:g id="APP_NAME">%1$s</xliff:g> จะอยู่ภายใต้นโยบายความเป็นส่วนตัวของแอปดังกล่าว"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"หากต้องการจัดการสิทธิ์ของ Android อื่นๆ ที่แอปนี้เข้าถึงได้ ให้ไปที่การตั้งค่าแล้วแตะที่แอป"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"อ่านนโยบายความเป็นส่วนตัว"</string>
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"เข้าถึงในช่วง 24 ชั่วโมงที่ผ่านมา"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"เริ่มต้นใช้งาน Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect จะจัดเก็บข้อมูลสุขภาพและการออกกำลังกาย และให้คุณซิงค์แอปต่างๆ ในโทรศัพท์ได้โดยง่าย"</string>
     <string name="share_data" msgid="3461840023402996573">"แชร์ข้อมูลกับแอปต่างๆ"</string>
@@ -324,16 +321,16 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 กิโลเมตรต่อชั่วโมง}other{# กิโลเมตรต่อชั่วโมง}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"ตั้งแต่ <xliff:g id="START_TIME">%1$s</xliff:g> ถึง <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"ตั้งแต่ <xliff:g id="START_TIME">%1$s</xliff:g> ถึง <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
-    <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 ไมล์}other{# ไมล์}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 กม.}other{# กม.}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 ไมล์}other{# ไมล์}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 กิโลเมตร}other{# กิโลเมตร}}"</string>
     <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 แคลอรี่}other{# แคลอรี่}}"</string>
     <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 แคลอรี่}other{# แคลอรี่}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
+    <skip />
+    <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
     <string name="units_title" msgid="4335002706905375844">"หน่วย"</string>
     <string name="set_units_label" msgid="7358440515698876383">"ตั้งค่าหน่วยข้อมูล"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"ระยะทาง"</string>
@@ -386,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"กำลังส่งออกข้อมูล Health Connect"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"ยกเลิก"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"ความคืบหน้าของการส่งออกข้อมูล"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"ฟิตเนส, ความแข็งแรงสมบูรณ์"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"สิทธิ์"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"Health Connect, ข้อมูลสุขภาพ, หมวดหมู่สุขภาพ, การเข้าถึงข้อมูล, กิจกรรม, การตรวจวัดร่างกาย, การติดตามรอบเดือน, โภชนาการ, การนอนหลับ, ค่าสัญญาณชีพ"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; สิทธิ์ของแอป"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; ข้อมูลและการเข้าถึง"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"ค้นหาแอป"</string>
+    <string name="no_results" msgid="4935646951230345730">"ไม่พบผลลัพธ์"</string>
+    <string name="help" msgid="6096599033945360524">"ความช่วยเหลือ"</string>
 </resources>

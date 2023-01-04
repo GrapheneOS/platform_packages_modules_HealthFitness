@@ -74,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"ອອກກຳລັງກາຍ"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"ອ່ານຂໍ້ມູນການອອກກຳລັງກາຍ"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"ຂຽນຂໍ້ມູນການອອກກຳລັງກາຍ"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"ເສັ້ນທາງອອກກຳລັງກາຍ"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"ເສັ້ນທາງອອກກຳລັງກາຍ"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"ຂຽນເສັ້ນທາງອອກກຳລັງກາຍ"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"ໄລຍະທາງ"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"ໄລຍະທາງ"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"ອ່ານຂໍ້ມູນໄລຍະທາງ"</string>
@@ -250,8 +253,7 @@
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"ຂໍ້ມູນທີ່ທ່ານແບ່ງປັນກັບ <xliff:g id="APP_NAME">%1$s</xliff:g> ແມ່ນຢູ່ພາຍໃຕ້ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວຂອງເຂົາເຈົ້າ"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ເພື່ອຈັດການການອະນຸຍາດອື່ນໆຂອງ Android ທີ່ແອັບນີ້ສາມາດເຂົ້າເຖິງໄດ້, ໃຫ້ເຂົ້າໄປການຕັ້ງຄ່າ, ຈາກນັ້ນແຕະແອັບ"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ອ່ານນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ"</string>
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"ເຂົ້າເຖິງໃນ 24 ຊົ່ວໂມງທີ່ຜ່ານມາ"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"ເລີ່ມຕົ້ນການນຳໃຊ້ Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect ຈະບັນທຶກຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານ, ເພື່ອມອບວິທີງ່າຍໆໃນການຊິ້ງຂໍ້ມູນແອັບຕ່າງໆຢູ່ໂທລະສັບຂອງທ່ານ"</string>
     <string name="share_data" msgid="3461840023402996573">"ແບ່ງປັນຂໍ້ມູນກັບແອັບຂອງທ່ານ"</string>
@@ -325,6 +327,10 @@
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 ກິໂລແມັດ}other{# ກິໂລແມັດ}}"</string>
     <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 ແຄລໍຣີ}other{# ແຄລໍຣີ}}"</string>
     <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 ແຄລ}other{# ແຄລ}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
+    <skip />
+    <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
     <string name="units_title" msgid="4335002706905375844">"ຫົວໜ່ວຍ"</string>
     <string name="set_units_label" msgid="7358440515698876383">"ຕັ້ງຫົວໜ່ວຍຂໍ້ມູນ"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"ໄລຍະທາງ"</string>
@@ -377,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"ກຳລັງສົ່ງອອກຂໍ້ມູນ Health Connect"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"ຍົກເລີກ"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"ຄວາມຄືບການສົ່ງອອກຂໍ້ມູນ"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"ການອອກກຳລັງກາຍ, ສຸຂະພາບ"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"ການອະນຸຍາດ"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"Health Connect, ຂໍ້ມູນສຸຂະພາບ, ໝວດໝູ່ສຸຂະພາບ, ສິດເຂົ້າເຖິງຂໍ້ມູນ, ການເຄື່ອນໄຫວ, ການວັດແທກຮ່າງກາຍ, ການຕິດຕາມຮອບວຽນ, ໂພຊະນາການ, ການນອນ, ສັນຍານຊີບ"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; ການອະນຸຍາດແອັບ"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; ຂໍ້ມູນ ແລະ ສິດເຂົ້າເຖິງ"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"ຊອກຫາແອັບ"</string>
+    <string name="no_results" msgid="4935646951230345730">"ບໍ່ມີຜົນການຊອກຫາ"</string>
+    <string name="help" msgid="6096599033945360524">"ຊ່ວຍເຫຼືອ"</string>
 </resources>

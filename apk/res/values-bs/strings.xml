@@ -74,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"vježbanje"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"Čitanje podataka o vježbanju"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"Zapisivanje podataka o vježbanju"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Ruta za vježbanje"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"ruta za vježbanje"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Zapisivanje rute za vježbanje"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Udaljenost"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"udaljenost"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Čitanje udaljenosti"</string>
@@ -250,8 +253,7 @@
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"Podatke koje dijelite s aplikacijom <xliff:g id="APP_NAME">%1$s</xliff:g> pokrivaju njena pravila privatnosti"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Da upravljate drugim odobrenjima za Android kojima ova aplikacija može pristupiti, idite u Postavke, a zatim dodirnite Aplikacije"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Pročitajte pravila privatnosti"</string>
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Pristupljeno u posljednja 24 sata"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Počnite koristiti Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect pohranjuje vaše podatke o zdravlju i fitnesu i pruža vam jednostavan način da sinhronizirate različite aplikacije na telefonu"</string>
     <string name="share_data" msgid="3461840023402996573">"Dijelite podatke sa svojim aplikacijama"</string>
@@ -323,8 +325,12 @@
     <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}one{# km}few{# km}other{# km}}"</string>
     <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 milja}one{# milja}few{# milje}other{# milja}}"</string>
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilometar}one{# kilometar}few{# kilometra}other{# kilometara}}"</string>
-    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 kalorija}one{# kalorija}few{# kalorije}other{# kalorija}}"</string>
-    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 cal}one{# cal}few{# cal}other{# cal}}"</string>
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 kalorija}one{# kalorije}few{# kalorija}other{# kalorija}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 kalorija}one{# kalorija}few{# kalorije}other{# kalorija}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
+    <skip />
+    <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
     <string name="units_title" msgid="4335002706905375844">"Jedinice"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Postavite jedinice podataka"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"Udaljenost"</string>
@@ -369,12 +375,20 @@
     <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect će izbrisati sve podatke starije od # mjeseca.\nMože proći dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}one{Health Connect će izbrisati sve podatke starije od # mjeseca.\nMože proći dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}few{Health Connect će izbrisati sve podatke starije od # mjeseca.\nMože proći dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}other{Health Connect će izbrisati sve podatke starije od # mjeseci.\nMože proći dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Podaci koji će se izbrisati"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Gotovo"</string>
-    <string name="export_data_title" msgid="8758166079870538927">"Izvoz podataka aplikacije Health Connect"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Izvezite podatke Health Connecta"</string>
     <string name="export_data_select_all" msgid="6932439749735842660">"Odaberi sve"</string>
     <string name="export_data_deselect_all" msgid="493230746701668306">"Poništi sve odabire"</string>
     <string name="export_data_next_button" msgid="4333280628720601565">"Naprijed"</string>
     <string name="export_data_notification_title" msgid="1584276187698297224">"Dohvatanje podataka za izvoz"</string>
-    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Izvoz podataka aplikacije Health Connect"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Izvoz podataka Health Connecta"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Otkaži"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Napredak izvoza podataka"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"fitnes, wellness"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"odobrenja"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"Health Connect, zdravstveni podaci, zdravstvene kategorije, pristup podacima, aktivnost, tjelesne mjere, praćenje ciklusa, prehrana, spavanje, vitalne funkcije"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; Odobrenja za aplikaciju"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; Podaci i pristup"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"Pretraživanje aplikacija"</string>
+    <string name="no_results" msgid="4935646951230345730">"Nema rezultata"</string>
+    <string name="help" msgid="6096599033945360524">"Pomoć"</string>
 </resources>
