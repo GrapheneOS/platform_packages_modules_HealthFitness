@@ -18,13 +18,12 @@ package android.healthconnect.aidl;
 
 import static android.healthconnect.Constants.DEFAULT_LONG;
 
+import android.annotation.NonNull;
 import android.healthconnect.DeleteUsingFiltersRequest;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.util.Arrays;
 import java.util.Collections;

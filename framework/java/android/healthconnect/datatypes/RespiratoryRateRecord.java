@@ -16,8 +16,7 @@
 package android.healthconnect.datatypes;
 
 import android.annotation.FloatRange;
-
-import androidx.annotation.NonNull;
+import android.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;

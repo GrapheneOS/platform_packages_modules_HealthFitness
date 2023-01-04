@@ -18,10 +18,9 @@ package android.healthconnect.datatypes;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.BMR_RECORD_BASAL_CALORIES_TOTAL;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 
+import android.annotation.NonNull;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Power;
-
-import androidx.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;

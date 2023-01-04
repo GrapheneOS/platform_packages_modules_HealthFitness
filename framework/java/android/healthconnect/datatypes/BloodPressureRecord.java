@@ -15,10 +15,9 @@
  */
 package android.healthconnect.datatypes;
 
+import android.annotation.IntDef;
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.units.Pressure;
-
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

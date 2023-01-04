@@ -20,10 +20,9 @@ import static android.healthconnect.datatypes.AggregationType.AggregationTypeIde
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.WEIGHT_RECORD_WEIGHT_MIN;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
 
+import android.annotation.NonNull;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.datatypes.units.Mass;
-
-import androidx.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;

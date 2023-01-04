@@ -16,12 +16,11 @@
 
 package android.healthconnect.aidl;
 
+import android.annotation.NonNull;
 import android.healthconnect.GetDataOriginPriorityOrderResponse;
 import android.healthconnect.datatypes.DataOrigin;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.stream.Collectors;

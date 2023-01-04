@@ -15,14 +15,13 @@
  */
 package android.healthconnect.internal.datatypes;
 
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.BodyTemperatureMeasurementLocation;
 import android.healthconnect.datatypes.BodyTemperatureRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.units.Temperature;
 import android.os.Parcel;
-
-import androidx.annotation.NonNull;
 
 /**
  * @see BodyTemperatureRecord

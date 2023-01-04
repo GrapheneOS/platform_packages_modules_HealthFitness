@@ -15,6 +15,7 @@
  */
 package android.healthconnect.internal.datatypes;
 
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.BloodPressureRecord;
 import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation;
 import android.healthconnect.datatypes.BloodPressureRecord.BodyPosition.BodyPositionType;
@@ -22,8 +23,6 @@ import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.units.Pressure;
 import android.os.Parcel;
-
-import androidx.annotation.NonNull;
 
 /**
  * @hide

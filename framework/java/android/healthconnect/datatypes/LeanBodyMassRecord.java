@@ -15,9 +15,8 @@
  */
 package android.healthconnect.datatypes;
 
+import android.annotation.NonNull;
 import android.healthconnect.datatypes.units.Mass;
-
-import androidx.annotation.NonNull;
 
 import java.time.Instant;
 import java.time.ZoneOffset;

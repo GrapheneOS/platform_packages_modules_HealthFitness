@@ -19,6 +19,7 @@ package android.healthconnect.aidl;
 import static android.healthconnect.Constants.DEFAULT_INT;
 import static android.healthconnect.Constants.DEFAULT_LONG;
 
+import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.AggregateRecordsGroupedByDurationResponse;
 import android.healthconnect.AggregateRecordsGroupedByPeriodResponse;
@@ -29,8 +30,6 @@ import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.ArrayMap;
-
-import androidx.annotation.NonNull;
 
 import java.time.Duration;
 import java.time.Instant;
