@@ -32,6 +32,7 @@ public class ReadRecordsResponse<T extends Record> {
 
     /**
      * @param records List of records of type T
+     * @hide
      */
     public ReadRecordsResponse(@NonNull List<T> records) {
         mRecords = records;

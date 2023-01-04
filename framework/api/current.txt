@@ -198,7 +198,6 @@ package android.healthconnect {
   }
 
   public class ReadRecordsResponse<T extends android.healthconnect.datatypes.Record> {
-    ctor public ReadRecordsResponse(@NonNull java.util.List<T>);
     method @NonNull public java.util.List<T> getRecords();
   }
 
