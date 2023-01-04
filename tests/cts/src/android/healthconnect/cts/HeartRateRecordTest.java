@@ -356,7 +356,8 @@ public class HeartRateRecordTest {
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
                                         new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
@@ -416,7 +417,8 @@ public class HeartRateRecordTest {
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
                                         new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
@@ -452,7 +454,8 @@ public class HeartRateRecordTest {
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
                                         new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
