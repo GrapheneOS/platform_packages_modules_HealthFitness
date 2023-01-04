@@ -479,6 +479,18 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
+  public final class ExerciseLap {
+    method @NonNull public java.time.Instant getEndTime();
+    method @Nullable public android.healthconnect.datatypes.units.Length getLength();
+    method @NonNull public java.time.Instant getStartTime();
+  }
+
+  public static final class ExerciseLap.Builder {
+    ctor public ExerciseLap.Builder(@NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.healthconnect.datatypes.ExerciseLap build();
+    method @NonNull public android.healthconnect.datatypes.ExerciseLap.Builder setLength(@NonNull android.healthconnect.datatypes.units.Length);
+  }
+
   public final class ExerciseRoute {
     ctor public ExerciseRoute(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location>);
     method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location> getRouteLocations();
@@ -501,10 +513,96 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location.Builder setVerticalAccuracy(@NonNull android.healthconnect.datatypes.units.Length);
   }
 
+  public final class ExerciseSegment {
+    method @NonNull public java.time.Instant getEndTime();
+    method @IntRange(from=0) public int getRepetitionsCount();
+    method public int getSegmentType();
+    method @NonNull public java.time.Instant getStartTime();
+  }
+
+  public static final class ExerciseSegment.Builder {
+    ctor public ExerciseSegment.Builder(@NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    method @NonNull public android.healthconnect.datatypes.ExerciseSegment build();
+    method @NonNull public android.healthconnect.datatypes.ExerciseSegment.Builder setRepetitionsCount(@IntRange(from=0) int);
+  }
+
+  public final class ExerciseSegmentType {
+    field public static final int EXERCISE_SEGMENT_TYPE_ARM_CURL = 26; // 0x1a
+    field public static final int EXERCISE_SEGMENT_TYPE_BACK_EXTENSION = 27; // 0x1b
+    field public static final int EXERCISE_SEGMENT_TYPE_BALL_SLAM = 28; // 0x1c
+    field public static final int EXERCISE_SEGMENT_TYPE_BARBELL_SHOULDER_PRESS = 1; // 0x1
+    field public static final int EXERCISE_SEGMENT_TYPE_BENCH_PRESS = 29; // 0x1d
+    field public static final int EXERCISE_SEGMENT_TYPE_BENCH_SIT_UP = 2; // 0x2
+    field public static final int EXERCISE_SEGMENT_TYPE_BIKING = 3; // 0x3
+    field public static final int EXERCISE_SEGMENT_TYPE_BIKING_STATIONARY = 4; // 0x4
+    field public static final int EXERCISE_SEGMENT_TYPE_BURPEE = 30; // 0x1e
+    field public static final int EXERCISE_SEGMENT_TYPE_CRUNCH = 31; // 0x1f
+    field public static final int EXERCISE_SEGMENT_TYPE_DEADLIFT = 32; // 0x20
+    field public static final int EXERCISE_SEGMENT_TYPE_DOUBLE_ARM_TRICEPS_EXTENSION = 33; // 0x21
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_LEFT_ARM = 5; // 0x5
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_RIGHT_ARM = 6; // 0x6
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_FRONT_RAISE = 7; // 0x7
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_LATERAL_RAISE = 8; // 0x8
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_ROW = 34; // 0x22
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_LEFT_ARM = 9; // 0x9
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_RIGHT_ARM = 10; // 0xa
+    field public static final int EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_TWO_ARM = 11; // 0xb
+    field public static final int EXERCISE_SEGMENT_TYPE_ELLIPTICAL = 12; // 0xc
+    field public static final int EXERCISE_SEGMENT_TYPE_FORWARD_TWIST = 13; // 0xd
+    field public static final int EXERCISE_SEGMENT_TYPE_FRONT_RAISE = 35; // 0x23
+    field public static final int EXERCISE_SEGMENT_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING = 62; // 0x3e
+    field public static final int EXERCISE_SEGMENT_TYPE_HIP_THRUST = 36; // 0x24
+    field public static final int EXERCISE_SEGMENT_TYPE_HULA_HOOP = 37; // 0x25
+    field public static final int EXERCISE_SEGMENT_TYPE_JUMPING_JACK = 38; // 0x26
+    field public static final int EXERCISE_SEGMENT_TYPE_JUMP_ROPE = 39; // 0x27
+    field public static final int EXERCISE_SEGMENT_TYPE_KETTLEBELL_SWING = 40; // 0x28
+    field public static final int EXERCISE_SEGMENT_TYPE_LATERAL_RAISE = 41; // 0x29
+    field public static final int EXERCISE_SEGMENT_TYPE_LAT_PULL_DOWN = 42; // 0x2a
+    field public static final int EXERCISE_SEGMENT_TYPE_LEG_CURL = 43; // 0x2b
+    field public static final int EXERCISE_SEGMENT_TYPE_LEG_EXTENSION = 44; // 0x2c
+    field public static final int EXERCISE_SEGMENT_TYPE_LEG_PRESS = 45; // 0x2d
+    field public static final int EXERCISE_SEGMENT_TYPE_LEG_RAISE = 46; // 0x2e
+    field public static final int EXERCISE_SEGMENT_TYPE_LUNGE = 47; // 0x2f
+    field public static final int EXERCISE_SEGMENT_TYPE_MOUNTAIN_CLIMBER = 48; // 0x30
+    field public static final int EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT = 64; // 0x40
+    field public static final int EXERCISE_SEGMENT_TYPE_PAUSE = 67; // 0x43
+    field public static final int EXERCISE_SEGMENT_TYPE_PILATES = 14; // 0xe
+    field public static final int EXERCISE_SEGMENT_TYPE_PLANK = 49; // 0x31
+    field public static final int EXERCISE_SEGMENT_TYPE_PULL_UP = 50; // 0x32
+    field public static final int EXERCISE_SEGMENT_TYPE_PUNCH = 51; // 0x33
+    field public static final int EXERCISE_SEGMENT_TYPE_REST = 66; // 0x42
+    field public static final int EXERCISE_SEGMENT_TYPE_ROWING_MACHINE = 15; // 0xf
+    field public static final int EXERCISE_SEGMENT_TYPE_RUNNING = 16; // 0x10
+    field public static final int EXERCISE_SEGMENT_TYPE_RUNNING_TREADMILL = 17; // 0x11
+    field public static final int EXERCISE_SEGMENT_TYPE_SHOULDER_PRESS = 52; // 0x34
+    field public static final int EXERCISE_SEGMENT_TYPE_SINGLE_ARM_TRICEPS_EXTENSION = 53; // 0x35
+    field public static final int EXERCISE_SEGMENT_TYPE_SIT_UP = 54; // 0x36
+    field public static final int EXERCISE_SEGMENT_TYPE_SQUAT = 55; // 0x37
+    field public static final int EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING = 18; // 0x12
+    field public static final int EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING_MACHINE = 19; // 0x13
+    field public static final int EXERCISE_SEGMENT_TYPE_STRETCHING = 20; // 0x14
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_BACKSTROKE = 57; // 0x39
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_BREASTSTROKE = 58; // 0x3a
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_BUTTERFLY = 59; // 0x3b
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_FREESTYLE = 56; // 0x38
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_MIXED = 60; // 0x3c
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_OPEN_WATER = 21; // 0x15
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_OTHER = 61; // 0x3d
+    field public static final int EXERCISE_SEGMENT_TYPE_SWIMMING_POOL = 22; // 0x16
+    field public static final int EXERCISE_SEGMENT_TYPE_UNKNOWN = 0; // 0x0
+    field public static final int EXERCISE_SEGMENT_TYPE_UPPER_TWIST = 23; // 0x17
+    field public static final int EXERCISE_SEGMENT_TYPE_WALKING = 24; // 0x18
+    field public static final int EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING = 63; // 0x3f
+    field public static final int EXERCISE_SEGMENT_TYPE_WHEELCHAIR = 25; // 0x19
+    field public static final int EXERCISE_SEGMENT_TYPE_YOGA = 65; // 0x41
+  }
+
   public final class ExerciseSessionRecord extends android.healthconnect.datatypes.IntervalRecord {
     method public int getExerciseType();
+    method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseLap> getLaps();
     method @Nullable public CharSequence getNotes();
     method @Nullable public android.healthconnect.datatypes.ExerciseRoute getRoute();
+    method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseSegment> getSegments();
     method @Nullable public CharSequence getTitle();
     method @NonNull public boolean hasRoute();
   }
@@ -513,8 +611,10 @@ package android.healthconnect.datatypes {
     ctor public ExerciseSessionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord build();
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setLaps(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseLap>);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setNotes(@Nullable CharSequence);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setRoute(@Nullable android.healthconnect.datatypes.ExerciseRoute);
+    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setSegments(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseSegment>);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setTitle(@Nullable CharSequence);
   }
@@ -530,6 +630,7 @@ package android.healthconnect.datatypes {
     field public static final int EXERCISE_SESSION_TYPE_CALISTHENICS = 8; // 0x8
     field public static final int EXERCISE_SESSION_TYPE_CRICKET = 9; // 0x9
     field public static final int EXERCISE_SESSION_TYPE_DANCING = 10; // 0xa
+    field public static final int EXERCISE_SESSION_TYPE_ELLIPTICAL = 60; // 0x3c
     field public static final int EXERCISE_SESSION_TYPE_EXERCISE_CLASS = 11; // 0xb
     field public static final int EXERCISE_SESSION_TYPE_FENCING = 12; // 0xc
     field public static final int EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN = 13; // 0xd
@@ -552,6 +653,7 @@ package android.healthconnect.datatypes {
     field public static final int EXERCISE_SESSION_TYPE_ROCK_CLIMBING = 29; // 0x1d
     field public static final int EXERCISE_SESSION_TYPE_ROLLER_HOCKEY = 30; // 0x1e
     field public static final int EXERCISE_SESSION_TYPE_ROWING = 31; // 0x1f
+    field public static final int EXERCISE_SESSION_TYPE_ROWING_MACHINE = 61; // 0x3d
     field public static final int EXERCISE_SESSION_TYPE_RUGBY = 32; // 0x20
     field public static final int EXERCISE_SESSION_TYPE_RUNNING = 33; // 0x21
     field public static final int EXERCISE_SESSION_TYPE_RUNNING_TREADMILL = 34; // 0x22
@@ -565,6 +667,7 @@ package android.healthconnect.datatypes {
     field public static final int EXERCISE_SESSION_TYPE_SOFTBALL = 42; // 0x2a
     field public static final int EXERCISE_SESSION_TYPE_SQUASH = 43; // 0x2b
     field public static final int EXERCISE_SESSION_TYPE_STAIR_CLIMBING = 44; // 0x2c
+    field public static final int EXERCISE_SESSION_TYPE_STAIR_CLIMBING_MACHINE = 59; // 0x3b
     field public static final int EXERCISE_SESSION_TYPE_STRENGTH_TRAINING = 45; // 0x2d
     field public static final int EXERCISE_SESSION_TYPE_STRETCHING = 46; // 0x2e
     field public static final int EXERCISE_SESSION_TYPE_SURFING = 47; // 0x2f

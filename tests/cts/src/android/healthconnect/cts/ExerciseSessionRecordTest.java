@@ -18,10 +18,14 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.healthconnect.datatypes.ExerciseLap;
 import android.healthconnect.datatypes.ExerciseRoute;
+import android.healthconnect.datatypes.ExerciseSegment;
+import android.healthconnect.datatypes.ExerciseSegmentType;
 import android.healthconnect.datatypes.ExerciseSessionRecord;
 import android.healthconnect.datatypes.ExerciseSessionType;
 import android.healthconnect.datatypes.Metadata;
+import android.healthconnect.datatypes.units.Length;
 
 import androidx.test.runner.AndroidJUnit4;
 
@@ -30,6 +34,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class ExerciseSessionRecordTest {
@@ -51,6 +56,8 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getRoute()).isNull();
         assertThat(record.getNotes()).isNull();
         assertThat(record.getTitle()).isNull();
+        assertThat(record.getSegments()).isEmpty();
+        assertThat(record.getLaps()).isEmpty();
     }
 
     @Test
@@ -78,6 +85,20 @@ public class ExerciseSessionRecordTest {
         ExerciseRoute route = TestUtils.buildExerciseRoute();
         CharSequence notes = "rain";
         CharSequence title = "Morning training";
+        List<ExerciseSegment> segmentList =
+                List.of(
+                        new ExerciseSegment.Builder(
+                                        START_TIME,
+                                        END_TIME,
+                                        ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                                .setRepetitionsCount(10)
+                                .build());
+
+        List<ExerciseLap> lapsList =
+                List.of(
+                        new ExerciseLap.Builder(START_TIME, END_TIME)
+                                .setLength(Length.fromMeters(10))
+                                .build());
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
                                 TestUtils.generateMetadata(),
@@ -89,6 +110,8 @@ public class ExerciseSessionRecordTest {
                         .setStartZoneOffset(ZoneOffset.MIN)
                         .setNotes(notes)
                         .setTitle(title)
+                        .setSegments(segmentList)
+                        .setLaps(lapsList)
                         .build();
         assertThat(record.hasRoute()).isTrue();
         assertThat(record.getRoute()).isEqualTo(route);
@@ -97,6 +120,8 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getExerciseType())
                 .isEqualTo(ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN);
         assertThat(record.getNotes()).isEqualTo(notes);
+        assertThat(record.getSegments()).isEqualTo(segmentList);
+        assertThat(record.getLaps()).isEqualTo(lapsList);
         assertThat(record.getTitle()).isEqualTo(title);
     }
 }
