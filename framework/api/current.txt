@@ -516,14 +516,14 @@ package android.healthconnect.datatypes {
   public static final class ExerciseRoute.Location {
     method @Nullable public android.healthconnect.datatypes.units.Length getAltitude();
     method @Nullable public android.healthconnect.datatypes.units.Length getHorizontalAccuracy();
-    method @FloatRange(from=-180.0, to=180.0) public double getLatitude();
+    method @FloatRange(from=-90.0, to=90.0) public double getLatitude();
     method @FloatRange(from=-180.0, to=180.0) public double getLongitude();
     method @NonNull public java.time.Instant getTime();
     method @Nullable public android.healthconnect.datatypes.units.Length getVerticalAccuracy();
   }
 
   public static final class ExerciseRoute.Location.Builder {
-    ctor public ExerciseRoute.Location.Builder(@NonNull java.time.Instant, @FloatRange(from=-180.0, to=180.0) double, @FloatRange(from=-180.0, to=180.0) double);
+    ctor public ExerciseRoute.Location.Builder(@NonNull java.time.Instant, @FloatRange(from=-90.0, to=90.0) double, @FloatRange(from=-180.0, to=180.0) double);
     method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location build();
     method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location.Builder setAltitude(@NonNull android.healthconnect.datatypes.units.Length);
     method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location.Builder setHorizontalAccuracy(@NonNull android.healthconnect.datatypes.units.Length);
