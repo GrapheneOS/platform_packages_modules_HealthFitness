@@ -60,8 +60,10 @@ public final class ExerciseRoute {
     /** Point in the time and space. Used in {@link ExerciseRoute}. */
     public static final class Location {
         // Values are used for FloatRange annotation in latitude/longitude getters and constructor.
-        private static final float MIN_COORDINATE = -180;
-        private static final float MAX_COORDINATE = 180;
+        private static final double MIN_LONGITUDE = -180;
+        private static final double MAX_LONGITUDE = 180;
+        private static final double MIN_LATITUDE = -90;
+        private static final double MAX_LATITUDE = 90;
 
         private final Instant mTime;
         private final double mLatitude;
@@ -74,10 +76,10 @@ public final class ExerciseRoute {
          * Represents a single location in an exercise route.
          *
          * @param time The point in time when the measurement was taken.
-         * @param latitude Latitude of a location represented as a float, in degrees. Valid range:
-         *     -180 - 180 degrees.
-         * @param longitude Longitude of a location represented as a float, in degrees. Valid range:
-         *     -180 - 180 degrees.
+         * @param latitude Latitude of a location represented as a double, in degrees. Valid range:
+         *     from -90 to 90 degrees.
+         * @param longitude Longitude of a location represented as a double, in degrees. Valid
+         *     range: from -180 to 180 degrees.
          * @param horizontalAccuracy The radius of uncertainty for the location, in [Length] unit.
          *     Must be non-negative value.
          * @param verticalAccuracy The validity of the altitude values, and their estimated
@@ -88,28 +90,28 @@ public final class ExerciseRoute {
          */
         private Location(
                 @NonNull Instant time,
-                @FloatRange(from = MIN_COORDINATE, to = MAX_COORDINATE) double latitude,
-                @FloatRange(from = MIN_COORDINATE, to = MAX_COORDINATE) double longitude,
+                @FloatRange(from = MIN_LATITUDE, to = MAX_LATITUDE) double latitude,
+                @FloatRange(from = MIN_LONGITUDE, to = MAX_LONGITUDE) double longitude,
                 @Nullable Length horizontalAccuracy,
                 @Nullable Length verticalAccuracy,
                 @Nullable Length altitude) {
             Objects.requireNonNull(time);
 
-            if (latitude < MIN_COORDINATE || latitude > MAX_COORDINATE) {
+            if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
                 throw new IllegalArgumentException(
                         "Latitude must be in range from "
-                                + MIN_COORDINATE
+                                + MIN_LATITUDE
                                 + " to "
-                                + MAX_COORDINATE
+                                + MAX_LATITUDE
                                 + ".");
             }
 
-            if (longitude < MIN_COORDINATE || longitude > MAX_COORDINATE) {
+            if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
                 throw new IllegalArgumentException(
                         "Longitude must be in range from "
-                                + MIN_COORDINATE
+                                + MIN_LONGITUDE
                                 + " to "
-                                + MAX_COORDINATE
+                                + MAX_LONGITUDE
                                 + ".");
             }
 
@@ -142,7 +144,7 @@ public final class ExerciseRoute {
         }
 
         /** Returns latitude of this location */
-        @FloatRange(from = -180.0, to = 180.0)
+        @FloatRange(from = -90.0, to = 90.0)
         public double getLatitude() {
             return mLatitude;
         }
@@ -201,10 +203,10 @@ public final class ExerciseRoute {
         public static final class Builder {
             @NonNull private final Instant mTime;
 
-            @FloatRange(from = -180.0, to = 180.0)
+            @FloatRange(from = MIN_LATITUDE, to = MAX_LATITUDE)
             private final double mLatitude;
 
-            @FloatRange(from = -180.0, to = 180.0)
+            @FloatRange(from = MIN_LONGITUDE, to = MAX_LONGITUDE)
             private final double mLongitude;
 
             @Nullable private Length mHorizontalAccuracy;
@@ -214,7 +216,7 @@ public final class ExerciseRoute {
             /** Sets time, longitude and latitude to the point. */
             public Builder(
                     @NonNull Instant time,
-                    @FloatRange(from = -180.0, to = 180.0) double latitude,
+                    @FloatRange(from = -90.0, to = 90.0) double latitude,
                     @FloatRange(from = -180.0, to = 180.0) double longitude) {
                 Objects.requireNonNull(time);
                 mTime = time;

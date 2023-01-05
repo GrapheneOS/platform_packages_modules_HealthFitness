@@ -76,7 +76,7 @@ public class ExerciseRouteTest {
     public void testExerciseRouteLocation_latitudeIsInvalid_throwsException() {
         ExerciseRoute.Location point =
                 new ExerciseRoute.Location.Builder(
-                                DEFAULT_TIME, /* latitude= */ -300, DEFAULT_LONGITUDE)
+                                DEFAULT_TIME, /* latitude= */ -120, DEFAULT_LONGITUDE)
                         .build();
         fail("Must return error if latitude is illegal");
     }

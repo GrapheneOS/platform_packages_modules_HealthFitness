@@ -170,8 +170,7 @@ public class ExerciseRouteInternal {
 
         /** returns this object with the specified latitude */
         @NonNull
-        public LocationInternal setLatitude(
-                @FloatRange(from = -180.0, to = 180.0) double latitude) {
+        public LocationInternal setLatitude(@FloatRange(from = -90.0, to = 90.0) double latitude) {
             this.mLatitude = latitude;
             return this;
         }
