@@ -569,7 +569,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         .map(
                                                 (name) ->
                                                         new DataOrigin.Builder()
-                                                                .setPackageName(packageName)
+                                                                .setPackageName(name)
                                                                 .build())
                                         .collect(Collectors.toList());
                         callback.onResult(
