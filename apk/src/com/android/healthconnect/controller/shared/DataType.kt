@@ -17,6 +17,7 @@ import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.HeartRateRecord
+import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.SpeedRecord
@@ -33,5 +34,6 @@ enum class DataType(val recordClass: Class<out Record>) {
     SPEED(SpeedRecord::class.java),
     STEPS(StepsRecord::class.java),
     STEPS_CADENCE(StepsCadenceRecord::class.java),
-    TOTAL_CALORIES_BURNED(TotalCaloriesBurnedRecord::class.java)
+    TOTAL_CALORIES_BURNED(TotalCaloriesBurnedRecord::class.java),
+    HEIGHT(HeightRecord::class.java)
 }

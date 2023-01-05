@@ -19,9 +19,13 @@ import android.healthconnect.HealthConnectManager
 import android.healthconnect.datatypes.DataOrigin
 import android.healthconnect.datatypes.Device
 import android.healthconnect.datatypes.HeartRateRecord
+import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.Metadata
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.StepsRecord
+import android.healthconnect.datatypes.WeightRecord
+import android.healthconnect.datatypes.units.Length
+import android.healthconnect.datatypes.units.Mass
 import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
 import android.util.Log
@@ -42,6 +46,14 @@ class SeedData(private val context: Context) {
     fun seedData() {
         seedStepsData()
         seedHeartRateData()
+        seedBodyMeasurementData()
+    }
+
+    private fun seedBodyMeasurementData() {
+        val records = mutableListOf<Record>()
+        records.add(HeightRecord.Builder(getMetaData(), Instant.now(), Length.fromMeters(1.75)).build())
+        records.add(WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromKilograms(70.0)).build())
+        insertRecord(records)
     }
 
     private fun seedStepsData() {

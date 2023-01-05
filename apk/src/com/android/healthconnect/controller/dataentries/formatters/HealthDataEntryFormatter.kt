@@ -17,6 +17,7 @@ import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.HeartRateRecord
+import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.SpeedRecord
@@ -41,7 +42,8 @@ constructor(
     private val distanceFormatter: DistanceFormatter,
     private val powerFormatter: PowerFormatter,
     private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter,
-    private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter
+    private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
+    private val heightFormatter: HeightFormatter
 ) {
 
     suspend fun format(record: Record): FormattedDataEntry {
@@ -56,6 +58,7 @@ constructor(
             is PowerRecord -> powerFormatter.format(record, appName)
             is ActiveCaloriesBurnedRecord -> activeCaloriesBurnedFormatter.format(record, appName)
             is TotalCaloriesBurnedRecord -> totalCaloriesBurnedFormatter.format(record, appName)
+            is HeightRecord -> heightFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

@@ -467,6 +467,25 @@
   <string translation_description="Kilometers formatted for speech. [ICU SYNTAX][CHAR LIMIT=NONE]"
       name="distance_km_long">{dist, plural, =1 {1 kilometer} other {# kilometers}}</string>
 
+  <!-- region Height -->
+  <string translation_description="Height in centimeters. [ICU SYNTAX][CHAR LIMIT=10]"
+      name="height_cm">{height, plural, =1 {1 cm} other {# cm}}</string>
+  <string translation_description="Height in centimeters. [ICU SYNTAX][CHAR LIMIT=30]"
+      name="height_cm_long">{height, plural, =1 {1 centimeter} other {# centimeters}}</string>
+   <string translation_description="Height measurement part in inches. [ICU SYNTAX][CHAR LIMIT=30]"
+      name="height_in_long">{height, plural, =1 {1 inch} other {# inches}}</string>
+  <string translation_description="Height measurement part in feet. [ICU SYNTAX][CHAR LIMIT=30]"
+      name="height_ft_long">{height, plural, =1 {1 foot} other {# feet}}</string>
+  <string translation_description="Height measurement part in inches compacted. [ICU SYNTAX][CHAR LIMIT=5]"
+      name="height_in_compacted">{height, plural, =1 {1\u2033} other {#\u2033}}</string>
+  <string translation_description="Height measurement part in feet compacted. [ICU SYNTAX][CHAR LIMIT=5]"
+      name="height_ft_compacted">{height, plural, =1 {1\u2032} other {#\u2032}}</string>
+  <string translation_description="Format for displaying height in feet and inches in compacted form e.g. 5′11″ [CHAR LIMIT=10]"
+      name="feet_inches_format"><xliff:g id="ft" example="5′">%1$s</xliff:g><xliff:g id="in" example="11″">%2$s</xliff:g></string>
+  <string translation_description="Format for displaying height in feet and inches in long form e.g. 5 feet 11 inches [CHAR LIMIT=60]"
+      name="feet_inches_format_long"><xliff:g id="ft" example="5 feet">%1$s</xliff:g> <xliff:g id="in" example="11 inches">%2$s</xliff:g></string>
+  <!--endregion-->
+
   <!-- Energy -->
   <string translation_description="Calories formatted. [ICU SYNTAX][CHAR LIMIT=60]"
       name="calories_long">{count, plural, =1 {1 calorie} other {# calories}}</string>
