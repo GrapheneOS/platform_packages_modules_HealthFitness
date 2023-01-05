@@ -59,6 +59,7 @@ public class GrantTimeIntegrationTest {
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getTargetContext();
+        PermissionsTestUtils.assumeHoldManageHealthPermissionsPermission(mContext);
         mHealthConnectManager = mContext.getSystemService(HealthConnectManager.class);
 
         revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);

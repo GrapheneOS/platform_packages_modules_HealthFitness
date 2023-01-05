@@ -21,7 +21,6 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
 
 import android.Manifest;
 import android.content.Context;
@@ -73,13 +72,7 @@ public class HealthConnectWithManagePermissionsTest {
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getTargetContext();
-        assumeTrue(
-                "Skipping test - test cannot hold "
-                        + HealthPermissions.MANAGE_HEALTH_PERMISSIONS
-                        + " for the build-under-test. This is likely because the build uses "
-                        + "mainline prebuilts and therefore does not have a compatible signature "
-                        + "with this test app. See the test class Javadoc for more info.",
-                canHoldManageHealthPermsPermission());
+        PermissionsTestUtils.assumeHoldManageHealthPermissionsPermission(mContext);
         mHealthConnectManager = mContext.getSystemService(HealthConnectManager.class);
 
         revokePermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
@@ -312,19 +305,5 @@ public class HealthConnectWithManagePermissionsTest {
     private void assertPermNotGrantedForApp(String packageName, String permName) throws Exception {
         assertThat(mContext.getPackageManager().checkPermission(permName, packageName))
                 .isEqualTo(PackageManager.PERMISSION_DENIED);
-    }
-
-    /**
-     * Returns {@code true} if the test can hold {@link
-     * HealthPermissions.MANAGE_HEALTH_PERMISSIONS}.
-     *
-     * <p>The permission is protected at signature level, and should be granted automatically if
-     * it's possible to hold. So effectively this method can simply check if this test's package
-     * holds the permission.
-     */
-    private static boolean canHoldManageHealthPermsPermission() {
-        return InstrumentationRegistry.getContext()
-                        .checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
-                == PackageManager.PERMISSION_GRANTED;
     }
 }
