@@ -41,6 +41,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -315,7 +316,8 @@ public class RestingHeartRateRecordTest {
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
                                         new TimeRangeFilter.Builder(
-                                                        Instant.ofEpochMilli(0), Instant.now())
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(RestingHeartRateRecord.BPM_MAX)
                                 .addAggregationType(RestingHeartRateRecord.BPM_MIN)
