@@ -497,6 +497,11 @@
       name="kj_long">{count, plural, =1 {1 kilojoule} other {# kilojoules}}</string>
   <!--endregion-->
 
+  <!-- region percent -->
+  <string name="percent" formatted="false" description="Percentage value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1%} other {#%}}</string>
+  <string name="percent_long" description="Percentage value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 percent} other {# percent}}</string>
+  <!--endregion-->
+
   <!-- region units -->
   <string name="units_title" description="Title on a screen allowing users to go to display units (weight/height/temperature etc) in the app[CHAR_LIMIT=50]">Units</string>
   <string name="set_units_label" description="Label in the drop down menu, allowing users to go to display units (weight/height/temperature etc) in the app [CHAR_LIMIT=50]">Set data units</string>
