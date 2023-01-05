@@ -34,6 +34,7 @@
     <activity
         android:id="@+id/update_apps_activity"
         app:action="android.intent.action.VIEW"
+        android:label="@string/playstore_app_title"
         app:data="@string/playstore_manage_apps_url"
         app:targetPackage="@string/playstore_package_name" />
     <fragment
@@ -78,8 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/dataEntriesFragment"
-        android:name="com.android.healthconnect.controller.dataentries.DataEntriesFragment"
-        android:label="DataEntriesFragment">
+        android:name="com.android.healthconnect.controller.dataentries.DataEntriesFragment">
         <action
             android:id="@+id/action_dataEntriesFragment_to_unitsFragment"
             app:destination="@+id/unitFragment" />
