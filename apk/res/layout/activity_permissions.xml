@@ -58,6 +58,7 @@
             android:layout_marginStart="@dimen/spacing_small"
             android:layout_marginVertical="@dimen/spacing_normal"
             android:layout_weight="1"
+            android:enabled="false"
             android:minHeight="@dimen/button_size"
             android:text="@string/request_permissions_allow" />
     </LinearLayout>

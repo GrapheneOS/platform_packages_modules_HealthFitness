@@ -27,9 +27,7 @@ import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
-import com.android.healthconnect.controller.shared.HealthPermissionReader
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 /** Permissions activity for Health Connect. */
 @AndroidEntryPoint(FragmentActivity::class)
@@ -40,51 +38,52 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
     }
 
     private val viewModel: RequestPermissionViewModel by viewModels()
-    @Inject lateinit var healthPermissionReader: HealthPermissionReader
-    private lateinit var appPackageName: String
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permissions)
 
-        if (!intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
+        if (!intent.hasExtra(EXTRA_PACKAGE_NAME)) {
             Log.e(TAG, "Invalid Intent Extras, finishing")
             finish()
         }
 
-        appPackageName = intent.getStringExtra(EXTRA_PACKAGE_NAME).orEmpty()
-        val permissionSelection = viewModel.getPermissionSelection()
-        val permissions = permissionSelection.ifEmpty { getPermissions().associateWith { false } }
-        val permissionsFragment = PermissionsFragment.newInstance(permissions)
+        viewModel.init(getPackageNameExtra(), getPermissionStrings())
+
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.permission_content, permissionsFragment)
+            .replace(R.id.permission_content, PermissionsFragment())
             .commit()
-
-        setupAllowButton()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        viewModel.savePermissionSelection(getPermissionsFragment().getPermissionAssignments())
+    override fun onResume() {
+        super.onResume()
+        setupAllowButton()
+        setupCancelButton()
+    }
+
+    private fun setupCancelButton() {
+        val cancelButton: View = findViewById(R.id.cancel)
+        cancelButton.setOnClickListener { handleResults(viewModel.request(getPackageNameExtra())) }
     }
 
     private fun setupAllowButton() {
-        val allowButton: View? = findViewById(R.id.allow)
-        allowButton?.setOnClickListener {
-            val permissions = getPermissionsFragment().getPermissionAssignments()
-            viewModel.request(appPackageName, permissions)
-            viewModel.permissionResults.observe(this) { results -> handleResults(results) }
+        val allowButton: View = findViewById(R.id.allow)
+        viewModel.grantedPermissions.observe(this) { grantedPermissions ->
+            allowButton.isEnabled = grantedPermissions.isNotEmpty()
         }
+        allowButton.setOnClickListener { handleResults(viewModel.request(getPackageNameExtra())) }
     }
 
     private fun handleResults(results: Map<HealthPermission, PermissionState>) {
         val grants =
-            getPermissions()
-                .map { permission ->
-                    if (results[permission] == PermissionState.GRANTED)
+            results.values
+                .map { permissionSelection ->
+                    if (PermissionState.GRANTED == permissionSelection) {
                         PackageManager.PERMISSION_GRANTED
-                    else PackageManager.PERMISSION_DENIED
+                    } else {
+                        PackageManager.PERMISSION_DENIED
+                    }
                 }
                 .toIntArray()
         val result = Intent()
@@ -98,14 +97,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         return intent.getStringArrayExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES).orEmpty()
     }
 
-    private fun getPermissions(): List<HealthPermission> {
-        return getPermissionStrings().mapNotNull { permissionString ->
-            HealthPermission.fromPermissionString(permissionString)
-        }
-    }
-
-    private fun getPermissionsFragment(): PermissionsFragment {
-        return supportFragmentManager.findFragmentById(R.id.permission_content)
-            as PermissionsFragment
+    private fun getPackageNameExtra(): String {
+        return intent.getStringExtra(EXTRA_PACKAGE_NAME).orEmpty()
     }
 }

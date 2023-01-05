@@ -1,10 +1,8 @@
 package com.android.healthconnect.controller.permissions
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
@@ -29,14 +27,10 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         private const val READ_CATEGORY = "read_permission_category"
         private const val WRITE_CATEGORY = "write_permission_category"
         private const val HEADER = "request_permissions_header"
-        @JvmStatic
-        fun newInstance(permissions: Map<HealthPermission, Boolean>) =
-            PermissionsFragment().apply { permissionMap = permissions.toMutableMap() }
     }
 
-    private val viewModel: RequestPermissionViewModel by viewModels()
+    private val viewModel: RequestPermissionViewModel by activityViewModels()
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
-    private var permissionMap: MutableMap<HealthPermission, Boolean> = HashMap()
 
     private val header: RequestPermissionHeaderPreference? by lazy {
         preferenceScreen.findPreference(HEADER)
@@ -62,15 +56,11 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             (0..(mWritePermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
                 (mWritePermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
             }
-            permissionMap.keys.forEach { permission -> permissionMap[permission] = grant }
+            viewModel.updatePermissions(grant)
         }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.permissions_screen, rootKey)
-        updateDataList()
-        setupAllowAll()
-        viewModel.loadAppInfo(
-            requireActivity().intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME).orEmpty())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,35 +72,35 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                 startActivity(startRationaleIntent)
             }
         }
-    }
-
-    fun getPermissionAssignments(): Map<HealthPermission, Boolean> {
-        return permissionMap.toMap()
+        viewModel.permissionsList.observe(viewLifecycleOwner) { permissions ->
+            updateDataList(permissions)
+            setupAllowAll()
+        }
     }
 
     private fun setupAllowAll() {
+        viewModel.allPermissionsGranted.observe(viewLifecycleOwner) { allPermissionsGranted ->
+            // does not trigger removing/enabling all permissions
+            allowAllPreference?.removeOnSwitchChangeListener(onSwitchChangeListener)
+            allowAllPreference?.isChecked = allPermissionsGranted
+            allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
+        }
         allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
     }
 
-    private fun updateDataList() {
+    private fun updateDataList(permissionsList: List<HealthPermission>) {
         mReadPermissionCategory?.removeAll()
         mWritePermissionCategory?.removeAll()
 
-        permissionMap.forEach { entry ->
-            val permission = entry.key
-            val value = entry.value
-            if (permission.permissionsAccessType.equals(PermissionsAccessType.READ)) {
+        permissionsList.forEach { permission ->
+            val value = viewModel.isPermissionGranted(permission)
+            if (PermissionsAccessType.READ == permission.permissionsAccessType) {
                 mReadPermissionCategory?.addPreference(getPermissionPreference(value, permission))
-            }
-        }
-
-        permissionMap.forEach { entry ->
-            val permission = entry.key
-            val value = entry.value
-            if (permission.permissionsAccessType.equals(PermissionsAccessType.WRITE)) {
+            } else if (PermissionsAccessType.WRITE == permission.permissionsAccessType) {
                 mWritePermissionCategory?.addPreference(getPermissionPreference(value, permission))
             }
         }
+
         if (mReadPermissionCategory?.preferenceCount == 0) {
             mReadPermissionCategory?.isVisible = false
         }
@@ -129,13 +119,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                 HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
                     .uppercaseLabel)
             it.setOnPreferenceChangeListener { _, newValue ->
-                permissionMap[permission] = newValue as Boolean
-
-                // does not trigger removing/enabling all permissions
-                allowAllPreference?.removeOnSwitchChangeListener(onSwitchChangeListener)
-                allowAllPreference?.isChecked = !permissionMap.containsValue(false)
-                allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
-
+                viewModel.updatePermission(permission, newValue as Boolean)
                 true
             }
         }
