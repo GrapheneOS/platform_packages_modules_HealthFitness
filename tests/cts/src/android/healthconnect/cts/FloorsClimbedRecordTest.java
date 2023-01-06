@@ -213,6 +213,26 @@ public class FloorsClimbedRecordTest {
         assertThat(newFloorsTotal - oldFloorsTotal).isEqualTo(20);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        FloorsClimbedRecord.Builder builder =
+                new FloorsClimbedRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10);
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+    }
+
     private void readFloorsClimbedRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<FloorsClimbedRecord> request =

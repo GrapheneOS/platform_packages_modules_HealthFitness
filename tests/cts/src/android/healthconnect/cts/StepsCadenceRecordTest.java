@@ -39,6 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -256,6 +257,29 @@ public class StepsCadenceRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteStepsCadenceRecord());
         TestUtils.verifyDeleteRecords(StepsCadenceRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, StepsCadenceRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        StepsCadenceRecord.Builder builder =
+                new StepsCadenceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Collections.emptyList());
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
     }
 
     private void testReadStepsCadenceRecordIds() throws InterruptedException {

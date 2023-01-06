@@ -39,6 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -290,6 +291,29 @@ public class CyclingPedalingCadenceRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteCyclingPedalingCadenceRecord());
         TestUtils.verifyDeleteRecords(CyclingPedalingCadenceRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, CyclingPedalingCadenceRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        CyclingPedalingCadenceRecord.Builder builder =
+                new CyclingPedalingCadenceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Collections.emptyList());
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
     }
 
     private void testReadCyclingPedalingCadenceRecordIds() throws InterruptedException {

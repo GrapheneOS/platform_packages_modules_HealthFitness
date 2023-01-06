@@ -191,6 +191,22 @@ public class BasalBodyTemperatureRecordTest {
         assertThat(newBasalBodyTemperatureRecords.size()).isEqualTo(0);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        BasalBodyTemperatureRecord.Builder builder =
+                new BasalBodyTemperatureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        0,
+                        Temperature.fromCelsius(10.0));
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private void readBasalBodyTemperatureRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<BasalBodyTemperatureRecord> request =

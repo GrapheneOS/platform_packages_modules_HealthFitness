@@ -201,11 +201,8 @@ public final class HeartRateRecord extends IntervalRecord {
         private final Instant mStartTime;
         private final Instant mEndTime;
         private final List<HeartRateSample> mHeartRateSamples;
-        private ZoneOffset mStartZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-        private ZoneOffset mEndZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-
+        private ZoneOffset mStartZoneOffset;
+        private ZoneOffset mEndZoneOffset;
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
@@ -230,6 +227,8 @@ public final class HeartRateRecord extends IntervalRecord {
             mStartTime = startTime;
             mEndTime = endTime;
             mHeartRateSamples = heartRateSamples;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /**
@@ -253,6 +252,20 @@ public final class HeartRateRecord extends IntervalRecord {
             Objects.requireNonNull(endZoneOffset);
 
             mEndZoneOffset = endZoneOffset;
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearStartZoneOffset() {
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearEndZoneOffset() {
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

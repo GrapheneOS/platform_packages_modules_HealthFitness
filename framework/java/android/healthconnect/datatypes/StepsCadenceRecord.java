@@ -141,9 +141,9 @@ public final class StepsCadenceRecord extends IntervalRecord {
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the activity started */
@@ -159,6 +159,20 @@ public final class StepsCadenceRecord extends IntervalRecord {
         public Builder setEndZoneOffset(@NonNull ZoneOffset endZoneOffset) {
             Objects.requireNonNull(endZoneOffset);
             mEndZoneOffset = endZoneOffset;
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearStartZoneOffset() {
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearEndZoneOffset() {
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

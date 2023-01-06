@@ -328,6 +328,29 @@ public class DistanceRecordTest {
         assertThat(newLength.getInMeters() - oldLength.getInMeters()).isEqualTo(100.5);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        DistanceRecord.Builder builder =
+                new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Length.fromMeters(10.0));
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+    }
+
     static DistanceRecord getBaseDistanceRecord() {
         return new DistanceRecord.Builder(
                         new Metadata.Builder().build(),

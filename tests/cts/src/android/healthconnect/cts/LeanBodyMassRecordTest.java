@@ -291,6 +291,19 @@ public class LeanBodyMassRecordTest {
         TestUtils.assertRecordNotFound(id, LeanBodyMassRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        LeanBodyMassRecord.Builder builder =
+                new LeanBodyMassRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0));
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static LeanBodyMassRecord getBaseLeanBodyMassRecord() {
         return new LeanBodyMassRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))

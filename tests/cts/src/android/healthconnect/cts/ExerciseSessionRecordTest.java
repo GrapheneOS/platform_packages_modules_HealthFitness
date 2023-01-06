@@ -124,4 +124,35 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getLaps()).isEqualTo(lapsList);
         assertThat(record.getTitle()).isEqualTo(title);
     }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        ExerciseRoute route = TestUtils.buildExerciseRoute();
+        CharSequence notes = "rain";
+        CharSequence title = "Morning training";
+        ExerciseSessionRecord.Builder builder =
+                new ExerciseSessionRecord.Builder(
+                                TestUtils.generateMetadata(),
+                                START_TIME,
+                                END_TIME,
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                        .setRoute(route)
+                        .setEndZoneOffset(ZoneOffset.MAX)
+                        .setStartZoneOffset(ZoneOffset.MIN)
+                        .setNotes(notes)
+                        .setTitle(title);
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+    }
 }

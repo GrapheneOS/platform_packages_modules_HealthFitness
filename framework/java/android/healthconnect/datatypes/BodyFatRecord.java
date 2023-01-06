@@ -97,8 +97,8 @@ public final class BodyFatRecord extends InstantRecord {
             Objects.requireNonNull(percentage);
             mMetadata = metadata;
             mTime = time;
-            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mPercentage = percentage;
+            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
         }
 
         /** Sets the zone offset of the user when the activity happened */
@@ -106,6 +106,13 @@ public final class BodyFatRecord extends InstantRecord {
         public Builder setZoneOffset(@NonNull ZoneOffset zoneOffset) {
             Objects.requireNonNull(zoneOffset);
             mZoneOffset = zoneOffset;
+            return this;
+        }
+
+        /** Sets the zone offset of this record to system default. */
+        @NonNull
+        public Builder clearZoneOffset() {
+            mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

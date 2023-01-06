@@ -43,6 +43,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -249,6 +250,26 @@ public class StepsRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
         TestUtils.verifyDeleteRecords(StepsRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, StepsRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        StepsRecord.Builder builder =
+                new StepsRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10);
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
     }
 
     private void readStepsRecordUsingClientId(List<Record> insertedRecord)

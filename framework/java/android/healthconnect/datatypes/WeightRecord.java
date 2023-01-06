@@ -122,8 +122,8 @@ public final class WeightRecord extends InstantRecord {
             Objects.requireNonNull(weight);
             mMetadata = metadata;
             mTime = time;
-            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mWeight = weight;
+            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
         }
 
         /** Sets the zone offset of the user when the activity happened */
@@ -131,6 +131,13 @@ public final class WeightRecord extends InstantRecord {
         public Builder setZoneOffset(@NonNull ZoneOffset zoneOffset) {
             Objects.requireNonNull(zoneOffset);
             mZoneOffset = zoneOffset;
+            return this;
+        }
+
+        /** Sets the zone offset of this record to system default. */
+        @NonNull
+        public Builder clearZoneOffset() {
+            mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

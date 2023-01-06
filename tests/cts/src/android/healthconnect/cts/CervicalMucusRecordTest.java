@@ -296,6 +296,19 @@ public class CervicalMucusRecordTest {
         TestUtils.assertRecordNotFound(id, CervicalMucusRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        CervicalMucusRecord.Builder builder =
+                new CervicalMucusRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), 1, 1);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static CervicalMucusRecord getBaseCervicalMucusRecord() {
         return new CervicalMucusRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1, 1)
                 .build();

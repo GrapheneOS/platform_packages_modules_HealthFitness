@@ -114,6 +114,26 @@ public class WheelchairPushesRecordTest {
                 .isEqualTo(oldResponse.get(WHEEL_CHAIR_PUSHES_COUNT_TOTAL) + 20);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        WheelchairPushesRecord.Builder builder =
+                new WheelchairPushesRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 1);
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+    }
+
     static WheelchairPushesRecord getBaseWheelchairPushesRecord() {
         return new WheelchairPushesRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)

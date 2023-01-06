@@ -39,11 +39,8 @@ public final class StepsRecord extends IntervalRecord {
         private final Instant mStartTime;
         private final Instant mEndTime;
         private final long mCount;
-        private ZoneOffset mStartZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-        private ZoneOffset mEndZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-
+        private ZoneOffset mStartZoneOffset;
+        private ZoneOffset mEndZoneOffset;
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
@@ -62,6 +59,8 @@ public final class StepsRecord extends IntervalRecord {
             mStartTime = startTime;
             mEndTime = endTime;
             mCount = count;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the activity started */
@@ -79,6 +78,20 @@ public final class StepsRecord extends IntervalRecord {
             Objects.requireNonNull(endZoneOffset);
 
             mEndZoneOffset = endZoneOffset;
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearStartZoneOffset() {
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearEndZoneOffset() {
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

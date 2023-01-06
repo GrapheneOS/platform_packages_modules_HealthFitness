@@ -103,8 +103,8 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
             Objects.requireNonNull(basalMetabolicRate);
             mMetadata = metadata;
             mTime = time;
-            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mBasalMetabolicRate = basalMetabolicRate;
+            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
         }
 
         /** Sets the zone offset of the user when the activity happened */
@@ -112,6 +112,13 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
         public Builder setZoneOffset(@NonNull ZoneOffset zoneOffset) {
             Objects.requireNonNull(zoneOffset);
             mZoneOffset = zoneOffset;
+            return this;
+        }
+
+        /** Sets the zone offset of this record to system default. */
+        @NonNull
+        public Builder clearZoneOffset() {
+            mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

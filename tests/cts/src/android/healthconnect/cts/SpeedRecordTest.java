@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -243,6 +244,29 @@ public class SpeedRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteSpeedRecord());
         TestUtils.verifyDeleteRecords(SpeedRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, SpeedRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        SpeedRecord.Builder builder =
+                new SpeedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Collections.emptyList());
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
     }
 
     private void testReadSpeedRecordIds() throws InterruptedException {
