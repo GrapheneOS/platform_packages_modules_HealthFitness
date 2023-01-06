@@ -27,13 +27,13 @@ import android.os.Parcelable;
  *
  * @hide
  */
-public final class MigrationException extends Throwable implements Parcelable {
-    @MigrationErrorCode private final int mErrorCode;
+public final class MigrationException extends RuntimeException implements Parcelable {
+    @ErrorCode private final int mErrorCode;
     private final String mErrorMessage;
     private final String mFailedEntityId;
 
     public MigrationException(
-            @MigrationErrorCode int errorCode,
+            @ErrorCode int errorCode,
             @Nullable String errorMessage,
             @Nullable String failedEntityId) {
         mErrorCode = errorCode;
@@ -41,10 +41,8 @@ public final class MigrationException extends Throwable implements Parcelable {
         mFailedEntityId = failedEntityId;
     }
 
-    /**
-     * Returns the migration error code. Must be one of the values in {@link MigrationErrorCode}.
-     */
-    @MigrationErrorCode
+    /** Returns the migration error code. Must be one of the values in {@link ErrorCode}. */
+    @ErrorCode
     public int getErrorCode() {
         return mErrorCode;
     }
@@ -94,8 +92,8 @@ public final class MigrationException extends Throwable implements Parcelable {
     }
 
     /** List of possible error codes returned by the migration APIs. */
-    public static final int UNKNOWN_ERROR = 0;
+    public static final int ERROR_UNKNOWN = 0;
 
-    @IntDef({UNKNOWN_ERROR})
-    @interface MigrationErrorCode {}
+    @IntDef({ERROR_UNKNOWN})
+    public @interface ErrorCode {}
 }

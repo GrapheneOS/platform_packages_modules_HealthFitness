@@ -55,7 +55,7 @@ import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
-import android.healthconnect.aidl.IMigrationExceptionCallback;
+import android.healthconnect.aidl.IMigrationCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
@@ -243,6 +243,25 @@ public class HealthConnectManager {
         }
         sHealthPermissions = Collections.unmodifiableSet(permissions);
         return sHealthPermissions;
+    }
+
+    @NonNull
+    private static IMigrationCallback wrapMigrationCallback(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, MigrationException> callback) {
+        return new IMigrationCallback.Stub() {
+            @Override
+            public void onSuccess() {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onResult(null));
+            }
+
+            @Override
+            public void onError(MigrationException exception) {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onError(exception));
+            }
+        };
     }
 
     /**
@@ -1274,14 +1293,19 @@ public class HealthConnectManager {
     /**
      * Marks the start of the migration.
      *
-     * @throws IllegalStateException if either {@link #startMigration()} or {@link
-     *     #finishMigration()} has been called.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
      * @hide
      */
     // TODO(b/262514203): Add migration permission checks
-    public void startMigration() {
+    public void startMigration(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, MigrationException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
         try {
-            mService.startMigration();
+            mService.startMigration(wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1290,14 +1314,19 @@ public class HealthConnectManager {
     /**
      * Marks the end of the migration.
      *
-     * @throws IllegalStateException if either {@link #startMigration()} has not been called or
-     *     {@link #finishMigration()} has been called.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
      * @hide
      */
     // TODO(b/262514203): Add migration permission checks
-    public void finishMigration() {
+    public void finishMigration(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, MigrationException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
         try {
-            mService.finishMigration();
+            mService.finishMigration(wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1308,32 +1337,22 @@ public class HealthConnectManager {
      *
      * @param entities List of {@link android.healthconnect.migration.MigrationDataEntity} to
      *     migrate.
-     * @param callback Callback to receive any error encountered while performing this operation.
-     * @throws IllegalStateException if either {@link #startMigration()} not been called or {@link
-     *     #finishMigration()} has been called.
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
      * @hide
      */
     // TODO(b/262514203): Add migration permission checks
     public void writeMigrationData(
             @NonNull List<MigrationDataEntity> entities,
-            @NonNull
-                    OutcomeReceiver<Void, android.healthconnect.migration.MigrationException>
-                            callback) {
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, MigrationException> callback) {
 
         Objects.requireNonNull(entities);
+        Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
 
         try {
-            mService.writeMigrationData(
-                    entities,
-                    new IMigrationExceptionCallback.Stub() {
-                        @Override
-                        public void onError(MigrationException exception) {
-                            Binder.clearCallingIdentity();
-                            callback.onError(exception);
-                        }
-                    });
-
+            mService.writeMigrationData(entities, wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

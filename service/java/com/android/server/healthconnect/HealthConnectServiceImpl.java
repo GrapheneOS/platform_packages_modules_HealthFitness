@@ -53,7 +53,7 @@ import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
-import android.healthconnect.aidl.IMigrationExceptionCallback;
+import android.healthconnect.aidl.IMigrationCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
@@ -71,6 +71,7 @@ import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.healthconnect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
 import android.healthconnect.migration.MigrationDataEntity;
+import android.healthconnect.migration.MigrationException;
 import android.os.Binder;
 import android.os.RemoteException;
 import android.os.UserHandle;
@@ -726,20 +727,49 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
-    public void startMigration() {
-        // Mark the start of the migration.
+    public void startMigration(IMigrationCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        // TODO(b/265000849): Start the migration
+                        callback.onSuccess();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
+                        // TODO(b/263897830): Send errors properly
+                        tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
+                    }
+                });
     }
 
     @Override
-    public void finishMigration() {
-        // Mark the end of the migration.
-
+    public void finishMigration(IMigrationCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        // TODO(b/264401271): Finish the migration
+                        callback.onSuccess();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
+                        // TODO(b/263897830): Send errors properly
+                        tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
+                    }
+                });
     }
 
     @Override
     public void writeMigrationData(
-            List<MigrationDataEntity> entities, IMigrationExceptionCallback callback) {
-        // Write data.
+            List<MigrationDataEntity> entities, IMigrationCallback callback) {
+        SHARED_EXECUTOR.execute(
+                () -> {
+                    try {
+                        // TODO(b/262514558): Perform the migration
+                        callback.onSuccess();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
+                        // TODO(b/263897830): Send errors properly
+                        tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
+                    }
+                });
     }
 
     private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {
@@ -1022,6 +1052,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             callback.onError(
                     new HealthConnectExceptionParcel(
                             new HealthConnectException(errorCode, exception.toString())));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Unable to send result to the callback", e);
+        }
+    }
+
+    private static void tryAndThrowException(
+            @NonNull IMigrationCallback callback,
+            @NonNull Exception exception,
+            @MigrationException.ErrorCode int errorCode,
+            @Nullable String failedEntityId) {
+        try {
+            callback.onError(
+                    new MigrationException(errorCode, exception.toString(), failedEntityId));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
