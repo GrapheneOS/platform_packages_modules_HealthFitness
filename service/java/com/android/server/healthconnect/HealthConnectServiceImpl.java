@@ -78,6 +78,7 @@ import android.permission.PermissionManager;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Log;
+import android.util.Pair;
 import android.util.Slog;
 
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -293,7 +294,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IReadRecordsResponseCallback callback) {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
-        boolean enforceSelfRead = enforceRecordReadPermission(uid, pid, request.getRecordType());
+        Pair<Boolean, Boolean> enforceSelfReadAndCheckUi =
+                enforceRecordReadPermission(uid, pid, request.getRecordType());
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
@@ -301,15 +303,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             List<RecordInternal<?>> recordInternalList =
                                     mTransactionManager.readRecords(
                                             new ReadTransactionRequest(
-                                                    packageName, request, enforceSelfRead));
+                                                    packageName,
+                                                    request,
+                                                    enforceSelfReadAndCheckUi.first));
                             finishDataDeliveryRead(request.getRecordType(), uid);
 
                             // TODO(b/260399261): To be moved to a separate thread
-                            AccessLogsHelper.getInstance()
-                                    .addAccessLog(
-                                            packageName,
-                                            Collections.singletonList(request.getRecordType()),
-                                            READ);
+                            // UI API calls should not be recorded in access logs.
+                            // enforceSelfReadAndCheckUi.second signifies that the caller is UI.
+                            if (!enforceSelfReadAndCheckUi.second) {
+                                AccessLogsHelper.getInstance()
+                                        .addAccessLog(
+                                                packageName,
+                                                Collections.singletonList(request.getRecordType()),
+                                                READ);
+                            }
                             callback.onResult(new RecordsParcel(recordInternalList));
                         } catch (TypeNotPresentException exception) {
                             // All the requested package names are not present, so simply return
@@ -815,11 +823,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         }
     }
 
-    private boolean enforceRecordReadPermission(int uid, int pid, int recordTypeId) {
+    /**
+     * Returns a pair of boolean values. where the first value specifies enforceSelfRead, i.e., the
+     * app is allowed to read self data, and the second boolean value is true if the caller has
+     * MANAGE_HEALTH_DATA_PERMISSION, which signifies that the caller is UI.
+     */
+    private Pair<Boolean, Boolean> enforceRecordReadPermission(int uid, int pid, int recordTypeId) {
         boolean enforceSelfRead = false;
+        boolean callerIsUi = false;
         try {
             // UI must be able to read records with MANAGE_HEALTH_DATA_PERMISSION
             mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+            callerIsUi = true;
         } catch (SecurityException exception) {
             try {
                 enforceRecordReadPermission(recordTypeId, uid);
@@ -834,7 +849,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 }
             }
         }
-        return enforceSelfRead;
+        return Pair.create(enforceSelfRead, callerIsUi);
     }
 
     private void enforceRecordWritePermissionInternal(List<Integer> recordTypeIds, int uid) {
