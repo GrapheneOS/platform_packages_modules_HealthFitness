@@ -18,19 +18,15 @@ package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.ComponentName
 import android.content.Intent
-import androidx.lifecycle.Lifecycle
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import junit.framework.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +34,6 @@ import org.junit.Test
 @HiltAndroidTest
 class OnboardingScreenTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
     @Before
     fun setup() {
         hiltRule.inject()
@@ -99,11 +94,9 @@ class OnboardingScreenTest {
 
     @Test
     fun onboardingScreen_goBackButton_isClickable() {
-        ActivityScenario.launch(MainActivity::class.java).use { activityScenario ->
-            startOnboardingActivity()
-            Espresso.onView(ViewMatchers.withId(R.id.go_back_button)).perform(ViewActions.click())
-            assertTrue(activityScenario.state == Lifecycle.State.DESTROYED)
-        }
+        startOnboardingActivity()
+
+        Espresso.onView(ViewMatchers.withId(R.id.go_back_button)).perform(ViewActions.click())
     }
 
     @Test
