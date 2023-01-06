@@ -42,10 +42,6 @@ constructor(
     private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase
 ) : ViewModel() {
 
-    companion object {
-        private const val TAG = "AppPermissionViewModel"
-    }
-
     private val _appPermissions = MutableLiveData<List<HealthPermissionStatus>>(emptyList())
     val appPermissions: LiveData<List<HealthPermissionStatus>>
         get() = _appPermissions
@@ -66,9 +62,6 @@ constructor(
         viewModelScope.launch {
             val permissions = loadAppPermissionsStatusUseCase.invoke(packageName)
             _appPermissions.postValue(permissions)
-            permissions.forEach {
-                Log.i(TAG, "loadForPackage: ${it.healthPermission} ${it.isGranted}")
-            }
             _allAppPermissionsGranted.postValue(permissions.all { it.isGranted })
             _atLeastOnePermissionGranted.postValue(permissions.any { it.isGranted })
         }
