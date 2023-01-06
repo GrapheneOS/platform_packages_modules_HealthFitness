@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"Ruhusa na data"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"Kagua na udhibiti data za afya na siha kwenye simu yako na usimamie programu zinazoweza kuzifikia"</string>
+    <string name="data_title" msgid="6928287139074878977">"Data na ufikiaji"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"Aina zote"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"Angalia aina zote"</string>
+    <string name="no_data" msgid="1120552294863595549">"Hakuna data"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"Angalia data yako na shughuli za hivi majuzi kwenye programu"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Ruhusa za programu"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Dhibiti programu na ruhusa zako"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"Ufikiaji wa hivi karibuni"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"Hakuna programu zilizofikia Health Connect hivi karibuni"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"Angalia vyote"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"Angalia ni programu zipi zilifikia data yako ndani ya saa 24 zilizopita"</string>
+    <string name="today_header" msgid="3128127066599449902">"Leo"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"Jana"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"Shughuli"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"shughuli"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Vipimo vya mwili"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"vipimo vya mwili"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Kulala"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"kulala"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Vipimo muhimu"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"vipimo muhimu"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Ufuatiliaji wa hedhi"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"ufuatiliaji wa hedhi"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Lishe"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"lishe"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"Vinjari data"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"Dhibiti data"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"Hamisha data"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"Futa data yote"</string>
+    <string name="no_categories" msgid="8250090588127237934">"Huna data yoyote kwenye Health Connect"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"Data yako"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"Kipaumbele cha programu"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"Futa data ya <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="can_read" msgid="7989669150752961504">"Zinazoweza kusoma <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="8278769263589284926">"Zinazoweza kuandika <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"Programu zilizozimwa"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"Programu hizi haziwezi tena kuandika <xliff:g id="DATA_TYPE">%s</xliff:g>, lakini bado zina data iliyohifadhiwa kwenye Health Connect"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"Programu haziwezi tena kusoma au kuandika data ya <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> na hakuna data ya <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> iliyohifadhiwa kwenye Health Connect"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"Data hii inajumuisha maelezo kama vile muda uliotumia kufanya mazoezi, aina ya mazoezi, mizunguko, marudio, vipindi au mitindo ya kuogelea"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"Data hii inajumuisha maelezo kama vile hatua za kulala na vipindi vya kulala"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"Angalia data yote"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Futa data hii"</string>
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
+    <string name="permgroupdesc_health" msgid="44553351410718944">"Ifikie data yako ya afya"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Isome data ya kalori ulizotumia"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Huruhusu programu kusoma data ya kalori ulizotumia"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Kalori ulizotumia"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"kalori ulizotumia"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Isome data ya kalori ulizotumia"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Iandike data ya kalori ulizotumia"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Mazoezi"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"mazoezi"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"Isome data ya mazoezi"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"Iandike data ya mazoezi"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Njia ya mazoezi"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"njia ya mazoezi"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Andika njia ya mazoezi"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"Umbali"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"umbali"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"Isome data ya umbali"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"Iandike data ya umbali"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Mwinuko uliofikia"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"mwinuko uliofikia"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Isome data ya mwinuko uliofikia"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Iandike data ya mwinuko uliofikia"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Sakafu ulizopanda"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"sakafu ulizopanda"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Isome data ya sakafu ulizopanda"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Iandike data ya sakafu ulizopanda"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"Nishati"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"nishati"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"Isome data ya nishati"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"Iandike data ya nishati"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"Kasi"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"kasi"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"Isome data ya kasi"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"Iandike data ya kasi"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"Hatua"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"hatua"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"Isome hatua"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"Iandike hatua"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Jumla ya kalori ulizotumia"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"jumla ya kalori ulizotumia"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Isome jumla ya kalori ulizotumia"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Iandike data ya jumla ya kalori ulizotumia"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"Kiwango cha juu zaidi kilichotumika cha VO2"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"Kiwango cha juu zaidi kilichotumika cha VO2"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"Isome data ya kiwango cha juu zaidi kilichotumika cha VO2"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"Iandike data ya kiwango cha juu zaidi kilichotumika cha VO2"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Misukumo ya kiti cha magurudumu"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"misukumo ya kiti cha magurudumu"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Isome data ya misukumo ya kiti cha magurudumu"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Iandike data ya misukumo ya kiti cha magurudumu"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Kiwango cha kawaida cha shughuli za ndani ya mwili"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"kiwango cha kawaida cha shughuli za ndani ya mwili"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Isome data ya kiwango cha kawaida cha shughuli za ndani ya mwili"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Iandike data ya kiwango cha kawaida cha shughuli za ndani ya mwili"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Mafuta mwilini"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"mafuta mwilini"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Isome data ya kiwango cha mafuta kwenye mwili"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"Iandike data ya kiwango cha mafuta kwenye mwili"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Kiwango cha maji kwenye mwili"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"kiwango cha maji kwenye mwili"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Isome data ya kiwango cha maji kwenye mwili"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Iandike data ya kiwango cha maji kwenye mwili"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Uzito wa mifupa"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"uzito wa mifupa"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Isome data ya uzito wa mifupa"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Iandike data ya uzito wa mifupa"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"Kimo"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"kimo"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"Isome data ya kimo"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"Iandike data ya kimo"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Mzingo wa nyonga"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"mzingo wa nyonga"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Isome data ya mzingo wa nyonga"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Iandike data ya mzingo wa nyonga"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Uzito wa mwili bila mafuta"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"uzito wa mwili bila mafuta"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Isome data ya uzito wa mwili bila mafuta"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Iandike data ya uzito wa mwili bila mafuta"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Mzingo wa kiuno"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"mzingo wa kiuno"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Isome data ya mzingo wa kiuno"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Iandike data ya mzingo wa kiuno"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"Uzito"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"Uzito"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"Isome data ya uzito"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"Iandike data ya uzito"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Ute wa mlango wa kizazi"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"ute wa mlango wa kizazi"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Isome data ya ute wa mlango wa kizazi"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Iandike data ya ute wa mlango wa kizazi"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Hedhi"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"hedhi"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Isome data ya hedhi"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Iandike data ya hedhi"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Jaribio la yai kupevuka"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"jaribio la yai kupevuka"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Isome data ya jaribio la yai kupevuka"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Iandike data ya jaribio la yai kupevuka"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Vitendo vya ngono"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"vitendo vya ngono"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Isome data ya vitendo vya ngono"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Iandike data ya vitendo vya ngono"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"Data ya matone"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"data ya matone"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"Isome data ya matone"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"Iandike data ya matone"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Kiwango cha maji kwenye mwili"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"kiwango cha maji kwenye mwili"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"Iandike data ya kiwango cha maji kwenye mwili"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"Iandike data ya kiwango cha maji kwenye mwili"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Lishe"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"lishe"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Isome data ya lishe"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Iandike data ya lishe"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Kulala"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"kulala"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"Isome data ya wakati umelala"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"Iandike data ya wakati umelala"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Kiwango cha kawaida cha joto kwenye mwili"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"kiwango cha kawaida cha joto kwenye mwili"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Isome data ya kiwango cha kawaida cha joto kwenye mwili"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Iandike data ya kiwango cha kawaida cha joto kwenye mwili"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Kiwango cha sukari kwenye damu"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"kiwango cha sukari kwenye damu"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Isome data ya kiwango cha sukari kwenye damu"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Iandike data ya kiwango cha sukari kwenye damu"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Shinikizo la damu"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"shinikizo la damu"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Isome data ya shinikizo la damu"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Iandike data ya shinikizo la damu"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Kiwango cha joto kwenye mwili"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"kiwango cha joto kwenye mwili"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Isome data ya kiwango cha joto kwenye mwili"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Iandike data ya kiwango cha joto kwenye mwili"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Mapigo ya moyo"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"mapigo ya moyo"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Isome data ya mapigo ya moyo"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Iandike data ya mapigo ya moyo"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Mabadiliko ya mapigo ya moyo"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"mabadiliko ya mapigo ya moyo"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Isome data ya mabadiliko ya moyo"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Iandike data ya mabadiliko ya mapigo ya moyo"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Kiwango cha oksijeni"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"kiwango cha oksijeni"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Isome data ya kiwango cha oksijeni"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Iandike data ya kiwango cha oksijeni"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Kiwango cha kupumua"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"kiwango cha kupumua"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Isome data ya kiwango cha kupumua"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Iandike data ya kiwango cha kupumua"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Mapigo ya moyo ya kawaida"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"mapigo ya moyo ya kawaida"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Isome data ya mapigo ya moyo ya kawaida"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Iandike data ya mapigo ya moyo ya kawaida"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"Inaweza kusoma data ya Health Connect"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"Inaweza kuandikia Health Connect"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"Ghairi"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"Ruhusu"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Ruhusu zote"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Chagua data unayotaka programu hii isome au iandike kwenye Health Connect"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Iwapo utaipatia ruhusa ya kusoma, programu hii itaweza kusoma data mpya na data ya siku 30 zilizopita"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Ungependa kuruhusu programu ya <xliff:g id="APP_NAME">%1$s</xliff:g> kufikia Health Connect?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"Unaweza kupata maelezo ya jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyoshughulikia data katika <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> ya msanidi programu"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"sera ya faragha"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"Siku inayofuata"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"Siku iliyotangulia"</string>
+    <string name="default_error" msgid="7047939092442348839">"Hitilafu fulani imetokea. Tafadhali jaribu tena."</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"Programu zenye ruhusa hii zinaweza kusoma na kuandika data yako ya afya."</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"Dhibiti programu zinazoweza kufikia data iliyohifadhiwa kwenye Health Connect. Gusa programu ili ukague data inayoweza kusoma au kuandika."</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"Programu zilizoruhusiwa"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Programu ambazo hazijaruhusiwa"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"Mipangilio na usaidizi"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"Ondoa ufikiaji kwa programu zote"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Je, huoni programu zako zote?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Programu ina ruhusa ya kusoma"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Programu ina ruhusa ya kuandika"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"Hakuna programu zilizoruhusiwa"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"Hakuna programu zilizozuiwa"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Ungependa kuondoa ufikiaji kwenye programu zote?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Hakuna programu yako yoyote itakayoweza kufikia au kuweka data mpya kwenye Health Connect. Hali hii haifuti data yoyote iliyopo."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Ondoa zote"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Dhibiti programu"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"Futa data ya programu"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Programu zilizozimwa"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Programu hizi hazina tena ufikiaji, lakini bado zina data iliyohifadhiwa kwenye Health Connect"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> inaweza kufikia data zilizowekwa baada ya <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Ili udhibiti ruhusa zingine za Android ambazo programu hii inaweza kufikia, nenda kwenye Mipangilio &gt; Programu"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Data unayoshiriki na programu ya <xliff:g id="APP_NAME">%1$s</xliff:g> inalindwa na sera yake ya faragha"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Ili udhibiti ruhusa zingine za Android ambazo programu hii inaweza kufikia, nenda kwenye Mipangilio kisha uguse Programu"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Soma sera ya faragha"</string>
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Ilifikiwa katika saa 24 zilizopita"</string>
+    <string name="onboarding_title" msgid="1175348642301557799">"Anza Kutumia Health Connect"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect inahifadhi data yako ya afya na siha, hivyo kukupatia njia rahisi ya kusawazisha programu tofauti kwenye simu yako"</string>
+    <string name="share_data" msgid="3461840023402996573">"Shiriki data na programu zako"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"Chagua data ambayo kila programu inaweza kusoma na kuandika kwenye Health Connect"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Dhibiti mipangilio na faragha yako"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"Badilisha ruhusa za programu na udhibiti data yako wakati wowote"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Rudi nyuma"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Anza"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"Futa data"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Chagua data ya kufuta"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"Inayofuata"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"Hatua hii hufuta kabisa data yote iliyowekwa kwenye Health Connect katika kipindi cha muda ulichochagua"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"Hatua hii hufuta kabisa data yote ya <xliff:g id="DATA_TYPE">%s</xliff:g> iliyowekwa kwenye Health Connect katika kipindi cha muda ulichochagua"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"Hatua hii hufuta kabisa data yote ya <xliff:g id="CATEGORY">%s</xliff:g> iliyowekwa kwenye Health Connect katika kipindi cha muda ulichochagua"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"Hatua hii hufuta kabisa data yote ya <xliff:g id="APP_DATA">%s</xliff:g> iliyowekwa kwenye Health Connect katika kipindi cha muda ulichochagua"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"Futa data ya saa 24 zilizopita"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"Futa data ya siku 7 zilizopita"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"Futa data ya siku 30 zilizopita"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"Futa data yote"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"Ungependa kufuta kabisa data yote?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Ungependa kufuta kabisa data yote ya saa 24 zilizopita"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Ungependa kufuta data yote ya siku 7 zilizopita?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Ungependa kufuta kabisa data yote ya siku 30 zilizopita?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Ungependa kufuta kabisa data yote ya <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Ungependa kufuta kabisa data ya <xliff:g id="DATA_TYPE">%s</xliff:g> ya saa 24 zilizopita?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Ungependa kufuta kabisa data ya <xliff:g id="DATA_TYPE">%s</xliff:g> ya siku 7 zilizopita?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Ungependa kufuta kabisa data ya <xliff:g id="DATA_TYPE">%s</xliff:g> ya siku 30 zilizopita?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"Ungependa kufuta kabisa data yote ya <xliff:g id="CATEGORY">%s</xliff:g>?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Ungependa kufuta kabisa data ya <xliff:g id="CATEGORY">%s</xliff:g> ya saa 24 zilizopita?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Ungependa kufuta kabisa data ya <xliff:g id="CATEGORY">%s</xliff:g> ya siku 7 zilizopita?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Ungependa kufuta kabisa data ya <xliff:g id="CATEGORY">%s</xliff:g> ya siku 30 zilizopita?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Ungependa kufuta kabisa data yote ya <xliff:g id="APP_DATA">%s</xliff:g>?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Ungependa kufuta kabisa data ya <xliff:g id="APP_DATA">%s</xliff:g> ya saa 24 zilizopita?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Ungependa kufuta kabisa data ya <xliff:g id="APP_DATA">%s</xliff:g> ya siku 7 zilizopita?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Ungependa kufuta kabisa data ya <xliff:g id="APP_DATA">%s</xliff:g> ya siku 30 zilizopita?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Pia, futa ruhusa zote za <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> kwenye Health Connect"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Ungependa kufuta kabisa data yote ya <xliff:g id="DATA_TYPE">%1$s</xliff:g> iliyowekwa na <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Ungependa kufuta kabisa data hii?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"Programu zilizounganishwa hazitaweza tena kufikia data hii kutoka Health Connect"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Futa"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Rudi nyuma"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Nimemaliza"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Funga"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Data imefutwa"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Data hii haihifadhiwi tena kwenye Health Connect."</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"Inafuta data yako"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Imeshindwa kufuta data"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Hitilafu fulani imetokea, Health Connect imeshindwa kufuta data yako"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Jaribu tena"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"Inafuta data ya Health Connect"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Inafuta data ya Health Connect"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Kufuta data"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"Chaguo za kuweka data"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"Futa data"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{Wati 1}other{Wati #}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{Wati 1}other{Wati #}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{Hatua 1}other{Hatua #}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{Hatua 1 kwa kila dakika}other{Hatua # kwa kila dakika}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{Hatua 1 kwa kila dakika}other{Hatua # kwa kila dakika}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{Bpm 1}other{Bpm #}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{Pigo 1 kwa kila dakika}other{Mapigo # kwa kila dakika}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{Maili 1 kwa saa}other{Maili # kwa saa}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{Kilomita 1 kwa saa}other{Kilomita # kwa saa}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{Maili 1 kwa saa}other{Maili # kwa saa}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{Kilomita 1 kwa saa}other{Kilomita # kwa saa}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"kuanzia <xliff:g id="START_TIME">%1$s</xliff:g> hadi <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"kuanzia <xliff:g id="START_TIME">%1$s</xliff:g> hadi <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{Maili 1}other{Maili #}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{Km 1}other{Km #}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{Maili 1}other{Maili #}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{Kilomita 1}other{Kilomita #}}"</string>
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{Kalori 1}other{Kalori #}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{Kalori 1}other{Kalori #}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
+    <skip />
+    <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"Idadi"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"Panga vipimo vya data"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"Umbali"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"Kimo"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"Uzito"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"Nguvu"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"Halijoto"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilomita"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Maili"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Sentimita"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"Futi na Inchi"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Ratili"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kilogramu"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Mawe"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Kalori"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Kilojuli"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Selisiasi"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Farenhaiti"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Je, huoni programu zako zote?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Endapo hutaona programu iliyosakinishwa, huenda programu hiyo haioani na Health Connect kwa sasa"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"Mambo unayoweza kujaribu"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"Angalia masasisho"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"Hakikisha kuwa programu ulizosakinisha zimesasishwa"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Angalia programu zote oanifu"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Tafuta programu kwenye Google Play"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"Tuma maoni"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"Tuambie ni programu ipi ya afya na mazoezi ungependa ifanye kazi na Health Connect"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Duka la Google Play"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"Futa kiotomatiki"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"Futa kiotomatiki"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"Dhibiti muda ambao data yako inahifadhiwa kwenye Health Connect kwa kuratibu ifutwe baada ya muda ulioweka"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Pata maelezo zaidi"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"Futa data kiotomatiki"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Baada ya mwezi #}other{Baada ya miezi #}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"Isifute kamwe"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Unapobadilisha mipangilio hii, Health Connect hufuta data iliyopo ili kuonyesha mapendeleo yako mapya"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Ungependa kufuta data kiotomatiki baada ya mwezi #?}other{Ungependa kufuta data kiotomatiki baada ya miezi #?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect itafuta data mpya kiotomatiki baada ya mwezi #. Kuweka mipangilio hii pia kutafuta data iliyopo ya zaidi ya mwezi #.}other{Health Connect itafuta data mpya kiotomatiki baada ya miezi #. Kuweka mipangilio hii pia kutafuta data iliyopo ya zaidi ya miezi #.}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Weka mipangilio ya kufuta kiotomatiki"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Data iliyopo itafutwa"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect itafuta data yote iliyopo ya zaidi ya miezi #.\nHuenda ikachukua hadi siku moja kwa mabadiliko haya kuonekana kwenye programu zako zilizounganishwa.}other{Health Connect itafuta data yote iliyopo ya zaidi ya miezi #.\nHuenda ikachukua hadi siku moja kwa mabadiliko haya kuonekana kwenye programu zako zilizounganishwa.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Data itafutwa kwenye"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"Nimemaliza"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"Hamisha data ya Health Connect"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"Chagua zote"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"Acha kuchagua zote"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"Inayofuata"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"Inaleta data ya kuhamisha"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Inahamisha data ya Health Connect"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Ghairi"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Maendeleo ya Data ya Kuhamisha"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"siha, afya"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"ruhusa"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"health connect, data ya afya, aina ya afya, ufikiaji wa data, shughuli, vipimo vya mwili, ufuatiliaji wa hedhi, lishe, data ya usingizi, vipimo muhimu"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; Ruhusa za programu"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; Data na ufikiaji"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"Tafuta programu"</string>
+    <string name="no_results" msgid="4935646951230345730">"Hakuna Matokeo"</string>
+    <string name="help" msgid="6096599033945360524">"Usaidizi"</string>
+</resources>

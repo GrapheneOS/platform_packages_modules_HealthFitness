@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"ទិន្នន័យនេះរួមបញ្ចូលព័ត៌មាន ដូចជាដំណាក់កាលគេង និងពេលគេង"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"មើលធាតុទាំងអស់"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"លុប​ទិន្នន័យនេះ"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"ចូលប្រើទិន្នន័យសុខភាពរបស់អ្នក"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"អានកាឡូរីដែលបានដុត"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"អនុញ្ញាតឱ្យកម្មវិធីអានកាឡូរីដែលបានដុត"</string>
@@ -75,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"លំហាត់ប្រាណ"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"អានលំហាត់ប្រាណ"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"សរសេរលំហាត់ប្រាណ"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"ផ្លូវលំហាត់ប្រាណ"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"ផ្លូវលំហាត់ប្រាណ"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"សរសេរ​ផ្លូវលំហាត់ប្រាណ"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"ចម្ងាយ"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"ចម្ងាយ"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"អានចម្ងាយ"</string>
@@ -251,8 +253,7 @@
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"ទិន្នន័យដែលអ្នកចែករំលែកជាមួយ <xliff:g id="APP_NAME">%1$s</xliff:g> ត្រូវអនុលោមតាមគោលការណ៍ឯកជនភាពរបស់វា"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ដើម្បីគ្រប់គ្រងការអនុញ្ញាត Android ផ្សេងទៀតដែលកម្មវិធីនេះអាចចូលប្រើប្រាស់ សូមចូលទៅកាន់ការកំណត់ រួចចុចកម្មវិធី"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"អានគោលការណ៍ឯកជនភាព"</string>
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"បានចូលប្រើក្នុងរយៈពេល 24 ម៉ោងចុងក្រោយ"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"ចាប់ផ្ដើមជាមួយ Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect រក្សាទុក​ទិន្នន័យសុខភាព និងសម្បទា​របស់អ្នក ដោយផ្តល់ឱ្យ​អ្នកនូវ​វិធីសាមញ្ញ​ក្នុងការធ្វើសមកាលកម្ម​កម្មវិធីផ្សេងៗ​នៅលើទូរសព្ទ​របស់អ្នក"</string>
     <string name="share_data" msgid="3461840023402996573">"ចែករំលែកទិន្នន័យជាមួយកម្មវិធីរបស់អ្នក"</string>
@@ -324,9 +325,11 @@
     <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}other{# km}}"</string>
     <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 ម៉ាយល៍}other{# ម៉ាយល៍}}"</string>
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 គីឡូម៉ែត្រ}other{# គីឡូម៉ែត្រ}}"</string>
-    <!-- no translation found for calories_long (3636635044382367818) -->
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 កាឡូរី}other{# កាឡូរី}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 Cal}other{# Cal}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
     <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
+    <!-- no translation found for kj_long (516247759297999467) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"ឯកតា"</string>
     <string name="set_units_label" msgid="7358440515698876383">"កំណត់ឯកតាទិន្នន័យ"</string>
@@ -380,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"កំពុងនាំចេញទិន្នន័យ Health Connect"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"បោះបង់"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"ដំណើរការនាំចេញទិន្នន័យ"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"សម្បទា សុខុមាលភាព"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"ការអនុញ្ញាត"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"health connect, ទិន្នន័យសុខភាព, ប្រភេទទិន្នន័យ, សិទ្ធិចូលប្រើទិន្នន័យ, សកម្មភាព, រង្វាស់រាងកាយ, ការតាមដានវដ្តរដូវ, អាហារូបត្ថម្ភ, ដេក, សរីរាង្គសំខាន់ៗ"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; ការអនុញ្ញាតកម្មវិធី"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; ទិន្នន័យ និងការចូលប្រើ"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"ស្វែងរក​កម្មវិធី"</string>
+    <string name="no_results" msgid="4935646951230345730">"មិន​មាន​លទ្ធផល​ទេ"</string>
+    <string name="help" msgid="6096599033945360524">"ជំនួយ"</string>
 </resources>

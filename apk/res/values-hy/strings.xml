@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"Այս տվյալները ներառում են տեղեկություններ, օրինակ, քնի փուլերի և քնի ժամանակահատվածների մասին"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"Տեսնել բոլոր տվյալները"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Ջնջել այս տվյալները"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"ձեր առողջության մասին տվյալների հասանելիություն"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Կարդալ՝ որքան կալորիա է այրվել"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Թույլ է տալիս հավելվածին կարդալ այրված կալորիաների մասին տվյալները"</string>
@@ -75,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"մարզում"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"Կարդալ մարզումների մասին տվյալները"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"Գրանցել մարզումների մասին տվյալները"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Մարզումների երթուղի"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"մարզումների երթուղի"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Գրանցել մարզումների երթուղին"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Հեռավորություն"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"հեռավորություն"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Կարդալ անցած հեռավորության մասին տվյալները"</string>
@@ -251,8 +253,7 @@
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"<xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածին ձեր փոխանցած տվյալների նկատմամբ կիրառվում է այդ հավելվածի գաղտնիության քաղաքականությունը"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Android-ում այս հավելվածին հասանելի մյուս թույլտվությունները կառավարելու համար անցեք Կարգավորումներ, ապա հպեք «Հավելվածներ»"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Կարդալ գաղտնիության քաղաքականությունը"</string>
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Օգտագործվել է վերջին 24 ժամվա ընթացքում"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Ներկայացնում ենք Health Connect-ը"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect-ը պահում է ձեր առողջության և ֆիզիկական ակտիվության տվյալները և համաժամացնում տարբեր հավելվածների աշխատանքը ձեր հեռախոսում"</string>
     <string name="share_data" msgid="3461840023402996573">"Կիսվեք տվյալներով հավելվածների հետ"</string>
@@ -324,9 +325,11 @@
     <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 կմ}one{# կմ}other{# կմ}}"</string>
     <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 մղոն}one{# մղոն}other{# մղոն}}"</string>
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 կիլոմետր}one{# կիլոմետր}other{# կիլոմետր}}"</string>
-    <!-- no translation found for calories_long (3636635044382367818) -->
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 կալորիա}one{# կալորիա}other{# կալորիա}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 կալ}one{# կալ}other{# կալ}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
     <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
+    <!-- no translation found for kj_long (516247759297999467) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"Միավորներ"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Ընտրել չափման միավորներ"</string>
@@ -380,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect-ի տվյալների արտահանում"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Չեղարկել"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Տվյալների արտահանման ընթացքը"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"ֆիթնես, առողջություն"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"թույլտվություններ"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"health connect, առողջության մասին տվյալներ, առողջության կատեգորիաներ, տվյալների հասանելիություն, գործողություններ, մարմնի պարամետրեր, ցիկլի հետագծում, սնունդ, քուն, կենսական ցուցանիշներ"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; Հավելվածի թույլտվություններ"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; Տվյալներ և հասանելիություն"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"Որոնեք հավելվածներ"</string>
+    <string name="no_results" msgid="4935646951230345730">"Արդյունքներ չկան"</string>
+    <string name="help" msgid="6096599033945360524">"Օգնություն"</string>
 </resources>

@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"تشتمل هذه البيانات على معلومات، مثل مراحل النوم وجلسات النوم."</string>
     <string name="all_entries_button" msgid="6651429850248301016">"عرض جميع الإدخالات"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"حذف هذه البيانات"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"الوصول إلى البيانات الصحية"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"قراءة السعرات الحرارية المحروقة"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"يسمح هذا الإذن للتطبيق بقراءة السعرات الحرارية المحروقة."</string>
@@ -75,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"التمارين الرياضية"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"قراءة بيانات التمارين الرياضية"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"كتابة بيانات التمارين الرياضية"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"مسار التمرين الرياضي"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"مسار التمرين الرياضي"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"كتابة مسار التمرين الرياضي"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"المسافة"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"المسافة"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"قراءة بيانات المسافة"</string>
@@ -246,18 +248,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"حذف بيانات التطبيق"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"التطبيقات غير النشطة"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"لن تتمكن هذه التطبيقات من الوصول إلى البيانات بعد ذلك، ولكن لا يزال لديها بيانات مخزَّنة في تطبيق Health Connect."</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"بإمكان تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" الوصول إلى البيانات التي تمت إضافتها بعد <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>."</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"لإدارة أذونات Android الأخرى التي يمكن لهذا التطبيق الوصول إليها، انتقِل إلى الإعدادات &gt; التطبيقات."</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"تخضع البيانات التي تشاركها مع تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لسياسة الخصوصية التي يُطبِّقها."</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"لإدارة أذونات Android الأخرى التي يمكن لهذا التطبيق الوصول إليها، انتقِل إلى \"الإعدادات\" ثم انقر على \"التطبيقات\"."</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"قراءة سياسة الخصوصية"</string>
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"الأذونات التي تم استخدامها للوصول في آخر 24 ساعة"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"بدء استخدام Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"يُخزِّن تطبيق Health Connect بيانات الصحة واللياقة البدنية، ما يمنحك طريقة بسيطة لمزامنة التطبيقات المختلفة على هاتفك."</string>
     <string name="share_data" msgid="3461840023402996573">"مشاركة البيانات مع تطبيقاتك"</string>
@@ -325,17 +321,15 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 كيلومتر في الساعة}zero{# كيلومتر في الساعة}two{# كيلومتر في الساعة}few{# كيلومتر في الساعة}many{# كيلومتر في الساعة}other{# كيلومتر في الساعة}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"من <xliff:g id="START_TIME">%1$s</xliff:g> إلى <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"من <xliff:g id="START_TIME">%1$s</xliff:g> إلى <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 ميل}zero{# ميل}two{# ميل}few{# ميل}many{# ميل}other{# ميل}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 كم}zero{# كم}two{# كم}few{# كم}many{# كم}other{# كم}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 ميل}zero{# ميل}two{# ميل}few{# ميل}many{# ميل}other{# ميل}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 كيلومتر}zero{# كيلومتر}two{# كيلومتر}few{# كيلومتر}many{# كيلومتر}other{# كيلومتر}}"</string>
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 سُعر حراري}zero{# سُعر حراري}two{# سُعر حراري}few{# سُعر حراري}many{# سُعر حراري}other{# سُعر حراري}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 سُعر حراري}zero{# سُعر حراري}two{# سُعر حراري}few{# سُعر حراري}many{# سُعر حراري}other{# سُعر حراري}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
     <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
-    <!-- no translation found for calories_long (3636635044382367818) -->
-    <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
+    <!-- no translation found for kj_long (516247759297999467) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"الوحدات"</string>
     <string name="set_units_label" msgid="7358440515698876383">"ضبط وحدات البيانات"</string>
@@ -389,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"جارٍ تصدير بيانات تطبيق Health Connect"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"إلغاء"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"مستوى التقدُّم في عملية تصدير البيانات"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"اللياقة البدنية، الحالة الصحية"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"الأذونات"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"health connect، البيانات الصحية، الفئات الصحية، الوصول إلى البيانات، النشاط، قياسات الجسم، تتبُّع الدورة الشهريّة، التغذية، النوم، المؤشرات الحيوية"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; أذونات التطبيقات"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; البيانات وإمكانية الوصول إليها"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"البحث عن تطبيقات"</string>
+    <string name="no_results" msgid="4935646951230345730">"ما مِن نتائج."</string>
+    <string name="help" msgid="6096599033945360524">"مساعدة"</string>
 </resources>

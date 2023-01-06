@@ -62,8 +62,7 @@
     <string name="data_access_sleep_description" msgid="6675848226107694375">"Estos datos incluyen información como las fases y las sesiones del sueño"</string>
     <string name="all_entries_button" msgid="6651429850248301016">"Ver todas las entradas"</string>
     <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Eliminar estos datos"</string>
-    <!-- no translation found for permgrouplab_health (5922812028501112990) -->
-    <skip />
+    <string name="permgrouplab_health" msgid="5922812028501112990">"Salud conectada"</string>
     <string name="permgroupdesc_health" msgid="44553351410718944">"acceder a tus datos de salud"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Leer calorías quemadas"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Permite que la aplicación lea las calorías quemadas"</string>
@@ -75,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"ejercicio"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"Leer ejercicio"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"Escribir ejercicio"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Ruta de ejercicio"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"ruta de ejercicio"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Escribir ruta de ejercicio"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Distancia"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"distancia"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Leer distancia"</string>
@@ -246,18 +248,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"Eliminar datos de la aplicación"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"Aplicaciones inactivas"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Estas aplicaciones ya no tienen acceso, pero siguen teniendo datos almacenados en Salud conectada"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> puede acceder a los datos añadidos después del <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Para gestionar otros permisos de Android a los que puede acceder esta aplicación, ve a Ajustes &gt; Aplicaciones"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Los datos que compartes con <xliff:g id="APP_NAME">%1$s</xliff:g> están sujetos a su política de privacidad"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Para gestionar otros permisos de Android a los que puede acceder esta aplicación, ve a Ajustes y, después, toca Aplicaciones"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Leer política de privacidad"</string>
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Se ha accedido en las últimas 24 horas"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Empezar a usar Salud conectada"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Salud conectada almacena tus datos de salud y actividad física, y te ofrece una forma sencilla de sincronizar las diferentes aplicaciones de tu teléfono"</string>
     <string name="share_data" msgid="3461840023402996573">"Comparte datos con tus aplicaciones"</string>
@@ -325,17 +321,15 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilómetro por hora}other{# kilómetros por hora}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"de <xliff:g id="START_TIME">%1$s</xliff:g> a <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"de <xliff:g id="START_TIME">%1$s</xliff:g> a <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 milla}other{# millas}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 milla}other{# millas}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilómetro}other{# kilómetros}}"</string>
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 caloría}other{# calorías}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 cal}other{# cal}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
     <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
-    <!-- no translation found for calories_long (3636635044382367818) -->
-    <skip />
-    <!-- no translation found for calories (1646804751247540818) -->
+    <!-- no translation found for kj_long (516247759297999467) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"Unidades"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Configurar unidades de datos"</string>
@@ -389,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Exportando datos de Salud conectada"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Cancelar"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Progreso de los datos de exportación"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"actividad física, bienestar"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"permisos"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"salud conectada, datos de salud, categorías de salud, acceso a datos, actividad, medidas corporales, seguimiento del ciclo, nutrición, sueño, constantes vitales"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Salud conectada &gt; Permisos de aplicaciones"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Salud conectada &gt; Datos y acceso"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"Buscar aplicaciones"</string>
+    <string name="no_results" msgid="4935646951230345730">"No hay resultados"</string>
+    <string name="help" msgid="6096599033945360524">"Ayuda"</string>
 </resources>

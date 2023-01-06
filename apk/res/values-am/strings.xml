@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label" msgid="3670096614980798151">"የጤና አገናኝ"</string>
+    <string name="permissions_and_data_header" msgid="8934418632257193297">"ፈቃዶች እና ውሂብ"</string>
+    <string name="home_subtitle" msgid="2276698589407549546">"በስልክዎ ላይ ያለውን የጤና እና አካል ብቃት ውሂብ ይገምግሙ እና ያስተዳድሩ እና የትኛዎቹ መተግበሪያዎች ሊደርሱበት እንደሚችሉ ይቆጣጠሩ"</string>
+    <string name="data_title" msgid="6928287139074878977">"ውሂብ እና መዳረሻ"</string>
+    <string name="all_categories_title" msgid="3963693021187107088">"ሁሉም ምድቦች"</string>
+    <string name="see_all_categories" msgid="5620285287530764592">"ሁሉንም ምድቦች አሳይ"</string>
+    <string name="no_data" msgid="1120552294863595549">"ውሂብ የለም"</string>
+    <string name="data_subtitle" msgid="2393062372551179163">"የእርስዎን ውሂብ እና የቅርብ ጊዜ የመተግበሪያ እንቅስቃሴ ይመልከቱ"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"የመተግበሪያ ፈቃዶች"</string>
+    <string name="connected_apps_subtitle" msgid="3605531955208324416">"የእርስዎን መተግበሪያዎች እና ፈቃዶች ያስተዳድሩ"</string>
+    <string name="recent_access_header" msgid="4949473550741167743">"የቅርብ ጊዜ መዳረሻ"</string>
+    <string name="no_recent_access" msgid="3009259344780866440">"በቅርብ ጊዜ ምንም መተግበሪያዎች የጤና አገናኝን አልደረሱበትም"</string>
+    <string name="see_all_recent_access" msgid="6703997237436002218">"ሁሉንም ይመልከቱ"</string>
+    <string name="recent_access_screen_description" msgid="8895660122430178701">"ባለፉት 24 ሰዓታት ውስጥ የትኛዎቹ መተግበሪያዎች ውሂብዎን እንደደረሱ ይመልከቱ"</string>
+    <string name="today_header" msgid="3128127066599449902">"ዛሬ"</string>
+    <string name="yesterday_header" msgid="6148252913497135984">"ትላንት"</string>
+    <string name="activity_category_uppercase" msgid="426623789703642935">"እንቅስቃሴ"</string>
+    <string name="activity_category_lowercase" msgid="3890597606215143531">"እንቅስቃሴ"</string>
+    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"የሰውነት አካል መለኪያዎች"</string>
+    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"የሰውነት አካል መለኪያዎች"</string>
+    <string name="sleep_category_uppercase" msgid="3009108865525702992">"እንቅልፍ"</string>
+    <string name="sleep_category_lowercase" msgid="3494760663063775639">"እንቅልፍ"</string>
+    <string name="vitals_category_uppercase" msgid="5215182092874187281">"መሠረታዊ ነገሮች"</string>
+    <string name="vitals_category_lowercase" msgid="6258474646818522701">"መሠረታዊ ነገሮች"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"የዑደት ክትትል"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"የዑደት ክትትል"</string>
+    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"ስነ ምግብ"</string>
+    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"ስነ ምግብ"</string>
+    <string name="browse_data_category" msgid="8013354207116704288">"ውሂብን አስስ"</string>
+    <string name="manage_data_section" msgid="3279837434203736906">"ውሂብን ያስተዳድሩ"</string>
+    <string name="export_data_button" msgid="4600095858908351359">"ውሂብን ወደ ውጭ ላክ"</string>
+    <string name="delete_all_data_button" msgid="2191953268634255722">"ሁሉንም ውሂብ ሰርዝ"</string>
+    <string name="no_categories" msgid="8250090588127237934">"በጤና አገናኝ ውስጥ ምንም ውሂብ የለዎትም"</string>
+    <string name="permission_types_title" msgid="449264809407468231">"የእርስዎ ውሂብ"</string>
+    <string name="app_priority_button" msgid="8977479205180396957">"የመተግበሪያ ቅድሚያ"</string>
+    <string name="delete_category_data_button" msgid="6062112760999637736">"የ<xliff:g id="CATEGORY">%s</xliff:g> ውሂብን ሰርዝ"</string>
+    <string name="can_read" msgid="7989669150752961504">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>ን ማንበብ ይችላል"</string>
+    <string name="can_write" msgid="8278769263589284926">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>ን መጻፍ ይችላል"</string>
+    <string name="inactive_apps" msgid="1582672802567614909">"የቦዘኑ መተግበሪያዎች"</string>
+    <string name="inactive_apps_message" msgid="5673235027162775241">"እነዚህ መተግበሪያዎች ከእንግዲህ <xliff:g id="DATA_TYPE">%s</xliff:g>ን መጻፍ አይችሉም ነገር ግን አሁንም በHealth Connect ውስጥ የተከማቸ ውሂብ አላቸው"</string>
+    <string name="data_access_empty_message" msgid="4448996647357515914">"መተግበሪያዎች ከእንግዲህ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>ን ማንበብ ወይም መጻፍ አይችሉም እና በHealth Connect ውስጥ የተከማቸ ምንም የ<xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ውሂብ የለም"</string>
+    <string name="data_access_exercise_description" msgid="3461117650889436196">"ይህ ውሂብ እንደ ገቢር የሆነበት ጊዜ፣ የልምምድ ዓይነት፣ ዙሮች፣ ድግግሞሾች፣ ክፍለ-ጊዜዎች ወይም የዋና ቀዘፋዎች ያለ መረጃን ያካትታል"</string>
+    <string name="data_access_sleep_description" msgid="6675848226107694375">"ይህ ውሂብ እንደ የእንቅልፍ ደረጃዎች እና የእንቅልፍ ክፍለ-ጊዜዎች ያለ መረጃን ያካትታል"</string>
+    <string name="all_entries_button" msgid="6651429850248301016">"ሁሉንም ግቤቶች አሳይ"</string>
+    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"ይህን ውሂብ ሰርዝ"</string>
+    <string name="permgrouplab_health" msgid="5922812028501112990">"የጤና አገናኝ"</string>
+    <string name="permgroupdesc_health" msgid="44553351410718944">"የጤና ውሂብዎን ይድረሱበት"</string>
+    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"የተቃጠሉ ካሎሪዎችን ያነባል"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"መተግበሪያዎቹ የተቃጠሉትን ካሎሪዎች እንዲያነቡ ያስችላቸዋል"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"የተቃጠሉ ገቢር ካሎሪዎች"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"የተቃጠሉ ገቢር ካሎሪዎች"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"የተቃጠሉ ገቢር ካሎሪዎችን ያነባል"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"የተቃጠሉ ገቢር ካሎሪዎችን ይጽፋል"</string>
+    <string name="exercise_uppercase_label" msgid="8730993778771782694">"ልምምድ"</string>
+    <string name="exercise_lowercase_label" msgid="5171299688710039066">"ልምምድ"</string>
+    <string name="exercise_read_content_description" msgid="167419823931295816">"ልምምድን ያነባል"</string>
+    <string name="exercise_write_content_description" msgid="4003820774292503277">"ልምምድን ይጽፋል"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"የልምምድ መስመር"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"የልምምድ መስመር"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"የልምምድ አቅጣጫን መጻፍ"</string>
+    <string name="distance_uppercase_label" msgid="1633540262436199877">"ርቀት"</string>
+    <string name="distance_lowercase_label" msgid="1195850163151685303">"ርቀት"</string>
+    <string name="distance_read_content_description" msgid="118912330039126690">"ርቀትን ያነባል"</string>
+    <string name="distance_write_content_description" msgid="6422928646909649167">"ርቀትን ይጽፋል"</string>
+    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"የተገኘ ከፍታ"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"የተገኘ ከፍታ"</string>
+    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"የተገኘውን ከፍታን ያነባል"</string>
+    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"የተገኘውን ከፍታን ይጽፋል"</string>
+    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"የተወጡ ፎቆች"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"የተወጡ ፎቆች"</string>
+    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"የተወጡ ፎቆችን ያነባል"</string>
+    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"የተወጡ ፎቆችን ይጽፋል"</string>
+    <string name="power_uppercase_label" msgid="7904465103558163227">"ኃይል"</string>
+    <string name="power_lowercase_label" msgid="6088931773399520221">"ኃይል"</string>
+    <string name="power_read_content_description" msgid="1695982410978951105">"ኃይልን ያነባል"</string>
+    <string name="power_write_content_description" msgid="2104228389895969584">"ኃይልን ይጽፋል"</string>
+    <string name="speed_uppercase_label" msgid="5639404638600357388">"ፍጥነት"</string>
+    <string name="speed_lowercase_label" msgid="4052095939564296524">"ፍጥነት"</string>
+    <string name="speed_read_content_description" msgid="4083062269928361271">"ፍጥነትን ያነባል"</string>
+    <string name="speed_write_content_description" msgid="766285450757233404">"ፍጥነትን ይጽፋል"</string>
+    <string name="steps_uppercase_label" msgid="4487635835111798199">"እርምጃዎች"</string>
+    <string name="steps_lowercase_label" msgid="8163081166756992688">"እርምጃዎች"</string>
+    <string name="steps_read_content_description" msgid="3439677896784274145">"እርምጃዎችን ያነባል"</string>
+    <string name="steps_write_content_description" msgid="7529071337669135652">"እርምጃዎችን ይጽፋል"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"ጠቅላላ የተቃጠሉ ካሎሪዎች"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"ጠቅላላ የተቃጠሉ ካሎሪዎች"</string>
+    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"ጠቅላላ የተቃጠሉ ካሎሪዎችን ያነባል"</string>
+    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"ጠቅላላ የተቃጠሉ ካሎሪዎችን ይጽፋል"</string>
+    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"ከፍተኛ VO2"</string>
+    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"ከፍተኛ VO2"</string>
+    <string name="vo2_max_read_content_description" msgid="410954028720491449">"ከፍተኛ VO2ን ያነባል"</string>
+    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"ከፍተኛ VO2ን ይጽፋል"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"የተሽከርካሪ ወንበር መግፋቶች"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"የተሽከርካሪ ወንበር መግፋቶች"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"የተሽከርካሪ ወንበር መግፋቶችን ያነባል"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"የተሽከርካሪ ወንበር መግፋቶችን ይጽፋል"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"መሠረታዊ የግንባንደት ፍጥነት"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"መሠረታዊ የግንባንደት ፍጥነት"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"መሠረታዊ የግንባንደት ፍጥነትን ያነባል"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"መሠረታዊ የግንባንደት ፍጥነትን ይጽፋል"</string>
+    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"የሰውነት ስብ"</string>
+    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"የሰውነት ስብ"</string>
+    <string name="body_fat_read_content_description" msgid="2237532746343995851">"የሰውነት ስብን ያነባል"</string>
+    <string name="body_fat_write_content_description" msgid="776793050617721281">"የሰውነት ስብን ይጽፋል"</string>
+    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"የሰውነት ውሃ መጠን"</string>
+    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"የሰውነት ውሃ መጠን"</string>
+    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"የሰውነት ውሃ መጠንን ያነባል"</string>
+    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"የሰውነት ውሃ መጠንን ይጽፋል"</string>
+    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"የአጥንት ክብደት"</string>
+    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"የአጥንት ክብደት"</string>
+    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"የአጥንት ክብደትን ያነባል"</string>
+    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"የአጥንት ክብደትን ይጽፋል"</string>
+    <string name="height_uppercase_label" msgid="3108103104753858170">"ቁመት"</string>
+    <string name="height_lowercase_label" msgid="1581432997449289035">"ቁመት"</string>
+    <string name="height_read_content_description" msgid="818540612624517331">"ቁመትን ያነባል"</string>
+    <string name="height_write_content_description" msgid="5924859550287826054">"ቁመትን ይጽፋል"</string>
+    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"የዳሌ ዙሪያ"</string>
+    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"የዳሌ ዙሪያ"</string>
+    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"የዳሌ ዙሪያን ያነባል"</string>
+    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"የዳሌ ዙሪያን ይጽፋል"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"የሰውነት ስብ እና ክብደት መጠን"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"የሰውነት ስብ እና ክብደት መጠን"</string>
+    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"የሰውነት ስብ እና ክብደት መጠንን ያነባል"</string>
+    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"የሰውነት ስብ እና ክብደት መጠንን ይጽፋል"</string>
+    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"የወገብ ዙሪያ"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"የወገብ ዙሪያ"</string>
+    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"የወገብ ዙሪያን ያነባል"</string>
+    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"የወገብ ዙሪያን ይጽፋል"</string>
+    <string name="weight_uppercase_label" msgid="5139159678065242304">"ክብደት"</string>
+    <string name="weight_lowercase_label" msgid="5476549439048429652">"ክብደት"</string>
+    <string name="weight_read_content_description" msgid="9145691331920027184">"ክብደትን ያነባል"</string>
+    <string name="weight_write_content_description" msgid="1837283361733660524">"ክብደትን ይጽፋል"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"የማህጸን በር ፈሳሽ"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"የማህጸን በር ፈሳሽ"</string>
+    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"የማህጸን በር ፈሳሽን ያነባል"</string>
+    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"የማህጸን በር ፈሳሽን ይጽፋል"</string>
+    <string name="menstruation_uppercase_label" msgid="785931033429661883">"የወር አበባ"</string>
+    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"የወር አበባ"</string>
+    <string name="menstruation_read_content_description" msgid="7208944260757605367">"የወር አበባን ያነባል"</string>
+    <string name="menstruation_write_content_description" msgid="5579059034516400795">"የወር አበባን ይጽፋል"</string>
+    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"የውጽዓት ምርመራ"</string>
+    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"የውጽዓት ምርመራ"</string>
+    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"የውጽዓት ምርመራን ያነባል"</string>
+    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"የውጽዓት ምርመራን ይጽፋል"</string>
+    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"ወሲባዊ እንቅስቃሴ"</string>
+    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"ወሲባዊ እንቅስቃሴ"</string>
+    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"ወሲባዊ እንቅስቃሴን ያነባል"</string>
+    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"ወሲባዊ እንቅስቃሴን ይጽፋል"</string>
+    <string name="spotting_uppercase_label" msgid="374296750601288023">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_lowercase_label" msgid="8482883324403335192">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_read_content_description" msgid="4143084456852811187">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ያነባል"</string>
+    <string name="spotting_write_content_description" msgid="4417069887396336720">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ይጽፋል"</string>
+    <string name="hydration_uppercase_label" msgid="8643231963758360012">"ውሃዘልነት"</string>
+    <string name="hydration_lowercase_label" msgid="3003284599251167246">"ውሃዘልነት"</string>
+    <string name="hydration_read_content_description" msgid="7246214812861654403">"ውሃዘልነትን ያነባል"</string>
+    <string name="hydration_write_content_description" msgid="1859954348288584034">"ውሃዘልነትን ይጽፋል"</string>
+    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"ስነ ምግብ"</string>
+    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"ስነ ምግብ"</string>
+    <string name="nutrition_read_content_description" msgid="1129363005245753193">"ስነ ምግብን ያነባል"</string>
+    <string name="nutrition_write_content_description" msgid="5618853263422426282">"ስነ ምግብን ይጽፋል"</string>
+    <string name="sleep_uppercase_label" msgid="5063088411115100109">"እንቅልፍ"</string>
+    <string name="sleep_lowercase_label" msgid="7013148357969868421">"እንቅልፍ"</string>
+    <string name="sleep_read_content_description" msgid="1652070331037708028">"እንቅልፍን ያነባል"</string>
+    <string name="sleep_write_content_description" msgid="6212072324500033055">"እንቅልፍን ያነባል"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"መሠረታዊ የሰውነት ሙቀት መጠን"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"መሠረታዊ የሰውነት ሙቀት መጠን"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"መሠረታዊ የሰውነት ሙቀት መጠንን ያነባል"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"መሠረታዊ የሰውነት ሙቀት መጠንን ይጽፋል"</string>
+    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"የደም ግሉኮስ"</string>
+    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"የደም ግሉኮስ"</string>
+    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"የደም ግሉኮስን ያነባል"</string>
+    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"የደም ግሉኮስን ይጽፋል"</string>
+    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"የደም ግፊት"</string>
+    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"የደም ግፊት"</string>
+    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"የደም ግፊትን ያነባል"</string>
+    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"የደም ግፊትን ይጽፋል"</string>
+    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"የሰውነት ሙቀት መጠን"</string>
+    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"የሰውነት ሙቀት መጠን"</string>
+    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"የሰውነት ሙቀት መጠንን ያነባል"</string>
+    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"የሰውነት ሙቀት መጠንን ይጽፋል"</string>
+    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"የልብ ምት"</string>
+    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"የልብ ምት"</string>
+    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"የልብ ምትን ያነባል"</string>
+    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"የልብ ምትን ይጽፋል"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"የልብ ምት ተለዋዋጭነት"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"የልብ ምት ተለዋዋጭነት"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"የልብ ምት ተለዋዋጭነትን ያነባል"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"የልብ ምት ተለዋዋጭነትን ይጽፋል"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"የኦክሲጅን ሙሌት"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"የኦክሲጅን ሙሌት"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"የኦክሲጅን ሙሌትን ያነባል"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"የኦክሲጅን ሙሌትን ይጽፋል"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"የትንፈሳ ፍጥነት"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"የትንፈሳ ፍጥነት"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"የትንፈሳ ፍጥነትን ያነባል"</string>
+    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"የትንፈሳ ፍጥነትን ይጽፋል"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"የእረፍት ጊዜ የልብ ምት"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"የእረፍት ጊዜ የልብ ምት"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"የእረፍት ጊዜ የልብ ምትን ያነባል"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"የእረፍት ጊዜ የልብ ምትን ይጽፋል"</string>
+    <string name="read_permission_category" msgid="2175522028919441420">"ከጤና አገናኝ ማንበብ ይችላል"</string>
+    <string name="write_permission_category" msgid="327087996054037374">"ለጤና አገናኝ መጻፍ ይችላል"</string>
+    <string name="request_permissions_cancel" msgid="7082122080520578200">"ይቅር"</string>
+    <string name="request_permissions_allow" msgid="2431904725832574525">"ፍቀድ"</string>
+    <string name="request_permissions_allow_all" msgid="2244683574167733806">"ሁሉንም ፍቀድ"</string>
+    <string name="request_permissions_header_desc" msgid="5753544536663743243">"ይህ መተግበሪያ እንዲያነብ ወይም በHealth Connect ላይ እንዲጽፍ የሚፈልጉትን ውሂብ ይምረጡ"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"የማንበብ መዳረሻን ከሰጡ ይህ መተግበሪያ አዲስ ውሂብን እና ካለፉት 30 ቀናት የተገኘ ውሂብን ማንበብ ይችላል"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectን እንዲደርስ ይፈቀድለት?"</string>
+    <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g> የእርስዎን ውሂብ እንዴት በገንቢው <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> ውስጥ እንደሚይዝ ማወቅ ይችላሉ"</string>
+    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"የግላዊነት መመሪያ"</string>
+    <string name="navigation_next_day" msgid="4940406450355240883">"ቀጣይ ቀን"</string>
+    <string name="navigation_previous_day" msgid="6152692518411256639">"ቀዳሚው ቀን"</string>
+    <string name="default_error" msgid="7047939092442348839">"የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።"</string>
+    <string name="health_permission_header_description" msgid="1352043269233254085">"ይህ ፈቃድ ያላቸው መተግበሪያዎች የእርስዎን የጤና ውሂብ ማንበብ እና መጻፍ ይችላሉ።"</string>
+    <string name="connected_apps_text" msgid="3656264326437387180">"የትኛዎቹ መተግበሪያዎች በHealth Connect ውስጥ የተከማቸ ውሂብን መድረስ እንደሚችሉ ይቆጣጠሩ። አንድ መተግበሪያ ማንበብ ወይም መጻፍ የሚችለውን ውሂብ ለመገምገም መታ ያድርጉት።"</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"መዳረሻ የተፈቀደላቸው"</string>
+    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"መዳረሻ ያልተፈቀደላቸው"</string>
+    <string name="settings_and_help_header" msgid="56459390338790190">"ቅንብሮች እና እገዛ"</string>
+    <string name="disconnect_all_apps" msgid="8400128470487727928">"የሁሉም መተግበሪያዎች መዳረሻን አስወግድ"</string>
+    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"ሁሉንም መተግበሪያዎችዎን ማየት አልቻሉም?"</string>
+    <string name="manage_permissions_read_header" msgid="7625997211374656400">"ለማንበብ የተፈቀደለት"</string>
+    <string name="manage_permissions_write_header" msgid="1730061424579902303">"ለመፃፍ የተፈቀደለት"</string>
+    <string name="no_apps_allowed" msgid="1006840024939920418">"ምንም መተግበሪያዎች አልተፈቀደላቸውም"</string>
+    <string name="no_apps_denied" msgid="5248752441339902085">"ምንም መተግበሪያዎች አልተከለከሉም"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"የሁሉም መተግበሪያዎች መዳረሻ ይወገድ?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"ማናቸውም መተግበሪያዎችዎ አዲስ ውሂብን መድረስ ወይም ወደ Health Connect ማከል አይችሉም። ይህ ማንኛውንም ነባር ውሂብ አይሰርዝም።"</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"ሁሉንም አስወግድ"</string>
+    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"መተግበሪያን ያስተዳድሩ"</string>
+    <string name="delete_app_data" msgid="2694002637558981031">"የመተግበሪያ ውሂብን ሰርዝ"</string>
+    <string name="inactive_apps_section_title" msgid="2773413377510525846">"የቦዘኑ መተግበሪያዎች"</string>
+    <string name="inactive_apps_section_message" msgid="5865391169046974428">"እነዚህ መተግበሪያዎች ከእንግዲህ መዳረሻ የላቸውም ነገር ግን አሁንም በጤና አገናኝ ውስጥ የተከማቸ ውሂብ አላቸው"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> ከ<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> በኋላ የታከለ ውሂብ መድረስ ይችላል"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"ይህ መተግበሪያ ሊደርስባቸው የሚችላቸውን ሌሎች የAndroid ፈቃዶችን ለማስተዳደር ወደ ቅንብሮች &gt; መተግበሪያዎች ይሂዱ"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"ለ<xliff:g id="APP_NAME">%1$s</xliff:g> የሚያጋሩት ውሂብ በግላዊነት መመሪያቸው የተሸፈነ ነው"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ይህ መተግበሪያ ሊደርስባቸው የሚችላቸውን ሌሎች የAndroid ፈቃዶችን ለማስተዳደር ወደ ቅንብሮች ይሂዱ፣ ከዚያም መተግበሪያዎች የሚለውን መታ ያድርጉ"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"የግላዊነት መመሪያ ያንብቡ"</string>
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"ባለፉት 24 ሰዓታት ውስጥ ተደርሶበታል"</string>
+    <string name="onboarding_title" msgid="1175348642301557799">"በHealth Connect ይጀምሩ"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"የጤና አገናኝ የእርስዎን የጤና እና አካል ብቃት ውሂብ ያከማቻል፣ ይህም በስልክዎ ላይ ያሉ የተለያዩ መተግበሪያዎችን ለማስመር ቀላል መንገድ ይሰጥዎታል"</string>
+    <string name="share_data" msgid="3461840023402996573">"በመተግበሪያዎችዎ ውሂብን ያጋሩ"</string>
+    <string name="share_data_description" msgid="3419415806525775710">"እያንዳንዱ መተግበሪያ በጤና አገናኝ ላይ ማንበብ ወይም መጻፍ የሚችለውን ውሂብ ይምረጡ"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"የእርስዎን ቅንብሮች እና ግላዊነት ያስተዳድሩ"</string>
+    <string name="manage_your_settings_description" msgid="3467283105611653797">"በማንኛውም ጊዜ የመተግበሪያ ፈቃዶችን ይለውጡ እና ውሂብዎን ያስተዳድሩ"</string>
+    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"ተመለስ"</string>
+    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"ይጀምሩ"</string>
+    <string name="delete_button_content_description" msgid="7102925022391975365">"ውሂብን ይሰርዙ"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"የሚሰርዙትን ውሂብ ይምረጡ"</string>
+    <string name="time_range_next_button" msgid="6231771008239100525">"ቀጣይ"</string>
+    <string name="time_range_message_all" msgid="7602288625100089210">"ይህ በተመረጠው ክፍለ-ጊዜ ውስጥ ወደ በጤና አገናኝ ላይ የታከለ ሁሉንም ውሂብ በቋሚነት ይሰርዛል"</string>
+    <string name="time_range_message_data_type" msgid="5725562126119560293">"ይህ በተመረጠው ክፍለ-ጊዜ ውስጥ ወደ በጤና አገናኝ ላይ የታከለን የ<xliff:g id="DATA_TYPE">%s</xliff:g> ውሂብ በቋሚነት ይሰርዛል"</string>
+    <string name="time_range_message_category" msgid="7087857058571953831">"ይህ በተመረጠው ክፍለ-ጊዜ ውስጥ ወደ በጤና አገናኝ ላይ የታከለን የ<xliff:g id="CATEGORY">%s</xliff:g> ውሂብ በቋሚነት ይሰርዛል"</string>
+    <string name="time_range_message_app_data" msgid="3142036149240792656">"ይህ በተመረጠው ክፍለ-ጊዜ ውስጥ ወደ በጤና አገናኝ ላይ የታከለን የ<xliff:g id="APP_DATA">%s</xliff:g> ውሂብ በቋሚነት ይሰርዛል"</string>
+    <string name="time_range_one_day" msgid="3033863003732558121">"ያለፉትን 24 ሰዓታት ሰርዝ"</string>
+    <string name="time_range_one_week" msgid="353979981636015030">"ያለፉትን 7 ቀናት ሰርዝ"</string>
+    <string name="time_range_one_month" msgid="4830107755328124319">"ያለፉትን 30 ቀናት ሰርዝ"</string>
+    <string name="time_range_all" msgid="4114445623609239143">"ሁሉንም ውሂብ ሰርዝ"</string>
+    <string name="confirming_question_all" msgid="838765230743574439">"ከሁሉም ጊዜ የተገኘው ሁሉም ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"ካለፉት 24 ሰዓታት የተገኘ ሁሉም ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"ካለፉት 7 ቀናት የተገኘ ሁሉም ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"ካለፉት 30 ቀናት የተገኘ ሁሉም ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_data_type_all" msgid="982234075886055865">"ከሁሉም ጊዜ የተገኘው የ<xliff:g id="DATA_TYPE">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"ካለፉት 24 ሰዓታት የተገኘው የ<xliff:g id="DATA_TYPE">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"ካለፉት 7 ቀናት የተገኘው የ<xliff:g id="DATA_TYPE">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"ካለፉት 30 ቀናት የተገኘው የ<xliff:g id="DATA_TYPE">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_category_all" msgid="600051636967007505">"ከሁሉም ጊዜ የተገኘው የ<xliff:g id="CATEGORY">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"ካለፉት 24 ሰዓታት የተገኘው የ<xliff:g id="CATEGORY">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"ካለፉት 7 ቀናት የተገኘው የ<xliff:g id="CATEGORY">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"ካለፉት 30 ቀናት የተገኘው የ<xliff:g id="CATEGORY">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"ከሁሉም ጊዜ የተገኘው የ<xliff:g id="APP_DATA">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"ካለፉት 24 ሰዓታት የተገኘው የ<xliff:g id="APP_DATA">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"ካለፉት 7 ቀናት የተገኘው የ<xliff:g id="APP_DATA">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"ካለፉት 30 ቀናት የተገኘው የ<xliff:g id="APP_DATA">%s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"እንዲሁም ሁሉንም የ<xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> ፈቃዶችን ከጤና አገናኝ ያስወግዱ"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"በ<xliff:g id="APP_DATA">%2$s</xliff:g> የታከለው ሁሉም የ<xliff:g id="DATA_TYPE">%1$s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_single_entry" msgid="2387097225045539359">"ይህ ግቤት በቋሚነት ይሰረዝ?"</string>
+    <string name="confirming_question_message" msgid="9090899967996008678">"የተገናኙ መተግበሪያዎች ከእንግዲህ ይህን ውሂብ ከHealth Connect መድረስ አይችሉም"</string>
+    <string name="confirming_question_delete_button" msgid="5965438966559454007">"ሰርዝ"</string>
+    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"ተመለስ"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"ተከናውኗል"</string>
+    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"ዝጋ"</string>
+    <string name="delete_dialog_success_title" msgid="8645983649329184701">"ውሂብ ተሰርዟል"</string>
+    <string name="delete_dialog_success_message" msgid="1412434616763639749">"ይህ ውሂብ ከእንግዲህ በHealth Connect ውስጥ አይከማችም።"</string>
+    <string name="delete_progress_indicator" msgid="6446736923548413592">"የእርስዎን ውሂብ በመሰረዝ ላይ"</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"ውሂብን መሰረዝ አልተቻለም"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"የሆነ ችግር ተፈጥሯል እና የጤና አገናኝ ውሂብዎን መሰረዝ አልቻለም"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"እንደገና ይሞክሩ"</string>
+    <string name="delete_data_notification_title" msgid="5445676878692242897">"የጤና አገናኝ ውሂብን በመሰረዝ ላይ"</string>
+    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"የጤና አገናኝ ውሂብን በመሰረዝ ላይ"</string>
+    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"የውሂብ ስረዛ"</string>
+    <string name="data_point_action_content_description" msgid="5272053018514984088">"የውሂብ ግቤት አማራጮች"</string>
+    <string name="delete_data_point" msgid="5665536304875634127">"ግቤትን ሰርዝ"</string>
+    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 ዋ}one{# ዋ}other{# ዋ}}"</string>
+    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 ዋት}one{# ዋት}other{# ዋት}}"</string>
+    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 እርምጃ}one{# እርምጃ}other{# እርምጃዎች}}"</string>
+    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 እርምጃ/ደ}one{# እርምጃ/ደ}other{# እርምጃዎች/ደ}}"</string>
+    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 እርምጃ በደቂቃ}one{# እርምጃ በደቂቃ}other{# እርምጃዎች በደቂቃ}}"</string>
+    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 ም/ደ}one{# ም/ደ}other{# ም/ደ}}"</string>
+    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 ምት በደቂቃ}one{# ምት በደቂቃ}other{# ምቶች በደቂቃ}}"</string>
+    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 ማ/ሰ}one{# ማ/ሰ}other{# ማ/ሰ}}"</string>
+    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 ኪሜ/ሰ}one{# ኪሜ/ሰ}other{# ኪሜ/ሰ}}"</string>
+    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 ማይል በሰዓት}one{# ማይል በሰዓት}other{# ማይሎች በሰዓት}}"</string>
+    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 ኪሎሜትር በሰዓት}one{# ኪሎሜትር በሰዓት}other{# ኪሎሜትሮች በሰዓት}}"</string>
+    <string name="time_range_long" msgid="2057628562186177263">"ከ<xliff:g id="START_TIME">%1$s</xliff:g> እስከ <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="5407008354838746975">"ከ<xliff:g id="START_TIME">%1$s</xliff:g> እስከ <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 ማይል}one{# ማይል}other{# ማይሎች}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 ኪሜ}one{# ኪሜ}other{# ኪሜ}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 ማይል}one{# ማይል}other{# ማይሎች}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 ኪሎሜትር}one{# ኪሎሜትር}other{# ኪሎሜትሮች}}"</string>
+    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 ካሎሪ}one{# ካሎሪ}other{# ካሎሪዎች}}"</string>
+    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 ካሎሪ}one{# ካሎሪ}other{# ካሎሪዎች}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
+    <skip />
+    <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
+    <string name="units_title" msgid="4335002706905375844">"አሃዶች"</string>
+    <string name="set_units_label" msgid="7358440515698876383">"የውሂብ አሃዶችን አቀናብር"</string>
+    <string name="distance_unit_title" msgid="3055365740477222083">"ርቀት"</string>
+    <string name="height_unit_title" msgid="677762136969683850">"ቁመት"</string>
+    <string name="weight_unit_title" msgid="1459327930265888396">"ክብደት"</string>
+    <string name="energy_unit_title" msgid="5416534225144126434">"ኃይል"</string>
+    <string name="temperature_unit_title" msgid="8849488991722636347">"የሙቀት መጠን"</string>
+    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"ኪሎሜትር"</string>
+    <string name="distance_unit_miles_label" msgid="7055538640044313099">"ማይል"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"ሳንቲሜትር"</string>
+    <string name="height_unit_feet_label" msgid="5868165630072173182">"ጫማ እና ኢንች"</string>
+    <string name="weight_unit_pound_label" msgid="5140603717613619894">"ፓውንድ"</string>
+    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"ኪሎግራም"</string>
+    <string name="weight_unit_stone_label" msgid="8143742807230733783">"ስቶን"</string>
+    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"ካሎሪ"</string>
+    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"ኪሎጁል"</string>
+    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"ሴልሺየስ"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"ፋራናይት"</string>
+    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"ኬልቪን"</string>
+    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"ሁሉንም መተግበሪያዎችዎን ማየት አልቻሉም?"</string>
+    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"አንድ የተጫነ መተግበሪያን ማየት ካልቻሉ ገና ከጤና አገናኝ ጋር ተኳዃኝ ላይሆን ይችላል"</string>
+    <string name="things_to_try" msgid="5007292603680871491">"የሚሞከሩ ነገሮች"</string>
+    <string name="check_for_updates" msgid="8437406613751262779">"ዝማኔዎች ካሉ ይመልከቱ"</string>
+    <string name="check_for_updates_description" msgid="1096082466727060156">"የተጫኑ መተግበሪያዎች ወቅታዊ እንደሆኑ ያረጋግጡ"</string>
+    <string name="see_all_compatible_apps" msgid="7992057176853172184">"ሁሉንም ተኳዃኝ መተግበሪያዎች አሳይ"</string>
+    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"በGoogle Play ላይ መተግበሪያዎችን ያግኙ"</string>
+    <string name="send_feedback" msgid="5208533169043471671">"ግብረመልስ ላክ"</string>
+    <string name="send_feedback_description" msgid="8072260306033182621">"የትኛዎቹ የጤንነት እና የአካል ብቃት መተግበሪያዎች ከጤና አገናኝ ጋር እንዲሰሩ እንደሚፈልጉ ይንገሩን"</string>
+    <string name="playstore_app_title" msgid="1735964688871308040">"Play መደብር"</string>
+    <string name="auto_delete_button" msgid="7613874709713318627">"በራስ-ሰር ሰርዝ"</string>
+    <string name="auto_delete_title" msgid="4076931002598655193">"በራስ-ሰር ሰርዝ"</string>
+    <string name="auto_delete_header" msgid="5258042693870924698">"ከተቀናበረ ጊዜ በኋላ እንዲሰረዝ ለውሂብዎ መርሐግብር በማስያዝ በHealth Connect ውስጥ ለምን ያህል ጊዜ እንደሚከማች ይቆጣጠሩ"</string>
+    <string name="auto_delete_learn_more" msgid="3247070192871987847">"የበለጠ ለመረዳት"</string>
+    <string name="auto_delete_section" msgid="9211252344455317906">"ውሂብን በራስ-ሰር ሰርዝ"</string>
+    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{ከ# ወር በኋላ}one{ከ# ወር በኋላ}other{ከ# ወራት በኋላ}}"</string>
+    <string name="range_never" msgid="7960509623911908545">"በጭራሽ"</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"እነዚህን ቅንብሮች ሲለውጡ የጤና አገናኝ የእርስዎን አዲስ ምርጫዎች ለማንፀባረቅ ነባር ውሂብን ይሰርዛል"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{ከ# ወር በኋላ ውሂብ በራስ-ሰር ይሰረዝ?}one{ከ# ወር በኋላ ውሂብ በራስ-ሰር ይሰረዝ?}other{ከ# ወራት በኋላ ውሂብ በራስ-ሰር ይሰረዝ?}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{የጤና አገናኝ ከ# ወር በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወር በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}one{የጤና አገናኝ ከ# ወር በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወር በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}other{የጤና አገናኝ ከ# ወራት በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወራት በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}}"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"በራስ-ሰር ሰርዝን አቀናብር"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"ነባር ውሂብ ይሰረዛል"</string>
+    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{የጤና አገናኝ ከ# ወር በላይ የቆየ ውሂብን በሙሉ ይሰርዛል።\nእነዚህ ለውጦች በእርስዎ የተገናኙ መተግበሪያዎች ውስጥ ለመታየት አንድ ቀን ሊወስዱ ይችላሉ።}one{የጤና አገናኝ ከ# ወር በላይ የቆየ ውሂብን በሙሉ ይሰርዛል።\nእነዚህ ለውጦች በእርስዎ የተገናኙ መተግበሪያዎች ላይ ለመታየት አንድ ቀን ሊወስዱ ይችላሉ።}other{የጤና አገናኝ ከ# ወራት በላይ የቆየ ውሂብን በሙሉ ይሰርዛል።\nእነዚህ ለውጦች በእርስዎ የተገናኙ መተግበሪያዎች ላይ ለመታየት አንድ ቀን ሊወስዱ ይችላሉ።}}"</string>
+    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"ከእነዚህ ውስጥ የሚሰረዝ ውሂብ"</string>
+    <string name="deletion_started_done_button" msgid="3502852477322616722">"ተከናውኗል"</string>
+    <string name="export_data_title" msgid="8758166079870538927">"የጤና አገናኝ ውሂብን ወደ ውጭ ላክ"</string>
+    <string name="export_data_select_all" msgid="6932439749735842660">"ሁሉንም ምረጥ"</string>
+    <string name="export_data_deselect_all" msgid="493230746701668306">"ሁሉንም አትምረጥ"</string>
+    <string name="export_data_next_button" msgid="4333280628720601565">"ቀጣይ"</string>
+    <string name="export_data_notification_title" msgid="1584276187698297224">"ወደ ውጭ ለመላክ ውሂብን በማምጣት ላይ"</string>
+    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"የጤና አገናኝ ውሂብን ወደ ውጭ በመላክ ላይ"</string>
+    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"ይቅር"</string>
+    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"የውሂብ ሂደትን ወደ ውጭ ይላኩ"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"የአካል ብቃት፣ ጤናማነት"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"ፈቃዶች"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"የጤና አገናኝ፣ የጤና ውሂብ፣ የጤና ምድቦች፣ የውሂብ መዳረሻ፣ እንቅስቃሴ፣ የሰውነት አካል መለኪያዎች፣ የዑደት መከታተል፣ ስነ-ምግብ፣ እንቅልፍ፣ መሠረታዊ ነገሮች"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"የጤና አገናኝ &gt; የመተግበሪያ ፈቃዶች"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"የጤና አገናኝ &gt; ውሂብ እና መዳረሻ"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"መተግበሪያዎችን ይፈልጉ"</string>
+    <string name="no_results" msgid="4935646951230345730">"ምንም ውጤቶች የሉም"</string>
+    <string name="help" msgid="6096599033945360524">"እገዛ"</string>
+</resources>

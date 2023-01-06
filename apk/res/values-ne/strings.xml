@@ -74,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"कसरत"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"कसरतसम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"कसरतसम्बन्धी डेटा राइट गर्ने अनुमति दिनुहोस्"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"कसरत गर्न जाने मार्ग"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"कसरत गर्न जाने मार्ग"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"कसरत गर्न जाने मार्ग राइट गर्नुहोस्"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"दूरी"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"दूरी"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"दूरीसम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
@@ -245,18 +248,12 @@
     <string name="delete_app_data" msgid="2694002637558981031">"एपसम्बन्धी डेटा मेटाउनुहोस्"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"निष्क्रिय एपहरू"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"यी एपहरूले अबदेखि Health Connect प्रयोग गर्न पाउँदैनन् तर Health Connect मा भने अझै पनि यी एपहरूसम्बन्धी डेटा भण्डारण गरिएको छ"</string>
-    <!-- no translation found for manage_permissions_time_frame (999373455193059136) -->
-    <skip />
-    <!-- no translation found for other_android_permissions (3408425226133353014) -->
-    <skip />
-    <!-- no translation found for manage_permissions_rationale (3159759998704130034) -->
-    <skip />
-    <!-- no translation found for other_android_permissions_content_description (4980418846778370352) -->
-    <skip />
-    <!-- no translation found for manage_permissions_learn_more (8137141655140907242) -->
-    <skip />
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> ले <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> पछि हालिएका डेटा हेर्न तथा प्रयोग गर्न सक्छ"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"तपाईं यो एपले प्रयोग गर्न सक्ने Android का अन्य अनुमति व्यवस्थापन गर्न चाहनुहुन्छ भने \"सेटिङ &gt; एपहरू\" मा जानुहोस्"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"तपाईंले <xliff:g id="APP_NAME">%1$s</xliff:g> सँग सेयर गर्नुभएको डेटा उक्त एपको गोपनीयता नीतिबमोजिम प्रयोग गरिन्छ"</string>
+    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"तपाईं यो एपले प्रयोग गर्न सक्ने Android का अन्य अनुमति व्यवस्थापन गर्न चाहनुहुन्छ भने सेटिङमा गई \"एपहरू\" मा ट्याप गर्नुहोस्"</string>
+    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"गोपनीयता नीति पढ्नुहोस्"</string>
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"पछिल्ला २४ घण्टामा प्रयोग गरिएको"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect चलाउन थाल्नुहोस्"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect ले तपाईंको स्वास्थ्य र तन्दुरुस्तीसम्बन्धी डेटा भण्डारण गर्छ र तपाईं आफ्नो फोनमा विभिन्न एपहरू सरल तरिकाले सिंक गर्न सक्नुहुन्छ"</string>
     <string name="share_data" msgid="3461840023402996573">"आफ्ना एपहरूसँग डेटा सेयर गर्नुहोस्"</string>
@@ -324,16 +321,16 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{१ किलोमिटर प्रति घण्टा}other{# किलोमिटर प्रति घण्टा}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> देखि <xliff:g id="END_TIME">%2$s</xliff:g> सम्म"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> देखि <xliff:g id="END_TIME">%2$s</xliff:g> सम्म"</string>
-    <!-- no translation found for distance_miles (2357357092314420912) -->
-    <skip />
-    <!-- no translation found for distance_km (411871319039389297) -->
-    <skip />
-    <!-- no translation found for distance_miles_long (3754739640134562413) -->
-    <skip />
-    <!-- no translation found for distance_km_long (1702836391705517609) -->
-    <skip />
+    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{१ माइल}other{# माइल}}"</string>
+    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{१ कि.मि.}other{# कि.मि.}}"</string>
+    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{१ माइल}other{# माइल}}"</string>
+    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{१ किलोमिटर}other{# किलोमिटर}}"</string>
     <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{१ क्यालोरी}other{# क्यालोरी}}"</string>
     <string name="calories" msgid="1646804751247540818">"{count,plural, =1{१ क्यालोरी}other{# क्यालोरी}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
+    <skip />
+    <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
     <string name="units_title" msgid="4335002706905375844">"एकाइहरू"</string>
     <string name="set_units_label" msgid="7358440515698876383">"डेटाको एकाइ सेट गर्नुहोस्"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"दूरी"</string>
@@ -386,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect सम्बन्धी डेटा एक्स्पोर्ट गरिँदै छ"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"रद्द गर्नुहोस्"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"कति डेटा एक्स्पोर्ट भयो भन्ने कुराको जानकारी"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"फिटनेस, तन्दुरुस्ती"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"अनुमतिहरू"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"health connect, स्वास्थ्यसम्बन्धी डेटा, स्वास्थ्यका कोटी, डेटा प्रयोग गर्ने अनुमति, गतिविधि, शारीरिक नाप, महिनावारीको रेकर्ड राख्ने सुविधा, पोषण, निद्रा, स्वास्थ्यसम्बन्धी आधारभूत विवरण"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect तथा एपलाई दिइएका अनुमति"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect तथा डेटा र अनुमति"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"एपहरू खोज्नुहोस्"</string>
+    <string name="no_results" msgid="4935646951230345730">"कुनै पनि परिणाम भेटिएन"</string>
+    <string name="help" msgid="6096599033945360524">"मद्दत"</string>
 </resources>

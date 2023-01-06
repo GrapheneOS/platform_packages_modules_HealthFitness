@@ -74,6 +74,9 @@
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‎‏‏‏‏‏‎‎‎‏‎‎‎‎‏‎‎‏‎‏‏‎‏‎‏‎‏‏‎‎‎‎‏‏‎‎‏‎‏‎‎‏‏‎‎‏‏‎‎‏‏‎‎‎‎‏‏‎‏‎‎exercise‎‏‎‎‏‎"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‎‏‎‏‎‎‏‎‏‎‎‏‎‏‏‎‎‏‎‏‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‎‏‏‏‎‎‏‎‎‎‏‎‎‎‏‎‎‎‎‏‎‎‏‎‎‎‎Read exercise‎‏‎‎‏‎"</string>
     <string name="exercise_write_content_description" msgid="4003820774292503277">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‎‏‏‏‏‎‎‏‎‎‎‎‎‏‏‎‏‏‎‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‎‎‎‎‎‎‏‎‎‎‏‎‏‏‏‎‏‎‏‏‏‎‏‏‎‏‎Write exercise‎‏‎‎‏‎"</string>
+    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‏‎‎‎‏‏‎‏‏‏‎‏‏‏‏‎‏‏‏‏‏‎‎‎‏‎‏‏‏‏‎‏‎‎‏‎‎‏‏‏‎‎‎‎‏‏‏‏‏‏‎‏‎‏‎‏‎‏‏‎‎Exercise route‎‏‎‎‏‎"</string>
+    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‎‏‎‏‎‎‏‎‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‎‏‏‎‎‏‎‏‎‏‎‏‏‎‎‎‎‎‎‏‎‎‎‎‎‎‏‎‎‏‎‎‎‎‎exercise route‎‏‎‎‏‎"</string>
+    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‎‎‎‎‏‎‏‏‎‎‎‎‎‎‎‏‎‏‎‏‎‏‏‏‎‎‎‎‏‎‏‎‏‎‏‏‎‏‏‏‎‎‏‎‏‎‏‏‎‏‎‏‎‎‏‎‏‏‎‏‎‎Write exercise route‎‏‎‎‏‎"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‏‏‎‏‎‏‎‏‎‏‏‏‎‎‎‎‎‎‎‎‎‏‏‎‏‏‎‏‎‏‏‏‏‎‎‏‏‎‎‏‏‏‎‏‏‎‏‏‏‎‏‏‏‎‎‎‏‎‏‎Distance‎‏‎‎‏‎"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‎‎‎‏‎‎‏‏‎‎‎‏‎‎‎‎‎‏‏‎‏‏‎‎‎‏‏‎‎‏‏‎‎‏‏‎‎‏‏‏‏‏‏‏‏‎‎‎‏‏‎‏‎‏‏‎‏‏‏‎distance‎‏‎‎‏‎"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‎‎‏‏‏‎‏‎‎‏‏‎‎‏‏‏‎‏‏‎‎‎‏‎‎‎‏‎‎‏‎‏‎‏‏‏‎‏‏‎‎‏‎‏‎‏‏‎‏‎‏‎‏‎‏‎‎‎‏‎‎Read distance‎‏‎‎‏‎"</string>
@@ -250,8 +253,7 @@
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‏‎‏‏‏‏‎‏‏‎‎‏‏‎‏‏‏‎‎‎‏‏‏‏‏‎‏‎‎‏‎‎‏‎‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‏‏‏‏‏‏‏‎‎‏‎‎Data you share with ‎‏‎‎‏‏‎<xliff:g id="APP_NAME">%1$s</xliff:g>‎‏‎‎‏‏‏‎ is covered by their privacy policy‎‏‎‎‏‎"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‎‏‎‏‎‎‎‏‏‏‏‎‎‎‎‎‎‎‎‎‏‎‎‎‏‏‎‏‏‏‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‎‏‎‎‏‎‎‏‏‎‎‎‎‎To manage other Android permissions this app can access, go to Settings, then tap Apps‎‏‎‎‏‎"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‎‎‎‎‏‏‏‎‏‏‎‎‏‏‏‎‏‏‏‏‎‎‏‏‏‎‎‏‎‎‎‏‎‎‎‏‏‎‏‏‎‏‎‏‎‎‏‏‏‎‎‎‏‏‏‎‏‎‏‎‎Read privacy policy‎‏‎‎‏‎"</string>
-    <!-- no translation found for app_perms_content_provider_24h (6254183883704363488) -->
-    <skip />
+    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‎‏‏‎‏‏‎‎‏‎‏‏‎‏‎‏‎‎‏‏‎‎‎‏‏‎‏‏‎‎‏‎‏‏‎‎‎‎‏‎‏‎‏‏‏‏‏‎‏‎‎‏‏‏‏‎‎‎‎‎‎Accessed in past 24 hours‎‏‎‎‏‎"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‎‎‎‎‏‎‎‏‏‏‏‏‎‏‎‏‏‎‏‎‏‎‏‏‏‎‎‏‏‏‎‎‏‏‏‏‎‎‏‏‏‏‏‎‎‏‏‏‏‎‎‎‎‏‎‎‏‏‏‎Get Started with Health Connect‎‏‎‎‏‎"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‏‎‎‏‏‎‎‏‏‏‏‏‎‎‎‏‎‎‏‎‏‏‎‎‎‎‏‎‎‏‎‏‏‏‎‏‏‎‎‏‎‏‏‎‎‎‎‏‏‎‏‏‎‎‏‏‎‏‎‎‎Health Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone‎‏‎‎‏‎"</string>
     <string name="share_data" msgid="3461840023402996573">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‎‎‎‎‎‎‎‎‏‎‏‎‏‏‏‎‏‏‎‏‎‎‏‎‏‎‎‎‏‏‏‎‎‎‎‎‎‎‏‎‏‎‏‎‎‏‏‎‎‎‏‏‎‏‎‏‏‏‎‏‎Share data with your apps‎‏‎‎‏‎"</string>
@@ -325,6 +327,10 @@
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‏‏‏‏‎‏‎‎‎‎‏‏‎‏‏‎‎‎‎‏‎‏‎‏‏‎‏‎‎‎‏‏‏‏‎‎‎‏‏‎‏‏‏‎‎‎‏‏‏‏‎‎‎‏‎‏‎‎‏‎1 kilometer‎‏‎‎‏‎}other{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‏‏‏‏‎‏‎‎‎‎‏‏‎‏‏‎‎‎‎‏‎‏‎‏‏‎‏‎‎‎‏‏‏‏‎‎‎‏‏‎‏‏‏‎‎‎‏‏‏‏‎‎‎‏‎‏‎‎‏‎# kilometers‎‏‎‎‏‎}}"</string>
     <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‎‎‏‎‎‏‏‏‎‏‏‏‏‏‏‎‏‏‎‎‎‏‎‎‏‏‏‎‎‎‎‏‏‏‏‎‎‎‏‎‎‏‎‏‏‏‏‎‎‎‎‎‎‏‎‎‏‎‏‎‎1 calorie‎‏‎‎‏‎}other{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‎‎‏‎‎‏‏‏‎‏‏‏‏‏‏‎‏‏‎‎‎‏‎‎‏‏‏‎‎‎‎‏‏‏‏‎‎‎‏‎‎‏‎‏‏‏‏‎‎‎‎‎‎‏‎‎‏‎‏‎‎# calories‎‏‎‎‏‎}}"</string>
     <string name="calories" msgid="1646804751247540818">"{count,plural, =1{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‏‏‎‏‏‎‏‏‎‏‎‏‎‏‎‎‎‎‎‎‎‏‏‎‎‏‎‎‎‏‏‎‏‎‎‏‎‎‎‏‎‎‏‎‎‎‎‎‎‏‎‎‏‎‏‎‎‏‎‎1 Cal‎‏‎‎‏‎}other{‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‏‏‎‏‏‎‏‏‎‏‎‏‎‏‎‎‎‎‎‎‎‏‏‎‎‏‎‎‎‏‏‎‏‎‎‏‎‎‎‏‎‎‏‎‎‎‎‎‎‏‎‎‏‎‏‎‎‏‎‎# Cal‎‏‎‎‏‎}}"</string>
+    <!-- no translation found for kj (5640715521602128434) -->
+    <skip />
+    <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
     <string name="units_title" msgid="4335002706905375844">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‏‏‎‎‎‎‏‎‏‎‎‏‎‎‎‎‎‏‎‏‏‏‏‏‏‏‏‎‎‏‏‏‏‏‎‏‎‏‏‏‎‎‏‏‏‎‏‎‎‏‎‎‎‏‏‎‎‏‎‎‎Units‎‏‎‎‏‎"</string>
     <string name="set_units_label" msgid="7358440515698876383">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‎‎‏‏‎‎‎‎‏‏‏‏‎‎‏‏‎‏‏‏‎‏‎‏‎‏‎‎‏‏‎‎‎‏‏‏‏‎‎‎‏‎‎‏‎‏‏‎‏‏‏‏‏‏‏‎‏‏‏‏‏‎Set data units‎‏‎‎‏‎"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‎‏‎‏‎‎‏‏‎‎‏‏‎‏‏‎‏‎‏‏‎‏‏‏‏‎‎‏‏‏‏‏‏‎‏‎‎‎‎‎‎‏‎‏‏‎‎‎‎‏‏‎‎‏‏‎‎‎‎‏‏‎Distance‎‏‎‎‏‎"</string>
@@ -377,4 +383,12 @@
     <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‏‎‏‎‎‏‎‏‎‎‎‎‏‏‎‏‏‎‎‏‏‎‎‎‎‏‎‏‎‎‏‎‎‏‎‏‏‎‏‏‏‎‎‏‎‎‏‏‏‏‎‏‎‏‎‏‎‏‏‎‎Exporting Health Connect data‎‏‎‎‏‎"</string>
     <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‏‏‏‏‎‏‏‎‏‎‏‎‎‎‏‏‏‎‏‏‏‏‎‏‏‏‏‎‎‎‏‎‎‏‏‎‎‎‏‎‎‎‎‎‎‎‏‏‏‏‏‎‎‎‎‎‎‎‎‎‎Cancel‎‏‎‎‏‎"</string>
     <string name="export_data_notification_channel_name" msgid="6425005413359319057">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‏‎‎‏‎‎‏‎‏‎‏‎‎‎‏‏‎‏‎‎‎‏‏‎‎‎‎‏‏‏‎‏‏‏‏‏‎‎‏‏‏‏‏‎‎‏‏‏‏‎‎‎‎‎‎‏‎‎‎‏‎Export Data Progress‎‏‎‎‏‎"</string>
+    <string name="search_keywords_home" msgid="9160844866689920918">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‏‏‏‏‏‏‎‎‏‎‎‎‎‏‏‏‎‏‏‎‏‏‏‏‎‏‏‏‏‎‏‎‏‏‏‎‎‏‏‎‎‎‎‎‏‏‎‏‏‎‏‏‏‏‏‎‎‏‎‏‏‎‎fitness, wellness‎‏‎‎‏‎"</string>
+    <string name="search_keywords_permissions" msgid="5833608935281551763">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‎‎‎‎‏‏‏‏‎‏‎‏‎‎‏‎‎‏‎‎‎‏‏‎‏‎‏‏‎‎‏‏‏‎‏‎‎‎‎‎‎‎‎‎‎‏‏‎‏‎‎‏‏‎‎‏‎‎‏‏‎permissions‎‏‎‎‏‎"</string>
+    <string name="search_keywords_data" msgid="3868299259004497681">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‎‏‏‎‏‎‏‏‎‏‎‏‏‏‎‏‏‏‏‎‏‎‏‏‎‏‎‏‏‏‎‎‏‎‏‎‎‎‏‏‏‎‏‏‏‏‎‏‎‏‎‏‏‏‏‎‎‎‏‎‎‎‏‎health connect, health data, health categories, data access, activity, body measurements, cycle tracking, nutrition, sleep, vitals‎‏‎‎‏‎"</string>
+    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‎‏‎‏‎‏‎‏‎‏‎‎‏‎‏‎‎‎‎‏‎‏‎‏‎‎‏‎‏‏‎‏‏‎‏‏‎‏‏‎‏‏‏‏‏‎‏‏‎‎‎‏‏‎‏‏‎‏‎‏‎Health Connect &gt; App permissions‎‏‎‎‏‎"</string>
+    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‎‏‏‎‎‏‎‏‎‏‎‎‎‏‎‏‎‏‏‎‏‎‏‏‎‏‎‎‎‎‎‏‎‎‏‎‎‎‏‎‏‏‎‏‎‎‏‏‏‎‎‏‎‎‏‎‎‏‎‎‎‏‎‎Health Connect &gt; Data and access‎‏‎‎‏‎"</string>
+    <string name="search_connected_apps" msgid="6129467632620352061">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‎‏‎‏‎‎‎‏‎‎‎‎‎‎‏‏‏‏‏‎‎‏‎‏‎‏‏‎‎‎‏‎‏‎‎‎‏‎‎‏‎‏‏‏‎‎‏‏‎‎‏‎‎‎‏‏‏‏‎‏‎Search apps‎‏‎‎‏‎"</string>
+    <string name="no_results" msgid="4935646951230345730">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‎‎‏‎‎‎‏‏‏‏‏‏‎‏‏‏‏‎‎‎‎‏‏‎‎‎‎‎‎‏‎‎‎‎‎‎‎‏‏‎‏‎‎‏‏‎‎‎‏‎‎‏‎‎‎‎‎‎‎‏‎‎No Results‎‏‎‎‏‎"</string>
+    <string name="help" msgid="6096599033945360524">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‎‏‏‏‏‏‎‎‎‏‏‏‏‏‏‏‎‏‎‏‎‎‏‎‎‏‏‎‏‏‎‏‏‏‏‎‎‎‏‎‎‎‎‏‎‏‎‎‏‎‏‏‎‎‎‏‎‎‏‏‎‏‏‎‎‎‏‎‎‎‏‎‎‎‏‏‎‎‎Help‎‏‎‎‏‎"</string>
 </resources>
