@@ -28,19 +28,22 @@ import com.android.healthconnect.controller.shared.AppMetadata
  * Each FilterChip represents a contributing app to the HealthConnect data. A default `All apps`
  * chip is added to the beginning of the list.
  */
-class ChipPreference
+open class ChipPreference
 @JvmOverloads
-constructor(context: Context, private val appMetadataList: List<AppMetadata> = listOf()) :
-    Preference(context) {
+constructor(
+    context: Context,
+    private val appMetadataList: List<AppMetadata> = listOf(),
+    private val addFilterChip: (appMetadata: AppMetadata, chipGroup: RadioGroup) -> Unit,
+    private val addAllAppsFilterChip: (chipGroup: RadioGroup) -> Unit
+) : Preference(context) {
 
     init {
         layoutResource = R.layout.widget_horizontal_chip_preference
         isSelectable = false
+        key = "chip_preference"
     }
 
-    private lateinit var chipGroup: RadioGroup
-
-    private var allAppsButton: FilterChip? = null
+    lateinit var chipGroup: RadioGroup
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
@@ -50,25 +53,10 @@ constructor(context: Context, private val appMetadataList: List<AppMetadata> = l
         // prevents chip duplication as the onBindViewHolder method is called twice
         chipGroup.removeAllViews()
 
-        addAllAppsFilterChip()
+        addAllAppsFilterChip(chipGroup)
 
         for (appMetadata in appMetadataList) {
-            addFilterChip(appMetadata)
+            addFilterChip(appMetadata, chipGroup)
         }
-    }
-
-    private fun addFilterChip(appMetadata: AppMetadata) {
-        val newFilterChip = FilterChip(context)
-        newFilterChip.setUnselectedIcon(appMetadata.icon)
-        newFilterChip.text = appMetadata.appName
-        chipGroup.addView(newFilterChip)
-    }
-
-    private fun addAllAppsFilterChip() {
-        allAppsButton = FilterChip(context)
-        allAppsButton?.id = R.id.select_all_chip
-        allAppsButton?.text = context.resources.getString(R.string.select_all_apps_title)
-        allAppsButton?.isChecked = true
-        chipGroup.addView(allAppsButton)
     }
 }
