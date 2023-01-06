@@ -15,11 +15,15 @@ package com.android.healthconnect.controller.dataentries.units
 
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
+import com.android.healthconnect.controller.dataentries.units.HeightUnit.CENTIMETERS
+import com.android.healthconnect.controller.dataentries.units.HeightUnit.FEET
 
 /** Length conversion utilities. */
 object LengthConverter {
     private const val METERS_PER_MILE = 1609.3444978925634
     private const val METERS_PER_KM = 1000.0
+    private const val CM_PER_METER = 100.0
+    private const val INCHES_PER_METER = 39.3701
 
     /**
      * Converts from meters to the provided distance units (miles or km)
@@ -32,6 +36,20 @@ object LengthConverter {
         return when (unit) {
             MILES -> source / METERS_PER_MILE
             KILOMETERS -> source / METERS_PER_KM
+        }
+    }
+
+    /**
+     * Converts from meters to the provided height units (cm or in)
+     *
+     * @param unit the units type to convert the passed in sourceMeters (m) to
+     * @param sourceMeters the m length to convert to unit length
+     * @return the sourceMeters in toUnit length units
+     */
+    fun convertHeightFromMeters(unit: HeightUnit, sourceMeters: Double) : Double {
+        return when(unit) {
+            CENTIMETERS -> sourceMeters * CM_PER_METER
+            FEET -> sourceMeters * INCHES_PER_METER
         }
     }
 }

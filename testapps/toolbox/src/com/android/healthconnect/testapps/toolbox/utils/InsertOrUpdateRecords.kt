@@ -24,6 +24,7 @@ import android.healthconnect.datatypes.ExerciseEventRecord
 import android.healthconnect.datatypes.ExerciseLapRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeartRateRecord.HeartRateSample
+import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.PowerRecord.PowerRecordSample
 import android.healthconnect.datatypes.Record
@@ -51,13 +52,14 @@ class InsertOrUpdateRecords {
                 StepsRecord::class -> {
                     record =
                         StepsRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mCount"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toLong())
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["mCount"]
+                                ?.getFieldValue()
+                                .toString()
+                                .toLong()
+                        )
                             .build()
                 }
                 DistanceRecord::class -> {
@@ -76,103 +78,130 @@ class InsertOrUpdateRecords {
                 ActiveCaloriesBurnedRecord::class -> {
                     record =
                         ActiveCaloriesBurnedRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                Energy.fromJoules(
-                                    mFieldNameToFieldInput["mEnergy"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            Energy.fromJoules(
+                                mFieldNameToFieldInput["mEnergy"]
+                                    ?.getFieldValue()
+                                    .toString()
+                                    .toDouble()
+                            )
+                        )
                             .build()
                 }
                 ElevationGainedRecord::class -> {
                     record =
                         ElevationGainedRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                Length.fromMeters(
-                                    mFieldNameToFieldInput["mElevation"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            Length.fromMeters(
+                                mFieldNameToFieldInput["mElevation"]
+                                    ?.getFieldValue()
+                                    .toString()
+                                    .toDouble()
+                            )
+                        )
                             .build()
                 }
                 ExerciseLapRecord::class -> {
                     record =
                         ExerciseLapRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant)
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant
+                        )
                             .setLength(
                                 Length.fromMeters(
                                     mFieldNameToFieldInput["mLength"]
                                         ?.getFieldValue()
                                         .toString()
-                                        .toDouble()))
+                                        .toDouble()
+                                )
+                            )
                             .build()
                 }
                 ExerciseEventRecord::class -> {
                     record =
                         ExerciseEventRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mEventType"]?.getFieldValue() as Int)
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["mEventType"]?.getFieldValue() as Int
+                        )
                             .build()
                 }
                 BasalMetabolicRateRecord::class -> {
                     record =
                         BasalMetabolicRateRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                Power.fromWatts(
-                                    mFieldNameToFieldInput["mBasalMetabolicRate"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                            getMetaData(context),
+                            mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
+                            Power.fromWatts(
+                                mFieldNameToFieldInput["mBasalMetabolicRate"]
+                                    ?.getFieldValue()
+                                    .toString()
+                                    .toDouble()
+                            )
+                        )
                             .build()
                 }
                 SpeedRecord::class -> {
                     record =
                         SpeedRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mSpeedRecordSamples"]?.getFieldValue()
-                                    as List<SpeedRecordSample>)
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["mSpeedRecordSamples"]?.getFieldValue()
+                                    as List<SpeedRecordSample>
+                        )
                             .build()
                 }
                 HeartRateRecord::class -> {
                     record =
                         HeartRateRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mHeartRateSamples"]?.getFieldValue()
-                                    as List<HeartRateSample>)
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["mHeartRateSamples"]?.getFieldValue()
+                                    as List<HeartRateSample>
+                        )
                             .build()
                 }
                 PowerRecord::class -> {
                     record =
                         PowerRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mPowerRecordSamples"]?.getFieldValue()
-                                    as List<PowerRecordSample>)
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["mPowerRecordSamples"]?.getFieldValue()
+                                    as List<PowerRecordSample>
+                        )
                             .build()
                 }
                 CyclingPedalingCadenceRecord::class -> {
                     record =
                         CyclingPedalingCadenceRecord.Builder(
-                                getMetaData(context),
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mCyclingPedalingCadenceRecordSamples"]
-                                    ?.getFieldValue() as List<CyclingPedalingCadenceRecordSample>)
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                            mFieldNameToFieldInput["mCyclingPedalingCadenceRecordSamples"]
+                                ?.getFieldValue() as List<CyclingPedalingCadenceRecordSample>
+                        )
                             .build()
+                }
+                HeightRecord::class -> {
+                    record =
+                        HeightRecord.Builder(
+                            getMetaData(context),
+                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
+                            Length.fromMeters(
+                                mFieldNameToFieldInput["mLength"]
+                                    ?.getFieldValue()
+                                    .toString()
+                                    .toDouble()
+                            )
+                        ).build()
                 }
                 else -> {
                     throw NotImplementedError("Record type not implemented")
