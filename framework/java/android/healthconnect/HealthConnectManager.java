@@ -55,6 +55,7 @@ import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
+import android.healthconnect.aidl.IMigrationExceptionCallback;
 import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.InsertRecordsResponseParcel;
@@ -68,6 +69,8 @@ import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
+import android.healthconnect.migration.MigrationDataEntity;
+import android.healthconnect.migration.MigrationException;
 import android.os.Binder;
 import android.os.OutcomeReceiver;
 import android.os.RemoteException;
@@ -1265,6 +1268,74 @@ public class HealthConnectManager {
 
         } catch (RemoteException exception) {
             exception.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Marks the start of the migration.
+     *
+     * @throws IllegalStateException if either {@link #startMigration()} or {@link
+     *     #finishMigration()} has been called.
+     * @hide
+     */
+    // TODO(b/262514203): Add migration permission checks
+    public void startMigration() {
+        try {
+            mService.startMigration();
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Marks the end of the migration.
+     *
+     * @throws IllegalStateException if either {@link #startMigration()} has not been called or
+     *     {@link #finishMigration()} has been called.
+     * @hide
+     */
+    // TODO(b/262514203): Add migration permission checks
+    public void finishMigration() {
+        try {
+            mService.finishMigration();
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Writes data to the module database.
+     *
+     * @param entities List of {@link android.healthconnect.migration.MigrationDataEntity} to
+     *     migrate.
+     * @param callback Callback to receive any error encountered while performing this operation.
+     * @throws IllegalStateException if either {@link #startMigration()} not been called or {@link
+     *     #finishMigration()} has been called.
+     * @hide
+     */
+    // TODO(b/262514203): Add migration permission checks
+    public void writeMigrationData(
+            @NonNull List<MigrationDataEntity> entities,
+            @NonNull
+                    OutcomeReceiver<Void, android.healthconnect.migration.MigrationException>
+                            callback) {
+
+        Objects.requireNonNull(entities);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.writeMigrationData(
+                    entities,
+                    new IMigrationExceptionCallback.Stub() {
+                        @Override
+                        public void onError(MigrationException exception) {
+                            Binder.clearCallingIdentity();
+                            callback.onError(exception);
+                        }
+                    });
+
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
         }
     }
 

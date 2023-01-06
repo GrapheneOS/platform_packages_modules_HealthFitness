@@ -12,6 +12,7 @@ import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.RecordsParcel;
+import android.healthconnect.aidl.IMigrationExceptionCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -21,6 +22,7 @@ import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.healthconnect.migration.MigrationDataEntity;
 
 import android.os.UserHandle;
 
@@ -178,4 +180,24 @@ interface IHealthConnectService {
     void getActivityDates(
         in ActivityDatesRequestParcel recordTypes,
         in IActivityDatesResponseCallback callback);
+
+    /**
+     * Marks the start of the migration.
+     */
+    void startMigration();
+
+    /**
+     * Marks the end of the migration.
+     */
+    void finishMigration();
+
+    /**
+     * Writes given entities to the module database.
+     *
+     * @param entities List of {@link MigrationDataEntity} to migrate.
+     * @param callback Callback to receive any error encountered while performing this operation.
+     */
+    void writeMigrationData(
+        in List<MigrationDataEntity> entities,
+        in IMigrationExceptionCallback callback);
 }
