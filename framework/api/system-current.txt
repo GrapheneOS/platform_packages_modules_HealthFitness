@@ -155,6 +155,7 @@ package android.healthconnect.datatypes {
     field public static final int RECORD_TYPE_RESPIRATORY_RATE = 37; // 0x25
     field public static final int RECORD_TYPE_RESTING_HEART_RATE = 39; // 0x27
     field public static final int RECORD_TYPE_SEXUAL_ACTIVITY = 34; // 0x22
+    field public static final int RECORD_TYPE_SLEEP_SESSION = 41; // 0x29
     field public static final int RECORD_TYPE_SPEED = 20; // 0x14
     field public static final int RECORD_TYPE_STEPS = 1; // 0x1
     field public static final int RECORD_TYPE_STEPS_CADENCE = 21; // 0x15
