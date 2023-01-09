@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.permissiontypes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
@@ -35,6 +36,9 @@ import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment
+import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment.Companion.PRIORITY_UPDATED_EVENT
+import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,6 +49,7 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
     companion object {
         private const val PERMISSION_TYPES = "permission_types"
         const val PERMISSION_TYPE_KEY = "permission_type_key"
+        private const val APP_PRIORITY_BUTTON = "app_priority"
         private const val DELETE_CATEGORY_DATA_BUTTON = "delete_category_data"
     }
 
@@ -54,6 +59,10 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
 
     private val mPermissionTypes: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(PERMISSION_TYPES)
+    }
+
+    private val mAppPriorityButton: Preference? by lazy {
+        preferenceScreen.findPreference(APP_PRIORITY_BUTTON)
     }
 
     private val mDeleteCategoryData: Preference? by lazy {
@@ -113,11 +122,46 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
         viewModel.loadData(category)
         viewModel.permissionTypesData.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is HealthPermissionTypesViewModel.PermissionTypesFragmentState.Loading -> {}
-                is HealthPermissionTypesViewModel.PermissionTypesFragmentState.WithData -> {
+                is HealthPermissionTypesViewModel.PermissionTypesState.Loading -> {}
+                is HealthPermissionTypesViewModel.PermissionTypesState.WithData -> {
                     updatePermissionTypesList(state.permissionTypes)
                 }
             }
+        }
+
+        childFragmentManager.setFragmentResultListener(PRIORITY_UPDATED_EVENT, this) { _, bundle ->
+            Log.e("SUCCESSFUL_UPDATE", "event sent")
+            bundle.getStringArrayList(PRIORITY_UPDATED_EVENT)?.let {
+                viewModel.updatePriorityList(category, it)
+            }
+        }
+
+        viewModel.priorityList.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is HealthPermissionTypesViewModel.PriorityListState.Loading -> {
+                    mAppPriorityButton?.isVisible = false
+                }
+                is HealthPermissionTypesViewModel.PriorityListState.LoadingFailed -> {
+                    mAppPriorityButton?.isVisible = false
+                }
+                is HealthPermissionTypesViewModel.PriorityListState.WithData -> {
+                    updatePriorityButton(state.priorityList)
+                }
+            }
+        }
+    }
+
+    private fun updatePriorityButton(priorityList: List<AppMetadata>) {
+        if (priorityList.size < 2) {
+            mAppPriorityButton?.isVisible = false
+            return
+        }
+        mAppPriorityButton?.isVisible = true
+        mAppPriorityButton?.summary = priorityList.first().appName
+        mAppPriorityButton?.setOnPreferenceClickListener {
+            PriorityListDialogFragment(priorityList, getString(category.lowercaseTitle))
+                .show(childFragmentManager, PriorityListDialogFragment.TAG)
+            true
         }
     }
 

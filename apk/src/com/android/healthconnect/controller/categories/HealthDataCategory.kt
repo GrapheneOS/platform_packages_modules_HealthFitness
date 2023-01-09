@@ -98,6 +98,17 @@ fun fromHealthPermissionType(type: HealthPermissionType): HealthDataCategory {
     throw IllegalArgumentException("No Category for permission type $type")
 }
 
+fun toSdkHealthDataCategory(dataCategory: HealthDataCategory): Int {
+    return when (dataCategory) {
+        HealthDataCategory.ACTIVITY -> sdkHealthDataCategory.ACTIVITY
+        HealthDataCategory.BODY_MEASUREMENTS -> sdkHealthDataCategory.BODY_MEASUREMENTS
+        HealthDataCategory.CYCLE_TRACKING -> sdkHealthDataCategory.CYCLE_TRACKING
+        HealthDataCategory.NUTRITION -> sdkHealthDataCategory.NUTRITION
+        HealthDataCategory.SLEEP -> sdkHealthDataCategory.SLEEP
+        HealthDataCategory.VITALS -> sdkHealthDataCategory.VITALS
+    }
+}
+
 /** Represents Category group for HealthConnect data in All Categories screen. */
 data class AllCategoriesScreenHealthDataCategory(
     val category: HealthDataCategory,

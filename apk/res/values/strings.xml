@@ -618,16 +618,14 @@
   <string name="deletion_started_done_button" description="Button that closes the dialog. [CHAR_LIMIT=40]">Done</string>
   <!--endregion -->
 
-  <!--  region Export Data -->
-  <string name="export_data_title" description="Window title where user can choose the types of data to export from the app. [CHAR_LIMIT=50]">Export Health&#160;Connect data</string>
-  <string name="export_data_select_all" description="Text associated with a text box allowing users to select all possible categories of data to export. [CHAR_LIMIT=50]">Select all</string>
-  <string name="export_data_deselect_all" description="Text associated with a text box allowing users to deselect all possible categories of data to export. [CHAR_LIMIT=50]">Deselect all</string>
-  <string name="export_data_next_button" description="Text for the button that allows the user to proceed to the next stage of the export data flow. [CHAR_LIMIT=50]">Next</string>
-  <!--  TODO(239165549): Finalize these notification strings. -->
-  <string name="export_data_notification_title" description="The title text of the notification that is shown while data for export is being generated. [CHAR_LIMIT=50]">Fetching data for export</string>
-  <string name="export_data_notification_ticker_text" description="The ticker text of the notification that is shown while data for export is being generated, which is read out by screen readers. [CHAR_LIMIT=50]">Exporting Health&#160;Connect data</string>
-  <string name="export_data_notification_cancel_button" description="The cancel button on the notification that is shown while data for export is being generated. [CHAR_LIMIT=50]">Cancel</string>
-  <string name="export_data_notification_channel_name" description="The channel name for the notification that is shown while data for export is being generated, which is visible to users in system settings. [CHAR_LIMIT=50]">Export Data Progress</string>
+  <!--  region Priority -->
+  <string name="priority_dialog_title" description="Window title where user can set the priority order of apps. [CHAR_LIMIT=50]">Set app priority</string>
+  <string name="priority_dialog_message" description="Description of the dar-and-drop list of apps that is modifiable by the user. [CHAR_LIMIT=NONE]">If more than one app adds <xliff:g id="data_type" example="heart rate">%s</xliff:g> data, Health&#160;Connect prioritizes the app highest in this list. Drag apps to reorder them.</string>
+  <string name="priority_dialog_positive_button" description="Label of the button that saves modifications made by the user. [CHAR_LIMIT=50]">Save</string>
+  <string name="action_drag_label_move_up" description="Label for an accessibility action that moves an app up in the ordered app priority list [CHAR LIMIT=50]">Move up</string>
+  <string name="action_drag_label_move_down" description="Label for an accessibility action that moves an app down in the ordered app priority list [CHAR LIMIT=50]">Move down</string>
+  <string name="action_drag_label_move_top" description="Label for an accessibility action that moves an app to the top of the ordered app priority list [CHAR LIMIT=50]">Move to top</string>
+  <string name="action_drag_label_move_bottom" description="Label for an accessibility action that moves an app to the bottom of the ordered app priority list [CHAR LIMIT=50]">Move to bottom</string>
   <!--  endregion-->
 
   <!--  region Search Indexable-->
