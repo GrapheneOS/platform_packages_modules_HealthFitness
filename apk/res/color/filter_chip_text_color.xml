@@ -13,12 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
-    <color name="onboarding_title_color">#1F1F1F</color>
-    <color name="onboarding_description_color">#3C4043</color>
-    <color name="onboarding_item_view_description_color">#444746</color>
-    <color name="get_started_button_background_color">?android:attr/colorAccent</color>
-    <color name="filter_chip_outline_color">?android:attr/textColorPrimary</color>
-    <color name="filter_chip_selected_text_color">@color/filter_chip_text_color</color>
-    <color name="filter_chip_selected_icon_color">?android:attr/textColorPrimary</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:color="?android:attr/textColorPrimary" />
+
+</selector>

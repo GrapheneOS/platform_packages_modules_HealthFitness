@@ -36,6 +36,7 @@ class HomeFragment : Hilt_HomeFragment() {
         private const val DATA_AND_ACCESS_PREFERENCE_KEY = "data_and_access"
         private const val RECENT_ACCESS_PREFERENCE_KEY = "recent_access"
         private const val CONNECTED_APPS_PREFERENCE_KEY = "connected_apps"
+
         @JvmStatic fun newInstance() = HomeFragment()
     }
 

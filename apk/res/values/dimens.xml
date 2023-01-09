@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +14,7 @@
   limitations under the License.
 -->
 <resources>
+    <dimen name="spacing_xsmall">6dp</dimen>
     <dimen name="spacing_small">8dp</dimen>
     <dimen name="spacing_data_entries">12dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
@@ -26,15 +26,17 @@
     <dimen name="button_size">48dp</dimen>
 
     <dimen name="icon_size">24dp</dimen>
+    <dimen name="chip_icon_size">18dp</dimen>
     <dimen name="app_icon_size">32dp</dimen>
     <dimen name="app_header_icon_size">48dp</dimen>
     <dimen name="category_icon_size">24dp</dimen>
     <dimen name="category_header_icon_size">48dp</dimen>
-    <dimen name="small_icon_size">20dp</dimen>
 
     <dimen name="banner_corner_radius">28dp</dimen>
     <dimen name="banner_alpha" type="float">0.05</dimen>
     <dimen name="banner_alpha_selected" type="float">0.14</dimen>
+
+    <dimen name="filter_corner_radius">8dp</dimen>
 
     <dimen name="timeline_divider_height">26dp</dimen>
 

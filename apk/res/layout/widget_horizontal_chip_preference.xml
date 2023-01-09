@@ -13,12 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
-    <color name="onboarding_title_color">#1F1F1F</color>
-    <color name="onboarding_description_color">#3C4043</color>
-    <color name="onboarding_item_view_description_color">#444746</color>
-    <color name="get_started_button_background_color">?android:attr/colorAccent</color>
-    <color name="filter_chip_outline_color">?android:attr/textColorPrimary</color>
-    <color name="filter_chip_selected_text_color">@color/filter_chip_text_color</color>
-    <color name="filter_chip_selected_icon_color">?android:attr/textColorPrimary</color>
-</resources>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/spacing_large"
+    android:paddingTop="@dimen/spacing_normal"
+    android:clipToPadding="false"
+    android:scrollbars="none">
+
+    <RadioGroup
+        android:id="@+id/chip_group"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal" />
+
+</HorizontalScrollView>

@@ -63,11 +63,13 @@
   <string name="no_categories" description="Label that shows when health connect does not have data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">You don\'t have any data in Health&#160;Connect</string>
   <!--endregion-->
 
-  <!-- region Permission types  -->
-  <string name="permission_types_title" description="Title of screen for a user to manage their health and fitness data [CHAR_LIMIT=40]">Your data</string>
-  <string name="app_priority_button" description="Label for a button that opens the app priority settings screen where users can set which app should have higher priority. [CHAR_LIMIT=50]">App priority</string>
-  <string name="delete_category_data_button" description="Label for a button that allows deleting all data points from a given health data category. [CHAR_LIMIT=50]">Delete <xliff:g id="category" example="activity">%s</xliff:g> data</string>
-  <!--endregion-->
+    <!-- region Permission types  -->
+    <string name="permission_types_title" description="Title of screen for a user to manage their health and fitness data [CHAR_LIMIT=40]">Your data</string>
+    <string name="app_priority_button" description="Label for a button that opens the app priority settings screen where users can set which app should have higher priority. [CHAR_LIMIT=50]">App priority</string>
+    <string name="delete_category_data_button" description="Label for a button that allows deleting all data points from a given health data category. [CHAR_LIMIT=50]">Delete <xliff:g id="category" example="activity">%s</xliff:g> data</string>
+    <string name="select_all_apps_title" description="Title shown for clearing filters. [CHAR_LIMIT=40]">All apps</string>
+
+    <!--endregion-->
 
   <!-- region Data access  -->
   <string name="can_read" description="Section title that refers to apps with read permission for given permission type. [CHAR_LIMIT=50]">Can read <xliff:g id="permission_type" example="heart rate">%s</xliff:g></string>
