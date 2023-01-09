@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -18,11 +20,14 @@ import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeRangeFilter
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.DistanceRecord
+import android.healthconnect.datatypes.ElevationGainedRecord
+import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
+import android.healthconnect.datatypes.WheelchairPushesRecord
 import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.deletion.DeletionType
@@ -79,7 +84,6 @@ class DeleteCategoryUseCaseTest {
         assertThat(filtersCaptor.value.timeRangeFilter.startTime).isEqualTo(startTime)
         assertThat(filtersCaptor.value.timeRangeFilter.endTime).isEqualTo(endTime)
         assertThat(filtersCaptor.value.dataOrigins).isEmpty()
-        // TODO update when more records available
         assertThat(filtersCaptor.value.recordTypes)
             .containsExactly(
                 TotalCaloriesBurnedRecord::class.java,
@@ -88,7 +92,10 @@ class DeleteCategoryUseCaseTest {
                 StepsRecord::class.java,
                 StepsCadenceRecord::class.java,
                 SpeedRecord::class.java,
-                PowerRecord::class.java)
+                PowerRecord::class.java,
+                WheelchairPushesRecord::class.java,
+                FloorsClimbedRecord::class.java,
+                ElevationGainedRecord::class.java)
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

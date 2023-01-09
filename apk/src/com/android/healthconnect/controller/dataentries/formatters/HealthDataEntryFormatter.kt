@@ -21,15 +21,21 @@ import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
 import android.healthconnect.datatypes.DistanceRecord
+import android.healthconnect.datatypes.ElevationGainedRecord
+import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
+import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
+import android.healthconnect.datatypes.RespiratoryRateRecord
+import android.healthconnect.datatypes.RestingHeartRateRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
+import android.healthconnect.datatypes.WheelchairPushesRecord
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.shared.AppInfoReader
 import javax.inject.Inject
@@ -53,7 +59,13 @@ constructor(
     private val bodyFatFormatter: BodyFatFormatter,
     private val oxygenSaturationFormatter: OxygenSaturationFormatter,
     private val basalBodyTemperatureFormatter: BasalBodyTemperatureFormatter,
-    private val bodyTemperatureFormatter: BodyTemperatureFormatter
+    private val bodyTemperatureFormatter: BodyTemperatureFormatter,
+    private val wheelchairPushesFormatter: WheelchairPushesFormatter,
+    private val restingHeartRateFormatter: RestingHeartRateFormatter,
+    private val respiratoryRateFormatter: RespiratoryRateFormatter,
+    private val hydrationFormatter: HydrationFormatter,
+    private val floorsFormatter: FloorsFormatter,
+    private val elevationGainedFormatter: ElevationGainedFormatter,
 ) {
 
     suspend fun format(record: Record): FormattedDataEntry {
@@ -73,6 +85,12 @@ constructor(
             is OxygenSaturationRecord -> oxygenSaturationFormatter.format(record, appName)
             is BodyTemperatureRecord -> bodyTemperatureFormatter.format(record, appName)
             is BasalBodyTemperatureRecord -> basalBodyTemperatureFormatter.format(record, appName)
+            is WheelchairPushesRecord -> wheelchairPushesFormatter.format(record, appName)
+            is RestingHeartRateRecord -> restingHeartRateFormatter.format(record, appName)
+            is RespiratoryRateRecord -> respiratoryRateFormatter.format(record, appName)
+            is HydrationRecord -> hydrationFormatter.format(record, appName)
+            is FloorsClimbedRecord -> floorsFormatter.format(record, appName)
+            is ElevationGainedRecord -> elevationGainedFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }
