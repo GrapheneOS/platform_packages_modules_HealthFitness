@@ -460,6 +460,26 @@
   <string name="date_range" translatable="false"><xliff:g example="Oct 30, 2021" id="start_time">%1$s</xliff:g> - <xliff:g example="Nov 11, 2021" id="end_time">%2$s</xliff:g> </string>
   <string name="date_range_long" description="Content description for date interval. [CHAR_LIMIT=NONE]"> from <xliff:g example="October 30, 2021" id="start_time">%1$s</xliff:g> to <xliff:g example="November 11, 2021" id="end_time">%2$s</xliff:g></string>
 
+  <!-- region Temperature units -->
+  <string name="temperature_celsius" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 ℃} other {# ℃}}</string>
+  <string name="temperature_celsius_long" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 degree Celsius} other {# degrees Celsius}}</string>
+  <string name="temperature_kelvin" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 K} other {# K}}</string>
+  <string name="temperature_kelvin_long" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 kelvin} other {# kelvins}}</string>
+  <string name="temperature_fahrenheit" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 ℉} other {# ℉}}</string>
+  <string name="temperature_fahrenheit_long" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 degree Fahrenheit} other {# degrees Fahrenheit}}</string>
+
+  <string name="temperature_location_armpit" description="Where the body temperature measurement was taken - armpit. [CHAR LIMIT=50]">Armpit</string>
+  <string name="temperature_location_finger" description="Where the body temperature measurement was taken - finger. [CHAR LIMIT=50]">Finger</string>
+  <string name="temperature_location_forehead" description="Where the body temperature measurement was taken - forehead. [CHAR LIMIT=50]">Forehead</string>
+  <string name="temperature_location_mouth" description="Where the body temperature measurement was taken - mouth. [CHAR LIMIT=50]">Mouth</string>
+  <string name="temperature_location_rectum" description="Where the body temperature measurement was taken - rectum. [CHAR LIMIT=50]">Rectum</string>
+  <string name="temperature_location_temporal_artery" description="Where the body temperature measurement was taken - temporal artery. [CHAR LIMIT=50]">Temporal artery</string>
+  <string name="temperature_location_toe" description="Where the body temperature measurement was taken - toe. [CHAR LIMIT=50]">Toe</string>
+  <string name="temperature_location_ear" description="Where the body temperature measurement was taken - ear. [CHAR LIMIT=50]">Ear</string>
+  <string name="temperature_location_wrist" description="Where the body temperature measurement was taken - wrist. [CHAR LIMIT=50]">Wrist</string>
+  <string name="temperature_location_vagina" description="Where the body temperature measurement was taken - vagina. [CHAR LIMIT=50]">Vagina</string>
+  <!--endregion-->
+
   <string translation_description="miles formatted. [ICU SYNTAX][CHAR LIMIT=60]"
       name="distance_miles">{dist, plural, =1 {1 mile} other {# miles}}</string>
   <string translation_description="Kilometers formatted. [ICU SYNTAX][CHAR LIMIT=60]"
@@ -488,7 +508,7 @@
       name="feet_inches_format_long"><xliff:g id="ft" example="5 feet">%1$s</xliff:g> <xliff:g id="in" example="11 inches">%2$s</xliff:g></string>
   <!--endregion-->
 
-  <!-- Energy -->
+  <!-- region Energy -->
   <string translation_description="Calories formatted. [ICU SYNTAX][CHAR LIMIT=60]"
       name="calories_long">{count, plural, =1 {1 calorie} other {# calories}}</string>
   <string translation_description="Calories formatted. [ICU SYNTAX][CHAR LIMIT=60]"
