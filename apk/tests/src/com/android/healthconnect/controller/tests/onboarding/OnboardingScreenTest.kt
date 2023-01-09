@@ -18,15 +18,19 @@ package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.ComponentName
 import android.content.Intent
+import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -94,9 +98,18 @@ class OnboardingScreenTest {
 
     @Test
     fun onboardingScreen_goBackButton_isClickable() {
+        val startOnboardingActivityIntent =
+            Intent.makeMainActivity(
+                    ComponentName(
+                        InstrumentationRegistry.getInstrumentation().getContext(),
+                        MainActivity::class.java))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        val scenario = launchActivityForResult<MainActivity>(startOnboardingActivityIntent)
         startOnboardingActivity()
 
         Espresso.onView(ViewMatchers.withId(R.id.go_back_button)).perform(ViewActions.click())
+        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 
     @Test
