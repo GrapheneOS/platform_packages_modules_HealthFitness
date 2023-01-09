@@ -35,6 +35,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.healthconnect.Constants;
@@ -222,7 +223,9 @@ public class AppInfoHelper {
                 String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
                 String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
                 byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
-                appInfoMap.put(packageName, new AppInfoInternal(rowId, packageName, appName, icon));
+                Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
+                appInfoMap.put(
+                        packageName, new AppInfoInternal(rowId, packageName, appName, bitmap));
                 idPackageNameMap.put(rowId, packageName);
             }
         }
@@ -255,13 +258,7 @@ public class AppInfoHelper {
             String appName = packageManager.getApplicationLabel(info).toString();
             Drawable icon = packageManager.getApplicationIcon(info);
             Bitmap bitmap = getBitmapFromDrawable(icon);
-            try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESS_FACTOR, stream);
-                byte[] bitmapData = stream.toByteArray();
-                return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmapData);
-            } catch (IOException exception) {
-                throw new IllegalArgumentException(exception);
-            }
+            return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap);
         } catch (NameNotFoundException exception) {
             throw new IllegalArgumentException(
                     "Could not find package info for package", exception);
@@ -286,8 +283,18 @@ public class AppInfoHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
         contentValues.put(APPLICATION_COLUMN_NAME, appInfo.getName());
-        contentValues.put(APP_ICON_COLUMN_NAME, appInfo.getIcon());
+        contentValues.put(APP_ICON_COLUMN_NAME, getBytesFromBitmap(appInfo.getIcon()));
         return contentValues;
+    }
+
+    private byte[] getBytesFromBitmap(Bitmap bitmap) {
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
+            byte[] bitmapData = stream.toByteArray();
+            return bitmapData;
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(exception);
+        }
     }
 
     /**

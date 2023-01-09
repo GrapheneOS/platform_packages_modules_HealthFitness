@@ -17,6 +17,7 @@ package android.healthconnect.internal.datatypes;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.graphics.Bitmap;
 import android.healthconnect.datatypes.AppInfo;
 
 /**
@@ -27,13 +28,13 @@ public final class AppInfoInternal {
     private long mId;
     private final String mPackageName;
     private final String mName;
-    private final byte[] mIcon;
+    private final Bitmap mIcon;
 
     public AppInfoInternal(
             @NonNull long id,
             @NonNull String packageName,
             @Nullable String name,
-            @Nullable byte[] icon) {
+            @Nullable Bitmap icon) {
         mId = id;
         mPackageName = packageName;
         mName = name;
@@ -63,7 +64,7 @@ public final class AppInfoInternal {
     }
 
     @Nullable
-    public byte[] getIcon() {
+    public Bitmap getIcon() {
         return mIcon;
     }
 
