@@ -44,16 +44,22 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.safeEq
+import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.settingslib.widget.MainSwitchPreference
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Matchers.*
+import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 @HiltAndroidTest
@@ -65,10 +71,16 @@ class ConnectedAppFragmentTest {
 
     @Before
     fun setup() {
-        hiltRule.inject()
         val context = InstrumentationRegistry.getInstrumentation().context
+        context.setLocale(Locale.US)
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+        hiltRule.inject()
+
         `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
-        `when`(viewModel.atLeastOnePermissionGranted).then { MutableLiveData(false) }
+        `when`(viewModel.atLeastOnePermissionGranted).then { MutableLiveData(true) }
+        val accessDate = Instant.parse("2022-10-20T18:40:13.00Z")
+        `when`(viewModel.loadAccessDate(Mockito.anyString())).thenReturn(accessDate)
+
         `when`(viewModel.appInfo).then {
             MutableLiveData(
                 AppMetadata(
@@ -332,7 +344,9 @@ class ConnectedAppFragmentTest {
         // TODO (b/261395536) update with the time the first permission was granted
         onView(
                 withText(
-                    "To manage other Android permissions this app can " +
+                    "$TEST_APP_NAME can access data added after October 20, 2022" +
+                        "\n\n" +
+                        "To manage other Android permissions this app can " +
                         "access, go to Settings > Apps" +
                         "\n\n" +
                         "Data you share with $TEST_APP_NAME is covered by their privacy policy"))
