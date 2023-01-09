@@ -14,7 +14,6 @@
   limitations under the License.
 -->
 <resources>
-
     <style name="Base.Theme.HealthConnect" parent="@style/Theme.SubSettingsBase">
         <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
         <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
@@ -25,6 +24,7 @@
         <item name="failureIcon">@drawable/quantum_ic_cancel_vd_theme_24</item>
         <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
         <item name="disconnectAllIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
+        <item name="disconnectIcon">@drawable/quantum_gm_ic_link_off_vd_theme_24</item>
         <item name="dialogGravity">@integer/dialog_gravity</item>
         <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
         <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>

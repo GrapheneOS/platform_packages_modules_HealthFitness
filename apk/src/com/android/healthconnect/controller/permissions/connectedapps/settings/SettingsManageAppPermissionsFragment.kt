@@ -23,8 +23,11 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.categories.fromHealthPermissionType
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
+import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.utils.setTitle
@@ -47,6 +50,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     }
 
     private lateinit var packageName: String
+    private lateinit var appName: String
     private val viewModel: AppPermissionViewModel by viewModels()
 
     private val allowAllPreference: MainSwitchPreference? by lazy {
@@ -80,30 +84,61 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
             requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
+        if (requireArguments().containsKey(EXTRA_APP_NAME) &&
+            requireArguments().getString(EXTRA_APP_NAME) != null) {
+            appName = requireArguments().getString(EXTRA_APP_NAME)!!
+        }
 
         viewModel.loadAppInfo(packageName)
         viewModel.loadForPackage(packageName)
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
         }
-        allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
-            if (preference.isPressed) {
-                if (grantAll) {
-                    viewModel.grantAllPermissions(packageName)
-                } else {
-                    viewModel.revokeAllPermissions(packageName)
-                }
-            }
-        }
-        viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
-            allowAllPreference?.isChecked = isAllGranted
-        }
+        setupAllowAllPreference()
+        setupHeader()
+    }
+
+    private fun setupHeader() {
         viewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
             header?.apply {
                 setIcon(appMetadata.icon)
                 setTitle(appMetadata.appName)
             }
         }
+    }
+
+    private fun setupAllowAllPreference() {
+        allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
+            if (preference.isPressed) {
+                if (grantAll) {
+                    viewModel.grantAllPermissions(packageName)
+                } else {
+                    showRevokeAllPermissions()
+                }
+            }
+        }
+        viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
+            allowAllPreference?.isChecked = isAllGranted
+        }
+    }
+
+    private fun showRevokeAllPermissions() {
+        childFragmentManager.setFragmentResultListener(
+            DisconnectDialogFragment.DISCONNECT_CANCELED_EVENT, this) { _, _ ->
+                allowAllPreference?.isChecked = true
+            }
+
+        childFragmentManager.setFragmentResultListener(
+            DisconnectDialogFragment.DISCONNECT_ALL_EVENT, this) { _, bundle ->
+                viewModel.revokeAllPermissions(packageName)
+                if (bundle.containsKey(DisconnectDialogFragment.KEY_DELETE_DATA) &&
+                    bundle.getBoolean(DisconnectDialogFragment.KEY_DELETE_DATA)) {
+                    viewModel.deleteAppData(packageName, appName)
+                }
+            }
+
+        DisconnectDialogFragment(appName = appName, enableDeleteData = false)
+            .show(childFragmentManager, DisconnectDialogFragment.TAG)
     }
 
     private fun updatePermissions(permissions: List<HealthPermissionStatus>) {
@@ -121,6 +156,8 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
 
             category?.addPreference(
                 SwitchPreference(requireContext()).also {
+                    val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
+                    it.setIcon(healthCategory.icon)
                     it.setTitle(
                         HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
                             .uppercaseLabel)

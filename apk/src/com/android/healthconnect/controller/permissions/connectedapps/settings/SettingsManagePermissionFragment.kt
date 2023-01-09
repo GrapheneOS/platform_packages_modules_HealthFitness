@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -28,6 +30,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -112,7 +115,9 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                 findNavController()
                     .navigate(
                         R.id.action_settingsManagePermission_to_settingsManageAppPermissions,
-                        bundleOf(EXTRA_PACKAGE_NAME to app.appMetadata.packageName))
+                        bundleOf(
+                            EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
+                            EXTRA_APP_NAME to app.appMetadata.appName))
                 true
             }
         }

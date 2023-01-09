@@ -8,11 +8,13 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.categories.fromHealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.requestpermissions.RequestPermissionHeaderPreference
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.children
 import com.android.settingslib.widget.MainSwitchPreference
 import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,11 +52,11 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
 
     private val onSwitchChangeListener: OnMainSwitchChangeListener =
         OnMainSwitchChangeListener { _, grant ->
-            (0..(mReadPermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
-                (mReadPermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            mReadPermissionCategory?.children?.forEach { preference ->
+                (preference as SwitchPreference).isChecked = grant
             }
-            (0..(mWritePermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
-                (mWritePermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            mWritePermissionCategory?.children?.forEach { preference ->
+                (preference as SwitchPreference).isChecked = grant
             }
             viewModel.updatePermissions(grant)
         }
@@ -114,6 +116,8 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         permission: HealthPermission
     ): Preference {
         return SwitchPreference(requireContext()).also {
+            val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
+            it.setIcon(healthCategory.icon)
             it.setDefaultValue(defaultValue)
             it.setTitle(
                 HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)

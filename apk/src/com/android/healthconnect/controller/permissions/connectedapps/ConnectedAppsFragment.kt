@@ -42,6 +42,7 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
+import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
@@ -205,7 +206,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         findNavController()
             .navigate(
                 R.id.action_connectedApps_to_connectedApp,
-                bundleOf(EXTRA_PACKAGE_NAME to app.appMetadata.packageName))
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
+                    EXTRA_APP_NAME to app.appMetadata.appName))
     }
 
     private fun getNoAppsPreference(@StringRes res: Int): Preference {
