@@ -55,17 +55,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         private const val DELETE_APP_DATA_PREFERENCE = "delete_app_data"
         private const val FOOTER_KEY = "connected_app_footer"
         private const val PARAGRAPH_SEPARATOR = "\n\n"
-
-        @JvmStatic
-        fun newInstance(packageName: String, appName: String) =
-            ConnectedAppFragment().apply {
-                mPackageName = packageName
-                mAppName = appName
-            }
     }
 
-    private var mPackageName: String = ""
-    private var mAppName: String = ""
+    private var packageName: String = ""
+    private var appName: String = ""
     private val viewModel: AppPermissionViewModel by viewModels()
 
     private val header: AppHeaderPreference? by lazy {
@@ -104,14 +97,14 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         super.onViewCreated(view, savedInstanceState)
         if (requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
             requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
-            mPackageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
+            packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
         if (requireArguments().containsKey(EXTRA_APP_NAME) &&
             requireArguments().getString(EXTRA_APP_NAME) != null) {
-            mAppName = requireArguments().getString(EXTRA_APP_NAME)!!
+            appName = requireArguments().getString(EXTRA_APP_NAME)!!
         }
-        viewModel.loadAppInfo(mPackageName)
-        viewModel.loadForPackage(mPackageName)
+        viewModel.loadAppInfo(packageName)
+        viewModel.loadForPackage(packageName)
 
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
@@ -133,7 +126,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     private fun setupDeleteAllPreference() {
         mDeleteAllDataPreference?.setOnPreferenceClickListener {
-            val deletionType = DeletionType.DeletionTypeAppData(mPackageName, mAppName)
+            val deletionType = DeletionType.DeletionTypeAppData(packageName, appName)
             childFragmentManager.setFragmentResult(
                 START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
@@ -144,7 +137,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
             if (preference.isPressed) {
                 if (grantAll) {
-                    viewModel.grantAllPermissions(mPackageName)
+                    viewModel.grantAllPermissions(packageName)
                 } else {
                     showRevokeAllPermissions()
                 }
@@ -161,13 +154,13 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         }
 
         childFragmentManager.setFragmentResultListener(DISCONNECT_ALL_EVENT, this) { _, bundle ->
-            viewModel.revokeAllPermissions(mPackageName)
+            viewModel.revokeAllPermissions(packageName)
             if (bundle.containsKey(KEY_DELETE_DATA) && bundle.getBoolean(KEY_DELETE_DATA)) {
-                viewModel.deleteAppData(mPackageName, mAppName)
+                viewModel.deleteAppData(packageName, appName)
             }
         }
 
-        DisconnectDialogFragment(mAppName).show(childFragmentManager, DisconnectDialogFragment.TAG)
+        DisconnectDialogFragment(appName).show(childFragmentManager, DisconnectDialogFragment.TAG)
     }
 
     private fun updatePermissions(permissions: List<HealthPermissionStatus>) {
@@ -192,7 +185,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                     it.setOnPreferenceChangeListener { _, newValue ->
                         val checked = newValue as Boolean
                         viewModel.updatePermission(
-                            mPackageName, permissionStatus.healthPermission, checked)
+                            packageName, permissionStatus.healthPermission, checked)
                         true
                     }
                 })
@@ -209,7 +202,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         val title =
             getString(R.string.other_android_permissions) +
                 PARAGRAPH_SEPARATOR +
-                getString(R.string.manage_permissions_rationale, mAppName)
+                getString(R.string.manage_permissions_rationale, appName)
 
         // TODO (b/261395536) update with the time the first permission was granted
         //        if (isAtLeastOneGranted) {

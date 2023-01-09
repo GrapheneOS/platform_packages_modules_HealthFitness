@@ -8,6 +8,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.categories.fromHealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
@@ -114,6 +115,8 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         permission: HealthPermission
     ): Preference {
         return SwitchPreference(requireContext()).also {
+            val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
+            it.setIcon(healthCategory.icon)
             it.setDefaultValue(defaultValue)
             it.setTitle(
                 HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)

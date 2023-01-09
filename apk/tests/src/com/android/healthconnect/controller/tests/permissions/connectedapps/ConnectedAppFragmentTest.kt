@@ -32,7 +32,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment.Companion.EXTRA_APP_NAME
+import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.EXERCISE
@@ -83,7 +83,9 @@ class ConnectedAppFragmentTest {
         `when`(viewModel.appPermissions).then { MutableLiveData(listOf<HealthPermissionStatus>()) }
 
         val scenario =
-            launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_NAME, TEST_APP_NAME) })
+            launchFragment<ConnectedAppFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         scenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -109,7 +111,9 @@ class ConnectedAppFragmentTest {
         }
 
         val scenario =
-            launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_NAME, TEST_APP_NAME) })
+            launchFragment<ConnectedAppFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         scenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -136,7 +140,9 @@ class ConnectedAppFragmentTest {
         }
 
         val scenario =
-            launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_NAME, TEST_APP_NAME) })
+            launchFragment<ConnectedAppFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         scenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -167,7 +173,9 @@ class ConnectedAppFragmentTest {
         }
 
         val scenario =
-            launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_NAME, TEST_APP_NAME) })
+            launchFragment<ConnectedAppFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         scenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -200,7 +208,9 @@ class ConnectedAppFragmentTest {
         `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
 
         val scenario =
-            launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_NAME, TEST_APP_NAME) })
+            launchFragment<ConnectedAppFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         scenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -228,7 +238,9 @@ class ConnectedAppFragmentTest {
         `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
 
         val scenario =
-            launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_NAME, TEST_APP_NAME) })
+            launchFragment<ConnectedAppFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         scenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -314,7 +326,8 @@ class ConnectedAppFragmentTest {
                 listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }
 
-        launchFragment({ ConnectedAppFragment.newInstance(TEST_APP_NAME, TEST_APP_NAME) })
+        launchFragment<ConnectedAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         // TODO (b/261395536) update with the time the first permission was granted
         onView(
