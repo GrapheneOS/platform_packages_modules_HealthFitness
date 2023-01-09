@@ -479,35 +479,6 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class ExerciseEventRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public int getEventType();
-  }
-
-  public static final class ExerciseEventRecord.Builder {
-    ctor public ExerciseEventRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
-    method @NonNull public android.healthconnect.datatypes.ExerciseEventRecord build();
-    method @NonNull public android.healthconnect.datatypes.ExerciseEventRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.ExerciseEventRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
-  }
-
-  public static final class ExerciseEventRecord.ExerciseEventType {
-    field public static final int EXERCISE_EVENT_TYPE_PAUSE = 1; // 0x1
-    field public static final int EXERCISE_EVENT_TYPE_REST = 2; // 0x2
-    field public static final int EXERCISE_EVENT_TYPE_UNKNOWN = 0; // 0x0
-  }
-
-  public final class ExerciseLapRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @Nullable public android.healthconnect.datatypes.units.Length getLength();
-  }
-
-  public static final class ExerciseLapRecord.Builder {
-    ctor public ExerciseLapRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord build();
-    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord.Builder setLength(@Nullable android.healthconnect.datatypes.units.Length);
-    method @NonNull public android.healthconnect.datatypes.ExerciseLapRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
-  }
-
   public final class ExerciseRoute {
     ctor public ExerciseRoute(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location>);
     method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location> getRouteLocations();
@@ -1041,27 +1012,6 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.StepsRecord build();
     method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
-  }
-
-  public final class SwimmingStrokesRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method public long getCount();
-    method public int getType();
-  }
-
-  public static final class SwimmingStrokesRecord.Builder {
-    ctor public SwimmingStrokesRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @IntRange(from=1, to=1000000) long, int);
-    method @NonNull public android.healthconnect.datatypes.SwimmingStrokesRecord build();
-    method @NonNull public android.healthconnect.datatypes.SwimmingStrokesRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.SwimmingStrokesRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
-  }
-
-  public static final class SwimmingStrokesRecord.SwimmingStrokesType {
-    field public static final int SWIMMING_STROKES_TYPE_BACKSTROKE = 2; // 0x2
-    field public static final int SWIMMING_STROKES_TYPE_BREASTSTROKE = 3; // 0x3
-    field public static final int SWIMMING_STROKES_TYPE_BUTTERFLY = 4; // 0x4
-    field public static final int SWIMMING_STROKES_TYPE_FREESTYLE = 1; // 0x1
-    field public static final int SWIMMING_STROKES_TYPE_MIXED = 5; // 0x5
-    field public static final int SWIMMING_STROKES_TYPE_OTHER = 0; // 0x0
   }
 
   public final class TotalCaloriesBurnedRecord extends android.healthconnect.datatypes.IntervalRecord {

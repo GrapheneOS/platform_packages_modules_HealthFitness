@@ -34,47 +34,44 @@ public final class RecordTypeIdentifier {
 
     // Interval Records
     public static final int RECORD_TYPE_STEPS = 1;
-    public static final int RECORD_TYPE_EXERCISE_LAP = 2;
-    public static final int RECORD_TYPE_ACTIVE_CALORIES_BURNED = 3;
-    public static final int RECORD_TYPE_HYDRATION = 4;
-    public static final int RECORD_TYPE_ELEVATION_GAINED = 5;
-    public static final int RECORD_TYPE_SWIMMING_STROKES = 6;
-    public static final int RECORD_TYPE_EXERCISE_EVENT = 7;
-    public static final int RECORD_TYPE_FLOORS_CLIMBED = 8;
-    public static final int RECORD_TYPE_WHEELCHAIR_PUSHES = 9;
-    public static final int RECORD_TYPE_DISTANCE = 10;
-    public static final int RECORD_TYPE_NUTRITION = 12;
-    public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 13;
+    public static final int RECORD_TYPE_ACTIVE_CALORIES_BURNED = 2;
+    public static final int RECORD_TYPE_HYDRATION = 3;
+    public static final int RECORD_TYPE_ELEVATION_GAINED = 4;
+    public static final int RECORD_TYPE_FLOORS_CLIMBED = 5;
+    public static final int RECORD_TYPE_WHEELCHAIR_PUSHES = 6;
+    public static final int RECORD_TYPE_DISTANCE = 7;
+    public static final int RECORD_TYPE_NUTRITION = 8;
+    public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 9;
 
     // Series Records
-    public static final int RECORD_TYPE_HEART_RATE = 17;
-    public static final int RECORD_TYPE_CYCLING_PEDALING_CADENCE = 18;
-    public static final int RECORD_TYPE_POWER = 19;
-    public static final int RECORD_TYPE_SPEED = 20;
-    public static final int RECORD_TYPE_STEPS_CADENCE = 21;
+    public static final int RECORD_TYPE_HEART_RATE = 10;
+    public static final int RECORD_TYPE_CYCLING_PEDALING_CADENCE = 11;
+    public static final int RECORD_TYPE_POWER = 12;
+    public static final int RECORD_TYPE_SPEED = 13;
+    public static final int RECORD_TYPE_STEPS_CADENCE = 14;
     // Instant records
-    public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 22;
-    public static final int RECORD_TYPE_BODY_FAT = 23;
-    public static final int RECORD_TYPE_VO2_MAX = 24;
-    public static final int RECORD_TYPE_CERVICAL_MUCUS = 25;
-    public static final int RECORD_TYPE_BASAL_BODY_TEMPERATURE = 26;
-    public static final int RECORD_TYPE_MENSTRUATION_FLOW = 27;
-    public static final int RECORD_TYPE_OXYGEN_SATURATION = 28;
-    public static final int RECORD_TYPE_BLOOD_PRESSURE = 29;
-    public static final int RECORD_TYPE_HEIGHT = 30;
-    public static final int RECORD_TYPE_BLOOD_GLUCOSE = 31;
-    public static final int RECORD_TYPE_WEIGHT = 32;
-    public static final int RECORD_TYPE_LEAN_BODY_MASS = 33;
-    public static final int RECORD_TYPE_SEXUAL_ACTIVITY = 34;
-    public static final int RECORD_TYPE_BODY_TEMPERATURE = 35;
-    public static final int RECORD_TYPE_OVULATION_TEST = 36;
-    public static final int RECORD_TYPE_RESPIRATORY_RATE = 37;
-    public static final int RECORD_TYPE_BONE_MASS = 38;
-    public static final int RECORD_TYPE_RESTING_HEART_RATE = 39;
+    public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 15;
+    public static final int RECORD_TYPE_BODY_FAT = 16;
+    public static final int RECORD_TYPE_VO2_MAX = 17;
+    public static final int RECORD_TYPE_CERVICAL_MUCUS = 18;
+    public static final int RECORD_TYPE_BASAL_BODY_TEMPERATURE = 19;
+    public static final int RECORD_TYPE_MENSTRUATION_FLOW = 20;
+    public static final int RECORD_TYPE_OXYGEN_SATURATION = 21;
+    public static final int RECORD_TYPE_BLOOD_PRESSURE = 22;
+    public static final int RECORD_TYPE_HEIGHT = 23;
+    public static final int RECORD_TYPE_BLOOD_GLUCOSE = 24;
+    public static final int RECORD_TYPE_WEIGHT = 25;
+    public static final int RECORD_TYPE_LEAN_BODY_MASS = 26;
+    public static final int RECORD_TYPE_SEXUAL_ACTIVITY = 27;
+    public static final int RECORD_TYPE_BODY_TEMPERATURE = 28;
+    public static final int RECORD_TYPE_OVULATION_TEST = 29;
+    public static final int RECORD_TYPE_RESPIRATORY_RATE = 30;
+    public static final int RECORD_TYPE_BONE_MASS = 31;
+    public static final int RECORD_TYPE_RESTING_HEART_RATE = 32;
 
     // Session records
-    public static final int RECORD_TYPE_EXERCISE_SESSION = 40;
-    public static final int RECORD_TYPE_SLEEP_SESSION = 41;
+    public static final int RECORD_TYPE_EXERCISE_SESSION = 33;
+    public static final int RECORD_TYPE_SLEEP_SESSION = 34;
 
     private RecordTypeIdentifier() {}
 
@@ -91,13 +88,10 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_DISTANCE,
         RECORD_TYPE_WHEELCHAIR_PUSHES,
         RECORD_TYPE_TOTAL_CALORIES_BURNED,
-        RECORD_TYPE_SWIMMING_STROKES,
         RECORD_TYPE_FLOORS_CLIMBED,
         RECORD_TYPE_ELEVATION_GAINED,
         RECORD_TYPE_ACTIVE_CALORIES_BURNED,
         RECORD_TYPE_HYDRATION,
-        RECORD_TYPE_EXERCISE_EVENT,
-        RECORD_TYPE_EXERCISE_LAP,
         RECORD_TYPE_NUTRITION,
         RECORD_TYPE_RESPIRATORY_RATE,
         RECORD_TYPE_BONE_MASS,
