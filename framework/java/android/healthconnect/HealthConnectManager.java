@@ -19,6 +19,7 @@ package android.healthconnect;
 import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 
+import android.Manifest;
 import android.annotation.CallbackExecutor;
 import android.annotation.IntRange;
 import android.annotation.NonNull;
@@ -1280,7 +1281,7 @@ public class HealthConnectManager {
      * @param callback Callback to receive result of performing this operation.
      * @hide
      */
-    // TODO(b/262514203): Add migration permission checks
+    @RequiresPermission(Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA)
     public void startMigration(
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Void, MigrationException> callback) {
@@ -1301,7 +1302,7 @@ public class HealthConnectManager {
      * @param callback Callback to receive result of performing this operation.
      * @hide
      */
-    // TODO(b/262514203): Add migration permission checks
+    @RequiresPermission(Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA)
     public void finishMigration(
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Void, MigrationException> callback) {
@@ -1323,7 +1324,7 @@ public class HealthConnectManager {
      * @param callback Callback to receive result of performing this operation.
      * @hide
      */
-    // TODO(b/262514203): Add migration permission checks
+    @RequiresPermission(Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA)
     public void writeMigrationData(
             @NonNull List<MigrationEntity> entities,
             @NonNull @CallbackExecutor Executor executor,
