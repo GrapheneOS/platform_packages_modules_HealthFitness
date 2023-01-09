@@ -14,6 +14,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionStr
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.requestpermissions.RequestPermissionHeaderPreference
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.children
 import com.android.settingslib.widget.MainSwitchPreference
 import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,11 +52,11 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
 
     private val onSwitchChangeListener: OnMainSwitchChangeListener =
         OnMainSwitchChangeListener { _, grant ->
-            (0..(mReadPermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
-                (mReadPermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            mReadPermissionCategory?.children?.forEach { preference ->
+                (preference as SwitchPreference).isChecked = grant
             }
-            (0..(mWritePermissionCategory?.preferenceCount?.minus(1) ?: -1)).forEach { i ->
-                (mWritePermissionCategory?.getPreference(i) as SwitchPreference).isChecked = grant
+            mWritePermissionCategory?.children?.forEach { preference ->
+                (preference as SwitchPreference).isChecked = grant
             }
             viewModel.updatePermissions(grant)
         }
