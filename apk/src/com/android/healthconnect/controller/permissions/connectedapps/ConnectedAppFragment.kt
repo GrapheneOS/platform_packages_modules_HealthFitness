@@ -24,12 +24,18 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.categories.fromHealthPermissionType
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
+import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
+import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment
+import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment.Companion.DISCONNECT_ALL_EVENT
+import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment.Companion.DISCONNECT_CANCELED_EVENT
+import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment.Companion.KEY_DELETE_DATA
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.settingslib.widget.AppHeaderPreference
@@ -51,11 +57,15 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         private const val PARAGRAPH_SEPARATOR = "\n\n"
 
         @JvmStatic
-        fun newInstance(packageName: String) =
-            ConnectedAppFragment().apply { mPackageName = packageName }
+        fun newInstance(packageName: String, appName: String) =
+            ConnectedAppFragment().apply {
+                mPackageName = packageName
+                mAppName = appName
+            }
     }
 
     private var mPackageName: String = ""
+    private var mAppName: String = ""
     private val viewModel: AppPermissionViewModel by viewModels()
 
     private val header: AppHeaderPreference? by lazy {
@@ -92,48 +102,72 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (mPackageName.isEmpty() && requireArguments().containsKey(EXTRA_PACKAGE_NAME)) {
-            mPackageName =
-                requireArguments().getString(EXTRA_PACKAGE_NAME)
-                    ?: throw IllegalArgumentException("PackageName can't be null!")
+        if (requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
+            requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
+            mPackageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
+        }
+        if (requireArguments().containsKey(EXTRA_APP_NAME) &&
+            requireArguments().getString(EXTRA_APP_NAME) != null) {
+            mAppName = requireArguments().getString(EXTRA_APP_NAME)!!
         }
         viewModel.loadAppInfo(mPackageName)
         viewModel.loadForPackage(mPackageName)
 
-        allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
-            if (preference.isPressed) {
-                if (grantAll) {
-                    viewModel.grantAllPermissions(mPackageName)
-                } else {
-                    viewModel.revokeAllPermissions(mPackageName)
-                }
-            }
-        }
-
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
         }
-        mDeleteAllDataPreference?.setOnPreferenceClickListener {
-            // TODO handle case when appName not found?
-            val appName = viewModel.appInfo.value?.appName
-            val deletionType = DeletionType.DeletionTypeAppData(mPackageName, appName ?: "")
-            childFragmentManager.setFragmentResult(
-                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
-            true
-        }
+        setupAllowAllPreference()
+        setupDeleteAllPreference()
+        setupHeader()
+        setupFooter()
+    }
 
-        viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
-            allowAllPreference?.isChecked = isAllGranted
-        }
-        viewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) { isAtLeastOneGranted ->
-            updateFooter(isAtLeastOneGranted)
-        }
+    private fun setupHeader() {
         viewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
             header?.apply {
                 setIcon(appMetadata.icon)
                 setTitle(appMetadata.appName)
             }
         }
+    }
+
+    private fun setupDeleteAllPreference() {
+        mDeleteAllDataPreference?.setOnPreferenceClickListener {
+            val deletionType = DeletionType.DeletionTypeAppData(mPackageName, mAppName)
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+            true
+        }
+    }
+
+    private fun setupAllowAllPreference() {
+        allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
+            if (preference.isPressed) {
+                if (grantAll) {
+                    viewModel.grantAllPermissions(mPackageName)
+                } else {
+                    showRevokeAllPermissions()
+                }
+            }
+        }
+        viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
+            allowAllPreference?.isChecked = isAllGranted
+        }
+    }
+
+    private fun showRevokeAllPermissions() {
+        childFragmentManager.setFragmentResultListener(DISCONNECT_CANCELED_EVENT, this) { _, _ ->
+            allowAllPreference?.isChecked = true
+        }
+
+        childFragmentManager.setFragmentResultListener(DISCONNECT_ALL_EVENT, this) { _, bundle ->
+            viewModel.revokeAllPermissions(mPackageName)
+            if (bundle.containsKey(KEY_DELETE_DATA) && bundle.getBoolean(KEY_DELETE_DATA)) {
+                viewModel.deleteAppData(mPackageName, mAppName)
+            }
+        }
+
+        DisconnectDialogFragment(mAppName).show(childFragmentManager, DisconnectDialogFragment.TAG)
     }
 
     private fun updatePermissions(permissions: List<HealthPermissionStatus>) {
@@ -151,6 +185,8 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
             category?.addPreference(
                 SwitchPreference(requireContext()).also {
+                    val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
+                    it.setIcon(healthCategory.icon)
                     it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
                     it.isChecked = permissionStatus.isGranted
                     it.setOnPreferenceChangeListener { _, newValue ->
@@ -163,12 +199,17 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         }
     }
 
+    private fun setupFooter() {
+        viewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) { isAtLeastOneGranted ->
+            updateFooter(isAtLeastOneGranted)
+        }
+    }
+
     private fun updateFooter(isAtLeastOneGranted: Boolean) {
-        val appName = viewModel.appInfo.value?.appName
-        var title =
+        val title =
             getString(R.string.other_android_permissions) +
                 PARAGRAPH_SEPARATOR +
-                getString(R.string.manage_permissions_rationale, appName)
+                getString(R.string.manage_permissions_rationale, mAppName)
 
         // TODO (b/261395536) update with the time the first permission was granted
         //        if (isAtLeastOneGranted) {

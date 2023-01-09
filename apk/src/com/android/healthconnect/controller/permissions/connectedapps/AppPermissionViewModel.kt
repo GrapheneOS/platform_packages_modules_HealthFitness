@@ -13,11 +13,13 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
-import android.util.Log
+import android.healthconnect.TimeRangeFilter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.deletion.DeletionType
+import com.android.healthconnect.controller.deletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
@@ -27,6 +29,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -39,7 +42,8 @@ constructor(
     private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
     private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
     private val revokePermissionsStatusUseCase: RevokeHealthPermissionUseCase,
-    private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase
+    private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
+    private val deleteAppDataUseCase: DeleteAppDataUseCase,
 ) : ViewModel() {
 
     private val _appPermissions = MutableLiveData<List<HealthPermissionStatus>>(emptyList())
@@ -93,6 +97,15 @@ constructor(
             // TODO(b/245514289) move this to a background thread.
             revokeAllHealthPermissionsUseCase.invoke(packageName)
             loadForPackage(packageName)
+        }
+    }
+
+    fun deleteAppData(packageName: String, appName: String) {
+        viewModelScope.launch {
+            val appData = DeletionType.DeletionTypeAppData(packageName, appName)
+            val timeRangeFilter =
+                TimeRangeFilter.Builder(Instant.EPOCH, Instant.ofEpochMilli(Long.MAX_VALUE)).build()
+            deleteAppDataUseCase.invoke(appData, timeRangeFilter)
         }
     }
 }
