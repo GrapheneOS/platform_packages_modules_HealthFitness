@@ -325,11 +325,31 @@
     <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 公里}other{# 公里}}"</string>
     <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 英里}other{# 英里}}"</string>
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 公里}other{# 公里}}"</string>
+    <!-- no translation found for height_cm (8939976388396204701) -->
+    <skip />
+    <!-- no translation found for height_cm_long (4322185580842737867) -->
+    <skip />
+    <!-- no translation found for height_in_long (4690944359939350391) -->
+    <skip />
+    <!-- no translation found for height_ft_long (4067044383386766601) -->
+    <skip />
+    <!-- no translation found for height_in_compacted (7320090488312126741) -->
+    <skip />
+    <!-- no translation found for height_ft_compacted (8869242348732761724) -->
+    <skip />
+    <!-- no translation found for feet_inches_format (4976828345068983431) -->
+    <skip />
+    <!-- no translation found for feet_inches_format_long (3559977708168174809) -->
+    <skip />
     <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 卡路里}other{# 卡路里}}"</string>
     <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 卡路里}other{# 卡路里}}"</string>
     <!-- no translation found for kj (5640715521602128434) -->
     <skip />
     <!-- no translation found for kj_long (516247759297999467) -->
+    <skip />
+    <!-- no translation found for percent (2841159621762576767) -->
+    <skip />
+    <!-- no translation found for percent_long (8144935650402894315) -->
     <skip />
     <string name="units_title" msgid="4335002706905375844">"單位"</string>
     <string name="set_units_label" msgid="7358440515698876383">"設定資料單位"</string>
