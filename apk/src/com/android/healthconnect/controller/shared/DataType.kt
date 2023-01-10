@@ -20,12 +20,14 @@ import android.healthconnect.datatypes.BasalBodyTemperatureRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
+import android.healthconnect.datatypes.BoneMassRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
+import android.healthconnect.datatypes.LeanBodyMassRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
@@ -35,6 +37,7 @@ import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
+import android.healthconnect.datatypes.WeightRecord
 import android.healthconnect.datatypes.WheelchairPushesRecord
 
 enum class DataType(val recordClass: Class<out Record>) {
@@ -58,4 +61,7 @@ enum class DataType(val recordClass: Class<out Record>) {
     HYDRATION(HydrationRecord::class.java),
     FLOORS_CLIMBED(FloorsClimbedRecord::class.java),
     ELEVATION_GAINED(ElevationGainedRecord::class.java),
+    BONE_MASS(BoneMassRecord::class.java),
+    LEAN_BODY_MASS(LeanBodyMassRecord::class.java),
+    WEIGHT(WeightRecord::class.java),
 }

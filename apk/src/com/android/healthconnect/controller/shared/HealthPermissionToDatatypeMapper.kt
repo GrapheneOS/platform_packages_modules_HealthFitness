@@ -20,12 +20,14 @@ import android.healthconnect.datatypes.BasalBodyTemperatureRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
+import android.healthconnect.datatypes.BoneMassRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
+import android.healthconnect.datatypes.LeanBodyMassRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
@@ -35,6 +37,7 @@ import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
+import android.healthconnect.datatypes.WeightRecord
 import android.healthconnect.datatypes.WheelchairPushesRecord
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ACTIVE_CALORIES_BURNED
@@ -56,6 +59,9 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.TOTAL_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WHEELCHAIR_PUSHES
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BONE_MASS
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.LEAN_BODY_MASS
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WEIGHT
 import com.google.common.annotations.VisibleForTesting
 
 object HealthPermissionToDatatypeMapper {
@@ -80,6 +86,9 @@ object HealthPermissionToDatatypeMapper {
             HYDRATION to listOf(HydrationRecord::class.java),
             FLOORS_CLIMBED to listOf(FloorsClimbedRecord::class.java),
             ELEVATION_GAINED to listOf(ElevationGainedRecord::class.java),
+            BONE_MASS to listOf(BoneMassRecord::class.java),
+            LEAN_BODY_MASS to listOf(LeanBodyMassRecord::class.java),
+            WEIGHT to listOf(WeightRecord::class.java),
         )
 
     fun getDataTypes(permissionType: HealthPermissionType): List<Class<out Record>> {

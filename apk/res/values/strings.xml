@@ -475,8 +475,26 @@
       name="respiratory_rate_value">{count, plural, =1 {1 rpm} other {# rpm}}</string>
   <string translation_description="Value of respiratory rate in respirations per minute. [ICU SYNTAX][CHAR LIMIT=26]"
       name="respiratory_rate_value_long">{count, plural, =1 {1 respiration per minute} other {# respirations per minute}}</string>
-  <!--  endregion-->
+  <!--  endregion  -->
 
+  <!--  region Weight -->
+  <string translation_description="Weight in kilograms. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="kilograms_short_label">{count, plural, =1 {1 kg} other {# kg}}</string>
+  <string translation_description="Weight in pounds. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="pounds_short_label">{count, plural, =1 {1 lb} other {# lb}}</string>
+  <string translation_description="Weight in stone. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="stone_short_label">{count, plural, =1 {1 st} other {# st}}</string>
+  <string translation_description="Weight in stone and pounds. Example: 9st 2lb. [ICU][CHAR LIMIT=60]"
+      name="stone_pound_short_label">{stone_part} {pound_part}</string>
+  <string translation_description="Weight in kilograms representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="kilograms_long_label">{count, plural, =1 {1 kilogram} other {# kilograms}}</string>
+  <string translation_description="Weight in pounds representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="pounds_long_label">{count, plural, =1 {1 pound} other {# pounds}}</string>
+  <string translation_description="Weight in stone representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=60]"
+      name="stone_long_label">{count, plural, =1 {1 stone} other {# stones}}</string>
+  <string translation_description="Weight in stone and pounds representation used by accessibility. Example: 9 stone, 2 pounds. [ICU][CHAR LIMIT=60]"
+      name="stone_pound_long_label">{stone_part} {pound_part}</string>
+  <!-- endregion -->
 
   <!-- region Temperature units -->
   <string name="temperature_celsius" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 ℃} other {# ℃}}</string>

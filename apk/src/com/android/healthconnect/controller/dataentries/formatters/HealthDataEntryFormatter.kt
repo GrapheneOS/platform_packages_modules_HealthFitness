@@ -20,12 +20,14 @@ import android.healthconnect.datatypes.BasalBodyTemperatureRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
+import android.healthconnect.datatypes.BoneMassRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
+import android.healthconnect.datatypes.LeanBodyMassRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
@@ -35,6 +37,7 @@ import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
+import android.healthconnect.datatypes.WeightRecord
 import android.healthconnect.datatypes.WheelchairPushesRecord
 import com.android.healthconnect.controller.dataentries.FormattedDataEntry
 import com.android.healthconnect.controller.shared.AppInfoReader
@@ -66,6 +69,9 @@ constructor(
     private val hydrationFormatter: HydrationFormatter,
     private val floorsFormatter: FloorsFormatter,
     private val elevationGainedFormatter: ElevationGainedFormatter,
+    private val weightFormatter: WeightFormatter,
+    private val leanBodyMassFormatter: LeanBodyMassFormatter,
+    private val boneMassFormatter: BoneMassFormatter,
 ) {
 
     suspend fun format(record: Record): FormattedDataEntry {
@@ -91,6 +97,9 @@ constructor(
             is HydrationRecord -> hydrationFormatter.format(record, appName)
             is FloorsClimbedRecord -> floorsFormatter.format(record, appName)
             is ElevationGainedRecord -> elevationGainedFormatter.format(record, appName)
+            is WeightRecord -> weightFormatter.format(record, appName)
+            is LeanBodyMassRecord -> leanBodyMassFormatter.format(record, appName)
+            is BoneMassRecord -> boneMassFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }
