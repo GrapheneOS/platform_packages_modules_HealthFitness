@@ -14,7 +14,6 @@
 package com.android.healthconnect.testapps.toolbox.ui
 
 import android.healthconnect.HealthConnectManager
-import android.healthconnect.datatypes.ExerciseEventRecord
 import android.healthconnect.datatypes.InstantRecord
 import android.healthconnect.datatypes.IntervalRecord
 import android.healthconnect.datatypes.Record
@@ -41,11 +40,8 @@ import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_TEXT
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.fieldviews.DateTimePicker
 import com.android.healthconnect.testapps.toolbox.fieldviews.EditableTextView
-import com.android.healthconnect.testapps.toolbox.fieldviews.EnumDropDown
 import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldView
 import com.android.healthconnect.testapps.toolbox.fieldviews.ListInputField
-import com.android.healthconnect.testapps.toolbox.utils.EnumFieldsWithValues
-import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getStaticFieldNamesAndValues
 import com.android.healthconnect.testapps.toolbox.utils.InsertOrUpdateRecords.Companion.createRecordObject
 import com.android.healthconnect.testapps.toolbox.viewmodels.InsertOrUpdateRecordsViewModel
 import java.lang.reflect.Field
@@ -182,16 +178,6 @@ class InsertRecordFragment : Fragment() {
             }
             mLinearLayout.addView(field)
             mFieldNameToFieldInput[mRecordsField.name] = field
-        }
-
-        when (mRecordClass) {
-            ExerciseEventRecord::class -> {
-                val enumFieldsWithValues: EnumFieldsWithValues =
-                    getStaticFieldNamesAndValues(ExerciseEventRecord.ExerciseEventType::class)
-                field = EnumDropDown(this.requireContext(), "mEventType", enumFieldsWithValues)
-                mLinearLayout.addView(field)
-                mFieldNameToFieldInput["mEventType"] = field
-            }
         }
     }
 
