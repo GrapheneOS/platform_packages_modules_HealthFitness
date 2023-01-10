@@ -72,17 +72,17 @@ import static android.healthconnect.datatypes.NutritionRecord.ZINC_TOTAL;
 import static android.healthconnect.datatypes.PowerRecord.POWER_AVG;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MAX;
 import static android.healthconnect.datatypes.PowerRecord.POWER_MIN;
-import static android.healthconnect.datatypes.StepsRecord.COUNT_TOTAL;
+import static android.healthconnect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.datatypes.WeightRecord.WEIGHT_AVG;
 import static android.healthconnect.datatypes.WeightRecord.WEIGHT_MAX;
 import static android.healthconnect.datatypes.WeightRecord.WEIGHT_MIN;
+import static android.healthconnect.datatypes.WheelchairPushesRecord.WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
 
 import android.annotation.NonNull;
 import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RestingHeartRateRecord;
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord;
-import android.healthconnect.datatypes.WheelchairPushesRecord;
 import android.healthconnect.datatypes.units.Energy;
 import android.healthconnect.datatypes.units.Length;
 import android.healthconnect.datatypes.units.Mass;
@@ -117,12 +117,12 @@ public final class AggregationTypeIdMapper {
                 Arrays.asList(
                         BPM_MAX,
                         BPM_MIN,
-                        COUNT_TOTAL,
+                        STEPS_COUNT_TOTAL,
                         BPM_AVG,
                         FLOORS_CLIMBED_TOTAL,
                         RestingHeartRateRecord.BPM_MAX,
                         RestingHeartRateRecord.BPM_MIN,
-                        WheelchairPushesRecord.COUNT_TOTAL));
+                        WHEEL_CHAIR_PUSHES_COUNT_TOTAL));
         addPowerIdsToAggregateResultMap(
                 Arrays.asList(BASAL_CALORIES_TOTAL, POWER_MIN, POWER_MAX, POWER_AVG));
         addEnergyIdsToAggregateResultMap(

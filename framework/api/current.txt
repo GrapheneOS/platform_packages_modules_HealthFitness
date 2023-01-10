@@ -1033,7 +1033,7 @@ package android.healthconnect.datatypes {
 
   public final class StepsRecord extends android.healthconnect.datatypes.IntervalRecord {
     method public long getCount();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> COUNT_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> STEPS_COUNT_TOTAL;
   }
 
   public static final class StepsRecord.Builder {
@@ -1111,7 +1111,7 @@ package android.healthconnect.datatypes {
 
   public final class WheelchairPushesRecord extends android.healthconnect.datatypes.IntervalRecord {
     method public long getCount();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> COUNT_TOTAL;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
   }
 
   public static final class WheelchairPushesRecord.Builder {

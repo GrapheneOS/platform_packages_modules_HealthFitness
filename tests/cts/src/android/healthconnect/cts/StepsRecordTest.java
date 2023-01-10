@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.datatypes.StepsRecord.COUNT_TOTAL;
+import static android.healthconnect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -296,7 +296,7 @@ public class StepsRecordTest {
                                                         Instant.ofEpochMilli(0),
                                                         Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
-                                .addAggregationType(COUNT_TOTAL)
+                                .addAggregationType(STEPS_COUNT_TOTAL)
                                 .build(),
                         records);
         List<Record> recordNew = Arrays.asList(getStepsRecord(1000), getStepsRecord(1000));
@@ -307,11 +307,12 @@ public class StepsRecordTest {
                                                         Instant.ofEpochMilli(0),
                                                         Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
-                                .addAggregationType(COUNT_TOTAL)
+                                .addAggregationType(STEPS_COUNT_TOTAL)
                                 .build(),
                         recordNew);
-        assertThat(newResponse.get(COUNT_TOTAL)).isNotNull();
-        assertThat(newResponse.get(COUNT_TOTAL)).isEqualTo(oldResponse.get(COUNT_TOTAL) + 2000);
+        assertThat(newResponse.get(STEPS_COUNT_TOTAL)).isNotNull();
+        assertThat(newResponse.get(STEPS_COUNT_TOTAL))
+                .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 2000);
     }
 
     static StepsRecord getBaseStepsRecord() {

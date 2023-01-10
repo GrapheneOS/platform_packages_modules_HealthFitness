@@ -97,7 +97,7 @@ public final class StepsRecord extends IntervalRecord {
      * HealthConnectManager}
      */
     @NonNull
-    public static final AggregationType<Long> COUNT_TOTAL =
+    public static final AggregationType<Long> STEPS_COUNT_TOTAL =
             new AggregationType<>(
                     STEPS_RECORD_COUNT_TOTAL, AggregationType.SUM, RECORD_TYPE_STEPS, Long.class);
 

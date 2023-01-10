@@ -16,6 +16,8 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.datatypes.WheelchairPushesRecord.WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
@@ -92,7 +94,7 @@ public class WheelchairPushesRecordTest {
                                                         Instant.ofEpochMilli(0),
                                                         Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
-                                .addAggregationType(WheelchairPushesRecord.COUNT_TOTAL)
+                                .addAggregationType(WHEEL_CHAIR_PUSHES_COUNT_TOTAL)
                                 .build(),
                         records);
         List<Record> recordNew =
@@ -104,12 +106,12 @@ public class WheelchairPushesRecordTest {
                                                         Instant.ofEpochMilli(0),
                                                         Instant.now().plus(1, ChronoUnit.DAYS))
                                                 .build())
-                                .addAggregationType(WheelchairPushesRecord.COUNT_TOTAL)
+                                .addAggregationType(WHEEL_CHAIR_PUSHES_COUNT_TOTAL)
                                 .build(),
                         recordNew);
-        assertThat(newResponse.get(WheelchairPushesRecord.COUNT_TOTAL)).isNotNull();
-        assertThat(newResponse.get(WheelchairPushesRecord.COUNT_TOTAL))
-                .isEqualTo(oldResponse.get(WheelchairPushesRecord.COUNT_TOTAL) + 20);
+        assertThat(newResponse.get(WHEEL_CHAIR_PUSHES_COUNT_TOTAL)).isNotNull();
+        assertThat(newResponse.get(WHEEL_CHAIR_PUSHES_COUNT_TOTAL))
+                .isEqualTo(oldResponse.get(WHEEL_CHAIR_PUSHES_COUNT_TOTAL) + 20);
     }
 
     static WheelchairPushesRecord getBaseWheelchairPushesRecord() {
