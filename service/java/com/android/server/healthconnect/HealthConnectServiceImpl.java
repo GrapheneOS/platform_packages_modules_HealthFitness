@@ -27,7 +27,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.AccessLog;
 import android.healthconnect.Constants;
-import android.healthconnect.GetDataOriginPriorityOrderResponse;
+import android.healthconnect.FetchDataOriginsPriorityOrderResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.HealthDataCategory;
@@ -566,7 +566,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         .collect(Collectors.toList());
                         callback.onResult(
                                 new GetPriorityResponseParcel(
-                                        new GetDataOriginPriorityOrderResponse(
+                                        new FetchDataOriginsPriorityOrderResponse(
                                                 dataOriginInPriorityOrder)));
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
