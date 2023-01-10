@@ -21,15 +21,21 @@ import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
 import android.healthconnect.datatypes.DistanceRecord
+import android.healthconnect.datatypes.ElevationGainedRecord
+import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
+import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
+import android.healthconnect.datatypes.RespiratoryRateRecord
+import android.healthconnect.datatypes.RestingHeartRateRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
+import android.healthconnect.datatypes.WheelchairPushesRecord
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ACTIVE_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BASAL_BODY_TEMPERATURE
@@ -37,13 +43,19 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BODY_FAT
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BODY_TEMPERATURE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ELEVATION_GAINED
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.FLOORS_CLIMBED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEIGHT
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HYDRATION
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.OXYGEN_SATURATION
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.POWER
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.RESPIRATORY_RATE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.RESTING_HEART_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SPEED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.TOTAL_CALORIES_BURNED
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType.OXYGEN_SATURATION
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WHEELCHAIR_PUSHES
 import com.google.common.annotations.VisibleForTesting
 
 object HealthPermissionToDatatypeMapper {
@@ -62,6 +74,12 @@ object HealthPermissionToDatatypeMapper {
             OXYGEN_SATURATION to listOf(OxygenSaturationRecord::class.java),
             BODY_TEMPERATURE to listOf(BodyTemperatureRecord::class.java),
             BASAL_BODY_TEMPERATURE to listOf(BasalBodyTemperatureRecord::class.java),
+            WHEELCHAIR_PUSHES to listOf(WheelchairPushesRecord::class.java),
+            RESTING_HEART_RATE to listOf(RestingHeartRateRecord::class.java),
+            RESPIRATORY_RATE to listOf(RespiratoryRateRecord::class.java),
+            HYDRATION to listOf(HydrationRecord::class.java),
+            FLOORS_CLIMBED to listOf(FloorsClimbedRecord::class.java),
+            ELEVATION_GAINED to listOf(ElevationGainedRecord::class.java),
         )
 
     fun getDataTypes(permissionType: HealthPermissionType): List<Class<out Record>> {

@@ -464,6 +464,24 @@
   <string name="date_range" translatable="false"><xliff:g example="Oct 30, 2021" id="start_time">%1$s</xliff:g> - <xliff:g example="Nov 11, 2021" id="end_time">%2$s</xliff:g> </string>
   <string name="date_range_long" description="Content description for date interval. [CHAR_LIMIT=NONE]"> from <xliff:g example="October 30, 2021" id="start_time">%1$s</xliff:g> to <xliff:g example="November 11, 2021" id="end_time">%2$s</xliff:g></string>
 
+  <string name="wheelchair_pushes" description="Number of wheelchair pushes. [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 wheelchair push} other {# wheelchair pushes}}</string>
+
+  <string name="liter" description="Volume value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 L} other {# L}}</string>
+  <string name="liter_long" description="Volume value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 liter} other {# liters}}</string>
+
+  <string name="floors_climbed" description="Value of floors climbed. [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 floor} other {# floors}}</string>
+
+  <string name="elevation_meters" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 m} other {# m}}</string>
+  <string name="elevation_meters_long" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 meter} other {# meters}}</string>
+
+  <!--  region Respiratory Rate-->
+  <string translation_description="Value of respiratory rate. rpm is short for 'respirations per minute'. [ICU SYNTAX][CHAR LIMIT=18]"
+      name="respiratory_rate_value">{count, plural, =1 {1 rpm} other {# rpm}}</string>
+  <string translation_description="Value of respiratory rate in respirations per minute. [ICU SYNTAX][CHAR LIMIT=26]"
+      name="respiratory_rate_value_long">{count, plural, =1 {1 respiration per minute} other {# respirations per minute}}</string>
+  <!--  endregion-->
+
+
   <!-- region Temperature units -->
   <string name="temperature_celsius" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 ℃} other {# ℃}}</string>
   <string name="temperature_celsius_long" description="Temperature value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 degree Celsius} other {# degrees Celsius}}</string>
@@ -526,6 +544,7 @@
   <!-- region percent -->
   <string name="percent" formatted="false" description="Percentage value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1%} other {#%}}</string>
   <string name="percent_long" description="Percentage value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 percent} other {# percent}}</string>
+  <!--endregion-->
   <!--endregion-->
 
   <!-- region units -->
