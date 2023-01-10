@@ -150,7 +150,7 @@ public final class SleepSessionRecord extends IntervalRecord {
 
         /** Returns stage type. */
         @StageType.StageTypes
-        public int getStage() {
+        public int getType() {
             return mStageType;
         }
 
@@ -159,7 +159,7 @@ public final class SleepSessionRecord extends IntervalRecord {
             if (this == o) return true;
             if (!(o instanceof Stage)) return false;
             Stage that = (Stage) o;
-            return getStage() == that.getStage()
+            return getType() == that.getType()
                     && Objects.equals(getStartTime(), that.getStartTime())
                     && Objects.equals(getEndTime(), that.getEndTime());
         }
@@ -170,7 +170,7 @@ public final class SleepSessionRecord extends IntervalRecord {
         }
     }
 
-    /** Identifier for sleeping stage, as returned by {@link Stage#getStage()}. */
+    /** Identifier for sleeping stage, as returned by {@link Stage#getType()}. */
     public static final class StageType {
         /** Use this type if the stage of sleep is unknown. */
         public static final int STAGE_TYPE_UNKNOWN = 0;

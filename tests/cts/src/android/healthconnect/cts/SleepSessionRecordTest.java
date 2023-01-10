@@ -88,6 +88,16 @@ public class SleepSessionRecordTest {
     }
 
     @Test
+    public void testSleepSession_buildStage_gettersAreCorrect() {
+        SleepSessionRecord.Stage stage1 =
+                new SleepSessionRecord.Stage(
+                        START_TIME, END_TIME, SleepSessionRecord.StageType.STAGE_TYPE_AWAKE);
+        assertThat(stage1.getType()).isEqualTo(SleepSessionRecord.StageType.STAGE_TYPE_AWAKE);
+        assertThat(stage1.getStartTime()).isEqualTo(START_TIME);
+        assertThat(stage1.getEndTime()).isEqualTo(END_TIME);
+    }
+
+    @Test
     public void testSleepSession_addStagesOneByOne_objectsAreEqual() {
         SleepSessionRecord.Stage stage1 =
                 new SleepSessionRecord.Stage(
