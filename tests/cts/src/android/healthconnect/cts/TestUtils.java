@@ -52,6 +52,7 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.migration.MigrationException;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 import android.util.Pair;
@@ -716,6 +717,83 @@ public class TestUtils {
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
+    }
+
+    public static boolean isApiBlocked() {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        return service.isApiBlockedDueToDataSync();
+    }
+
+    public static void startMigration() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        service.startMigration(
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<Void, MigrationException>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(MigrationException exception) {
+                        Log.e(TAG, exception.getErrorMessage());
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+    }
+
+    public static void finishMigration() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        service.finishMigration(
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<Void, MigrationException>() {
+
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(MigrationException exception) {
+                        Log.e(TAG, exception.getErrorMessage());
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+    }
+
+    public static void insertMinDataMigrationSdkExtensionVersion(int version)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        service.insertMinDataMigrationSdkExtensionVersion(
+                version,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(MigrationException exception) {
+                        Log.e(TAG, exception.getMessage());
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
     }
 
     static final class RecordAndIdentifier {
