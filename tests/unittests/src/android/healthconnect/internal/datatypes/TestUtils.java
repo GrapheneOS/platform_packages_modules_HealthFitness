@@ -70,6 +70,7 @@ public class TestUtils {
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setStartTime((long) 1e9)
                         .setEndTime((long) 1e10)
-                        .setUuid("id");
+                        .setUuid("id")
+                        .setPackageName("android.healthconnect.unittests");
     }
 }

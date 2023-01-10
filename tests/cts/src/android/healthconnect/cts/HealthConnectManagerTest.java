@@ -18,6 +18,8 @@ package android.healthconnect.cts;
 import static android.Manifest.permission.CAMERA;
 import static android.healthconnect.HealthConnectManager.isHealthPermission;
 import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -190,10 +192,10 @@ public class HealthConnectManagerTest {
 
         // Modify the Uid of the updateRecords to the uuid that was present in the insert records.
         for (int itr = 0; itr < updateRecords.size(); itr++) {
-            updateRecords
-                    .get(itr)
-                    .getMetadata()
-                    .setId(insertRecords.get(itr).getMetadata().getId());
+            updateRecords.set(
+                    itr,
+                    setTestRecordId(
+                            updateRecords.get(itr), insertRecords.get(itr).getMetadata().getId()));
         }
 
         service.updateRecords(
@@ -261,13 +263,13 @@ public class HealthConnectManagerTest {
         // leaving out alternate records so that they have a new UUID which is not present in the
         // dataBase.
         for (int itr = 0; itr < updateRecords.size(); itr++) {
-            updateRecords
-                    .get(itr)
-                    .getMetadata()
-                    .setId(
+            updateRecords.set(
+                    itr,
+                    setTestRecordId(
+                            updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()));
+                                    : String.valueOf(Math.random())));
         }
 
         // perform the update operation.
@@ -333,11 +335,10 @@ public class HealthConnectManagerTest {
 
         // Modify the Uuid of the updateRecords to the uuid that was present in the insert records.
         for (int itr = 0; itr < updateRecords.size(); itr++) {
-            updateRecords
-                    .get(itr)
-                    .getMetadata()
-                    .setId(insertRecords.get(itr).getMetadata().getId());
-
+            updateRecords.set(
+                    itr,
+                    setTestRecordId(
+                            updateRecords.get(itr), insertRecords.get(itr).getMetadata().getId()));
             //             adding an entry with invalid packageName.
             if (updateRecords.get(itr).getRecordType() == RECORD_TYPE_STEPS) {
                 updateRecords.set(
@@ -413,6 +414,41 @@ public class HealthConnectManagerTest {
                 getStepsRecord(isSetClientRecordId, ""),
                 getHeartRateRecord(isSetClientRecordId),
                 getBasalMetabolicRateRecord(isSetClientRecordId));
+    }
+
+    private Record setTestRecordId(Record record, String id) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(metadata.getClientRecordId())
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        switch (record.getRecordType()) {
+            case RECORD_TYPE_STEPS:
+                return new StepsRecord.Builder(metadataWithId, Instant.now(), Instant.now(), 10)
+                        .build();
+            case RECORD_TYPE_HEART_RATE:
+                HeartRateRecord.HeartRateSample heartRateSample =
+                        new HeartRateRecord.HeartRateSample(72, Instant.now());
+                ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
+                heartRateSamples.add(heartRateSample);
+                heartRateSamples.add(heartRateSample);
+                return new HeartRateRecord.Builder(
+                                metadataWithId, Instant.now(), Instant.now(), heartRateSamples)
+                        .build();
+            case RECORD_TYPE_BASAL_METABOLIC_RATE:
+                return new BasalMetabolicRateRecord.Builder(
+                                metadataWithId, Instant.now(), Power.fromWatts(100.0))
+                        .setZoneOffset(
+                                ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                        .build();
+            default:
+                throw new IllegalStateException("Invalid record type.");
+        }
     }
 
     private StepsRecord getStepsRecord(boolean isSetClientRecordId, String packageName) {
