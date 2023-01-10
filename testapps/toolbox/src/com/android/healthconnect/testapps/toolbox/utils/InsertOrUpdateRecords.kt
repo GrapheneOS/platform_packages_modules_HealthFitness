@@ -20,8 +20,6 @@ import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
-import android.healthconnect.datatypes.ExerciseEventRecord
-import android.healthconnect.datatypes.ExerciseLapRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeartRateRecord.HeartRateSample
 import android.healthconnect.datatypes.HeightRecord
@@ -102,33 +100,6 @@ class InsertOrUpdateRecords {
                                     .toString()
                                     .toDouble()
                             )
-                        )
-                            .build()
-                }
-                ExerciseLapRecord::class -> {
-                    record =
-                        ExerciseLapRecord.Builder(
-                            getMetaData(context),
-                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant
-                        )
-                            .setLength(
-                                Length.fromMeters(
-                                    mFieldNameToFieldInput["mLength"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()
-                                )
-                            )
-                            .build()
-                }
-                ExerciseEventRecord::class -> {
-                    record =
-                        ExerciseEventRecord.Builder(
-                            getMetaData(context),
-                            mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                            mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                            mFieldNameToFieldInput["mEventType"]?.getFieldValue() as Int
                         )
                             .build()
                 }

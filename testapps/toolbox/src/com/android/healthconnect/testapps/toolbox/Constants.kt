@@ -18,8 +18,6 @@ import android.healthconnect.datatypes.BasalMetabolicRateRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
-import android.healthconnect.datatypes.ExerciseEventRecord
-import android.healthconnect.datatypes.ExerciseLapRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
@@ -152,8 +150,6 @@ object Constants {
                 HealthPermissionType.ACTIVE_CALORIES_BURNED,
                 HealthPermissionType.DISTANCE,
                 HealthPermissionType.ELEVATION_GAINED,
-                HealthPermissionType.EXERCISE_EVENT,
-                HealthPermissionType.EXERCISE_LAP,
                 HealthPermissionType.FLOORS_CLIMBED,
                 HealthPermissionType.POWER,
                 HealthPermissionType.SPEED,
@@ -212,8 +208,6 @@ object Constants {
             ActiveCaloriesBurnedRecord::class, R.string.active_calories_burned_label),
         DISTANCE(DistanceRecord::class, R.string.distance_label),
         ELEVATION_GAINED(ElevationGainedRecord::class, R.string.elevation_gained_label),
-        EXERCISE_EVENT(ExerciseEventRecord::class, R.string.exercise_event_label),
-        EXERCISE_LAP(ExerciseLapRecord::class, R.string.exercise_lap_label),
         FLOORS_CLIMBED(null, R.string.floors_climbed_label),
         STEPS(StepsRecord::class, R.string.steps_label),
         TOTAL_CALORIES_BURNED(null, R.string.total_calories_burned_label),
