@@ -96,6 +96,7 @@ import android.os.Binder;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
+import android.os.Trace;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
 import android.util.ArrayMap;
@@ -157,6 +158,7 @@ import java.util.stream.Stream;
  * @hide
  */
 final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
+
     // Key for storing the current data download state
     @VisibleForTesting static final String DATA_DOWNLOAD_STATE_KEY = "DATA_DOWNLOAD_STATE_KEY";
 
@@ -187,6 +189,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
     // Key for storing the error restoring HC data.
     private static final String DATA_RESTORE_ERROR_KEY = "data_restore_error_key";
+
+    private static final String TAG_INSERT = "HealthConnectInsert";
+    private static final String TAG_READ = "HealthConnectRead";
+    private static final String TAG_GRANT_PERMISSION = "HealthConnectGrantReadPermissions";
+    private static final String TAG_READ_PERMISSION = "HealthConnectReadPermission";
+    private static final String TAG_INSERT_SUBTASKS = "HealthConnectInsertSubtasks";
+    private static final String TAG_READ_SUBTASKS = "HealthConnectReadSubtasks";
+    private static final int TRACE_TAG_INSERT = TAG_INSERT.hashCode();
+    private static final int TRACE_TAG_READ = TAG_READ.hashCode();
+    private static final int TRACE_TAG_GRANT_PERMISSION = TAG_GRANT_PERMISSION.hashCode();
+    private static final int TRACE_TAG_READ_PERMISSION = TAG_READ_PERMISSION.hashCode();
+    private static final int TRACE_TAG_INSERT_SUBTASKS = TAG_INSERT_SUBTASKS.hashCode();
+    private static final int TRACE_TAG_READ_SUBTASKS = TAG_READ_SUBTASKS.hashCode();
 
     private final TransactionManager mTransactionManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
@@ -221,7 +236,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
+        Trace.traceBegin(TRACE_TAG_GRANT_PERMISSION, TAG_GRANT_PERMISSION);
         mPermissionHelper.grantHealthPermission(packageName, permissionName, user);
+        Trace.traceEnd(TRACE_TAG_GRANT_PERMISSION);
     }
 
     @Override
@@ -242,7 +259,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
-        return mPermissionHelper.getGrantedHealthPermissions(packageName, user);
+        Trace.traceBegin(TRACE_TAG_READ_PERMISSION, TAG_READ_PERMISSION);
+        List<String> grantedPermissions =
+                mPermissionHelper.getGrantedHealthPermissions(packageName, user);
+        Trace.traceEnd(TRACE_TAG_READ_PERMISSION);
+        return grantedPermissions;
     }
 
     @Override
@@ -277,6 +298,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
+                    Trace.traceBegin(TRACE_TAG_INSERT, TAG_INSERT);
                     try {
                         List<String> uuids =
                                 mTransactionManager.insertAll(
@@ -287,15 +309,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 /* isInsertRequest */ true));
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                         HealthConnectThreadScheduler.scheduleInternalTask(
-                                () ->
-                                        ActivityDateHelper.getInstance()
-                                                .insertRecordDate(recordsParcel.getRecords()));
+                                () -> {
+                                    Trace.traceBegin(
+                                            TRACE_TAG_INSERT_SUBTASKS,
+                                            TAG_INSERT.concat("InsertRecordDate"));
+                                    ActivityDateHelper.getInstance()
+                                            .insertRecordDate(recordsParcel.getRecords());
+                                    Trace.traceEnd(TRACE_TAG_INSERT_SUBTASKS);
+                                });
                         finishDataDeliveryWriteRecords(recordInternals, uid);
+                        Trace.traceEnd(TRACE_TAG_INSERT);
                     } catch (SQLiteException sqLiteException) {
+                        Trace.traceEnd(TRACE_TAG_INSERT);
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (Exception e) {
+                        Trace.traceEnd(TRACE_TAG_INSERT);
                         Slog.e(TAG, "Exception: ", e);
                         tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
                     }
@@ -398,6 +428,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
+                    Trace.traceBegin(TRACE_TAG_READ, TAG_READ);
                     try {
                         try {
                             long startDateAccess = request.getStartTime();
@@ -433,15 +464,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             // Calls from controller APK should not be recorded in access logs.
                             if (!holdsDataManagementPermission) {
                                 HealthConnectThreadScheduler.scheduleInternalTask(
-                                        () ->
-                                                AccessLogsHelper.getInstance()
-                                                        .addAccessLog(
-                                                                packageName,
-                                                                Collections.singletonList(
-                                                                        request.getRecordType()),
-                                                                READ));
+                                        () -> {
+                                            Trace.traceBegin(
+                                                    TRACE_TAG_READ_SUBTASKS,
+                                                    TAG_READ.concat("AddAccessLog"));
+                                            AccessLogsHelper.getInstance()
+                                                    .addAccessLog(
+                                                            packageName,
+                                                            Collections.singletonList(
+                                                                    request.getRecordType()),
+                                                            READ);
+                                            Trace.traceEnd(TRACE_TAG_READ_SUBTASKS);
+                                        });
                             }
                             finishDataDeliveryRead(request.getRecordType(), uid);
+                            Trace.traceEnd(TRACE_TAG_READ);
                         } catch (TypeNotPresentException exception) {
                             // All the requested package names are not present, so simply
                             // return an empty list
@@ -451,16 +488,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         new ReadRecordsResponseParcel(
                                                 new RecordsParcel(new ArrayList<>()),
                                                 DEFAULT_LONG));
+                                Trace.traceEnd(TRACE_TAG_READ);
                             } else {
+                                Trace.traceEnd(TRACE_TAG_READ);
                                 throw exception;
                             }
                         }
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "Exception: ", sqLiteException);
+                        Trace.traceEnd(TRACE_TAG_READ);
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
+                        Trace.traceEnd(TRACE_TAG_READ);
                         tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
                     }
                 },
@@ -1404,6 +1445,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private void finishDataDeliveryRead(List<Integer> recordTypeIds, int uid) {
+        Trace.traceBegin(TRACE_TAG_READ_SUBTASKS, TAG_READ.concat("FinishDataDeliveryRead"));
+
         try {
             for (Integer recordTypeId : recordTypeIds) {
                 String permissionName =
@@ -1416,15 +1459,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (Exception exception) {
             // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
         }
+        Trace.traceEnd(TRACE_TAG_READ_SUBTASKS);
     }
 
     private void finishDataDeliveryWriteRecords(List<RecordInternal<?>> recordInternals, int uid) {
+        Trace.traceBegin(TRACE_TAG_READ_SUBTASKS, TAG_READ.concat(".FinishDataDeliveryWrite"));
         Set<Integer> recordTypeIdsToEnforce = new ArraySet<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             recordTypeIdsToEnforce.add(recordInternal.getRecordType());
         }
 
         finishDataDeliveryWrite(recordTypeIdsToEnforce.stream().toList(), uid);
+        Trace.traceEnd(TRACE_TAG_READ_SUBTASKS);
     }
 
     private void finishDataDeliveryWrite(List<Integer> recordTypeIds, int uid) {

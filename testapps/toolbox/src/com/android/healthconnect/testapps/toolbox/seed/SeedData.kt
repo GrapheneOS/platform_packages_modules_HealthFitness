@@ -16,7 +16,6 @@
 package com.android.healthconnect.testapps.toolbox.seed
 
 import android.content.Context
-import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
@@ -33,115 +32,98 @@ import android.health.connect.datatypes.units.Length
 import android.health.connect.datatypes.units.Mass
 import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
-import android.util.Log
-import android.widget.Toast
+import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.insertRecords
 import java.time.Duration.ofDays
 import java.time.Duration.ofMinutes
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Random
+import kotlinx.coroutines.runBlocking
 
-class SeedData(private val context: Context) {
+class SeedData(private val context: Context, private val manager: HealthConnectManager) {
 
     companion object {
         private const val TAG = "SeedData"
+        const val NUMBER_OF_INTERVAL_RECORDS_TO_INSERT = 2000L
+        const val NUMBER_OF_SERIES_RECORDS_TO_INSERT = 200L
     }
-
-    private val manager by lazy { context.getSystemService(HealthConnectManager::class.java) }
 
     fun seedData() {
-        seedStepsData()
-        seedHeartRateData()
-        seedBodyMeasurementData()
-        seedMenstruationData()
+        runBlocking {
+            seedBodyMeasurementData()
+            seedMenstruationData()
+            seedStepsData(NUMBER_OF_INTERVAL_RECORDS_TO_INSERT)
+            seedHeartRateData(NUMBER_OF_SERIES_RECORDS_TO_INSERT)
+        }
     }
 
-    private fun seedBodyMeasurementData() {
-        val records = mutableListOf<Record>()
-        records.add(
-            HeightRecord.Builder(getMetaData(), Instant.now(), Length.fromMeters(1.75)).build()
-        )
-        records.add(
-            WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromKilograms(70.0)).build()
-        )
-        insertRecord(records)
-    }
-
-    private fun seedStepsData() {
+    suspend fun seedStepsData(numberOfRecords: Long) {
         val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val records =
-            (1L..100L).map { count -> getStepsRecord(count, start.plus(ofMinutes(count))) }
-        insertRecord(records)
+            (1L..numberOfRecords).map { count ->
+                getStepsRecord(count, start.plus(ofMinutes(count)))
+            }
+
+        insertRecords(records, manager)
     }
 
-    private fun seedMenstruationData() {
+    private suspend fun seedBodyMeasurementData() {
+        val records = mutableListOf<Record>()
+        records.add(
+            HeightRecord.Builder(getMetaData(), Instant.now(), Length.fromMeters(1.75)).build())
+        records.add(
+            WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromKilograms(70.0)).build())
+        insertRecords(records, manager)
+    }
+
+    private suspend fun seedMenstruationData() {
         val today = Instant.now()
         val periodRecord =
             MenstruationPeriodRecord.Builder(getMetaData(), today.minus(ofDays(5L)), today).build()
         val flowRecords =
             (-5..0).map { days ->
                 MenstruationFlowRecord.Builder(
-                    getMetaData(),
-                    today.minus(ofDays(days.toLong())),
-                    MenstruationFlowType.FLOW_MEDIUM
-                )
+                        getMetaData(),
+                        today.minus(ofDays(days.toLong())),
+                        MenstruationFlowType.FLOW_MEDIUM)
                     .build()
             }
-        insertRecord(
+        insertRecords(
             buildList {
                 add(periodRecord)
                 addAll(flowRecords)
-            })
+            },
+            manager)
     }
 
-    private fun seedHeartRateData() {
+    suspend fun seedHeartRateData(numberOfRecords: Long) {
         val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val random = Random()
         val records =
-            (0L..100L).map { timeOffset ->
+            (1L..numberOfRecords).map { timeOffset ->
                 val hrSamples = ArrayList<Pair<Long, Instant>>()
                 repeat(100) { i ->
                     hrSamples.add(
-                        Pair(getValidHeartRate(random), start.plus(ofMinutes(timeOffset + i)))
-                    )
+                        Pair(getValidHeartRate(random), start.plus(ofMinutes(timeOffset + i))))
                 }
                 getHeartRateRecord(
                     hrSamples,
                     start.plus(ofMinutes(timeOffset)),
-                    start.plus(ofMinutes(timeOffset + 100))
-                )
+                    start.plus(ofMinutes(timeOffset + 100)))
             }
-        insertRecord(records)
-    }
-
-    private fun <T : Record> insertRecord(records: List<T>) {
-        try {
-            manager.insertRecords(records, Runnable::run) { response ->
-                Log.i(TAG, "onResult: ${response.records.size}")
-                Toast.makeText(
-                    context,
-                    "${response.records.size} steps records added!",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        } catch (ex: HealthConnectException) {
-            Toast.makeText(context, "Failed to insert steps records! $ex", Toast.LENGTH_SHORT)
-                .show()
-            Log.e(TAG, "Failed to insert steps records!", ex)
-        }
+        insertRecords(records, manager)
     }
 
     private fun getHeartRateRecord(
         heartRateValues: List<Pair<Long, Instant>>,
         start: Instant,
-        end: Instant
+        end: Instant,
     ): HeartRateRecord {
         return HeartRateRecord.Builder(
-            getMetaData(),
-            start,
-            end,
-            heartRateValues.map { HeartRateRecord.HeartRateSample(it.first, it.second) })
+                getMetaData(),
+                start,
+                end,
+                heartRateValues.map { HeartRateRecord.HeartRateSample(it.first, it.second) })
             .build()
     }
 
