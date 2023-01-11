@@ -45,6 +45,8 @@ public final class AggregationType<T> {
     public static final int AVG = 2;
     /** @hide */
     public static final int SUM = 3;
+    /** @hide */
+    public static final int COUNT = 4;
 
     @AggregationTypeIdentifier.Id private final int mId;
     @AggregateOperationType private final int mType;
@@ -167,6 +169,7 @@ public final class AggregationType<T> {
         int WEIGHT_RECORD_WEIGHT_MAX = 61;
         int WEIGHT_RECORD_WEIGHT_MIN = 62;
         int WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL = 63;
+        int HEART_RATE_RECORD_MEASUREMENTS_COUNT = 64;
 
         /** @hide */
         @IntDef({
@@ -233,14 +236,15 @@ public final class AggregationType<T> {
             WEIGHT_RECORD_WEIGHT_AVG,
             WEIGHT_RECORD_WEIGHT_MAX,
             WEIGHT_RECORD_WEIGHT_MIN,
-            WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL
+            WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL,
+            HEART_RATE_RECORD_MEASUREMENTS_COUNT
         })
         @Retention(RetentionPolicy.SOURCE)
         @interface Id {}
     }
 
     /** @hide */
-    @IntDef({MAX, MIN, AVG, SUM})
+    @IntDef({MAX, MIN, AVG, SUM, COUNT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface AggregateOperationType {}
 }

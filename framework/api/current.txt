@@ -598,6 +598,7 @@ package android.healthconnect.datatypes {
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_AVG;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
     field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
+    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> HEART_MEASUREMENTS_COUNT;
   }
 
   public static final class HeartRateRecord.Builder {

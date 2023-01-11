@@ -19,6 +19,7 @@ package android.healthconnect.cts;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
+import static android.healthconnect.datatypes.HeartRateRecord.HEART_MEASUREMENTS_COUNT;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -566,6 +567,47 @@ public class HeartRateRecordTest {
             assertThat(response.getZoneOffset(BPM_MIN))
                     .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
         }
+    }
+
+    @Test
+    public void testHeartAggregation_measurement_count() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        TestUtils.getHeartRateRecord(71),
+                        TestUtils.getHeartRateRecord(72),
+                        TestUtils.getHeartRateRecord(73));
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(HEART_MEASUREMENTS_COUNT)
+                                .addAggregationType(BPM_MAX)
+                                .build(),
+                        records);
+        List<Record> recordsNew =
+                Arrays.asList(
+                        TestUtils.getHeartRateRecord(71),
+                        TestUtils.getHeartRateRecord(72),
+                        TestUtils.getHeartRateRecord(73));
+        AggregateRecordsResponse<Long> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeRangeFilter.Builder(
+                                                        Instant.ofEpochMilli(0),
+                                                        Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(HEART_MEASUREMENTS_COUNT)
+                                .build(),
+                        recordsNew);
+        assertThat(newResponse.get(HEART_MEASUREMENTS_COUNT)).isNotNull();
+        assertThat(response.get(HEART_MEASUREMENTS_COUNT)).isNotNull();
+        assertThat(
+                        newResponse.get(HEART_MEASUREMENTS_COUNT)
+                                - response.get(HEART_MEASUREMENTS_COUNT))
+                .isEqualTo(6);
     }
 
     private void insertHeartRateRecordsWithDelay(long delayInMillis, int times)

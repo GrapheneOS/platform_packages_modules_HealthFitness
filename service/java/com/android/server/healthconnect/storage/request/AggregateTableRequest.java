@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.storage.request;
 
 import static android.healthconnect.datatypes.AggregationType.AVG;
+import static android.healthconnect.datatypes.AggregationType.COUNT;
 import static android.healthconnect.datatypes.AggregationType.MAX;
 import static android.healthconnect.datatypes.AggregationType.MIN;
 import static android.healthconnect.datatypes.AggregationType.SUM;
@@ -252,6 +253,8 @@ public class AggregateTableRequest {
                 return "AVG";
             case SUM:
                 return "SUM";
+            case COUNT:
+                return "COUNT";
             default:
                 return null;
         }

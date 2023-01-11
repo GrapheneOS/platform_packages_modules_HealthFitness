@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_AVG;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MAX;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MIN;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_MEASUREMENTS_COUNT;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
@@ -61,6 +62,7 @@ public class HeartRateRecordHelper
             case HEART_RATE_RECORD_BPM_MAX:
             case HEART_RATE_RECORD_BPM_MIN:
             case HEART_RATE_RECORD_BPM_AVG:
+            case HEART_RATE_RECORD_MEASUREMENTS_COUNT:
                 return new AggregateResult<>(
                                 results.getLong(
                                         results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME)))
@@ -81,6 +83,7 @@ public class HeartRateRecordHelper
             case HEART_RATE_RECORD_BPM_MAX:
             case HEART_RATE_RECORD_BPM_MIN:
             case HEART_RATE_RECORD_BPM_AVG:
+            case HEART_RATE_RECORD_MEASUREMENTS_COUNT:
                 return new AggregateParams(
                                 SERIES_TABLE_NAME,
                                 Collections.singletonList(BEATS_PER_MINUTE_COLUMN_NAME),

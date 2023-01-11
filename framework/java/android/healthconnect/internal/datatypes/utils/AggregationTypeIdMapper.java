@@ -24,6 +24,7 @@ import static android.healthconnect.datatypes.FloorsClimbedRecord.FLOORS_CLIMBED
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
+import static android.healthconnect.datatypes.HeartRateRecord.HEART_MEASUREMENTS_COUNT;
 import static android.healthconnect.datatypes.HeightRecord.HEIGHT_AVG;
 import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MAX;
 import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MIN;
@@ -102,7 +103,7 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    private static final int MAP_SIZE = 64;
+    private static final int MAP_SIZE = 65;
     private static AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
@@ -122,7 +123,8 @@ public final class AggregationTypeIdMapper {
                         FLOORS_CLIMBED_TOTAL,
                         RestingHeartRateRecord.BPM_MAX,
                         RestingHeartRateRecord.BPM_MIN,
-                        WHEEL_CHAIR_PUSHES_COUNT_TOTAL));
+                        WHEEL_CHAIR_PUSHES_COUNT_TOTAL,
+                        HEART_MEASUREMENTS_COUNT));
         addPowerIdsToAggregateResultMap(
                 Arrays.asList(BASAL_CALORIES_TOTAL, POWER_MIN, POWER_MAX, POWER_AVG));
         addEnergyIdsToAggregateResultMap(

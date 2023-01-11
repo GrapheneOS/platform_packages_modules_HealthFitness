@@ -19,6 +19,7 @@ package android.healthconnect.datatypes;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_AVG;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MAX;
 import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MIN;
+import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_MEASUREMENTS_COUNT;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 
 import android.annotation.NonNull;
@@ -63,6 +64,18 @@ public final class HeartRateRecord extends IntervalRecord {
             new AggregationType<>(
                     HEART_RATE_RECORD_BPM_AVG,
                     AggregationType.AVG,
+                    RECORD_TYPE_HEART_RATE,
+                    Long.class);
+
+    /**
+     * Metric identifier to retrieve the number of heart rate measurements using aggregate APIs in
+     * {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Long> HEART_MEASUREMENTS_COUNT =
+            new AggregationType<>(
+                    HEART_RATE_RECORD_MEASUREMENTS_COUNT,
+                    AggregationType.COUNT,
                     RECORD_TYPE_HEART_RATE,
                     Long.class);
 
