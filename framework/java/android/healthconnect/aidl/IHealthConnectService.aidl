@@ -12,7 +12,7 @@ import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.RecordsParcel;
-import android.healthconnect.aidl.IMigrationExceptionCallback;
+import android.healthconnect.aidl.IMigrationCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -183,21 +183,26 @@ interface IHealthConnectService {
 
     /**
      * Marks the start of the migration.
+     *
+     * @param callback Callback to receive a result or an error encountered while performing this
+     * operation.
      */
-    void startMigration();
+    void startMigration(in IMigrationCallback callback);
 
     /**
      * Marks the end of the migration.
+     *
+     * @param callback Callback to receive a result or an error encountered while performing this
+     * operation.
      */
-    void finishMigration();
+    void finishMigration(in IMigrationCallback callback);
 
     /**
      * Writes given entities to the module database.
      *
      * @param entities List of {@link MigrationDataEntity} to migrate.
-     * @param callback Callback to receive any error encountered while performing this operation.
+     * @param callback Callback to receive a result or an error encountered while performing this
+     * operation.
      */
-    void writeMigrationData(
-        in List<MigrationDataEntity> entities,
-        in IMigrationExceptionCallback callback);
+    void writeMigrationData(in List<MigrationDataEntity> entities, in IMigrationCallback callback);
 }
