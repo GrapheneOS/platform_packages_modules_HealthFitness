@@ -205,7 +205,9 @@ public final class HealthConnectPermissionHelper {
         if (HealthPermissions.isWritePermission(permissionName)) {
             HealthDataCategoryPriorityHelper.getInstance()
                     .appendToPriorityList(
-                            packageName, HealthPermissions.getHealthDataCategory(permissionName));
+                            packageName,
+                            HealthPermissions.getHealthDataCategory(permissionName),
+                            mContext);
         }
     }
 

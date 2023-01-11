@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -23,6 +24,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.HealthDataCategory;
@@ -90,10 +92,12 @@ public class HealthDataCategoryPriorityHelper {
     }
 
     public void appendToPriorityList(
-            @NonNull String packageName, @HealthDataCategory.Type int dataCategory) {
+            @NonNull String packageName,
+            @HealthDataCategory.Type int dataCategory,
+            Context context) {
         List<Long> newPriorityOrder;
         getHealthDataCategoryToAppIdPriorityMap().putIfAbsent(dataCategory, new ArrayList<>());
-        long appInfoId = AppInfoHelper.getInstance().getAppInfoId(packageName);
+        long appInfoId = AppInfoHelper.getInstance().getOrInsertAppInfoId(packageName, context);
         if (getHealthDataCategoryToAppIdPriorityMap().get(dataCategory).contains(appInfoId)) {
             return;
         }
