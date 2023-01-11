@@ -953,8 +953,8 @@ package android.healthconnect.datatypes {
   public static class SleepSessionRecord.Stage {
     ctor public SleepSessionRecord.Stage(@NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public java.time.Instant getEndTime();
-    method public int getStage();
     method @NonNull public java.time.Instant getStartTime();
+    method public int getType();
   }
 
   public static final class SleepSessionRecord.StageType {
