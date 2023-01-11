@@ -18,6 +18,7 @@ package android.healthconnect.datatypes;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.graphics.Bitmap;
 
 import java.util.Objects;
 
@@ -26,8 +27,8 @@ public final class AppInfo {
     /** Application name/label */
     private final String mName;
 
-    /** Application icon as byte array */
-    private final byte[] mIcon;
+    /** Application icon as bitmap */
+    private final Bitmap mIcon;
 
     /** Application package name */
     private final String mPackageName;
@@ -40,14 +41,14 @@ public final class AppInfo {
     public static final class Builder {
         private final String mPackageName;
         private final String mName;
-        private final byte[] mIcon;
+        private final Bitmap mIcon;
 
         /**
          * @param packageName package name of the application
          * @param name name/label of the application. Optional
          * @param icon icon of the application. Optional.
          */
-        public Builder(@NonNull String packageName, @Nullable String name, @Nullable byte[] icon) {
+        public Builder(@NonNull String packageName, @Nullable String name, @Nullable Bitmap icon) {
             Objects.requireNonNull(packageName);
             mPackageName = packageName;
             mName = name;
@@ -63,7 +64,7 @@ public final class AppInfo {
         }
     }
 
-    private AppInfo(@NonNull String packageName, @Nullable String name, @Nullable byte[] icon) {
+    private AppInfo(@NonNull String packageName, @Nullable String name, @Nullable Bitmap icon) {
         Objects.requireNonNull(packageName);
         mPackageName = packageName;
         mName = name;
@@ -76,9 +77,9 @@ public final class AppInfo {
         return mPackageName;
     }
 
-    /** Returns the application icon as byte array */
+    /** Returns the application icon as bitmap */
     @Nullable
-    public byte[] getIcon() {
+    public Bitmap getIcon() {
         return mIcon;
     }
 
