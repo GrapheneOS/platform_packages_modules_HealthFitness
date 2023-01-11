@@ -33,8 +33,6 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_C
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_EVENT;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_LAP;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEIGHT;
@@ -51,7 +49,6 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_S
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SWIMMING_STROKES;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
@@ -85,13 +82,10 @@ public final class RecordTypeRecordCategoryMapper {
                         put(RECORD_TYPE_DISTANCE, ACTIVITY);
                         put(RECORD_TYPE_WHEELCHAIR_PUSHES, ACTIVITY);
                         put(RECORD_TYPE_TOTAL_CALORIES_BURNED, ACTIVITY);
-                        put(RECORD_TYPE_SWIMMING_STROKES, ACTIVITY);
                         put(RECORD_TYPE_FLOORS_CLIMBED, ACTIVITY);
                         put(RECORD_TYPE_ELEVATION_GAINED, ACTIVITY);
                         put(RECORD_TYPE_ACTIVE_CALORIES_BURNED, ACTIVITY);
                         put(RECORD_TYPE_HYDRATION, NUTRITION);
-                        put(RECORD_TYPE_EXERCISE_EVENT, ACTIVITY);
-                        put(RECORD_TYPE_EXERCISE_LAP, ACTIVITY);
                         put(RECORD_TYPE_NUTRITION, NUTRITION);
                         put(RECORD_TYPE_RESPIRATORY_RATE, VITALS);
                         put(RECORD_TYPE_BONE_MASS, BODY_MEASUREMENTS);

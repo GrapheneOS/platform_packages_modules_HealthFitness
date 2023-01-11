@@ -32,8 +32,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.CervicalMucusRec
 import com.android.server.healthconnect.storage.datatypehelpers.CyclingPedalingCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ElevationGainedRecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ExerciseEventRecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ExerciseLapRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.FloorsClimbedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeightRecordHelper;
@@ -51,7 +49,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.SexualActivityRe
 import com.android.server.healthconnect.storage.datatypehelpers.SpeedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.SwimmingStrokesRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.TotalCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.Vo2MaxRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.WeightRecordHelper;
@@ -74,11 +71,7 @@ public final class RecordHelperProvider {
         Map<Integer, RecordHelper<?>> recordIDToHelperMap = new ArrayMap<>();
         recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_STEPS, new StepsRecordHelper());
         recordIDToHelperMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_EVENT, new ExerciseEventRecordHelper());
-        recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_DISTANCE, new DistanceRecordHelper());
-        recordIDToHelperMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_LAP, new ExerciseLapRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
                 new ElevationGainedRecordHelper());
@@ -91,9 +84,6 @@ public final class RecordHelperProvider {
                 RecordTypeIdentifier.RECORD_TYPE_HYDRATION, new HydrationRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_NUTRITION, new NutritionRecordHelper());
-        recordIDToHelperMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_SWIMMING_STROKES,
-                new SwimmingStrokesRecordHelper());
 
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES,

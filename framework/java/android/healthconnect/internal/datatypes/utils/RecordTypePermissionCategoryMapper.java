@@ -28,8 +28,6 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_C
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_EVENT;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_LAP;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEIGHT;
@@ -46,7 +44,6 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_S
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SWIMMING_STROKES;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
@@ -90,7 +87,6 @@ public final class RecordTypePermissionCategoryMapper {
                         put(
                                 RECORD_TYPE_TOTAL_CALORIES_BURNED,
                                 HealthPermissionCategory.TOTAL_CALORIES_BURNED);
-                        put(RECORD_TYPE_SWIMMING_STROKES, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_FLOORS_CLIMBED, HealthPermissionCategory.FLOORS_CLIMBED);
                         put(
                                 RECORD_TYPE_ELEVATION_GAINED,
@@ -99,8 +95,6 @@ public final class RecordTypePermissionCategoryMapper {
                                 RECORD_TYPE_ACTIVE_CALORIES_BURNED,
                                 HealthPermissionCategory.ACTIVE_CALORIES_BURNED);
                         put(RECORD_TYPE_HYDRATION, HealthPermissionCategory.HYDRATION);
-                        put(RECORD_TYPE_EXERCISE_EVENT, HealthPermissionCategory.EXERCISE);
-                        put(RECORD_TYPE_EXERCISE_LAP, HealthPermissionCategory.EXERCISE);
                         put(RECORD_TYPE_NUTRITION, HealthPermissionCategory.NUTRITION);
                         put(
                                 RECORD_TYPE_BASAL_BODY_TEMPERATURE,
