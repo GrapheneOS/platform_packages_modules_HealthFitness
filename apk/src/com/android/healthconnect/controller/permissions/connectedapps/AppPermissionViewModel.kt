@@ -25,25 +25,27 @@ import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermi
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedApps.LoadAppPermissionsStatusUseCase
+import com.android.healthconnect.controller.permissions.connectedapps.settings.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.Instant
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 
 /** View model for {@link ConnectedAppFragment} . */
 @HiltViewModel
 class AppPermissionViewModel
 @Inject
 constructor(
-    private val appInfoReader: AppInfoReader,
-    private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
-    private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
-    private val revokePermissionsStatusUseCase: RevokeHealthPermissionUseCase,
-    private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
-    private val deleteAppDataUseCase: DeleteAppDataUseCase,
+        private val appInfoReader: AppInfoReader,
+        private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
+        private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
+        private val revokePermissionsStatusUseCase: RevokeHealthPermissionUseCase,
+        private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
+        private val deleteAppDataUseCase: DeleteAppDataUseCase,
+        private val loadAccessDateUseCase: LoadAccessDateUseCase
 ) : ViewModel() {
 
     private val _appPermissions = MutableLiveData<List<HealthPermissionStatus>>(emptyList())
@@ -75,6 +77,10 @@ constructor(
         viewModelScope.launch { _appInfo.postValue(appInfoReader.getAppMetadata(packageName)) }
     }
 
+    fun loadAccessDate(packageName: String): Instant? {
+        return loadAccessDateUseCase.invoke(packageName)
+    }
+
     fun updatePermission(packageName: String, healthPermission: HealthPermission, grant: Boolean) {
         if (grant) {
             grantPermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
@@ -104,7 +110,7 @@ constructor(
         viewModelScope.launch {
             val appData = DeletionType.DeletionTypeAppData(packageName, appName)
             val timeRangeFilter =
-                TimeRangeFilter.Builder(Instant.EPOCH, Instant.ofEpochMilli(Long.MAX_VALUE)).build()
+                    TimeRangeFilter.Builder(Instant.EPOCH, Instant.ofEpochMilli(Long.MAX_VALUE)).build()
             deleteAppDataUseCase.invoke(appData, timeRangeFilter)
         }
     }
