@@ -183,7 +183,7 @@ public class DeleteTableRequest {
         Objects.requireNonNull(timeColumnName);
 
         // Return if the params will result in no impact on the query
-        if (endTime < 0 || startTime < 0 || endTime > startTime) {
+        if (endTime < 0 || startTime < 0 || endTime < startTime) {
             return this;
         }
 
