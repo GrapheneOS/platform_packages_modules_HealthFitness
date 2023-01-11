@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -13,6 +15,8 @@
  */
 package com.android.healthconnect.controller.tests.autodelete
 
+import android.os.Bundle
+import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -23,17 +27,23 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.autodelete.AutoDeleteFragment
+import com.android.healthconnect.controller.autodelete.AutoDeleteRange
+import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
 
 @HiltAndroidTest
 class AutoDeleteFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
+    @BindValue val viewModel: AutoDeleteViewModel = Mockito.mock(AutoDeleteViewModel::class.java)
 
     @Before
     fun setup() {
@@ -41,8 +51,14 @@ class AutoDeleteFragmentTest {
     }
 
     @Test
+    @Throws(java.lang.Exception::class)
     fun autoDeleteFragment_isDisplayed() {
-        launchFragment<AutoDeleteFragment>()
+        Mockito.`when`(viewModel.storedAutoDeleteRange).then {
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        }
+        launchFragment<AutoDeleteFragment>(Bundle())
 
         onView(
                 withText(
@@ -59,16 +75,38 @@ class AutoDeleteFragmentTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun autoDelete_checkDefaultRange_defaultRangeIsNever() {
-        launchFragment<AutoDeleteFragment>()
+    @Throws(java.lang.Exception::class)
+    fun autoDelete_checkDefaultRange_defaultRange() {
+        Mockito.`when`(viewModel.storedAutoDeleteRange).then {
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        }
+        Mockito.`when`(viewModel.newAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS)
+        }
+        Mockito.`when`(viewModel.oldAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
+        }
+        launchFragment<AutoDeleteFragment>(Bundle())
         onView(withId(R.id.radio_button_never)).check(matches(isChecked()))
     }
 
     @Test
     @Throws(java.lang.Exception::class)
-    fun autoDelete_setRangeTo3Months_confirmationDialog() {
-        launchFragment<AutoDeleteFragment>()
+    fun autoDelete_setRangeTo3Months_saveChanges() {
+        Mockito.`when`(viewModel.storedAutoDeleteRange).then {
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        }
+        Mockito.`when`(viewModel.newAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS)
+        }
+        Mockito.`when`(viewModel.oldAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
+        }
+        launchFragment<AutoDeleteFragment>(Bundle())
 
         onView(withId(R.id.radio_button_3_months)).perform(click())
         onView(withText("Auto-delete data after 3 months?"))
@@ -81,12 +119,27 @@ class AutoDeleteFragmentTest {
             .check(matches(isDisplayed()))
         onView(withText("Set auto-delete")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+
+        onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
+
+        onView(withId(R.id.radio_button_3_months)).check(matches(isChecked()))
     }
 
     @Test
     @Throws(java.lang.Exception::class)
-    fun autoDelete_setRangeTo18Months_confirmationDialog() {
-        launchFragment<AutoDeleteFragment>()
+    fun autoDelete_setRangeTo18Months_confirmationDialog_saveChanges() {
+        Mockito.`when`(viewModel.storedAutoDeleteRange).then {
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        }
+        Mockito.`when`(viewModel.newAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS)
+        }
+        Mockito.`when`(viewModel.oldAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
+        }
+        launchFragment<AutoDeleteFragment>(Bundle())
 
         onView(withId(R.id.radio_button_18_months)).perform(click())
         onView(withText("Auto-delete data after 18 months?"))
@@ -99,5 +152,9 @@ class AutoDeleteFragmentTest {
             .check(matches(isDisplayed()))
         onView(withText("Set auto-delete")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+
+        onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
+
+        onView(withId(R.id.radio_button_18_months)).check(matches(isChecked()))
     }
 }

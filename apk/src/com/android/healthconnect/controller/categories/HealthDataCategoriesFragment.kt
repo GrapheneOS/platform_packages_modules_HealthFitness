@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -13,9 +15,11 @@
  */
 package com.android.healthconnect.controller.categories
 
+import android.icu.text.MessageFormat
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -23,6 +27,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.autodelete.AutoDeleteRange
+import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
+import com.android.healthconnect.controller.autodelete.numberOfMonths
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -43,6 +50,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     }
 
     private val viewModel: HealthDataCategoryViewModel by viewModels()
+    private val autoDeleteViewModel: AutoDeleteViewModel by activityViewModels()
 
     private val mBrowseDataCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(BROWSE_DATA_CATEGORY)
@@ -78,6 +86,22 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
         setTitle(R.string.data_title)
     }
 
+    private fun buildSummary(autoDeleteRange: AutoDeleteRange): String {
+        return when (autoDeleteRange) {
+            AutoDeleteRange.AUTO_DELETE_RANGE_NEVER -> getString(R.string.range_never)
+            AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS -> {
+                val count = numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS)
+                MessageFormat.format(
+                    getString(R.string.range_after_x_months), mapOf("count" to count))
+            }
+            AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS -> {
+                val count = numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS)
+                MessageFormat.format(
+                    getString(R.string.range_after_x_months), mapOf("count" to count))
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.categoriesData.observe(viewLifecycleOwner) { state ->
@@ -85,6 +109,20 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                 is HealthDataCategoryViewModel.CategoriesFragmentState.Loading -> {}
                 is HealthDataCategoryViewModel.CategoriesFragmentState.WithData -> {
                     updateDataList(state.categories)
+                }
+            }
+        }
+
+        autoDeleteViewModel.storedAutoDeleteRange.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                AutoDeleteViewModel.AutoDeleteState.Loading -> {
+                    mAutoDelete?.summary = ""
+                }
+                is AutoDeleteViewModel.AutoDeleteState.LoadingFailed -> {
+                    mAutoDelete?.summary = ""
+                }
+                is AutoDeleteViewModel.AutoDeleteState.WithData -> {
+                    mAutoDelete?.summary = buildSummary(state.autoDeleteRange)
                 }
             }
         }

@@ -17,11 +17,13 @@ package com.android.healthconnect.controller.autodelete
 
 import android.content.Context
 import android.icu.text.MessageFormat
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
@@ -34,9 +36,13 @@ import com.android.healthconnect.controller.R
 class AutoDeleteRangePickerPreference
 constructor(
     context: Context,
-    private val _childFragmentManager: FragmentManager,
-    private var autoDeleteRange: AutoDeleteRange
+    private val childFragmentManager: FragmentManager,
+    private val autoDeleteRange: AutoDeleteRange
 ) : Preference(context), RadioGroup.OnCheckedChangeListener {
+
+    companion object {
+        const val SET_TO_NEVER_EVENT = "SET_TO_NEVER_EVENT"
+    }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {
         super.onBindViewHolder(holder)
@@ -58,8 +64,8 @@ constructor(
         }
 
         val radioGroup: RadioGroup = holder.findViewById(R.id.radio_group) as RadioGroup
-        setCheckedRadioButton(radioGroup, autoDeleteRange)
         setRadioButtonTexts(radioGroup)
+
         radioGroup.setOnCheckedChangeListener(null)
         setCheckedRadioButton(radioGroup, autoDeleteRange)
         radioGroup.setOnCheckedChangeListener(this)
@@ -91,21 +97,20 @@ constructor(
 
     private fun setToNeverOrAskConfirmation(chosenId: Int) {
         if (chosenId == R.id.radio_button_never) {
-            updateAutoDeleteRange(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
+            childFragmentManager.setFragmentResult(SET_TO_NEVER_EVENT, Bundle())
             return
         }
-        if (chosenId == R.id.radio_button_3_months) {
-            autoDeleteRange = AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS
-        } else if (chosenId == R.id.radio_button_18_months) {
-            autoDeleteRange = AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS
-        }
-        AutoDeleteConfirmationDialogFragment(autoDeleteRange)
-            .show(_childFragmentManager, AutoDeleteConfirmationDialogFragment.TAG)
-    }
-
-    private fun updateAutoDeleteRange(_autoDeleteRange: AutoDeleteRange) {
-        autoDeleteRange = _autoDeleteRange
-        // TODO(): update auto delete in DB via AutoDeleteManager
+        val newAutoDeleteRange: AutoDeleteRange =
+            if (chosenId == R.id.radio_button_3_months)
+                AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS
+            else AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS
+        childFragmentManager.setFragmentResult(
+            AutoDeleteConfirmationDialogFragment.AUTO_DELETE_CONFIRMATION_DIALOG_EVENT,
+            bundleOf(
+                AutoDeleteConfirmationDialogFragment.NEW_AUTO_DELETE_RANGE_BUNDLE to
+                    newAutoDeleteRange,
+                AutoDeleteConfirmationDialogFragment.OLD_AUTO_DELETE_RANGE_BUNDLE to
+                    autoDeleteRange))
     }
 
     override fun onCheckedChanged(radioGroup: RadioGroup, checkedId: Int) {
