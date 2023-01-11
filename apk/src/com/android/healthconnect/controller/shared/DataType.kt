@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.shared
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.BasalBodyTemperatureRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
+import android.healthconnect.datatypes.BloodGlucoseRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
 import android.healthconnect.datatypes.BoneMassRecord
@@ -28,6 +29,7 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
+import android.healthconnect.datatypes.NutritionRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
@@ -64,4 +66,6 @@ enum class DataType(val recordClass: Class<out Record>) {
     BONE_MASS(BoneMassRecord::class.java),
     LEAN_BODY_MASS(LeanBodyMassRecord::class.java),
     WEIGHT(WeightRecord::class.java),
+    BLOOD_GLUCOSE(BloodGlucoseRecord::class.java),
+    NUTRITION(NutritionRecord::class.java),
 }
