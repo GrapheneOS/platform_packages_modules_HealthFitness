@@ -479,6 +479,22 @@
   <string name="cycling_cadence_series_range" translatable="false"><xliff:g example="100 rpm" id="min">%1$s</xliff:g> - <xliff:g example="109 bpm" id="max">%2$s</xliff:g></string>
   <string name="cycling_cadence_series_range_long" description="Pedaling rate range, in crank revolutions per minute (RPM)"> from <xliff:g example="100 revolutions per minute" id="min">%1$s</xliff:g> to <xliff:g example="109 revolutions per minute" id="max">%2$s</xliff:g></string>
 
+  <string name="sexual_activity_protected" description="Whether protection was used during sexual activity. [CHAR LIMIT=50]">Protected</string>
+  <string name="sexual_activity_unprotected" description="Whether protection was used during sexual activity. [CHAR LIMIT=50]">Unprotected</string>
+
+  <string name="spotting" description="Intermenstrual bleeding type: spotting. [CHAR LIMIT=50]">Spotting</string>
+  <string name="flow_spotting" description="How heavy the user's menstruation flow was - spotting. [CHAR LIMIT=50]">Spotting</string>
+  <string name="flow_light" description="How heavy the user's menstruation flow was - light. [CHAR LIMIT=50]">Light flow</string>
+  <string name="flow_medium" description="How heavy the user's menstruation flow was - medium. [CHAR LIMIT=50]">Medium flow</string>
+  <string name="flow_heavy" description="How heavy the user's menstruation flow was - heavy. [CHAR LIMIT=50]">Heavy flow</string>
+
+  <string name="period_day" description="Which day of the user's menstruation period it was. [CHAR LIMIT=50]">Period day <xliff:g example="2" id="day">%1$d</xliff:g> of <xliff:g example="5" id="total_length">%2$d</xliff:g></string>
+
+  <string name="ovulation_positive" description="The positive result of a user's ovulation test. [CHAR LIMIT=50]">Positive</string>
+  <string name="ovulation_negative" description="The negative result of a user's ovulation test. [CHAR LIMIT=50]">Negative</string>
+  <string name="ovulation_high" description="The high fertility result of a user's ovulation test. [CHAR LIMIT=50]">High</string>
+  <string name="ovulation_inconclusive" description="The inconclusive result of a user's ovulation test. [CHAR LIMIT=50]">Inconclusive</string>
+
   <!--  region vo2 max-->
   <string name="vo2_max" description="VO₂ max value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 mL/(kg·min)} other {# mL/(kg·min)}}</string>
   <string name="vo2_max_long" description="VO₂ max value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1  milliliter of oxygen per kilogram of body mass per minute} other {#  milliliters of oxygen per kilogram of body mass per minute}}</string>
@@ -488,6 +504,19 @@
   <string name="vo2_multistage_fitness_test" description="A method of VO₂ max measurement - multistage fitness test. [CHAR LIMIT=50]">Multistage fitness test</string>
   <string name="vo2_rockport_fitness_test" description="A method of VO₂ max measurement - Rockport fitness test [CHAR LIMIT=50]">Rockport fitness test</string>
   <string name="vo2_other" description="A method of VO₂ max measurement - other [CHAR LIMIT=50]">Other</string>
+  <!--  endregion -->
+
+  <!--  region mucus -->
+  <string name="mucus_dry" description="The consistency or texture of the user's cervical mucus - dry. [CHAR LIMIT=50]">Dry</string>
+  <string name="mucus_sticky" description="The consistency or texture of the user's cervical mucus - sticky. [CHAR LIMIT=50]">Sticky</string>
+  <string name="mucus_creamy" description="The consistency or texture of the user's cervical mucus - creamy. [CHAR LIMIT=50]">Creamy</string>
+  <string name="mucus_watery" description="The consistency or texture of the user's cervical mucus - watery. [CHAR LIMIT=50]">Watery</string>
+  <string name="mucus_egg_white" description="The consistency or texture of the user's cervical mucus - Egg white. [CHAR LIMIT=50]">Egg white</string>
+  <string name="mucus_unusual" description="The consistency or texture of the user's cervical mucus - unusual. [CHAR LIMIT=50]">Unusual</string>
+
+  <string name="mucus_light" description="The amount of the user's cervical mucus - light. [CHAR LIMIT=50]">Light</string>
+  <string name="mucus_medium" description="The amount of the user's cervical mucus - medium. [CHAR LIMIT=50]">Medium</string>
+  <string name="mucus_heavy" description="The amount of the user's cervical mucus - heavy. [CHAR LIMIT=50]">Heavy</string>
   <!--  endregion -->
 
   <!--  region Blood pressure-->
