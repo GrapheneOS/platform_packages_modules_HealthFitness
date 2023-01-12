@@ -16,7 +16,6 @@
 package com.android.healthconnect.controller.autodelete
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceFragmentCompat
@@ -70,14 +69,11 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
         }
 
         childFragmentManager.setFragmentResultListener(SET_TO_NEVER_EVENT, this) { _, _ ->
-            Log.e(SET_TO_NEVER_EVENT, "Auto-delete set to never.")
             viewModel.updateAutoDeleteRange(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
         }
 
         childFragmentManager.setFragmentResultListener(
             AUTO_DELETE_CONFIRMATION_DIALOG_EVENT, this) { _, bundle ->
-                Log.e(
-                    AUTO_DELETE_CONFIRMATION_DIALOG_EVENT, "Auto-delete confirmation dialog opened.")
                 bundle.getSerializable(NEW_AUTO_DELETE_RANGE_BUNDLE)?.let { newAutoDeleteRange ->
                     bundle.getSerializable(OLD_AUTO_DELETE_RANGE_BUNDLE)?.let { oldAutoDeleteRange
                         ->
@@ -91,17 +87,16 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
             }
 
         childFragmentManager.setFragmentResultListener(AUTO_DELETE_SAVED_EVENT, this) { _, bundle ->
-            Log.e(AUTO_DELETE_SAVED_EVENT, "Auto-delete range successfully updated.")
             bundle.getSerializable(AUTO_DELETE_SAVED_EVENT)?.let {
                 viewModel.updateAutoDeleteRange(it as AutoDeleteRange)
             }
+            DeletionStartedDialogFragment()
+                .show(childFragmentManager, DeletionStartedDialogFragment.TAG)
         }
 
         childFragmentManager.setFragmentResultListener(AUTO_DELETE_CANCELLED_EVENT, this) {
             _,
             bundle ->
-            Log.e(
-                AUTO_DELETE_CANCELLED_EVENT, "Auto-delete range update successfully cancelled.")
             bundle.getSerializable(AUTO_DELETE_CANCELLED_EVENT)?.let {
                 viewModel.updateAutoDeleteRange(it as AutoDeleteRange)
             }
