@@ -70,7 +70,6 @@ public class HealthConnectManagerService extends SystemService {
 
     @Override
     public void onStart() {
-        mFirstGrantTimeManager.initializeState();
         mPackageMonitor.registerBroadcastReceiver(mContext);
         publishBinderService(
                 Context.HEALTHCONNECT_SERVICE,
