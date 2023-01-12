@@ -19,6 +19,7 @@ import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeRangeFilter
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
+import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
@@ -27,6 +28,7 @@ import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
+import android.healthconnect.datatypes.Vo2MaxRecord
 import android.healthconnect.datatypes.WheelchairPushesRecord
 import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.categories.HealthDataCategory
@@ -95,7 +97,10 @@ class DeleteCategoryUseCaseTest {
                 PowerRecord::class.java,
                 WheelchairPushesRecord::class.java,
                 FloorsClimbedRecord::class.java,
-                ElevationGainedRecord::class.java)
+                ElevationGainedRecord::class.java,
+                Vo2MaxRecord::class.java,
+                CyclingPedalingCadenceRecord::class.java
+            )
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

@@ -474,6 +474,35 @@
   <string name="elevation_meters" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 m} other {# m}}</string>
   <string name="elevation_meters_long" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 meter} other {# meters}}</string>
 
+  <string name="cycling_rpm" description="Pedaling rate, in crank revolutions per minute (RPM). [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 rpm} other {# rpm}}</string>
+  <string name="cycling_rpm_long" description="Pedaling rate, in crank revolutions per minute (RPM).  [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 revolution per minute} other {# revolutions per minute}}</string>
+  <string name="cycling_cadence_series_range" translatable="false"><xliff:g example="100 rpm" id="min">%1$s</xliff:g> - <xliff:g example="109 bpm" id="max">%2$s</xliff:g></string>
+  <string name="cycling_cadence_series_range_long" description="Pedaling rate range, in crank revolutions per minute (RPM)"> from <xliff:g example="100 revolutions per minute" id="min">%1$s</xliff:g> to <xliff:g example="109 revolutions per minute" id="max">%2$s</xliff:g></string>
+
+  <!--  region vo2 max-->
+  <string name="vo2_max" description="VO₂ max value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 mL/(kg·min)} other {# mL/(kg·min)}}</string>
+  <string name="vo2_max_long" description="VO₂ max value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1  milliliter of oxygen per kilogram of body mass per minute} other {#  milliliters of oxygen per kilogram of body mass per minute}}</string>
+  <string name="vo2_metabolic_cart" description="A method of VO₂ max measurement - metabolic cart. [CHAR LIMIT=50]">Metabolic cart</string>
+  <string name="vo2_heart_rate_ratio" description="A method of VO₂ max measurement - heart rate ratio. [CHAR LIMIT=50]">Heart rate ratio</string>
+  <string name="vo2_cooper_test" description="A method of VO₂ max measurement - Cooper test. [CHAR LIMIT=50]">Cooper test</string>
+  <string name="vo2_multistage_fitness_test" description="A method of VO₂ max measurement - multistage fitness test. [CHAR LIMIT=50]">Multistage fitness test</string>
+  <string name="vo2_rockport_fitness_test" description="A method of VO₂ max measurement - Rockport fitness test [CHAR LIMIT=50]">Rockport fitness test</string>
+  <string name="vo2_other" description="A method of VO₂ max measurement - other [CHAR LIMIT=50]">Other</string>
+  <!--  endregion -->
+
+  <!--  region Blood pressure-->
+  <string name="blood_pressure" description="Blood pressure value with unit. [CHAR LIMIT=80]"><xliff:g example="120" id="systolic">%1$s</xliff:g>/<xliff:g example="80" id="diastolic">%2$s</xliff:g> mmHg</string>
+  <string name="blood_pressure_long" description="Blood pressure value with unit. [CHAR LIMIT=160]"><xliff:g example="120" id="systolic">%1$s</xliff:g>/<xliff:g example="80" id="diastolic">%2$s</xliff:g> millimetre of mercury</string>
+  <string name="body_position_standing_up" description="Body position when taking blood pressure - standing up. [CHAR LIMIT=50]">Standing up</string>
+  <string name="body_position_sitting_down" description="Body position when taking blood pressure - sitting down. [CHAR LIMIT=50]">Sitting down</string>
+  <string name="body_position_lying_down" description="Body position when taking blood pressure - lying down. [CHAR LIMIT=50]">Lying down</string>
+  <string name="body_position_reclining" description="Body position when taking blood pressure - reclining. [CHAR LIMIT=50]">Reclining</string>
+  <string name="blood_pressure_left_wrist" description="Body part where the blood pressure was taken - left wrist. [CHAR LIMIT=50]">Left wrist</string>
+  <string name="blood_pressure_right_wrist" description="Body part where the blood pressure was taken - right wrist. [CHAR LIMIT=50]">Right wrist</string>
+  <string name="blood_pressure_left_arm" description="Body part where the blood pressure was taken - left upper arm. [CHAR LIMIT=50]">Left upper arm</string>
+  <string name="blood_pressure_right_arm" description="Body part where the blood pressure was taken - right upper arm. [CHAR LIMIT=50]">Right upper arm</string>
+  <!--  endregion -->
+
   <!-- region BloodGlucose -->
   <string name="millimoles_per_liter" description="Blood glucose value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 mmol/L} other {# mmol/L}}</string>
   <string name="millimoles_per_liter_long" description="Blood glucose value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 millimole per liter} other {# millimoles per liter}}</string>
