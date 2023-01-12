@@ -15,10 +15,14 @@
  */
 package com.android.healthconnect.controller.autodelete
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.autodelete.api.LoadAutoDeleteUseCase
+import com.android.healthconnect.controller.autodelete.api.UpdateAutoDeleteUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -27,18 +31,76 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class AutoDeleteViewModel
 @Inject
-constructor(private val loadAutoDeleteUseCase: LoadAutoDeleteUseCase) : ViewModel() {
+constructor(
+    private val loadAutoDeleteUseCase: LoadAutoDeleteUseCase,
+    private val updateAutoDeleteUseCase: UpdateAutoDeleteUseCase
+) : ViewModel() {
 
-    private val _autoDeleteRange = MutableLiveData<AutoDeleteRange>()
+    companion object {
+        private const val TAG = "AutoDeleteRange"
+    }
 
-    val autoDeleteRange: LiveData<AutoDeleteRange>
-        get() = _autoDeleteRange
+    private val _storedAutoDeleteRange = MutableLiveData<AutoDeleteState>()
+    private val _newAutoDeleteRange = MutableLiveData<AutoDeleteRange>()
+    private val _oldAutoDeleteRange = MutableLiveData<AutoDeleteRange>()
+
+    /** Holds the auto-delete range value that is stored in the database. */
+    val storedAutoDeleteRange: LiveData<AutoDeleteState>
+        get() = _storedAutoDeleteRange
+
+    /** Argument used only for [AutoDeleteConfirmationDialogFragment]. */
+    val newAutoDeleteRange: LiveData<AutoDeleteRange>
+        get() = _newAutoDeleteRange
+
+    /** Argument used only for [AutoDeleteConfirmationDialogFragment]. */
+    val oldAutoDeleteRange: LiveData<AutoDeleteRange>
+        get() = _oldAutoDeleteRange
 
     init {
         loadAutoDeleteRange()
     }
 
     private fun loadAutoDeleteRange() {
-        viewModelScope.launch { _autoDeleteRange.postValue(loadAutoDeleteUseCase.invoke()) }
+        _storedAutoDeleteRange.postValue(AutoDeleteState.Loading)
+        viewModelScope.launch {
+            when (val result = loadAutoDeleteUseCase.invoke(null)) {
+                is UseCaseResults.Success -> {
+                    _storedAutoDeleteRange.postValue(
+                        AutoDeleteState.WithData(fromNumberOfMonths(result.data)))
+                }
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Load error ", result.exception)
+                    _storedAutoDeleteRange.postValue(AutoDeleteState.LoadingFailed)
+                }
+            }
+        }
+    }
+
+    fun updateAutoDeleteRange(autoDeleteRange: AutoDeleteRange) {
+        viewModelScope.launch {
+            when (val result = updateAutoDeleteUseCase.invoke(numberOfMonths(autoDeleteRange))) {
+                is UseCaseResults.Success -> {
+                    _storedAutoDeleteRange.postValue(AutoDeleteState.WithData(autoDeleteRange))
+                }
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Update error ", result.exception)
+                    _storedAutoDeleteRange.postValue(AutoDeleteState.LoadingFailed)
+                }
+            }
+        }
+    }
+
+    fun updateAutoDeleteDialogArguments(
+        newAutoDeleteRange: AutoDeleteRange,
+        oldAutoDeleteRange: AutoDeleteRange
+    ) {
+        _newAutoDeleteRange.value = newAutoDeleteRange
+        _oldAutoDeleteRange.value = oldAutoDeleteRange
+    }
+
+    sealed class AutoDeleteState {
+        object Loading : AutoDeleteState()
+        object LoadingFailed : AutoDeleteState()
+        data class WithData(val autoDeleteRange: AutoDeleteRange) : AutoDeleteState()
     }
 }

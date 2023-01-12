@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,11 +16,18 @@
 package com.android.healthconnect.controller.autodelete
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.AUTO_DELETE_CANCELLED_EVENT
+import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.AUTO_DELETE_CONFIRMATION_DIALOG_EVENT
+import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.AUTO_DELETE_SAVED_EVENT
+import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.NEW_AUTO_DELETE_RANGE_BUNDLE
+import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.OLD_AUTO_DELETE_RANGE_BUNDLE
+import com.android.healthconnect.controller.autodelete.AutoDeleteRangePickerPreference.Companion.SET_TO_NEVER_EVENT
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,9 +39,7 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
         private const val AUTO_DELETE_SECTION = "auto_delete_section"
     }
 
-    private val viewModel: AutoDeleteViewModel by viewModels()
-
-    private lateinit var autoDeleteRange: AutoDeleteRange
+    private val viewModel: AutoDeleteViewModel by activityViewModels()
 
     private val mAutoDeleteSection: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(AUTO_DELETE_SECTION)
@@ -49,11 +56,55 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.autoDeleteRange.observe(viewLifecycleOwner) { _autoDeleteRange ->
-            autoDeleteRange = _autoDeleteRange
-            mAutoDeleteSection?.addPreference(
-                AutoDeleteRangePickerPreference(
-                    requireContext(), childFragmentManager, autoDeleteRange))
+        viewModel.storedAutoDeleteRange.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is AutoDeleteViewModel.AutoDeleteState.Loading -> {}
+                is AutoDeleteViewModel.AutoDeleteState.LoadingFailed -> {}
+                is AutoDeleteViewModel.AutoDeleteState.WithData -> {
+                    mAutoDeleteSection?.removeAll()
+                    mAutoDeleteSection?.addPreference(
+                        AutoDeleteRangePickerPreference(
+                            requireContext(), childFragmentManager, state.autoDeleteRange))
+                }
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(SET_TO_NEVER_EVENT, this) { _, _ ->
+            Log.e(SET_TO_NEVER_EVENT, "Auto-delete set to never.")
+            viewModel.updateAutoDeleteRange(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
+        }
+
+        childFragmentManager.setFragmentResultListener(
+            AUTO_DELETE_CONFIRMATION_DIALOG_EVENT, this) { _, bundle ->
+                Log.e(
+                    AUTO_DELETE_CONFIRMATION_DIALOG_EVENT, "Auto-delete confirmation dialog opened.")
+                bundle.getSerializable(NEW_AUTO_DELETE_RANGE_BUNDLE)?.let { newAutoDeleteRange ->
+                    bundle.getSerializable(OLD_AUTO_DELETE_RANGE_BUNDLE)?.let { oldAutoDeleteRange
+                        ->
+                        viewModel.updateAutoDeleteDialogArguments(
+                            newAutoDeleteRange as AutoDeleteRange,
+                            oldAutoDeleteRange as AutoDeleteRange)
+                        AutoDeleteConfirmationDialogFragment()
+                            .show(childFragmentManager, AutoDeleteConfirmationDialogFragment.TAG)
+                    }
+                }
+            }
+
+        childFragmentManager.setFragmentResultListener(AUTO_DELETE_SAVED_EVENT, this) { _, bundle ->
+            Log.e(AUTO_DELETE_SAVED_EVENT, "Auto-delete range successfully updated.")
+            bundle.getSerializable(AUTO_DELETE_SAVED_EVENT)?.let {
+                viewModel.updateAutoDeleteRange(it as AutoDeleteRange)
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(AUTO_DELETE_CANCELLED_EVENT, this) {
+            _,
+            bundle ->
+            Log.e(
+                AUTO_DELETE_CANCELLED_EVENT, "Auto-delete range update successfully cancelled.")
+            bundle.getSerializable(AUTO_DELETE_CANCELLED_EVENT)?.let {
+                viewModel.updateAutoDeleteRange(it as AutoDeleteRange)
+            }
         }
     }
 }

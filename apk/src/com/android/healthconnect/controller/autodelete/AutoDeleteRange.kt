@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -27,21 +29,29 @@ enum class AutoDeleteRange {
     AUTO_DELETE_RANGE_EIGHTEEN_MONTHS
 }
 
+private const val QUANTITY_0_MONTHS = 0
 private const val QUANTITY_3_MONTHS = 3
 private const val QUANTITY_18_MONTHS = 18
 
-/**
- * Returns the number of months corresponding to the given [AutoDeleteRange] or throws in case of
- * [AutoDeleteRange.AUTO_DELETE_RANGE_NEVER].
- */
+/** Returns the number of months corresponding to the given [AutoDeleteRange]. */
 fun numberOfMonths(range: AutoDeleteRange): Int {
     return when (range) {
         AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS -> QUANTITY_3_MONTHS
         AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS -> QUANTITY_18_MONTHS
-        AutoDeleteRange.AUTO_DELETE_RANGE_NEVER ->
-            throw UnsupportedOperationException(
-                "Unable determine the number of months in the auto-delete range.")
+        AutoDeleteRange.AUTO_DELETE_RANGE_NEVER -> QUANTITY_0_MONTHS
     }
+}
+
+/**
+ * Returns [AutoDeleteRange] corresponding to the given number of months or throws in case of
+ * unsupported number of months.
+ */
+fun fromNumberOfMonths(numberOfMonths: Int): AutoDeleteRange {
+    if (numberOfMonths == QUANTITY_0_MONTHS) return AutoDeleteRange.AUTO_DELETE_RANGE_NEVER
+    if (numberOfMonths == QUANTITY_3_MONTHS) return AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS
+    if (numberOfMonths == QUANTITY_18_MONTHS)
+        return AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS
+    throw UnsupportedOperationException("Number of months is not supported: $numberOfMonths")
 }
 
 /** Returns the [Instant] that is the start of the [AutoDeleteRange]. */

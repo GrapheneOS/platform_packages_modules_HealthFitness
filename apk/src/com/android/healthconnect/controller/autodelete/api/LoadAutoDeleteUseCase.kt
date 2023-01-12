@@ -13,13 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.autodelete
+package com.android.healthconnect.controller.autodelete.api
 
+import android.healthconnect.HealthConnectManager
+import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Singleton
-class LoadAutoDeleteUseCase @Inject constructor() {
-    /** Temporary mock data, returns the stored auto delete range. */
-    suspend operator fun invoke(): AutoDeleteRange = AutoDeleteRange.AUTO_DELETE_RANGE_NEVER
+class LoadAutoDeleteUseCase
+@Inject
+constructor(
+    private val healthConnectManager: HealthConnectManager,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
+) : BaseUseCase<Void?, Int>(dispatcher) {
+
+    /** Returns the number of months that is the auto-delete range. */
+    override suspend fun execute(input: Void?): Int =
+        healthConnectManager.recordRetentionPeriodInDays
 }
