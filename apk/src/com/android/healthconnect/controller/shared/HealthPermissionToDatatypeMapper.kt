@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.shared
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.BasalBodyTemperatureRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
+import android.healthconnect.datatypes.BloodGlucoseRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
 import android.healthconnect.datatypes.BoneMassRecord
@@ -28,6 +29,7 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
+import android.healthconnect.datatypes.NutritionRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
@@ -43,14 +45,18 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ACTIVE_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BASAL_BODY_TEMPERATURE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BASAL_METABOLIC_RATE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BLOOD_GLUCOSE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BODY_FAT
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BODY_TEMPERATURE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BONE_MASS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ELEVATION_GAINED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.FLOORS_CLIMBED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEIGHT
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HYDRATION
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.LEAN_BODY_MASS
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.NUTRITION
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.OXYGEN_SATURATION
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.POWER
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.RESPIRATORY_RATE
@@ -58,10 +64,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SPEED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.TOTAL_CALORIES_BURNED
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WHEELCHAIR_PUSHES
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BONE_MASS
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType.LEAN_BODY_MASS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WEIGHT
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WHEELCHAIR_PUSHES
 import com.google.common.annotations.VisibleForTesting
 
 object HealthPermissionToDatatypeMapper {
@@ -89,6 +93,8 @@ object HealthPermissionToDatatypeMapper {
             BONE_MASS to listOf(BoneMassRecord::class.java),
             LEAN_BODY_MASS to listOf(LeanBodyMassRecord::class.java),
             WEIGHT to listOf(WeightRecord::class.java),
+            BLOOD_GLUCOSE to listOf(BloodGlucoseRecord::class.java),
+            NUTRITION to listOf(NutritionRecord::class.java),
         )
 
     fun getDataTypes(permissionType: HealthPermissionType): List<Class<out Record>> {

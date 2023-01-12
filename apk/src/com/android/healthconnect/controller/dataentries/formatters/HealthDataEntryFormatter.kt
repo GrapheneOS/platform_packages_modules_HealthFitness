@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.dataentries.formatters
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.BasalBodyTemperatureRecord
 import android.healthconnect.datatypes.BasalMetabolicRateRecord
+import android.healthconnect.datatypes.BloodGlucoseRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
 import android.healthconnect.datatypes.BoneMassRecord
@@ -28,6 +29,7 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
+import android.healthconnect.datatypes.NutritionRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
@@ -72,6 +74,8 @@ constructor(
     private val weightFormatter: WeightFormatter,
     private val leanBodyMassFormatter: LeanBodyMassFormatter,
     private val boneMassFormatter: BoneMassFormatter,
+    private val bloodGlucoseFormatter: BloodGlucoseFormatter,
+    private val nutritionFormatter: NutritionFormatter,
 ) {
 
     suspend fun format(record: Record): FormattedDataEntry {
@@ -100,6 +104,8 @@ constructor(
             is WeightRecord -> weightFormatter.format(record, appName)
             is LeanBodyMassRecord -> leanBodyMassFormatter.format(record, appName)
             is BoneMassRecord -> boneMassFormatter.format(record, appName)
+            is BloodGlucoseRecord -> bloodGlucoseFormatter.format(record, appName)
+            is NutritionRecord -> nutritionFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

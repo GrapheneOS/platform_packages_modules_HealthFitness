@@ -474,6 +474,78 @@
   <string name="elevation_meters" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 m} other {# m}}</string>
   <string name="elevation_meters_long" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 meter} other {# meters}}</string>
 
+  <!-- region BloodGlucose -->
+  <string name="millimoles_per_liter" description="Blood glucose value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 mmol/L} other {# mmol/L}}</string>
+  <string name="millimoles_per_liter_long" description="Blood glucose value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 millimole per liter} other {# millimoles per liter}}</string>
+
+  <string name="specimen_source_interstitial_fluid" description="Source of the blood glucose measurement - interstitial fluid. [CHAR LIMIT=50]">Interstitial fluid</string>
+  <string name="specimen_source_capillary_blood" description="Source of the blood glucose measurement - capillary blood. [CHAR LIMIT=50]">Capillary blood</string>
+  <string name="specimen_source_plasma" description="Source of the blood glucose measurement - plasma. [CHAR LIMIT=50]">Plasma</string>
+  <string name="specimen_source_serum" description="Source of the blood glucose measurement - serum. [CHAR LIMIT=50]">Serum</string>
+  <string name="specimen_source_tears" description="Source of the blood glucose measurement - tears. [CHAR LIMIT=50]">Tears</string>
+  <string name="specimen_source_whole_blood" description="Source of the blood glucose measurement - whole blood. [CHAR LIMIT=50]">Whole blood</string>
+
+  <string name="blood_glucose_general" description="Relationship of the meal to the blood glucose measurement - general. [CHAR LIMIT=50]">General</string>
+  <string name="blood_glucose_fasting" description="Relationship of the meal to the blood glucose measurement - fasting. [CHAR LIMIT=50]">Fasting</string>
+  <string name="blood_glucose_before_meal" description="Relationship of the meal to the blood glucose measurement - before meal. [CHAR LIMIT=50]">Before meal</string>
+  <string name="blood_glucose_after_meal" description="Relationship of the meal to the blood glucose measurement - after meal. [CHAR LIMIT=50]">After meal</string>
+
+  <string name="mealtype_label" description="Meal type label, displayed when showing a nutrition entry. [CHAR LIMIT=50]">Meal type</string>
+  <string name="mealtype_unknown" description="Unknown meal type, displayed when showing a nutrition entry. [CHAR LIMIT=50]">Unknown</string>
+  <string name="mealtype_breakfast" description="Breakfast, a meal type, usually eaten as a first meal in the day, in the morning, displayed when showing a nutrition entry. [CHAR LIMIT=50]">Breakfast</string>
+  <string name="mealtype_lunch" description="Lunch, a meal type, eaten in the middle of the day, displayed when showing a nutrition entry. [CHAR LIMIT=50]">Lunch</string>
+  <string name="mealtype_dinner" description="Dinner, a meal type, usually eaten as a last warm meal of the day, displayed when showing a nutrition entry. [CHAR LIMIT=50]">Dinner</string>
+  <string name="mealtype_snack" description="Snack, a meal type, eaten in between big meals, displayed when showing a nutrition entry. [CHAR LIMIT=50]">Snack</string>
+  <!-- endregion-->
+  <!-- region Nutrition-->
+  <string name="biotin" description="Biotin, also called vitamin B7, one of the vitamins found in food. [CHAR LIMIT=50]">Biotin</string>
+  <string name="caffeine" description="Caffeine, a chemical with stimulant effects, found in food and drink. [CHAR LIMIT=50]">Caffeine</string>
+  <string name="calcium" description="Calcium, a nutrient associated with bones and teeth. [CHAR LIMIT=50]">Calcium</string>
+  <string name="chloride" description="Chloride, a crucial electrolyte responsible for proper blood volume and pressure. [CHAR LIMIT=50]">Chloride</string>
+  <string name="cholesterol" description="Dietary cholesterol, found in animal based food. [CHAR LIMIT=50]">Cholesterol</string>
+  <string name="chromium" description="Chromium, an essential nutrient required for sugar and fat metabolism. [CHAR LIMIT=50]">Chromium</string>
+  <string name="copper" description="Copper,a nutrient which, together with iron, enables the body to form red blood cells. [CHAR LIMIT=50]">Copper</string>
+  <string name="dietary_fiber" description="Dietary fiber, also known as roughage, is the indigestible part of plant foods. [CHAR LIMIT=50]">Dietary fiber</string>
+  <string name="energy_consumed_total" description="Kcal or Kj found in consumed food. [CHAR LIMIT=50]">Energy</string>
+  <string name="energy_consumed_from_fat" description="Kcal or Kj found in consumed food, coming from consuming fat. [CHAR LIMIT=50]">Energy from fat</string>
+  <string name="folate" description="Folate is the natural form of vitamin B9. [CHAR LIMIT=50]">Folate</string>
+  <string name="folic_acid" description="Folic acid, also known as vitamin B₉ and folacin, is one of the B vitamins. [CHAR LIMIT=50]">Folic acid</string>
+  <string name="iodine" description="Iodine is a mineral used by the thyroid gland to make thyroid hormones. [CHAR LIMIT=50]">Iodine</string>
+  <string name="iron" description="Iron, a mineral that helps maintain healthy blood. [CHAR LIMIT=50]">Iron</string>
+  <string name="magnesium" description="Magnesium, a macromineral found in nuts and leafy greens. [CHAR LIMIT=50]">Magnesium</string>
+  <string name="manganese" description="Manganese, a micromineral found in nuts and leafy greens. [CHAR LIMIT=50]">manganese</string>
+  <string name="molybdenum" description="Molybdenum, a mineral which activates enzymes that help break down harmful sulfites and prevent toxins from building up in the body. [CHAR LIMIT=50]">Molybdenum</string>
+  <string name="monounsaturated_fat" description="Monosaturated fat, fat molecules that have one unsaturated carbon bond in the molecule. Monounsaturated fatty acids (MUFAs) are a healthy type of fa [CHAR LIMIT=50]">Monounsaturated fat</string>
+  <string name="niacin" description="Niacin, also known as nicotinic acid, is an organic compound and a form of vitamin B3. [CHAR LIMIT=50]">Niacin</string>
+  <string name="pantothenic_acid" description="Pantothenic acid, also called vitamin B5. [CHAR LIMIT=50]">Pantothenic acid</string>
+  <string name="phosphorus" description="Phosphorus, a mineral that works with calcium to help build bones. [CHAR LIMIT=50]">Phosphorus</string>
+  <string name="polyunsaturated_fat" description="Polyunsaturated fat is a type of dietary fat. It is one of the healthy fats, along with monounsaturated fat. [CHAR LIMIT=50]">Polyunsaturated fat</string>
+  <string name="potassium" description="Potassium, a mineral with main role in the body to help maintain normal levels of fluid inside our cells. [CHAR LIMIT=50]">Potassium</string>
+  <string name="protein" description="Protein, a macronutrient, one of the building blocks of body tissue and can also serve as a fuel source. [CHAR LIMIT=50]">Protein</string>
+  <string name="riboflavin" description="Riboflavin, also known as vitamin B2. [CHAR LIMIT=50]">Riboflavin</string>
+  <string name="saturated_fat" description="Saturated fat, one of the unhealthy fats, along with trans fat, found in food. [CHAR LIMIT=50]">Saturated fat</string>
+  <string name="selenium" description="Selenium, an essential trace mineral that supports many bodily processes. [CHAR LIMIT=50]">Selenium</string>
+  <string name="sodium" description="Sodium is an essential nutrient and is needed by the body in relatively small amounts. [CHAR LIMIT=50]">Sodium</string>
+  <string name="sugar" description="Sugar is the generic name for sweet-tasting, soluble carbohydrates, many of which are used in food. [CHAR LIMIT=50]">Sugar</string>
+  <string name="thiamin" description="Thiamin, also known as thiamine and vitamin B1. [CHAR LIMIT=50]">Thiamin</string>
+  <string name="total_carbohydrate" description="total carbohydrates includes all types of carbohydrate found in the food or beverage. [CHAR LIMIT=50]">Total carbohydrate</string>
+  <string name="total_fat" description="Total fat indicates how much fat is in a single serving of food. [CHAR LIMIT=50]">Total fat</string>
+  <string name="trans_fat" description="Trans fat, also called trans-unsaturated fatty acids or trans fatty acids, is a type of unsaturated fat that is considered the most unhealthy. [CHAR LIMIT=50]">Trans fat</string>
+  <string name="unsaturated_fat" description="Unsaturated fats help lower a person's levels of LDL cholesterol. [CHAR LIMIT=50]">Unsaturated fat</string>
+  <string name="vitamin_a" description="Vitamin A, also known as retinol, is key for good vision, a healthy immune system, and cell growth. [CHAR LIMIT=50]">Vitamin A</string>
+  <string name="vitamin_b12" description="Vitamin B12, also known as cobalamin, is a water-soluble vitamin involved in metabolism. [CHAR LIMIT=50]">Vitamin B12</string>
+  <string name="vitamin_b6" description="Vitamin B6 is one of the B vitamins, and thus an essential nutrient. [CHAR LIMIT=50]">Vitamin B6</string>
+  <string name="vitamin_c" description="Vitamin C is a water-soluble vitamin found in various foods and sold as a dietary supplement. [CHAR LIMIT=50]">Vitamin C</string>
+  <string name="vitamin_d" description="Vitamin D helps regulate the amount of calcium and phosphate in the body. [CHAR LIMIT=50]">Vitamin D</string>
+  <string name="vitamin_e" description="Vitamin E is an important fat-soluble nutrient. It's a powerful antioxidant and is needed for immune health and cellular signaling in your body. [CHAR LIMIT=50]">Vitamin E</string>
+  <string name="vitamin_k" description="Vitamin K is a group of vitamins that the body needs for blood clotting, helping wounds to heal. [CHAR LIMIT=50]">Vitamin K</string>
+  <string name="zinc" description="Zinc is a trace mineral necessary for almost 100 enzymes to carry out vital chemical reactions. [CHAR LIMIT=50]">Zinc</string>
+  <string name="nutrient_with_value" description="Used for formatting nutrition data. Example: Copper: 29g [CHAR LIMIT=50]"><xliff:g example="Copper" id="nutrient">%1$s</xliff:g>: <xliff:g example="29g" id="amount">%2$s</xliff:g></string>
+  <string name="meal_name" description="Name for food or drink provided by the user. [CHAR LIMIT=50]">Name</string>
+  <string name="gram_short_format" description="Weight in grams. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 g} other {# g}}</string>
+  <string name="gram_long_format" description="Weight in grams. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 gram} other {# grams}}</string>
+  <!-- endregion -->
+
   <!--  region Respiratory Rate-->
   <string translation_description="Value of respiratory rate. rpm is short for 'respirations per minute'. [ICU SYNTAX][CHAR LIMIT=18]"
       name="respiratory_rate_value">{count, plural, =1 {1 rpm} other {# rpm}}</string>
