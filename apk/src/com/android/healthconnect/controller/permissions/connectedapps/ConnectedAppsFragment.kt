@@ -121,13 +121,37 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
         }
+        // TODO (b/245515046) add denied apps flow
+        //        val appName1 = "Run Tracker"
+        //        val bannerPreference = DeniedAppsBannerPreference(
+        //                requireContext()
+        //        ) {
+        //            openDeniedAppsDialog()
+        //        }.also {
+        //            it.title = getString(R.string.denied_apps_banner_title)
+        //            it.summary = getString(R.string.denied_apps_banner_message_one_app, appName1)
+        //            it.order = 1}
+        //
+        //        preferenceScreen.addPreference(
+        //                bannerPreference
+        //        )
+    }
+
+    private fun openDeniedAppsDialog() {
+        AlertDialogBuilder(this)
+            .setTitle(R.string.denied_apps_dialog_title)
+            .setMessage(R.string.denied_apps_dialog_message)
+            .setPositiveButton(R.string.denied_apps_dialog_got_it_button)
+            .setIcon(R.attr.disconnectIcon)
+            .create()
+            .show()
     }
 
     private fun openRemoveAllAppsAccessDialog() {
         AlertDialogBuilder(this)
             .setTitle(R.string.permissions_disconnect_all_dialog_title)
             .setMessage(R.string.permissions_disconnect_all_dialog_message)
-            .setIcon(R.attr.disconnectAllIcon)
+            .setIcon(R.attr.disconnectIcon)
             .setNegativeButton(android.R.string.cancel)
             .setPositiveButton(R.string.permissions_disconnect_all_dialog_disconnect) { _, _ ->
                 viewModel.disconnectAllApps()

@@ -354,6 +354,18 @@
   <string name="app_perms_content_provider_24h" description="Summary for showing the last access text for content provider permissions [CHAR LIMIT=70]">Accessed in past 24 hours</string>
   <!--endregion-->
 
+  <!--region Denied Apps -->
+  <string name="denied_apps_banner_title" description="Title of a banner that provides information about apps that have been denied, in other words their permissions have been removed. [CHAR_LIMIT=100]">Removed app permissions</string>
+  <string name="denied_apps_banner_message_one_app" description="Message of a banner that provides information about an app that has been denied. [CHAR_LIMIT=NONE]">Health&#160;Connect removed permissions for <xliff:g id="app_data" example="Strava">%s</xliff:g></string>
+  <string name="denied_apps_banner_message_two_apps" description="Message of a banner that provides information about two apps that have been denied. [CHAR_LIMIT=NONE]">Health&#160;Connect removed permissions for <xliff:g id="app_data" example="Strava">%1$s</xliff:g> and <xliff:g id="app_data_two" example="Strava">%2$s</xliff:g></string>
+  <string name="denied_apps_banner_message_three_apps" description="Message of a banner that provides information about three apps that have been denied. [CHAR_LIMIT=NONE]">Health&#160;Connect removed permissions for <xliff:g id="app_data" example="Strava">%1$s</xliff:g>, <xliff:g id="app_data_two" example="Strava">%2$s</xliff:g> and <xliff:g id="app_data_three" example="Strava">%3$s</xliff:g></string>
+  <string name="denied_apps_banner_message_many_apps" description="Message of a banner that provides information about more than three apps that have been denied. [CHAR_LIMIT=NONE]">Health&#160;Connect removed permissions for <xliff:g id="app_data" example="Strava">%1$s</xliff:g>, <xliff:g id="app_data_two" example="Strava">%2$s</xliff:g>, <xliff:g id="app_data_three" example="Strava">%3$s</xliff:g> and other apps</string>
+  <string name="denied_apps_banner_button" description="Label of a button that opens a page with more details about denied apps. [CHAR_LIMIT=40]">See details</string>
+  <string name="denied_apps_dialog_title" description="Title of a dialog that provides information about apps with permissions removed by Health Connect. [CHAR_LIMIT=NONE]">Why Health&#160;Connect removes app permissions</string>
+  <string name="denied_apps_dialog_message" description="Label of a button that opens a page with more details about denied apps. [CHAR_LIMIT=NONE]">If an app is suspended or removed from Google&#160;Play, Health&#160;Connect automatically removes its permissions.\n\nThis means the app can no longer access data stored in Health&#160;Connect. If this app has previously written data, it appears in the inactive apps list.</string>
+  <string name="denied_apps_dialog_got_it_button" description="Label of a button that closes the dialog. [CHAR_LIMIT=40]">Got it</string>
+  <!--endregion-->
+
   <!--region Onboarding -->
   <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time">Get Started with Health&#160;Connect</string>
   <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page">Health&#160;Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone</string>

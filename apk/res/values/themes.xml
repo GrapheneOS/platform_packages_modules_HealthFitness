@@ -25,6 +25,7 @@
         <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
         <item name="disconnectAllIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
         <item name="disconnectIcon">@drawable/quantum_gm_ic_link_off_vd_theme_24</item>
+        <item name="deniedAppsBannerIcon">@drawable/quantum_gm_ic_error_outline_vd_theme_24</item>
         <item name="dialogGravity">@integer/dialog_gravity</item>
         <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
         <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>

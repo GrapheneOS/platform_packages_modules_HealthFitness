@@ -91,30 +91,35 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
         }
 
         // TODO add filters here if more than one contributing app
-        //        val APP_1 =
-        //            AppMetadata(
-        //                "package.name1",
-        //                "App name A",
-        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
-        //        val APP_2 =
-        //            AppMetadata(
-        //                "package.name2",
-        //                "App name B",
-        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
-        //        val APP_3 =
-        //            AppMetadata(
-        //                "package.name3",
-        //                "App name C",
-        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
-        //        val APP_4 =
-        //            AppMetadata(
-        //                "package.name4",
-        //                "App name D",
-        //                AttributeResolver.getDrawable(requireContext(), R.attr.deleteIcon))
-        //        val appData = listOf(APP_1, APP_2, APP_3, APP_4)
-        //        val newPreference = ChipPreference(requireContext(), appData).also { it.order = 1
-        // }
-        //        preferenceScreen.addPreference(newPreference)
+        //                val APP_1 =
+        //                    AppMetadata(
+        //                        "package.name1",
+        //                        "App name A",
+        //                        AttributeResolver.getDrawable(requireContext(),
+        // R.attr.deleteIcon))
+        //                val APP_2 =
+        //                    AppMetadata(
+        //                        "package.name2",
+        //                        "App name B",
+        //                        AttributeResolver.getDrawable(requireContext(),
+        // R.attr.deleteIcon))
+        //                val APP_3 =
+        //                    AppMetadata(
+        //                        "package.name3",
+        //                        "App name C",
+        //                        AttributeResolver.getDrawable(requireContext(),
+        // R.attr.deleteIcon))
+        //                val APP_4 =
+        //                    AppMetadata(
+        //                        "package.name4",
+        //                        "App name D",
+        //                        AttributeResolver.getDrawable(requireContext(),
+        // R.attr.deleteIcon))
+        //                val appData = listOf(APP_1, APP_2, APP_3, APP_4)
+        //                val newPreference = ChipPreference(requireContext(), appData).also {
+        // it.order = 1
+        //         }
+        //                preferenceScreen.addPreference(newPreference)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

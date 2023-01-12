@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_banner"
+    android:paddingTop="@dimen/spacing_banner"
+    android:layout_marginHorizontal="@dimen/spacing_normal"
+    android:layout_marginTop="@dimen/spacing_banner"
+    android:background="@drawable/banner_background">
+
+    <ImageView
+        android:id="@+id/banner_icon"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/deniedAppsBannerIcon"
+        app:tint="?android:attr/textColorPrimary" />
+
+    <TextView
+        android:id="@+id/banner_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceTitle"
+        android:paddingVertical="@dimen/spacing_small"/>
+
+    <TextView
+        android:id="@+id/banner_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceSummary"/>
+
+    <Button
+        android:id="@+id/banner_button"
+        android:paddingTop="@dimen/spacing_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/denied_apps_banner_button"
+        android:layout_gravity="end"
+        style="@style/Widget.HealthConnect.Button.Borderless"
+        android:textColor="?android:attr/textColorPrimary"
+        />
+
+
+
+</LinearLayout>
