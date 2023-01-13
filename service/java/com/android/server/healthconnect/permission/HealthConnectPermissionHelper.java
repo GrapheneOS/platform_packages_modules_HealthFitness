@@ -167,6 +167,7 @@ public final class HealthConnectPermissionHelper {
     }
 
     /** See {@link android.healthconnect.HealthConnectManager#getGrantedHealthPermissions}. */
+    @NonNull
     public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
         Objects.requireNonNull(packageName);
@@ -179,6 +180,15 @@ public final class HealthConnectPermissionHelper {
         } finally {
             Binder.restoreCallingIdentity(token);
         }
+    }
+
+    /**
+     * Returns {@code true} if there is at least one granted permission for the provided {@code
+     * packageName}, {@code false} otherwise.
+     */
+    public boolean hasGrantedHealthPermissions(
+            @NonNull String packageName, @NonNull UserHandle user) {
+        return !getGrantedHealthPermissions(packageName, user).isEmpty();
     }
 
     /**
@@ -222,7 +232,9 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
-    private List<String> getGrantedHealthPermissionsUnchecked(String packageName, UserHandle user) {
+    @NonNull
+    private List<String> getGrantedHealthPermissionsUnchecked(
+            @NonNull String packageName, @NonNull UserHandle user) {
         PackageInfo packageInfo;
         try {
             PackageManager packageManager =
@@ -234,6 +246,11 @@ public final class HealthConnectPermissionHelper {
         } catch (PackageManager.NameNotFoundException e) {
             throw new IllegalArgumentException("Invalid package", e);
         }
+
+        if (packageInfo.requestedPermissions == null) {
+            return List.of();
+        }
+
         List<String> grantedHealthPerms = new ArrayList<>(packageInfo.requestedPermissions.length);
         for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
             String currPerm = packageInfo.requestedPermissions[i];

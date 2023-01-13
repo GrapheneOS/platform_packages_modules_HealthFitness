@@ -17,6 +17,18 @@
 package android.healthconnect.internal.datatypes;
 
 import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireString;
+import static android.healthconnect.migration.DataMigrationFields.DM_APP_INFO_APP_NAME;
+import static android.healthconnect.migration.DataMigrationFields.DM_APP_INFO_PACKAGE_NAME;
+import static android.healthconnect.migration.DataMigrationFields.DM_DEVICE_INFO_MANUFACTURER;
+import static android.healthconnect.migration.DataMigrationFields.DM_DEVICE_INFO_MODEL;
+import static android.healthconnect.migration.DataMigrationFields.DM_DEVICE_INFO_TYPE;
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_APP_INFO;
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_CLIENT_RECORD_ID;
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_DEVICE_INFO;
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_LAST_MODIFIED_TIME;
+
+import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -26,6 +38,7 @@ import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.os.Bundle;
 import android.os.Parcel;
 
 import java.time.Instant;
@@ -41,6 +54,7 @@ public abstract class RecordInternal<T extends Record> {
     private final int mRecordIdentifier;
     private String mUuid;
     private String mPackageName;
+    private String mAppName;
     private long mLastModifiedTime = DEFAULT_LONG;
     private String mClientRecordId;
     private long mClientRecordVersion = DEFAULT_LONG;
@@ -69,6 +83,7 @@ public abstract class RecordInternal<T extends Record> {
     public final void populateUsing(@NonNull Parcel parcel) {
         mUuid = parcel.readString();
         mPackageName = parcel.readString();
+        mAppName = parcel.readString();
         mLastModifiedTime = parcel.readLong();
         mClientRecordId = parcel.readString();
         mClientRecordVersion = parcel.readLong();
@@ -84,6 +99,26 @@ public abstract class RecordInternal<T extends Record> {
         populateUsingInternal((T) record);
     }
 
+    /** Populates the record using the provided data migration payload. */
+    public final void populateUsing(@NonNull Bundle payload) {
+        requireNonNull(payload);
+
+        mLastModifiedTime = payload.getLong(DM_RECORD_LAST_MODIFIED_TIME, DEFAULT_LONG);
+        mClientRecordId = payload.getString(DM_RECORD_CLIENT_RECORD_ID);
+        mClientRecordVersion = DEFAULT_LONG;
+
+        final Bundle appInfo = requireNonNull(payload.getBundle(DM_RECORD_APP_INFO));
+        mPackageName = requireString(appInfo, DM_APP_INFO_PACKAGE_NAME);
+        mAppName = requireString(appInfo, DM_APP_INFO_APP_NAME);
+
+        final Bundle deviceInfo = requireNonNull(payload.getBundle(DM_RECORD_DEVICE_INFO));
+        mManufacturer = deviceInfo.getString(DM_DEVICE_INFO_MANUFACTURER);
+        mModel = deviceInfo.getString(DM_DEVICE_INFO_MODEL);
+        mDeviceType = deviceInfo.getInt(DM_DEVICE_INFO_TYPE, Device.DEVICE_TYPE_UNKNOWN);
+
+        populateRecordFrom(payload);
+    }
+
     /**
      * Populates {@code parcel} with the self information, required to reconstructor this object
      * during IPC
@@ -92,6 +127,7 @@ public abstract class RecordInternal<T extends Record> {
     public final void writeToParcel(@NonNull Parcel parcel) {
         parcel.writeString(mUuid);
         parcel.writeString(mPackageName);
+        parcel.writeString(mAppName);
         parcel.writeLong(mLastModifiedTime);
         parcel.writeString(mClientRecordId);
         parcel.writeLong(mClientRecordVersion);
@@ -121,6 +157,23 @@ public abstract class RecordInternal<T extends Record> {
     @NonNull
     public RecordInternal<T> setPackageName(@Nullable String packageName) {
         this.mPackageName = packageName;
+        return this;
+    }
+
+    /**
+     * Returns an application name associated with this record. Currently, it is used for AppInfo
+     * generation when inserting a record. May be {@code null}, in which case the app name may be
+     * missing in AppInfo.
+     */
+    @Nullable
+    public String getAppName() {
+        return mAppName;
+    }
+
+    /** Sets the application name for this record. */
+    @NonNull
+    public RecordInternal<T> setAppName(@Nullable String appName) {
+        mAppName = appName;
         return this;
     }
 
@@ -264,4 +317,7 @@ public abstract class RecordInternal<T extends Record> {
      * record}
      */
     abstract void populateRecordFrom(@NonNull T record);
+
+    /** Populates the record using the provided data migration payload. */
+    abstract void populateRecordFrom(@NonNull Bundle payload);
 }

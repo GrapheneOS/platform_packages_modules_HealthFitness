@@ -46,6 +46,7 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 /**
  * A class to handle all the DB transaction request from the clients. {@link TransactionManager}
@@ -88,18 +89,18 @@ public class TransactionManager {
      */
     public List<String> insertAll(@NonNull UpsertTransactionRequest request)
             throws SQLiteException {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            db.beginTransaction();
-            try {
-                request.getUpsertRequests()
-                        .forEach((upsertTableRequest) -> insertRecord(db, upsertTableRequest));
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
+        insertAll(request.getUpsertRequests());
+        return request.getUUIdsInOrder();
+    }
 
-            return request.getUUIdsInOrder();
-        }
+    /**
+     * Inserts or replaces all the {@link UpsertTableRequest} into the HealthConnect database.
+     *
+     * @param upsertTableRequests a list of insert table requests.
+     */
+    public void insertOrReplaceAll(@NonNull List<UpsertTableRequest> upsertTableRequests)
+            throws SQLiteException {
+        insertAll(upsertTableRequests, this::insertOrReplace);
     }
 
     /**
@@ -109,11 +110,17 @@ public class TransactionManager {
      */
     public void insertAll(@NonNull List<UpsertTableRequest> upsertTableRequests)
             throws SQLiteException {
+        insertAll(upsertTableRequests, this::insertRecord);
+    }
+
+    private void insertAll(
+            @NonNull List<UpsertTableRequest> upsertTableRequests,
+            @NonNull BiConsumer<SQLiteDatabase, UpsertTableRequest> insert) {
         try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
             db.beginTransaction();
             try {
                 upsertTableRequests.forEach(
-                        (upsertTableRequest) -> insertOrReplace(db, upsertTableRequest));
+                        (upsertTableRequest) -> insert.accept(db, upsertTableRequest));
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();

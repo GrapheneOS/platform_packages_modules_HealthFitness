@@ -82,6 +82,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.server.healthconnect.migration.DataMigrationManager;
+import com.android.server.healthconnect.migration.DataMigrationParser;
+import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -90,6 +93,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelp
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
@@ -137,17 +141,36 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     new LinkedBlockingQueue<>());
     private final TransactionManager mTransactionManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
+    private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final Context mContext;
     private final PermissionManager mPermissionManager;
 
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
             HealthConnectPermissionHelper permissionHelper,
+            FirstGrantTimeManager firstGrantTimeManager,
             Context context) {
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
+        mFirstGrantTimeManager = firstGrantTimeManager;
         mContext = context;
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
+    }
+
+    @NonNull
+    private DataMigrationManager getDataMigrationManager(@NonNull UserHandle userHandle) {
+        final Context userContext = mContext.createContextAsUser(userHandle, 0);
+
+        return new DataMigrationManager(
+                userContext,
+                mTransactionManager,
+                mPermissionHelper,
+                mFirstGrantTimeManager,
+                new DataMigrationParser(
+                        userContext,
+                        DeviceInfoHelper.getInstance(),
+                        AppInfoHelper.getInstance(),
+                        RecordHelperProvider.getInstance()));
     }
 
     @Override
@@ -770,7 +793,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
-                        // TODO(b/262514558): Perform the migration
+                        getDataMigrationManager(getCallingUserHandle()).apply(entities);
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);

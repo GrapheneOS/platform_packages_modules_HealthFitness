@@ -29,6 +29,7 @@ import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.HeightRecordInternal;
+import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
 import java.util.Arrays;
@@ -44,6 +45,12 @@ import java.util.List;
 public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordInternal> {
     private static final String HEIGHT_RECORD_TABLE_NAME = "height_record_table";
     private static final String HEIGHT_COLUMN_NAME = "height";
+
+    @NonNull
+    @Override
+    public RecordInternal<?> newInternalRecord() {
+        return new HeightRecordInternal();
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

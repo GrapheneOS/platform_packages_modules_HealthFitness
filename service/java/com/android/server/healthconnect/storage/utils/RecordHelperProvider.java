@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
@@ -161,6 +163,6 @@ public final class RecordHelperProvider {
 
     @NonNull
     public RecordHelper<?> getRecordHelper(int recordType) {
-        return mRecordIDToHelperMap.get(recordType);
+        return requireNonNull(mRecordIDToHelperMap.get(recordType));
     }
 }

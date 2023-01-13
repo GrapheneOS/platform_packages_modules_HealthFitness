@@ -27,6 +27,10 @@ import android.os.Parcelable;
  * @hide
  */
 public final class MigrationDataEntity implements Parcelable {
+
+    public static final int TYPE_PACKAGE_PERMISSIONS = 1;
+    public static final int TYPE_RECORD = 2;
+
     private final int mTypeId;
     private final String mEntityId;
     private final Bundle mPayload;

@@ -16,11 +16,14 @@
 package android.healthconnect.internal.datatypes;
 
 import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireLong;
+import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_STEPS_COUNT;
 
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.StepsRecord;
+import android.os.Bundle;
 import android.os.Parcel;
 
 /**
@@ -64,5 +67,10 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeLong(mCount);
+    }
+
+    @Override
+    void populateIntervalRecordFrom(@NonNull Bundle payload) {
+        mCount = requireLong(payload, DM_RECORD_STEPS_COUNT);
     }
 }

@@ -66,7 +66,8 @@ public class UpsertTransactionRequest {
 
         for (RecordInternal<?> recordInternal : recordInternals) {
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
-            AppInfoHelper.getInstance().populateAppInfoId(recordInternal, context);
+            AppInfoHelper.getInstance()
+                    .populateAppInfoId(recordInternal, context, /*requireAllFields=*/ true);
             DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);
 
             if (isInsertRequest) {

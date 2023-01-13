@@ -74,7 +74,8 @@ public class HealthConnectManagerService extends SystemService {
         mPackageMonitor.registerBroadcastReceiver(mContext);
         publishBinderService(
                 Context.HEALTHCONNECT_SERVICE,
-                new HealthConnectServiceImpl(mTransactionManager, mPermissionHelper, mContext));
+                new HealthConnectServiceImpl(
+                        mTransactionManager, mPermissionHelper, mFirstGrantTimeManager, mContext));
     }
 
     @Override
