@@ -759,8 +759,8 @@
 
   <string name="deletion_started_title" description="Title of a dialog that lets the user know about some existing data being deleted. [CHAR_LIMIT=50]">Existing data will be deleted</string>
   <string name="deletion_started_x_months" description="Description explaining what deleting data older than x months means and when the changes will be visible. [CHAR_LIMIT=NONE]">{count, plural,
-    =1{Health&#160;Connect will delete all data older than # months.\nIt may take a day for these changes to appear in your connected apps.}
-    other{Health&#160;Connect will delete all data older than # months.\nIt may take a day for these changes to appear in your connected apps.}
+    =1{Health&#160;Connect will delete all data older than # months. It may take a day for these changes to appear in your connected apps.}
+    other{Health&#160;Connect will delete all data older than # months. It may take a day for these changes to appear in your connected apps.}
   }</string>
   <string name="deletion_started_category_list_section" description="Title of a section that lists those categories where data will be deleted from. [CHAR_LIMIT=NONE]">Data to be deleted from these</string>
   <string name="deletion_started_done_button" description="Button that closes the dialog. [CHAR_LIMIT=40]">Done</string>

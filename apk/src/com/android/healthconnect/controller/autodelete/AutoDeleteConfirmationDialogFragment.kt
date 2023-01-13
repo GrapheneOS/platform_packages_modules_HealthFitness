@@ -58,8 +58,8 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ ->
                     setFragmentResult(
-                        AUTO_DELETE_SAVED_EVENT,
-                        bundleOf(AUTO_DELETE_SAVED_EVENT to viewModel.oldAutoDeleteRange.value))
+                        AUTO_DELETE_CANCELLED_EVENT,
+                        bundleOf(AUTO_DELETE_CANCELLED_EVENT to viewModel.oldAutoDeleteRange.value))
                 }
         }
 

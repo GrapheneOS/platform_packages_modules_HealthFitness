@@ -122,6 +122,16 @@ class AutoDeleteFragmentTest {
 
         onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
 
+        onView(withText("Existing data will be deleted"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Health\u00A0Connect will delete all data older than 3 months. It may take a day for these changes to appear in your connected apps."))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(withText("Done")).inRoot(isDialog()).perform(click())
+
         onView(withId(R.id.radio_button_3_months)).check(matches(isChecked()))
     }
 
@@ -154,6 +164,16 @@ class AutoDeleteFragmentTest {
         onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
 
         onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
+
+        onView(withText("Existing data will be deleted"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Health\u00A0Connect will delete all data older than 18 months. It may take a day for these changes to appear in your connected apps."))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(withText("Done")).inRoot(isDialog()).perform(click())
 
         onView(withId(R.id.radio_button_18_months)).check(matches(isChecked()))
     }

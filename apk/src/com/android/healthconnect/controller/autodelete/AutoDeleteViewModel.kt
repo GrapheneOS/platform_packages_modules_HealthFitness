@@ -48,11 +48,11 @@ constructor(
     val storedAutoDeleteRange: LiveData<AutoDeleteState>
         get() = _storedAutoDeleteRange
 
-    /** Argument used only for [AutoDeleteConfirmationDialogFragment]. */
+    /** Holds the new proposed auto-delete range that the user has to confirm. */
     val newAutoDeleteRange: LiveData<AutoDeleteRange>
         get() = _newAutoDeleteRange
 
-    /** Argument used only for [AutoDeleteConfirmationDialogFragment]. */
+    /** Holds the old auto-delete range that is restored if the user cancels the update. */
     val oldAutoDeleteRange: LiveData<AutoDeleteRange>
         get() = _oldAutoDeleteRange
 

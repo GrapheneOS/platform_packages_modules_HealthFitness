@@ -75,9 +75,7 @@ class AutoDeleteRangeTest {
     @Test
     fun fromNumberOfMonths_unsupportedNumberOfMonths_throws() {
         val thrown =
-                assertThrows(UnsupportedOperationException::class.java) {
-                    fromNumberOfMonths(100)
-                }
+            assertThrows(UnsupportedOperationException::class.java) { fromNumberOfMonths(100) }
         assertThat(thrown).hasMessageThat().isEqualTo("Number of months is not supported: 100")
     }
 
