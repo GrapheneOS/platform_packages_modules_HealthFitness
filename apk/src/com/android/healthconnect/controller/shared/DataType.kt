@@ -23,6 +23,7 @@ import android.healthconnect.datatypes.BloodPressureRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
 import android.healthconnect.datatypes.BoneMassRecord
+import android.healthconnect.datatypes.CervicalMucusRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
@@ -31,12 +32,15 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
+import android.healthconnect.datatypes.MenstruationFlowRecord
 import android.healthconnect.datatypes.NutritionRecord
+import android.healthconnect.datatypes.OvulationTestRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.RespiratoryRateRecord
 import android.healthconnect.datatypes.RestingHeartRateRecord
+import android.healthconnect.datatypes.SexualActivityRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
@@ -74,4 +78,8 @@ enum class DataType(val recordClass: Class<out Record>) {
     BLOOD_PRESSURE(BloodPressureRecord::class.java),
     VO2_MAX(Vo2MaxRecord::class.java),
     CYCLE_PEDALING_CADENCE(CyclingPedalingCadenceRecord::class.java),
+    CERVICAL_MUCUS(CervicalMucusRecord::class.java),
+    SEXUAL_ACTIVITY(SexualActivityRecord::class.java),
+    OVULATION_TEST(OvulationTestRecord::class.java),
+    MENSTRUATION(MenstruationFlowRecord::class.java),
 }

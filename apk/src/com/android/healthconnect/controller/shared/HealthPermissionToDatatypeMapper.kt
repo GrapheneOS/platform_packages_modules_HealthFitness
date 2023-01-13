@@ -23,6 +23,7 @@ import android.healthconnect.datatypes.BloodPressureRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
 import android.healthconnect.datatypes.BoneMassRecord
+import android.healthconnect.datatypes.CervicalMucusRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
@@ -31,12 +32,15 @@ import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
+import android.healthconnect.datatypes.MenstruationFlowRecord
 import android.healthconnect.datatypes.NutritionRecord
+import android.healthconnect.datatypes.OvulationTestRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.RespiratoryRateRecord
 import android.healthconnect.datatypes.RestingHeartRateRecord
+import android.healthconnect.datatypes.SexualActivityRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
@@ -72,6 +76,10 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BLOOD_PRESSURE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.VO2_MAX
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.EXERCISE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.CERVICAL_MUCUS
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SEXUAL_ACTIVITY
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.OVULATION_TEST
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.MENSTRUATION
 import com.google.common.annotations.VisibleForTesting
 
 object HealthPermissionToDatatypeMapper {
@@ -103,7 +111,11 @@ object HealthPermissionToDatatypeMapper {
             NUTRITION to listOf(NutritionRecord::class.java),
             BLOOD_PRESSURE to listOf(BloodPressureRecord::class.java),
             VO2_MAX to listOf(Vo2MaxRecord::class.java),
-            EXERCISE to listOf(CyclingPedalingCadenceRecord::class.java)
+            EXERCISE to listOf(CyclingPedalingCadenceRecord::class.java),
+            CERVICAL_MUCUS to listOf(CervicalMucusRecord::class.java),
+            SEXUAL_ACTIVITY to listOf(SexualActivityRecord::class.java),
+            OVULATION_TEST to listOf(OvulationTestRecord::class.java),
+            MENSTRUATION to listOf(MenstruationFlowRecord::class.java),
         )
 
     fun getDataTypes(permissionType: HealthPermissionType): List<Class<out Record>> {
