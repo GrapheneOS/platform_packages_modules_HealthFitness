@@ -51,6 +51,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -322,6 +323,14 @@ public class ActiveCaloriesBurnedRecordTest {
         Energy newEnergy = newResponse.get(ACTIVE_CALORIES_TOTAL);
         Energy oldEnergy = oldResponse.get(ACTIVE_CALORIES_TOTAL);
         assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(45.5);
+        Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(ACTIVE_CALORIES_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(ACTIVE_CALORIES_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     @Test

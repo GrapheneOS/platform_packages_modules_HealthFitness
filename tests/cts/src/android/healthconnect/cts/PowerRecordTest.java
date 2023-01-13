@@ -52,6 +52,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -280,6 +281,10 @@ public class PowerRecordTest {
         assertThat(minPower.getInWatts()).isEqualTo(5.0);
         assertThat(avgPower).isNotNull();
         assertThat(avgPower.getInWatts()).isEqualTo(10.0);
+        Set<DataOrigin> newDataOrigin = response.getDataOrigins(POWER_AVG);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     private void testReadPowerRecordIds() throws InterruptedException {

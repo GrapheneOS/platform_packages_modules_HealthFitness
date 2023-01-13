@@ -45,6 +45,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -125,6 +126,16 @@ public class TotalCaloriesBurnedRecordTest {
         assertThat(totEnergyBefore).isNotNull();
         assertThat(totEnergyAfter).isNotNull();
         assertThat(totEnergyAfter.getInJoules()).isEqualTo(totEnergyBefore.getInJoules() + 20.0);
+        Set<DataOrigin> newDataOrigin =
+                newResponse.getDataOrigins(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin =
+                oldResponse.getDataOrigins(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord() {

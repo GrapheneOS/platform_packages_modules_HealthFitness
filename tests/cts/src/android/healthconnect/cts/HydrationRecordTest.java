@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class HydrationRecordTest {
@@ -293,6 +294,14 @@ public class HydrationRecordTest {
         assertThat(newVolume).isNotNull();
         assertThat(oldVolume).isNotNull();
         assertThat(newVolume.getInMilliliters() - oldVolume.getInMilliliters()).isEqualTo(20);
+        Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(VOLUME_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(VOLUME_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     private void readHydrationRecordUsingClientId(List<Record> insertedRecord)

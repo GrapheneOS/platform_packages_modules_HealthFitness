@@ -185,8 +185,11 @@ public class TransactionManager {
     @NonNull
     public void populateWithAggregation(AggregateTableRequest aggregateTableRequest) {
         try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-                Cursor cursor = db.rawQuery(aggregateTableRequest.getAggregationCommand(), null)) {
-            aggregateTableRequest.onResultsFetched(cursor);
+                Cursor cursor = db.rawQuery(aggregateTableRequest.getAggregationCommand(), null);
+                Cursor metaDataCursor =
+                        db.rawQuery(
+                                aggregateTableRequest.getCommandToFetchAggregateMetadata(), null)) {
+            aggregateTableRequest.onResultsFetched(cursor, metaDataCursor);
         }
     }
 

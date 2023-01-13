@@ -30,6 +30,7 @@ package android.healthconnect {
 
   public final class AggregateRecordsResponse<T> {
     method @Nullable public T get(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins(@NonNull android.healthconnect.datatypes.AggregationType<T>);
     method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.healthconnect.datatypes.AggregationType<T>);
   }
 

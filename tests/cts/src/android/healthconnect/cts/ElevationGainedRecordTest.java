@@ -51,6 +51,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -347,6 +348,14 @@ public class ElevationGainedRecordTest {
         assertThat(newElevation).isNotNull();
         assertThat(oldElevation).isNotNull();
         assertThat(newElevation.getInMeters() - oldElevation.getInMeters()).isEqualTo(100.5);
+        Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(ELEVATION_GAINED_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(ELEVATION_GAINED_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     static ElevationGainedRecord getBaseElevationGainedRecord() {

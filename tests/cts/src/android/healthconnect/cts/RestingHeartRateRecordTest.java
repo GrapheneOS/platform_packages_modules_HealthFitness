@@ -47,6 +47,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -331,6 +332,10 @@ public class RestingHeartRateRecordTest {
         assertThat(response.get(RestingHeartRateRecord.BPM_MIN)).isEqualTo(1);
         assertThat(response.getZoneOffset(RestingHeartRateRecord.BPM_MIN))
                 .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        Set<DataOrigin> dataOrigins = response.getDataOrigins(RestingHeartRateRecord.BPM_MIN);
+        for (DataOrigin itr : dataOrigins) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     private static RestingHeartRateRecord getBaseRestingHeartRateRecord() {

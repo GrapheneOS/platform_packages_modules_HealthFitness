@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class FloorsClimbedRecordTest {
@@ -211,6 +212,14 @@ public class FloorsClimbedRecordTest {
         assertThat(newFloorsTotal).isNotNull();
         assertThat(oldFloorsTotal).isNotNull();
         assertThat(newFloorsTotal - oldFloorsTotal).isEqualTo(20);
+        Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(FLOORS_CLIMBED_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(FLOORS_CLIMBED_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     private void readFloorsClimbedRecordUsingClientId(List<Record> insertedRecord)

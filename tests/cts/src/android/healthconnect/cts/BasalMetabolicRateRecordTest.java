@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -312,6 +313,14 @@ public class BasalMetabolicRateRecordTest {
         Power newPower = newResponse.get(BASAL_CALORIES_TOTAL);
         Power oldPower = oldResponse.get(BASAL_CALORIES_TOTAL);
         assertThat(newPower.getInWatts() - oldPower.getInWatts()).isEqualTo(45.5);
+        Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(BASAL_CALORIES_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(BASAL_CALORIES_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     private void readBasalMetabolicRateRecordUsingClientId(List<Record> insertedRecord)
