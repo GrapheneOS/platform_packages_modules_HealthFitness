@@ -52,9 +52,11 @@ package android.healthconnect {
     method @RequiresPermission(android.Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA) public void stageAllHealthConnectRemoteData(@NonNull java.util.Map<java.lang.String,android.os.ParcelFileDescriptor>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.restore.StageRemoteDataException>) throws java.lang.NullPointerException;
     method @RequiresPermission(android.Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA) public void updateDataDownloadState(int);
     method @RequiresPermission(android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void updateDataOriginPriorityOrder(@NonNull android.healthconnect.UpdateDataOriginPriorityOrderRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
+    field public static final String ACTION_HEALTH_CONNECT_MIGRATION_READY = "android.healthconnect.action.HEALTH_CONNECT_MIGRATION_READY";
     field public static final String ACTION_HEALTH_HOME_SETTINGS = "android.healthconnect.action.HEALTH_HOME_SETTINGS";
     field public static final String ACTION_MANAGE_HEALTH_DATA = "android.healthconnect.action.MANAGE_HEALTH_DATA";
     field public static final String ACTION_REQUEST_HEALTH_PERMISSIONS = "android.healthconnect.action.REQUEST_HEALTH_PERMISSIONS";
+    field public static final String ACTION_SHOW_MIGRATION_INFO = "android.healthconnect.action.SHOW_MIGRATION_INFO";
     field public static final int DATA_DOWNLOAD_COMPLETE = 4; // 0x4
     field public static final int DATA_DOWNLOAD_FAILED = 3; // 0x3
     field public static final int DATA_DOWNLOAD_RETRY = 2; // 0x2
