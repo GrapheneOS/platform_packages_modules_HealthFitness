@@ -64,9 +64,7 @@ public class ChangeLogsResponseParcel implements Parcelable {
     }
 
     public ChangeLogsResponse getChangeLogsResponse()
-            throws InvocationTargetException,
-                    InstantiationException,
-                    IllegalAccessException,
+            throws InvocationTargetException, InstantiationException, IllegalAccessException,
                     NoSuchMethodException {
         return new ChangeLogsResponse(
                 InternalExternalRecordConverter.getInstance()

@@ -38,6 +38,7 @@ import android.healthconnect.aidl.ActivityDatesResponseParcel;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.ApplicationInfoResponseParcel;
 import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.healthconnect.aidl.ChangeLogTokenResponseParcel;
 import android.healthconnect.aidl.ChangeLogsRequestParcel;
 import android.healthconnect.aidl.ChangeLogsResponseParcel;
 import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
@@ -374,8 +375,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         callback.onResult(
-                                ChangeLogsRequestHelper.getInstance()
-                                        .getToken(packageName, request));
+                                new ChangeLogTokenResponseParcel(
+                                        ChangeLogsRequestHelper.getInstance()
+                                                .getToken(packageName, request)));
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(

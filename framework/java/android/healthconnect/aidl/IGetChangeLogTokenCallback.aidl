@@ -1,6 +1,7 @@
 package android.healthconnect.aidl;
 
 import android.healthconnect.aidl.HealthConnectExceptionParcel;
+import android.healthconnect.aidl.ChangeLogTokenResponseParcel;
 
 /**
  * Callback for {@link IHealthConnectService#getChangeLogToken}
@@ -9,7 +10,7 @@ import android.healthconnect.aidl.HealthConnectExceptionParcel;
  */
 interface IGetChangeLogTokenCallback {
     // Called on a successful operation
-    oneway void onResult(String token);
+    oneway void onResult(in ChangeLogTokenResponseParcel parcel);
     // Called when an error is hit
     oneway void onError(in HealthConnectExceptionParcel exception);
 }
