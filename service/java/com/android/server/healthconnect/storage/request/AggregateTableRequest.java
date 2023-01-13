@@ -22,6 +22,8 @@ import static android.healthconnect.datatypes.AggregationType.MAX;
 import static android.healthconnect.datatypes.AggregationType.MIN;
 import static android.healthconnect.datatypes.AggregationType.SUM;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.database.Cursor;
@@ -33,6 +35,7 @@ import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -124,6 +127,13 @@ public class AggregateTableRequest {
         return this;
     }
 
+    /** Returns SQL statement to get data origins for the aggregation operation */
+    public String getCommandToFetchAggregateMetadata() {
+        final StringBuilder builder = new StringBuilder("SELECT DISTINCT ");
+        builder.append(APP_INFO_ID_COLUMN_NAME).append(", ");
+        return appendAggregateCommand(builder);
+    }
+
     /** Returns SQL statement to perform aggregation operation */
     @NonNull
     public String getAggregationCommand() {
@@ -146,47 +156,7 @@ public class AggregateTableRequest {
             }
         }
 
-        boolean useGroupBy = false;
-        if (mGroupByColumnName != null) {
-            useGroupBy = true;
-            builder.append(" CASE ");
-            int groupByIndex = 0;
-            for (long i = mGroupByStart; i < mGroupByEnd; i += mGroupByDelta) {
-                builder.append(" WHEN ")
-                        .append(mGroupByColumnName)
-                        .append(" >= ")
-                        .append(i)
-                        .append(" AND ")
-                        .append(mGroupByColumnName)
-                        .append(" < ")
-                        .append(i + mGroupByDelta)
-                        .append(" THEN ")
-                        .append(groupByIndex++);
-            }
-            builder.append(" END " + GROUP_BY_COLUMN_NAME + " ");
-        } else {
-            builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
-        }
-
-        builder.append(" FROM ").append(mTableName);
-        if (mSqlJoin != null) {
-            builder.append(mSqlJoin.getInnerJoinClause());
-        }
-
-        WhereClauses whereClauses = new WhereClauses();
-        whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
-        whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
-        builder.append(whereClauses.get(true));
-
-        if (useGroupBy) {
-            builder.append(" GROUP BY " + GROUP_BY_COLUMN_NAME);
-        }
-
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "Aggregation query: " + builder);
-        }
-
-        return builder.toString();
+        return appendAggregateCommand(builder);
     }
 
     public AggregateTableRequest setPackageFilter(
@@ -227,11 +197,18 @@ public class AggregateTableRequest {
         setGroupBySize();
     }
 
-    public void onResultsFetched(Cursor cursor) {
+    public void onResultsFetched(Cursor cursor, Cursor metaDataCursor) {
+        List<Long> packageIds = new ArrayList<>();
+        while (metaDataCursor.moveToNext()) {
+            packageIds.add(StorageUtils.getCursorLong(metaDataCursor, APP_INFO_ID_COLUMN_NAME));
+        }
+        List<String> packageNames = AppInfoHelper.getInstance().getPackageNames(packageIds);
         while (cursor.moveToNext()) {
             mAggregateResults.put(
                     StorageUtils.getCursorInt(cursor, GROUP_BY_COLUMN_NAME),
-                    mRecordHelper.getAggregateResult(cursor, mAggregationType));
+                    mRecordHelper
+                            .getAggregateResult(cursor, mAggregationType)
+                            .setDataOrigins(packageNames));
         }
     }
 
@@ -258,5 +235,49 @@ public class AggregateTableRequest {
             default:
                 return null;
         }
+    }
+
+    private String appendAggregateCommand(StringBuilder builder) {
+        boolean useGroupBy = false;
+        if (mGroupByColumnName != null) {
+            useGroupBy = true;
+            builder.append(" CASE ");
+            int groupByIndex = 0;
+            for (long i = mGroupByStart; i < mGroupByEnd; i += mGroupByDelta) {
+                builder.append(" WHEN ")
+                        .append(mGroupByColumnName)
+                        .append(" >= ")
+                        .append(i)
+                        .append(" AND ")
+                        .append(mGroupByColumnName)
+                        .append(" < ")
+                        .append(i + mGroupByDelta)
+                        .append(" THEN ")
+                        .append(groupByIndex++);
+            }
+            builder.append(" END " + GROUP_BY_COLUMN_NAME + " ");
+        } else {
+            builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
+        }
+
+        builder.append(" FROM ").append(mTableName);
+        if (mSqlJoin != null) {
+            builder.append(mSqlJoin.getInnerJoinClause());
+        }
+
+        WhereClauses whereClauses = new WhereClauses();
+        whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
+        whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
+        builder.append(whereClauses.get(true));
+
+        if (useGroupBy) {
+            builder.append(" GROUP BY " + GROUP_BY_COLUMN_NAME);
+        }
+
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Aggregation origin uery: " + builder);
+        }
+
+        return builder.toString();
     }
 }

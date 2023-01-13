@@ -52,6 +52,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -318,6 +319,10 @@ public class HeightRecordTest {
         assertThat(minHeight.getInMeters()).isEqualTo(5.0);
         assertThat(avgHeight).isNotNull();
         assertThat(avgHeight.getInMeters()).isEqualTo(10.0);
+        Set<DataOrigin> dataOrigins = response.getDataOrigins(HEIGHT_AVG);
+        for (DataOrigin itr : dataOrigins) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     private static HeightRecord getBaseHeightRecord() {

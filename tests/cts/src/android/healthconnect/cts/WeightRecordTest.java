@@ -52,6 +52,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -198,6 +199,10 @@ public class WeightRecordTest {
         assertThat(minWeight.getInKilograms()).isEqualTo(5.0);
         assertThat(avgWeight).isNotNull();
         assertThat(avgWeight.getInKilograms()).isEqualTo(10.0);
+        Set<DataOrigin> dataOrigins = response.getDataOrigins(WEIGHT_AVG);
+        for (DataOrigin itr : dataOrigins) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     @Test

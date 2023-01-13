@@ -19,12 +19,15 @@ package android.healthconnect;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.datatypes.AggregationType;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.util.ArrayMap;
 
 import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /** A class representing response for {@link HealthConnectManager#aggregate} */
 public final class AggregateRecordsResponse<T> {
@@ -62,6 +65,21 @@ public final class AggregateRecordsResponse<T> {
         }
 
         return result.getZoneOffset();
+    }
+
+    /** @hide */
+    public static <U> Set<DataOrigin> getDataOriginsInternal(
+            @NonNull AggregationType<U> aggregationType,
+            Map<AggregationType<U>, AggregateResult<U>> mAggregateResults) {
+        Objects.requireNonNull(aggregationType);
+
+        AggregateResult<U> result = mAggregateResults.get(aggregationType);
+
+        if (result == null) {
+            return Collections.emptySet();
+        }
+
+        return result.getDataOrigins();
     }
 
     /** @hide */
@@ -110,5 +128,14 @@ public final class AggregateRecordsResponse<T> {
     @Nullable
     public ZoneOffset getZoneOffset(@NonNull AggregationType<T> aggregationType) {
         return getZoneOffsetInternal(aggregationType, mAggregateResults);
+    }
+
+    /**
+     * Returns a set of {@link DataOrigin}s for the underlying aggregation record, empty set if the
+     * corresponding aggregation doesn't exist and or if multiple records were present.
+     */
+    @NonNull
+    public Set<DataOrigin> getDataOrigins(@NonNull AggregationType<T> aggregationType) {
+        return getDataOriginsInternal(aggregationType, mAggregateResults);
     }
 }

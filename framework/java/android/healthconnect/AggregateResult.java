@@ -17,10 +17,14 @@
 package android.healthconnect;
 
 import android.annotation.NonNull;
+import android.healthconnect.datatypes.DataOrigin;
 import android.os.Parcel;
+import android.util.ArraySet;
 
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A class to represent the results of {@link HealthConnectManager} aggregate APIs
@@ -30,6 +34,7 @@ import java.util.Objects;
 public final class AggregateResult<T> {
     private final T mResult;
     private ZoneOffset mZoneOffset;
+    private Set<DataOrigin> mDataOrigins;
 
     public AggregateResult(T result) {
         mResult = result;
@@ -57,6 +62,23 @@ public final class AggregateResult<T> {
         Objects.requireNonNull(zoneOffset);
 
         mZoneOffset = zoneOffset;
+        return this;
+    }
+
+    /** Returns set of {@link DataOrigin} that contributed to the aggregation result */
+    @NonNull
+    public Set<DataOrigin> getDataOrigins() {
+        return mDataOrigins;
+    }
+
+    /** Sets a Set of {@link DataOrigin} that contributed to the aggregation result. */
+    public AggregateResult<T> setDataOrigins(@NonNull List<String> packageNameList) {
+        Objects.requireNonNull(packageNameList);
+
+        mDataOrigins = new ArraySet<>();
+        for (String packageName : packageNameList) {
+            mDataOrigins.add(new DataOrigin.Builder().setPackageName(packageName).build());
+        }
         return this;
     }
 

@@ -37,7 +37,8 @@ public final class WheelchairPushesRecord extends IntervalRecord {
     private final long mCount;
 
     /**
-     * Metric identifier to get minimum weight using aggregate APIs in {@link HealthConnectManager}
+     * Metric identifier to get total wheelchair push count using aggregate APIs in {@link
+     * HealthConnectManager}
      */
     @android.annotation.NonNull
     public static final AggregationType<Long> WHEEL_CHAIR_PUSHES_COUNT_TOTAL =

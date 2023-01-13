@@ -88,6 +88,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class NutritionRecordTest {
@@ -341,6 +342,14 @@ public class NutritionRecordTest {
             assertThat(newTotal).isNotNull();
             assertThat(oldTotal).isNotNull();
             assertThat(newTotal.getInKilograms() - oldTotal.getInKilograms()).isEqualTo(20);
+            Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(type);
+            for (DataOrigin itr : newDataOrigin) {
+                assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+            }
+            Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(type);
+            for (DataOrigin itr : oldDataOrigin) {
+                assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+            }
         }
     }
 

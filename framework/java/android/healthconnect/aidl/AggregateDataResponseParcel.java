@@ -26,6 +26,7 @@ import android.healthconnect.AggregateRecordsGroupedByPeriodResponse;
 import android.healthconnect.AggregateRecordsResponse;
 import android.healthconnect.AggregateResult;
 import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /** @hide */
 public class AggregateDataResponseParcel implements Parcelable {
@@ -83,7 +85,8 @@ public class AggregateDataResponseParcel implements Parcelable {
                             id,
                             AggregationTypeIdMapper.getInstance()
                                     .getAggregateResultFor(id, in)
-                                    .setZoneOffset(parseZoneOffset(in)));
+                                    .setZoneOffset(parseZoneOffset(in))
+                                    .setDataOrigins(in.createStringArrayList()));
                 } else {
                     result.put(id, null);
                 }
@@ -216,6 +219,12 @@ public class AggregateDataResponseParcel implements Parcelable {
                                     } else {
                                         dest.writeInt(DEFAULT_INT);
                                     }
+                                    Set<DataOrigin> dataOrigins = val.getDataOrigins();
+                                    List<String> packageNames = new ArrayList<>();
+                                    for (DataOrigin dataOrigin : dataOrigins) {
+                                        packageNames.add(dataOrigin.getPackageName());
+                                    }
+                                    dest.writeStringList(packageNames);
                                 }
                             });
         }

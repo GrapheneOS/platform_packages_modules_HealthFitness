@@ -27,6 +27,7 @@ import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.InsertRecordsResponse;
 import android.healthconnect.TimeRangeFilter;
+import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.WheelchairPushesRecord;
@@ -45,6 +46,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -112,6 +114,14 @@ public class WheelchairPushesRecordTest {
         assertThat(newResponse.get(WHEEL_CHAIR_PUSHES_COUNT_TOTAL)).isNotNull();
         assertThat(newResponse.get(WHEEL_CHAIR_PUSHES_COUNT_TOTAL))
                 .isEqualTo(oldResponse.get(WHEEL_CHAIR_PUSHES_COUNT_TOTAL) + 20);
+        Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(WHEEL_CHAIR_PUSHES_COUNT_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(WHEEL_CHAIR_PUSHES_COUNT_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     static WheelchairPushesRecord getBaseWheelchairPushesRecord() {
