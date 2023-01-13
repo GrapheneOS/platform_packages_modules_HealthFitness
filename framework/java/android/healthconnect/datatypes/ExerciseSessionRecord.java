@@ -21,14 +21,18 @@ import android.annotation.Nullable;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Captures any other exercise a user does for which there is not a custom record type. This can be
- * common fitness exercise like running or different sports.
+ * Captures exercise or a sequence of exercises. This can be a playing game like football or a
+ * sequence of fitness exercises.
  *
- * <p>Each record needs a start time and end time. Records don't need to be back-to-back or directly
- * after each other, there can be gaps in between.
+ * <p>Each record needs a start time, end time and session type. In addition, each record has two
+ * optional independent lists of time intervals: {@link ExerciseSegment} represents particular
+ * exercise within session, {@link ExerciseLap} represents a lap time within session.
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION)
 public final class ExerciseSessionRecord extends IntervalRecord {
@@ -37,6 +41,9 @@ public final class ExerciseSessionRecord extends IntervalRecord {
     private final CharSequence mNotes;
     private final CharSequence mTitle;
     private final ExerciseRoute mRoute;
+
+    private final List<ExerciseSegment> mSegments;
+    private final List<ExerciseLap> mLaps;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -58,12 +65,16 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             @Nullable CharSequence notes,
             @NonNull @ExerciseSessionType.ExerciseSessionTypes int exerciseType,
             @Nullable CharSequence title,
-            @Nullable ExerciseRoute route) {
+            @Nullable ExerciseRoute route,
+            @NonNull List<ExerciseSegment> segments,
+            @NonNull List<ExerciseLap> laps) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         mNotes = notes;
         mExerciseType = exerciseType;
         mTitle = title;
         mRoute = route;
+        mSegments = Collections.unmodifiableList(segments);
+        mLaps = Collections.unmodifiableList(laps);
     }
 
     /** Returns exerciseType of this session. */
@@ -90,6 +101,23 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         return mRoute;
     }
 
+    /**
+     * Returns segments of this session. Returns empty list if the session doesn't have exercise
+     * segments.
+     */
+    @NonNull
+    public List<ExerciseSegment> getSegments() {
+        return mSegments;
+    }
+
+    /**
+     * Returns laps of this session. Returns empty list if the session doesn't have exercise laps.
+     */
+    @NonNull
+    public List<ExerciseLap> getLaps() {
+        return mLaps;
+    }
+
     /** Returns if this session has route. */
     @NonNull
     public boolean hasRoute() {
@@ -105,13 +133,19 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         return getExerciseType() == that.getExerciseType()
                 && RecordUtils.isEqualNullableCharSequences(getNotes(), that.getNotes())
                 && RecordUtils.isEqualNullableCharSequences(getTitle(), that.getTitle())
-                && Objects.equals(getRoute(), that.getRoute());
+                && Objects.equals(getRoute(), that.getRoute())
+                && Objects.equals(getSegments(), that.getSegments());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                super.hashCode(), getExerciseType(), getNotes(), getTitle(), getRoute());
+                super.hashCode(),
+                getExerciseType(),
+                getNotes(),
+                getTitle(),
+                getRoute(),
+                getSegments());
     }
 
     /** Builder class for {@link ExerciseSessionRecord} */
@@ -125,6 +159,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         private CharSequence mNotes;
         private CharSequence mTitle;
         private ExerciseRoute mRoute;
+        private List<ExerciseSegment> mSegments;
+        private List<ExerciseLap> mLaps;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -147,6 +183,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mExerciseType = exerciseType;
+            mSegments = new ArrayList<>();
+            mLaps = new ArrayList<>();
         }
 
         /** Sets the zone offset of the user when the session started */
@@ -200,6 +238,32 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             return this;
         }
 
+        /**
+         * Sets segments for this session.
+         *
+         * @param laps list of {@link ExerciseLap} of this session
+         */
+        @NonNull
+        public Builder setLaps(@NonNull List<ExerciseLap> laps) {
+            Objects.requireNonNull(laps);
+            mLaps.clear();
+            mLaps.addAll(laps);
+            return this;
+        }
+
+        /**
+         * Sets segments for this session.
+         *
+         * @param segments list of {@link ExerciseSegment} of this session
+         */
+        @NonNull
+        public Builder setSegments(@NonNull List<ExerciseSegment> segments) {
+            Objects.requireNonNull(segments);
+            mSegments.clear();
+            mSegments.addAll(segments);
+            return this;
+        }
+
         /** Returns {@link ExerciseSessionRecord} */
         @NonNull
         public ExerciseSessionRecord build() {
@@ -212,7 +276,9 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                     mNotes,
                     mExerciseType,
                     mTitle,
-                    mRoute);
+                    mRoute,
+                    mSegments,
+                    mLaps);
         }
     }
 }

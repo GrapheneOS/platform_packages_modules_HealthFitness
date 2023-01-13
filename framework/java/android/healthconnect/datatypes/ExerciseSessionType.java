@@ -203,6 +203,15 @@ public final class ExerciseSessionType {
     /** Use this type for the other workout session. */
     public static final int EXERCISE_SESSION_TYPE_OTHER_WORKOUT = 58;
 
+    /** Use this type for the stair climbing machine session. */
+    public static final int EXERCISE_SESSION_TYPE_STAIR_CLIMBING_MACHINE = 59;
+
+    /** Use this type for elliptical workout. */
+    public static final int EXERCISE_SESSION_TYPE_ELLIPTICAL = 60;
+
+    /** Use this type for rowing machine. */
+    public static final int EXERCISE_SESSION_TYPE_ROWING_MACHINE = 61;
+
     private ExerciseSessionType() {}
 
     /** @hide */
@@ -218,6 +227,7 @@ public final class ExerciseSessionType {
         EXERCISE_SESSION_TYPE_CALISTHENICS,
         EXERCISE_SESSION_TYPE_CRICKET,
         EXERCISE_SESSION_TYPE_DANCING,
+        EXERCISE_SESSION_TYPE_ELLIPTICAL,
         EXERCISE_SESSION_TYPE_EXERCISE_CLASS,
         EXERCISE_SESSION_TYPE_FENCING,
         EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN,
@@ -239,6 +249,7 @@ public final class ExerciseSessionType {
         EXERCISE_SESSION_TYPE_ROCK_CLIMBING,
         EXERCISE_SESSION_TYPE_ROLLER_HOCKEY,
         EXERCISE_SESSION_TYPE_ROWING,
+        EXERCISE_SESSION_TYPE_ROWING_MACHINE,
         EXERCISE_SESSION_TYPE_RUGBY,
         EXERCISE_SESSION_TYPE_RUNNING,
         EXERCISE_SESSION_TYPE_RUNNING_TREADMILL,
@@ -252,6 +263,7 @@ public final class ExerciseSessionType {
         EXERCISE_SESSION_TYPE_SOFTBALL,
         EXERCISE_SESSION_TYPE_SQUASH,
         EXERCISE_SESSION_TYPE_STAIR_CLIMBING,
+        EXERCISE_SESSION_TYPE_STAIR_CLIMBING_MACHINE,
         EXERCISE_SESSION_TYPE_STRENGTH_TRAINING,
         EXERCISE_SESSION_TYPE_STRETCHING,
         EXERCISE_SESSION_TYPE_SURFING,
@@ -265,7 +277,7 @@ public final class ExerciseSessionType {
         EXERCISE_SESSION_TYPE_WEIGHTLIFTING,
         EXERCISE_SESSION_TYPE_WHEELCHAIR,
         EXERCISE_SESSION_TYPE_OTHER_WORKOUT,
-        EXERCISE_SESSION_TYPE_YOGA
+        EXERCISE_SESSION_TYPE_YOGA,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ExerciseSessionTypes {}
