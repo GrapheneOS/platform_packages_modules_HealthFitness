@@ -247,6 +247,8 @@ public final class SleepSessionRecord extends IntervalRecord {
             mStages = new ArrayList<>(stages);
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the activity started */

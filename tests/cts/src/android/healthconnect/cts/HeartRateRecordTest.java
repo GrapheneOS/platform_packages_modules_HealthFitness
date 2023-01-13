@@ -269,6 +269,34 @@ public class HeartRateRecordTest {
         TestUtils.assertRecordNotFound(id, HeartRateRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        HeartRateRecord.HeartRateSample heartRateRecord =
+                new HeartRateRecord.HeartRateSample(10, Instant.now());
+        ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
+        heartRateRecords.add(heartRateRecord);
+        heartRateRecords.add(heartRateRecord);
+        HeartRateRecord.Builder builder =
+                new HeartRateRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        heartRateRecords);
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+    }
+
     private void testReadHeartRateRecordIds() throws InterruptedException {
         List<Record> recordList =
                 Arrays.asList(getCompleteHeartRateRecord(), getCompleteHeartRateRecord());

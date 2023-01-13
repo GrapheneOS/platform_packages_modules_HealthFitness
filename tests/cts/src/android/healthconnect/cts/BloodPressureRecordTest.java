@@ -297,6 +297,24 @@ public class BloodPressureRecordTest {
         TestUtils.assertRecordNotFound(id, BloodPressureRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        BloodPressureRecord.Builder builder =
+                new BloodPressureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Pressure.fromMillimetersOfMercury(10.0),
+                        Pressure.fromMillimetersOfMercury(10.0),
+                        1);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static BloodPressureRecord getBaseBloodPressureRecord() {
         return new BloodPressureRecord.Builder(
                         new Metadata.Builder().build(),

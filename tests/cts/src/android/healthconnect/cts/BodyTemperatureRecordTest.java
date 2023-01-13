@@ -301,6 +301,22 @@ public class BodyTemperatureRecordTest {
         TestUtils.assertRecordNotFound(id, BodyTemperatureRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        BodyTemperatureRecord.Builder builder =
+                new BodyTemperatureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Temperature.fromCelsius(10.0));
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static BodyTemperatureRecord getBaseBodyTemperatureRecord() {
         return new BodyTemperatureRecord.Builder(
                         new Metadata.Builder().build(),

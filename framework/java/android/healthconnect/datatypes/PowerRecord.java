@@ -152,9 +152,9 @@ public final class PowerRecord extends IntervalRecord {
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mPowerRecordSamples = powerRecordSamples;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the activity started */

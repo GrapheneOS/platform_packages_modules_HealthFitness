@@ -44,6 +44,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -321,6 +322,19 @@ public class BasalMetabolicRateRecordTest {
         for (DataOrigin itr : oldDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
         }
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        BasalMetabolicRateRecord.Builder builder =
+                new BasalMetabolicRateRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(10.0));
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
     private void readBasalMetabolicRateRecordUsingClientId(List<Record> insertedRecord)

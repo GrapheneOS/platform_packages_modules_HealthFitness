@@ -18,6 +18,9 @@ package android.healthconnect.datatypes;
 
 import android.annotation.Nullable;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+
 /**
  * Utils class with record helper functions.
  *
@@ -34,5 +37,9 @@ public class RecordUtils {
         }
 
         return CharSequence.compare(sequence1, sequence2) == 0;
+    }
+
+    public static ZoneOffset getDefaultZoneOffset() {
+        return ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
     }
 }

@@ -296,6 +296,18 @@ public class SexualActivityRecordTest {
         TestUtils.assertRecordNotFound(id, SexualActivityRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        SexualActivityRecord.Builder builder =
+                new SexualActivityRecord.Builder(new Metadata.Builder().build(), Instant.now(), 0);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static SexualActivityRecord getBaseSexualActivityRecord() {
         return new SexualActivityRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
                 .build();

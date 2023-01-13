@@ -131,8 +131,8 @@ public final class HeightRecord extends InstantRecord {
             Objects.requireNonNull(height);
             mMetadata = metadata;
             mTime = time;
-            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mHeight = height;
+            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
         }
 
         /** Sets the zone offset of the user when the activity happened */
@@ -140,6 +140,13 @@ public final class HeightRecord extends InstantRecord {
         public Builder setZoneOffset(@NonNull ZoneOffset zoneOffset) {
             Objects.requireNonNull(zoneOffset);
             mZoneOffset = zoneOffset;
+            return this;
+        }
+
+        /** Sets the zone offset of this record to system default. */
+        @NonNull
+        public Builder clearZoneOffset() {
+            mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

@@ -277,6 +277,18 @@ public class Vo2MaxRecordTest {
         TestUtils.assertRecordNotFound(id, Vo2MaxRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        Vo2MaxRecord.Builder builder =
+                new Vo2MaxRecord.Builder(new Metadata.Builder().build(), Instant.now(), 0, 10.0);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static Vo2MaxRecord getBaseVo2MaxRecord() {
         return new Vo2MaxRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1, 10.0)
                 .build();

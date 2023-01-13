@@ -302,6 +302,19 @@ public class MenstruationFlowRecordTest {
         TestUtils.assertRecordNotFound(id, MenstruationFlowRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        MenstruationFlowRecord.Builder builder =
+                new MenstruationFlowRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), 0);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static MenstruationFlowRecord getBaseMenstruationFlowRecord() {
         return new MenstruationFlowRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
                 .build();

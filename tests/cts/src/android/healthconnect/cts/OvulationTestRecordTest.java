@@ -296,6 +296,18 @@ public class OvulationTestRecordTest {
         TestUtils.assertRecordNotFound(id, OvulationTestRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        OvulationTestRecord.Builder builder =
+                new OvulationTestRecord.Builder(new Metadata.Builder().build(), Instant.now(), 0);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static OvulationTestRecord getBaseOvulationTestRecord() {
         return new OvulationTestRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
                 .build();

@@ -278,6 +278,19 @@ public class BodyFatRecordTest {
         TestUtils.assertRecordNotFound(id, BodyFatRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        BodyFatRecord.Builder builder =
+                new BodyFatRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(10.0));
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static BodyFatRecord getBaseBodyFatRecord() {
         return new BodyFatRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(10.0))

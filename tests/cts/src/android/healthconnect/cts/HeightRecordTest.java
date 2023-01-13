@@ -325,6 +325,19 @@ public class HeightRecordTest {
         }
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        HeightRecord.Builder builder =
+                new HeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0));
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static HeightRecord getBaseHeightRecord() {
         return new HeightRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0))

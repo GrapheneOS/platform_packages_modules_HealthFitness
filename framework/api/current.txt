@@ -241,6 +241,8 @@ package android.healthconnect.datatypes {
   public static final class ActiveCaloriesBurnedRecord.Builder {
     ctor public ActiveCaloriesBurnedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Energy);
     method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord build();
+    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -262,6 +264,7 @@ package android.healthconnect.datatypes {
   public static final class BasalBodyTemperatureRecord.Builder {
     ctor public BasalBodyTemperatureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Temperature);
     method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord build();
+    method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -273,6 +276,7 @@ package android.healthconnect.datatypes {
   public static final class BasalMetabolicRateRecord.Builder {
     ctor public BasalMetabolicRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Power);
     method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -286,6 +290,7 @@ package android.healthconnect.datatypes {
   public static final class BloodGlucoseRecord.Builder {
     ctor public BloodGlucoseRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.BloodGlucose, int, int);
     method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord build();
+    method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -333,6 +338,7 @@ package android.healthconnect.datatypes {
   public static final class BloodPressureRecord.Builder {
     ctor public BloodPressureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Pressure, @NonNull android.healthconnect.datatypes.units.Pressure, int);
     method @NonNull public android.healthconnect.datatypes.BloodPressureRecord build();
+    method @NonNull public android.healthconnect.datatypes.BloodPressureRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.BloodPressureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -343,6 +349,7 @@ package android.healthconnect.datatypes {
   public static final class BodyFatRecord.Builder {
     ctor public BodyFatRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Percentage);
     method @NonNull public android.healthconnect.datatypes.BodyFatRecord build();
+    method @NonNull public android.healthconnect.datatypes.BodyFatRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.BodyFatRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -368,6 +375,7 @@ package android.healthconnect.datatypes {
   public static final class BodyTemperatureRecord.Builder {
     ctor public BodyTemperatureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Temperature);
     method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord build();
+    method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -378,6 +386,7 @@ package android.healthconnect.datatypes {
   public static final class BoneMassRecord.Builder {
     ctor public BoneMassRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
     method @NonNull public android.healthconnect.datatypes.BoneMassRecord build();
+    method @NonNull public android.healthconnect.datatypes.BoneMassRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.BoneMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -389,6 +398,7 @@ package android.healthconnect.datatypes {
   public static final class CervicalMucusRecord.Builder {
     ctor public CervicalMucusRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, int);
     method @NonNull public android.healthconnect.datatypes.CervicalMucusRecord build();
+    method @NonNull public android.healthconnect.datatypes.CervicalMucusRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.CervicalMucusRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -416,6 +426,8 @@ package android.healthconnect.datatypes {
   public static final class CyclingPedalingCadenceRecord.Builder {
     ctor public CyclingPedalingCadenceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>);
     method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord build();
+    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -467,6 +479,8 @@ package android.healthconnect.datatypes {
   public static final class DistanceRecord.Builder {
     ctor public DistanceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
     method @NonNull public android.healthconnect.datatypes.DistanceRecord build();
+    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -479,6 +493,8 @@ package android.healthconnect.datatypes {
   public static final class ElevationGainedRecord.Builder {
     ctor public ElevationGainedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
     method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord build();
+    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -614,6 +630,8 @@ package android.healthconnect.datatypes {
   public static final class ExerciseSessionRecord.Builder {
     ctor public ExerciseSessionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord build();
+    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setLaps(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseLap>);
     method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setNotes(@Nullable CharSequence);
@@ -696,6 +714,8 @@ package android.healthconnect.datatypes {
   public static final class FloorsClimbedRecord.Builder {
     ctor public FloorsClimbedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord build();
+    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -711,6 +731,8 @@ package android.healthconnect.datatypes {
   public static final class HeartRateRecord.Builder {
     ctor public HeartRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample>);
     method @NonNull public android.healthconnect.datatypes.HeartRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -731,6 +753,7 @@ package android.healthconnect.datatypes {
   public static final class HeightRecord.Builder {
     ctor public HeightRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
     method @NonNull public android.healthconnect.datatypes.HeightRecord build();
+    method @NonNull public android.healthconnect.datatypes.HeightRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.HeightRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -742,6 +765,8 @@ package android.healthconnect.datatypes {
   public static final class HydrationRecord.Builder {
     ctor public HydrationRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Volume);
     method @NonNull public android.healthconnect.datatypes.HydrationRecord build();
+    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -765,6 +790,7 @@ package android.healthconnect.datatypes {
   public static final class LeanBodyMassRecord.Builder {
     ctor public LeanBodyMassRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
     method @NonNull public android.healthconnect.datatypes.LeanBodyMassRecord build();
+    method @NonNull public android.healthconnect.datatypes.LeanBodyMassRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.LeanBodyMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -783,6 +809,7 @@ package android.healthconnect.datatypes {
   public static final class MenstruationFlowRecord.Builder {
     ctor public MenstruationFlowRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int);
     method @NonNull public android.healthconnect.datatypes.MenstruationFlowRecord build();
+    method @NonNull public android.healthconnect.datatypes.MenstruationFlowRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.MenstruationFlowRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -905,6 +932,8 @@ package android.healthconnect.datatypes {
   public static final class NutritionRecord.Builder {
     ctor public NutritionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
     method @NonNull public android.healthconnect.datatypes.NutritionRecord build();
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setBiotin(@Nullable android.healthconnect.datatypes.units.Mass);
     method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCaffeine(@Nullable android.healthconnect.datatypes.units.Mass);
     method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCalcium(@Nullable android.healthconnect.datatypes.units.Mass);
@@ -960,6 +989,7 @@ package android.healthconnect.datatypes {
   public static final class OvulationTestRecord.Builder {
     ctor public OvulationTestRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int);
     method @NonNull public android.healthconnect.datatypes.OvulationTestRecord build();
+    method @NonNull public android.healthconnect.datatypes.OvulationTestRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.OvulationTestRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -977,6 +1007,7 @@ package android.healthconnect.datatypes {
   public static final class OxygenSaturationRecord.Builder {
     ctor public OxygenSaturationRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Percentage);
     method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord build();
+    method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -1011,6 +1042,7 @@ package android.healthconnect.datatypes {
   public static final class RespiratoryRateRecord.Builder {
     ctor public RespiratoryRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @FloatRange(from=0, to=1000) double);
     method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -1023,6 +1055,7 @@ package android.healthconnect.datatypes {
   public static final class RestingHeartRateRecord.Builder {
     ctor public RestingHeartRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @IntRange(from=1, to=300) long);
     method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord build();
+    method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -1033,6 +1066,7 @@ package android.healthconnect.datatypes {
   public static final class SexualActivityRecord.Builder {
     ctor public SexualActivityRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int);
     method @NonNull public android.healthconnect.datatypes.SexualActivityRecord build();
+    method @NonNull public android.healthconnect.datatypes.SexualActivityRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.SexualActivityRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -1083,6 +1117,8 @@ package android.healthconnect.datatypes {
   public static final class SpeedRecord.Builder {
     ctor public SpeedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.SpeedRecord.SpeedRecordSample>);
     method @NonNull public android.healthconnect.datatypes.SpeedRecord build();
+    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -1100,6 +1136,8 @@ package android.healthconnect.datatypes {
   public static final class StepsCadenceRecord.Builder {
     ctor public StepsCadenceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample>);
     method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord build();
+    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -1118,6 +1156,8 @@ package android.healthconnect.datatypes {
   public static final class StepsRecord.Builder {
     ctor public StepsRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, long);
     method @NonNull public android.healthconnect.datatypes.StepsRecord build();
+    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -1130,6 +1170,8 @@ package android.healthconnect.datatypes {
   public static final class TotalCaloriesBurnedRecord.Builder {
     ctor public TotalCaloriesBurnedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Energy);
     method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord build();
+    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -1142,6 +1184,7 @@ package android.healthconnect.datatypes {
   public static final class Vo2MaxRecord.Builder {
     ctor public Vo2MaxRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @FloatRange(from=0, to=100) double);
     method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord build();
+    method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -1164,6 +1207,7 @@ package android.healthconnect.datatypes {
   public static final class WeightRecord.Builder {
     ctor public WeightRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
     method @NonNull public android.healthconnect.datatypes.WeightRecord build();
+    method @NonNull public android.healthconnect.datatypes.WeightRecord.Builder clearZoneOffset();
     method @NonNull public android.healthconnect.datatypes.WeightRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
@@ -1175,6 +1219,8 @@ package android.healthconnect.datatypes {
   public static final class WheelchairPushesRecord.Builder {
     ctor public WheelchairPushesRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @IntRange(from=1, to=1000000) long);
     method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord build();
+    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }

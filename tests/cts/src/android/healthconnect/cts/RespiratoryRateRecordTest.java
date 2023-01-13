@@ -300,6 +300,19 @@ public class RespiratoryRateRecordTest {
         TestUtils.assertRecordNotFound(id, RespiratoryRateRecord.class);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        RespiratoryRateRecord.Builder builder =
+                new RespiratoryRateRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), 10.0);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
     private static RespiratoryRateRecord getBaseRespiratoryRateRecord() {
         return new RespiratoryRateRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), 10.0)
