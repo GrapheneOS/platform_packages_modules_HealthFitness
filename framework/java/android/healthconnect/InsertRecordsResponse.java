@@ -29,7 +29,7 @@ import java.util.List;
 public class InsertRecordsResponse {
     final List<Record> mRecords;
 
-    // @hide
+    /** @hide */
     public InsertRecordsResponse(@NonNull List<Record> records) {
         mRecords = records;
     }

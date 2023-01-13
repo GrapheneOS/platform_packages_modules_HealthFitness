@@ -64,8 +64,6 @@ package android.healthconnect {
   }
 
   public class HealthConnectException extends java.lang.RuntimeException {
-    ctor public HealthConnectException(int, @Nullable String);
-    ctor public HealthConnectException(int);
     method public int getErrorCode();
     field public static final int ERROR_INTERNAL = 2; // 0x2
     field public static final int ERROR_INVALID_ARGUMENT = 3; // 0x3
@@ -168,7 +166,6 @@ package android.healthconnect {
   }
 
   public class InsertRecordsResponse {
-    ctor public InsertRecordsResponse(@NonNull java.util.List<android.healthconnect.datatypes.Record>);
     method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getRecords();
   }
 
