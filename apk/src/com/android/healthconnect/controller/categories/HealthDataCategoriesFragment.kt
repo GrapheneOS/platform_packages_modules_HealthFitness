@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
+import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,8 +50,9 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
         private const val DELETE_ALL_DATA_BUTTON = "delete_all_data"
     }
 
-    private val viewModel: HealthDataCategoryViewModel by viewModels()
+    private val categoriesViewModel: HealthDataCategoryViewModel by viewModels()
     private val autoDeleteViewModel: AutoDeleteViewModel by activityViewModels()
+    private val deletionViewModel: DeletionViewModel by activityViewModels()
 
     private val mBrowseDataCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(BROWSE_DATA_CATEGORY)
@@ -104,7 +106,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.categoriesData.observe(viewLifecycleOwner) { state ->
+        categoriesViewModel.categoriesData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is HealthDataCategoryViewModel.CategoriesFragmentState.Loading -> {}
                 is HealthDataCategoryViewModel.CategoriesFragmentState.WithData -> {
@@ -124,6 +126,12 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                 is AutoDeleteViewModel.AutoDeleteState.WithData -> {
                     mAutoDelete?.summary = buildSummary(state.autoDeleteRange)
                 }
+            }
+        }
+
+        deletionViewModel.categoriesReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
+            if (isReloadNeeded) {
+                categoriesViewModel.loadCategories()
             }
         }
     }
@@ -153,7 +161,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             }
         }
 
-        viewModel.allCategoriesData.observe(viewLifecycleOwner) { allCategoriesList ->
+        categoriesViewModel.allCategoriesData.observe(viewLifecycleOwner) { allCategoriesList ->
             if (sortedCategoriesList.size < allCategoriesList.size) {
                 mBrowseDataCategory?.addPreference(
                     Preference(requireContext()).also {
