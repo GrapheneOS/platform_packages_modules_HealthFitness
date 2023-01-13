@@ -22,6 +22,7 @@ import android.healthconnect.HealthConnectManager
 import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +50,10 @@ class MainActivity : Hilt_MainActivity() {
         if (intent.action == HealthConnectManager.ACTION_MANAGE_HEALTH_DATA) {
             findNavController(R.id.nav_host_fragment)
                 .navigate(R.id.action_deeplink_to_healthDataCategoriesFragment)
+        }
+        getAppBarLayout()?.let { appBarLayout ->
+            findNavController(R.id.nav_host_fragment)
+                .addOnDestinationChangedListener(DestinationChangedListener(appBarLayout))
         }
     }
 

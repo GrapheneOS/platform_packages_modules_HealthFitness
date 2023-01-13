@@ -16,6 +16,8 @@
 
 package com.android.healthconnect.controller.quicksettings
 
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Intent
 import android.service.quicksettings.TileService
 import com.android.healthconnect.controller.MainActivity
@@ -23,12 +25,18 @@ import com.android.healthconnect.controller.MainActivity
 /** Service for Quick Settings Tile. Tapping on the icon opens Health Connect. */
 class QuickSettingsService : TileService() {
 
+    companion object {
+        private const val REQUEST_CODE = 1
+    }
+
     override fun onClick() {
         val openAppIntent = Intent(this, MainActivity::class.java)
         openAppIntent.addFlags(
             Intent.FLAG_ACTIVITY_NEW_TASK or
                 Intent.FLAG_ACTIVITY_SINGLE_TOP or
                 Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivityAndCollapse(openAppIntent)
+        val pendingIntent =
+            PendingIntent.getActivity(this, REQUEST_CODE, openAppIntent, FLAG_IMMUTABLE)
+        startActivityAndCollapse(pendingIntent)
     }
 }
