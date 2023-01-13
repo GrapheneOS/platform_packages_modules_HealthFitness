@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,24 +25,26 @@ import java.util.Objects;
 
 /** @hide */
 @SystemApi
-public final class GetDataOriginPriorityOrderResponse {
-    private final List<DataOrigin> mDataOriginInPriorityOrder;
+public final class FetchDataOriginsPriorityOrderResponse {
+
+    private final List<DataOrigin> mDataOriginsPriorityOrder;
 
     /**
-     * @param dataOriginInPriorityOrder dataOrigin in priority order
+     * @param dataOriginsPriorityOrder dataOrigins in priority order
      * @hide
      */
-    public GetDataOriginPriorityOrderResponse(@NonNull List<DataOrigin> dataOriginInPriorityOrder) {
-        Objects.requireNonNull(dataOriginInPriorityOrder);
+    public FetchDataOriginsPriorityOrderResponse(
+            @NonNull List<DataOrigin> dataOriginsPriorityOrder) {
+        Objects.requireNonNull(dataOriginsPriorityOrder);
 
-        mDataOriginInPriorityOrder = dataOriginInPriorityOrder;
+        mDataOriginsPriorityOrder = dataOriginsPriorityOrder;
     }
 
     /**
-     * @return dataOrigin in priority order
+     * @return dataOrigins in priority order
      */
     @NonNull
-    public List<DataOrigin> getDataOriginInPriorityOrder() {
-        return mDataOriginInPriorityOrder;
+    public List<DataOrigin> getDataOriginsPriorityOrder() {
+        return mDataOriginsPriorityOrder;
     }
 }

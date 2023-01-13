@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.permissiontypes.api
 
-import android.healthconnect.GetDataOriginPriorityOrderResponse
+import android.healthconnect.FetchDataOriginsPriorityOrderResponse
 import android.healthconnect.HealthConnectManager
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.categories.HealthDataCategory
@@ -33,19 +33,20 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 class LoadPriorityListUseCase
 @Inject
 constructor(
-    private val healthConnectManager: HealthConnectManager,
-    private val appInfoReader: AppInfoReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+        private val healthConnectManager: HealthConnectManager,
+        private val appInfoReader: AppInfoReader,
+        @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseUseCase<HealthDataCategory, List<AppMetadata>>(dispatcher) {
 
     /** Returns list of [AppMetadata]s for given [HealthDataCategory] in priority order. */
     override suspend fun execute(input: HealthDataCategory): List<AppMetadata> {
-        val dataOriginPriorityOrderResponse: GetDataOriginPriorityOrderResponse =
-            suspendCancellableCoroutine { continuation ->
-                healthConnectManager.getDataOriginsInPriorityOrder(
-                    toSdkHealthDataCategory(input), Runnable::run, continuation.asOutcomeReceiver())
-            }
-        return dataOriginPriorityOrderResponse.dataOriginInPriorityOrder.map { dataOrigin ->
+        val dataOriginPriorityOrderResponse: FetchDataOriginsPriorityOrderResponse =
+                suspendCancellableCoroutine { continuation ->
+                    healthConnectManager.fetchDataOriginsPriorityOrder(
+                            toSdkHealthDataCategory(input),
+                            Runnable::run, continuation.asOutcomeReceiver())
+                }
+        return dataOriginPriorityOrderResponse.dataOriginsPriorityOrder.map { dataOrigin ->
             appInfoReader.getAppMetadata(dataOrigin.packageName)
         }
     }

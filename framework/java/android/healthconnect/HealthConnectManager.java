@@ -827,7 +827,8 @@ public class HealthConnectManager {
     }
 
     /**
-     * Get the data priority order of the contributing {@link DataOrigin} for {@code dataCategory}.
+     * Fetch the data priority order of the contributing {@link DataOrigin} for {@code
+     * dataCategory}.
      *
      * @param dataCategory {@link HealthDataCategory} for which to get the priority order
      * @param executor Executor on which to invoke the callback.
@@ -838,11 +839,11 @@ public class HealthConnectManager {
      */
     @SystemApi
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
-    public void getDataOriginsInPriorityOrder(
+    public void fetchDataOriginsPriorityOrder(
             @HealthDataCategory.Type int dataCategory,
             @NonNull Executor executor,
             @NonNull
-                    OutcomeReceiver<GetDataOriginPriorityOrderResponse, HealthConnectException>
+                    OutcomeReceiver<FetchDataOriginsPriorityOrderResponse, HealthConnectException>
                             callback) {
         try {
             mService.getCurrentPriority(

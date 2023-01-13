@@ -28,7 +28,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
 import android.content.Context;
-import android.healthconnect.GetDataOriginPriorityOrderResponse;
+import android.healthconnect.FetchDataOriginsPriorityOrderResponse;
 import android.healthconnect.HealthConnectException;
 import android.healthconnect.HealthConnectManager;
 import android.healthconnect.UpdateDataOriginPriorityOrderRequest;
@@ -92,20 +92,20 @@ public class HealthPermissionCategoryPriorityTests {
 
         try {
             for (Integer permissionCategory : sAllDataCategories) {
-                GetDataOriginPriorityOrderResponse currentPriority =
+                FetchDataOriginsPriorityOrderResponse currentPriority =
                         getPriority(permissionCategory);
                 assertThat(currentPriority).isNotNull();
                 updatePriority(permissionCategory, Arrays.asList("a", "b", "c"));
-                GetDataOriginPriorityOrderResponse newPriority = getPriority(permissionCategory);
-                assertThat(currentPriority.getDataOriginInPriorityOrder().size())
-                        .isEqualTo(newPriority.getDataOriginInPriorityOrder().size());
+                FetchDataOriginsPriorityOrderResponse newPriority = getPriority(permissionCategory);
+                assertThat(currentPriority.getDataOriginsPriorityOrder().size())
+                        .isEqualTo(newPriority.getDataOriginsPriorityOrder().size());
 
                 List<String> currentPriorityString =
-                        currentPriority.getDataOriginInPriorityOrder().stream()
+                        currentPriority.getDataOriginsPriorityOrder().stream()
                                 .map(DataOrigin::getPackageName)
                                 .collect(Collectors.toList());
                 List<String> newPriorityString =
-                        newPriority.getDataOriginInPriorityOrder().stream()
+                        newPriority.getDataOriginsPriorityOrder().stream()
                                 .map(DataOrigin::getPackageName)
                                 .collect(Collectors.toList());
                 assertThat(currentPriorityString.equals(newPriorityString)).isTrue();
@@ -131,22 +131,22 @@ public class HealthPermissionCategoryPriorityTests {
     // TODO(b/257638480): Add more tests with some actual priorities, after grant permission tests
     // are in place
 
-    private GetDataOriginPriorityOrderResponse getPriority(int permissionCategory)
+    private FetchDataOriginsPriorityOrderResponse getPriority(int permissionCategory)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
 
         CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<GetDataOriginPriorityOrderResponse> response = new AtomicReference<>();
+        AtomicReference<FetchDataOriginsPriorityOrderResponse> response = new AtomicReference<>();
         AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
                 new AtomicReference<>();
-        service.getDataOriginsInPriorityOrder(
+        service.fetchDataOriginsPriorityOrder(
                 permissionCategory,
                 Executors.newSingleThreadExecutor(),
                 new OutcomeReceiver<>() {
                     @Override
-                    public void onResult(GetDataOriginPriorityOrderResponse result) {
+                    public void onResult(FetchDataOriginsPriorityOrderResponse result) {
                         response.set(result);
                         latch.countDown();
                     }
