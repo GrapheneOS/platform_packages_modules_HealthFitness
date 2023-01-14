@@ -38,6 +38,7 @@ android_test {
         "androidx.navigation_navigation-runtime-ktx",
         "androidx.navigation_navigation-ui-ktx",
         "SettingsLibCollapsingToolbarBaseActivity",
+        "SettingsLibHelpUtils",
         "SettingsLibTopIntroPreference",
         "SettingsLibFooterPreference",
         "androidx.annotation_annotation",

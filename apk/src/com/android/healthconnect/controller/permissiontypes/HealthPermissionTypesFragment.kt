@@ -39,6 +39,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment.Companion.PRIORITY_UPDATED_EVENT
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -119,6 +120,8 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupMenu(this, viewLifecycleOwner)
+
         viewModel.loadData(category)
         viewModel.permissionTypesData.observe(viewLifecycleOwner) { state ->
             when (state) {

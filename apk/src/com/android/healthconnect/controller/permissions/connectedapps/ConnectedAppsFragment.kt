@@ -26,6 +26,7 @@ import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -45,6 +46,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
+import com.android.healthconnect.controller.utils.HelpCenterLauncher.openHCGetStartedLink
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,12 +103,18 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                         true
                     }
                     R.id.menu_help -> {
+                        openHCGetStartedLink(this@ConnectedAppsFragment as Fragment)
                         true
                     }
                     else -> true
                 }
             }
         }
+
+    private fun setupMenu() {
+        (activity as MenuHost).addMenuProvider(
+            menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
@@ -230,10 +238,5 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 true
             }
         }
-    }
-
-    private fun setupMenu() {
-        (activity as MenuHost).addMenuProvider(
-            menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }

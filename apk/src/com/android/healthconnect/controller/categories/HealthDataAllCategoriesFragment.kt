@@ -24,6 +24,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,6 +53,8 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupMenu(this, viewLifecycleOwner)
+
         viewModel.allCategoriesData.observe(viewLifecycleOwner) { allCategoriesList ->
             updateAllDataList(allCategoriesList)
         }
