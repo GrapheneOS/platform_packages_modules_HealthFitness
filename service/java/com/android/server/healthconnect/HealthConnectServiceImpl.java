@@ -224,7 +224,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 recordInternals,
                                                 mContext,
                                                 /* isInsertRequest */ true));
-                        finishDataDeliveryWriteRecords(recordInternals, uid);
 
                         // TODO(b/265337296): Use background thread to execute this
                         SHARED_EXECUTOR.execute(
@@ -234,6 +233,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 });
 
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
+                        finishDataDeliveryWriteRecords(recordInternals, uid);
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
@@ -318,7 +318,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     packageName,
                                                     request,
                                                     enforceSelfReadAndCheckUi.first));
-                            finishDataDeliveryRead(request.getRecordType(), uid);
 
                             // UI API calls should not be recorded in access logs.
                             // enforceSelfReadAndCheckUi.second signifies that the caller is UI.
@@ -335,6 +334,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         });
                             }
                             callback.onResult(new RecordsParcel(recordInternalList));
+                            finishDataDeliveryRead(request.getRecordType(), uid);
                         } catch (TypeNotPresentException exception) {
                             // All the requested package names are not present, so simply return
                             // an empty list
@@ -404,8 +404,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         recordInternals,
                                         mContext,
                                         /* isInsertRequest */ false));
-                        finishDataDeliveryWriteRecords(recordInternals, uid);
                         callback.onResult();
+                        finishDataDeliveryWriteRecords(recordInternals, uid);
                     } catch (SecurityException securityException) {
                         tryAndThrowException(
                                 callback, securityException, HealthConnectException.ERROR_SECURITY);
@@ -488,7 +488,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         new ReadTransactionRequest(
                                                 ChangeLogsHelper.getRecordTypeToInsertedUuids(
                                                         changeLogsResponse.getChangeLogsMap())));
-                        finishDataDeliveryRead(changeLogsTokenRequest.getRecordTypes(), uid);
                         callback.onResult(
                                 new ChangeLogsResponseParcel(
                                         new RecordsParcel(recordInternals),
@@ -496,6 +495,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 changeLogsResponse.getChangeLogsMap()),
                                         changeLogsResponse.getNextPageToken(),
                                         changeLogsResponse.hasMorePages()));
+                        finishDataDeliveryRead(changeLogsTokenRequest.getRecordTypes(), uid);
                     } catch (IllegalArgumentException illegalArgumentException) {
                         Slog.e(TAG, "IllegalArgumentException: ", illegalArgumentException);
                         tryAndThrowException(
@@ -547,8 +547,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 new DeleteTransactionRequest(packageName, request, mContext)
                                         .setHasManageHealthDataPermission(
                                                 hasDataManagementPermission(uid, pid)));
-                        finishDataDeliveryWrite(recordTypeIdsToDelete, uid);
                         callback.onResult();
+                        finishDataDeliveryWrite(recordTypeIdsToDelete, uid);
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
@@ -842,15 +842,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         enforceRecordWritePermissionInternal(recordTypeIdsToEnforce.stream().toList(), uid);
     }
 
-    private void finishDataDeliveryWriteRecords(List<RecordInternal<?>> recordInternals, int uid) {
-        Set<Integer> recordTypeIdsToEnforce = new ArraySet<>();
-        for (RecordInternal<?> recordInternal : recordInternals) {
-            recordTypeIdsToEnforce.add(recordInternal.getRecordType());
-        }
-
-        finishDataDeliveryWrite(recordTypeIdsToEnforce.stream().toList(), uid);
-    }
-
     private boolean hasDataManagementPermission(int uid, int pid) {
         return mContext.checkPermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid)
                 == PERMISSION_GRANTED;
@@ -940,24 +931,41 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private void finishDataDeliveryRead(List<Integer> recordTypeIds, int uid) {
-        for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    HealthPermissions.getHealthReadPermission(
-                            RecordTypePermissionCategoryMapper
-                                    .getHealthPermissionCategoryForRecordType(recordTypeId));
-            mPermissionManager.finishDataDelivery(
-                    permissionName, new AttributionSource.Builder(uid).build());
+        try {
+            for (Integer recordTypeId : recordTypeIds) {
+                String permissionName =
+                        HealthPermissions.getHealthReadPermission(
+                                RecordTypePermissionCategoryMapper
+                                        .getHealthPermissionCategoryForRecordType(recordTypeId));
+                mPermissionManager.finishDataDelivery(
+                        permissionName, new AttributionSource.Builder(uid).build());
+            }
+        } catch (Exception exception) {
+            // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
         }
     }
 
+    private void finishDataDeliveryWriteRecords(List<RecordInternal<?>> recordInternals, int uid) {
+        Set<Integer> recordTypeIdsToEnforce = new ArraySet<>();
+        for (RecordInternal<?> recordInternal : recordInternals) {
+            recordTypeIdsToEnforce.add(recordInternal.getRecordType());
+        }
+
+        finishDataDeliveryWrite(recordTypeIdsToEnforce.stream().toList(), uid);
+    }
+
     private void finishDataDeliveryWrite(List<Integer> recordTypeIds, int uid) {
-        for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    HealthPermissions.getHealthWritePermission(
-                            RecordTypePermissionCategoryMapper
-                                    .getHealthPermissionCategoryForRecordType(recordTypeId));
-            mPermissionManager.finishDataDelivery(
-                    permissionName, new AttributionSource.Builder(uid).build());
+        try {
+            for (Integer recordTypeId : recordTypeIds) {
+                String permissionName =
+                        HealthPermissions.getHealthWritePermission(
+                                RecordTypePermissionCategoryMapper
+                                        .getHealthPermissionCategoryForRecordType(recordTypeId));
+                mPermissionManager.finishDataDelivery(
+                        permissionName, new AttributionSource.Builder(uid).build());
+            }
+        } catch (Exception exception) {
+            // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
         }
     }
 
