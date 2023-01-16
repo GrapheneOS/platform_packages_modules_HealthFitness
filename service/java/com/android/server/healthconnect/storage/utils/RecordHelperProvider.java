@@ -29,6 +29,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.BloodGlucoseReco
 import com.android.server.healthconnect.storage.datatypehelpers.BloodPressureRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BodyFatRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BodyTemperatureRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BodyWaterMassRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BoneMassRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.CervicalMucusRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.CyclingPedalingCadenceRecordHelper;
@@ -36,10 +37,13 @@ import com.android.server.healthconnect.storage.datatypehelpers.DistanceRecordHe
 import com.android.server.healthconnect.storage.datatypehelpers.ElevationGainedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.FloorsClimbedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HeartRateVariabilityRmssdHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeightRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HydrationRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.IntermenstrualBleedingRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.LeanBodyMassRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MenstruationFlowRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.MenstruationPeriodRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.NutritionRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.OvulationTestRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.OxygenSaturationRecordHelper;
@@ -86,7 +90,6 @@ public final class RecordHelperProvider {
                 RecordTypeIdentifier.RECORD_TYPE_HYDRATION, new HydrationRecordHelper());
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_NUTRITION, new NutritionRecordHelper());
-
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES,
                 new WheelchairPushesRecordHelper());
@@ -143,6 +146,17 @@ public final class RecordHelperProvider {
                 RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION,
                 new OxygenSaturationRecordHelper());
         recordIDToHelperMap.put(RecordTypeIdentifier.RECORD_TYPE_WEIGHT, new WeightRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS, new BodyWaterMassRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD,
+                new HeartRateVariabilityRmssdHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
+                new IntermenstrualBleedingRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD,
+                new MenstruationPeriodRecordHelper());
 
         mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
     }

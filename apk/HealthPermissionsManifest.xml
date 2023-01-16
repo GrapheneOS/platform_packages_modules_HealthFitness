@@ -153,6 +153,12 @@
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
+        android:name="android.permission.health.READ_INTERMENSTRUAL_BLEEDING"
+        android:label="@string/intermenstrual_bleeding_read_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
         android:name="android.permission.health.READ_MENSTRUATION"
         android:label="@string/menstruation_read_content_description"
         android:protectionLevel="dangerous"
@@ -378,6 +384,12 @@
     <permission
         android:name="android.permission.health.WRITE_CERVICAL_MUCUS"
         android:label="@string/cervical_mucus_write_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
+        android:name="android.permission.health.WRITE_INTERMENSTRUAL_BLEEDING"
+        android:label="@string/intermenstrual_bleeding_write_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
