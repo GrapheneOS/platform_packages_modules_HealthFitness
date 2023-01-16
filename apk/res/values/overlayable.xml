@@ -20,6 +20,7 @@
             <item type="integer" name="dialog_gravity" />
             <item type="integer" name="dialog_title_gravity"/>
             <item type="integer" name="dialog_title_icon_visibility"/>
+            <item type="string"  name="config_headlineFontFamily"/>
         </policy>
     </overlayable>
 </resources>
