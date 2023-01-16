@@ -123,8 +123,8 @@ public class DeviceInfoHelper {
         ConcurrentHashMap<DeviceInfo, Long> deviceInfoMap = new ConcurrentHashMap<>();
         ConcurrentHashMap<Long, DeviceInfo> idDeviceInfoMap = new ConcurrentHashMap<>();
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
+        final SQLiteDatabase db = transactionManager.getReadableDb();
+        try (Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
                 long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
                 String manufacturer = getCursorString(cursor, MANUFACTURER_COLUMN_NAME);

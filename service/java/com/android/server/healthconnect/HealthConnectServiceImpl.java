@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -158,22 +158,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
     }
 
-    @NonNull
-    private DataMigrationManager getDataMigrationManager(@NonNull UserHandle userHandle) {
-        final Context userContext = mContext.createContextAsUser(userHandle, 0);
-
-        return new DataMigrationManager(
-                userContext,
-                mTransactionManager,
-                mPermissionHelper,
-                mFirstGrantTimeManager,
-                new DataMigrationParser(
-                        userContext,
-                        DeviceInfoHelper.getInstance(),
-                        AppInfoHelper.getInstance(),
-                        RecordHelperProvider.getInstance()));
-    }
-
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
@@ -242,9 +226,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 /* isInsertRequest */ true));
                         finishDataDeliveryWriteRecords(recordInternals, uid);
 
-                        // TODO(260399261): Debug and update the insertion to use a separate thread.
-                        ActivityDateHelper.getInstance()
-                                .insertRecordDate(recordsParcel.getRecords());
+                        // TODO(b/265337296): Use background thread to execute this
+                        SHARED_EXECUTOR.execute(
+                                () -> {
+                                    ActivityDateHelper.getInstance()
+                                            .insertRecordDate(recordsParcel.getRecords());
+                                });
 
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                     } catch (SQLiteException sqLiteException) {
@@ -333,15 +320,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     enforceSelfReadAndCheckUi.first));
                             finishDataDeliveryRead(request.getRecordType(), uid);
 
-                            // TODO(b/260399261): To be moved to a separate thread
                             // UI API calls should not be recorded in access logs.
                             // enforceSelfReadAndCheckUi.second signifies that the caller is UI.
                             if (!enforceSelfReadAndCheckUi.second) {
-                                AccessLogsHelper.getInstance()
-                                        .addAccessLog(
-                                                packageName,
-                                                Collections.singletonList(request.getRecordType()),
-                                                READ);
+                                // TODO(b/265337296): Use background thread to execute this
+                                SHARED_EXECUTOR.execute(
+                                        () -> {
+                                            AccessLogsHelper.getInstance()
+                                                    .addAccessLog(
+                                                            packageName,
+                                                            Collections.singletonList(
+                                                                    request.getRecordType()),
+                                                            READ);
+                                        });
                             }
                             callback.onResult(new RecordsParcel(recordInternalList));
                         } catch (TypeNotPresentException exception) {
@@ -413,7 +404,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         recordInternals,
                                         mContext,
                                         /* isInsertRequest */ false));
-                        enforceRecordWritePermissionForRecords(recordInternals, uid);
+                        finishDataDeliveryWriteRecords(recordInternals, uid);
                         callback.onResult();
                     } catch (SecurityException securityException) {
                         tryAndThrowException(
@@ -803,6 +794,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
                     }
                 });
+    }
+
+    @NonNull
+    private DataMigrationManager getDataMigrationManager(@NonNull UserHandle userHandle) {
+        final Context userContext = mContext.createContextAsUser(userHandle, 0);
+
+        return new DataMigrationManager(
+                userContext,
+                mTransactionManager,
+                mPermissionHelper,
+                mFirstGrantTimeManager,
+                new DataMigrationParser(
+                        userContext,
+                        DeviceInfoHelper.getInstance(),
+                        AppInfoHelper.getInstance(),
+                        RecordHelperProvider.getInstance()));
     }
 
     private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {

@@ -153,8 +153,8 @@ public final class ChangeLogsHelper {
         TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         long nextChangesToken = DEFAULT_LONG;
         boolean hasMoreRecords = false;
-        try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, readTableRequest)) {
+        final SQLiteDatabase db = transactionManager.getReadableDb();
+        try (Cursor cursor = transactionManager.read(db, readTableRequest)) {
             int count = 0;
             while (cursor.moveToNext()) {
                 if (count >= pageSize) {

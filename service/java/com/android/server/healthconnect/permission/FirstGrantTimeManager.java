@@ -377,6 +377,11 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
             mUidToGrantTime = new ArrayMap<>();
         }
 
+        @Override
+        public String toString() {
+            return mUidToGrantTime.toString();
+        }
+
         @Nullable
         Instant remove(@Nullable Integer uid) {
             if (uid == null) {
@@ -400,11 +405,6 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         @Nullable
         Instant put(@NonNull Integer uid, @NonNull Instant time) {
             return mUidToGrantTime.put(uid, time);
-        }
-
-        @Override
-        public String toString() {
-            return mUidToGrantTime.toString();
         }
 
         @NonNull
