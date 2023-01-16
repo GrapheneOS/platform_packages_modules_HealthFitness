@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package android.healthconnect.datatypes;
 
 import android.annotation.NonNull;
@@ -20,12 +21,14 @@ import android.annotation.NonNull;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
+
 /** A record that contains a measurement with a time interval. */
 public abstract class IntervalRecord extends Record {
     private final Instant mStartTime;
     private final ZoneOffset mStartZoneOffset;
     private final Instant mEndTime;
     private final ZoneOffset mEndZoneOffset;
+
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}
      * @param startTime Start time of this activity
@@ -49,6 +52,7 @@ public abstract class IntervalRecord extends Record {
         mEndTime = endTime;
         mEndZoneOffset = endZoneOffset;
     }
+
     /**
      * @return Start time of the activity
      */
@@ -56,6 +60,7 @@ public abstract class IntervalRecord extends Record {
     public Instant getStartTime() {
         return mStartTime;
     }
+
     /**
      * @return Start time's zone offset of the activity
      */
@@ -63,6 +68,7 @@ public abstract class IntervalRecord extends Record {
     public ZoneOffset getStartZoneOffset() {
         return mStartZoneOffset;
     }
+
     /**
      * @return End time of the activity
      */
@@ -70,6 +76,7 @@ public abstract class IntervalRecord extends Record {
     public Instant getEndTime() {
         return mEndTime;
     }
+
     /**
      * @return End time's zone offset of the activity
      */
@@ -77,6 +84,7 @@ public abstract class IntervalRecord extends Record {
     public ZoneOffset getEndZoneOffset() {
         return mEndZoneOffset;
     }
+
     /**
      * Indicates whether some other object is "equal to" this one.
      *
@@ -94,6 +102,7 @@ public abstract class IntervalRecord extends Record {
         }
         return false;
     }
+
     /**
      * Returns a hash code value for the object.
      *

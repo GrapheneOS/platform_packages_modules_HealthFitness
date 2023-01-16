@@ -39,7 +39,6 @@ import static android.healthconnect.HealthPermissionCategory.HEART_RATE;
 import static android.healthconnect.HealthPermissionCategory.HEART_RATE_VARIABILITY;
 import static android.healthconnect.HealthPermissionCategory.HEIGHT;
 import static android.healthconnect.HealthPermissionCategory.HYDRATION;
-import static android.healthconnect.HealthPermissionCategory.INTERMENSTRUAL_BLEEDING;
 import static android.healthconnect.HealthPermissionCategory.LEAN_BODY_MASS;
 import static android.healthconnect.HealthPermissionCategory.MENSTRUATION;
 import static android.healthconnect.HealthPermissionCategory.NUTRITION;
@@ -251,13 +250,6 @@ public final class HealthPermissions {
      * <p>Protection level: dangerous.
      */
     public static final String READ_MENSTRUATION = "android.permission.health.READ_MENSTRUATION";
-    /**
-     * Allows an application to read the user's intermenstrual bleeding data.
-     *
-     * <p>Protection level: dangerous.
-     */
-    public static final String READ_INTERMENSTRUAL_BLEEDING =
-            "android.permission.health.READ_INTERMENSTRUAL_BLEEDING";
     /**
      * Allows an application to read the user's ovulation test data.
      *
@@ -503,13 +495,6 @@ public final class HealthPermissions {
      */
     public static final String WRITE_MENSTRUATION = "android.permission.health.WRITE_MENSTRUATION";
     /**
-     * Allows an application to write the user's intermenstrual bleeding data.
-     *
-     * <p>Protection level: dangerous.
-     */
-    public static final String WRITE_INTERMENSTRUAL_BLEEDING =
-            "android.permission.health.WRITE_INTERMENSTRUAL_BLEEDING";
-    /**
      * Allows an application to write the user's ovulation test data.
      *
      * <p>Protection level: dangerous.
@@ -629,7 +614,6 @@ public final class HealthPermissions {
                             WRITE_WEIGHT,
                             WRITE_CERVICAL_MUCUS,
                             WRITE_MENSTRUATION,
-                            WRITE_INTERMENSTRUAL_BLEEDING,
                             WRITE_OVULATION_TEST,
                             WRITE_SEXUAL_ACTIVITY,
                             WRITE_HYDRATION,
@@ -741,8 +725,6 @@ public final class HealthPermissions {
         sHealthCategoryToWritePermissionMap.put(WEIGHT, WRITE_WEIGHT);
         sHealthCategoryToWritePermissionMap.put(CERVICAL_MUCUS, WRITE_CERVICAL_MUCUS);
         sHealthCategoryToWritePermissionMap.put(MENSTRUATION, WRITE_MENSTRUATION);
-        sHealthCategoryToWritePermissionMap.put(
-                INTERMENSTRUAL_BLEEDING, WRITE_INTERMENSTRUAL_BLEEDING);
         sHealthCategoryToWritePermissionMap.put(OVULATION_TEST, WRITE_OVULATION_TEST);
         sHealthCategoryToWritePermissionMap.put(SEXUAL_ACTIVITY, WRITE_SEXUAL_ACTIVITY);
         sHealthCategoryToWritePermissionMap.put(HYDRATION, WRITE_HYDRATION);
@@ -781,8 +763,6 @@ public final class HealthPermissions {
         sHealthCategoryToReadPermissionMap.put(WEIGHT, READ_WEIGHT);
         sHealthCategoryToReadPermissionMap.put(CERVICAL_MUCUS, READ_CERVICAL_MUCUS);
         sHealthCategoryToReadPermissionMap.put(MENSTRUATION, READ_MENSTRUATION);
-        sHealthCategoryToReadPermissionMap.put(
-                INTERMENSTRUAL_BLEEDING, READ_INTERMENSTRUAL_BLEEDING);
         sHealthCategoryToReadPermissionMap.put(OVULATION_TEST, READ_OVULATION_TEST);
         sHealthCategoryToReadPermissionMap.put(SEXUAL_ACTIVITY, READ_SEXUAL_ACTIVITY);
         sHealthCategoryToReadPermissionMap.put(HYDRATION, READ_HYDRATION);
@@ -832,8 +812,6 @@ public final class HealthPermissions {
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_MENSTRUATION, CYCLE_TRACKING);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_OVULATION_TEST, CYCLE_TRACKING);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_SEXUAL_ACTIVITY, CYCLE_TRACKING);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_INTERMENSTRUAL_BLEEDING, CYCLE_TRACKING);
 
         sWriteHealthPermissionToHealthDataCategoryMap.put(
                 WRITE_HYDRATION, HealthDataCategory.NUTRITION);
@@ -886,8 +864,7 @@ public final class HealthPermissions {
                     WRITE_CERVICAL_MUCUS,
                     WRITE_MENSTRUATION,
                     WRITE_OVULATION_TEST,
-                    WRITE_SEXUAL_ACTIVITY,
-                    WRITE_INTERMENSTRUAL_BLEEDING
+                    WRITE_SEXUAL_ACTIVITY
                 });
 
         sDataCategoryToWritePermissionsMap.put(
