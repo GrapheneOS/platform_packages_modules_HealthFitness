@@ -16,19 +16,24 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <com.android.settingslib.widget.TopIntroPreference
+        android:order="0"
         android:key="connected_apps_top_intro"
         android:title="@string/connected_apps_text"/>
     <PreferenceCategory
+        android:order="2"
         android:key="allowed_apps"
         android:title="@string/connected_apps_section_title"/>
     <PreferenceCategory
+        android:order="3"
         android:key="not_allowed_apps"
         android:title="@string/not_connected_apps_section_title"/>
     <com.android.healthconnect.controller.shared.LongSummaryPreferenceCategory
+        android:order="4"
         android:key="inactive_apps"
         android:title="@string/inactive_apps_section_title"
         android:summary="@string/inactive_apps_section_message" />
     <PreferenceCategory
+        android:order="5"
         android:key="settings_and_help"
         android:title="@string/settings_and_help_header">
         <Preference
