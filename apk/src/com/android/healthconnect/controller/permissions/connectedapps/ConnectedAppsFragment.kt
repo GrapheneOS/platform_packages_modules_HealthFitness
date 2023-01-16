@@ -157,9 +157,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun openRemoveAllAppsAccessDialog() {
         AlertDialogBuilder(this)
+            .setIcon(R.attr.disconnectAllIcon)
             .setTitle(R.string.permissions_disconnect_all_dialog_title)
             .setMessage(R.string.permissions_disconnect_all_dialog_message)
-            .setIcon(R.attr.disconnectIcon)
             .setNegativeButton(android.R.string.cancel)
             .setPositiveButton(R.string.permissions_disconnect_all_dialog_disconnect) { _, _ ->
                 viewModel.disconnectAllApps()
