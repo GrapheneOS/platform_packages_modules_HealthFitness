@@ -24,7 +24,6 @@ import android.healthconnect.datatypes.BloodGlucoseRecord;
 import android.healthconnect.datatypes.BloodPressureRecord;
 import android.healthconnect.datatypes.BodyFatRecord;
 import android.healthconnect.datatypes.BodyTemperatureRecord;
-import android.healthconnect.datatypes.BodyWaterMassRecord;
 import android.healthconnect.datatypes.BoneMassRecord;
 import android.healthconnect.datatypes.CervicalMucusRecord;
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord;
@@ -32,13 +31,10 @@ import android.healthconnect.datatypes.DistanceRecord;
 import android.healthconnect.datatypes.ElevationGainedRecord;
 import android.healthconnect.datatypes.FloorsClimbedRecord;
 import android.healthconnect.datatypes.HeartRateRecord;
-import android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord;
 import android.healthconnect.datatypes.HeightRecord;
 import android.healthconnect.datatypes.HydrationRecord;
-import android.healthconnect.datatypes.IntermenstrualBleedingRecord;
 import android.healthconnect.datatypes.LeanBodyMassRecord;
 import android.healthconnect.datatypes.MenstruationFlowRecord;
-import android.healthconnect.datatypes.MenstruationPeriodRecord;
 import android.healthconnect.datatypes.NutritionRecord;
 import android.healthconnect.datatypes.OvulationTestRecord;
 import android.healthconnect.datatypes.OxygenSaturationRecord;
@@ -62,7 +58,6 @@ import android.healthconnect.internal.datatypes.BloodGlucoseRecordInternal;
 import android.healthconnect.internal.datatypes.BloodPressureRecordInternal;
 import android.healthconnect.internal.datatypes.BodyFatRecordInternal;
 import android.healthconnect.internal.datatypes.BodyTemperatureRecordInternal;
-import android.healthconnect.internal.datatypes.BodyWaterMassRecordInternal;
 import android.healthconnect.internal.datatypes.BoneMassRecordInternal;
 import android.healthconnect.internal.datatypes.CervicalMucusRecordInternal;
 import android.healthconnect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
@@ -70,13 +65,10 @@ import android.healthconnect.internal.datatypes.DistanceRecordInternal;
 import android.healthconnect.internal.datatypes.ElevationGainedRecordInternal;
 import android.healthconnect.internal.datatypes.FloorsClimbedRecordInternal;
 import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
-import android.healthconnect.internal.datatypes.HeartRateVariabilityRmssdRecordInternal;
 import android.healthconnect.internal.datatypes.HeightRecordInternal;
 import android.healthconnect.internal.datatypes.HydrationRecordInternal;
-import android.healthconnect.internal.datatypes.IntermenstrualBleedingRecordInternal;
 import android.healthconnect.internal.datatypes.LeanBodyMassRecordInternal;
 import android.healthconnect.internal.datatypes.MenstruationFlowRecordInternal;
-import android.healthconnect.internal.datatypes.MenstruationPeriodRecordInternal;
 import android.healthconnect.internal.datatypes.NutritionRecordInternal;
 import android.healthconnect.internal.datatypes.OvulationTestRecordInternal;
 import android.healthconnect.internal.datatypes.OxygenSaturationRecordInternal;
@@ -146,18 +138,6 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_SPEED, SpeedRecordInternal.class);
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE, StepsCadenceRecordInternal.class);
-        mRecordIdToInternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS,
-                BodyWaterMassRecordInternal.class);
-        mRecordIdToInternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD,
-                HeartRateVariabilityRmssdRecordInternal.class);
-        mRecordIdToInternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD,
-                MenstruationPeriodRecordInternal.class);
-        mRecordIdToInternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
-                IntermenstrualBleedingRecordInternal.class);
 
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_VO2_MAX, Vo2MaxRecordInternal.class);
@@ -275,17 +255,6 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE, RestingHeartRateRecord.class);
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_WEIGHT, WeightRecord.class);
-        mRecordIdToExternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS, BodyWaterMassRecord.class);
-        mRecordIdToExternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD,
-                HeartRateVariabilityRmssdRecord.class);
-        mRecordIdToExternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD,
-                MenstruationPeriodRecord.class);
-        mRecordIdToExternalRecordClassMap.put(
-                RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
-                IntermenstrualBleedingRecord.class);
 
         mExternalRecordClassToRecordIdMap =
                 new ArrayMap<>(mRecordIdToExternalRecordClassMap.size());

@@ -36,7 +36,6 @@ import static android.healthconnect.HealthPermissions.READ_HEART_RATE_VARIABILIT
 import static android.healthconnect.HealthPermissions.READ_HEIGHT;
 import static android.healthconnect.HealthPermissions.READ_HIP_CIRCUMFERENCE;
 import static android.healthconnect.HealthPermissions.READ_HYDRATION;
-import static android.healthconnect.HealthPermissions.READ_INTERMENSTRUAL_BLEEDING;
 import static android.healthconnect.HealthPermissions.READ_LEAN_BODY_MASS;
 import static android.healthconnect.HealthPermissions.READ_MENSTRUATION;
 import static android.healthconnect.HealthPermissions.READ_NUTRITION;
@@ -74,7 +73,6 @@ import static android.healthconnect.HealthPermissions.WRITE_HEART_RATE_VARIABILI
 import static android.healthconnect.HealthPermissions.WRITE_HEIGHT;
 import static android.healthconnect.HealthPermissions.WRITE_HIP_CIRCUMFERENCE;
 import static android.healthconnect.HealthPermissions.WRITE_HYDRATION;
-import static android.healthconnect.HealthPermissions.WRITE_INTERMENSTRUAL_BLEEDING;
 import static android.healthconnect.HealthPermissions.WRITE_LEAN_BODY_MASS;
 import static android.healthconnect.HealthPermissions.WRITE_MENSTRUATION;
 import static android.healthconnect.HealthPermissions.WRITE_NUTRITION;
@@ -153,7 +151,6 @@ public class HealthPermissionsPresenceTest {
                     READ_OXYGEN_SATURATION,
                     READ_RESPIRATORY_RATE,
                     READ_RESTING_HEART_RATE,
-                    READ_INTERMENSTRUAL_BLEEDING,
                     WRITE_ACTIVE_CALORIES_BURNED,
                     WRITE_DISTANCE,
                     WRITE_ELEVATION_GAINED,
@@ -190,8 +187,7 @@ public class HealthPermissionsPresenceTest {
                     WRITE_HEART_RATE_VARIABILITY,
                     WRITE_OXYGEN_SATURATION,
                     WRITE_RESPIRATORY_RATE,
-                    WRITE_RESTING_HEART_RATE,
-                    WRITE_INTERMENSTRUAL_BLEEDING);
+                    WRITE_RESTING_HEART_RATE);
 
     private PackageManager mPackageManager;
 
