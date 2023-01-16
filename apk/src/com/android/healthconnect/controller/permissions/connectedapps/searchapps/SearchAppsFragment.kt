@@ -47,7 +47,6 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         const val ALLOWED_APPS_CATEGORY = "allowed_apps"
         private const val NOT_ALLOWED_APPS = "not_allowed_apps"
         private const val INACTIVE_APPS = "inactive_apps"
-        private const val NO_SEARCH_RESULT = "no_search_result"
     }
 
     private var mSearchView: SearchView? = null
@@ -63,10 +62,6 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
 
     private val mInactiveAppsPreference: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(INACTIVE_APPS)
-    }
-
-    private val mNoSearchResultCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(NO_SEARCH_RESULT)
     }
 
     private val menuProvider =

@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.permissiontypes.api.FilterPermissionTypesUseCase
+import com.android.healthconnect.controller.permissiontypes.api.LoadContributingAppsUseCase
 import com.android.healthconnect.controller.permissiontypes.api.LoadPermissionTypesUseCase
 import com.android.healthconnect.controller.permissiontypes.api.LoadPriorityListUseCase
 import com.android.healthconnect.controller.permissiontypes.api.UpdatePriorityListUseCase
@@ -39,7 +41,9 @@ constructor(
     private val loadPermissionTypesUseCase: LoadPermissionTypesUseCase,
     private val loadPriorityListUseCase: LoadPriorityListUseCase,
     private val updatePriorityListUseCase: UpdatePriorityListUseCase,
-    private val appInfoReader: AppInfoReader
+    private val appInfoReader: AppInfoReader,
+    private val loadContributingAppsUseCase: LoadContributingAppsUseCase,
+    private val filterPermissionTypesUseCase: FilterPermissionTypesUseCase
 ) : ViewModel() {
 
     companion object {
@@ -48,6 +52,8 @@ constructor(
 
     private val _permissionTypesData = MutableLiveData<PermissionTypesState>()
     private val _priorityList = MutableLiveData<PriorityListState>()
+    private val _appsWithData = MutableLiveData<AppsWithDataFragmentState>()
+    private val _selectedAppFilter = MutableLiveData("All apps")
 
     /** Provides a list of [HealthPermissionType]s displayed in [HealthPermissionTypesFragment]. */
     val permissionTypesData: LiveData<PermissionTypesState>
@@ -59,6 +65,18 @@ constructor(
      */
     val priorityList: LiveData<PriorityListState>
         get() = _priorityList
+
+    /** Provides a list of apps with data in [HealthPermissionTypesFragment]. */
+    val appsWithData: LiveData<AppsWithDataFragmentState>
+        get() = _appsWithData
+
+    /** Stores currently selected app filter. */
+    val selectedAppFilter: LiveData<String>
+        get() = _selectedAppFilter
+
+    fun setAppFilter(selectedAppFilter: String) {
+        _selectedAppFilter.postValue(selectedAppFilter)
+    }
 
     fun loadData(category: HealthDataCategory) {
         _permissionTypesData.postValue(PermissionTypesState.Loading)
@@ -85,6 +103,28 @@ constructor(
         }
     }
 
+    fun loadAppsWithData(category: HealthDataCategory) {
+        _appsWithData.postValue(AppsWithDataFragmentState.Loading)
+        viewModelScope.launch {
+            val appsWithHealthPermissions = loadContributingAppsUseCase.invoke(category)
+            _appsWithData.postValue(AppsWithDataFragmentState.WithData(appsWithHealthPermissions))
+        }
+    }
+
+    fun filterPermissionTypes(category: HealthDataCategory, selectedAppPackageName: String): Unit {
+        _permissionTypesData.postValue(PermissionTypesState.Loading)
+        viewModelScope.launch {
+            val permissionTypes =
+                filterPermissionTypesUseCase.invoke(category, selectedAppPackageName)
+            if (permissionTypes.isNotEmpty()) {
+                _permissionTypesData.postValue(PermissionTypesState.WithData(permissionTypes))
+            } else {
+                val permissionTypes = loadPermissionTypesUseCase.invoke(category)
+                _permissionTypesData.postValue(PermissionTypesState.WithData(permissionTypes))
+            }
+        }
+    }
+
     fun updatePriorityList(category: HealthDataCategory, newPriorityList: List<String>) {
         _priorityList.postValue(PriorityListState.Loading)
         viewModelScope.launch {
@@ -105,5 +145,10 @@ constructor(
         object Loading : PriorityListState()
         object LoadingFailed : PriorityListState()
         data class WithData(val priorityList: List<AppMetadata>) : PriorityListState()
+    }
+
+    sealed class AppsWithDataFragmentState {
+        object Loading : AppsWithDataFragmentState()
+        data class WithData(val appsWithData: List<AppMetadata>) : AppsWithDataFragmentState()
     }
 }

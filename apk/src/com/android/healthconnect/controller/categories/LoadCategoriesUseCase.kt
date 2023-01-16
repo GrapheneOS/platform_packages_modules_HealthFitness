@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -16,7 +18,6 @@ package com.android.healthconnect.controller.categories
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.RecordTypeInfoResponse
 import android.healthconnect.datatypes.Record
-import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject
@@ -33,10 +34,6 @@ constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    companion object {
-        private const val TAG = "GetCategoriesWithData"
-    }
-
     /** Returns list of available data categories. */
     suspend operator fun invoke(): List<HealthDataCategory> =
         withContext(dispatcher) {
@@ -48,7 +45,6 @@ constructor(
                     }
                 HEALTH_DATA_CATEGORIES.filter { hasData(it, recordTypeInfoMap) }
             } catch (e: Exception) {
-                Log.e(TAG, "GetCategoriesWithDataUseCase", e)
                 emptyList()
             }
         }

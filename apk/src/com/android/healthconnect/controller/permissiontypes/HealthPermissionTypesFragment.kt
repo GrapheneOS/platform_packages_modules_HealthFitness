@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.permissiontypes
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.RadioGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
@@ -34,6 +35,8 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
+import com.android.healthconnect.controller.filters.ChipPreference
+import com.android.healthconnect.controller.filters.FilterChip
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment
@@ -41,13 +44,16 @@ import com.android.healthconnect.controller.permissiontypes.prioritylist.Priorit
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.settingslib.widget.AppHeaderPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Fragment for health permission types. */
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
-class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
+open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
 
     companion object {
+        private const val PERMISSION_TYPES_HEADER = "permission_types_header"
+        private const val APP_FILTERS_PREFERENCE = "app_filters_preference"
         private const val PERMISSION_TYPES = "permission_types"
         const val PERMISSION_TYPE_KEY = "permission_type_key"
         private const val APP_PRIORITY_BUTTON = "app_priority"
@@ -57,6 +63,14 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
     private lateinit var category: HealthDataCategory
 
     private val viewModel: HealthPermissionTypesViewModel by viewModels()
+
+    private val mPermissionTypesHeader: AppHeaderPreference? by lazy {
+        preferenceScreen.findPreference(PERMISSION_TYPES_HEADER)
+    }
+
+    private val mAppFiltersPreference: PreferenceGroup? by lazy {
+        preferenceScreen.findPreference(APP_FILTERS_PREFERENCE)
+    }
 
     private val mPermissionTypes: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(PERMISSION_TYPES)
@@ -72,6 +86,7 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.health_permission_types_screen, rootKey)
+
         if (requireArguments().containsKey(CATEGORY_NAME_KEY) &&
             (requireArguments().getString(CATEGORY_NAME_KEY) != null)) {
             val categoryName = requireArguments().getString(CATEGORY_NAME_KEY)!!
@@ -90,53 +105,33 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
                 START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
         }
-
-        // TODO add filters here if more than one contributing app
-        //                val APP_1 =
-        //                    AppMetadata(
-        //                        "package.name1",
-        //                        "App name A",
-        //                        AttributeResolver.getDrawable(requireContext(),
-        // R.attr.deleteIcon))
-        //                val APP_2 =
-        //                    AppMetadata(
-        //                        "package.name2",
-        //                        "App name B",
-        //                        AttributeResolver.getDrawable(requireContext(),
-        // R.attr.deleteIcon))
-        //                val APP_3 =
-        //                    AppMetadata(
-        //                        "package.name3",
-        //                        "App name C",
-        //                        AttributeResolver.getDrawable(requireContext(),
-        // R.attr.deleteIcon))
-        //                val APP_4 =
-        //                    AppMetadata(
-        //                        "package.name4",
-        //                        "App name D",
-        //                        AttributeResolver.getDrawable(requireContext(),
-        // R.attr.deleteIcon))
-        //                val appData = listOf(APP_1, APP_2, APP_3, APP_4)
-        //                val newPreference = ChipPreference(requireContext(), appData).also {
-        // it.order = 1
-        //         }
-        //                preferenceScreen.addPreference(newPreference)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupMenu(this, viewLifecycleOwner)
-
+        mPermissionTypesHeader?.icon = requireContext().resources.getDrawable(category.icon)
+        mPermissionTypesHeader?.title = getString(category.uppercaseTitle)
         viewModel.loadData(category)
         viewModel.permissionTypesData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is HealthPermissionTypesViewModel.PermissionTypesState.Loading -> {}
                 is HealthPermissionTypesViewModel.PermissionTypesState.WithData -> {
+                    viewModel.loadAppsWithData(category)
                     updatePermissionTypesList(state.permissionTypes)
                 }
             }
         }
-
+        viewModel.appsWithData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is HealthPermissionTypesViewModel.AppsWithDataFragmentState.Loading -> {}
+                is HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData -> {
+                    if (state.appsWithData.size > 1) {
+                        addAppFilters(state.appsWithData)
+                    }
+                }
+            }
+        }
         childFragmentManager.setFragmentResultListener(PRIORITY_UPDATED_EVENT, this) { _, bundle ->
             Log.e("SUCCESSFUL_UPDATE", "event sent")
             bundle.getStringArrayList(PRIORITY_UPDATED_EVENT)?.let {
@@ -188,6 +183,44 @@ class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
                     }
                 })
         }
+    }
+
+    private fun addAppFilters(appsWithHealthPermissions: List<AppMetadata>) {
+        mAppFiltersPreference?.removeAll()
+        mAppFiltersPreference?.addPreference(
+            ChipPreference(
+                requireContext(),
+                appsWithHealthPermissions,
+                addFilterChip = ::addFilterChip,
+                addAllAppsFilterChip = ::addAllAppsFilterChip))
+    }
+
+    private fun addFilterChip(appMetadata: AppMetadata, chipGroup: RadioGroup) {
+        val newFilterChip = FilterChip(requireContext())
+        newFilterChip.setUnselectedIcon(appMetadata.icon)
+        newFilterChip.text = appMetadata.appName
+        newFilterChip.isChecked = appMetadata.appName == viewModel.selectedAppFilter.value
+        newFilterChip.setOnClickListener {
+            viewModel.setAppFilter(appMetadata.appName)
+            viewModel.filterPermissionTypes(category, appMetadata.packageName)
+        }
+        chipGroup.addView(newFilterChip)
+    }
+
+    private fun addAllAppsFilterChip(chipGroup: RadioGroup) {
+        val allAppsButton = FilterChip(requireContext())
+        allAppsButton.id = R.id.select_all_chip
+        allAppsButton.text = requireContext().resources.getString(R.string.select_all_apps_title)
+        allAppsButton.isChecked =
+            viewModel.selectedAppFilter.value ==
+                requireContext().resources.getString(R.string.select_all_apps_title)
+        allAppsButton.setOnClickListener {
+            viewModel.setAppFilter(
+                requireContext().resources.getString(R.string.select_all_apps_title))
+            viewModel.filterPermissionTypes(
+                category, requireContext().resources.getString(R.string.select_all_apps_title))
+        }
+        chipGroup.addView(allAppsButton)
     }
 
     override fun onResume() {
