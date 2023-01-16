@@ -803,5 +803,7 @@
 
   <!--  region Menu Items -->
   <string name="help" description="Menu option for accessing help [CHAR LIMIT=50]">Help</string>
+  <string name="hc_get_started_link" description="Link that helps to learn more about Health Connect. [CHAR_LIMIT=50]" translatable="false">https://support.google.com/android?p=get_started_hc</string>
+
   <!--  endregion-->
 </resources>

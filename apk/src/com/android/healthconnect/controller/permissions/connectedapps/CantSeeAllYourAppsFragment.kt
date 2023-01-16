@@ -15,10 +15,12 @@ package com.android.healthconnect.controller.permissions.connectedapps
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -67,5 +69,10 @@ class CantSeeAllYourAppsFragment : Hilt_CantSeeAllYourAppsFragment() {
             getActivity()?.startActivityForResult(intent, 0)
             true
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupMenu(this, viewLifecycleOwner)
     }
 }

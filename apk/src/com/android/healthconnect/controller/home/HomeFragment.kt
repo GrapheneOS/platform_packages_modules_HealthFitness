@@ -25,6 +25,7 @@ import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.recentaccess.RecentAccessApp
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
+import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,6 +74,8 @@ class HomeFragment : Hilt_HomeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        SendFeedbackAndHelpMenu.setupMenu(this, viewLifecycleOwner)
+
         viewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
             updateRecentApps(recentApps)
         }

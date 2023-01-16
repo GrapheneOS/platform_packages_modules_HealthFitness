@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.dataentries
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -51,6 +52,7 @@ import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.utils.HelpCenterLauncher
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
@@ -80,6 +82,16 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                     R.id.menu_open_units -> {
                         findNavController()
                             .navigate(R.id.action_dataEntriesFragment_to_unitsFragment)
+                        true
+                    }
+                    R.id.menu_send_feedback -> {
+                        val intent = Intent(Intent.ACTION_BUG_REPORT)
+                        activity?.startActivityForResult(intent, 0)
+                        true
+                    }
+                    R.id.menu_help -> {
+                        HelpCenterLauncher.openHCGetStartedLink(
+                            this@DataEntriesFragment as Fragment)
                         true
                     }
                     else -> false

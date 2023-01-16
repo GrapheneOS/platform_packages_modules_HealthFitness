@@ -36,6 +36,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.START_DEL
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
+import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -106,6 +107,8 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupMenu(this, viewLifecycleOwner)
+
         categoriesViewModel.categoriesData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is HealthDataCategoryViewModel.CategoriesFragmentState.Loading -> {}
