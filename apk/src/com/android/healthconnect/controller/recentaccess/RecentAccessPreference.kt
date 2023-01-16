@@ -17,13 +17,9 @@
 package com.android.healthconnect.controller.recentaccess
 
 import android.content.Context
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
@@ -34,58 +30,57 @@ import java.time.format.DateTimeFormatter
 
 /** Custom preference for displaying Recent access apps, including dash lines for timeline views. */
 class RecentAccessPreference
-constructor(
-    context: Context,
-    val recentAccessApp: RecentAccessApp,
-    val isHistory: Boolean = true,
-    val isLastUsage: Boolean = false
-) : Preference(context) {
+constructor(context: Context, val recentAccessApp: RecentAccessEntry, val showCategories: Boolean) :
+        Preference(context) {
+
+    private lateinit var appIcon: ImageView
+    private lateinit var appTitle: TextView
+    private lateinit var dataTypesWritten: TextView
+    private lateinit var dataTypesRead: TextView
+    private lateinit var accessTime: TextView
+    private val separator: String = context.getString(R.string.data_type_separator)
 
     init {
-        super.setTitle(recentAccessApp.metadata.appName)
-
-        if (isHistory) {
-            val writeData: String = recentAccessApp.dataTypesWritten.joinToString(", ")
-            super.setSummary(writeData)
-        }
+        layoutResource = R.layout.widget_recent_access_timeline
+        isSelectable = true
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder?) {
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        val widgetFrame: ViewGroup = holder?.findViewById(android.R.id.widget_frame) as ViewGroup
-        val widgetFrameParent: LinearLayout = widgetFrame.parent as LinearLayout
+        appIcon = holder.findViewById(R.id.recent_access_app_icon) as ImageView
+        appIcon.setImageDrawable(recentAccessApp.metadata.icon)
 
-        val iconFrame: LinearLayout? = holder.findViewById(android.R.id.icon_frame) as LinearLayout?
-        widgetFrameParent.removeView(iconFrame)
+        appTitle = holder.findViewById(R.id.title) as TextView
+        appTitle.text = recentAccessApp.metadata.appName
 
-        var recentAccessWidget: ViewGroup? =
-            holder.findViewById(R.id.recent_access_widget_layout) as ViewGroup?
-        if (recentAccessWidget == null) {
-            val inflater: LayoutInflater = context.getSystemService(LayoutInflater::class.java)
-            recentAccessWidget =
-                inflater.inflate(R.layout.widget_recent_access_timeline, widgetFrameParent, false)
-                    as ViewGroup?
-            widgetFrameParent.addView(recentAccessWidget, 0)
+        dataTypesWritten = holder.findViewById(R.id.data_types_written) as TextView
+        dataTypesRead = holder.findViewById(R.id.data_types_read) as TextView
+
+        if (showCategories) {
+            if (recentAccessApp.dataTypesWritten.isNotEmpty()) {
+                dataTypesWritten.text =
+                        context.getString(
+                                R.string.write_data_access_label,
+                                recentAccessApp.dataTypesWritten.sorted().joinToString(separator) {
+                                    context.getString(it)
+                                })
+                dataTypesWritten.isVisible = true
+            }
+
+            if (recentAccessApp.dataTypesRead.isNotEmpty()) {
+                dataTypesRead.text =
+                        context.getString(
+                                R.string.read_data_access_label,
+                                recentAccessApp.dataTypesRead.sorted().joinToString(separator) {
+                                    context.getString(it)
+                                })
+                dataTypesRead.isVisible = true
+            }
         }
 
-        widgetFrameParent.gravity = Gravity.TOP
-
-        val recentAccessTime: TextView? =
-            recentAccessWidget?.findViewById(R.id.recent_access_time) as TextView?
-        recentAccessTime?.text = formatTime(recentAccessApp.instantTime)
-
-        val recentAccessAppIcon: ImageView? =
-            recentAccessWidget?.findViewById(R.id.recent_access_app_icon) as ImageView?
-        recentAccessAppIcon?.setImageDrawable(recentAccessApp.metadata.icon)
-
-        val dashLine: View? = recentAccessWidget?.findViewById(R.id.recent_access_dash_line)
-
-        if (isHistory && !isLastUsage) {
-            dashLine?.visibility = View.VISIBLE
-        } else {
-            dashLine?.visibility = View.GONE
-        }
+        accessTime = holder.findViewById(R.id.time) as TextView
+        accessTime.text = formatTime(recentAccessApp.instantTime)
     }
 
     private fun formatTime(instant: Instant): String {

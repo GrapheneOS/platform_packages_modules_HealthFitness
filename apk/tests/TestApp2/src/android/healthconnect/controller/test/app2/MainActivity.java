@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.home
+package android.healthconnect.controller.test.app2;
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import android.app.Activity;
 
-@HiltViewModel class HomeFragmentViewModel @Inject constructor() : ViewModel() {}
+/**
+ * This app is used as an external package to test system api {@link
+ * android.healthconnect.HealthConnectManager} permission-related APIs.
+ */
+public class MainActivity extends Activity {}

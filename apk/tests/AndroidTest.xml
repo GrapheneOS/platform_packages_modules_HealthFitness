@@ -24,6 +24,7 @@
     <option name="cleanup-apks" value="true"/>
     <option name="test-file-name" value="HealthConnectControllerUITests.apk"/>
     <option name="test-file-name" value="HealthConnectUITestApp.apk"/>
+    <option name="test-file-name" value="HealthConnectUITestApp2.apk"/>
   </target_preparer>
   <test class="com.android.tradefed.testtype.AndroidJUnitTest">
     <option name="runner" value="com.android.healthconnect.controller.tests.HiltTestRunner"/>

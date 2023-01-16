@@ -16,29 +16,163 @@
 
 package com.android.healthconnect.controller.recentaccess
 
+import android.healthconnect.AccessLog
+import android.healthconnect.Constants
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.dataTypeToCategory
+import com.android.healthconnect.controller.utils.SystemTimeSource
+import com.android.healthconnect.controller.utils.TimeSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Duration
+import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RecentAccessViewModel
 @Inject
-constructor(private val loadRecentAccessUseCase: LoadRecentAccessUseCase) : ViewModel() {
+constructor(
+        private val appInfoReader: AppInfoReader,
+        private val loadRecentAccessUseCase: ILoadRecentAccessUseCase,
+) : ViewModel() {
 
-    private val _recentAccessApps = MutableLiveData<List<RecentAccessApp>>()
+    private val _recentAccessApps = MutableLiveData<List<RecentAccessEntry>>()
 
-    val recentAccessApps: LiveData<List<RecentAccessApp>>
+    private val MAX_CLUSTER_DURATION = Duration.ofMinutes(10)
+    private val MAX_GAP_BETWEEN_LOGS_IN_CLUSTER_DURATION = Duration.ofMinutes(1)
+
+    val recentAccessApps: LiveData<List<RecentAccessEntry>>
         get() = _recentAccessApps
 
-    init {
-        loadRecentAccessApps()
+    fun loadRecentAccessApps(maxNumEntries: Int = -1, timeSource: TimeSource = SystemTimeSource) {
+        viewModelScope.launch {
+            val accessLogs = loadRecentAccessUseCase.invoke()
+            val clusters = clusterEntries(accessLogs, maxNumEntries, timeSource)
+            _recentAccessApps.postValue(clusters)
+        }
     }
 
-    private fun loadRecentAccessApps() {
-        viewModelScope.launch { _recentAccessApps.postValue(loadRecentAccessUseCase.invoke()) }
+    private data class DataAccessEntryCluster(
+        val latestTime: Instant,
+        var earliestTime: Instant,
+        val recentDataAccessEntry: RecentAccessEntry
+    )
+
+    private suspend fun clusterEntries(
+        accessLogs: List<AccessLog>,
+        maxNumEntries: Int,
+        timeSource: TimeSource = SystemTimeSource
+    ): List<RecentAccessEntry> {
+        if (accessLogs.isEmpty()) {
+            return listOf()
+        }
+
+        val dataAccessEntries = mutableListOf<RecentAccessEntry>()
+        val currentDataAccessEntryClusters = hashMapOf<String, DataAccessEntryCluster>()
+
+        // Logs are sorted by time, descending
+        for (currentLog in accessLogs) {
+            val currentPackageName = currentLog.packageName
+            val currentCluster = currentDataAccessEntryClusters.get(currentPackageName)
+
+            if (currentCluster == null) {
+                // If no cluster started for this app yet, init one with the current log
+                currentDataAccessEntryClusters.put(
+                    currentPackageName, initDataAccessEntryCluster(currentLog, timeSource))
+            } else if (logBelongsToCluster(currentLog, currentCluster)) {
+                updateDataAccessEntryCluster(currentCluster, currentLog, timeSource)
+            } else {
+                // Log doesn't belong to current cluster. Convert current cluster to UI entry and
+                // remove
+                // it from currently accumulating clusters, start a new cluster with currentLog
+
+                dataAccessEntries.add(currentCluster.recentDataAccessEntry)
+
+                currentDataAccessEntryClusters.remove(currentPackageName)
+
+                currentDataAccessEntryClusters.put(
+                    currentPackageName, initDataAccessEntryCluster(currentLog, timeSource))
+
+                // If we have enough entries already and all clusters that are still being
+                // accumulated are
+                // already earlier than the ones we completed, we can finish and return what we have
+                if (maxNumEntries != -1 && dataAccessEntries.size >= maxNumEntries) {
+                    val earliestDataAccessEntryTime = dataAccessEntries.minOf { it.instantTime }
+                    if (currentDataAccessEntryClusters.values.none {
+                        it.earliestTime.isAfter(earliestDataAccessEntryTime)
+                    }) {
+                        break
+                    }
+                }
+            }
+        }
+
+        // complete all remaining clusters and add them to the list of entries. If we already had
+        // enough
+        // entries and we don't need these remaining clusters (we broke the loop above early), they
+        // will be
+        // filtered out anyway by final sorting and limiting.
+        currentDataAccessEntryClusters.values.map { cluster ->
+            dataAccessEntries.add(cluster.recentDataAccessEntry)
+        }
+
+        return dataAccessEntries
+            .sortedByDescending { it.instantTime }
+            .take(if (maxNumEntries != -1) maxNumEntries else dataAccessEntries.size)
+    }
+
+    private suspend fun initDataAccessEntryCluster(
+        accessLog: AccessLog,
+        timeSource: TimeSource = SystemTimeSource
+    ): DataAccessEntryCluster {
+        val newCluster =
+            DataAccessEntryCluster(
+                latestTime = accessLog.accessTime,
+                earliestTime = Instant.MIN,
+                recentDataAccessEntry =
+                    RecentAccessEntry(
+                        metadata =
+                            appInfoReader.getAppMetadata(packageName = accessLog.packageName)))
+
+        updateDataAccessEntryCluster(newCluster, accessLog, timeSource)
+        return newCluster
+    }
+
+    private fun logBelongsToCluster(
+        accessLog: AccessLog,
+        cluster: DataAccessEntryCluster
+    ): Boolean =
+        Duration.between(accessLog.accessTime, cluster.latestTime)
+            .compareTo(MAX_CLUSTER_DURATION) <= 0 &&
+            Duration.between(accessLog.accessTime, cluster.earliestTime)
+                .compareTo(MAX_GAP_BETWEEN_LOGS_IN_CLUSTER_DURATION) <= 0
+
+    private fun updateDataAccessEntryCluster(
+        cluster: DataAccessEntryCluster,
+        accessLog: AccessLog,
+        timeSource: TimeSource = SystemTimeSource
+    ) {
+        val midnight =
+            timeSource
+                .currentLocalDateTime()
+                .toLocalDate()
+                .atStartOfDay(timeSource.deviceZoneOffset())
+                .toInstant()
+
+        cluster.earliestTime = accessLog.accessTime
+        cluster.recentDataAccessEntry.instantTime = accessLog.accessTime
+        cluster.recentDataAccessEntry.isToday = (!accessLog.accessTime.isBefore(midnight))
+
+        if (accessLog.operationType == Constants.READ) {
+            cluster.recentDataAccessEntry.dataTypesRead.addAll(
+                accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle })
+        } else {
+            cluster.recentDataAccessEntry.dataTypesWritten.addAll(
+                accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle })
+        }
     }
 }

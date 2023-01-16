@@ -16,12 +16,17 @@
 
 package com.android.healthconnect.controller.recentaccess
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +37,9 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
     companion object {
         private const val RECENT_ACCESS_TODAY_KEY = "recent_access_today"
         private const val RECENT_ACCESS_YESTERDAY_KEY = "recent_access_yesterday"
+        private const val RECENT_ACCESS_NO_DATA_KEY = "no_data"
     }
+
     private val viewModel: RecentAccessViewModel by viewModels()
 
     private val mRecentAccessTodayPreferenceGroup: PreferenceGroup? by lazy {
@@ -41,6 +48,10 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
     private val mRecentAccessYesterdayPreferenceGroup: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(RECENT_ACCESS_YESTERDAY_KEY)
+    }
+
+    private val mRecentAccessNoDataPreference: Preference? by lazy {
+        preferenceScreen.findPreference(RECENT_ACCESS_NO_DATA_KEY)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -54,28 +65,56 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.loadRecentAccessApps()
         viewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
             updateRecentApps(recentApps)
         }
     }
 
-    private fun updateRecentApps(recentAppsList: List<RecentAccessApp>) {
+    private fun updateRecentApps(recentAppsList: List<RecentAccessEntry>) {
         mRecentAccessTodayPreferenceGroup?.removeAll()
         mRecentAccessYesterdayPreferenceGroup?.removeAll()
+        mRecentAccessNoDataPreference?.isVisible = false
 
         if (recentAppsList.isEmpty()) {
+            mRecentAccessYesterdayPreferenceGroup?.isVisible = false
             mRecentAccessTodayPreferenceGroup?.isVisible = false
-            mRecentAccessYesterdayPreferenceGroup?.isVisible = false
-            // TODO add empty screen state
+            mRecentAccessNoDataPreference?.isVisible = true
         } else {
-            // TODO add logic for separating records into `Today` and `Yesterday`
-            // hide the `Yesterday` section while using predefined RecentAccessApps
-            mRecentAccessYesterdayPreferenceGroup?.isVisible = false
+            // if the last entry is today, we don't need the 'Yesterday' section
+            mRecentAccessYesterdayPreferenceGroup?.isVisible = !recentAppsList.last().isToday
 
             recentAppsList.forEachIndexed { index, recentApp ->
-                mRecentAccessTodayPreferenceGroup?.addPreference(
-                    RecentAccessPreference(
-                        requireContext(), recentApp, true, index == recentAppsList.size - 1))
+                val isLastUsage =
+                    (index == recentAppsList.size - 1) ||
+                        (recentApp.isToday &&
+                            index < recentAppsList.size - 1 &&
+                            !recentAppsList[index + 1].isToday)
+                val newPreference =
+                    RecentAccessPreference(requireContext(), recentApp, true).also {
+                        it.setOnPreferenceClickListener {
+                            findNavController()
+                                .navigate(
+                                    R.id.action_recentAccessFragment_to_connectedAppFragment,
+                                    bundleOf(
+                                        Intent.EXTRA_PACKAGE_NAME to recentApp.metadata.packageName,
+                                        Constants.EXTRA_APP_NAME to recentApp.metadata.appName))
+                            true
+                        }
+                    }
+                if (recentApp.isToday) {
+                    mRecentAccessTodayPreferenceGroup?.addPreference(newPreference)
+                    if (!isLastUsage) {
+                        mRecentAccessTodayPreferenceGroup?.addPreference(
+                            DividerPreference(requireContext()))
+                    }
+                } else {
+                    mRecentAccessYesterdayPreferenceGroup?.addPreference(newPreference)
+                    if (!isLastUsage) {
+                        mRecentAccessYesterdayPreferenceGroup?.addPreference(
+                            DividerPreference(requireContext()))
+                    }
+                }
             }
         }
     }

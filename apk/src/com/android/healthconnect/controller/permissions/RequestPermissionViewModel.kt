@@ -10,8 +10,8 @@ import com.android.healthconnect.controller.permissions.api.GrantHealthPermissio
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
-import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.AppInfoReader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -21,10 +21,10 @@ import kotlinx.coroutines.launch
 class RequestPermissionViewModel
 @Inject
 constructor(
-    private val appInfoReader: AppInfoReader,
-    private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
-    private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
-    private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase
+        private val appInfoReader: AppInfoReader,
+        private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
+        private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
+        private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase
 ) : ViewModel() {
 
     private val _appMetaData = MutableLiveData<AppMetadata>()
@@ -39,14 +39,15 @@ constructor(
     val grantedPermissions: LiveData<Set<HealthPermission>>
         get() = _grantedPermissions
 
-    private val _allPermissionsGranted = MediatorLiveData<Boolean>(false).apply {
-        addSource(_permissionsList) {
-            postValue(isAllPermissionsGranted(permissionsList, grantedPermissions))
+    private val _allPermissionsGranted =
+        MediatorLiveData<Boolean>(false).apply {
+            addSource(_permissionsList) {
+                postValue(isAllPermissionsGranted(permissionsList, grantedPermissions))
+            }
+            addSource(_grantedPermissions) {
+                postValue(isAllPermissionsGranted(permissionsList, grantedPermissions))
+            }
         }
-        addSource(_grantedPermissions) {
-            postValue(isAllPermissionsGranted(permissionsList, grantedPermissions))
-        }
-    }
     val allPermissionsGranted: LiveData<Boolean>
         get() = _allPermissionsGranted
 
@@ -68,7 +69,7 @@ constructor(
         loadPermissions(packageName, permissions)
     }
 
-    fun isPermissionGranted(permission: HealthPermission) : Boolean {
+    fun isPermissionGranted(permission: HealthPermission): Boolean {
         return _grantedPermissions.value.orEmpty().contains(permission)
     }
 

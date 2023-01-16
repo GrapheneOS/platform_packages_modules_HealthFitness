@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,6 +41,9 @@
         android:name="com.android.healthconnect.controller.home.HomeFragment"
         android:label="@string/app_label">
         <action
+            android:id="@+id/action_homeFragment_to_connectedAppFragment"
+            app:destination="@id/connectedAppFragment" />
+        <action
             android:id="@+id/action_homeFragment_to_healthDataCategoriesFragment"
             app:destination="@id/healthDataCategoriesFragment" />
         <action
@@ -68,7 +70,11 @@
     <fragment
         android:id="@+id/recentAccessFragment"
         android:name="com.android.healthconnect.controller.recentaccess.RecentAccessFragment"
-        android:label="@string/recent_access_header" />
+        android:label="@string/recent_access_header">
+        <action
+            android:id="@+id/action_recentAccessFragment_to_connectedAppFragment"
+            app:destination="@id/connectedAppFragment" />
+    </fragment>
     <fragment
         android:id="@+id/healthDataAllCategoriesFragment"
         android:name="com.android.healthconnect.controller.categories.HealthDataAllCategoriesFragment"
@@ -100,7 +106,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchConnectedApps"
-        android:name="com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchAppsFragment" >
+        android:name="com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchAppsFragment">
         <action
             android:id="@+id/action_searchApps_to_connectedApp"
             app:destination="@id/connectedAppFragment" />
@@ -133,6 +139,7 @@
     </fragment>
     <fragment
         android:id="@+id/connectedAppFragment"
+        android:label="@string/app_access_title"
         android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment">
         <argument
             android:name="android.intent.extra.PACKAGE_NAME"

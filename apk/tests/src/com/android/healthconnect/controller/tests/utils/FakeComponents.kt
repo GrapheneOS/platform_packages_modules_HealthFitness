@@ -13,11 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.healthconnect.controller.tests.utils
 
-package com.android.healthconnect.controller.home
+import android.healthconnect.AccessLog
+import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
+    private var list: List<AccessLog> = emptyList()
+    fun updateList(list: List<AccessLog>) {
+        this.list = list
+    }
 
-@HiltViewModel class HomeFragmentViewModel @Inject constructor() : ViewModel() {}
+    override suspend fun invoke(): List<AccessLog> {
+        return list
+    }
+}
+

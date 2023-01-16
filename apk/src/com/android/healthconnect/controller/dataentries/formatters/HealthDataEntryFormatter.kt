@@ -57,39 +57,39 @@ import javax.inject.Singleton
 class HealthDataEntryFormatter
 @Inject
 constructor(
-    private val appInfoReader: AppInfoReader,
-    private val heartRateFormatter: HeartRateFormatter,
-    private val stepsFormatter: StepsFormatter,
-    private val stepsCadenceFormatter: StepsCadenceFormatter,
-    private val basalMetabolicRateFormatter: BasalMetabolicRateFormatter,
-    private val speedFormatter: SpeedFormatter,
-    private val distanceFormatter: DistanceFormatter,
-    private val powerFormatter: PowerFormatter,
-    private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter,
-    private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
-    private val heightFormatter: HeightFormatter,
-    private val bodyFatFormatter: BodyFatFormatter,
-    private val oxygenSaturationFormatter: OxygenSaturationFormatter,
-    private val basalBodyTemperatureFormatter: BasalBodyTemperatureFormatter,
-    private val bodyTemperatureFormatter: BodyTemperatureFormatter,
-    private val wheelchairPushesFormatter: WheelchairPushesFormatter,
-    private val restingHeartRateFormatter: RestingHeartRateFormatter,
-    private val respiratoryRateFormatter: RespiratoryRateFormatter,
-    private val hydrationFormatter: HydrationFormatter,
-    private val floorsFormatter: FloorsFormatter,
-    private val elevationGainedFormatter: ElevationGainedFormatter,
-    private val weightFormatter: WeightFormatter,
-    private val leanBodyMassFormatter: LeanBodyMassFormatter,
-    private val boneMassFormatter: BoneMassFormatter,
-    private val bloodGlucoseFormatter: BloodGlucoseFormatter,
-    private val nutritionFormatter: NutritionFormatter,
-    private val bloodPressureFormatter: BloodPressureFormatter,
-    private val cyclingPedalingCadenceFormatter: CyclingPedalingCadenceFormatter,
-    private val vo2MaxFormatter: Vo2MaxFormatter,
-    private val cervicalMucusFormatter: CervicalMucusFormatter,
-    private val menstruationFlowFormatter: MenstruationFlowFormatter,
-    private val ovulationTestFormatter: OvulationTestFormatter,
-    private val sexualActivityFormatter: SexualActivityFormatter,
+        private val appInfoReader: AppInfoReader,
+        private val heartRateFormatter: HeartRateFormatter,
+        private val stepsFormatter: StepsFormatter,
+        private val stepsCadenceFormatter: StepsCadenceFormatter,
+        private val basalMetabolicRateFormatter: BasalMetabolicRateFormatter,
+        private val speedFormatter: SpeedFormatter,
+        private val distanceFormatter: DistanceFormatter,
+        private val powerFormatter: PowerFormatter,
+        private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter,
+        private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
+        private val heightFormatter: HeightFormatter,
+        private val bodyFatFormatter: BodyFatFormatter,
+        private val oxygenSaturationFormatter: OxygenSaturationFormatter,
+        private val basalBodyTemperatureFormatter: BasalBodyTemperatureFormatter,
+        private val bodyTemperatureFormatter: BodyTemperatureFormatter,
+        private val wheelchairPushesFormatter: WheelchairPushesFormatter,
+        private val restingHeartRateFormatter: RestingHeartRateFormatter,
+        private val respiratoryRateFormatter: RespiratoryRateFormatter,
+        private val hydrationFormatter: HydrationFormatter,
+        private val floorsFormatter: FloorsFormatter,
+        private val elevationGainedFormatter: ElevationGainedFormatter,
+        private val weightFormatter: WeightFormatter,
+        private val leanBodyMassFormatter: LeanBodyMassFormatter,
+        private val boneMassFormatter: BoneMassFormatter,
+        private val bloodGlucoseFormatter: BloodGlucoseFormatter,
+        private val nutritionFormatter: NutritionFormatter,
+        private val bloodPressureFormatter: BloodPressureFormatter,
+        private val cyclingPedalingCadenceFormatter: CyclingPedalingCadenceFormatter,
+        private val vo2MaxFormatter: Vo2MaxFormatter,
+        private val cervicalMucusFormatter: CervicalMucusFormatter,
+        private val menstruationFlowFormatter: MenstruationFlowFormatter,
+        private val ovulationTestFormatter: OvulationTestFormatter,
+        private val sexualActivityFormatter: SexualActivityFormatter,
 ) {
 
     suspend fun format(record: Record): FormattedDataEntry {
@@ -121,7 +121,8 @@ constructor(
             is BloodGlucoseRecord -> bloodGlucoseFormatter.format(record, appName)
             is NutritionRecord -> nutritionFormatter.format(record, appName)
             is BloodPressureRecord -> bloodPressureFormatter.format(record, appName)
-            is CyclingPedalingCadenceRecord -> cyclingPedalingCadenceFormatter.format(record, appName)
+            is CyclingPedalingCadenceRecord ->
+                cyclingPedalingCadenceFormatter.format(record, appName)
             is Vo2MaxRecord -> vo2MaxFormatter.format(record, appName)
             is CervicalMucusRecord -> cervicalMucusFormatter.format(record, appName)
             is SexualActivityRecord -> sexualActivityFormatter.format(record, appName)

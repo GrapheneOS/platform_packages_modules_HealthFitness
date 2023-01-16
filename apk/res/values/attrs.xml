@@ -41,6 +41,14 @@
     <attr name="textAppearanceOnboardingDescription" format="reference" />
     <attr name="textAppearanceOnboardingHeader" format="reference" />
 
+    <attr name="listItemPaddingTop" format="reference" />
+    <attr name="listItemPaddingBottom" format="reference" />
+    <attr name="largeListItemPaddingTop" format="reference" />
+    <attr name="largeListItemPaddingBottom" format="reference" />
+    <attr name="listItemMinHeight" format="reference" />
+    <attr name="recentAccessTimelineDividerHeight" format="reference" />
+    <attr name="recentAccessTimelineDividerDrawable" format="reference" />
+
     <attr name="outlinedButton" format="reference" />
 
     <attr name="chipStyle" format="reference" />

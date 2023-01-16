@@ -18,8 +18,8 @@ package com.android.healthconnect.controller.permissions.connectedapps
 import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.AppInfoReader
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,12 +29,12 @@ import kotlinx.coroutines.withContext
 class LoadHealthPermissionApps
 @Inject
 constructor(
-    private val healthPermissionReader: HealthPermissionReader,
-    private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
-    private val getContributorAppInfoUseCase: GetContributorAppInfoUseCase,
-    private val queryRecentAccessLogsUseCase: QueryRecentAccessLogsUseCase,
-    private val appInfoReader: AppInfoReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+        private val healthPermissionReader: HealthPermissionReader,
+        private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
+        private val getContributorAppInfoUseCase: GetContributorAppInfoUseCase,
+        private val queryRecentAccessLogsUseCase: QueryRecentAccessLogsUseCase,
+        private val appInfoReader: AppInfoReader,
+        @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
     /** Returns a list of ConnectedAppMetadata. */
     suspend operator fun invoke(): List<ConnectedAppMetadata> =

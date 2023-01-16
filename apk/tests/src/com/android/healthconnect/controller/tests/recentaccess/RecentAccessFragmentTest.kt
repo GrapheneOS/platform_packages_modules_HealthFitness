@@ -16,24 +16,29 @@
 
 package com.android.healthconnect.controller.tests.recentaccess
 
+import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.recentaccess.RecentAccessApp
+import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.categories.HealthDataCategory
+import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessFragment
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.google.common.collect.ImmutableSet
+import com.android.healthconnect.controller.tests.utils.setLocale
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,22 +51,39 @@ class RecentAccessFragmentTest {
 
     @BindValue
     val viewModel: RecentAccessViewModel = Mockito.mock(RecentAccessViewModel::class.java)
+    private lateinit var context: Context
 
     @Before
     fun setup() {
         hiltRule.inject()
+        context = InstrumentationRegistry.getInstrumentation().context
+        context.setLocale(Locale.US)
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
     }
 
     @Test
     fun test_RecentAccessFragment_displaysCorrectly() {
         val recentApp =
-            RecentAccessApp(
-                TEST_APP, Instant.parse("2022-10-20T18:40:13.00Z"), ImmutableSet.of("Read"))
+            RecentAccessEntry(
+                metadata = TEST_APP,
+                instantTime = Instant.parse("2022-10-20T18:40:13.00Z"),
+                isToday = true,
+                dataTypesWritten =
+                    mutableSetOf(
+                        HealthDataCategory.ACTIVITY.uppercaseTitle,
+                        HealthDataCategory.VITALS.uppercaseTitle),
+                dataTypesRead =
+                    mutableSetOf(
+                        HealthDataCategory.SLEEP.uppercaseTitle,
+                        HealthDataCategory.NUTRITION.uppercaseTitle))
 
         Mockito.`when`(viewModel.recentAccessApps).then { MutableLiveData(listOf(recentApp)) }
 
         launchFragment<RecentAccessFragment>(Bundle())
-        onView(withText(R.string.today_header)).check(matches(isDisplayed()))
+        onView(withText("Today")).check(matches(isDisplayed()))
         onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        onView(withText("18:40")).check(matches(isDisplayed()))
+        onView(withText("Read: Nutrition, Sleep")).check(matches(isDisplayed()))
+        onView(withText("Write: Activity, Vitals")).check(matches(isDisplayed()))
     }
 }

@@ -17,25 +17,13 @@
 package com.android.healthconnect.controller.recentaccess
 
 import com.android.healthconnect.controller.shared.AppMetadata
-import com.google.common.collect.ImmutableSet
 import java.time.Instant
 
 /** Represents one app that recently accessed health data. */
-data class RecentAccessApp(
+data class RecentAccessEntry(
     val metadata: AppMetadata,
-    val instantTime: Instant,
-    val dataTypesWritten: ImmutableSet<String>
+    var instantTime: Instant = Instant.MIN,
+    var isToday: Boolean = false,
+    var dataTypesWritten: MutableSet<Int> = mutableSetOf(),
+    var dataTypesRead: MutableSet<Int> = mutableSetOf()
 )
-
-// Placeholder constants
-val APP_1 = AppMetadata("package.name1", "app name A", null)
-
-val APP_2 = AppMetadata("package.name2", "app name B", null)
-val RECENT_APP_1 =
-    RecentAccessApp(APP_1, Instant.parse("2022-10-20T18:40:13.00Z"), ImmutableSet.of("Read"))
-
-val RECENT_APP_2 =
-    RecentAccessApp(
-        APP_2, Instant.parse("2022-10-20T19:53:14.00Z"), ImmutableSet.of("Read", "Write"))
-
-val RECENT_ACCESS_APPS = listOf(RECENT_APP_1, RECENT_APP_2)

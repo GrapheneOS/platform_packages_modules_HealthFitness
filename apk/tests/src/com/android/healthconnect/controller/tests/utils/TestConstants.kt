@@ -27,6 +27,7 @@ import com.android.healthconnect.controller.shared.AppMetadata
 import java.time.Instant
 
 val NOW: Instant = Instant.parse("2022-10-20T07:06:05.432Z")
+val MIDNIGHT: Instant = Instant.parse("2022-10-20T00:00:00.000Z")
 
 fun getHeartRateRecord(heartRateValues: List<Long>, startTime: Instant = NOW): HeartRateRecord {
     return HeartRateRecord.Builder(

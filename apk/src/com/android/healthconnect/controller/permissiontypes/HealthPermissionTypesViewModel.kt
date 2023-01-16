@@ -27,8 +27,8 @@ import com.android.healthconnect.controller.permissiontypes.api.LoadContributing
 import com.android.healthconnect.controller.permissiontypes.api.LoadPermissionTypesUseCase
 import com.android.healthconnect.controller.permissiontypes.api.LoadPriorityListUseCase
 import com.android.healthconnect.controller.permissiontypes.api.UpdatePriorityListUseCase
-import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
