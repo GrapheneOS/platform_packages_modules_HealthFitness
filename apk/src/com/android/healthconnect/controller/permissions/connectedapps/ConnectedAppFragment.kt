@@ -38,11 +38,13 @@ import com.android.healthconnect.controller.permissions.connectedapps.shared.Dis
 import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment.Companion.KEY_DELETE_DATA
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment for connected app screen. */
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
@@ -57,6 +59,8 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         private const val FOOTER_KEY = "connected_app_footer"
         private const val PARAGRAPH_SEPARATOR = "\n\n"
     }
+
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private var packageName: String = ""
     private var appName: String = ""
@@ -101,11 +105,11 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
-                requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
+            requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
         if (requireArguments().containsKey(EXTRA_APP_NAME) &&
-                requireArguments().getString(EXTRA_APP_NAME) != null) {
+            requireArguments().getString(EXTRA_APP_NAME) != null) {
             appName = requireArguments().getString(EXTRA_APP_NAME)!!
         }
         viewModel.loadAppInfo(packageName)
@@ -133,7 +137,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         mDeleteAllDataPreference?.setOnPreferenceClickListener {
             val deletionType = DeletionType.DeletionTypeAppData(packageName, appName)
             childFragmentManager.setFragmentResult(
-                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
             true
         }
     }
@@ -175,25 +179,25 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         permissions.forEach { permissionStatus ->
             val permission = permissionStatus.healthPermission
             val category =
-                    if (permission.permissionsAccessType == PermissionsAccessType.READ) {
-                        mReadPermissionCategory
-                    } else {
-                        mWritePermissionCategory
-                    }
+                if (permission.permissionsAccessType == PermissionsAccessType.READ) {
+                    mReadPermissionCategory
+                } else {
+                    mWritePermissionCategory
+                }
 
             category?.addPreference(
-                    SwitchPreference(requireContext()).also {
-                        val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
-                        it.setIcon(healthCategory.icon)
-                        it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
-                        it.isChecked = permissionStatus.isGranted
-                        it.setOnPreferenceChangeListener { _, newValue ->
-                            val checked = newValue as Boolean
-                            viewModel.updatePermission(
-                                    packageName, permissionStatus.healthPermission, checked)
-                            true
-                        }
-                    })
+                SwitchPreference(requireContext()).also {
+                    val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
+                    it.setIcon(healthCategory.icon)
+                    it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
+                    it.isChecked = permissionStatus.isGranted
+                    it.setOnPreferenceChangeListener { _, newValue ->
+                        val checked = newValue as Boolean
+                        viewModel.updatePermission(
+                            packageName, permissionStatus.healthPermission, checked)
+                        true
+                    }
+                })
         }
     }
 
@@ -205,24 +209,27 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     private fun updateFooter(isAtLeastOneGranted: Boolean) {
         var title =
-                getString(R.string.other_android_permissions) +
-                        PARAGRAPH_SEPARATOR +
-                        getString(R.string.manage_permissions_rationale, appName)
+            getString(R.string.other_android_permissions) +
+                PARAGRAPH_SEPARATOR +
+                getString(R.string.manage_permissions_rationale, appName)
 
         if (isAtLeastOneGranted) {
             val dataAccessDate = viewModel.loadAccessDate(packageName)
             dataAccessDate?.let {
                 val formattedDate = dateFormatter.formatLongDate(dataAccessDate)
                 title =
-                        getString(R.string.manage_permissions_time_frame, appName, formattedDate) +
-                                PARAGRAPH_SEPARATOR +
-                                title
+                    getString(R.string.manage_permissions_time_frame, appName, formattedDate) +
+                        PARAGRAPH_SEPARATOR +
+                        title
             }
         }
 
         mConnectedAppFooter?.title = title
         mConnectedAppFooter?.setLearnMoreText(getString(R.string.manage_permissions_learn_more))
-        // TODO (b/262060317) add link to app privacy policy
-        mConnectedAppFooter?.setLearnMoreAction {}
+        mConnectedAppFooter?.setLearnMoreAction {
+            val startRationaleIntent =
+                healthPermissionReader.getApplicationRationaleIntent(packageName)
+            startActivity(startRationaleIntent)
+        }
     }
 }
