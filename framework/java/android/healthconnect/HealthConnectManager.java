@@ -69,7 +69,7 @@ import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
-import android.healthconnect.migration.MigrationDataEntity;
+import android.healthconnect.migration.MigrationEntity;
 import android.healthconnect.migration.MigrationException;
 import android.os.Binder;
 import android.os.OutcomeReceiver;
@@ -1314,15 +1314,14 @@ public class HealthConnectManager {
     /**
      * Writes data to the module database.
      *
-     * @param entities List of {@link android.healthconnect.migration.MigrationDataEntity} to
-     *     migrate.
+     * @param entities List of {@link MigrationEntity} to migrate.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      * @hide
      */
     // TODO(b/262514203): Add migration permission checks
     public void writeMigrationData(
-            @NonNull List<MigrationDataEntity> entities,
+            @NonNull List<MigrationEntity> entities,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Void, MigrationException> callback) {
 

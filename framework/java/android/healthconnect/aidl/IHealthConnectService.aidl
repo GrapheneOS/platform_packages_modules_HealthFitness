@@ -22,7 +22,7 @@ import android.healthconnect.aidl.IReadRecordsResponseCallback;
 import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IRecordTypeInfoResponseCallback;
 import android.healthconnect.aidl.ReadRecordsRequestParcel;
-import android.healthconnect.migration.MigrationDataEntity;
+import android.healthconnect.migration.MigrationEntity;
 
 import android.os.UserHandle;
 
@@ -204,5 +204,5 @@ interface IHealthConnectService {
      * @param callback Callback to receive a result or an error encountered while performing this
      * operation.
      */
-    void writeMigrationData(in List<MigrationDataEntity> entities, in IMigrationCallback callback);
+    void writeMigrationData(in List<MigrationEntity> entities, in IMigrationCallback callback);
 }

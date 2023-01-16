@@ -120,13 +120,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setAdditionalColumnsToFetch(Collections.singletonList(getZoneOffsetColumnName()));
     }
 
-    /** Creates a new empty internal record. */
-    @NonNull
-    public RecordInternal<?> newInternalRecord() {
-        // TODO(b/263571058): Make abstract when implemented for all records
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     /**
      * @return {@link AggregateResult} for {@link AggregationType}
      */

@@ -15,15 +15,11 @@
  */
 package android.healthconnect.internal.datatypes;
 
-import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireDouble;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_HEIGHT_HEIGHT;
-
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.HeightRecord;
 import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.datatypes.units.Length;
-import android.os.Bundle;
 import android.os.Parcel;
 
 /**
@@ -66,10 +62,5 @@ public final class HeightRecordInternal extends InstantRecordInternal<HeightReco
     @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mHeight);
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Bundle payload) {
-        mHeight = requireDouble(payload, DM_RECORD_HEIGHT_HEIGHT);
     }
 }

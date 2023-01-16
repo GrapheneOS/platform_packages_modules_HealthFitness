@@ -17,18 +17,6 @@
 package android.healthconnect.internal.datatypes;
 
 import static android.healthconnect.Constants.DEFAULT_LONG;
-import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireString;
-import static android.healthconnect.migration.DataMigrationFields.DM_APP_INFO_APP_NAME;
-import static android.healthconnect.migration.DataMigrationFields.DM_APP_INFO_PACKAGE_NAME;
-import static android.healthconnect.migration.DataMigrationFields.DM_DEVICE_INFO_MANUFACTURER;
-import static android.healthconnect.migration.DataMigrationFields.DM_DEVICE_INFO_MODEL;
-import static android.healthconnect.migration.DataMigrationFields.DM_DEVICE_INFO_TYPE;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_APP_INFO;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_CLIENT_RECORD_ID;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_DEVICE_INFO;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_LAST_MODIFIED_TIME;
-
-import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -38,7 +26,6 @@ import android.healthconnect.datatypes.Identifier;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.os.Bundle;
 import android.os.Parcel;
 
 import java.time.Instant;
@@ -97,26 +84,6 @@ public abstract class RecordInternal<T extends Record> {
     @SuppressWarnings("unchecked")
     public final void populateUsing(@NonNull Record record) throws ClassCastException {
         populateUsingInternal((T) record);
-    }
-
-    /** Populates the record using the provided data migration payload. */
-    public final void populateUsing(@NonNull Bundle payload) {
-        requireNonNull(payload);
-
-        mLastModifiedTime = payload.getLong(DM_RECORD_LAST_MODIFIED_TIME, DEFAULT_LONG);
-        mClientRecordId = payload.getString(DM_RECORD_CLIENT_RECORD_ID);
-        mClientRecordVersion = DEFAULT_LONG;
-
-        final Bundle appInfo = requireNonNull(payload.getBundle(DM_RECORD_APP_INFO));
-        mPackageName = requireString(appInfo, DM_APP_INFO_PACKAGE_NAME);
-        mAppName = requireString(appInfo, DM_APP_INFO_APP_NAME);
-
-        final Bundle deviceInfo = requireNonNull(payload.getBundle(DM_RECORD_DEVICE_INFO));
-        mManufacturer = deviceInfo.getString(DM_DEVICE_INFO_MANUFACTURER);
-        mModel = deviceInfo.getString(DM_DEVICE_INFO_MODEL);
-        mDeviceType = deviceInfo.getInt(DM_DEVICE_INFO_TYPE, Device.DEVICE_TYPE_UNKNOWN);
-
-        populateRecordFrom(payload);
     }
 
     /**
@@ -317,7 +284,4 @@ public abstract class RecordInternal<T extends Record> {
      * record}
      */
     abstract void populateRecordFrom(@NonNull T record);
-
-    /** Populates the record using the provided data migration payload. */
-    abstract void populateRecordFrom(@NonNull Bundle payload);
 }

@@ -71,7 +71,7 @@ import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 import android.healthconnect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
-import android.healthconnect.migration.MigrationDataEntity;
+import android.healthconnect.migration.MigrationEntity;
 import android.healthconnect.migration.MigrationException;
 import android.os.Binder;
 import android.os.RemoteException;
@@ -84,7 +84,6 @@ import android.util.Pair;
 import android.util.Slog;
 
 import com.android.server.healthconnect.migration.DataMigrationManager;
-import com.android.server.healthconnect.migration.DataMigrationParser;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.AutoDeleteService;
@@ -781,8 +780,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
-    public void writeMigrationData(
-            List<MigrationDataEntity> entities, IMigrationCallback callback) {
+    public void writeMigrationData(List<MigrationEntity> entities, IMigrationCallback callback) {
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
@@ -805,11 +803,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mTransactionManager,
                 mPermissionHelper,
                 mFirstGrantTimeManager,
-                new DataMigrationParser(
-                        userContext,
-                        DeviceInfoHelper.getInstance(),
-                        AppInfoHelper.getInstance(),
-                        RecordHelperProvider.getInstance()));
+                DeviceInfoHelper.getInstance(),
+                AppInfoHelper.getInstance(),
+                RecordHelperProvider.getInstance());
     }
 
     private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {

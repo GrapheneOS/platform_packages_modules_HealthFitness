@@ -24,18 +24,28 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.PackageInfoFlags;
-import android.healthconnect.migration.MigrationDataEntity;
+import android.healthconnect.internal.datatypes.RecordInternal;
+import android.healthconnect.migration.MigrationEntity;
+import android.healthconnect.migration.MigrationPayload;
+import android.healthconnect.migration.PermissionMigrationPayload;
+import android.healthconnect.migration.RecordMigrationPayload;
 import android.os.UserHandle;
 
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Controls the data migration flow. Accepts and applies collections of {@link MigrationDataEntity}.
+ * Controls the data migration flow. Accepts and applies collections of {@link MigrationEntity}.
  *
  * @hide
  */
@@ -45,59 +55,91 @@ public final class DataMigrationManager {
     private final TransactionManager mTransactionManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final FirstGrantTimeManager mFirstGrantTimeManager;
-    private final DataMigrationParser mParser;
+    private final DeviceInfoHelper mDeviceInfoHelper;
+    private final AppInfoHelper mAppInfoHelper;
+    private final RecordHelperProvider mRecordHelperProvider;
 
     public DataMigrationManager(
             @NonNull Context userContext,
             @NonNull TransactionManager transactionManager,
             @NonNull HealthConnectPermissionHelper permissionHelper,
             @NonNull FirstGrantTimeManager firstGrantTimeManager,
-            @NonNull DataMigrationParser parser) {
+            @NonNull DeviceInfoHelper deviceInfoHelper,
+            @NonNull AppInfoHelper appInfoHelper,
+            @NonNull RecordHelperProvider recordHelperProvider) {
         mUserContext = userContext;
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
         mFirstGrantTimeManager = firstGrantTimeManager;
-        mParser = parser;
+        mDeviceInfoHelper = deviceInfoHelper;
+        mAppInfoHelper = appInfoHelper;
+        mRecordHelperProvider = recordHelperProvider;
     }
 
     /**
      * Parses and applies the provided migration entities.
      *
-     * @param entities a collection of {@link MigrationDataEntity} to be applied.
+     * @param entities a collection of {@link MigrationEntity} to be applied.
      */
-    public void apply(@NonNull Collection<MigrationDataEntity> entities) {
-        final List<DataMigrationParser.ParseResult> results = mParser.parse(entities);
-        updateDatabase(results);
-        updatePermissions(results);
+    public void apply(@NonNull Collection<MigrationEntity> entities) {
+        migrateRecords(entities);
+        migratePermissions(entities);
     }
 
-    private void updateDatabase(@NonNull List<DataMigrationParser.ParseResult> results) {
-        mTransactionManager.insertAll(
-                results.stream()
-                        .filter(result -> result instanceof DataMigrationParser.UpsertData)
-                        .map(result -> (DataMigrationParser.UpsertData) result)
-                        .map(DataMigrationParser.UpsertData::getRequest)
-                        .toList());
+    private void migrateRecords(@NonNull Collection<MigrationEntity> entities) {
+        final List<UpsertTableRequest> requests = parseRecords(entities);
+        if (!requests.isEmpty()) {
+            mTransactionManager.insertAll(requests);
+        }
     }
 
-    private void updatePermissions(@NonNull List<DataMigrationParser.ParseResult> results) {
-        results.stream()
-                .filter(result -> result instanceof DataMigrationParser.GrantPermissions)
-                .map(result -> (DataMigrationParser.GrantPermissions) result)
-                .forEach(this::updatePermissions);
+    @NonNull
+    private List<UpsertTableRequest> parseRecords(@NonNull Collection<MigrationEntity> entities) {
+        final List<UpsertTableRequest> list = new ArrayList<>();
+
+        for (MigrationEntity entity : entities) {
+            final MigrationPayload payload = entity.getPayload();
+            if (payload instanceof RecordMigrationPayload) {
+                list.add(parseRecord((RecordMigrationPayload) payload));
+            }
+        }
+
+        return list;
     }
 
-    private void updatePermissions(DataMigrationParser.GrantPermissions result) {
-        final String packageName = result.getPackageName();
+    @NonNull
+    private UpsertTableRequest parseRecord(@NonNull RecordMigrationPayload payload) {
+        final RecordInternal<?> record = payload.getRecord();
+        StorageUtils.addNameBasedUUIDTo(record);
+        mAppInfoHelper.populateAppInfoId(record, mUserContext, false);
+        mDeviceInfoHelper.populateDeviceInfoId(record);
+
+        return mRecordHelperProvider
+                .getRecordHelper(record.getRecordType())
+                .getUpsertTableRequest(record);
+    }
+
+    @NonNull
+    private void migratePermissions(@NonNull Collection<MigrationEntity> entities) {
+        for (MigrationEntity entity : entities) {
+            final MigrationPayload payload = entity.getPayload();
+            if (payload instanceof PermissionMigrationPayload) {
+                migratePermissions((PermissionMigrationPayload) payload);
+            }
+        }
+    }
+
+    private void migratePermissions(@NonNull PermissionMigrationPayload payload) {
+        final String packageName = payload.getHoldingPackageName();
         final UserHandle appUserHandle = getUserHandle(packageName);
         if ((appUserHandle != null)
                 && !mPermissionHelper.hasGrantedHealthPermissions(packageName, appUserHandle)) {
-            for (String permissionName : result.getPermissionNames()) {
+            for (String permissionName : payload.getPermissions()) {
                 mPermissionHelper.grantHealthPermission(packageName, permissionName, appUserHandle);
             }
 
             mFirstGrantTimeManager.setFirstGrantTime(
-                    result.getPackageName(), result.getFirstGrantTime(), mUserContext.getUser());
+                    packageName, payload.getFirstGrantTime(), mUserContext.getUser());
         }
     }
 
