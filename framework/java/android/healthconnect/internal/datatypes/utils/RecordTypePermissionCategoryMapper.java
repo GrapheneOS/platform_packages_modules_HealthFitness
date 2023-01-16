@@ -23,6 +23,7 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_B
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_FAT;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
@@ -30,10 +31,13 @@ import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_D
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEIGHT;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW;
+import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION;
@@ -123,6 +127,14 @@ public final class RecordTypePermissionCategoryMapper {
                                 HealthPermissionCategory.RESTING_HEART_RATE);
                         put(RECORD_TYPE_HEIGHT, HealthPermissionCategory.HEIGHT);
                         put(RECORD_TYPE_WEIGHT, HealthPermissionCategory.WEIGHT);
+                        put(RECORD_TYPE_BODY_WATER_MASS, HealthPermissionCategory.BODY_WATER_MASS);
+                        put(
+                                RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD,
+                                HealthPermissionCategory.HEART_RATE_VARIABILITY);
+                        put(RECORD_TYPE_MENSTRUATION_PERIOD, HealthPermissionCategory.MENSTRUATION);
+                        put(
+                                RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
+                                HealthPermissionCategory.INTERMENSTRUAL_BLEEDING);
                     }
                 };
     }
