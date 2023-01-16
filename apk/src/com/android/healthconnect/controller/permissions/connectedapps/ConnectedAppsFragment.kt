@@ -114,23 +114,19 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             findNavController().navigate(R.id.action_connectedApps_to_cantSeeAllYourApps)
             true
         }
-        mRemoveAllApps?.setOnPreferenceClickListener {
-            openRemoveAllAppsAccessDialog()
-            true
-        }
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
         }
     }
 
-    private fun openRemoveAllAppsAccessDialog() {
+    private fun openRemoveAllAppsAccessDialog(apps: List<ConnectedAppMetadata>) {
         AlertDialogBuilder(this)
             .setTitle(R.string.permissions_disconnect_all_dialog_title)
             .setMessage(R.string.permissions_disconnect_all_dialog_message)
             .setIcon(R.attr.disconnectAllIcon)
             .setNegativeButton(android.R.string.cancel)
             .setPositiveButton(R.string.permissions_disconnect_all_dialog_disconnect) { _, _ ->
-                viewModel.disconnectAllApps()
+                viewModel.disconnectAllApps(apps)
             }
             .create()
             .show()
@@ -147,9 +143,18 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         setupMenu()
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             val connectedAppsGroup = connectedApps.groupBy { it.status }
-            updateAllowedApps(connectedAppsGroup[ALLOWED].orEmpty())
-            updateDeniedApps(connectedAppsGroup[DENIED].orEmpty())
+            val allowedApps = connectedAppsGroup[ALLOWED].orEmpty()
+            val notAllowedApps = connectedAppsGroup[DENIED].orEmpty()
+            updateAllowedApps(allowedApps)
+            updateDeniedApps(notAllowedApps)
             updateInactiveApps(connectedAppsGroup[INACTIVE].orEmpty())
+
+            val activeApps: MutableList<ConnectedAppMetadata> = allowedApps.toMutableList()
+            activeApps.addAll(notAllowedApps)
+            mRemoveAllApps?.setOnPreferenceClickListener {
+                openRemoveAllAppsAccessDialog(activeApps)
+                true
+            }
         }
     }
 

@@ -53,9 +53,9 @@ constructor(
         }
     }
 
-    fun disconnectAllApps() {
+    fun disconnectAllApps(apps: List<ConnectedAppMetadata>) {
         viewModelScope.launch {
-            _connectedApps.value?.forEach { app ->
+            apps.forEach { app ->
                 revokeAllHealthPermissionsUseCase.invoke(app.appMetadata.packageName)
             }
             loadConnectedApps()
