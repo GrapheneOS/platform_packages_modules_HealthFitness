@@ -30,6 +30,7 @@ public final class Metadata {
     private final String mClientRecordId;
     private final long mClientRecordVersion;
     private String mId;
+
     /**
      * @param device Optional client supplied device information associated with the data.
      * @param dataOrigin Where the data comes from, such as application information originally
@@ -99,7 +100,11 @@ public final class Metadata {
         return mId;
     }
 
-    /** Sets record identifier */
+    /**
+     * Sets record identifier
+     *
+     * @hide
+     */
     public void setId(@NonNull String id) {
         Objects.requireNonNull(id);
 

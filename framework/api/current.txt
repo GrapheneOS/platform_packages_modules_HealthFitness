@@ -445,13 +445,13 @@ package android.healthconnect.datatypes {
   }
 
   public final class DataOrigin {
-    method @Nullable public String getPackageName();
+    method @NonNull public String getPackageName();
   }
 
   public static final class DataOrigin.Builder {
     ctor public DataOrigin.Builder();
     method @NonNull public android.healthconnect.datatypes.DataOrigin build();
-    method @NonNull public android.healthconnect.datatypes.DataOrigin.Builder setPackageName(@Nullable String);
+    method @NonNull public android.healthconnect.datatypes.DataOrigin.Builder setPackageName(@NonNull String);
   }
 
   public final class Device {
@@ -866,7 +866,6 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.Device getDevice();
     method @NonNull public String getId();
     method @NonNull public java.time.Instant getLastModifiedTime();
-    method public void setId(@NonNull String);
   }
 
   public static final class Metadata.Builder {

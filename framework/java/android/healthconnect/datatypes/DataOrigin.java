@@ -17,7 +17,6 @@
 package android.healthconnect.datatypes;
 
 import android.annotation.NonNull;
-import android.annotation.Nullable;
 
 import java.util.Objects;
 
@@ -34,7 +33,9 @@ public final class DataOrigin {
          * record insertion time.
          */
         @NonNull
-        public Builder setPackageName(@Nullable String packageName) {
+        public Builder setPackageName(@NonNull String packageName) {
+            Objects.requireNonNull(packageName);
+
             mPackageName = packageName;
             return this;
         }
@@ -55,10 +56,9 @@ public final class DataOrigin {
     }
 
     /**
-     * @return null if the package name has not been set or the caller doesn't have the correct
-     *     permissions to read the corresponding package name.
+     * @return the corresponding package name.
      */
-    @Nullable
+    @NonNull
     public String getPackageName() {
         return mPackageName;
     }
