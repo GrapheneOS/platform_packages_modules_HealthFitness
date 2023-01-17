@@ -23,7 +23,6 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.DialogTitle
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.AttributeResolver
