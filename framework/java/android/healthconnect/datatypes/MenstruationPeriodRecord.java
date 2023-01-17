@@ -64,8 +64,6 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final ZoneOffset mDefaultStartOffset;
-        private final ZoneOffset mDefaultEndOffset;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
 
@@ -84,8 +82,8 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
             mEndTime = endTime;
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-            mDefaultStartOffset = mStartZoneOffset;
-            mDefaultEndOffset = mEndZoneOffset;
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the interval of this record started */
@@ -101,7 +99,7 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
         /** Clears start zone offset. */
         @NonNull
         public MenstruationPeriodRecord.Builder clearStartZoneOffset() {
-            mStartZoneOffset = mDefaultStartOffset;
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 
@@ -118,7 +116,7 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
         /** Clears end zone offset. */
         @NonNull
         public MenstruationPeriodRecord.Builder clearEndZoneOffset() {
-            mEndZoneOffset = mDefaultEndOffset;
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 
