@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.service
 
 import android.content.Context
 import android.healthconnect.HealthConnectManager
+import android.os.Process
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,9 +28,10 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object HealthManagerModule {
-
     @Provides
     fun provideHealthConnectManager(@ApplicationContext context: Context): HealthConnectManager {
-        return requireNotNull(context.getSystemService(HealthConnectManager::class.java))
+        val userHandle = Process.myUserHandle()
+        val contextAsUser = context.createContextAsUser(userHandle, 0)
+        return requireNotNull(contextAsUser.getSystemService(HealthConnectManager::class.java))
     }
 }
