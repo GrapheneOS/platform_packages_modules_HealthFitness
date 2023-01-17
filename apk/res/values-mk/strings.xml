@@ -53,6 +53,7 @@
     <string name="permission_types_title" msgid="449264809407468231">"Вашите податоци"</string>
     <string name="app_priority_button" msgid="8977479205180396957">"Приоритет на апликација"</string>
     <string name="delete_category_data_button" msgid="6062112760999637736">"Избриши ги податоците од <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="select_all_apps_title" msgid="4176624521570022159">"Сите апликации"</string>
     <string name="can_read" msgid="7989669150752961504">"Може да чита <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="8278769263589284926">"Може да запишува <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="1582672802567614909">"Неактивни апликации"</string>
@@ -227,6 +228,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до Health Connect?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"Може да дознаете како <xliff:g id="APP_NAME">%1$s</xliff:g> постапува со вашите податоци во <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> на програмерот"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"политика за приватност"</string>
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Да се отстранат сите дозволи?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Отстрани ги сите"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да чита или запишува податоци од Health Connect.\n\nОва не влијае на другите дозволи што може да ги има оваа апликација, како локација, камера или микрофон."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Избриши ги и податоците на <xliff:g id="APP_NAME">%1$s</xliff:g> од Health Connect"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Следниот ден"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Претходниот ден"</string>
     <string name="default_error" msgid="7047939092442348839">"Нешто не е во ред. Обидете се повторно."</string>
@@ -321,34 +326,268 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 километар на час}one{# километар на час}other{# километри на час}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"од <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"од <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 туркање на инвалидска количка}one{# туркање на инвалидска количка}other{# туркања на инвалидска количка}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 L}one{# L}other{# L}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 литар}one{# литар}other{# литри}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 кат}one{# кат}other{# ката}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 м.}one{# м.}other{# м.}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 метар}one{# метар}other{# метри}}"</string>
+    <!-- no translation found for cycling_rpm (695951810426620592) -->
+    <skip />
+    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
+    <skip />
+    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
+    <skip />
+    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
+    <skip />
+    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
+    <skip />
+    <!-- no translation found for spotting (8367146199172958006) -->
+    <skip />
+    <!-- no translation found for flow_spotting (8313480263034209601) -->
+    <skip />
+    <!-- no translation found for flow_light (7714669130547926098) -->
+    <skip />
+    <!-- no translation found for flow_medium (1120681378064573572) -->
+    <skip />
+    <!-- no translation found for flow_heavy (7611846277419291182) -->
+    <skip />
+    <!-- no translation found for period_day (7959562867933427299) -->
+    <skip />
+    <!-- no translation found for ovulation_positive (2041632905561554787) -->
+    <skip />
+    <!-- no translation found for ovulation_negative (132669521951412311) -->
+    <skip />
+    <!-- no translation found for ovulation_high (2591492801425787141) -->
+    <skip />
+    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
+    <skip />
+    <!-- no translation found for vo2_max (9010053102311278194) -->
+    <skip />
+    <!-- no translation found for vo2_max_long (2028203290582321110) -->
+    <skip />
+    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
+    <skip />
+    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
+    <skip />
+    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
+    <skip />
+    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
+    <skip />
+    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
+    <skip />
+    <!-- no translation found for vo2_other (7156255285130439695) -->
+    <skip />
+    <!-- no translation found for mucus_dry (798150315290557122) -->
+    <skip />
+    <!-- no translation found for mucus_sticky (1550935711891429944) -->
+    <skip />
+    <!-- no translation found for mucus_creamy (6331121251236727520) -->
+    <skip />
+    <!-- no translation found for mucus_watery (8046086206314018549) -->
+    <skip />
+    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
+    <skip />
+    <!-- no translation found for mucus_unusual (3168872819443903646) -->
+    <skip />
+    <!-- no translation found for mucus_light (7872301587428469740) -->
+    <skip />
+    <!-- no translation found for mucus_medium (3752514167673201447) -->
+    <skip />
+    <!-- no translation found for mucus_heavy (585018675901081368) -->
+    <skip />
+    <!-- no translation found for blood_pressure (5997173579668733931) -->
+    <skip />
+    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
+    <skip />
+    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
+    <skip />
+    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
+    <skip />
+    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
+    <skip />
+    <!-- no translation found for body_position_reclining (1761765938932384014) -->
+    <skip />
+    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
+    <skip />
+    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
+    <skip />
+    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
+    <skip />
+    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
+    <skip />
+    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
+    <skip />
+    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
+    <skip />
+    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
+    <skip />
+    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
+    <skip />
+    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
+    <skip />
+    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
+    <skip />
+    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
+    <skip />
+    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
+    <skip />
+    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
+    <skip />
+    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
+    <skip />
+    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
+    <skip />
+    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
+    <skip />
+    <!-- no translation found for mealtype_label (7946924589574443051) -->
+    <skip />
+    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
+    <skip />
+    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
+    <skip />
+    <!-- no translation found for mealtype_lunch (403599819099429864) -->
+    <skip />
+    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
+    <skip />
+    <!-- no translation found for mealtype_snack (2337826732633152765) -->
+    <skip />
+    <!-- no translation found for biotin (3627884250275404075) -->
+    <skip />
+    <!-- no translation found for caffeine (116658071099408928) -->
+    <skip />
+    <!-- no translation found for calcium (2421306187949865076) -->
+    <skip />
+    <!-- no translation found for chloride (7490996250510177338) -->
+    <skip />
+    <!-- no translation found for cholesterol (6244346992349630002) -->
+    <skip />
+    <!-- no translation found for chromium (1717886909765369185) -->
+    <skip />
+    <!-- no translation found for copper (4865917412156527453) -->
+    <skip />
+    <!-- no translation found for dietary_fiber (6858567136946084886) -->
+    <skip />
+    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
+    <skip />
+    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
+    <skip />
+    <!-- no translation found for folate (8173733292245451456) -->
+    <skip />
+    <!-- no translation found for folic_acid (8591315035224265134) -->
+    <skip />
+    <!-- no translation found for iodine (6295585927454501032) -->
+    <skip />
+    <!-- no translation found for iron (1829192962959178553) -->
+    <skip />
+    <!-- no translation found for magnesium (2378288907103259048) -->
+    <skip />
+    <!-- no translation found for manganese (4343136164658896416) -->
+    <skip />
+    <!-- no translation found for molybdenum (7771581143656671252) -->
+    <skip />
+    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
+    <skip />
+    <!-- no translation found for niacin (2824160609495269089) -->
+    <skip />
+    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
+    <skip />
+    <!-- no translation found for phosphorus (4952419844375433055) -->
+    <skip />
+    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
+    <skip />
+    <!-- no translation found for potassium (707209134595635038) -->
+    <skip />
+    <!-- no translation found for protein (3822882640861839933) -->
+    <skip />
+    <!-- no translation found for riboflavin (2985915835639186827) -->
+    <skip />
+    <!-- no translation found for saturated_fat (9021673028646987453) -->
+    <skip />
+    <!-- no translation found for selenium (9082380472819491510) -->
+    <skip />
+    <!-- no translation found for sodium (8769822050033855464) -->
+    <skip />
+    <!-- no translation found for sugar (5999057784352629476) -->
+    <skip />
+    <!-- no translation found for thiamin (3709641915459997520) -->
+    <skip />
+    <!-- no translation found for total_carbohydrate (232426059808514593) -->
+    <skip />
+    <!-- no translation found for total_fat (3978725283210702305) -->
+    <skip />
+    <!-- no translation found for trans_fat (5328804254745808226) -->
+    <skip />
+    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
+    <skip />
+    <!-- no translation found for vitamin_a (7755534197188927987) -->
+    <skip />
+    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
+    <skip />
+    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
+    <skip />
+    <!-- no translation found for vitamin_c (8347021170400899646) -->
+    <skip />
+    <!-- no translation found for vitamin_d (3643353935248181962) -->
+    <skip />
+    <!-- no translation found for vitamin_e (2134971402339322071) -->
+    <skip />
+    <!-- no translation found for vitamin_k (390827413844437529) -->
+    <skip />
+    <!-- no translation found for zinc (1009892754125043398) -->
+    <skip />
+    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
+    <skip />
+    <!-- no translation found for meal_name (4909433722102389860) -->
+    <skip />
+    <!-- no translation found for gram_short_format (5070017285803939836) -->
+    <skip />
+    <!-- no translation found for gram_long_format (2701869452855193331) -->
+    <skip />
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 rpm}one{# rpm}other{# rpm}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 здив во минута}one{# здив во минута}other{# здива во минута}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}one{# kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 lb}one{# lb}other{# lb}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 st}one{# st}other{# st}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 килограм}one{# килограм}other{# килограми}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 фунта}one{# фунта}other{# фунти}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 стон}one{# стон}other{# стона}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
+    <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}one{# ℃}other{# ℃}}"</string>
+    <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 степен целзиусов}one{# степен целзиусов}other{# степени целзиусови}}"</string>
+    <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}one{# K}other{# K}}"</string>
+    <string name="temperature_kelvin_long" msgid="6986189366155454098">"{value,plural, =1{1 келвин}one{# келвин}other{# келвини}}"</string>
+    <string name="temperature_fahrenheit" msgid="2476056347231267984">"{value,plural, =1{1 ℉}one{# ℉}other{# ℉}}"</string>
+    <string name="temperature_fahrenheit_long" msgid="2971978242519651318">"{value,plural, =1{1 степен фаренхајтов}one{# степен фаренхајтов}other{# степени фаренхајтови}}"</string>
+    <string name="temperature_location_armpit" msgid="7696835579581948830">"Пазуви"</string>
+    <string name="temperature_location_finger" msgid="7351193245180935719">"Прст"</string>
+    <string name="temperature_location_forehead" msgid="3368004987230117306">"Чело"</string>
+    <string name="temperature_location_mouth" msgid="8833157753375108198">"Уста"</string>
+    <string name="temperature_location_rectum" msgid="2691251624275239001">"Ректум"</string>
+    <string name="temperature_location_temporal_artery" msgid="1015028774234140913">"Слепоочна артерија"</string>
+    <string name="temperature_location_toe" msgid="3785918672110411401">"Прст на ногата"</string>
+    <string name="temperature_location_ear" msgid="7361330734290842889">"Уво"</string>
+    <string name="temperature_location_wrist" msgid="4789557303674138504">"Зглоб"</string>
+    <string name="temperature_location_vagina" msgid="7501964407778590798">"Вагина"</string>
     <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 милја}one{# милја}other{# милји}}"</string>
     <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}one{# km}other{# km}}"</string>
     <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 милја}one{# милја}other{# милји}}"</string>
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 километар}one{# километар}other{# километри}}"</string>
-    <!-- no translation found for height_cm (8939976388396204701) -->
-    <skip />
-    <!-- no translation found for height_cm_long (4322185580842737867) -->
-    <skip />
-    <!-- no translation found for height_in_long (4690944359939350391) -->
-    <skip />
-    <!-- no translation found for height_ft_long (4067044383386766601) -->
-    <skip />
-    <!-- no translation found for height_in_compacted (7320090488312126741) -->
-    <skip />
-    <!-- no translation found for height_ft_compacted (8869242348732761724) -->
-    <skip />
-    <!-- no translation found for feet_inches_format (4976828345068983431) -->
-    <skip />
-    <!-- no translation found for feet_inches_format_long (3559977708168174809) -->
-    <skip />
+    <string name="height_cm" msgid="8939976388396204701">"{height,plural, =1{1 cm}one{# cm}other{# cm}}"</string>
+    <string name="height_cm_long" msgid="4322185580842737867">"{height,plural, =1{1 сантиметар}one{# сантиметар}other{# сантиметри}}"</string>
+    <string name="height_in_long" msgid="4690944359939350391">"{height,plural, =1{1 инч}one{# инч}other{# инча}}"</string>
+    <string name="height_ft_long" msgid="4067044383386766601">"{height,plural, =1{1 стапка}one{# стапка}other{# стапки}}"</string>
+    <string name="height_in_compacted" msgid="7320090488312126741">"{height,plural, =1{1″}one{#″}other{#″}}"</string>
+    <string name="height_ft_compacted" msgid="8869242348732761724">"{height,plural, =1{1′}one{#′}other{#′}}"</string>
+    <string name="feet_inches_format" msgid="4976828345068983431">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>⁠"</string>
+    <string name="feet_inches_format_long" msgid="3559977708168174809">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>⁠"</string>
     <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 калорија}one{# калорија}other{# калории}}"</string>
     <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 калорија}one{# калорија}other{# калории}}"</string>
     <string name="kj" msgid="5640715521602128434">"{count,plural, =1{1 kJ}one{# kJ}other{# kJ}}"</string>
     <string name="kj_long" msgid="516247759297999467">"{count,plural, =1{1 килоџул}one{# килоџул}other{# килоџули}}"</string>
-    <!-- no translation found for percent (2841159621762576767) -->
-    <skip />
-    <!-- no translation found for percent_long (8144935650402894315) -->
-    <skip />
+    <string name="percent" formatted="false" msgid="2841159621762576767">"{value,plural, =1{1 %}one{# %}other{# %}}"</string>
+    <string name="percent_long" msgid="8144935650402894315">"{value,plural, =1{1 процент}one{# процент}other{# проценти}}"</string>
     <string name="units_title" msgid="4335002706905375844">"Мерни единици"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Поставете мерни единици"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"Растојание"</string>
@@ -390,17 +629,17 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect автоматски ќе ги избрише новите податоци по # месец. Ако го поставите ова, ќе се избришат и постојните податоци постари од # месец.}one{Health Connect автоматски ќе ги избрише новите податоци по # месец. Ако го поставите ова, ќе се избришат и постојните податоци постари од # месец.}other{Health Connect автоматски ќе ги избрише новите податоци по # месеци. Ако го поставите ова, ќе се избришат и постојните податоци постари од # месеци.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Постави автоматско бришење"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Постојните податоци ќе се избришат"</string>
-    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect ќе ги избрише податоците постари од # месец.\nМоже да помине еден ден пред промениве да се појават во поврзаните апликации.}one{Health Connect ќе ги избрише податоците постари од # месец.\nМоже да помине еден ден пред промениве да се појават во поврзаните апликации.}other{Health Connect ќе ги избрише податоците постари од # месеци.\nМоже да помине еден ден пред промениве да се појават во поврзаните апликации.}}"</string>
+    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
+    <skip />
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Податоци за бришење од овие категории"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Готово"</string>
-    <string name="export_data_title" msgid="8758166079870538927">"Извезете ги податоците за Health Connect"</string>
-    <string name="export_data_select_all" msgid="6932439749735842660">"Избери ги сите"</string>
-    <string name="export_data_deselect_all" msgid="493230746701668306">"Поништи го изборот на сите"</string>
-    <string name="export_data_next_button" msgid="4333280628720601565">"Следно"</string>
-    <string name="export_data_notification_title" msgid="1584276187698297224">"Преземање податоци за извоз"</string>
-    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Се извезуваат податоците од Health Connect"</string>
-    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Откажи"</string>
-    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Напредок на податоците од извозот"</string>
+    <string name="priority_dialog_title" msgid="7095478075034320176">"Поставете приоритетен распоред на апликации"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"Ако повеќе од една апликација додаваат податоци за <xliff:g id="DATA_TYPE">%s</xliff:g>, Health Connect ѝ дава приоритет на апликацијата што се наоѓа највисоко на списоков. Повлечете ги апликациите за да им го смените редоследот."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Зачувај"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Премести нагоре"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Премести надолу"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Премести најгоре"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Премести најдолу"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"фитнес, велнес"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"дозволи"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"health connect, податоци за здравјето, здравствени категории, пристап до податоци, активност, телесни мерења, следење на циклусот, исхрана, спиење, витални функции"</string>

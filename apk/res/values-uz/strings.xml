@@ -53,6 +53,7 @@
     <string name="permission_types_title" msgid="449264809407468231">"Maʼlumotlaringiz"</string>
     <string name="app_priority_button" msgid="8977479205180396957">"Ilova muhimliligi"</string>
     <string name="delete_category_data_button" msgid="6062112760999637736">"<xliff:g id="CATEGORY">%s</xliff:g> axborotini olib tashlash"</string>
+    <string name="select_all_apps_title" msgid="4176624521570022159">"Barcha ilovalar"</string>
     <string name="can_read" msgid="7989669150752961504">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> axborotini oʻqishi mumkin"</string>
     <string name="can_write" msgid="8278769263589284926">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> axborotini yozishi mumkin"</string>
     <string name="inactive_apps" msgid="1582672802567614909">"Nofaol ilovalar"</string>
@@ -227,6 +228,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectga ulanishiga ruxsat berilsinmi?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g> ilovasi maʼlumotlaringizni qanday qayta ishlashi haqida dastur ishlab chiquvchining <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> orqali tanishishingiz mumkin"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"maxfiylik siyosati"</string>
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Barcha ruxsatlar taqiqlansinmi?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Hammasini tozalash"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"Endi <xliff:g id="APP_NAME">%1$s</xliff:g> ilovasi Health Connect xizmatidagi axborotlarni oʻqishi yoki yozishi imkonsiz.\n\nBu ushbu ilova oladigan joylashuv, kamera yoki mikrofon kabi boshqa ruxsatlarga taʼsir qilmaydi."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Health Connect ilovasidan <xliff:g id="APP_NAME">%1$s</xliff:g> maʼlumotlarini oʻchirish"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Keyingi kun"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Avvalgi kun"</string>
     <string name="default_error" msgid="7047939092442348839">"Nimadir xato ketdi. Qayta urining."</string>
@@ -321,34 +326,162 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{Soatiga 1 kilometr}other{Soatiga # kilometr}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> – <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> – <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{nogironlar aravasini 1 marta itarish}other{nogironlar aravasini # marta itarish}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 l}other{# l}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 litr}other{# litr}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 qavat}other{# qavat}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}other{# m}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 metr}other{# metr}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{daqiqasiga 1 aylanish}other{daqiqasiga # aylanish}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"<xliff:g id="MIN">%1$s</xliff:g> — <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"Himoyalangan"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Himoyalanmagan"</string>
+    <string name="spotting" msgid="8367146199172958006">"Qon ketishi"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"Qon ketishi"</string>
+    <string name="flow_light" msgid="7714669130547926098">"Kam qon kelishi"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"Oʻrtacha qon kelishi"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"Koʻp qon kelishi"</string>
+    <string name="period_day" msgid="7959562867933427299">"Hayz kuni: <xliff:g id="DAY">%1$d</xliff:g>/<xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"Ijobiy"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"Salbiy"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"Yuqori"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"Noaniq"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·daq)}other{# mL/(kg·daq)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{Tana kilogramm massasi daqiqasiga 1 millilitr kislorod}other{Tana kilogramm massasi daqiqasiga # millilitr kislorod}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Kalorimetriya"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Puls"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"Kuper testi"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Moki yugurish testi"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"Rokport fitnes testi"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"Boshqa"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"Quruq"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"Yopishqoq"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"Kremli"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"Suvli"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"Oq"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"Noodatiy"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"Oq"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"Oʻrtacha"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"Ogʻir"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mm sim.ust"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mm sim.ust"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"Tik holatda"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"Oʻtirgan holatda"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"Yotiq"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"Boshni orqaga tashlab"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Chap bilak"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Oʻng bilak"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Chap qoʻl yuqorisi"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Oʻng qoʻl yuqorisi"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/l}other{# mmol/l}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{litriga 1 millimol}other{litriga # millimol}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Teriosti suyuqligi"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Kapilyar qon"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"Plazma"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"Zardob"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"Koʻz yoshlari"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Yaxlit qon"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"Umumiy"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Och qoringa"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Ovqatdan oldin"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Ovqatdan keyin"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"Ovqat turi"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"Noaniq"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"Nonushta"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"Tushlik"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"Kechki ovqat"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"Tamaddi"</string>
+    <string name="biotin" msgid="3627884250275404075">"Biotin"</string>
+    <string name="caffeine" msgid="116658071099408928">"Kofein"</string>
+    <string name="calcium" msgid="2421306187949865076">"Kalsiy"</string>
+    <string name="chloride" msgid="7490996250510177338">"Xlorid"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"Xolesterin"</string>
+    <string name="chromium" msgid="1717886909765369185">"Xrom"</string>
+    <string name="copper" msgid="4865917412156527453">"Mis"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"Sellyuloza"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"Energiya"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Yogʻdan ajralgan energiya"</string>
+    <string name="folate" msgid="8173733292245451456">"Folat"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"Foliy kislotasi"</string>
+    <string name="iodine" msgid="6295585927454501032">"Yod"</string>
+    <string name="iron" msgid="1829192962959178553">"Temir"</string>
+    <string name="magnesium" msgid="2378288907103259048">"Magniy"</string>
+    <string name="manganese" msgid="4343136164658896416">"marganets"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"Molibden"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"Mono toʻyintirilmagan yogʻ"</string>
+    <string name="niacin" msgid="2824160609495269089">"Niatsin"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"Pantotenik kislota"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"Fosfor"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Koʻp toʻyinmagan yogʻ"</string>
+    <string name="potassium" msgid="707209134595635038">"Kaliy"</string>
+    <string name="protein" msgid="3822882640861839933">"Oqsillar"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"Riboflavin"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"Toʻyintirilgan yogʻ"</string>
+    <string name="selenium" msgid="9082380472819491510">"Selen"</string>
+    <string name="sodium" msgid="8769822050033855464">"Natriy"</string>
+    <string name="sugar" msgid="5999057784352629476">"Shakar"</string>
+    <string name="thiamin" msgid="3709641915459997520">"Tiamin"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"Jami uglevodlar"</string>
+    <string name="total_fat" msgid="3978725283210702305">"Jami yogʻlar"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"Trans yogʻ"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"Toʻyintirilmagan yogʻ"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"A vitamini"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"B12 vitamini"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"B6 vitamini"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"C vitamini"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"D vitamini"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"E vitamini"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"K vitamini"</string>
+    <string name="zinc" msgid="1009892754125043398">"Rux"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"Nomi"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 gramm}other{# gramm}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{Daqiqasiga 1 marta nafas harakati}other{Daqiqasiga # marta nafas harakati}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 funt}other{# funt}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 st}other{# st}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 kilogramm}other{# kilogramm}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 funt}other{# funt}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 stoun}other{# stoun}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
+    <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}other{# ℃}}"</string>
+    <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 gradus (selsiy)}other{# gradus (selsiy)}}"</string>
+    <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}other{# K}}"</string>
+    <string name="temperature_kelvin_long" msgid="6986189366155454098">"{value,plural, =1{1 kelvin}other{# kelvin}}"</string>
+    <string name="temperature_fahrenheit" msgid="2476056347231267984">"{value,plural, =1{1 ℉}other{# ℉}}"</string>
+    <string name="temperature_fahrenheit_long" msgid="2971978242519651318">"{value,plural, =1{1 gradus (farengeyt)}other{# gradus (farengeyt)}}"</string>
+    <string name="temperature_location_armpit" msgid="7696835579581948830">"Qoʻltiq"</string>
+    <string name="temperature_location_finger" msgid="7351193245180935719">"Barmoq"</string>
+    <string name="temperature_location_forehead" msgid="3368004987230117306">"Peshana"</string>
+    <string name="temperature_location_mouth" msgid="8833157753375108198">"Ogʻiz"</string>
+    <string name="temperature_location_rectum" msgid="2691251624275239001">"Yoʻgʻon ichak"</string>
+    <string name="temperature_location_temporal_artery" msgid="1015028774234140913">"Chakka arteriyasi"</string>
+    <string name="temperature_location_toe" msgid="3785918672110411401">"Oyoq barmogʻi"</string>
+    <string name="temperature_location_ear" msgid="7361330734290842889">"Quloq"</string>
+    <string name="temperature_location_wrist" msgid="4789557303674138504">"Bilak"</string>
+    <string name="temperature_location_vagina" msgid="7501964407778590798">"Vagina"</string>
     <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 mil}other{# mil}}"</string>
     <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}other{# km}}"</string>
     <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 mil}other{# mil}}"</string>
     <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilometr}other{# kilometr}}"</string>
-    <!-- no translation found for height_cm (8939976388396204701) -->
-    <skip />
-    <!-- no translation found for height_cm_long (4322185580842737867) -->
-    <skip />
-    <!-- no translation found for height_in_long (4690944359939350391) -->
-    <skip />
-    <!-- no translation found for height_ft_long (4067044383386766601) -->
-    <skip />
-    <!-- no translation found for height_in_compacted (7320090488312126741) -->
-    <skip />
-    <!-- no translation found for height_ft_compacted (8869242348732761724) -->
-    <skip />
-    <!-- no translation found for feet_inches_format (4976828345068983431) -->
-    <skip />
-    <!-- no translation found for feet_inches_format_long (3559977708168174809) -->
-    <skip />
+    <string name="height_cm" msgid="8939976388396204701">"{height,plural, =1{1 sm}other{# sm}}"</string>
+    <string name="height_cm_long" msgid="4322185580842737867">"{height,plural, =1{1 santimetr}other{# santimetr}}"</string>
+    <string name="height_in_long" msgid="4690944359939350391">"{height,plural, =1{1 duym}other{# duym}}"</string>
+    <string name="height_ft_long" msgid="4067044383386766601">"{height,plural, =1{1 fut}other{# fut}}"</string>
+    <string name="height_in_compacted" msgid="7320090488312126741">"{height,plural, =1{1″}other{#″}}"</string>
+    <string name="height_ft_compacted" msgid="8869242348732761724">"{height,plural, =1{1′}other{#′}}"</string>
+    <string name="feet_inches_format" msgid="4976828345068983431">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>⁠"</string>
+    <string name="feet_inches_format_long" msgid="3559977708168174809">"<xliff:g id="FT">%1$s</xliff:g>, <xliff:g id="IN">%2$s</xliff:g>⁠"</string>
     <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 kaloriya}other{# kaloriya}}"</string>
     <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 kal}other{# kal}}"</string>
     <string name="kj" msgid="5640715521602128434">"{count,plural, =1{1 kJ}other{# kJ}}"</string>
     <string name="kj_long" msgid="516247759297999467">"{count,plural, =1{1 kilojoul}other{# kilojoul}}"</string>
-    <!-- no translation found for percent (2841159621762576767) -->
-    <skip />
-    <!-- no translation found for percent_long (8144935650402894315) -->
-    <skip />
+    <string name="percent" formatted="false" msgid="2841159621762576767">"{value,plural, =1{1%}other{#%}}"</string>
+    <string name="percent_long" msgid="8144935650402894315">"{value,plural, =1{1 foiz}other{# foiz}}"</string>
     <string name="units_title" msgid="4335002706905375844">"Birliklar"</string>
     <string name="set_units_label" msgid="7358440515698876383">"Axborot birliklarini sozlash"</string>
     <string name="distance_unit_title" msgid="3055365740477222083">"Masofa"</string>
@@ -390,17 +523,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect maʼlumotlarni # oydan keyin avtomatik oʻchiradi. Sozlama oʻzgartirilganda # oydan beri saqlangan maʼlumotlar ham oʻchib ketadi.}other{Health Connect maʼlumotlarni # oydan keyin avtomatik oʻchiradi. Sozlama oʻzgartirilganda # oydan beri saqlangan maʼlumotlar ham oʻchib ketadi.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Avtomatik tozalanishini sozlash"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Mavjud axborotlar tozalab tashlanadi"</string>
-    <string name="deletion_started_x_months" msgid="5185301269706239900">"{count,plural, =1{Health Connect # oydan beri saqlangan maʼlumotlarni oʻchiradi.\nBu oʻzgarishlarning ulangan ilovalarda bajarilishi bir kun vaqt olishi mumkin.}other{Health Connect # oydan beri saqlangan maʼlumotlarni oʻchiradi.\nBu oʻzgarishlarning ulangan ilovalarda bajarilishi bir kun vaqt olishi mumkin.}}"</string>
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect # oydan beri saqlangan maʼlumotlarni oʻchiradi. Bu oʻzgarishlarning ulangan ilovalarda bajarilishi bir kun vaqt olishi mumkin.}other{Health Connect # oydan beri saqlangan maʼlumotlarni oʻchiradi. Bu oʻzgarishlarning ulangan ilovalarda bajarilishi bir kun vaqt olishi mumkin.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Quyidagi turdagi maʼlumotlar tozalanadi"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Tayyor"</string>
-    <string name="export_data_title" msgid="8758166079870538927">"Health Connect maʼlumotlarini eksport qilish"</string>
-    <string name="export_data_select_all" msgid="6932439749735842660">"Hammasini tanlash"</string>
-    <string name="export_data_deselect_all" msgid="493230746701668306">"Tanlamani bekor qilish"</string>
-    <string name="export_data_next_button" msgid="4333280628720601565">"Keyingisi"</string>
-    <string name="export_data_notification_title" msgid="1584276187698297224">"Eksport uchun maʼlumotlar olinmoqda"</string>
-    <string name="export_data_notification_ticker_text" msgid="5355019122830294358">"Health Connect maʼlumotlari import qilinmoqda"</string>
-    <string name="export_data_notification_cancel_button" msgid="6875373606442909184">"Bekor qilish"</string>
-    <string name="export_data_notification_channel_name" msgid="6425005413359319057">"Maʼlumotlar eksport qilinmoqda"</string>
+    <string name="priority_dialog_title" msgid="7095478075034320176">"Ilova muhimligini belgilash"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"Agar <xliff:g id="DATA_TYPE">%s</xliff:g> axborotini bir nechta ilova kiritsa, Health Connect ularning muhimligini quyidagi roʻyxat orqali ajratadi. Ilovalarni tortib tartiblash mumkin."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Saqlash"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Tepaga surish"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Pastga surish"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Boshiga olish"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Oxiriga olish"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"fitnes, salomatlik"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"ruxsatlar"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"health connect, salomatlik axboroti, salomatlik turkumlari, maʼlumotlarga kirish, faoliyat, jismoniy koʻrsatkichlar, davr kuzatuvi, ovqatlanish, uyqu, koʻrsatkichlar"</string>
