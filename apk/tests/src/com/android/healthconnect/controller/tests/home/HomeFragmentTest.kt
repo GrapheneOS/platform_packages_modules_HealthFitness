@@ -77,13 +77,12 @@ class HomeFragmentTest {
         }
         launchFragment<HomeFragment>(Bundle())
 
-        onView(withText(R.string.home_subtitle)).check(matches(isDisplayed()))
-        onView(withText(R.string.connected_apps_title)).check(matches(isDisplayed()))
-        onView(withText(R.string.connected_apps_subtitle)).check(matches(isDisplayed()))
-        onView(withText(R.string.data_title)).check(matches(isDisplayed()))
-        onView(withText(R.string.data_subtitle)).check(matches(isDisplayed()))
+        onView(withText("Manage the health and fitness data on your phone, and control which apps can access it")).check(matches(isDisplayed()))
+        onView(withText("App permissions")).check(matches(isDisplayed()))
+        onView(withText("Manage your apps and permissions")).check(matches(isDisplayed()))
+        onView(withText("Data and access")).check(matches(isDisplayed()))
 
-        onView(withText(R.string.recent_access_header)).check(matches(isDisplayed()))
+        onView(withText("Recent access")).check(matches(isDisplayed()))
         onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
         onView(withText("18:40")).check(matches(isDisplayed()))
         onView(withText("See all recent access")).check(matches(isDisplayed()))
@@ -96,13 +95,12 @@ class HomeFragmentTest {
         }
         launchFragment<HomeFragment>(Bundle())
 
-        onView(withText(R.string.home_subtitle)).check(matches(isDisplayed()))
-        onView(withText(R.string.connected_apps_title)).check(matches(isDisplayed()))
-        onView(withText(R.string.connected_apps_subtitle)).check(matches(isDisplayed()))
-        onView(withText(R.string.data_title)).check(matches(isDisplayed()))
-        onView(withText(R.string.data_subtitle)).check(matches(isDisplayed()))
+        onView(withText("Manage the health and fitness data on your phone, and control which apps can access it")).check(matches(isDisplayed()))
+        onView(withText("App permissions")).check(matches(isDisplayed()))
+        onView(withText("Manage your apps and permissions")).check(matches(isDisplayed()))
+        onView(withText("Data and access")).check(matches(isDisplayed()))
 
-        onView(withText(R.string.recent_access_header)).check(matches(isDisplayed()))
-        onView(withText(R.string.no_recent_access)).check(matches(isDisplayed()))
+        onView(withText("Recent access")).check(matches(isDisplayed()))
+        onView(withText("No apps recently accessed Health\u00A0Connect")).check(matches(isDisplayed()))
     }
 }

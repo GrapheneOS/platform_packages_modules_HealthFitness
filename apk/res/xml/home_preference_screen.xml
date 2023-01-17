@@ -31,7 +31,6 @@
         <Preference
             android:key="data_and_access"
             android:icon="@drawable/ic_health_data"
-            android:title="@string/data_title"
-            android:summary="@string/data_subtitle" />
+            android:title="@string/data_title" />
     </PreferenceCategory>
 </PreferenceScreen>

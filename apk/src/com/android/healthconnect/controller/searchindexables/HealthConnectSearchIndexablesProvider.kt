@@ -73,8 +73,6 @@ class HealthConnectSearchIndexablesProvider : SearchIndexablesProvider() {
     private fun createDataAccessIndex(): Array<String?> {
         val dataAccessIndex = arrayOfNulls<String>(INDEXABLES_RAW_COLUMNS.size)
         dataAccessIndex[COLUMN_INDEX_RAW_TITLE] = requireContext().getString(R.string.data_title)
-        dataAccessIndex[COLUMN_INDEX_RAW_SUMMARY_ON] =
-            requireContext().getString(R.string.data_subtitle)
         dataAccessIndex[COLUMN_INDEX_RAW_SCREEN_TITLE] =
             requireContext().getString(R.string.search_breadcrumbs_data)
         dataAccessIndex[COLUMN_INDEX_RAW_KEYWORDS] =
