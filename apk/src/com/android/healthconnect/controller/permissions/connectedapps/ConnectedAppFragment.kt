@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.shared.Dis
 import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment.Companion.KEY_DELETE_DATA
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
@@ -45,6 +46,7 @@ import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment for connected app screen. */
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
@@ -59,6 +61,8 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         private const val FOOTER_KEY = "connected_app_footer"
         private const val PARAGRAPH_SEPARATOR = "\n\n"
     }
+
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private var packageName: String = ""
     private var appName: String = ""
@@ -226,8 +230,11 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
         mConnectedAppFooter?.title = title
         mConnectedAppFooter?.setLearnMoreText(getString(R.string.manage_permissions_learn_more))
-        // TODO (b/262060317) add link to app privacy policy
-        mConnectedAppFooter?.setLearnMoreAction {}
+        mConnectedAppFooter?.setLearnMoreAction {
+            val startRationaleIntent =
+                healthPermissionReader.getApplicationRationaleIntent(packageName)
+            startActivity(startRationaleIntent)
+        }
     }
 
     override fun onResume() {
