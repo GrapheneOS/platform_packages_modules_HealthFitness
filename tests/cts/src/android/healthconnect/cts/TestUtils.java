@@ -61,6 +61,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -668,6 +669,46 @@ public class TestUtils {
                         latch.countDown();
                     });
             assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            return response.get();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
+    public static List<LocalDate> getActivityDates(List<Class<? extends Record>> recordTypes)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            CountDownLatch latch = new CountDownLatch(1);
+            assertThat(service).isNotNull();
+            AtomicReference<List<LocalDate>> response = new AtomicReference<>();
+            AtomicReference<HealthConnectException> exceptionAtomicReference =
+                    new AtomicReference<>();
+            service.queryActivityDates(
+                    recordTypes,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(List<LocalDate> result) {
+                            response.set(result);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(HealthConnectException exception) {
+                            exceptionAtomicReference.set(exception);
+                            latch.countDown();
+                        }
+                    });
+
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            if (exceptionAtomicReference.get() != null) {
+                throw exceptionAtomicReference.get();
+            }
+
             return response.get();
         } finally {
             uiAutomation.dropShellPermissionIdentity();

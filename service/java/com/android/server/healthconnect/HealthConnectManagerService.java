@@ -91,11 +91,14 @@ public class HealthConnectManagerService extends SystemService {
     @Override
     public void onUserUnlocking(@NonNull TargetUser user) {
         Objects.requireNonNull(user);
-        try {
-            AutoDeleteService.schedule(mContext, user.getUserHandle().getIdentifier());
-        } catch (Exception e) {
-            Slog.e(TAG, "Auto delete schedule failed", e);
-        }
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        AutoDeleteService.schedule(mContext, user.getUserHandle().getIdentifier());
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Auto delete schedule failed", e);
+                    }
+                });
     }
 
     @Override
