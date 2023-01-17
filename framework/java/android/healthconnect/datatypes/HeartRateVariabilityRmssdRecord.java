@@ -75,8 +75,7 @@ public final class HeartRateVariabilityRmssdRecord extends InstantRecord {
         private final Metadata mMetadata;
         private final Instant mTime;
         private final double mHeartRateVariabilityMillis;
-        private ZoneOffset mZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        private ZoneOffset mZoneOffset;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -107,7 +106,7 @@ public final class HeartRateVariabilityRmssdRecord extends InstantRecord {
         /** Clears zone offset. */
         @NonNull
         public HeartRateVariabilityRmssdRecord.Builder clearZoneOffset() {
-            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 
