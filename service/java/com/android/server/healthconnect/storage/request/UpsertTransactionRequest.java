@@ -20,9 +20,11 @@ import static android.healthconnect.Constants.UPSERT;
 
 import android.annotation.NonNull;
 import android.content.Context;
+import android.healthconnect.Constants;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.ArraySet;
+import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -37,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Refines a request from what the user sent to a format that makes the most sense for the
@@ -50,6 +51,7 @@ import java.util.stream.Collectors;
  * @hide
  */
 public class UpsertTransactionRequest {
+    private static final String TAG = "HealthConnectUTR";
     @NonNull private final List<UpsertTableRequest> mInsertRequests = new ArrayList<>();
     @NonNull private final List<String> mUUIDsInOrder = new ArrayList<>();
     @NonNull private final String mPackageName;
@@ -90,10 +92,15 @@ public class UpsertTransactionRequest {
         mInsertRequests.addAll(changeLogs.getUpsertTableRequests());
         if (!mRecordTypes.isEmpty()) {
             AccessLogsHelper.getInstance()
-                    .addAccessLog(
-                            packageName,
-                            mRecordTypes.stream().collect(Collectors.toList()),
-                            UPSERT);
+                    .addAccessLog(packageName, new ArrayList<>(mRecordTypes), UPSERT);
+        }
+        if (Constants.DEBUG) {
+            Slog.d(
+                    TAG,
+                    "Upserting transaction for "
+                            + mPackageName
+                            + " with size "
+                            + recordInternals.size());
         }
     }
 

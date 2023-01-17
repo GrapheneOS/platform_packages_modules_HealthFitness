@@ -65,7 +65,6 @@ public final class ChangeLogsRequestHelper {
     private static final String ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME = "row_id_change_logs_table";
     private static final String TIME_COLUMN_NAME = "time";
     private static ChangeLogsRequestHelper sChangeLogsRequestHelper;
-
     private ChangeLogsRequestHelper() {}
 
     @NonNull
@@ -87,8 +86,8 @@ public final class ChangeLogsRequestHelper {
                                         .addWhereEqualsClause(
                                                 PACKAGE_NAME_COLUMN_NAME, packageName));
         TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, readTableRequest)) {
+        final SQLiteDatabase db = transactionManager.getReadableDb();
+        try (Cursor cursor = transactionManager.read(db, readTableRequest)) {
             if (!cursor.moveToFirst()) {
                 throw new IllegalArgumentException("Invalid token");
             }

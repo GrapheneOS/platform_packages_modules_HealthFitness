@@ -80,10 +80,10 @@ public final class AccessLogsHelper {
         final ReadTableRequest readTableRequest = new ReadTableRequest(TABLE_NAME);
 
         List<AccessLog> accessLogsList = new ArrayList<>();
-        AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
-        try (SQLiteDatabase db = TransactionManager.getInitialisedInstance().getReadableDb();
-                Cursor cursor =
-                        TransactionManager.getInitialisedInstance().read(db, readTableRequest)) {
+        final AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
+        final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
+        final SQLiteDatabase db = transactionManager.getReadableDb();
+        try (Cursor cursor = transactionManager.read(db, readTableRequest)) {
             while (cursor.moveToNext()) {
                 String packageName =
                         String.valueOf(

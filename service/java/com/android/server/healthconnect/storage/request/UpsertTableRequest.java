@@ -19,8 +19,6 @@ package com.android.server.healthconnect.storage.request;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.ContentValues;
-import android.healthconnect.Constants;
-import android.util.Slog;
 
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
@@ -73,9 +71,6 @@ public class UpsertTableRequest {
             mContentValues.put(mParentCol, mRowId);
         }
 
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "Upsert to " + mTable + ":" + mContentValues);
-        }
         return mContentValues;
     }
 

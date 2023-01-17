@@ -89,6 +89,10 @@ public class TransactionManager {
      */
     public List<String> insertAll(@NonNull UpsertTransactionRequest request)
             throws SQLiteException {
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Inserting " + request.getUpsertRequests().size() + " requests.");
+        }
+
         insertAll(request.getUpsertRequests());
         return request.getUUIdsInOrder();
     }
@@ -116,15 +120,14 @@ public class TransactionManager {
     private void insertAll(
             @NonNull List<UpsertTableRequest> upsertTableRequests,
             @NonNull BiConsumer<SQLiteDatabase, UpsertTableRequest> insert) {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            db.beginTransaction();
-            try {
-                upsertTableRequests.forEach(
-                        (upsertTableRequest) -> insert.accept(db, upsertTableRequest));
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            upsertTableRequests.forEach(
+                    (upsertTableRequest) -> insert.accept(db, upsertTableRequest));
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
     }
 
@@ -137,43 +140,40 @@ public class TransactionManager {
      * @param request a delete request.
      */
     public void deleteAll(@NonNull DeleteTransactionRequest request) throws SQLiteException {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            db.beginTransaction();
-            try {
-                for (DeleteTableRequest deleteTableRequest : request.getDeleteTableRequests()) {
-                    if (deleteTableRequest.requiresRead()) {
-                        /*
-                        Delete request needs UUID before the entry can be
-                        deleted, fetch and set it in {@code request}
-                        */
-                        try (Cursor cursor =
-                                db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
-                            while (cursor.moveToNext()) {
-                                request.onUuidFetched(
-                                        deleteTableRequest.getRecordType(),
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            for (DeleteTableRequest deleteTableRequest : request.getDeleteTableRequests()) {
+                if (deleteTableRequest.requiresRead()) {
+                    /*
+                    Delete request needs UUID before the entry can be
+                    deleted, fetch and set it in {@code request}
+                    */
+                    try (Cursor cursor = db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
+                        while (cursor.moveToNext()) {
+                            request.onUuidFetched(
+                                    deleteTableRequest.getRecordType(),
+                                    StorageUtils.getCursorString(
+                                            cursor, deleteTableRequest.getIdColumnName()));
+                            if (deleteTableRequest.requiresPackageCheck()) {
+                                request.enforcePackageCheck(
                                         StorageUtils.getCursorString(
-                                                cursor, deleteTableRequest.getIdColumnName()));
-                                if (deleteTableRequest.requiresPackageCheck()) {
-                                    request.enforcePackageCheck(
-                                            StorageUtils.getCursorString(
-                                                    cursor, deleteTableRequest.getIdColumnName()),
-                                            StorageUtils.getCursorLong(
-                                                    cursor,
-                                                    deleteTableRequest.getPackageColumnName()));
-                                }
+                                                cursor, deleteTableRequest.getIdColumnName()),
+                                        StorageUtils.getCursorLong(
+                                                cursor, deleteTableRequest.getPackageColumnName()));
                             }
                         }
                     }
-                    db.execSQL(deleteTableRequest.getDeleteCommand());
                 }
-
-                request.getChangeLogUpsertRequests()
-                        .forEach((insertRequest) -> insertRecord(db, insertRequest));
-
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
+                db.execSQL(deleteTableRequest.getDeleteCommand());
             }
+
+            request.getChangeLogUpsertRequests()
+                    .forEach((insertRequest) -> insertRecord(db, insertRequest));
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
     }
 
@@ -184,8 +184,8 @@ public class TransactionManager {
      */
     @NonNull
     public void populateWithAggregation(AggregateTableRequest aggregateTableRequest) {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-                Cursor cursor = db.rawQuery(aggregateTableRequest.getAggregationCommand(), null);
+        final SQLiteDatabase db = getReadableDb();
+        try (Cursor cursor = db.rawQuery(aggregateTableRequest.getAggregationCommand(), null);
                 Cursor metaDataCursor =
                         db.rawQuery(
                                 aggregateTableRequest.getCommandToFetchAggregateMetadata(), null)) {
@@ -202,20 +202,19 @@ public class TransactionManager {
     public List<RecordInternal<?>> readRecords(@NonNull ReadTransactionRequest request)
             throws SQLiteException {
         List<RecordInternal<?>> recordInternals = new ArrayList<>();
-        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase()) {
-            request.getReadRequests()
-                    .forEach(
-                            (readTableRequest -> {
-                                try (Cursor cursor = read(db, readTableRequest)) {
-                                    Objects.requireNonNull(readTableRequest.getRecordHelper());
-                                    recordInternals.addAll(
-                                            readTableRequest
-                                                    .getRecordHelper()
-                                                    .getInternalRecords(cursor));
-                                }
-                            }));
-            return recordInternals;
-        }
+        final SQLiteDatabase db = getReadableDb();
+        request.getReadRequests()
+                .forEach(
+                        (readTableRequest -> {
+                            try (Cursor cursor = read(db, readTableRequest)) {
+                                Objects.requireNonNull(readTableRequest.getRecordHelper());
+                                recordInternals.addAll(
+                                        readTableRequest
+                                                .getRecordHelper()
+                                                .getInternalRecords(cursor));
+                            }
+                        }));
+        return recordInternals;
     }
 
     /**
@@ -232,9 +231,8 @@ public class TransactionManager {
      * @return rowId of the inserted record.
      */
     public long insert(@NonNull UpsertTableRequest request) {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            return insertRecord(db, request);
-        }
+        final SQLiteDatabase db = getWritableDb();
+        return insertRecord(db, request);
     }
 
     /**
@@ -252,9 +250,8 @@ public class TransactionManager {
      * @param request an insert request.
      */
     public void insertOrReplace(@NonNull UpsertTableRequest request) {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            insertOrReplaceRecord(db, request);
-        }
+        final SQLiteDatabase db = getWritableDb();
+        insertOrReplaceRecord(db, request);
     }
 
     /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
@@ -267,27 +264,27 @@ public class TransactionManager {
     }
 
     public long getLastRowIdFor(String tableName) {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-                Cursor cursor = db.rawQuery(StorageUtils.getMaxPrimaryKeyQuery(tableName), null)) {
+        final SQLiteDatabase db = getReadableDb();
+        try (Cursor cursor = db.rawQuery(StorageUtils.getMaxPrimaryKeyQuery(tableName), null)) {
             cursor.moveToFirst();
             return cursor.getLong(cursor.getColumnIndex(PRIMARY_COLUMN_NAME));
         }
     }
 
-    /** Note: it is the responsibility of the requester to manage and close {@code db} */
+    /** Note: NEVER close this DB */
+    @NonNull
     public SQLiteDatabase getReadableDb() {
-        return mHealthConnectDatabase.getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = mHealthConnectDatabase.getReadableDatabase();
+
+        if (sqLiteDatabase == null) {
+            throw new InternalError("SQLite DB not found");
+        }
+        return sqLiteDatabase;
     }
 
     public void delete(DeleteTableRequest request) {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            db.execSQL(request.getDeleteCommand());
-        }
-    }
-
-    /** Note: it is the responsibility of the requester to manage and close {@code db} */
-    public SQLiteDatabase getWritableDb() {
-        return mHealthConnectDatabase.getWritableDatabase();
+        final SQLiteDatabase db = getWritableDb();
+        db.execSQL(request.getDeleteCommand());
     }
 
     /**
@@ -296,15 +293,14 @@ public class TransactionManager {
      * @param request an update request.
      */
     public void updateAll(@NonNull UpsertTransactionRequest request) {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            db.beginTransaction();
-            try {
-                request.getUpsertRequests()
-                        .forEach((upsertTableRequest) -> updateRecord(db, upsertTableRequest));
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            request.getUpsertRequests()
+                    .forEach((upsertTableRequest) -> updateRecord(db, upsertTableRequest));
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
     }
 
@@ -314,32 +310,29 @@ public class TransactionManager {
      */
     public ArrayList<DataOrigin> getDistinctPackageNamesForRecordTable(RecordHelper<?> recordHelper)
             throws SQLiteException {
-        try (SQLiteDatabase db = getReadableDb()) {
-            ArrayList<DataOrigin> packageNamesForDatatype = new ArrayList<>();
-            try (Cursor cursorForDistinctPackageNames =
-                    db.rawQuery(
-                            /* sql query */
-                            recordHelper
-                                    .getReadTableRequestWithDistinctAppInfoIds()
-                                    .getReadCommand(),
-                            /* selectionArgs */ null)) {
-                if (cursorForDistinctPackageNames.getCount() > 0) {
-                    AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
-                    while (cursorForDistinctPackageNames.moveToNext()) {
-                        String packageName =
-                                appInfoHelper.getPackageName(
-                                        cursorForDistinctPackageNames.getLong(
-                                                cursorForDistinctPackageNames.getColumnIndex(
-                                                        APP_INFO_ID_COLUMN_NAME)));
-                        if (!packageName.isEmpty()) {
-                            packageNamesForDatatype.add(
-                                    new DataOrigin.Builder().setPackageName(packageName).build());
-                        }
+        final SQLiteDatabase db = getReadableDb();
+        ArrayList<DataOrigin> packageNamesForDatatype = new ArrayList<>();
+        try (Cursor cursorForDistinctPackageNames =
+                db.rawQuery(
+                        /* sql query */
+                        recordHelper.getReadTableRequestWithDistinctAppInfoIds().getReadCommand(),
+                        /* selectionArgs */ null)) {
+            if (cursorForDistinctPackageNames.getCount() > 0) {
+                AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
+                while (cursorForDistinctPackageNames.moveToNext()) {
+                    String packageName =
+                            appInfoHelper.getPackageName(
+                                    cursorForDistinctPackageNames.getLong(
+                                            cursorForDistinctPackageNames.getColumnIndex(
+                                                    APP_INFO_ID_COLUMN_NAME)));
+                    if (!packageName.isEmpty()) {
+                        packageNamesForDatatype.add(
+                                new DataOrigin.Builder().setPackageName(packageName).build());
                     }
                 }
             }
-            return packageNamesForDatatype;
         }
+        return packageNamesForDatatype;
     }
 
     /**
@@ -354,23 +347,22 @@ public class TransactionManager {
             return;
         }
 
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            db.beginTransaction();
-            try {
-                RecordHelperProvider.getInstance()
-                        .getRecordHelpers()
-                        .values()
-                        .forEach(
-                                (recordHelper) -> {
-                                    DeleteTableRequest request =
-                                            recordHelper.getDeleteRequestForAutoDelete(
-                                                    recordAutoDeletePeriodInDays);
-                                    db.execSQL(request.getDeleteCommand());
-                                });
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            RecordHelperProvider.getInstance()
+                    .getRecordHelpers()
+                    .values()
+                    .forEach(
+                            (recordHelper) -> {
+                                DeleteTableRequest request =
+                                        recordHelper.getDeleteRequestForAutoDelete(
+                                                recordAutoDeletePeriodInDays);
+                                db.execSQL(request.getDeleteCommand());
+                            });
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
     }
 
@@ -381,22 +373,32 @@ public class TransactionManager {
      * make sure that either all its operation succeed or fail in a single run.
      */
     public void deleteStaleChangeLogEntries() {
-        try (SQLiteDatabase db = mHealthConnectDatabase.getWritableDatabase()) {
-            db.beginTransaction();
-            try {
-                db.execSQL(
-                        ChangeLogsRequestHelper.getInstance()
-                                .getDeleteRequestForAutoDelete()
-                                .getDeleteCommand());
-                db.execSQL(
-                        ChangeLogsHelper.getInstance()
-                                .getDeleteRequestForAutoDelete()
-                                .getDeleteCommand());
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            db.execSQL(
+                    ChangeLogsRequestHelper.getInstance()
+                            .getDeleteRequestForAutoDelete()
+                            .getDeleteCommand());
+            db.execSQL(
+                    ChangeLogsHelper.getInstance()
+                            .getDeleteRequestForAutoDelete()
+                            .getDeleteCommand());
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
+    }
+
+    /** Note: NEVER close this DB */
+    @NonNull
+    private SQLiteDatabase getWritableDb() {
+        SQLiteDatabase sqLiteDatabase = mHealthConnectDatabase.getWritableDatabase();
+
+        if (sqLiteDatabase == null) {
+            throw new InternalError("SQLite DB not found");
+        }
+        return sqLiteDatabase;
     }
 
     /** Assumes that caller will be closing {@code db} and handling the transaction if required */

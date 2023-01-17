@@ -81,15 +81,6 @@ public final class ActivityDateHelper {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo());
     }
 
-    @NonNull
-    List<Pair<String, String>> getColumnInfo() {
-        // TODO(260554339): Update the db columns to store dates as integers
-        return Arrays.asList(
-                new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT),
-                new Pair<>(DATE_COLUMN_NAME, TEXT_NOT_NULL),
-                new Pair<>(RECORD_TYPE_ID_COLUMN_NAME, INTEGER_NOT_NULL_UNIQUE));
-    }
-
     /** Called on DB update. */
     public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
         // empty by default
@@ -149,6 +140,15 @@ public final class ActivityDateHelper {
     }
 
     @NonNull
+    List<Pair<String, String>> getColumnInfo() {
+        // TODO(260554339): Update the db columns to store dates as integers
+        return Arrays.asList(
+                new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT),
+                new Pair<>(DATE_COLUMN_NAME, TEXT_NOT_NULL),
+                new Pair<>(RECORD_TYPE_ID_COLUMN_NAME, INTEGER_NOT_NULL_UNIQUE));
+    }
+
+    @NonNull
     private ContentValues getContentValues(int recordTypeId, @NonNull Set<String> dates) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DATE_COLUMN_NAME, String.join(DELIMITER, dates));
@@ -165,9 +165,8 @@ public final class ActivityDateHelper {
      */
     private HashMap<Integer, List<String>> readDates(@NonNull ReadTableRequest request) {
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, request)) {
-
+        final SQLiteDatabase db = transactionManager.getReadableDb();
+        try (Cursor cursor = transactionManager.read(db, request)) {
             return getRecordIdToDatesMap(cursor);
         }
     }
@@ -176,9 +175,7 @@ public final class ActivityDateHelper {
     @NonNull
     private HashMap<Integer, Set<String>> getRecordIdToDistinctDatesMap(
             @NonNull List<RecordInternal<?>> recordInternals) {
-
         HashMap<Integer, List<String>> existingDates = readDates(new ReadTableRequest(TABLE_NAME));
-
         HashMap<Integer, Set<String>> recordIdToDates = new HashMap<>();
 
         for (RecordInternal<?> recordInternal : recordInternals) {
