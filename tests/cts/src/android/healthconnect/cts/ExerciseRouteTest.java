@@ -22,8 +22,11 @@ import static org.junit.Assert.fail;
 
 import android.healthconnect.datatypes.ExerciseRoute;
 import android.healthconnect.datatypes.units.Length;
+import android.os.Parcel;
 
 import androidx.test.runner.AndroidJUnit4;
+
+import com.google.common.collect.ImmutableList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -116,5 +119,63 @@ public class ExerciseRouteTest {
         assertThat(route.getRouteLocations()).hasSize(1);
         assertThat(route.getRouteLocations())
                 .isEqualTo(List.of(TestUtils.buildLocationTimePoint()));
+    }
+
+    @Test
+    public void testExerciseRouteLocation_parcelable() {
+        Parcel parcel = Parcel.obtain();
+        double horizontalAcc = 2.3F;
+        double verticalAcc = 0.5F;
+        double altitude = -1F;
+        ExerciseRoute.Location point =
+                new ExerciseRoute.Location.Builder(
+                                DEFAULT_TIME, DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+                        .setHorizontalAccuracy(Length.fromMeters(horizontalAcc))
+                        .setVerticalAccuracy(Length.fromMeters(verticalAcc))
+                        .setAltitude(Length.fromMeters(altitude))
+                        .build();
+
+        point.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        assertThat(ExerciseRoute.Location.CREATOR.createFromParcel(parcel)).isEqualTo(point);
+    }
+
+    @Test
+    public void testExerciseRouteLocation_parcelable_missingField() {
+        Parcel parcel = Parcel.obtain();
+        double altitude = -1F;
+        ExerciseRoute.Location point =
+                new ExerciseRoute.Location.Builder(
+                                DEFAULT_TIME, DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+                        .setAltitude(Length.fromMeters(altitude))
+                        .build();
+
+        point.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        assertThat(ExerciseRoute.Location.CREATOR.createFromParcel(parcel)).isEqualTo(point);
+    }
+
+    @Test
+    public void testExerciseRoute_parcelable() {
+        Parcel parcel = Parcel.obtain();
+        ExerciseRoute.Location point1 =
+                new ExerciseRoute.Location.Builder(
+                                DEFAULT_TIME, DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+                        .setHorizontalAccuracy(Length.fromMeters(2.3F))
+                        .setVerticalAccuracy(Length.fromMeters(1.2F))
+                        .setAltitude(Length.fromMeters(-1F))
+                        .build();
+
+        ExerciseRoute.Location point2 =
+                new ExerciseRoute.Location.Builder(DEFAULT_TIME.plusSeconds(13), 33.5, -12.9)
+                        .setHorizontalAccuracy(Length.fromMeters(0.9F))
+                        .setVerticalAccuracy(Length.fromMeters(1.2F))
+                        .setAltitude(Length.fromMeters(2.3F))
+                        .build();
+
+        ExerciseRoute route = new ExerciseRoute(ImmutableList.of(point1, point2));
+        route.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        assertThat(ExerciseRoute.CREATOR.createFromParcel(parcel)).isEqualTo(route);
     }
 }

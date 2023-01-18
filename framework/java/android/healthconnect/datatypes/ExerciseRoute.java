@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,37 @@ import android.annotation.FloatRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.healthconnect.datatypes.units.Length;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /** Route of the exercise session. Contains sequence of location points with timestamps. */
-public final class ExerciseRoute {
+public final class ExerciseRoute implements Parcelable {
     private final List<Location> mRouteLocations;
+
+    @NonNull
+    public static final Creator<ExerciseRoute> CREATOR =
+            new Creator<>() {
+
+                @Override
+                public ExerciseRoute createFromParcel(Parcel source) {
+                    int size = source.readInt();
+                    List<Location> locations = new ArrayList<>(size);
+                    for (int i = 0; i < size; i++) {
+                        locations.add(i, Location.CREATOR.createFromParcel(source));
+                    }
+                    return new ExerciseRoute(locations);
+                }
+
+                @Override
+                public ExerciseRoute[] newArray(int size) {
+                    return new ExerciseRoute[size];
+                }
+            };
 
     /**
      * Creates {@link ExerciseRoute} instance
@@ -57,8 +80,21 @@ public final class ExerciseRoute {
         return Objects.hash(getRouteLocations());
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(mRouteLocations.size());
+        for (int i = 0; i < mRouteLocations.size(); i++) {
+            mRouteLocations.get(i).writeToParcel(dest, flags);
+        }
+    }
+
     /** Point in the time and space. Used in {@link ExerciseRoute}. */
-    public static final class Location {
+    public static final class Location implements Parcelable {
         // Values are used for FloatRange annotation in latitude/longitude getters and constructor.
         private static final double MIN_LONGITUDE = -180;
         private static final double MAX_LONGITUDE = 180;
@@ -71,6 +107,33 @@ public final class ExerciseRoute {
         private final Length mHorizontalAccuracy;
         private final Length mVerticalAccuracy;
         private final Length mAltitude;
+
+        @NonNull
+        public static final Creator<Location> CREATOR =
+                new Creator<>() {
+                    @Override
+                    public Location createFromParcel(Parcel source) {
+                        Instant timestamp = Instant.ofEpochMilli(source.readLong());
+                        double lat = source.readDouble();
+                        double lon = source.readDouble();
+                        Builder builder = new Builder(timestamp, lat, lon);
+                        if (source.readBoolean()) {
+                            builder.setHorizontalAccuracy(Length.fromMeters(source.readDouble()));
+                        }
+                        if (source.readBoolean()) {
+                            builder.setVerticalAccuracy(Length.fromMeters(source.readDouble()));
+                        }
+                        if (source.readBoolean()) {
+                            builder.setAltitude(Length.fromMeters(source.readDouble()));
+                        }
+                        return builder.build();
+                    }
+
+                    @Override
+                    public Location[] newArray(int size) {
+                        return new Location[size];
+                    }
+                };
 
         /**
          * Represents a single location in an exercise route.
@@ -197,6 +260,30 @@ public final class ExerciseRoute {
                     getHorizontalAccuracy(),
                     getVerticalAccuracy(),
                     getAltitude());
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(@NonNull Parcel dest, int flags) {
+            dest.writeLong(mTime.toEpochMilli());
+            dest.writeDouble(mLatitude);
+            dest.writeDouble(mLongitude);
+            dest.writeBoolean(mHorizontalAccuracy != null);
+            if (mHorizontalAccuracy != null) {
+                dest.writeDouble(mHorizontalAccuracy.getInMeters());
+            }
+            dest.writeBoolean(mVerticalAccuracy != null);
+            if (mVerticalAccuracy != null) {
+                dest.writeDouble(mVerticalAccuracy.getInMeters());
+            }
+            dest.writeBoolean(mAltitude != null);
+            if (mAltitude != null) {
+                dest.writeDouble(mAltitude.getInMeters());
+            }
         }
 
         /** Builder class for {@link Location} */

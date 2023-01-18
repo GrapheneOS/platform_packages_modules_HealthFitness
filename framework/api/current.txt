@@ -524,18 +524,24 @@ package android.healthconnect.datatypes {
     method @NonNull public android.healthconnect.datatypes.ExerciseLap.Builder setLength(@NonNull android.healthconnect.datatypes.units.Length);
   }
 
-  public final class ExerciseRoute {
+  public final class ExerciseRoute implements android.os.Parcelable {
     ctor public ExerciseRoute(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location>);
+    method public int describeContents();
     method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location> getRouteLocations();
+    method public void writeToParcel(@NonNull android.os.Parcel, int);
+    field @NonNull public static final android.os.Parcelable.Creator<android.healthconnect.datatypes.ExerciseRoute> CREATOR;
   }
 
-  public static final class ExerciseRoute.Location {
+  public static final class ExerciseRoute.Location implements android.os.Parcelable {
+    method public int describeContents();
     method @Nullable public android.healthconnect.datatypes.units.Length getAltitude();
     method @Nullable public android.healthconnect.datatypes.units.Length getHorizontalAccuracy();
     method @FloatRange(from=-90.0, to=90.0) public double getLatitude();
     method @FloatRange(from=-180.0, to=180.0) public double getLongitude();
     method @NonNull public java.time.Instant getTime();
     method @Nullable public android.healthconnect.datatypes.units.Length getVerticalAccuracy();
+    method public void writeToParcel(@NonNull android.os.Parcel, int);
+    field @NonNull public static final android.os.Parcelable.Creator<android.healthconnect.datatypes.ExerciseRoute.Location> CREATOR;
   }
 
   public static final class ExerciseRoute.Location.Builder {
