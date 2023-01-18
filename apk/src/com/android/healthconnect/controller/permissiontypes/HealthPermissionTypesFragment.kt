@@ -42,8 +42,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment.Companion.PRIORITY_UPDATED_EVENT
 import com.android.healthconnect.controller.shared.AppMetadata
-import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -109,7 +109,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMenu(this, viewLifecycleOwner)
+        setupSharedMenu(viewLifecycleOwner)
         mPermissionTypesHeader?.icon = requireContext().resources.getDrawable(category.icon)
         mPermissionTypesHeader?.title = getString(category.uppercaseTitle)
         viewModel.loadData(category)

@@ -36,8 +36,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
-import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -139,7 +139,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMenu(this, viewLifecycleOwner)
+        setupSharedMenu(viewLifecycleOwner)
 
         viewModel.loadAppMetaDataMap(permissionType)
         viewModel.appMetadataMap.observe(viewLifecycleOwner) { appMetadataMap ->
