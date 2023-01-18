@@ -44,6 +44,7 @@ fun Fragment.setupMenu(
     val menuProvider =
         object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
                 menuInflater.inflate(menuRes, menu)
             }
 
@@ -61,7 +62,6 @@ fun Fragment.setupMenu(
                 }
             }
         }
-
     (requireActivity() as MenuHost).addMenuProvider(
         menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
 }

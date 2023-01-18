@@ -362,6 +362,7 @@
   <string name="manage_permissions_learn_more" description="Link text that open's a third party app's data privacy policy [CHAR_LIMIT=NONE]">Read privacy policy</string>
   <string name="app_perms_content_provider_24h" description="Summary for showing the last access text for content provider permissions [CHAR LIMIT=70]">Accessed in past 24 hours</string>
   <string name="app_access_title" description="Title of screen for a user to manage the health and fitness data a particular app has access to [CHAR_LIMIT=40]">App access</string>
+  <string name="connected_apps_empty_list_section_title" description = "Title of section when there are no connected apps">You don’t currently have any compatible apps installed</string>
   <!--endregion-->
 
   <!--region Denied Apps -->
