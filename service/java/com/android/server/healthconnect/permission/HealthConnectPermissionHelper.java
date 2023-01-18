@@ -95,7 +95,7 @@ public final class HealthConnectPermissionHelper {
         enforceManageHealthPermissions(/* message= */ "grantHealthPermission");
         enforceValidPermission(permissionName);
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
-        enforceValidPackage(packageName);
+        enforceValidPackage(packageName, checkedUser);
         enforceSupportPermissionsUsageIntent(packageName, checkedUser);
         final long token = Binder.clearCallingIdentity();
         try {
@@ -124,7 +124,7 @@ public final class HealthConnectPermissionHelper {
         enforceManageHealthPermissions(/* message= */ "revokeHealthPermission");
         enforceValidPermission(permissionName);
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
-        enforceValidPackage(packageName);
+        enforceValidPackage(packageName, checkedUser);
         final long token = Binder.clearCallingIdentity();
         try {
             boolean isAlreadyDenied =
@@ -157,7 +157,7 @@ public final class HealthConnectPermissionHelper {
         Objects.requireNonNull(packageName);
         enforceManageHealthPermissions(/* message= */ "revokeAllHealthPermissions");
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
-        enforceValidPackage(packageName);
+        enforceValidPackage(packageName, checkedUser);
         final long token = Binder.clearCallingIdentity();
         try {
             revokeAllHealthPermissionsUnchecked(packageName, checkedUser, reason);
@@ -173,7 +173,7 @@ public final class HealthConnectPermissionHelper {
         Objects.requireNonNull(packageName);
         enforceManageHealthPermissions(/* message= */ "getGrantedHealthPermissions");
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
-        enforceValidPackage(packageName);
+        enforceValidPackage(packageName, checkedUser);
         final long token = Binder.clearCallingIdentity();
         try {
             return getGrantedHealthPermissionsUnchecked(packageName, checkedUser);
@@ -201,7 +201,7 @@ public final class HealthConnectPermissionHelper {
         Objects.requireNonNull(packageName);
         enforceManageHealthPermissions(/* message= */ "getHealthDataStartDateAccess");
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
-        enforceValidPackage(packageName);
+        enforceValidPackage(packageName, checkedUser);
 
         Instant grantTimeDate = mFirstGrantTimeManager.getFirstGrantTime(packageName, checkedUser);
         if (grantTimeDate == null) {
@@ -286,9 +286,12 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
-    private void enforceValidPackage(String packageName) {
+    private void enforceValidPackage(String packageName, UserHandle user) {
         try {
-            mPackageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
+            PackageManager packageManager =
+                    mContext.createContextAsUser(user, /* flags= */ 0).getPackageManager();
+
+            packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
         } catch (PackageManager.NameNotFoundException e) {
             throw new IllegalArgumentException("invalid package", e);
         }
