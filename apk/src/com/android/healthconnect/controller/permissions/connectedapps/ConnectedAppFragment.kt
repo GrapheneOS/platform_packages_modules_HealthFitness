@@ -40,8 +40,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionStr
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
-import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu.setupMenu
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.MainSwitchPreference
@@ -106,7 +106,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMenu(this, viewLifecycleOwner)
+        setupSharedMenu(viewLifecycleOwner)
 
         if (requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
             requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {

@@ -28,9 +28,9 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
-import com.android.healthconnect.controller.utils.SendFeedbackAndHelpMenu
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Home fragment for Health Connect. */
@@ -78,8 +78,8 @@ class HomeFragment : Hilt_HomeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        SendFeedbackAndHelpMenu.setupMenu(this, viewLifecycleOwner)
 
+        setupSharedMenu(viewLifecycleOwner = viewLifecycleOwner)
         viewModel.loadRecentAccessApps(maxNumEntries = 3)
         viewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
             updateRecentApps(recentApps)

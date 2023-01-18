@@ -15,24 +15,17 @@
  */
 package com.android.healthconnect.controller.dataentries
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -52,8 +45,8 @@ import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
-import com.android.healthconnect.controller.utils.HelpCenterLauncher
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.setupMenu
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 
@@ -71,33 +64,6 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var loadingView: View
     private lateinit var errorView: View
     private val adapter = DataEntryAdapter()
-    private val menuProvider =
-        object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.data_entries, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.menu_open_units -> {
-                        findNavController()
-                            .navigate(R.id.action_dataEntriesFragment_to_unitsFragment)
-                        true
-                    }
-                    R.id.menu_send_feedback -> {
-                        val intent = Intent(Intent.ACTION_BUG_REPORT)
-                        activity?.startActivityForResult(intent, 0)
-                        true
-                    }
-                    R.id.menu_help -> {
-                        HelpCenterLauncher.openHCGetStartedLink(
-                            this@DataEntriesFragment as Fragment)
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -111,7 +77,16 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                     ?: throw IllegalArgumentException("PERMISSION_TYPE_KEY can't be null!")
         }
         setTitle(fromPermissionType(permissionType).uppercaseLabel)
-        setupMenu()
+        setupMenu(R.menu.data_entries, viewLifecycleOwner) { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_open_units -> {
+                    findNavController().navigate(R.id.action_dataEntriesFragment_to_unitsFragment)
+                    true
+                }
+                else -> false
+            }
+        }
+
         dataNavigationView = view.findViewById(R.id.date_navigation_view)
         noDataView = view.findViewById(R.id.no_data_view)
         errorView = view.findViewById(R.id.error_view)
@@ -127,11 +102,6 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         }
 
         return view
-    }
-
-    private fun setupMenu() {
-        (activity as MenuHost).addMenuProvider(
-            menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

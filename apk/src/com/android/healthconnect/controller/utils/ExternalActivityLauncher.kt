@@ -15,18 +15,24 @@
  */
 package com.android.healthconnect.controller.utils
 
-import android.content.Context
-import androidx.fragment.app.Fragment
+import android.content.Intent
+import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.settingslib.HelpUtils
 
 /** Utility class to launch help center articles. */
-object HelpCenterLauncher {
-    fun openHCGetStartedLink(fragment: Fragment) {
-        val context: Context = fragment.requireContext()
-        fragment.startActivityForResult(
+object ExternalActivityLauncher {
+    fun openHCGetStartedLink(activity: FragmentActivity) {
+        activity.startActivityForResult(
             HelpUtils.getHelpIntent(
-                context, context.getString(R.string.hc_get_started_link), /* backupContext= */ ""),
+                activity,
+                activity.getString(R.string.hc_get_started_link),
+                /* backupContext= */ ""),
             /*requestCode=*/ 0)
+    }
+
+    fun openSendFeedbackActivity(activity: FragmentActivity) {
+        val intent = Intent(Intent.ACTION_BUG_REPORT)
+        activity.startActivityForResult(intent, 0)
     }
 }

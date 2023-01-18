@@ -15,21 +15,13 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
-import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -46,8 +38,8 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
-import com.android.healthconnect.controller.utils.HelpCenterLauncher.openHCGetStartedLink
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.setupMenu
 import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -83,37 +75,6 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private val mRemoveAllApps: Preference? by lazy {
         preferenceScreen.findPreference(REMOVE_ALL_APPS)
-    }
-
-    private val menuProvider =
-        object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.connected_apps, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.menu_search -> {
-                        findNavController().navigate(R.id.action_connectedApps_to_searchApps)
-                        true
-                    }
-                    R.id.menu_send_feedback -> {
-                        val intent = Intent(Intent.ACTION_BUG_REPORT)
-                        activity?.startActivityForResult(intent, 0)
-                        true
-                    }
-                    R.id.menu_help -> {
-                        openHCGetStartedLink(this@ConnectedAppsFragment as Fragment)
-                        true
-                    }
-                    else -> true
-                }
-            }
-        }
-
-    private fun setupMenu() {
-        (activity as MenuHost).addMenuProvider(
-            menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -172,7 +133,16 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMenu()
+        setupMenu(R.menu.connected_apps, viewLifecycleOwner) { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_search -> {
+                    findNavController().navigate(R.id.action_connectedApps_to_searchApps)
+                    true
+                }
+                else -> false
+            }
+        }
+
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             val connectedAppsGroup = connectedApps.groupBy { it.status }
             val allowedApps = connectedAppsGroup[ALLOWED].orEmpty()
