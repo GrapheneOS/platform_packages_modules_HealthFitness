@@ -20,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.SystemApi;
 import android.healthconnect.HealthDataCategory;
 import android.healthconnect.datatypes.DataOrigin;
 import android.os.Parcel;
@@ -33,6 +34,7 @@ import java.util.List;
  *
  * @hide
  */
+@SystemApi
 public final class PriorityMigrationPayload extends MigrationPayload implements Parcelable {
 
     @NonNull
@@ -40,6 +42,7 @@ public final class PriorityMigrationPayload extends MigrationPayload implements 
             new Creator<>() {
                 @Override
                 public PriorityMigrationPayload createFromParcel(Parcel in) {
+                    in.readInt(); // Skip the type
                     return new PriorityMigrationPayload(in);
                 }
 
@@ -60,7 +63,7 @@ public final class PriorityMigrationPayload extends MigrationPayload implements 
         mDataOrigins = dataOrigins;
     }
 
-    private PriorityMigrationPayload(@NonNull Parcel in) {
+    PriorityMigrationPayload(@NonNull Parcel in) {
         mDataCategory = in.readInt();
 
         mDataOrigins =
@@ -75,6 +78,8 @@ public final class PriorityMigrationPayload extends MigrationPayload implements 
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(TYPE_PRIORITY);
+
         dest.writeInt(mDataCategory);
         dest.writeStringList(mDataOrigins.stream().map(DataOrigin::getPackageName).toList());
     }
@@ -84,12 +89,18 @@ public final class PriorityMigrationPayload extends MigrationPayload implements 
         return 0;
     }
 
-    /** @hide */
+    /**
+     * Returns data category associated with this payload. See {@link HealthDataCategory.Type}
+     * HealthDataCategory.Type for all possible values.
+     *
+     * @see HealthDataCategory.Type
+     */
+    @HealthDataCategory.Type
     public int getDataCategory() {
         return mDataCategory;
     }
 
-    /** @hide */
+    /** Returns a list of {@link DataOrigin} associated with this payload */
     @NonNull
     public List<DataOrigin> getDataOrigins() {
         return mDataOrigins;
@@ -100,14 +111,14 @@ public final class PriorityMigrationPayload extends MigrationPayload implements 
         private final List<DataOrigin> mDataOrigins = new ArrayList<>();
         private int mDataCategory = HealthDataCategory.UNKNOWN;
 
-        /** Sets {@code dataCategory} to the specified value. */
+        /** Sets the value for {@link PriorityMigrationPayload#getDataCategory()}. */
         @NonNull
         public Builder setDataCategory(@HealthDataCategory.Type int dataCategory) {
             mDataCategory = dataCategory;
             return this;
         }
 
-        /** Adds the specified {@code dataOrigin} to the list. */
+        /** Adds the value for {@link PriorityMigrationPayload#getDataOrigins()} ()}. */
         @NonNull
         public Builder addDataOrigin(@NonNull DataOrigin dataOrigin) {
             requireNonNull(dataOrigin);

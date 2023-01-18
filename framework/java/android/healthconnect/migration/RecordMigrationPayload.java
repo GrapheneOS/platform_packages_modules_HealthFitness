@@ -19,6 +19,8 @@ package android.healthconnect.migration;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
+import android.annotation.SystemApi;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
@@ -30,6 +32,7 @@ import android.os.Parcelable;
  *
  * @hide
  */
+@SystemApi
 public final class RecordMigrationPayload extends MigrationPayload implements Parcelable {
 
     @NonNull
@@ -37,6 +40,7 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
             new Creator<>() {
                 @Override
                 public RecordMigrationPayload createFromParcel(Parcel in) {
+                    in.readInt(); // Skip the type
                     return new RecordMigrationPayload(in);
                 }
 
@@ -46,26 +50,32 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
                 }
             };
 
-    private final RecordInternal<?> mRecord;
+    private final RecordInternal<?> mRecordInternal;
+    @Nullable private Record mRecord;
 
     private RecordMigrationPayload(
             @NonNull String originPackageName,
             @NonNull String originAppName,
             @NonNull Record record) {
-        mRecord = InternalExternalRecordConverter.getInstance().getInternalRecord(record);
-        mRecord.setPackageName(originPackageName);
-        mRecord.setAppName(originAppName);
+        mRecordInternal = InternalExternalRecordConverter.getInstance().getInternalRecord(record);
+        mRecordInternal.setPackageName(originPackageName);
+        mRecordInternal.setAppName(originAppName);
+
+        mRecord = record;
     }
 
-    private RecordMigrationPayload(@NonNull Parcel in) {
-        mRecord = InternalExternalRecordConverter.getInstance().newInternalRecord(in.readInt());
-        mRecord.populateUsing(in);
+    RecordMigrationPayload(@NonNull Parcel in) {
+        mRecordInternal =
+                InternalExternalRecordConverter.getInstance().newInternalRecord(in.readInt());
+        mRecordInternal.populateUsing(in);
     }
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(mRecord.getRecordType());
-        mRecord.writeToParcel(dest);
+        dest.writeInt(TYPE_RECORD);
+
+        dest.writeInt(mRecordInternal.getRecordType());
+        mRecordInternal.writeToParcel(dest);
     }
 
     @Override
@@ -73,9 +83,31 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
         return 0;
     }
 
-    /** @hide */
-    public RecordInternal<?> getRecord() {
+    /** Returns origin package name associated with this payload. */
+    @NonNull
+    public String getOriginPackageName() {
+        return mRecordInternal.getPackageName();
+    }
+
+    /** Returns origin application name associated with this payload. */
+    @NonNull
+    public String getOriginAppName() {
+        return mRecordInternal.getAppName();
+    }
+
+    /** Returns {@link Record} associated with this payload. */
+    @NonNull
+    public Record getRecord() {
+        if (mRecord == null) {
+            mRecord = mRecordInternal.toExternalRecord();
+        }
+
         return mRecord;
+    }
+
+    /** @hide */
+    public RecordInternal<?> getRecordInternal() {
+        return mRecordInternal;
     }
 
     /** Builder for {@link RecordMigrationPayload}. */
@@ -102,7 +134,7 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
             mRecord = record;
         }
 
-        /** Sets {@code originPackageName} to the specified value. */
+        /** Sets the value for {@link RecordMigrationPayload#getOriginPackageName()}. */
         @NonNull
         public Builder setOriginPackageName(@NonNull String originPackageName) {
             requireNonNull(originPackageName);
@@ -110,7 +142,7 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
             return this;
         }
 
-        /** Sets {@code originAppName} to the specified value. */
+        /** Sets the value for {@link RecordMigrationPayload#getOriginAppName()} ()}. */
         @NonNull
         public Builder setOriginAppName(@NonNull String originAppName) {
             requireNonNull(originAppName);
@@ -118,7 +150,7 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
             return this;
         }
 
-        /** Sets {@code record} to the specified value. */
+        /** Sets the value for {@link RecordMigrationPayload#getRecord()} ()}. */
         @NonNull
         public Builder setRecord(@NonNull Record record) {
             requireNonNull(record);

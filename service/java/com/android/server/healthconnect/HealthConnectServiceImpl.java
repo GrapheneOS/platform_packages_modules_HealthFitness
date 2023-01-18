@@ -835,7 +835,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
                         // TODO(b/263897830): Send errors properly
-                        tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
+                        tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
     }
@@ -856,7 +856,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
                         // TODO(b/263897830): Send errors properly
-                        tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
+                        tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
     }
@@ -877,7 +877,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
                         // TODO(b/263897830): Send errors properly
-                        tryAndThrowException(callback, e, MigrationException.ERROR_UNKNOWN, null);
+                        tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
     }

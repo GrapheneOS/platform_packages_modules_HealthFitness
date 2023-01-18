@@ -17,6 +17,7 @@
 package android.healthconnect.migration;
 
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -25,13 +26,8 @@ import android.os.Parcelable;
  *
  * @hide
  */
+@SystemApi
 public final class MigrationEntity implements Parcelable {
-
-    public static final int TYPE_PACKAGE_PERMISSIONS = 1;
-    public static final int TYPE_RECORD = 2;
-    public static final int TYPE_APP_INFO = 3;
-    public static final int TYPE_PRIORITY = 4;
-    public static final int TYPE_METADATA = 5;
 
     @NonNull
     public static final Creator<MigrationEntity> CREATOR =
@@ -63,30 +59,8 @@ public final class MigrationEntity implements Parcelable {
     private MigrationEntity(@NonNull Parcel in) {
         mEntityId = in.readString();
 
-        final int type = in.readInt();
-        switch (type) {
-            case TYPE_PACKAGE_PERMISSIONS:
-                mPayload = readParcelable(in, PermissionMigrationPayload.class);
-                break;
-            case TYPE_RECORD:
-                mPayload = readParcelable(in, RecordMigrationPayload.class);
-                break;
-            case TYPE_APP_INFO:
-                mPayload = readParcelable(in, AppInfoMigrationPayload.class);
-                break;
-            case TYPE_PRIORITY:
-                mPayload = readParcelable(in, PriorityMigrationPayload.class);
-                break;
-            case TYPE_METADATA:
-                mPayload = readParcelable(in, MetadataMigrationPayload.class);
-                break;
-            default:
-                throw new IllegalStateException("Unsupported type: " + type);
-        }
-    }
-
-    private static <T> T readParcelable(@NonNull Parcel parcel, @NonNull Class<T> clazz) {
-        return parcel.readParcelable(clazz.getClassLoader(), clazz);
+        mPayload =
+                in.readParcelable(MigrationPayload.class.getClassLoader(), MigrationPayload.class);
     }
 
     /**
@@ -118,22 +92,6 @@ public final class MigrationEntity implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(mEntityId);
-
-        if (mPayload instanceof PermissionMigrationPayload) {
-            dest.writeInt(TYPE_PACKAGE_PERMISSIONS);
-            dest.writeParcelable((PermissionMigrationPayload) mPayload, 0);
-        } else if (mPayload instanceof RecordMigrationPayload) {
-            dest.writeInt(TYPE_RECORD);
-            dest.writeParcelable((RecordMigrationPayload) mPayload, 0);
-        } else if (mPayload instanceof AppInfoMigrationPayload) {
-            dest.writeInt(TYPE_APP_INFO);
-            dest.writeParcelable((AppInfoMigrationPayload) mPayload, 0);
-        } else if (mPayload instanceof PriorityMigrationPayload) {
-            dest.writeInt(TYPE_PRIORITY);
-            dest.writeParcelable((PriorityMigrationPayload) mPayload, 0);
-        } else if (mPayload instanceof MetadataMigrationPayload) {
-            dest.writeInt(TYPE_METADATA);
-            dest.writeParcelable((MetadataMigrationPayload) mPayload, 0);
-        }
+        dest.writeParcelable(mPayload, 0);
     }
 }

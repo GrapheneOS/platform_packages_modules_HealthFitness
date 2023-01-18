@@ -109,7 +109,7 @@ public final class DataMigrationManager {
 
     @NonNull
     private UpsertTableRequest parseRecord(@NonNull RecordMigrationPayload payload) {
-        final RecordInternal<?> record = payload.getRecord();
+        final RecordInternal<?> record = payload.getRecordInternal();
         StorageUtils.addNameBasedUUIDTo(record);
         mAppInfoHelper.populateAppInfoId(record, mUserContext, false);
         mDeviceInfoHelper.populateDeviceInfoId(record);
