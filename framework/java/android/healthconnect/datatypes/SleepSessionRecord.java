@@ -245,8 +245,6 @@ public final class SleepSessionRecord extends IntervalRecord {
             mStartTime = startTime;
             mEndTime = endTime;
             mStages = new ArrayList<>(stages);
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
@@ -265,6 +263,20 @@ public final class SleepSessionRecord extends IntervalRecord {
         public Builder setEndZoneOffset(@NonNull ZoneOffset endZoneOffset) {
             Objects.requireNonNull(endZoneOffset);
             mEndZoneOffset = endZoneOffset;
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearStartZoneOffset() {
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearEndZoneOffset() {
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

@@ -80,8 +80,6 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }

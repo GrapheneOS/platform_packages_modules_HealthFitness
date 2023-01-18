@@ -20,11 +20,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.fail;
 
+import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.SleepSessionRecord;
 
 import org.junit.Test;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.List;
 
 public class SleepSessionRecordTest {
@@ -161,5 +164,28 @@ public class SleepSessionRecordTest {
         assertThat(record.getStages()).hasSize(2);
         assertThat(CharSequence.compare(record.getTitle(), TITLE)).isEqualTo(0);
         assertThat(CharSequence.compare(record.getNotes(), NOTES)).isEqualTo(0);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        SleepSessionRecord.Builder builder =
+                new SleepSessionRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now(),
+                        Collections.emptyList());
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
     }
 }

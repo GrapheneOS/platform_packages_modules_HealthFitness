@@ -173,6 +173,20 @@ public final class PowerRecord extends IntervalRecord {
             return this;
         }
 
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearStartZoneOffset() {
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            return this;
+        }
+
+        /** Sets the start zone offset of this record to system default. */
+        @NonNull
+        public Builder clearEndZoneOffset() {
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
+            return this;
+        }
+
         /**
          * @return Object of {@link PowerRecord}
          */
