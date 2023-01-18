@@ -34,6 +34,7 @@ import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.StepsRecord;
 import android.platform.test.annotations.AppModeFull;
+import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
@@ -166,6 +167,19 @@ public class StepsRecordTest {
                                         new DataOrigin.Builder().setPackageName("abc").build())
                                 .build());
         assertThat(newStepsRecords.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_withPageSize() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(TestUtils.getStepsRecord(), TestUtils.getStepsRecord());
+        TestUtils.insertRecords(recordList);
+        Pair<List<StepsRecord>, Long> newStepsRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .build());
+        assertThat(newStepsRecords.first.size()).isEqualTo(1);
     }
 
     @Test

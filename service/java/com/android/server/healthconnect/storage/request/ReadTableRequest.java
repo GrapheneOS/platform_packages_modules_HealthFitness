@@ -16,7 +16,10 @@
 
 package com.android.server.healthconnect.storage.request;
 
+import static android.healthconnect.Constants.DEFAULT_PAGE_SIZE;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.LIMIT_SIZE;
 
 import android.annotation.NonNull;
 import android.healthconnect.Constants;
@@ -24,6 +27,7 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
@@ -44,7 +48,9 @@ public class ReadTableRequest {
     private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses();
     private boolean mDistinct = false;
+    private OrderByClause mOrderByClause = new OrderByClause();
     private String mLimitClause = "";
+    private int mPageSize = DEFAULT_PAGE_SIZE;
 
     public ReadTableRequest(@NonNull String tableName) {
         Objects.requireNonNull(tableName);
@@ -73,9 +79,9 @@ public class ReadTableRequest {
         return this;
     }
 
-    /** Used to set Inner Join Clause for the read query */
+    /** Used to set Join Clause for the read query */
     @NonNull
-    public ReadTableRequest setInnerJoinClause(SqlJoin joinClause) {
+    public ReadTableRequest setJoinClause(SqlJoin joinClause) {
         mJoinClause = joinClause;
         return this;
     }
@@ -105,20 +111,44 @@ public class ReadTableRequest {
         builder.append(" FROM ");
         builder.append(mTableName);
 
+        builder.append(mWhereClauses.get(/* withWhereKeyword */ true));
+        builder.append(mOrderByClause.getOrderBy());
+        builder.append(mLimitClause);
+
+        String readQuery = builder.toString();
         if (mJoinClause != null) {
-            builder.append(mJoinClause.getInnerJoinClause());
-            builder.append(mWhereClauses.get(/* withWhereKeyword */ true));
-            builder.append(mJoinClause.getOrderByClause());
-        } else {
-            builder.append(mWhereClauses.get(/* withWhereKeyword */ true));
+            readQuery = mJoinClause.getInnerQueryJoinClause(readQuery);
         }
         builder.append(mLimitClause);
 
         if (Constants.DEBUG) {
-            Slog.d(TAG, "read query: " + builder);
+            Slog.d(TAG, "read query: " + readQuery);
         }
 
-        return builder.toString();
+        return readQuery;
+    }
+
+    /** Sets order by clause for the read query */
+    @NonNull
+    public ReadTableRequest setOrderBy(OrderByClause orderBy) {
+        mOrderByClause = orderBy;
+        return this;
+    }
+
+    /** Sets LIMIT size for the read query */
+    @NonNull
+    public ReadTableRequest setLimit(int pageSize) {
+        mPageSize = pageSize;
+        // We set limit size to requested pageSize + 1,so that if number of records queried is more
+        // than pageSize we know there are more records available to return for the next read.
+        pageSize += 1;
+        mLimitClause = LIMIT_SIZE + pageSize;
+        return this;
+    }
+
+    /** Returns page size of the read request */
+    public int getPageSize() {
+        return mPageSize;
     }
 
     private String getColumnsToFetch() {
@@ -127,12 +157,5 @@ public class ReadTableRequest {
         }
 
         return String.join(DELIMITER, mColumnNames);
-    }
-
-    /** Sets LIMIT size for the read query */
-    @NonNull
-    public ReadTableRequest setLimit(int size) {
-        mLimitClause = " LIMIT " + size;
-        return this;
     }
 }

@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import static com.android.server.healthconnect.storage.utils.StorageUtils.SELECT_ALL;
+
 /** @hide */
 public final class SqlJoin {
     private final String mSelfTableName;
@@ -34,6 +36,28 @@ public final class SqlJoin {
         mJoiningColumnNameToMatch = joiningColumnNameToMatch;
     }
 
+    /**
+     * Returns query by applying JOIN condition on the innerQuery
+     *
+     * @param innerQuery An inner query to be used for the JOIN
+     * @return Final query with JOIN condition
+     */
+    public String getInnerQueryJoinClause(String innerQuery) {
+        if (innerQuery == null) {
+            throw new IllegalArgumentException("Inner query cannot be null");
+        }
+        return SELECT_ALL
+                + "( "
+                + innerQuery
+                + " ) JOIN "
+                + mTableNameToJoinOn
+                + " ON "
+                + mSelfColumnNameToMatch
+                + " = "
+                + mJoiningColumnNameToMatch;
+    }
+
+    /** Returns query with INNER JOIN condition */
     public String getInnerJoinClause() {
         return " INNER JOIN "
                 + mTableNameToJoinOn

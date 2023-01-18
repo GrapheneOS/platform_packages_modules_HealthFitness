@@ -16,8 +16,12 @@
 
 package com.android.server.healthconnect.storage;
 
+import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.healthconnect.Constants.DEFAULT_PAGE_SIZE;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
 import android.content.Context;
@@ -27,6 +31,7 @@ import android.database.sqlite.SQLiteException;
 import android.healthconnect.Constants;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.util.Pair;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -211,10 +216,41 @@ public class TransactionManager {
                                 recordInternals.addAll(
                                         readTableRequest
                                                 .getRecordHelper()
-                                                .getInternalRecords(cursor));
+                                                .getInternalRecords(cursor, DEFAULT_PAGE_SIZE));
                             }
                         }));
         return recordInternals;
+    }
+
+    /**
+     * Reads the records {@link RecordInternal} stored in the HealthConnect database and returns the
+     * max row_id as next page token.
+     *
+     * @param request a read request.
+     * @return Pair containing records list read {@link RecordInternal} from the table and a next
+     *     page token for pagination
+     */
+    public Pair<List<RecordInternal<?>>, Long> readRecordsAndGetNextToken(
+            @NonNull ReadTransactionRequest request) throws SQLiteException {
+        // throw an exception if read requested is not for a single record type
+        // i.e. size of read table request is not equal to 1.
+        if (request.getReadRequests().size() != 1) {
+            throw new IllegalArgumentException("Read requested is not for a single record type");
+        }
+        List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+        long token = DEFAULT_LONG;
+        ReadTableRequest readTableRequest = request.getReadRequests().get(0);
+        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
+                Cursor cursor = read(db, readTableRequest)) {
+            recordInternalList =
+                    readTableRequest
+                            .getRecordHelper()
+                            .getInternalRecords(cursor, readTableRequest.getPageSize());
+            if (cursor.moveToNext()) {
+                token = getCursorLong(cursor, PRIMARY_COLUMN_NAME);
+            }
+        }
+        return Pair.create(recordInternalList, token);
     }
 
     /**

@@ -39,6 +39,7 @@ import android.healthconnect.datatypes.HeartRateRecord;
 import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.platform.test.annotations.AppModeFull;
+import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
@@ -168,6 +169,66 @@ public class HeartRateRecordTest {
         assertThat(newHeartRateRecords.size() - oldHeartRateRecords.size()).isEqualTo(1);
         assertThat(newHeartRateRecords.get(newHeartRateRecords.size() - 1).equals(testRecord))
                 .isTrue();
+    }
+
+    @Test
+    public void testReadHeartRateRecordUsingFilters_withPageSize() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(TestUtils.getHeartRateRecord(), TestUtils.getHeartRateRecord());
+        TestUtils.insertRecords(recordList);
+        Pair<List<HeartRateRecord>, Long> newHeartRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                                .setPageSize(1)
+                                .build());
+        assertThat(newHeartRecords.first.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testReadHeartRateRecordUsingFilters_withPageToken() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        TestUtils.getHeartRateRecord(),
+                        TestUtils.getHeartRateRecord(),
+                        TestUtils.getHeartRateRecord());
+        TestUtils.insertRecords(recordList);
+        Pair<List<HeartRateRecord>, Long> oldHeartRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                                .setPageSize(1)
+                                .build());
+        Pair<List<HeartRateRecord>, Long> newHeartRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                                .setPageSize(1)
+                                .setPageToken(oldHeartRecords.second)
+                                .build());
+        assertThat(newHeartRecords.first.size()).isEqualTo(1);
+        assertThat(newHeartRecords.second).isNotEqualTo(oldHeartRecords.second);
+    }
+
+    @Test
+    public void testReadHeartRateRecordUsingFilters_nextPageTokenEnd() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(TestUtils.getHeartRateRecord(), TestUtils.getHeartRateRecord());
+        TestUtils.insertRecords(recordList);
+        Pair<List<HeartRateRecord>, Long> oldHeartRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                                .build());
+        Pair<List<HeartRateRecord>, Long> newHeartRecords;
+        while (oldHeartRecords.second != -1) {
+            newHeartRecords =
+                    TestUtils.readRecordsWithPagination(
+                            new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                                    .setPageToken(oldHeartRecords.second)
+                                    .build());
+            if (newHeartRecords.second != -1) {
+                assertThat(newHeartRecords.second).isGreaterThan(oldHeartRecords.second);
+            }
+            oldHeartRecords = newHeartRecords;
+        }
+        assertThat(oldHeartRecords.second).isEqualTo(-1);
     }
 
     @Test

@@ -16,6 +16,7 @@
 
 package android.healthconnect.aidl;
 
+import static android.healthconnect.Constants.DEFAULT_INT;
 import static android.healthconnect.Constants.DEFAULT_LONG;
 
 import android.annotation.NonNull;
@@ -55,6 +56,9 @@ public class ReadRecordsRequestParcel implements Parcelable {
     private final List<String> mPackageFilters;
     private final long mStartTime;
     private final long mEndTime;
+    private final int mPageSize;
+    private final long mPageToken;
+    private final boolean mAscending;
 
     protected ReadRecordsRequestParcel(Parcel in) {
         mRecordType = in.readInt();
@@ -64,6 +68,9 @@ public class ReadRecordsRequestParcel implements Parcelable {
         mRecordIdFiltersParcel =
                 in.readParcelable(
                         RecordIdFiltersParcel.class.getClassLoader(), RecordIdFiltersParcel.class);
+        mPageSize = in.readInt();
+        mPageToken = in.readLong();
+        mAscending = in.readBoolean();
     }
 
     public ReadRecordsRequestParcel(ReadRecordsRequestUsingIds<?> request) {
@@ -72,6 +79,11 @@ public class ReadRecordsRequestParcel implements Parcelable {
         mStartTime = DEFAULT_LONG;
         mEndTime = DEFAULT_LONG;
         mRecordType = RecordMapper.getInstance().getRecordType(request.getRecordType());
+        mPageSize = DEFAULT_INT;
+
+        // set to -1 as pageToken is not supported for read using ids but only with filters.
+        mPageToken = DEFAULT_LONG;
+        mAscending = true;
     }
 
     public ReadRecordsRequestParcel(ReadRecordsRequestUsingFilters<?> request) {
@@ -89,6 +101,9 @@ public class ReadRecordsRequestParcel implements Parcelable {
             mEndTime = request.getTimeRangeFilter().getEndTime().toEpochMilli();
         }
         mRecordType = RecordMapper.getInstance().getRecordType(request.getRecordType());
+        mPageSize = request.getPageSize();
+        mPageToken = request.getPageToken();
+        mAscending = request.isAscending();
     }
 
     public int getRecordType() {
@@ -111,6 +126,18 @@ public class ReadRecordsRequestParcel implements Parcelable {
         return mRecordIdFiltersParcel;
     }
 
+    public int getPageSize() {
+        return mPageSize;
+    }
+
+    public long getPageToken() {
+        return mPageToken;
+    }
+
+    public boolean isAscending() {
+        return mAscending;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -123,5 +150,8 @@ public class ReadRecordsRequestParcel implements Parcelable {
         dest.writeLong(mEndTime);
         dest.writeStringList(mPackageFilters);
         dest.writeParcelable(mRecordIdFiltersParcel, 0);
+        dest.writeInt(mPageSize);
+        dest.writeLong(mPageToken);
+        dest.writeBoolean(mAscending);
     }
 }

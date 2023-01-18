@@ -144,10 +144,11 @@ public final class ChangeLogsHelper {
                             .getAppInfoIds(changeLogTokenRequest.getPackageNamesToFilter()));
         }
 
-        // We set limit size to pageSize + 1,so that if number of records returned is more than
-        // pageSize we know there are more records available to return for the next read.
+        // In setLimit(pagesize) method size will be set to pageSize + 1,so that if number of
+        // records returned is more than pageSize we know there are more records available to return
+        // for the next read.
         final ReadTableRequest readTableRequest =
-                new ReadTableRequest(TABLE_NAME).setWhereClause(whereClause).setLimit(pageSize + 1);
+                new ReadTableRequest(TABLE_NAME).setWhereClause(whereClause).setLimit(pageSize);
 
         Map<Integer, ChangeLogs> operationToChangeLogMap = new ArrayMap<>();
         TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
