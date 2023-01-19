@@ -14,28 +14,53 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.android.settingslib.widget.TopIntroPreference
         android:order="0"
-        android:key="connected_apps_top_intro"
-        android:title="@string/connected_apps_text"/>
+        android:key="connected_apps_top_intro"/>
+    <PreferenceCategory
+        android:key="things_to_try_app_permissions_screen"
+        android:title="@string/things_to_try"
+        app:isPreferenceVisible="false"
+        android:order="6">
+        <Preference
+            android:key="check_for_updates_app_permissions_screen"
+            android:icon="@drawable/check_for_update_icon"
+            android:title="@string/check_for_updates"
+            android:summary="@string/check_for_updates_description" />
+        <Preference
+            android:key="see_all_compatible_apps_app_permissions_screen"
+            android:icon="@drawable/see_all_compatible_apps_icon"
+            android:title="@string/see_all_compatible_apps"
+            android:summary="@string/see_all_compatible_apps_description" />
+        <Preference
+            android:key="send_feedback_app_permissions_screen"
+            android:icon="@drawable/send_feedback_icon"
+            android:title="@string/send_feedback"
+            android:summary="@string/send_feedback_description" />
+    </PreferenceCategory>
     <PreferenceCategory
         android:order="2"
         android:key="allowed_apps"
-        android:title="@string/connected_apps_section_title"/>
+        android:title="@string/connected_apps_section_title"
+        app:isPreferenceVisible="false"/>
     <PreferenceCategory
         android:order="3"
         android:key="not_allowed_apps"
-        android:title="@string/not_connected_apps_section_title"/>
+        android:title="@string/not_connected_apps_section_title"
+        app:isPreferenceVisible="false"/>
     <com.android.healthconnect.controller.shared.LongSummaryPreferenceCategory
         android:order="4"
         android:key="inactive_apps"
         android:title="@string/inactive_apps_section_title"
-        android:summary="@string/inactive_apps_section_message" />
+        android:summary="@string/inactive_apps_section_message"
+        app:isPreferenceVisible="false"/>
     <PreferenceCategory
         android:order="5"
         android:key="settings_and_help"
-        android:title="@string/settings_and_help_header">
+        android:title="@string/settings_and_help_header"
+        app:isPreferenceVisible="false">
         <Preference
             android:key="remove_all_apps"
             android:icon="@drawable/quantum_gm_ic_block_vd_theme_24"

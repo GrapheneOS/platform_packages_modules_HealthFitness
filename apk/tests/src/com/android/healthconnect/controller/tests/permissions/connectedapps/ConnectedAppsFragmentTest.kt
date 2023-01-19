@@ -33,7 +33,6 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsFragment
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
-import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -61,19 +60,6 @@ class ConnectedAppsFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
-    }
-    @Test
-    fun test_displaysSections() {
-        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(listOf<AppMetadata>()) }
-
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText("Allowed access")).check(matches(isDisplayed()))
-        onView(withText("No apps allowed")).check(matches(isDisplayed()))
-        onView(withText("Not allowed access")).check(matches(isDisplayed()))
-        onView(withText("No apps denied")).check(matches(isDisplayed()))
-        onView(withText("Settings & help")).check(matches(isDisplayed()))
-        onView(withText("Can't see all your apps?")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -107,6 +93,31 @@ class ConnectedAppsFragmentTest {
 
         onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
         onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_appPermissionsWithNoConnectedApps_isDisplayedCorrectly() {
+        val connectApp = listOf<ConnectedAppMetadata>()
+        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText("You don’t currently have any compatible apps installed"))
+            .check(matches(isDisplayed()))
+        onView(withText("Things to try")).check(matches(isDisplayed()))
+        onView(withText("Check for updates")).check(matches(isDisplayed()))
+        onView(withText("Make sure installed apps are up-to-date")).check(matches(isDisplayed()))
+        onView(withText("See all compatible apps")).check(matches(isDisplayed()))
+        onView(withText("Find apps on Google\u00A0Play")).check(matches(isDisplayed()))
+        onView(withText("Send feedback")).check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Tell us which health & fitness apps you’d like to work with Health\u00A0Connect"))
+            .check(matches(isDisplayed()))
+        onView(withText("Allowed access")).check(doesNotExist())
+        onView(withText("Not allowed access")).check(doesNotExist())
+        onView(withText("No apps denied")).check(doesNotExist())
+        onView(withText("Settings & help")).check(doesNotExist())
     }
 
     @Test

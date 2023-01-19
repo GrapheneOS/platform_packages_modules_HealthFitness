@@ -103,6 +103,13 @@
         <action
             android:id="@+id/action_connectedApps_to_searchApps"
             app:destination="@id/searchConnectedApps" />
+        <action
+            android:id="@+id/action_connected_apps_to_updated_apps"
+            app:destination="@id/update_apps_activity" />
+
+        <action
+            android:id="@+id/action_connected_apps_to_play_store"
+            app:destination="@id/playstore_activity" />
     </fragment>
     <fragment
         android:id="@+id/searchConnectedApps"
@@ -116,10 +123,10 @@
         android:name="com.android.healthconnect.controller.permissions.connectedapps.CantSeeAllYourAppsFragment"
         android:label="@string/cant_see_all_your_apps_title">
         <action
-            android:id="@+id/action_connected_apps_to_play_store"
+            android:id="@+id/action_cant_see_all_apps_to_play_store"
             app:destination="@id/playstore_activity" />
         <action
-            android:id="@+id/action_connected_apps_to_updated_apps"
+            android:id="@+id/action_cant_see_all_apps_to_updated_apps"
             app:destination="@id/update_apps_activity" />
     </fragment>
     <fragment

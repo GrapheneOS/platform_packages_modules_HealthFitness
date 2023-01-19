@@ -55,12 +55,12 @@ class CantSeeAllYourAppsFragment : Hilt_CantSeeAllYourAppsFragment() {
         setPreferencesFromResource(R.xml.cant_see_all_your_apps_screen, rootKey)
 
         mCheckForUpdates?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_connected_apps_to_updated_apps)
+            findNavController().navigate(R.id.action_cant_see_all_apps_to_updated_apps)
             true
         }
 
         mSeeAllCompatibleApps?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_connected_apps_to_play_store)
+            findNavController().navigate(R.id.action_cant_see_all_apps_to_play_store)
             true
         }
 

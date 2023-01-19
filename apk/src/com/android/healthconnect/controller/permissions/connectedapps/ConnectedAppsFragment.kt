@@ -15,8 +15,10 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
+import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
@@ -40,7 +42,9 @@ import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
+import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppPreference
+import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Fragment for connected apps screen. */
@@ -48,14 +52,25 @@ import dagger.hilt.android.AndroidEntryPoint
 class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     companion object {
+        private const val TOP_INTRO = "connected_apps_top_intro"
         const val ALLOWED_APPS_CATEGORY = "allowed_apps"
         private const val NOT_ALLOWED_APPS = "not_allowed_apps"
         private const val CANT_SEE_ALL_YOUR_APPS = "cant_see_apps"
         private const val REMOVE_ALL_APPS = "remove_all_apps"
         private const val INACTIVE_APPS = "inactive_apps"
+        private const val THINGS_TO_TRY = "things_to_try_app_permissions_screen"
+        private const val SETTINGS_AND_HELP = "settings_and_help"
+        private const val CHECK_FOR_UPDATES = "check_for_updates_app_permissions_screen"
+        private const val SEE_ALL_COMPATIBLE_APPS = "see_all_compatible_apps_app_permissions_screen"
+        private const val SEND_FEEDBACK = "send_feedback_app_permissions_screen"
     }
 
     private val viewModel: ConnectedAppsViewModel by viewModels()
+    private lateinit var searchMenuItem: MenuItem
+
+    private val mTopIntro: TopIntroPreference? by lazy {
+        preferenceScreen.findPreference(TOP_INTRO)
+    }
 
     private val mAllowedAppsCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(ALLOWED_APPS_CATEGORY)
@@ -69,6 +84,14 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         preferenceScreen.findPreference(INACTIVE_APPS)
     }
 
+    private val mThingsToTryCategory: PreferenceGroup? by lazy {
+        preferenceScreen.findPreference(THINGS_TO_TRY)
+    }
+
+    private val mSettingAndHelpCategory: PreferenceGroup? by lazy {
+        preferenceScreen.findPreference(SETTINGS_AND_HELP)
+    }
+
     private val mCantSeeAllYourAppsPreference: Preference? by lazy {
         preferenceScreen.findPreference(CANT_SEE_ALL_YOUR_APPS)
     }
@@ -77,14 +100,42 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         preferenceScreen.findPreference(REMOVE_ALL_APPS)
     }
 
+    private val mCheckForUpdates: Preference? by lazy {
+        preferenceScreen.findPreference(CHECK_FOR_UPDATES)
+    }
+
+    private val mSeeAllCompatibleApps: Preference? by lazy {
+        preferenceScreen.findPreference(SEE_ALL_COMPATIBLE_APPS)
+    }
+
+    private val mSendFeedback: Preference? by lazy {
+        preferenceScreen.findPreference(SEND_FEEDBACK)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
         mCantSeeAllYourAppsPreference?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_connectedApps_to_cantSeeAllYourApps)
             true
         }
+
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
+        }
+        mCheckForUpdates?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.action_connected_apps_to_updated_apps)
+            true
+        }
+
+        mSeeAllCompatibleApps?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.action_connected_apps_to_play_store)
+            true
+        }
+
+        mSendFeedback?.setOnPreferenceClickListener {
+            val intent = Intent(Intent.ACTION_BUG_REPORT)
+            getActivity()?.startActivityForResult(intent, 0)
+            true
         }
         // TODO (b/245515046) add denied apps flow
         //        val appName1 = "Run Tracker"
@@ -133,29 +184,45 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMenu(R.menu.connected_apps, viewLifecycleOwner) { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_search -> {
-                    findNavController().navigate(R.id.action_connectedApps_to_searchApps)
+        viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
+            if (connectedApps.isEmpty()) {
+                setupSharedMenu(viewLifecycleOwner)
+                mTopIntro?.title = getString(R.string.connected_apps_empty_list_section_title)
+                mThingsToTryCategory?.isVisible = true
+                mInactiveAppsPreference?.isVisible = false
+                mAllowedAppsCategory?.isVisible = false
+                mNotAllowedAppsCategory?.isVisible = false
+                mSettingAndHelpCategory?.isVisible = false
+            } else {
+                setupMenu(R.menu.connected_apps, viewLifecycleOwner) { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.menu_search -> {
+                            searchMenuItem = menuItem
+                            findNavController().navigate(R.id.action_connectedApps_to_searchApps)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                mTopIntro?.title = getString(R.string.connected_apps_text)
+                mThingsToTryCategory?.isVisible = false
+                mInactiveAppsPreference?.isVisible = true
+                mAllowedAppsCategory?.isVisible = true
+                mNotAllowedAppsCategory?.isVisible = true
+                mSettingAndHelpCategory?.isVisible = true
+                val connectedAppsGroup = connectedApps.groupBy { it.status }
+                val allowedApps = connectedAppsGroup[ALLOWED].orEmpty()
+                val notAllowedApps = connectedAppsGroup[DENIED].orEmpty()
+                updateAllowedApps(allowedApps)
+                updateDeniedApps(notAllowedApps)
+                updateInactiveApps(connectedAppsGroup[INACTIVE].orEmpty())
+
+                val activeApps: MutableList<ConnectedAppMetadata> = allowedApps.toMutableList()
+                activeApps.addAll(notAllowedApps)
+                mRemoveAllApps?.setOnPreferenceClickListener {
+                    openRemoveAllAppsAccessDialog(activeApps)
                     true
                 }
-                else -> false
-            }
-        }
-
-        viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
-            val connectedAppsGroup = connectedApps.groupBy { it.status }
-            val allowedApps = connectedAppsGroup[ALLOWED].orEmpty()
-            val notAllowedApps = connectedAppsGroup[DENIED].orEmpty()
-            updateAllowedApps(allowedApps)
-            updateDeniedApps(notAllowedApps)
-            updateInactiveApps(connectedAppsGroup[INACTIVE].orEmpty())
-
-            val activeApps: MutableList<ConnectedAppMetadata> = allowedApps.toMutableList()
-            activeApps.addAll(notAllowedApps)
-            mRemoveAllApps?.setOnPreferenceClickListener {
-                openRemoveAllAppsAccessDialog(activeApps)
-                true
             }
         }
     }
