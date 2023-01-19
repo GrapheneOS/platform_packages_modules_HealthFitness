@@ -21,6 +21,7 @@ import static android.healthconnect.Constants.DEFAULT_LONG;
 import static android.healthconnect.Constants.READ;
 import static android.healthconnect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
+import android.Manifest;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.AttributionSource;
@@ -765,8 +766,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
+    // intent.
     @Override
     public void startMigration(IMigrationCallback callback) {
+
+        mContext.enforceCallingOrSelfPermission(
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
+                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
@@ -780,8 +788,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
+    // intent.
     @Override
     public void finishMigration(IMigrationCallback callback) {
+        mContext.enforceCallingOrSelfPermission(
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
+                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {
@@ -795,8 +809,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
+    // intent.
     @Override
     public void writeMigrationData(List<MigrationEntity> entities, IMigrationCallback callback) {
+
+        mContext.enforceCallingOrSelfPermission(
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
+                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
         SHARED_EXECUTOR.execute(
                 () -> {
                     try {

@@ -27,6 +27,7 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -185,10 +186,13 @@ public class DataMigrationTest {
     }
 
     private void migrate(MigrationEntity... entities) {
-        DataMigrationTest.<Void, MigrationException>blockingCall(
-                outcomeReceiver ->
-                        mManager.writeMigrationData(
-                                List.of(entities), Runnable::run, outcomeReceiver));
+        runWithShellPermissionIdentity(
+                () ->
+                        DataMigrationTest.<Void, MigrationException>blockingCall(
+                                outcomeReceiver ->
+                                        mManager.writeMigrationData(
+                                                List.of(entities), Runnable::run, outcomeReceiver)),
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
     private MigrationEntity getRecordEntity(String entityId, Record record) {
