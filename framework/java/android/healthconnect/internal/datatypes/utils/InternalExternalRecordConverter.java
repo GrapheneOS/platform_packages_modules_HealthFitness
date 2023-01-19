@@ -18,6 +18,7 @@ package android.healthconnect.internal.datatypes.utils;
 
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.Record;
+import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.RecordInternal;
 
 import java.lang.reflect.InvocationTargetException;
@@ -61,23 +62,40 @@ public final class InternalExternalRecordConverter {
         List<RecordInternal<?>> internalRecordListInternal = new ArrayList<>(records.size());
 
         for (Record record : records) {
-            Class<? extends RecordInternal<?>> recordClass =
-                    mRecordIdToInternalRecordClassMap.get(record.getRecordType());
-            Objects.requireNonNull(recordClass);
-            RecordInternal<?> recordInternal;
-            try {
-                recordInternal = recordClass.getConstructor().newInstance();
-            } catch (InstantiationException
-                    | IllegalAccessException
-                    | InvocationTargetException
-                    | NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-            recordInternal.populateUsing(record);
-            internalRecordListInternal.add(recordInternal);
+            internalRecordListInternal.add(getInternalRecord(record));
         }
 
         return internalRecordListInternal;
+    }
+
+    /** Converts {@link Record} to {@link RecordInternal}. */
+    @NonNull
+    public RecordInternal<?> getInternalRecord(@NonNull Record record) {
+        Objects.requireNonNull(record);
+
+        final RecordInternal<?> recordInternal = newInternalRecord(record.getRecordType());
+        recordInternal.populateUsing(record);
+
+        return recordInternal;
+    }
+
+    /** Returns a new instance of {@link RecordInternal} for the provided {@code type }. */
+    @NonNull
+    public RecordInternal<?> newInternalRecord(@RecordTypeIdentifier.RecordType int type) {
+        Class<? extends RecordInternal<?>> recordClass =
+                mRecordIdToInternalRecordClassMap.get(type);
+        Objects.requireNonNull(recordClass);
+        RecordInternal<?> recordInternal;
+        try {
+            recordInternal = recordClass.getConstructor().newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+        return recordInternal;
     }
 
     /** Returns a record for {@param record} */

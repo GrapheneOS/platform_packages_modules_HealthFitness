@@ -33,7 +33,6 @@ import android.healthconnect.AggregateResult;
 import android.healthconnect.datatypes.AggregationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.PowerRecordInternal;
-import android.healthconnect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -55,12 +54,6 @@ public class PowerRecordHelper
     private static final String SERIES_TABLE_NAME = "power_record_table";
     private static final String POWER_COLUMN_NAME = "power";
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
-
-    @NonNull
-    @Override
-    public RecordInternal<?> newInternalRecord() {
-        return new PowerRecordInternal();
-    }
 
     @Override
     public final AggregateResult<?> getAggregateResult(

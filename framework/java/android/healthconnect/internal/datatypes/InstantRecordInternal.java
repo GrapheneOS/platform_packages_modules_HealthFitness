@@ -16,13 +16,8 @@
 
 package android.healthconnect.internal.datatypes;
 
-import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireLong;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_TIME;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_ZONE_OFFSET;
-
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.InstantRecord;
-import android.os.Bundle;
 import android.os.Parcel;
 
 import java.time.Instant;
@@ -80,14 +75,6 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
         populateInstantRecordTo(parcel);
     }
 
-    @Override
-    final void populateRecordFrom(@NonNull Bundle payload) {
-        mTime = requireLong(payload, DM_RECORD_TIME);
-        mZoneOffset = payload.getInt(DM_RECORD_ZONE_OFFSET);
-
-        populateInstantRecordFrom(payload);
-    }
-
     Instant getTime() {
         return Instant.ofEpochMilli(mTime);
     }
@@ -133,9 +120,4 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
      * transmissions
      */
     abstract void populateInstantRecordTo(@NonNull Parcel parcel);
-
-    /** Populates the record using the provided data migration payload. */
-    void populateInstantRecordFrom(@NonNull Bundle payload) {
-        // TODO(b/263571058): Make abstract when implemented for all records
-    }
 }

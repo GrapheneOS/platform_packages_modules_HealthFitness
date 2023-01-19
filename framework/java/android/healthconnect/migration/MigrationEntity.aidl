@@ -1,3 +1,3 @@
 package android.healthconnect.migration;
 
-parcelable MigrationDataEntity;
+parcelable MigrationEntity;

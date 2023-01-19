@@ -15,17 +15,8 @@
  */
 package android.healthconnect.internal.datatypes;
 
-import static android.healthconnect.internal.datatypes.utils.BundleUtils.requireLong;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_END_TIME;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_END_ZONE_OFFSET;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_START_TIME;
-import static android.healthconnect.migration.DataMigrationFields.DM_RECORD_START_ZONE_OFFSET;
-
-import static java.util.Objects.requireNonNull;
-
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.IntervalRecord;
-import android.os.Bundle;
 import android.os.Parcel;
 
 import java.time.Instant;
@@ -91,18 +82,6 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
         mEndZoneOffset = intervalRecord.getEndZoneOffset().getTotalSeconds();
 
         populateIntervalRecordFrom(intervalRecord);
-    }
-
-    @Override
-    final void populateRecordFrom(@NonNull Bundle payload) {
-        requireNonNull(payload);
-
-        mStartTime = requireLong(payload, DM_RECORD_START_TIME);
-        mStartZoneOffset = payload.getInt(DM_RECORD_START_ZONE_OFFSET);
-        mEndTime = requireLong(payload, DM_RECORD_END_TIME);
-        mEndZoneOffset = payload.getInt(DM_RECORD_END_ZONE_OFFSET);
-
-        populateIntervalRecordFrom(payload);
     }
 
     Instant getStartTime() {
@@ -171,9 +150,4 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
      * transmissions
      */
     abstract void populateIntervalRecordTo(@NonNull Parcel parcel);
-
-    /** Populates the record using the provided data migration payload. */
-    void populateIntervalRecordFrom(@NonNull Bundle payload) {
-        // TODO(b/263571058): Make abstract when implemented for all records
-    }
 }
