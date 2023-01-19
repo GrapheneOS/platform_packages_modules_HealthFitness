@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.tests.migration.app;
+package android.healthconnect.cts.app;
 
 import android.app.Activity;
 

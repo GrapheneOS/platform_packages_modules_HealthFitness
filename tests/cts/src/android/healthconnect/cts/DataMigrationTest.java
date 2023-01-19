@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.tests.migration;
+package android.healthconnect.cts;
 
 import static android.content.pm.PackageManager.GET_PERMISSIONS;
 import static android.content.pm.PackageManager.PackageInfoFlags;
@@ -50,7 +50,6 @@ import android.healthconnect.migration.MigrationEntity;
 import android.healthconnect.migration.MigrationException;
 import android.healthconnect.migration.PermissionMigrationPayload;
 import android.healthconnect.migration.RecordMigrationPayload;
-import android.os.Bundle;
 import android.os.OutcomeReceiver;
 import android.os.UserHandle;
 
@@ -76,19 +75,13 @@ import java.util.function.Consumer;
 @RunWith(AndroidJUnit4.class)
 public class DataMigrationTest {
 
-    private static final String PACKAGE_NAME = "android.healthconnect.tests.migration";
-    private static final String APP_PACKAGE_NAME = "android.healthconnect.tests.migration.app";
+    private static final String PACKAGE_NAME = "android.healthconnect.cts";
+    private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
     private final Executor mOutcomeExecutor = Executors.newSingleThreadExecutor();
     private final Instant mEndTime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
     private final Instant mStartTime = mEndTime.minus(Duration.ofHours(1));
     private Context mTargetContext;
     private HealthConnectManager mManager;
-
-    private static Bundle bundleOf(Consumer<Bundle> builder) {
-        final Bundle bundle = new Bundle();
-        builder.accept(bundle);
-        return bundle;
-    }
 
     private static <T, E extends RuntimeException> T blockingCall(
             Consumer<OutcomeReceiver<T, E>> action) throws E {
