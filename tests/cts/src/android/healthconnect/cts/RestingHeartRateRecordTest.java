@@ -207,7 +207,10 @@ public class RestingHeartRateRecordTest {
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<RestingHeartRateRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(RestingHeartRateRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<RestingHeartRateRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
         result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
         insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));

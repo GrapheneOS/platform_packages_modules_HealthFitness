@@ -249,7 +249,10 @@ public class FloorsClimbedRecordTest {
         for (Record record : insertedRecord) {
             request.addClientRecordId(record.getMetadata().getClientRecordId());
         }
-        List<FloorsClimbedRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(FloorsClimbedRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<FloorsClimbedRecord> result = TestUtils.readRecords(requestUsingIds);
         result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
         insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
 

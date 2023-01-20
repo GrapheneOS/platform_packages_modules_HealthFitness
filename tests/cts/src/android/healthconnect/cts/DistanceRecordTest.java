@@ -281,7 +281,10 @@ public class DistanceRecordTest {
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<DistanceRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(DistanceRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<DistanceRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
         result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
         insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));

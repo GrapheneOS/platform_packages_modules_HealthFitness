@@ -347,7 +347,10 @@ public class CyclingPedalingCadenceRecordTest {
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<CyclingPedalingCadenceRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(CyclingPedalingCadenceRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<CyclingPedalingCadenceRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
         for (int i = 0; i < result.size(); i++) {
             assertThat(result.get(i).equals(insertedRecords.get(i))).isTrue();

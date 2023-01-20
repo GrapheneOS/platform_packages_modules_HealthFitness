@@ -301,7 +301,10 @@ public class ElevationGainedRecordTest {
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<ElevationGainedRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(ElevationGainedRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<ElevationGainedRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
         result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
         insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));

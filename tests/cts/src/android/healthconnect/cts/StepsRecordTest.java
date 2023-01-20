@@ -81,6 +81,8 @@ public class StepsRecordTest {
     public void testReadStepsRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<StepsRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class).addId("abc").build();
+        assertThat(request.getRecordType()).isEqualTo(StepsRecord.class);
+        assertThat(request.getRecordIdFilters()).isNotNull();
         List<StepsRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
@@ -308,7 +310,10 @@ public class StepsRecordTest {
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<StepsRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(StepsRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<StepsRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
         result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
         insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));

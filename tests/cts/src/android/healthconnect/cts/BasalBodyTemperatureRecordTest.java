@@ -232,7 +232,10 @@ public class BasalBodyTemperatureRecordTest {
         for (Record record : insertedRecords) {
             request.addId(record.getMetadata().getId());
         }
-        List<BasalBodyTemperatureRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(BasalBodyTemperatureRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<BasalBodyTemperatureRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
         result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
         insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
