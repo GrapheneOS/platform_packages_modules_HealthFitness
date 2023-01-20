@@ -80,7 +80,7 @@ public final class MigrationBroadcastScheduler {
      */
     public void prescheduleNewJobs(Context context) {
         synchronized (mLock) {
-            int migrationState = MigrationStateManager.getInstance().getMigrationState();
+            int migrationState = MigrationStateManager.getInitialisedInstance().getMigrationState();
 
             if (Constants.DEBUG) {
                 Slog.d(TAG, "Current migration state: " + migrationState);

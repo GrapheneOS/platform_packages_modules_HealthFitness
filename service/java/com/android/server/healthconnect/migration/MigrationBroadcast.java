@@ -16,23 +16,23 @@
 
 package com.android.server.healthconnect.migration;
 
-import android.Manifest;
+import static com.android.server.healthconnect.migration.MigrationConstants.HC_PACKAGE_NAME_CONFIG_NAME;
+import static com.android.server.healthconnect.migration.MigrationUtils.filterIntent;
+import static com.android.server.healthconnect.migration.MigrationUtils.filterPermissions;
+
 import android.annotation.NonNull;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.Slog;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * This class contains methods to:
@@ -78,16 +78,14 @@ public class MigrationBroadcast {
         }
 
         String hcMigratorPackage =
-                mContext.getString(
-                        mContext.getResources()
-                                .getIdentifier(
-                                        "config_healthConnectMigratorPackageName",
-                                        "string",
-                                        "android"));
+                mContext.getResources()
+                        .getString(
+                                Resources.getSystem()
+                                        .getIdentifier(HC_PACKAGE_NAME_CONFIG_NAME, null, null));
         String migrationAwarePackage;
 
-        List<String> permissionFilteredPackages = filterPermissions();
-        List<String> filteredPackages = filterIntent(permissionFilteredPackages);
+        List<String> permissionFilteredPackages = filterPermissions(mContext);
+        List<String> filteredPackages = filterIntent(mContext, permissionFilteredPackages);
 
         int numPackages = filteredPackages.size();
 
@@ -131,74 +129,6 @@ public class MigrationBroadcast {
         } else if (Constants.DEBUG) {
             Slog.d(TAG, "Migration aware app is not installed on the current user");
         }
-    }
-
-    /**
-     * Filters and returns the package names of applications which hold permission {@link
-     * android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA}.
-     *
-     * @return List of filtered app package names which hold the specified permission
-     */
-    private List<String> filterPermissions() {
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "Calling filterPermissions()");
-        }
-
-        String[] permissions = new String[] {Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA};
-
-        List<PackageInfo> packageInfos =
-                mContext.getPackageManager()
-                        .getPackagesHoldingPermissions(
-                                permissions, PackageManager.PackageInfoFlags.of(0));
-
-        List<String> permissionFilteredPackages =
-                packageInfos.stream().map(info -> info.packageName).collect(Collectors.toList());
-
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "permissionFilteredPackages : " + permissionFilteredPackages);
-        }
-        return permissionFilteredPackages;
-    }
-
-    /**
-     * Filters and returns the package names of applications which handle intent {@link
-     * android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
-     *
-     * @param permissionFilteredPackages List of app package names holding permission {@link
-     *     android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA}
-     * @return List of filtered app package names which handle the specified intent action
-     */
-    private List<String> filterIntent(List<String> permissionFilteredPackages) {
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "Calling filterIntents()");
-        }
-
-        List<String> filteredPackages = new ArrayList<String>(permissionFilteredPackages.size());
-
-        for (String packageName : permissionFilteredPackages) {
-
-            if (Constants.DEBUG) {
-                Slog.d(TAG, "Checking intent for package : " + packageName);
-            }
-
-            Intent intentToCheck =
-                    new Intent(HealthConnectManager.ACTION_SHOW_MIGRATION_INFO)
-                            .setPackage(packageName);
-
-            ResolveInfo resolveResult =
-                    mContext.getPackageManager()
-                            .resolveActivity(
-                                    intentToCheck,
-                                    PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL));
-
-            if (resolveResult != null) {
-                filteredPackages.add(packageName);
-            }
-        }
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "filteredPackages : " + filteredPackages);
-        }
-        return filteredPackages;
     }
 
     private boolean isPackageInstalled(String packageName, UserHandle user) {

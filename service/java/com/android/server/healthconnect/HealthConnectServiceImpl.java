@@ -21,7 +21,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
-import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
@@ -118,7 +117,6 @@ import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.migration.DataMigrationManager;
-import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -196,15 +194,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             TransactionManager transactionManager,
             HealthConnectPermissionHelper permissionHelper,
             FirstGrantTimeManager firstGrantTimeManager,
-            MigrationBroadcastScheduler migrationBroadcastScheduler,
             Context context) {
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
         mFirstGrantTimeManager = firstGrantTimeManager;
         mContext = context;
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
-        mMigrationStateManager = MigrationStateManager.getInstance();
-        mMigrationStateManager.setMigrationBroadcastScheduler(migrationBroadcastScheduler);
+        mMigrationStateManager = MigrationStateManager.getInitialisedInstance();
         mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
         mBackupRestore = new BackupRestore(mFirstGrantTimeManager);
@@ -1189,8 +1185,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateStartMigration();
-                        mMigrationStateManager.updateMigrationState(
-                                MIGRATION_STATE_IN_PROGRESS, mContext);
+                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IN_PROGRESS);
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -1216,8 +1211,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateFinishMigration();
-                        mMigrationStateManager.updateMigrationState(
-                                MIGRATION_STATE_COMPLETE, mContext);
+                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -1369,7 +1363,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingPermission(
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
         mBackupRestore.deleteAndResetEverything(userHandle);
-        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IDLE, mContext);
+        mMigrationStateManager.clearCaches();
         AppInfoHelper.getInstance().clearData(mTransactionManager);
         ActivityDateHelper.getInstance().clearData(mTransactionManager);
         MigrationEntityHelper.getInstance().clearData(mTransactionManager);
