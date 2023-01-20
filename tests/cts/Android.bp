@@ -81,3 +81,42 @@ android_test {
     test_config:"AndroidTestNoPermission.xml",
     manifest: "AndroidManifestNoPermission.xml",
 }
+
+android_test {
+    name: "CtsHealthConnectControllerTestCases",
+    defaults: ["cts_defaults"],
+    libs: [
+        "android.test.runner",
+        "android.test.base",
+        "framework-healthfitness",
+    ],
+    srcs: [
+        ":healthconnect-cts-testapp-srcs",
+        ":healthconnect-cts-testapp2-srcs",
+        "src/android/healthconnect/cts/ui/*.kt",
+        "src/android/healthconnect/cts/ui/testing/*.kt",
+        "src/android/healthconnect/cts/TestUtils.java",
+    ],
+    // Tag this module as a cts test artifact
+    test_suites: [
+        "cts",
+        "general-tests",
+        "mts-healthconnect",
+    ],
+    static_libs: [
+        "androidx.test.rules",
+        "androidx.test.ext.truth",
+        "compatibility-device-util-axt",
+        "ctstestrunner-axt",
+        "cts-wm-util",
+        "testng",
+    ],
+    min_sdk_version: "UpsideDownCake",
+    sdk_version: "module_current",
+    test_config:"AndroidTestUI.xml",
+    manifest: "AndroidManifestUI.xml",
+    data: [
+            ":HealthConnectCtsTestApp",
+            ":HealthConnectCtsTestApp2",
+        ],
+}
