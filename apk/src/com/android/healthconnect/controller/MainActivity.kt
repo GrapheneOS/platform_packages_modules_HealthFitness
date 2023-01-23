@@ -39,7 +39,7 @@ class MainActivity : Hilt_MainActivity() {
         val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
         val previouslyOpened =
             sharedPreference.getBoolean(getString(R.string.previously_opened), false)
-        if (!previouslyOpened) {
+        if (!previouslyOpened && savedInstanceState == null) {
             val intent = Intent(this, OnboardingActivity::class.java)
             startActivityForResult(intent, 0)
         }
