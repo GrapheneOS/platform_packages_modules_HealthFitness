@@ -59,9 +59,7 @@
   <string name="body_water_mass_label" description="Label used to show the user's body water mass data [CHAR_LIMIT=50]">Body water mass</string>
   <string name="bone_mass_label" description="Label used to show the user's bone mass data [CHAR_LIMIT=50]">Bone mass</string>
   <string name="height_label" description="Label used to show the user's height data [CHAR_LIMIT=50]">Height</string>
-  <string name="hip_circumference_label" description="Label used to show the user's hip circumference data [CHAR_LIMIT=50]">Hip circumference</string>
   <string name="lean_body_mass_label" description="Label used to show the user's lean body mass data [CHAR_LIMIT=50]">Lean body mass</string>
-  <string name="waist_circumference_label" description="Label used to show the user's waist circumference data [CHAR_LIMIT=50]">Waist circumference</string>
   <string name="weight_label" description="Label used to show the user's weight data [CHAR_LIMIT=50]">Weight</string>
   <!--endregion-->
 

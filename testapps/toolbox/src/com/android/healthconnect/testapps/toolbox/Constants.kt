@@ -54,7 +54,6 @@ object Constants {
             "android.permission.health.READ_HEART_RATE",
             "android.permission.health.READ_HEART_RATE_VARIABILITY",
             "android.permission.health.READ_HEIGHT",
-            "android.permission.health.READ_HIP_CIRCUMFERENCE",
             "android.permission.health.READ_HYDRATION",
             "android.permission.health.READ_LEAN_BODY_MASS",
             "android.permission.health.READ_MENSTRUATION",
@@ -70,7 +69,6 @@ object Constants {
             "android.permission.health.READ_STEPS",
             "android.permission.health.READ_TOTAL_CALORIES_BURNED",
             "android.permission.health.READ_VO2_MAX",
-            "android.permission.health.READ_WAIST_CIRCUMFERENCE",
             "android.permission.health.READ_WEIGHT",
             "android.permission.health.READ_WHEELCHAIR_PUSHES",
             "android.permission.health.WRITE_ACTIVE_CALORIES_BURNED",
@@ -90,7 +88,6 @@ object Constants {
             "android.permission.health.WRITE_HEART_RATE",
             "android.permission.health.WRITE_HEART_RATE_VARIABILITY",
             "android.permission.health.WRITE_HEIGHT",
-            "android.permission.health.WRITE_HIP_CIRCUMFERENCE",
             "android.permission.health.WRITE_HYDRATION",
             "android.permission.health.WRITE_LEAN_BODY_MASS",
             "android.permission.health.WRITE_MENSTRUATION",
@@ -106,7 +103,6 @@ object Constants {
             "android.permission.health.WRITE_STEPS",
             "android.permission.health.WRITE_TOTAL_CALORIES_BURNED",
             "android.permission.health.WRITE_VO2_MAX",
-            "android.permission.health.WRITE_WAIST_CIRCUMFERENCE",
             "android.permission.health.WRITE_WEIGHT",
             "android.permission.health.WRITE_WHEELCHAIR_PUSHES",
         )
@@ -167,9 +163,7 @@ object Constants {
                 HealthPermissionType.BODY_WATER_MASS,
                 HealthPermissionType.BONE_MASS,
                 HealthPermissionType.HEIGHT,
-                HealthPermissionType.HIP_CIRCUMFERENCE,
                 HealthPermissionType.LEAN_BODY_MASS,
-                HealthPermissionType.WAIST_CIRCUMFERENCE,
                 HealthPermissionType.WEIGHT)
 
         val CYCLE_TRACKING_PERMISSION_GROUPS =
@@ -224,9 +218,7 @@ object Constants {
         BODY_WATER_MASS(null, R.string.body_water_mass_label),
         BONE_MASS(null, R.string.bone_mass_label),
         HEIGHT(null, R.string.height_label),
-        HIP_CIRCUMFERENCE(null, R.string.hip_circumference_label),
         LEAN_BODY_MASS(null, R.string.lean_body_mass_label),
-        WAIST_CIRCUMFERENCE(null, R.string.waist_circumference_label),
         WEIGHT(null, R.string.weight_label),
 
         // CYCLE_TRACKING

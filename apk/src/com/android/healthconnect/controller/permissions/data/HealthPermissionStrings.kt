@@ -143,26 +143,12 @@ private val PERMISSION_TYPE_STRINGS: ImmutableMap<HealthPermissionType, HealthPe
                 R.string.height_read_content_description,
                 R.string.height_write_content_description))
         .put(
-            HealthPermissionType.HIP_CIRCUMFERENCE,
-            HealthPermissionStrings(
-                R.string.hip_circumference_uppercase_label,
-                R.string.hip_circumference_lowercase_label,
-                R.string.hip_circumference_read_content_description,
-                R.string.hip_circumference_write_content_description))
-        .put(
             HealthPermissionType.LEAN_BODY_MASS,
             HealthPermissionStrings(
                 R.string.lean_body_mass_uppercase_label,
                 R.string.lean_body_mass_lowercase_label,
                 R.string.lean_body_mass_read_content_description,
                 R.string.lean_body_mass_write_content_description))
-        .put(
-            HealthPermissionType.WAIST_CIRCUMFERENCE,
-            HealthPermissionStrings(
-                R.string.waist_circumference_uppercase_label,
-                R.string.waist_circumference_lowercase_label,
-                R.string.waist_circumference_read_content_description,
-                R.string.waist_circumference_write_content_description))
         .put(
             HealthPermissionType.WEIGHT,
             HealthPermissionStrings(

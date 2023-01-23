@@ -77,7 +77,6 @@ package android.healthconnect {
     field public static final int HEART_RATE = 29; // 0x1d
     field public static final int HEART_RATE_VARIABILITY = 30; // 0x1e
     field public static final int HEIGHT = 13; // 0xd
-    field public static final int HIP_CIRCUMFERENCE = 14; // 0xe
     field public static final int HYDRATION = 23; // 0x17
     field public static final int INTERMENSTRUAL_BLEEDING = 38; // 0x26
     field public static final int LEAN_BODY_MASS = 15; // 0xf
@@ -95,7 +94,6 @@ package android.healthconnect {
     field public static final int TOTAL_CALORIES_BURNED = 35; // 0x23
     field public static final int UNKNOWN = 0; // 0x0
     field public static final int VO2_MAX = 7; // 0x7
-    field public static final int WAIST_CIRCUMFERENCE = 16; // 0x10
     field public static final int WEIGHT = 17; // 0x11
     field public static final int WHEELCHAIR_PUSHES = 8; // 0x8
   }

@@ -34,7 +34,6 @@ import static android.healthconnect.HealthPermissions.READ_FLOORS_CLIMBED;
 import static android.healthconnect.HealthPermissions.READ_HEART_RATE;
 import static android.healthconnect.HealthPermissions.READ_HEART_RATE_VARIABILITY;
 import static android.healthconnect.HealthPermissions.READ_HEIGHT;
-import static android.healthconnect.HealthPermissions.READ_HIP_CIRCUMFERENCE;
 import static android.healthconnect.HealthPermissions.READ_HYDRATION;
 import static android.healthconnect.HealthPermissions.READ_INTERMENSTRUAL_BLEEDING;
 import static android.healthconnect.HealthPermissions.READ_LEAN_BODY_MASS;
@@ -51,7 +50,6 @@ import static android.healthconnect.HealthPermissions.READ_SPEED;
 import static android.healthconnect.HealthPermissions.READ_STEPS;
 import static android.healthconnect.HealthPermissions.READ_TOTAL_CALORIES_BURNED;
 import static android.healthconnect.HealthPermissions.READ_VO2_MAX;
-import static android.healthconnect.HealthPermissions.READ_WAIST_CIRCUMFERENCE;
 import static android.healthconnect.HealthPermissions.READ_WEIGHT;
 import static android.healthconnect.HealthPermissions.READ_WHEELCHAIR_PUSHES;
 import static android.healthconnect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
@@ -72,7 +70,6 @@ import static android.healthconnect.HealthPermissions.WRITE_FLOORS_CLIMBED;
 import static android.healthconnect.HealthPermissions.WRITE_HEART_RATE;
 import static android.healthconnect.HealthPermissions.WRITE_HEART_RATE_VARIABILITY;
 import static android.healthconnect.HealthPermissions.WRITE_HEIGHT;
-import static android.healthconnect.HealthPermissions.WRITE_HIP_CIRCUMFERENCE;
 import static android.healthconnect.HealthPermissions.WRITE_HYDRATION;
 import static android.healthconnect.HealthPermissions.WRITE_INTERMENSTRUAL_BLEEDING;
 import static android.healthconnect.HealthPermissions.WRITE_LEAN_BODY_MASS;
@@ -89,7 +86,6 @@ import static android.healthconnect.HealthPermissions.WRITE_SPEED;
 import static android.healthconnect.HealthPermissions.WRITE_STEPS;
 import static android.healthconnect.HealthPermissions.WRITE_TOTAL_CALORIES_BURNED;
 import static android.healthconnect.HealthPermissions.WRITE_VO2_MAX;
-import static android.healthconnect.HealthPermissions.WRITE_WAIST_CIRCUMFERENCE;
 import static android.healthconnect.HealthPermissions.WRITE_WEIGHT;
 import static android.healthconnect.HealthPermissions.WRITE_WHEELCHAIR_PUSHES;
 
@@ -133,9 +129,7 @@ public class HealthPermissionsPresenceTest {
                     READ_BODY_WATER_MASS,
                     READ_BONE_MASS,
                     READ_HEIGHT,
-                    READ_HIP_CIRCUMFERENCE,
                     READ_LEAN_BODY_MASS,
-                    READ_WAIST_CIRCUMFERENCE,
                     READ_WEIGHT,
                     READ_CERVICAL_MUCUS,
                     READ_MENSTRUATION,
@@ -171,9 +165,7 @@ public class HealthPermissionsPresenceTest {
                     WRITE_BODY_WATER_MASS,
                     WRITE_BONE_MASS,
                     WRITE_HEIGHT,
-                    WRITE_HIP_CIRCUMFERENCE,
                     WRITE_LEAN_BODY_MASS,
-                    WRITE_WAIST_CIRCUMFERENCE,
                     WRITE_WEIGHT,
                     WRITE_CERVICAL_MUCUS,
                     WRITE_MENSTRUATION,

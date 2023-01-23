@@ -35,7 +35,6 @@
   <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
   <uses-permission android:name="android.permission.health.READ_HEART_RATE_VARIABILITY" />
   <uses-permission android:name="android.permission.health.READ_HEIGHT" />
-  <uses-permission android:name="android.permission.health.READ_HIP_CIRCUMFERENCE" />
   <uses-permission android:name="android.permission.health.READ_HYDRATION" />
   <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS" />
   <uses-permission android:name="android.permission.health.READ_MENSTRUATION" />
@@ -51,7 +50,6 @@
   <uses-permission android:name="android.permission.health.READ_STEPS" />
   <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED" />
   <uses-permission android:name="android.permission.health.READ_VO2_MAX" />
-  <uses-permission android:name="android.permission.health.READ_WAIST_CIRCUMFERENCE" />
   <uses-permission android:name="android.permission.health.READ_WEIGHT" />
   <uses-permission android:name="android.permission.health.READ_WHEELCHAIR_PUSHES" />
   <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED" />
@@ -72,7 +70,6 @@
   <uses-permission android:name="android.permission.health.WRITE_HEART_RATE" />
   <uses-permission android:name="android.permission.health.WRITE_HEART_RATE_VARIABILITY" />
   <uses-permission android:name="android.permission.health.WRITE_HEIGHT" />
-  <uses-permission android:name="android.permission.health.WRITE_HIP_CIRCUMFERENCE" />
   <uses-permission android:name="android.permission.health.WRITE_HYDRATION" />
   <uses-permission android:name="android.permission.health.WRITE_LEAN_BODY_MASS" />
   <uses-permission android:name="android.permission.health.WRITE_MENSTRUATION" />
@@ -88,7 +85,6 @@
   <uses-permission android:name="android.permission.health.WRITE_STEPS" />
   <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED" />
   <uses-permission android:name="android.permission.health.WRITE_VO2_MAX" />
-  <uses-permission android:name="android.permission.health.WRITE_WAIST_CIRCUMFERENCE" />
   <uses-permission android:name="android.permission.health.WRITE_WEIGHT" />
   <uses-permission android:name="android.permission.health.WRITE_WHEELCHAIR_PUSHES" />
 
