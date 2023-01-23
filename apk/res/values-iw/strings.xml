@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"הרשאות ונתונים"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"כאן אפשר לבדוק את נתוני הבריאות והכושר בטלפון ולנהל אותם, ולהחליט אילו אפליקציות יכולות לגשת לנתונים"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"כאן אפשר לנהל את נתוני הבריאות והכושר בטלפון, ולהחליט אילו אפליקציות יכולות לגשת לנתונים"</string>
     <string name="data_title" msgid="6928287139074878977">"נתונים וגישה"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"כל הקטגוריות"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"הצגת כל הקטגוריות"</string>
     <string name="no_data" msgid="1120552294863595549">"אין נתונים"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"צפייה בנתונים ובפעילות האחרונה באפליקציה"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"הרשאות הניתנות לאפליקציות"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"ניהול האפליקציות וההרשאות"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"אפליקציות שניגשו לנתונים לאחרונה"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"אף אפליקציה לא ניגשה לאחרונה ל-Health Connect"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"הצגת הכול"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"הצגת כל האפליקציות שניגשו לאחרונה"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"כאן אפשר לראות אילו אפליקציות ניגשו לנתונים שלך ב-24 השעות האחרונות"</string>
     <string name="today_header" msgid="3128127066599449902">"היום"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"אתמול"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"קריאה: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"כתיבה: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"פעילות"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"פעילות"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"מדדים גופניים"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"ריר צוואר הרחם"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"קריאה של נתוני ריר צוואר הרחם"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"כתיבה של נתוני ריר צוואר הרחם"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"דימום בין וסתי"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"דימום בין וסתי"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"קריאה של נתוני הדימום הבין וסתי"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"כתיבה של נתוני הדימום הבין וסתי"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"וסת"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"וסת"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"קריאה של נתוני הווסת"</string>
@@ -247,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"אין אפליקציות שקיבלו הרשאת גישה"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"אין אפליקציות שלא קיבלו הרשאת גישה"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"להסיר את הרשאת הגישה לכל האפליקציות?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"לאף אחת מהאפליקציות שלך לא תהיה אפשרות לגשת לנתונים או להוסיף נתונים חדשים ל-Health Connect. הפעולה הזאת לא תמחק נתונים קיימים."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"לאף אחת מהאפליקציות שלך לא תהיה אפשרות לגשת לנתונים או להוסיף נתונים חדשים ל-Health Connect. הפעולה הזאת לא תמחק נתונים קיימים.\n\nהפעולה הזאת לא משפיעה על הרשאות אחרות שעשויות להיות לאפליקציה, כמו המיקום, המצלמה או המיקרופון."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"הסרת הכול"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"ניהול האפליקציה"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"מחיקת נתוני האפליקציה"</string>
@@ -259,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"כדי לנהל הרשאות Android אחרות שיש לאפליקציה הזו גישה אליהן, עוברים ל\'הגדרות\' ומקישים על \'אפליקציות\'"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"לעיון במדיניות הפרטיות"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"הייתה גישה ב-24 השעות האחרונות"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"גישה לאפליקציות"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"ההרשאות שניתנו לאפליקציה הוסרו"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"אפליקציית Health Connect הסירה את ההרשאות של <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"אפליקציית Health Connect הסירה את ההרשאות של <xliff:g id="APP_DATA_0">%1$s</xliff:g> ושל <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"אפליקציית Health Connect הסירה את ההרשאות של <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> ושל <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"אפליקציית Health Connect הסירה את ההרשאות של <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> ושל אפליקציות אחרות"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"פרטים נוספים"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"למה אפליקציית Health Connect מסירה הרשאות הניתנות לאפליקציות"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"אם אפליקציה הושעתה מ-Google Play או הוסרה משם, Health Connect מסירה אוטומטית את ההרשאות שניתנו לאפליקציה.\n\nכלומר, האפליקציה הזו כבר לא יכולה לגשת לנתונים שאוחסנו ב-Health Connect. אם לאפליקציה הזו יש נתונים שנכתבו לפני כן, היא תופיע ברשימת האפליקציות הלא פעילות."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"הבנתי"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"איך מתחילים להשתמש ב-Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"אפליקציית Health Connect מאחסנת את נתוני הבריאות והכושר שלך, ומאפשרת לך לסנכרן בקלות את האפליקציות השונות בטלפון"</string>
     <string name="share_data" msgid="3461840023402996573">"שיתוף נתונים עם האפליקציות שלך"</string>
@@ -332,218 +350,112 @@
     <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{קומה אחת}one{# קומות}two{# קומות}other{# קומות}}"</string>
     <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{מטר אחד}one{# מטרים}two{# מטרים}other{# מטרים}}"</string>
     <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{מטר אחד}one{# מטרים}two{# מטרים}other{# מטרים}}"</string>
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{סיבוב אחד לדקה}one{# סיבובים לדקה}two{# סיבובים לדקה}other{# סיבובים לדקה}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{סיבוב אחד לדקה}one{# סיבובים לדקה}two{# סיבובים לדקה}other{# סיבובים לדקה}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"מ-<xliff:g id="MIN">%1$s</xliff:g> עד <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"מוגן"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"לא מוגן"</string>
+    <string name="spotting" msgid="8367146199172958006">"הכתמה קלה"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"הכתמה קלה"</string>
+    <string name="flow_light" msgid="7714669130547926098">"דימום חלש"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"דימום בינוני"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"דימום חזק"</string>
+    <string name="period_day" msgid="7959562867933427299">"יום <xliff:g id="DAY">%1$d</xliff:g> של הווסת מתוך <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"תוצאה חיובית"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"תוצאה שלילית"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"תוצאה גבוהה"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"לא חד-משמעית"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 מ\"ל/ק\"ג לדקה}one{# מ\"ל/ק\"ג לדקה}two{# מ\"ל/ק\"ג לדקה}other{# מ\"ל/ק\"ג לדקה}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 מיליליטר חמצן לכל קילוגרם של מסת גוף לדקה}one{# מיליליטרים חמצן לכל קילוגרם של מסת גוף לדקה}two{# מיליליטרים חמצן לכל קילוגרם של מסת גוף לדקה}other{# מיליליטרים חמצן לכל קילוגרם של מסת גוף לדקה}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"עגלה מטבולית"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"יחס הדופק"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"מבחן קופר"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"מבחן כושר רב-שלבי"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"מבחן כושר רוקפורט"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"עוד הגדרות"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"יבש"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"דביק"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"דומה לקרם"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"מימי"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"כמו חלבון ביצה"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"חריג"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"כמות קטנה"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"כמות בינונית"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"כמות גדולה"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"‎<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> מילימטר כספית (mmHg)"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> מילימטר כספית"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"עמידה"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"ישיבה"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"שכיבה"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"הישענות בזמן ישיבה"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"פרק כף היד השמאלי"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"פרק כף היד הימני"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"הזרוע השמאלית"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"הזרוע הימנית"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{מילימול אחד לליטר (mmol/L)}one{# מילימולים לליטר (mmol/L)}two{# מילימולים לליטר (mmol/L)}other{# מילימולים לליטר (mmol/L)}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{מילימול אחד לליטר}one{# מילימולים לליטר}two{# מילימולים לליטר}other{# מילימולים לליטר}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"נוזל בין-תאי"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"דם נימי"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"פלזמה"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"סרום"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"דמעות"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"דם מלא"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"כללי"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"צום"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"לפני הארוחה"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"לאחר הארוחה"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"סוג הארוחה"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"לא ידוע"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"ארוחת בוקר"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"ארוחת צהריים"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"ארוחת ערב"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"חטיף"</string>
+    <string name="biotin" msgid="3627884250275404075">"ויטמין B7"</string>
+    <string name="caffeine" msgid="116658071099408928">"קפאין"</string>
+    <string name="calcium" msgid="2421306187949865076">"סידן"</string>
+    <string name="chloride" msgid="7490996250510177338">"כלור"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"כולסטרול"</string>
+    <string name="chromium" msgid="1717886909765369185">"כרום"</string>
+    <string name="copper" msgid="4865917412156527453">"נחושת"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"סיבים תזונתיים"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"אנרגיה"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"אנרגיה משומן"</string>
+    <string name="folate" msgid="8173733292245451456">"ויטמין B9"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"חומצה פולית"</string>
+    <string name="iodine" msgid="6295585927454501032">"יוד"</string>
+    <string name="iron" msgid="1829192962959178553">"ברזל"</string>
+    <string name="magnesium" msgid="2378288907103259048">"מגנזיום"</string>
+    <string name="manganese" msgid="4343136164658896416">"מַנגָן"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"מוליבדן"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"שומן חד בלתי-רווי"</string>
+    <string name="niacin" msgid="2824160609495269089">"ויטמין B3 (ניאצין)"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"ויטמין B5"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"זרחן"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"שומן רב בלתי-רווי"</string>
+    <string name="potassium" msgid="707209134595635038">"אשלגן"</string>
+    <string name="protein" msgid="3822882640861839933">"חלבונים"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"ויטמין B2"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"שומן רווי"</string>
+    <string name="selenium" msgid="9082380472819491510">"סלניום"</string>
+    <string name="sodium" msgid="8769822050033855464">"נתרן"</string>
+    <string name="sugar" msgid="5999057784352629476">"סוכר"</string>
+    <string name="thiamin" msgid="3709641915459997520">"ויטמין B1"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"סך כל הפחמימות"</string>
+    <string name="total_fat" msgid="3978725283210702305">"סה\"כ שומן"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"שומן טראנס"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"שומן בלתי-רווי"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"ויטמין A"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"ויטמין B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"ויטמין B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"ויטמין C"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"ויטמין D"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"ויטמין E"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"ויטמין K"</string>
+    <string name="zinc" msgid="1009892754125043398">"אבץ"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"שם"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{גר\' אחד}one{# גר‘}two{# גר‘}other{# גר‘}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{גרם אחד}one{# גרמים}two{# גרמים}other{# גרמים}}"</string>
     <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{נשימה אחת בדקה}one{# נשימות בדקה}two{# נשימות בדקה}other{# נשימות בדקה}}"</string>
     <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{נשימה אחת בדקה}one{# נשימות בדקה}two{# נשימות בדקה}other{# נשימות בדקה}}"</string>
     <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{ק\"ג אחד}one{# ק\"ג}two{# ק\"ג}other{# ק\"ג}}"</string>
@@ -629,8 +541,7 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי חודש אחד. ההגדרה הזאת תמחק גם נתונים קיימים מלפני חודש.}one{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי # חודשים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}two{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי חודשיים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}other{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי # חודשים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"הגדרת מחיקה אוטומטית"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"הנתונים הקיימים יימחקו"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{כל הנתונים מלפני # חודשים ויותר יימחקו מ-Health Connect‏. ייתכן שיעבור יום עד שהשינויים האלה יופיעו באפליקציות המקושרות שלך.}one{Health Connect will delete all data older than # months. It may take a day for these changes to appear in your connected apps.}two{כל הנתונים מלפני חודשיים ויותר יימחקו מ-Health Connect‏. ייתכן שיעבור יום עד שהשינויים האלה יופיעו באפליקציות המקושרות שלך.}other{כל הנתונים מלפני # חודשים ויותר יימחקו מ-Health Connect‏. ייתכן שיעבור יום עד שהשינויים האלה יופיעו באפליקציות המקושרות שלך.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"הנתונים שיימחקו מהקטגוריות האלה"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"סיום"</string>
     <string name="priority_dialog_title" msgid="7095478075034320176">"הגדרת העדיפות של האפליקציות"</string>

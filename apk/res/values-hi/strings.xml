@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"अनुमतियां और डेटा"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"अपने फ़ोन पर, सेहत और फ़िटनेस से जुड़ा डेटा देखें और उसे मैनेज करें. साथ ही, यह भी कंट्रोल करें कि कौनसे ऐप्लिकेशन इसे ऐक्सेस कर सकते हैं"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"अपने फ़ोन पर, सेहत और फ़िटनेस से जुड़ा डेटा मैनेज करें. साथ ही, यह भी कंट्रोल करें कि कौनसे ऐप्लिकेशन इसे ऐक्सेस कर सकते हैं"</string>
     <string name="data_title" msgid="6928287139074878977">"डेटा और उसका ऐक्सेस"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"सभी कैटगरी"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"सभी कैटगरी देखें"</string>
     <string name="no_data" msgid="1120552294863595549">"कोई डेटा उपलब्ध नहीं है"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"अपना डेटा और ऐप्लिकेशन में हाल ही में की गई गतिविधि की जानकारी देखें"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"ऐप्लिकेशन अनुमतियां"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"डिवाइस पर मौजूद ऐप्लिकेशन और उन्हें दी गई अनुमतियां मैनेज करें"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"हाल ही में, डेटा ऐक्सेस करने वाले ऐप्लिकेशन"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"हाल ही में, किसी भी ऐप्लिकेशन ने Health Connect का इस्तेमाल नहीं किया"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"सभी देखें"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"हाल में डेटा ऐक्सेस करने वाले सभी ऐप्लिकेशन देखें"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"देखें कि पिछले 24 घंटों में किन ऐप्लिकेशन ने आपका डेटा ऐक्सेस किया है"</string>
     <string name="today_header" msgid="3128127066599449902">"आज"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"बीता हुआ कल"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"ऐप्लिकेशन इस डेटा को देख सकता है: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"ऐप्लिकेशन इस डेटा में बदलाव कर सकता है: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"गतिविधि"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"गतिविधि"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"शरीर की माप का डेटा"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"सर्विकल म्यूकस का डेटा"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"सर्विकल म्यूकस का डेटा देखने की अनुमति दें"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"सर्विकल म्यूकस का डेटा सेव करने की अनुमति दें"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"माहवारी के साइकल के दौरान होने वाला रक्त स्राव"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"माहवारी के साइकल के दौरान होने वाला रक्त स्राव"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"माहवारी के साइकल के दौरान होने वाले रक्त स्राव का डेटा देखें"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"माहवारी के साइकल के दौरान होने वाले रक्त स्राव के डेटा में बदलाव करें"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"माहवारी का डेटा"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"माहवारी का डेटा"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"माहवारी का डेटा पढ़ने की अनुमति दें"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"क्या आपको <xliff:g id="APP_NAME">%1$s</xliff:g> को Health Connect का डेटा ऐक्सेस करने की अनुमति देनी है?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g>, आपके डेटा को कैसे हैंडल करता है इसके बारे में जानने के लिए, डेवलपर की <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> में जाएं"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"निजता नीति"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"क्या आपको सभी अनुमतियां हटानी हैं?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"सभी अनुमतियां हटाएं"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"इसके बाद, <xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी.\n\nऐसा करके, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Health Connect से <xliff:g id="APP_NAME">%1$s</xliff:g> का डेटा भी मिटाएं"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"अगला दिन"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"पिछला दिन"</string>
     <string name="default_error" msgid="7047939092442348839">"कोई गड़बड़ी हुई. कृपया फिर से कोशिश करें."</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"किसी भी ऐप्लिकेशन को अनुमति नहीं है"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"सभी ऐप्लिकेशन को अनुमति दी गई"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"क्या आपको सभी ऐप्लिकेशन के लिए ऐक्सेस हटाना है?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"आपके किसी भी ऐप्लिकेशन को Health Connect में नया डेटा जोड़ने या उसमें मौजूद डेटा को ऐक्सेस करने की अनुमति नहीं होगी. हालांकि, ऐसा करने से कोई मौजूदा डेटा नहीं मिटेगा."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"आपके किसी भी ऐप्लिकेशन को Health Connect में नया डेटा जोड़ने या उसमें मौजूद डेटा को ऐक्सेस करने की अनुमति नहीं होगी. हालांकि, ऐसा करने से कोई मौजूदा डेटा नहीं मिटेगा.\n\nऐसा करके, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"सभी अनुमतियां हटाएं?"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"ऐप्लिकेशन मैनेज करें"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"ऐप्लिकेशन का डेटा मिटाएं"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"यह ऐप्लिकेशन, Android की जिन अन्य अनुमतियों को ऐक्सेस कर सकता है उन्हें मैनेज करने के लिए, \'सेटिंग\' में जाकर \'ऐप्लिकेशन\' पर टैप करें"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ऐप्लिकेशन की निजता नीति पढ़ें"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"पिछले 24 घंटे में ऐक्सेस किया गया"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"ऐप्लिकेशन को दिया गया ऐक्सेस"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"ऐप्लिकेशन को मिली अनुमतियां हटा दी गई हैं"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect ने <xliff:g id="APP_DATA">%s</xliff:g> को मिली अनुमतियां हटा दी हैं"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect ने <xliff:g id="APP_DATA_0">%1$s</xliff:g> और <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> को मिली अनुमतियां हटा दी हैं"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Health Connect ने <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, और <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> को मिली अनुमतियां हटा दी हैं"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Health Connect ने <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>, और अन्य ऐप्लिकेशन को मिली अनुमतियां हटा दी हैं"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"ज़्यादा जानकारी देखें"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Health Connect, ऐप्लिकेशन को मिली अनुमतियां क्यों हटाता है"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"अगर Google Play में किसी ऐप्लिकेशन पर रोक लगा दी गई है या उसे हटा दिया गया है, तो Health Connect उस ऐप्लिकेशन को मिली अनुमतियों को अपने-आप हटा देता है.\n\nइसका यह मतलब है कि अब वह ऐप्लिकेशन, Health Connect में सेव किए गए आपके डेटा को ऐक्सेस नहीं कर पाएगा. अगर इस ऐप्लिकेशन में पहले से डेटा सेव है, तो यह बंद किए गए ऐप्लिकेशन की सूची में दिखेगा."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"ठीक है"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect का इस्तेमाल शुरू करें"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect में, सेहत और फ़िटनेस से जुड़ा आपका डेटा सेव किया जाता है. इससे, अपने फ़ोन में अलग-अलग ऐप्लिकेशन को आसानी से सिंक करने में मदद मिलती है"</string>
     <string name="share_data" msgid="3461840023402996573">"ऐप्लिकेशन के साथ डेटा शेयर करें"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 किलोमीटर प्रति घंटा}one{# किलोमीटर प्रति घंटा}other{# किलोमीटर प्रति घंटा}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> से <xliff:g id="END_TIME">%2$s</xliff:g> तक"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> से <xliff:g id="END_TIME">%2$s</xliff:g> तक"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 व्हीलचेयर पुश}one{# व्हीलचेयर पुश}other{# व्हीलचेयर पुश}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 ली॰}one{# ली॰}other{# ली॰}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 लीटर}one{# लीटर}other{# लीटर}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 फ़्लोर}one{# फ़्लोर}other{# फ़्लोर}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 मी॰}one{# मी॰}other{# मी॰}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 मीटर}one{# मीटर}other{# मीटर}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 आरपीएम}one{# आरपीएम}other{# आरपीएम}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 रेवलूशन प्रति मिनट}one{# रेवलूशन प्रति मिनट}other{# रेवलूशन प्रति मिनट}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"<xliff:g id="MIN">%1$s</xliff:g> से <xliff:g id="MAX">%2$s</xliff:g> तक"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"सुरक्षित सेक्स"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"असुरक्षित सेक्स"</string>
+    <string name="spotting" msgid="8367146199172958006">"खून का हल्का रिसाव"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"खून का हल्का रिसाव"</string>
+    <string name="flow_light" msgid="7714669130547926098">"कम रिसाव"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"मध्यम रिसाव"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"ज़्यादा रिसाव"</string>
+    <string name="period_day" msgid="7959562867933427299">"पीरियड (माहवारी) का <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g> में से <xliff:g id="DAY">%1$d</xliff:g> दिन"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"पॉज़िटिव"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"नेगेटिव"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"ज़्यादा"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"कोई ठोस नतीजा नहीं निकला"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 मि॰ली॰/(कि॰ग्रा॰ प्रति मिनट)}one{# मि॰ली॰/(कि॰ग्रा॰ प्रति मिनट)}other{# मि॰ली॰/(कि॰ग्रा॰ प्रति मिनट)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{शरीर के एक किलोग्राम वज़न के लिए, एक मिनट में 1 मिलीलीटर ऑक्सीजन}one{शरीर के एक किलोग्राम वज़न के लिए, एक मिनट में # मिलीलीटर ऑक्सीजन}other{शरीर के एक किलोग्राम वज़न के लिए, एक मिनट में # मिलीलीटर ऑक्सीजन}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"मेटाबॉलिक कार्ट"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"धड़कन की दर का अनुपात"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"कूपर टेस्ट"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"मल्टीस्टेज फ़िटनेस टेस्ट"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"रॉकपोर्ट फ़िटनेस टेस्ट"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"अन्य"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"सूखा"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"चिपचिपा"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"क्रीम जैसा"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"पानी जैसा"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"अंडे जैसा सफ़ेद"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"असामान्य"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"हल्का बहाव"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"सामान्य बहाव"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"बहुत ज़्यादा बहाव"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>–<xliff:g id="DIASTOLIC">%2$s</xliff:g> मिलीमीटर ऑफ़ मर्क्युरी"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> मिलीमीटर ऑफ़ मर्क्युरी"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"खड़े होकर"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"बैठकर"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"लेटकर"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"झुककर"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"बाईं कलाई"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"दाईं कलाई"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"बाईं बांह में ऊपर की ओर"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"दाईं बांह में ऊपर की ओर"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 मि॰मो॰/ली॰}one{# मि॰मो॰/ली॰}other{# मि॰मो॰/ली॰}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 मिलीमोल प्रति लीटर}one{# मिलीमोल प्रति लीटर}other{# मिलीमोल प्रति लीटर}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"इंटरस्टिशियल फ़्लूइड"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"कैपिलरी ब्लड"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"प्लाज़्मा"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"सीरम"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"आंसू"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"होल ब्लड"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"सामान्य"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"खाली पेट"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"खाने के पहले"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"खाने के बाद"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"किस तरह का खाना है"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"कोई जानकारी नहीं है"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"नाश्ता"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"दिन का खाना (लंच)"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"रात का खाना (डिनर)"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"हल्का नाश्ता"</string>
+    <string name="biotin" msgid="3627884250275404075">"बायटिन"</string>
+    <string name="caffeine" msgid="116658071099408928">"कैफ़ीन"</string>
+    <string name="calcium" msgid="2421306187949865076">"कैल्सियम"</string>
+    <string name="chloride" msgid="7490996250510177338">"क्लोराइड"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"कोलेस्ट्रॉल"</string>
+    <string name="chromium" msgid="1717886909765369185">"क्रोमियम"</string>
+    <string name="copper" msgid="4865917412156527453">"कॉपर"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"भोजन से मिला फ़ाइबर"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"ऊर्जा"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"फ़ैट से मिलने वाली ऊर्जा"</string>
+    <string name="folate" msgid="8173733292245451456">"फ़ोलेट"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"फ़ोलिक ऐसिड"</string>
+    <string name="iodine" msgid="6295585927454501032">"आयोडीन"</string>
+    <string name="iron" msgid="1829192962959178553">"आयरन"</string>
+    <string name="magnesium" msgid="2378288907103259048">"मैग्नीशियम"</string>
+    <string name="manganese" msgid="4343136164658896416">"मैंगनीज़"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"मलिब्डनम"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"मोनोअनसैचुरेटेड फ़ैट"</string>
+    <string name="niacin" msgid="2824160609495269089">"नायसिन"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"पेंटोथेनिक ऐसिड"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"फ़ॉसफ़ोरस"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"पॉलीअनसैचुरेटेड फ़ैट"</string>
+    <string name="potassium" msgid="707209134595635038">"पोटैशियम"</string>
+    <string name="protein" msgid="3822882640861839933">"प्रोटीन"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"राइबोफ़्लेविन"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"सैचुरेटेड फ़ैट"</string>
+    <string name="selenium" msgid="9082380472819491510">"सीलीनियम"</string>
+    <string name="sodium" msgid="8769822050033855464">"सोडियम"</string>
+    <string name="sugar" msgid="5999057784352629476">"शुगर"</string>
+    <string name="thiamin" msgid="3709641915459997520">"थायमिन"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"कुल कार्बोहाइड्रेट"</string>
+    <string name="total_fat" msgid="3978725283210702305">"कुल फ़ैट"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"ट्रांस फ़ैट"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"अनसैचुरेटेड फ़ैट"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"विटामिन ए"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"विटामिन B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"विटामिन B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"विटामिन सी"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"विटामिन डी"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"विटामिन ई"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"विटामिन के"</string>
+    <string name="zinc" msgid="1009892754125043398">"ज़िंक"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"नाम"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 ग्रा॰}one{# ग्रा॰}other{# ग्रा॰}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 ग्राम}one{# ग्राम}other{# ग्राम}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 आरपीएम}one{# आरपीएम}other{# आरपीएम}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 सांस प्रति मिनट}one{# सांस प्रति मिनट}other{# सांस प्रति मिनट}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 कि॰ग्रा॰}one{# कि॰ग्रा॰}other{# कि॰ग्रा॰}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 पाउंड}one{# पाउंड}other{# पाउंड}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 स्टोन}one{# स्टोन}other{# स्टोन}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 किलोग्राम}one{# किलोग्राम}other{# किलोग्राम}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 पाउंड}one{# पाउंड}other{# पाउंड}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 स्टोन}one{# स्टोन}other{# स्टोन}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}one{# ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 डिग्री सेल्सियस}one{# डिग्री सेल्सियस}other{# डिग्री सेल्सियस}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}one{# K}other{# K}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}one{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}other{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"ऑटोमैटिकली मिटाने की सुविधा को सेट करें"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"मौजूदा डेटा मिटा दिया जाएगा"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect, # महीने से पहले का सारा डेटा मिटा देगा. इन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}one{Health Connect, # महीने से पहले का सारा डेटा मिटा देगा. इन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}other{Health Connect, # महीने से पहले का सारा डेटा मिटा देगा. इन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"इन कैटगरी का डेटा मिटा दिया जाएगा"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"हो गया"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"प्राथमिकता के हिसाब से, ऐप्लिकेशन का क्रम सेट करें"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"अगर एक से ज़्यादा ऐप्लिकेशन, <xliff:g id="DATA_TYPE">%s</xliff:g> से जुड़ा अपना डेटा सेव करते हैं, तो Health Connect इस सूची में सबसे ऊपर मौजूद ऐप्लिकेशन के डेटा को प्राथमिकता देता है. ऐप्लिकेशन का क्रम बदलने के लिए, उन्हें खींचें और छोड़ें."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"सेव करें"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"ऊपर ले जाएं"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"नीचे ले जाएं"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"सबसे ऊपर ले जाएं"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"सबसे नीचे ले जाएं"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"फ़िटनेस, सेहत"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"अनुमतियां"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"Health Connect, स्वास्थ्य की जानकारी से जुड़ा डेटा, स्वास्थ्य की कैटगरी, डेटा ऐक्सेस, गतिविधि, शरीर की माप, पीरियड साइकल को ट्रैक करना, पोषण, नींद, शरीर से जुड़ी ज़रूरी जानकारी"</string>

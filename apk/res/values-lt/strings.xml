@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Leidimai ir duomenys"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"Peržiūrėkite ir tvarkykite telefone esančius sveikatos ir kūno rengybos duomenis, taip pat valdykite, kurios programos gali juos pasiekti"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"Tvarkykite telefone esančius sveikatos ir kūno rengybos duomenis ir valdykite, kurios programos gali juos pasiekti"</string>
     <string name="data_title" msgid="6928287139074878977">"Duomenys ir prieiga"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Visos kategorijos"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Žr. visas kategorijas"</string>
     <string name="no_data" msgid="1120552294863595549">"Nėra jokių duomenų"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"Peržiūrėkite duomenis ir pastarąją programų veiklą"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Programos leidimai"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Tvarkykite programas ir leidimus"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Naujausia prieiga"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Nėra neseniai „Health Connect“ pasiekusių programų"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"Žr. viską"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Žr. visus naujausius prieigos duomenis"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Peržiūrėkite, kurios programos pasiekė jūsų duomenis per pastarąsias dvidešimt keturias valandas"</string>
     <string name="today_header" msgid="3128127066599449902">"Šiandien"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"Vakar"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"Skaityti: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Rašyti: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Veikla"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"veikla"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Kūno matavimai"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"gimdos kaklelio gleivės"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Skaityti gimdos kaklelio gleivių duomenis"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Rašyti gimdos kaklelio gleivių duomenis"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Tarpmenstruacinis kraujavimas"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"tarpmenstruacinis kraujavimas"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Skaityti tarpmenstruacinio kraujavimo duomenis"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Rašyti tarpmenstruacinio kraujavimo duomenis"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruacijos"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruacijos"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Skaityti menstruacijų duomenis"</string>
@@ -247,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Neleidžiamos jokios programos"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Neatmesta jokių programų"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Pašalinti visų programų prieigą?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Nė viena iš jūsų programų negalės pasiekti ar pridėti naujų duomenų sistemoje „Health Connect“. Esami duomenys neištrinami."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Nė viena iš jūsų programų negalės pasiekti ar pridėti naujų duomenų sistemoje „Health Connect“. Esami duomenys neištrinami.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vietovės, vaizdo kameros ar mikrofono."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Pašalinti viską"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Programos tvarkymas"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Ištrinti programos duomenis"</string>
@@ -259,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Jei norite valdyti kitus „Android“ leidimus, kuriuos ši programa gali pasiekti, eikite į skiltį „Nustatymai“, tada palieskite „Programos“"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Skaityti privatumo politiką"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Pasiekta per pastarąsias 24 val."</string>
+    <string name="app_access_title" msgid="3790585897490185758">"Programos prieiga"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Pašalinti programų leidimai"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"„Health Connect“ pašalino „<xliff:g id="APP_DATA">%s</xliff:g>“ leidimus"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“ ir „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“ leidimus"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“, „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“ ir „<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>“ leidimus"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“, „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“, „<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>“ ir kitų programų leidimus"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Žr. išsamią informaciją"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Kodėl „Health Connect“ pašalina programų leidimus"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Jei programa sustabdyta arba pašalinta iš „Google Play“, „Health Connect“ automatiškai pašalina jos leidimus.\n\nTai reiškia, kad programa nebegali pasiekti duomenų, saugomų sistemoje „Health Connect“. Jei šioje programoje yra anksčiau įrašytų duomenų, ji rodoma neaktyvių programų sąraše."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"Supratau"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Darbo su klasikinės versijos „Health Connect“ pradžia"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Sistemoje „Health Connect“ saugomi jūsų sveikatos ir kūno rengybos duomenys ir galite lengvai sinchronizuoti skirtingas programas telefone"</string>
     <string name="share_data" msgid="3461840023402996573">"Duomenų bendrinimas su programomis"</string>
@@ -332,218 +350,112 @@
     <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 aukštas}one{# aukštas}few{# aukštai}many{# aukšto}other{# aukštų}}"</string>
     <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}one{# m}few{# m}many{# m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 metras}one{# metras}few{# metrai}many{# metro}other{# metrų}}"</string>
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 spm}one{# spm}few{# spm}many{# spm}other{# spm}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 sūkis per minutę}one{# sūkis per minutę}few{# sūkiai per minutę}many{# sūkio per minutę}other{# sūkių per minutę}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"nuo <xliff:g id="MIN">%1$s</xliff:g> iki <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"Su apsauga"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Be apsaugos"</string>
+    <string name="spotting" msgid="8367146199172958006">"Tepliojimas"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"Tepliojimas"</string>
+    <string name="flow_light" msgid="7714669130547926098">"Lengvas kraujavimas"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"Vidutinis kraujavimas"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"Gausus kraujavimas"</string>
+    <string name="period_day" msgid="7959562867933427299">"<xliff:g id="DAY">%1$d</xliff:g> menstruacijų diena iš <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"Teigiamas"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"Neigiamas"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"Aukšta"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"Nepakankamas"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 ml/(kg·min)}one{# ml/(kg·min)}few{# ml/(kg·min)}many{# ml/(kg·min)}other{# ml/(kg·min)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 mililitras deguonies kūno masės kilogramui per minutę}one{# mililitras deguonies kūno masės kilogramui per minutę}few{# mililitrai deguonies kūno masės kilogramui per minutę}many{# mililitro deguonies kūno masės kilogramui per minutę}other{# mililitrų deguonies kūno masės kilogramui per minutę}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Netiesioginės kalorimetrijos modulis"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Pulso dažnio santykis"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"Kuperio testas"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Daugiapakopis kūno rengybos testas"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"„Rockport“ kūno rengybos testas"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"Kita"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"Sausa"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"Lipni"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"Tiršta"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"Vandeninga"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"Kiaušinio baltymas"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"Neįprasta"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"Negausus"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"Vidutinis"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"Gausus"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mm Hg"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> gyvsidabrio stulpelio milimetr."</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"Atsistojus"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"Atsisėdus"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"Gulint"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"Atsilošus"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Kairysis riešas"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Dešinysis riešas"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Kairysis žastas"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Dešinysis žastas"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/l}one{# mmol/l}few{# mmol/l}many{# mmol/l}other{# mmol/l}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 milimolis litre}one{# milimolis litre}few{# milimoliai litre}many{# milimolio litre}other{# milimolių litre}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Tarpaudininis skystis"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Kapiliarinis kraujas"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"Plazma"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"Serumas"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"Ašaros"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Visos sudėties kraujas"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"Bendra"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Nevalgius"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Prieš valgį"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Po valgio"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"Valgio tipas"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"Nežinoma"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"Pusryčiai"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"Pietūs"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"Vakarienė"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"Užkandis"</string>
+    <string name="biotin" msgid="3627884250275404075">"Biotinas"</string>
+    <string name="caffeine" msgid="116658071099408928">"Kofeinas"</string>
+    <string name="calcium" msgid="2421306187949865076">"Kalcis"</string>
+    <string name="chloride" msgid="7490996250510177338">"Chloridas"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"Cholesterolis"</string>
+    <string name="chromium" msgid="1717886909765369185">"Chromas"</string>
+    <string name="copper" msgid="4865917412156527453">"Varis"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"Maistinės skaidulos"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"Energija"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Energija, gaunama iš riebalų"</string>
+    <string name="folate" msgid="8173733292245451456">"Folatai"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"Folio rūgštis"</string>
+    <string name="iodine" msgid="6295585927454501032">"Jodas"</string>
+    <string name="iron" msgid="1829192962959178553">"Geležis"</string>
+    <string name="magnesium" msgid="2378288907103259048">"Magnis"</string>
+    <string name="manganese" msgid="4343136164658896416">"Manganas"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"Molibdenas"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"Mononesotieji riebalai"</string>
+    <string name="niacin" msgid="2824160609495269089">"Niacinas"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"Pantoteno rūgštis"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"Fosforas"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Polinesotieji riebalai"</string>
+    <string name="potassium" msgid="707209134595635038">"Kalis"</string>
+    <string name="protein" msgid="3822882640861839933">"Baltymai"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"Riboflavinas"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"Sotieji riebalai"</string>
+    <string name="selenium" msgid="9082380472819491510">"Selenas"</string>
+    <string name="sodium" msgid="8769822050033855464">"Natris"</string>
+    <string name="sugar" msgid="5999057784352629476">"Cukrus"</string>
+    <string name="thiamin" msgid="3709641915459997520">"Tiaminas"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"Iš viso angliavandenių"</string>
+    <string name="total_fat" msgid="3978725283210702305">"Iš viso riebalų"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"Transriebalai"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"Nesotieji riebalai"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"Vitaminas A"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"Vitaminas B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"Vitaminas B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"Vitaminas C"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"Vitaminas D"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"Vitaminas E"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"Vitaminas K"</string>
+    <string name="zinc" msgid="1009892754125043398">"Cinkas"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"Pavadinimas"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}one{# g}few{# g}many{# g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 gramas}one{# gramas}few{# gramai}many{# gramo}other{# gramų}}"</string>
     <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 įpm}one{# įpm}few{# įpm}many{# įpm}other{# įpm}}"</string>
     <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 įkvėpimas per minutę}one{# įkvėpimas per minutę}few{# įkvėpimai per minutę}many{# įkvėpimo per minutę}other{# įkvėpimų per minutę}}"</string>
     <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}one{# kg}few{# kg}many{# kg}other{# kg}}"</string>
@@ -629,8 +541,7 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}one{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}few{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesių. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesių duomenys.}many{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}other{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesių. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesių duomenys.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Nustatyti automatinį ištrynimą"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Esami duomenys bus ištrinti"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}one{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}few{„Health Connect“ ištrins visus senesnius nei # mėnesių duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}many{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}other{„Health Connect“ ištrins visus senesnius nei # mėnesių duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Duomenys, kurie bus ištrinti iš šių kategorijų"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Atlikta"</string>
     <string name="priority_dialog_title" msgid="7095478075034320176">"Programų prioriteto nustatymas"</string>

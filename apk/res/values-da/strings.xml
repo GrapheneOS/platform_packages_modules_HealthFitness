@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Tilladelser og data"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"Gennemgå og administrer sundheds- og motionsdata på din telefon, og bestem, hvilke apps der har adgang til dem"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"Administrer sundheds- og træningsdata på din telefon, og bestem, hvilke apps der skal have adgang til dem"</string>
     <string name="data_title" msgid="6928287139074878977">"Data og adgang"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Alle kategorier"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Se alle kategorier"</string>
     <string name="no_data" msgid="1120552294863595549">"Ingen data"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"Se dine data og din seneste appaktivitet"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Apptilladelser"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Administrer dine apps og tilladelser"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Seneste adgang"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Ingen apps har for nylig tilgået Health Connect"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"Se alt"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Se al nylig adgang"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Se, hvilke apps der har tilgået dine data inden for de seneste 24 timer"</string>
     <string name="today_header" msgid="3128127066599449902">"I dag"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"I går"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"Læser: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Skriver: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Aktivitet"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"aktivitet"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Kropsmål"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"udflåd"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Læs udflåd"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Skriv udflåd"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Pletblødning"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"pletblødning"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Læs data om pletblødning"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Skriv data om pletblødning"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruation"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruation"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Læs menstruation"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til Health Connect?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"Du kan se, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> håndterer dine data, i udviklerens <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"privatlivspolitik"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Vil du fjerne alle tilladelser?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Fjern alle"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan ikke længere læse eller skrive data i Health Connect.\n\nDette påvirker ikke andre tilladelser, som appen har, f.eks. adgang til lokation, kamera eller mikrofon."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Slet også <xliff:g id="APP_NAME">%1$s</xliff:g>-data fra Health Connect"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Næste dag"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Forrige dag"</string>
     <string name="default_error" msgid="7047939092442348839">"Noget gik galt. Prøv igen."</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Ingen apps har tilladelse"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Ingen apps er blevet afvist"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Vil du fjerne adgangen for alle apps?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Ingen af dine apps kan få adgang til eller føje nye data til Health Connect. Dette sletter ikke eksisterende data."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Ingen af dine apps kan få adgang til eller føje nye data til Health Connect. Dette sletter ikke eksisterende data.\n\nDette påvirker ikke evt. andre tilladelser, som appen har, f.eks. adgang til lokation, kamera eller mikrofon."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Fjern alle"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Administrer app"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Slet appdata"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Du kan administrere andre Android-tilladelser, som denne app har, ved at gå til Indstillinger og trykke på Apps"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Læs privatlivspolitikken"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Brugt inden for de seneste 24 timer"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"Appadgang"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Apptilladelser blev fjernet"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect fjernede tilladelser for <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect fjernede tilladelser for <xliff:g id="APP_DATA_0">%1$s</xliff:g> og <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Health Connect fjernede tilladelser for <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> og <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Health Connect fjernede tilladelser for <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> og andre apps"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Få flere oplysninger"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Derfor fjerner Health Connect apptilladelser"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Hvis en app suspenderes eller fjernes fra Google Play, fjerner Health Connect automatisk dens tilladelser.\n\nDet betyder, at appen ikke længere vil have adgang til data, der er gemt i Health Connect. Hvis appen tidligere har skrevet data, vises den på listen over inaktive apps."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"OK"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Kom godt i gang med Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect opbevarer dine sundheds- og motionsdata, så du nemt kan synkronisere de forskellige apps på din telefon"</string>
     <string name="share_data" msgid="3461840023402996573">"Del data med dine apps"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometer i timen}one{# kilometer i timen}other{# kilometer i timen}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"fra <xliff:g id="START_TIME">%1$s</xliff:g> til <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"fra <xliff:g id="START_TIME">%1$s</xliff:g> til <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 kørestolsskub}one{# kørestolsskub}other{# kørestolsskub}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 l}one{# l}other{# l}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 liter}one{# liter}other{# liter}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 etage}one{# etage}other{# etager}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}one{# m}other{# m}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 meter}one{# meter}other{# meter}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 omdr./min.}one{# omdr./min.}other{# omdr./min.}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 omdrejning pr. minut}one{# omdrejning pr. minut}other{# omdrejninger pr. minut}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"fra <xliff:g id="MIN">%1$s</xliff:g> til <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"Beskyttet"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Ubeskyttet"</string>
+    <string name="spotting" msgid="8367146199172958006">"Pletblødning"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"Pletblødning"</string>
+    <string name="flow_light" msgid="7714669130547926098">"Let blødning"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"Medium blødning"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"Kraftig blødning"</string>
+    <string name="period_day" msgid="7959562867933427299">"Dag <xliff:g id="DAY">%1$d</xliff:g> af <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g> i menstruationen"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"Positiv"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"Negativ"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"Høj"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"Ugyldigt resultat"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 ml/kg/min.}one{# ml/kg/min.}other{# ml/kg/min.}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 milliliter ilt pr. kilo kropsvægt pr. minut}one{# milliliter ilt pr. kilo kropsvægt pr. minut}other{# milliliter ilt pr. kilo kropsvægt pr. minut}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Metabolisk vogn"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Pulsfrekvens"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"Coopertest"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Bip-test (MSFT)"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"Rockport-test"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"Andet"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"Tør"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"Klæbrig"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"Tyktflydende"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"Tyndtflydende"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"Æggehvidelignende"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"Usædvanlig"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"Let"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"Medium"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"Kraftig"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> millimeter kviksølv"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"Stående"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"Siddende"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"Liggende"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"Tilbagelænet"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Venstre håndled"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Højre håndled"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Venstre overarm"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Højre overarm"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/liter}one{# mmol/liter}other{# mmol/liter}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 millimol pr. liter}one{# millimol pr. liter}other{# millimol pr. liter}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Vævsvæske"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Kapillærblod"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"Plasma"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"Serum"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"Tårer"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Fuldblod"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"Generelt"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Fastende"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Før et måltid"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Efter et måltid"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"Måltidstype"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"Ukendt"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"Morgenmad"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"Frokost"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"Aftensmad"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"Mellemmåltid"</string>
+    <string name="biotin" msgid="3627884250275404075">"Biotin"</string>
+    <string name="caffeine" msgid="116658071099408928">"Koffein"</string>
+    <string name="calcium" msgid="2421306187949865076">"Calcium"</string>
+    <string name="chloride" msgid="7490996250510177338">"Klorid"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"Kolesterol"</string>
+    <string name="chromium" msgid="1717886909765369185">"Krom"</string>
+    <string name="copper" msgid="4865917412156527453">"Kobber"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"Kostfibre"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"Energi"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Energi fra fedt"</string>
+    <string name="folate" msgid="8173733292245451456">"Folat"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"Folsyre"</string>
+    <string name="iodine" msgid="6295585927454501032">"Jod"</string>
+    <string name="iron" msgid="1829192962959178553">"Jern"</string>
+    <string name="magnesium" msgid="2378288907103259048">"Magnesium"</string>
+    <string name="manganese" msgid="4343136164658896416">"mangan"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"Molybdæn"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"Enkeltumættet fedt"</string>
+    <string name="niacin" msgid="2824160609495269089">"Niacin"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"Pantothensyre"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"Fosfor"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Flerumættet fedt"</string>
+    <string name="potassium" msgid="707209134595635038">"Kalium"</string>
+    <string name="protein" msgid="3822882640861839933">"Protein"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"Riboflavin"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"Mættet fedt"</string>
+    <string name="selenium" msgid="9082380472819491510">"Selen"</string>
+    <string name="sodium" msgid="8769822050033855464">"Natrium"</string>
+    <string name="sugar" msgid="5999057784352629476">"Sukker"</string>
+    <string name="thiamin" msgid="3709641915459997520">"Thiamin"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"Samlet kulhydratindhold"</string>
+    <string name="total_fat" msgid="3978725283210702305">"Samlet fedtindhold"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"Transfedtsyre"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"Umættet fedt"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"A-vitamin"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"B12-vitamin"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"B6-vitamin"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"C-vitamin"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"D-vitamin"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"E-vitamin"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"K-vitamin"</string>
+    <string name="zinc" msgid="1009892754125043398">"Zink"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"Navn"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}one{# g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 gram}one{# gram}other{# gram}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 rpm}one{# rpm}other{# rpm}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 respiration pr. minut}one{# respiration pr. minut}other{# respirationer pr. minut}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}one{# kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 lb}one{# lb}other{# lb}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 st}one{# st}other{# st}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} og {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 kilogram}one{# kilogram}other{# kilogram}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 engelsk pund}one{# engelsk pund}other{# engelske pund}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 stone}one{# stone}other{# stones}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} og {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}one{# ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 grad celsius}one{# grad celsius}other{# grader celsius}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}one{# K}other{# K}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect sletter automatisk nye data efter # måned. Denne indstilling sletter også eksisterende data, som er ældre end # måned.}one{Health Connect sletter automatisk nye data efter # måned. Denne indstilling sletter også eksisterende data, som er ældre end # måned.}other{Health Connect sletter automatisk nye data efter # måneder. Denne indstilling sletter også eksisterende data, som er ældre end # måneder.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Konfigurer automatisk sletning"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Eksisterende data slettes"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect sletter alle data, som er ældre end # måned. Der kan gå en dag, før disse ændringer vises i dine tilknyttede apps.}one{Health Connect will delete all data older than # months. It may take a day for these changes to appear in your connected apps.}other{Health Connect sletter alle data, som er ældre end # måneder. Der kan gå en dag, før disse ændringer vises i dine tilknyttede apps.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Data slettes fra følgende"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Udfør"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"Angiv prioritet for apps"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"Hvis mere end én app tilføjer data om <xliff:g id="DATA_TYPE">%s</xliff:g>, prioriterer Health Connect den app, der står øverst på denne liste. Træk i apps for at ændre rækkefølgen."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Gem"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Flyt op"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Flyt ned"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Flyt til toppen"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Flyt til bunden"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"træning, velvære"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"tilladelser"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"health connect, sundhedsdata, sundhedskategorier, dataadgang, aktivitet, kropsmål, tracking af cyklus, ernæring, søvn, vitale værdier"</string>

@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"අවසර සහ දත්ත"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"ඔබේ දුරකථනයේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත සමාලෝචන කරන්න සහ කළමනා කරන්න සහ ඒවාට ප්‍රවේශ විය හැකි යෙදුම් පාලන කරන්න"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"ඔබේ දුරකථනයෙහි සෞඛ්‍ය සහ යෝග්‍යතා දත්ත කළමනාකරණය කරන්න, සහ එයට ප්‍රවේශ විය හැකි යෙදුම් පාලනය කරන්න"</string>
     <string name="data_title" msgid="6928287139074878977">"දත්ත සහ ප්‍රවේශය"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"ප්‍රවර්ග සියල්ල"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"සියලු ප්‍රවර්ග බලන්න"</string>
     <string name="no_data" msgid="1120552294863595549">"දත්ත නැත"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"ඔබගේ දත්ත සහ මෑත යෙදුම් ක්‍රියාකාරකම් බලන්න"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"යෙදුම් අවසර"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"ඔබගේ යෙදුම් සහ අවසර කළමනා කරන්න"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"මෑත ප්‍රවේශය"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Health Connect වෙත මෑතදී ප්‍රවේශ වූ යෙදුම් කිසිවක් නැත"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"සියල්ල බලන්න"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"සියලු මෑත ප්‍රවේශයන් බලන්න"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"පසුගිය පැය 24 තුළ ඔබේ දත්ත වෙත ප්‍රවේශ වී ඇත්තේ කුමන යෙදුම් දැයි බලන්න"</string>
     <string name="today_header" msgid="3128127066599449902">"අද"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"ඊයේ"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"කියවන්න: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"ලියන්න: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"ක්‍රියාකාරකම"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"ක්‍රියාකාරකම"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"ශරීර මිනුම්"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"ගැබ්ගෙල තරලය"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"ගැබ්ගෙල තරලය කියවන්න"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"ගැබ්ගෙල තරලය ලියන්න"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"අන්තර් ඔසප් රුධිර වහනය"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"අන්තර් ඔසප් රුධිර වහනය"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"අන්තර් ඔසප් රුධිර වහනය කියවන්න"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"අන්තර් ඔසප් රුධිර වහනය ලියන්න"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"ඔසප් වීම"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"ඔසප් වීම"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"ඔසප් වීම කියවන්න"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> හට Health Connect වෙත ප්‍රවේශ වීමට ඉඩ දෙන්නද?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"ඔබට <xliff:g id="APP_NAME">%1$s</xliff:g> ඔබේ දත්ත හසුරුවන ආකාරය ගැන සංවර්ධකගේ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> තුළ දැන ගත හැක"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"පෞද්ගලිකත්ව ප්‍රතිපත්තිය"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"සියලු අවසර ඉවත් කරන්න ද?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"සියල්ල ඉවත් කරන්න"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> හට තවදුරටත් Health Connect වෙතින් දත්ත කිසිවක් කියවීමට හෝ ලිවීමට නොහැකි වනු ඇත.\n\nස්ථානය, කැමරාව, හෝ මයික්‍රෆෝනය වැනි, මෙම යෙදුමට තිබිය හැකි වෙනත් අවසරවලට මෙය බලපාන්නේ නැත."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Health Connect වෙතින් <xliff:g id="APP_NAME">%1$s</xliff:g> දත්ත ද මකන්න"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"ඊළඟ දිනය"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"පෙර දිනය"</string>
     <string name="default_error" msgid="7047939092442348839">"යමක් වැරදිණි. නැවත උත්සාහ කරන්න."</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"යෙදුම් කිසිවකට ඉඩ නොදුන්නා"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"යෙදුම් කිසිවක් ප්‍රතික්‍ෂේප නොකෙරේ"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"සියලු යෙදුම් සඳහා ප්‍රවේශය ඉවත් කරන්නද?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"ඔබගේ කිසිදු යෙදුමකට Health Connect වෙත ප්‍රවේශ වීමට හෝ නව දත්ත එක් කිරීමට නොහැකි වෙයි. මෙය පවතින දත්ත කිසිවක් නොමකයි."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"ඔබගේ කිසිදු යෙදුමකට Health Connect වෙත ප්‍රවේශ වීමට හෝ නව දත්ත එක් කිරීමට නොහැකි වනු ඇත. මෙය පවතින දත්ත කිසිවක් නොමකයි.\n\nස්ථානය, කැමරාව, හෝ මයික්‍රෆෝනය වැනි මෙම යෙදුමට තිබිය හැකි වෙනත් අවසරවලට මෙය බලපාන්නේ නැත."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"සියල්ල ඉවත් කරන්න"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"යෙදුම කළමනා කරන්න"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"යෙදුම් දත්ත මකන්න"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"මෙම යෙදුමට ප්‍රවේශ විය හැකි වෙනත් Android අවසර කළමනාකරණය කිරීමට, සැකසීම්, පසුව යෙදුම් වෙත යන්න"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"පෞද්ගලිකත්ව ප්‍රතිපත්තිය කියවන්න"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"පසුගිය පැය 24 තුළ ප්‍රවේශ විය"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"යෙදුම් ප්‍රවේශය"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"යෙදුම් අවසර ඉවත් කර ඇත"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"<xliff:g id="APP_DATA">%s</xliff:g> සඳහා Health Connect අවසර ඉවත් කර ඇත"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"<xliff:g id="APP_DATA_0">%1$s</xliff:g> සහ <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> සඳහා Health Connect අවසර ඉවත් කර ඇත"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"<xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> සහ <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> සඳහා Health Connect අවසර ඉවත් කර ඇත"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"<xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> සහ අනෙක් යෙදුම් සඳහා Health Connect අවසර ඉවත් කර ඇත"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"විස්තර බලන්න"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Health Connect යෙදුම් අවසර ඉවත් කරන හේතුව"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"යෙදුමක් අත්හිටුවා හෝ Google Play වෙතින් ඉවත් කර ඇත්නම්, Health Connect එහි අවසරයන් ස්වයංක්‍රීයව ඉවත් කරයි.\n\nමෙයින් අදහස් වන්නේ යෙදුමට තවදුරටත් Health Connect තුළ ගබඩා කර ඇති දත්ත වෙත ප්‍රවේශ විය නොහැකි බවයි. මෙම යෙදුමට පෙර ලියා ඇති දත්ත තිබේ නම්, එය අක්‍රිය යෙදුම් ලැයිස්තුවේ දිස් වේ."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"තේරුණා"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect සමග පටන් ගන්න"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect ඔබට ඔබේ දුරකථනයේ විවිධ යෙදුම් සමමුහූර්ත කිරීමට සරල ක්‍රමයක් ලබා දෙමින්, ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත ගබඩා කරයි"</string>
     <string name="share_data" msgid="3461840023402996573">"ඔබේ යෙදුම් සමග දත්ත බෙදා ගන්න"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{පැයට 1 කිලෝමීටරයක්}one{පැයට කිලෝමීටර # ක්}other{පැයට කිලෝමීටර # ක්}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"<xliff:g id="START_TIME">%1$s</xliff:g> සිට <xliff:g id="END_TIME">%2$s</xliff:g> දක්වා"</string>
     <string name="date_range_long" msgid="5407008354838746975">"<xliff:g id="START_TIME">%1$s</xliff:g> සිට <xliff:g id="END_TIME">%2$s</xliff:g> දක්වා"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 රෝද පුටු තල්ලු කිරීමක්}one{රෝද පුටු තල්ලු කිරීම් #ක්}other{රෝද පුටු තල්ලු කිරීම් #ක්}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 L}one{# L}other{# L}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{ලීටර 1ක්}one{ලීටර #ක්}other{ලීටර #ක්}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{මහල් 1ක්}one{මහල් #ක්}other{මහල් #ක්}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{මි 1}one{මි #}other{මි #}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{මීටර 1ක්}one{මීටර #ක්}other{මීටර #ක්}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 rpm}one{# rpm}other{# rpm}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{මිනිත්තුවකට භ්‍රමණ 1}one{මිනිත්තුවකට භ්‍රමණ #}other{මිනිත්තුවකට භ්‍රමණ #}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"<xliff:g id="MIN">%1$s</xliff:g> සිට <xliff:g id="MAX">%2$s</xliff:g> දක්වා"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"ආරක්ෂිත"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"අනාරක්ෂිත"</string>
+    <string name="spotting" msgid="8367146199172958006">"තැන්ගත කිරීම"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"තැන්ගත කිරීම"</string>
+    <string name="flow_light" msgid="7714669130547926098">"සුළු වහනයක් සහිත"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"මධ්‍යම වහනයක් සහිත"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"දැඩි වහනයක් සහිත"</string>
+    <string name="period_day" msgid="7959562867933427299">"ඔසප් වීම <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g> න් <xliff:g id="DAY">%1$d</xliff:g> වෙනි දිනය"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"පොසිටිව්"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"නෙගටිව්"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"ඉහළ"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"අවිනිශ්චිත"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·min)}one{# mL/(kg·min)}other{# mL/(kg·min)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{මිනිත්තුවකට සිරුරේ බර කිලෝග්‍රෑමයකට ඔක්සිජන් මිලිලීටර 1}one{මිනිත්තුවකට සිරුරේ බර කිලෝග්‍රෑමයකට ඔක්සිජන් මිලිලීටර #}other{මිනිත්තුවකට සිරුරේ බර කිලෝග්‍රෑමයකට ඔක්සිජන් මිලිලීටර #}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"පරිවෘත්තීය කරත්තය"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"හෘද ස්පන්දන වේග අනුපාතය"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"කූපර් පරීක්ෂණය"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"බහු අදියර යෝග්‍යතා පරීක්ෂණය"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"රොක්පෝට් යෝග්‍යතා පරීක්ෂණය"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"වෙනත්"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"වියළි"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"ඇලෙනසුළු"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"උකු"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"දියාරු"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"බිත්තර සුදු මදය"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"අසාමාන්‍ය"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"සැහැල්ලු"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"මධ්‍යම"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"දැඩි"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"රසදිය මිලිමීටර <xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g>"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"සිට‍‍ගෙන"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"වාඩි වී"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"වැතිරගෙන"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"දිගෑ දී"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"වම් මැණික් කටුව"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"දකුණු මැණික් කටුව"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"වම් උඩු බාහුව"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"වම් උඩු බාහුව"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/L}one{# mmol/L}other{# mmol/L}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{ලීටරයට මිලිමවුල 1}one{ලීටරයට මිලිමවුල #}other{ලීටරයට මිලිමවුල #}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"අන්තරාල තරලය"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"කේෂ නාලිකා රුධිරය"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"ප්ලාස්මාව"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"රුධිර තරලය"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"කඳුළු"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"සම්පූර්ණ රුධිරය"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"සාමාන්‍ය"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"නිරාහාරව"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"කෑමට පෙර"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"කෑමට පසු"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"ආහාර වේලේ ආකාරය"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"නොදනී"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"උදෑසන ආහාරය"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"දිවා ආහාරය"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"රාත්‍රී ආහාරය"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"සුළු කෑම"</string>
+    <string name="biotin" msgid="3627884250275404075">"බයොටින්"</string>
+    <string name="caffeine" msgid="116658071099408928">"කැෆේන්"</string>
+    <string name="calcium" msgid="2421306187949865076">"කැල්සියම්"</string>
+    <string name="chloride" msgid="7490996250510177338">"ක්ලෝරයිඩ්"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"කොලෙස්ටරෝල්"</string>
+    <string name="chromium" msgid="1717886909765369185">"ක්‍රෝමියම්"</string>
+    <string name="copper" msgid="4865917412156527453">"තඹ"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"ආහාර තන්තු"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"ශක්තිය"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"මේදයෙන් ශක්තිය"</string>
+    <string name="folate" msgid="8173733292245451456">"ෆෝලේට්"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"ෆෝලික් අම්ලය"</string>
+    <string name="iodine" msgid="6295585927454501032">"අයඩින්"</string>
+    <string name="iron" msgid="1829192962959178553">"යකඩ"</string>
+    <string name="magnesium" msgid="2378288907103259048">"මැග්නීසියම්"</string>
+    <string name="manganese" msgid="4343136164658896416">"මැංගනීස්"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"මොලිබ්ඩිනම්"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"ඒක අසංතෘප්ත මේදය"</string>
+    <string name="niacin" msgid="2824160609495269089">"නියසින්"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"පැන්ටොතනික් අම්ලය"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"ෆොස්ෆරස්"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"බහු අසංතෘප්ත මේදය"</string>
+    <string name="potassium" msgid="707209134595635038">"පොටෑසියම්"</string>
+    <string name="protein" msgid="3822882640861839933">"ප්‍රෝටීන්"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"රයිබොෆ්ලේවින්"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"සංතෘප්ත මේදය"</string>
+    <string name="selenium" msgid="9082380472819491510">"සෙලේනියම්"</string>
+    <string name="sodium" msgid="8769822050033855464">"සෝඩියම්"</string>
+    <string name="sugar" msgid="5999057784352629476">"සීනි"</string>
+    <string name="thiamin" msgid="3709641915459997520">"තයමින්"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"මුළු කාබොහයිඩ්‍රේට"</string>
+    <string name="total_fat" msgid="3978725283210702305">"මුළු මේදය"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"ට්‍රාන්ස් මේදය"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"අසංතෘප්ත මේදය"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"විටමින් A"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"විටමින් B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"විටමින් B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"විටමින් C"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"විටමින් D"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"විටමින් E"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"විටමින් K"</string>
+    <string name="zinc" msgid="1009892754125043398">"සින්ක්"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"නම"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}one{# g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{ග්‍රෑම් 1}one{ග්‍රෑම් #}other{ග්‍රෑම් #}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 rpm}one{# rpm}other{# rpm}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{විනාඩියකට ආශ්වාස ප්‍රශ්වාස 1ක්}one{විනාඩියකට ආශ්වාස ප්‍රශ්වාස #ක්}other{විනාඩියකට ආශ්වාස ප්‍රශ්වාස #ක්}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}one{# kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 lb}one{# lb}other{# lb}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 වැනි}one{# වැනි}other{# වැනි}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{කිලෝග්‍රෑම් 1ක්}one{කිලෝග්‍රෑම් #ක්}other{කිලෝග්‍රෑම් #ක්}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{රාත්තල් 1ක්}one{රාත්තල් #ක්}other{රාත්තල් #ක්}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 ගලක්}one{ගල් #ක්}other{ගල් #ක්}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}one{# ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{සෙල්සියල් අංශක 1}one{සෙල්සියල් අංශක #}other{සෙල්සියල් අංශක #}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}one{# K}other{# K}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect # මාසයකට පසු නව දත්ත ස්වයංක්‍රීයව මැකෙයි. මෙය සැකසීම # මාසයකට වඩා පැරණි පවතින දත්ත ද මකයි.}one{Health Connect මාස #කට පසු නව දත්ත ස්වයංක්‍රීයව මැකෙයි. මෙය සැකස මාස #කට වඩා පැරණි පවතින දත්ත ද මකයි.}other{Health Connect මාස #කට පසු නව දත්ත ස්වයංක්‍රීයව මැකෙයි. මෙය සැකස මාස #කට වඩා පැරණි පවතින දත්ත ද මකයි.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"ස්වයං-මැකීම සකසන්න"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"පවතින දත්ත මකනු ලැබේ"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect මාස #කට වඩා පැරණි සියලු දත්ත මකනු ඇත. මෙම වෙනස්කම් ඔබේ සම්බන්ධිත යෙදුම්වල දිස් වීමට එක දිනක් ගත විය හැක.}one{Health Connect මාස #කට වඩා පැරණි සියලු දත්ත මකනු ඇත. මෙම වෙනස්කම් ඔබේ සම්බන්ධිත යෙදුම්වල දිස් වීමට එක දිනක් ගත විය හැක.}other{Health Connect මාස #කට වඩා පැරණි සියලු දත්ත මකනු ඇත. මෙම වෙනස්කම් ඔබේ සම්බන්ධිත යෙදුම්වල දිස් වීමට එක දිනක් ගත විය හැක.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"මේවායින් මකා දැමිය යුතු දත්ත"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"නිමයි"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"යෙදුම් ප්‍රමුඛතාව සකසන්න"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"යෙදුම් එකකට වඩා වැඩි ගණනක් <xliff:g id="DATA_TYPE">%s</xliff:g> දත්ත එක් කළහොත්, Health Connect මෙම ලැයිස්තුවේ ඉහළින්ම ඇති යෙදුමට ප්‍රමුඛතාව දෙනු ඇත. ඒවා නැවත අනුපිළිවෙළට සැකසීමට යෙදුම් අදින්න."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"සුරකින්න"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"ඉහළට ගෙන යන්න"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"පහළට ගෙන යන්න"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"ඉහළට ගෙන යන්න"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"පතුළට ගෙන යන්න"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"යෝග්‍යතාව, සුවතාවය"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"අවසර"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"health connect, සෞඛ්‍ය දත්ත, සෞඛ්‍ය ප්‍රවර්ග, දත්ත ප්‍රවේශය, ක්‍රියාකාරකම්, ශරීර මිනුම්, ඔසප් චක්‍ර ලුහුබැඳීම, පෝෂණය, නින්ද, vitals"</string>
