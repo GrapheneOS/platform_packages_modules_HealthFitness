@@ -200,6 +200,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // Permission for test api for deleting staged data
     private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
             "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA";
+    // Allows an application to act as a backup inter-agent to send and receive HealthConnect data
+    // during a D2D flow
+    private static final String HEALTH_CONNECT_D2D_INTER_AGENT_PERMISSION =
+            "android.permission.HEALTH_CONNECT_D2D_INTER_AGENT";
     // Key for storing the current data restore state on disk.
     private static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
     // Key for storing the error restoring HC data.
@@ -1172,8 +1176,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull StageRemoteDataRequest stageRemoteDataRequest,
             @NonNull UserHandle userHandle,
             @NonNull IDataStagingFinishedCallback callback) {
-        mContext.enforceCallingPermission(
-                Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
+        mDataPermissionEnforcer.enforceAnyOfPermissions(
+                Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA,
+                HEALTH_CONNECT_D2D_INTER_AGENT_PERMISSION);
 
         mStatesLock.writeLock().lock();
         try {

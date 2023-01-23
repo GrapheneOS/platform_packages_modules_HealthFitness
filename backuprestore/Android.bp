@@ -22,6 +22,25 @@ android_app_certificate {
     certificate: "com.android.health.connect.backuprestore",
 }
 
+filegroup {
+    name: "healthConnectBackupRestore-sources",
+    srcs: [
+        "src/**/*.java",
+    ],
+}
+
+android_library {
+    name: "HealthConnectBackupRestoreLibrary",
+    srcs: [":healthConnectBackupRestore-sources"],
+    sdk_version: "module_current",
+    min_sdk_version: "UpsideDownCake",
+    libs: [
+        "framework-annotations-lib",
+        "framework-healthfitness.impl",
+    ],
+    apex_available: ["com.android.healthfitness"],
+}
+
 android_app {
     name: "HealthConnectBackupRestore",
     defaults: ["platform_app_defaults"],
@@ -29,14 +48,11 @@ android_app {
     min_sdk_version: "UpsideDownCake",
     updatable: true,
     certificate: ":com.android.health.connect.backuprestore.certificate",
-    manifest: "AndroidManifest.xml",
-
-    srcs: ["src/**/*.java"],
-
-    libs: ["framework-healthfitness.impl",],
-    static_libs: [],
-
-    apex_available: [
-        "com.android.healthfitness",
+    additional_manifests: [
+      "PermissionsManifest.xml"
     ],
+
+    static_libs: ["HealthConnectBackupRestoreLibrary",],
+
+    apex_available: ["com.android.healthfitness"],
 }
