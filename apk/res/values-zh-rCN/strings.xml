@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"权限和数据"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"查看和管理手机上的健康与健身数据，并控制哪些应用可以访问这些数据"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"管理手机上的健康与健身数据，并控制哪些应用可以访问这些数据"</string>
     <string name="data_title" msgid="6928287139074878977">"数据和访问权限"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"所有类别"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"查看所有类别"</string>
     <string name="no_data" msgid="1120552294863595549">"无数据"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"查看您的数据和近期应用活动"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"应用权限"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"管理应用和权限"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"近期数据访问情况"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"最近没有任何应用访问 Health Connect"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"查看全部"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"查看近期的所有数据访问情况"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"查看过去 24 小时内哪些应用访问过您的数据"</string>
     <string name="today_header" msgid="3128127066599449902">"今天"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"昨天"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"读取：%s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"写入：%s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">"、 "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"活动"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"活动"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"身体测量数据"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"宫颈粘液"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"读取宫颈粘液数据"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"写入宫颈粘液数据"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"经间期出血"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"经间期出血"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"读取经间期出血数据"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"写入经间期出血数据"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"经期"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"经期"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"读取经期数据"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"要允许<xliff:g id="APP_NAME">%1$s</xliff:g>访问 Health Connect 吗？"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"您可以参阅开发者的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解<xliff:g id="APP_NAME">%1$s</xliff:g>如何处理您的数据"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"隐私权政策"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"要撤消所有权限吗？"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"全部移除"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”将无法继续在 Health Connect 中读取或写入任何数据。\n\n这不会影响此应用可能拥有的其他权限，例如位置信息、摄像头或麦克风权限。"</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"同时删除 Health Connect 中的“<xliff:g id="APP_NAME">%1$s</xliff:g>”数据"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"后一天"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"前一天"</string>
     <string name="default_error" msgid="7047939092442348839">"出了点问题。请重试。"</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"未允许任何应用"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"未拒绝任何应用"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"要撤销所有应用的访问权限吗？"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"您的应用都将无法访问 Health Connect 中的数据，也不能向其添加新数据。这不会删除任何现有数据。"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"您的应用都将无法访问 Health Connect 中的数据，也不能向其添加新数据。这不会删除任何现有数据。\n\n这不会影响此应用可能拥有的其他权限，例如位置信息、摄像头或麦克风权限。"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"全部移除"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"管理应用"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"删除应用数据"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"如需管理此应用可以访问的其他 Android 权限，请进入“设置”，然后点按“应用”"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"阅读隐私权政策"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"上次访问时间：过去 24 小时内"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"应用访问权限"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"已撤消应用权限"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect 已撤消“<xliff:g id="APP_DATA">%s</xliff:g>”的权限"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect 已撤消“<xliff:g id="APP_DATA_0">%1$s</xliff:g>”和“<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>”的权限"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Health Connect 已撤消“<xliff:g id="APP_DATA_0">%1$s</xliff:g>”“<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>”和“<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>”的权限"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Health Connect 已撤消“<xliff:g id="APP_DATA_0">%1$s</xliff:g>”“<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>”“<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>”和其他应用的权限"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"查看详情"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Health Connect 为何会撤消应用权限"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"如果应用在 Google Play 中被暂停或下架，Health Connect 将自动撤消其权限。\n\n这表示此应用无法再访问 Health Connect 中存储的数据。此应用如果之前写入过数据，则会列在已停用应用列表中。"</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"知道了"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"开始使用 Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect 会存储您的健康与健身数据，让您可以轻松同步手机上的不同应用"</string>
     <string name="share_data" msgid="3461840023402996573">"与您的应用分享数据"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 公里/小时}other{# 公里/小时}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"从 <xliff:g id="START_TIME">%1$s</xliff:g> 到 <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"从 <xliff:g id="START_TIME">%1$s</xliff:g>到 <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{推轮椅 1 次}other{推轮椅 # 次}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 L}other{# L}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 升}other{# 升}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 层}other{# 层}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}other{# m}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 米}other{# 米}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 转/分钟}other{# 转/分钟}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"从 <xliff:g id="MIN">%1$s</xliff:g>到 <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"采取了保护措施"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"未采取保护措施"</string>
+    <string name="spotting" msgid="8367146199172958006">"点状出血"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"点状出血"</string>
+    <string name="flow_light" msgid="7714669130547926098">"月经量：少"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"月经量：中"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"月经量：多"</string>
+    <string name="period_day" msgid="7959562867933427299">"经期第 <xliff:g id="DAY">%1$d</xliff:g> 天（共 <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g> 天）"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"阳性"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"阴性"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"高"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"不明确"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 毫升/（千克/分钟）}other{# 毫升/（千克/分钟）}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{每千克体重每分钟 1 毫升氧}other{每千克体重每分钟 # 毫升氧}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"代谢车"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"心率比"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"库珀测试"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"多级体能测试"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"Rockport 体能测试"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"其他"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"干燥"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"黏性"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"奶油状"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"水状"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"蛋白状"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"异常"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"少"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"中"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"多"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> 毫米汞柱"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"站立"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"坐下"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"躺下"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"斜坐"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"左手腕"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"右手腕"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"左上臂"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"右上臂"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/L}other{# mmol/L}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 毫摩尔/升}other{# 毫摩尔/升}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"组织间液"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"毛细血管血"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"血浆"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"血清"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"眼泪"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"全血"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"常规"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"空腹"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"餐前"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"餐后"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"用餐类型"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"未知"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"早餐"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"午餐"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"晚餐"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"零食"</string>
+    <string name="biotin" msgid="3627884250275404075">"生物素"</string>
+    <string name="caffeine" msgid="116658071099408928">"咖啡因"</string>
+    <string name="calcium" msgid="2421306187949865076">"钙"</string>
+    <string name="chloride" msgid="7490996250510177338">"氯化物"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"胆固醇"</string>
+    <string name="chromium" msgid="1717886909765369185">"铬"</string>
+    <string name="copper" msgid="4865917412156527453">"铜"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"膳食纤维"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"能量"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"来自脂肪的能量"</string>
+    <string name="folate" msgid="8173733292245451456">"叶酸盐"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"叶酸"</string>
+    <string name="iodine" msgid="6295585927454501032">"碘"</string>
+    <string name="iron" msgid="1829192962959178553">"铁"</string>
+    <string name="magnesium" msgid="2378288907103259048">"镁"</string>
+    <string name="manganese" msgid="4343136164658896416">"锰"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"钼"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"单不饱和脂肪"</string>
+    <string name="niacin" msgid="2824160609495269089">"烟酸"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"泛酸"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"磷"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"多不饱和脂肪"</string>
+    <string name="potassium" msgid="707209134595635038">"钾"</string>
+    <string name="protein" msgid="3822882640861839933">"蛋白质"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"核黄素"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"饱和脂肪"</string>
+    <string name="selenium" msgid="9082380472819491510">"硒"</string>
+    <string name="sodium" msgid="8769822050033855464">"钠"</string>
+    <string name="sugar" msgid="5999057784352629476">"糖"</string>
+    <string name="thiamin" msgid="3709641915459997520">"硫胺素"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"碳水化合物总量"</string>
+    <string name="total_fat" msgid="3978725283210702305">"脂肪总量"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"反式脂肪"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"不饱和脂肪"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"维生素 A"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"维生素 B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"维生素 B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"维生素 C"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"维生素 D"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"维生素 E"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"维生素 K"</string>
+    <string name="zinc" msgid="1009892754125043398">"锌"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>：<xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"名称"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 克}other{# 克}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{每分钟呼吸 1 次}other{每分钟呼吸 # 次}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 lb}other{# lb}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 st}other{# st}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 公斤}other{# 公斤}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 磅}other{# 磅}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 英石}other{# 英石}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 摄氏度}other{# 摄氏度}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}other{# K}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect 会在 # 个月后自动删除新数据。这样设置也会删除存储时长已超过 # 个月的现有数据。}other{Health Connect 会在 # 个月后自动删除新数据。这样设置也会删除存储时长已超过 # 个月的现有数据。}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"设置自动删除"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"现有数据将被删除"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect 将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}other{Health Connect 将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"以下类别的数据将被删除"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"完成"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"设置应用优先级"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"如果多个应用都可以添加<xliff:g id="DATA_TYPE">%s</xliff:g>数据，Health Connect 会优先考虑此列表中排在最前面的应用。拖动应用即可重新排序。"</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"保存"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"上移"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"下移"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"移至顶部"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"移至底部"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"健身, 健康, fitness, wellness"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"权限"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"Health Connect, 健康数据, 健康类别, 数据访问权限, 活动, 身体测量数据, 经期记录, 营养, 睡眠, 生命体征, health connect, health data, health categories, data access, activity, body measurements, cycle tracking, nutrition, sleep, vitals"</string>

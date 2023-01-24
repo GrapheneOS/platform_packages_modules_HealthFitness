@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"የጤና አገናኝ"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"ፈቃዶች እና ውሂብ"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"በስልክዎ ላይ ያለውን የጤና እና አካል ብቃት ውሂብ ይገምግሙ እና ያስተዳድሩ እና የትኛዎቹ መተግበሪያዎች ሊደርሱበት እንደሚችሉ ይቆጣጠሩ"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"በስልክዎ ላይ ያለውን የጤና እና አካል ብቃት ውሂብ ያስተዳድሩ እና የትኛዎቹ መተግበሪያዎች ሊደርሱበት እንደሚችሉ ይቆጣጠሩ"</string>
     <string name="data_title" msgid="6928287139074878977">"ውሂብ እና መዳረሻ"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"ሁሉም ምድቦች"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"ሁሉንም ምድቦች አሳይ"</string>
     <string name="no_data" msgid="1120552294863595549">"ውሂብ የለም"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"የእርስዎን ውሂብ እና የቅርብ ጊዜ የመተግበሪያ እንቅስቃሴ ይመልከቱ"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"የመተግበሪያ ፈቃዶች"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"የእርስዎን መተግበሪያዎች እና ፈቃዶች ያስተዳድሩ"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"የቅርብ ጊዜ መዳረሻ"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"በቅርብ ጊዜ ምንም መተግበሪያዎች የጤና አገናኝን አልደረሱበትም"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"ሁሉንም ይመልከቱ"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"ሁሉንም የቅርብ ጊዜ መድረሶች ይመልከቱ"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"ባለፉት 24 ሰዓታት ውስጥ የትኛዎቹ መተግበሪያዎች ውሂብዎን እንደደረሱ ይመልከቱ"</string>
     <string name="today_header" msgid="3128127066599449902">"ዛሬ"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"ትላንት"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"ይህን አንብቧል፦ %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"ይህን ጽፏል፦ %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">"፣ "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"እንቅስቃሴ"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"እንቅስቃሴ"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"የሰውነት አካል መለኪያዎች"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"የማህጸን በር ፈሳሽ"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"የማህጸን በር ፈሳሽን ያነባል"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"የማህጸን በር ፈሳሽን ይጽፋል"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"ከወር አበባ ዑደት ውጭ ያለ የደም መፍሰስ"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"ከወር አበባ ዑደት ውጭ ያለ የደም መፍሰስ"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"ከወር አበባ ዑደት ውጭ ያለ የደም መፍሰስን ያነባል"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"ከወር አበባ ዑደት ውጭ ያለ የደም መፍሰስን ይጽፋል"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"የወር አበባ"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"የወር አበባ"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"የወር አበባን ያነባል"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectን እንዲደርስ ይፈቀድለት?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g> የእርስዎን ውሂብ እንዴት በገንቢው <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> ውስጥ እንደሚይዝ ማወቅ ይችላሉ"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"የግላዊነት መመሪያ"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"ሁሉም ፈቃዶች ይወገዱ?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"ሁሉንም አስወግድ"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> ከጤና አገናኝ የመጣ ማንኛውም ውሂብ ከእንግዲህ ማንበብ ወይም መጻፍ አይችልም።\n\nይህ መተግበሪያ ሊኖሩት የሚችሉትን እንደ አካባቢ፣ ካሜራ ወይም ማይክሮፎን ባሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አያሳርፍም።"</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"እንዲሁም የ<xliff:g id="APP_NAME">%1$s</xliff:g> ውሂብን ከጤና አገናኝ ሰርዝ"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"ቀጣይ ቀን"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"ቀዳሚው ቀን"</string>
     <string name="default_error" msgid="7047939092442348839">"የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።"</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"ምንም መተግበሪያዎች አልተፈቀደላቸውም"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"ምንም መተግበሪያዎች አልተከለከሉም"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"የሁሉም መተግበሪያዎች መዳረሻ ይወገድ?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"ማናቸውም መተግበሪያዎችዎ አዲስ ውሂብን መድረስ ወይም ወደ Health Connect ማከል አይችሉም። ይህ ማንኛውንም ነባር ውሂብ አይሰርዝም።"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"ማናቸውም መተግበሪያዎችዎ አዲስ ውሂብን መድረስ ወይም ወደ የጤና አገናኝ ማከል አይችሉም። ይህ ማንኛውንም ነባር ውሂብ አይሰርዝም።\n\nይህ እንደ አካባቢ፣ ካሜራ ወይም ማይክሮፎን ያሉ ይህ መተግበሪያ ሊኖሩት የሚችሉት ሌሎች ፈቃዶች ላይ ተጽዕኖ አያሳድርም።"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"ሁሉንም አስወግድ"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"መተግበሪያን ያስተዳድሩ"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"የመተግበሪያ ውሂብን ሰርዝ"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"ይህ መተግበሪያ ሊደርስባቸው የሚችላቸውን ሌሎች የAndroid ፈቃዶችን ለማስተዳደር ወደ ቅንብሮች ይሂዱ፣ ከዚያም መተግበሪያዎች የሚለውን መታ ያድርጉ"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"የግላዊነት መመሪያ ያንብቡ"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"ባለፉት 24 ሰዓታት ውስጥ ተደርሶበታል"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"የመተግበሪያ መዳረሻ"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"የተወገዱ የመተግበሪያ ፍቃዶች"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"የጤና አገናኝ የ<xliff:g id="APP_DATA">%s</xliff:g>ን ፈቃዶች አስወግዷል"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"የጤና አገናኝ የ<xliff:g id="APP_DATA_0">%1$s</xliff:g>ን እና የ<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>ን ፈቃዶች አስወግዷል"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"የጤና አገናኝ የ<xliff:g id="APP_DATA_0">%1$s</xliff:g>ን፣ የ<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>ን እና የ<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>ን ፈቃዶች አስወግዷል"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"የጤና አገናኝ የ<xliff:g id="APP_DATA_0">%1$s</xliff:g>ን፣ የ<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>ን፣ የ<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>ን እና የሌሎች መተግበሪያዎችን ፈቃዶች አስወግዷል"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"ዝርዝሮችን ይመልከቱ"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"የጤና አገናኝ ለምን የመተግበሪያ ፍቃዶችን እንደሚያስወግድ"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"አንድ መተግበሪያ ከGoogle Play ከታገደ ወይም ከተወገደ የጤና አገናኝ በራስ-ሰር የእሱን ፈቃዶች ያስወግዳል።\n\nይህ ማለት መተግበሪያው ከእንግዲህ የጤና አገናኝ ውስጥ የተከማቸ ውሂብን መድረስ አይችልም ማለት ነው። ይህ መተግበሪያ ከዚህ ቀደም የተጻፈ ውሂብ ካለው የቦዘኑ መተግበሪያዎች ዝርዝሩ ውስጥ ይታያል።"</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"ገባኝ"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"በHealth Connect ይጀምሩ"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"የጤና አገናኝ የእርስዎን የጤና እና አካል ብቃት ውሂብ ያከማቻል፣ ይህም በስልክዎ ላይ ያሉ የተለያዩ መተግበሪያዎችን ለማስመር ቀላል መንገድ ይሰጥዎታል"</string>
     <string name="share_data" msgid="3461840023402996573">"በመተግበሪያዎችዎ ውሂብን ያጋሩ"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 ኪሎሜትር በሰዓት}one{# ኪሎሜትር በሰዓት}other{# ኪሎሜትሮች በሰዓት}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"ከ<xliff:g id="START_TIME">%1$s</xliff:g> እስከ <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"ከ<xliff:g id="START_TIME">%1$s</xliff:g> እስከ <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 ተሽከርካሪ ወንበር ግፊት}one{# ተሽከርካሪ ወንበር ግፊት}other{# ተሽከርካሪ ወንበር ግፊቶች}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 ሊ}one{# ሊ}other{# ሊ}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 ሊትር}one{# ሊትር}other{# ሊትር}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 ፎቅ}one{# ፎቅ}other{# ፎቆች}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 ደ}one{# ደ}other{# ደ}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 ሜትር}one{# ሜትር}other{# ሜትሮች}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 ት/ደ}one{# ት/ደ}other{# ት/ደ}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 ዙር በደቂቃ}one{# ዙር በደቂቃ}other{# ዙሮች በደቂቃ}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"ከ<xliff:g id="MIN">%1$s</xliff:g> እስከ <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"የተጠበቀ"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"ያልተጠበቀ"</string>
+    <string name="spotting" msgid="8367146199172958006">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="flow_light" msgid="7714669130547926098">"ቀላል ፍሰት"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"መካከለኛ ፍሰት"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"ከባድ ፍሰት"</string>
+    <string name="period_day" msgid="7959562867933427299">"የወር አበባ ቀን <xliff:g id="DAY">%1$d</xliff:g> ከ<xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"አዎንታዊ"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"አሉታዊ"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"ከፍተኛ"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"ለውሳኔ የማያበቃ"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 ሚሊ/(ኪግ ደ)}one{# ሚሊ/(ኪግ·ደ)}other{# ሚሊ/(ኪግ·ደ)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 የኦክሲጅን ሚሊ ሊትር በሰውነት ክብደት ኪሎ ግራም በደቂቃ}one{# የኦክሲጅን ሚሊ ሊትር በሰውነት ክብደት ኪሎ ግራም በደቂቃ}other{# የኦክሲጅን ሚሊ ሊትር በሰውነት ክብደት ኪሎ ግራም በደቂቃ}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"ሜታቦሊክ ተሳቢ"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"የልብ ምት ምጥጥን"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"የኩፐር ሙከራ"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"ባለብዙ ደረጃ የአካል ብቃት ሙከራ"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"የሮክፖርት የአካል ብቃት ሙከራ"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"ሌላ"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"ደረቅ"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"የሚያጣብቅ"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"ክሬም ነክ"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"ውሃማ"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"የእንቁላል ነጭ ክፍል"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"ያልተለመደ"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"ቀላል"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"መካከለኛ"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"ከባድ"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> ሚሊሜትር ሜርኩሪ"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"መቆም"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"መቀመጥ"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"ጋደም ማለት"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"ወደ ኋላ ዘንበል ማለት"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"የግራ እጅ አንጓ"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"የቀኝ እጅ አንጓ"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"የግራ የላይኛው ክንድ"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"የቀኝ የላይኛው ክንድ"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 ሚሞል/ሊ}one{# ሚሞል/ሊ}other{# ሚሞል/ሊ}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 ሚሊሞል በሊትር}one{# ሚሊሞል በሊትር}other{# ሚሊሞሎች በሊትር}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"የመሃል ፈሳሽ"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"ካፒላሪ ደም"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"ፕላዝማ"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"እዥ"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"እንባዎች"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"ሙሉ ደም"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"አጠቃላይ"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"መጾም"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"ከምግብ በፊት"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"ከምግብ በኋላ"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"የምግብ ዓይነት"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"ያልታወቀ"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"ቁርስ"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"ምሳ"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"እራት"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"ማቆያ ምግብ"</string>
+    <string name="biotin" msgid="3627884250275404075">"ባዮቲን"</string>
+    <string name="caffeine" msgid="116658071099408928">"ካፌይን"</string>
+    <string name="calcium" msgid="2421306187949865076">"ካልሲየም"</string>
+    <string name="chloride" msgid="7490996250510177338">"ክሎራይድ"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"ኮሌስትሮል"</string>
+    <string name="chromium" msgid="1717886909765369185">"ክሮሚየም"</string>
+    <string name="copper" msgid="4865917412156527453">"መዳብ"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"ምግብ ነክ ፋይበር"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"ኃይል"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"ከስብ የተገኘ ኃይል"</string>
+    <string name="folate" msgid="8173733292245451456">"ፎሌት"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"ፎሊክ አሲድ"</string>
+    <string name="iodine" msgid="6295585927454501032">"አዮዲን"</string>
+    <string name="iron" msgid="1829192962959178553">"ብረት"</string>
+    <string name="magnesium" msgid="2378288907103259048">"ማግኒዚየም"</string>
+    <string name="manganese" msgid="4343136164658896416">"ማንጋኒዝ"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"ሞሊብዲነም"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"ሞኖ ፈሳሽ ቅባት"</string>
+    <string name="niacin" msgid="2824160609495269089">"ኒያሲን"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"ፓንቶቴኒክ አሲድ"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"ፎስፎረስ"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"ፖሊ ፈሳሽ ስብ"</string>
+    <string name="potassium" msgid="707209134595635038">"ፖታሲየም"</string>
+    <string name="protein" msgid="3822882640861839933">"ፕሮቲን"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"ሪቦፍላቪን"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"ጠጣር ቅባት"</string>
+    <string name="selenium" msgid="9082380472819491510">"ሴሊኒየም"</string>
+    <string name="sodium" msgid="8769822050033855464">"ሶዲየም"</string>
+    <string name="sugar" msgid="5999057784352629476">"ስኳር"</string>
+    <string name="thiamin" msgid="3709641915459997520">"ቲያሚን"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"ጠቅላላ ካርቦሃይድሬት"</string>
+    <string name="total_fat" msgid="3978725283210702305">"ጠቅላላ ስብ"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"ትራንስ ስብ"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"ፈሳሽ ስብ"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"ቫይታሚን ኤ"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"ቫይታሚን ቢ12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"ቫይታሚን ቢ6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"ቫይታሚን ሲ"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"ቫይታሚን ዲ"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"ቫይታሚን ኢ"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"ቫይታሚን ኬ"</string>
+    <string name="zinc" msgid="1009892754125043398">"ዚንክ"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>፦ <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"ስም"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 ግ}one{# ግ}other{# ግ}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 ግራም}one{# ግራም}other{# ግራም}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 ት/ደ}one{# ት/ደ}other{# ት/ደ}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 ትንፈሳ በደቂቃ}one{# ትንፈሳ በደቂቃ}other{# ትንፈሳዎች በደቂቃ}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 ኪግ}one{# ኪግ}other{# ኪግ}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 ፓውንድ}one{# ፓውንድ}other{# ፓውንድ}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 ስቶን}one{# ስቶን}other{# ስቶን}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 ኪሎግራም}one{# ኪሎግራም}other{# ኪሎግራም}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 ፓውንድ}one{# ፓውንድ}other{# ፓውንድ}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 ስቶን}one{# ስቶን}other{# ስቶን}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 °ሴ}one{# °ሴ}other{# °ሴ}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 ዲግሪ ሴልሺየስ}one{# ዲግሪ ሴልሺየስ}other{# ዲግሪ ሴልሺየስ}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 ኬ}one{# ኬ}other{# ኬ}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{የጤና አገናኝ ከ# ወር በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወር በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}one{የጤና አገናኝ ከ# ወር በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወር በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}other{የጤና አገናኝ ከ# ወራት በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወራት በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"በራስ-ሰር ሰርዝን አቀናብር"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"ነባር ውሂብ ይሰረዛል"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{የጤና አገናኝ ከ# ወር በላይ የቆየ ውሂብን በሙሉ ይሰርዛል። እነዚህ ለውጦች በእርስዎ የተገናኙ መተግበሪያዎች ላይ ለመታየት አንድ ቀን ሊወስዱ ይችላሉ።}one{የጤና አገናኝ ከ# ወር በላይ የቆየ ውሂብን በሙሉ ይሰርዛል። እነዚህ ለውጦች በእርስዎ የተገናኙ መተግበሪያዎች ላይ ለመታየት አንድ ቀን ሊወስዱ ይችላሉ።}other{የጤና አገናኝ ከ# ወራት በላይ የቆየ ውሂብን በሙሉ ይሰርዛል።እነዚህ ለውጦች በእርስዎ የተገናኙ መተግበሪያዎች ላይ ለመታየት አንድ ቀን ሊወስዱ ይችላሉ።}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"ከእነዚህ ውስጥ የሚሰረዝ ውሂብ"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"ተከናውኗል"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"የመተግበሪያ ቅድሚያን ያቀናብሩ"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"ከአንድ በላይ መተግበሪያ የ<xliff:g id="DATA_TYPE">%s</xliff:g> ውሂብ ካከለ Health Connect በዚህ ዝርዝር ውስጥ ለከፍተኛው መተግበሪያው ቅድሚያ ይሰጣል። መተግበሪያዎችን እንደገና ለማዘዝ ይጎትቱ።"</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"አስቀምጥ"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"ወደ ላይ ውሰድ"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"ወደ ታች ውሰድ"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"ወደ ራስጌ ውሰድ"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"ወደ ግርጌ ውሰድ"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"የአካል ብቃት፣ ጤናማነት"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"ፈቃዶች"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"የጤና አገናኝ፣ የጤና ውሂብ፣ የጤና ምድቦች፣ የውሂብ መዳረሻ፣ እንቅስቃሴ፣ የሰውነት አካል መለኪያዎች፣ የዑደት መከታተል፣ ስነ-ምግብ፣ እንቅልፍ፣ መሠረታዊ ነገሮች"</string>

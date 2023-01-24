@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Ruxsatlar va maʼlumotlar"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"Telefondagi jismoniy va salomatlik maʼlumotlarini tekshirish va boshqarish hamda buni koʻrishga qaysi ilovalarga ruxsat berilishi"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"Telefondagi jismoniy va salomatlik maʼlumotlarini tekshirish va boshqarish hamda buni koʻrishga qaysi ilovalarga ruxsat berilishi"</string>
     <string name="data_title" msgid="6928287139074878977">"Maʼlumotlar va ruxsat"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Barcha turkumlar"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Barcha turkumlarni ochish"</string>
     <string name="no_data" msgid="1120552294863595549">"Hech narsa topilmadi"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"Maʼlumotlar va ilovadagi oxirgi harakatlarni koʻrish"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Ilovalar uchun ruxsatlar"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Ilovalar va ruxsatlarni boshqarish"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Oxirgi kirish"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Yaqin orada hech qanday ilova Health Connect ilovasiga ulanmagan"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"Hammasi"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Barcha oxirgi ruxsatlarni koʻrish"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Oxirgi 24 soat ichida qaysi ilovalar maʼlumotlaringizga kirganini koʻring"</string>
     <string name="today_header" msgid="3128127066599449902">"Bugun"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"Kecha"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"Oʻqish: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Yozish: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Faollik"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"faollik"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Jismoniy koʻrsatkichlar"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"bachadon shilligʻi"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Bachadon shilligʻini oʻqish"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Bachadon shilligʻini yozish"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Hayzlar orasida qon ketishi"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"hayzlar orasida qon ketishi"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Hayzlar orasida qon ketishini oʻqish"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Hayzlar orasida qon ketishini yozish"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Hayz"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"hayz"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Hayzni oʻqish"</string>
@@ -247,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Hech qanday ilovaga ruxsat berilmagan"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Hech qanday ilovaga taqiqlanmagan"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Barcha ilovalar uchun taqiqlansinmi?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Ilovalardan hech biri Health Connectga kira olmaydi va yangi maʼlumotlarni kirita olmaydi. Hech qanday maʼlumot oʻchirilmaydi."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Ilovalardan hech biri Health Connectga kira olmaydi va yangi maʼlumotlarni kirita olmaydi. Hech qanday maʼlumot oʻchirilmaydi.\n\nBu ilovada joylashuv, kamera yoki mikrofon kabi boshqa ruxsatlarga taʼsir qilmaydi."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Hammasini tozalash"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Ilovani boshqarish"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Ilova maʼlumotlarini oʻchirsih"</string>
@@ -259,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Bu ilova olishi mumkin boʻlgan boshqa Android ruxsatlarini boshqarish uchun Sozlamalar &gt; Ilovalar rukniga kiring"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Maxfiylik siyosatini oʻqish"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Oxirgi 24 soat ichida kirilgan"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"Ilovaga ruxsat"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Ilovadan olingan ruxsatlar"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect <xliff:g id="APP_DATA">%s</xliff:g> ruxsatlarini olib tashladi"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect <xliff:g id="APP_DATA_0">%1$s</xliff:g> va <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> ruxsatlarini olib tashladi"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Health Connect <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> va <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> ruxsatlarini olib tashladi"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Health Connect <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> va boshqa ilova ruxsatlarini olib tashladi"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Tafsilotlar"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Health Connect ilova ruxsatlarini nega olib tashlaydi"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Ilova Google Playdan olib tashlansa yoki muzlatilsa, Health Connect uning ruxsatlarini avtomatik olib tashlaydi.\n\nBunda ilova Health Connect ichida saqlangan maʼlumotlarga kira olmay qoladi. Agar bu ilova avval axborot yozgan boʻlsa, u nofaol ilovalar roʻyxatida chiqadi."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"OK"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Health Connect bilan ishlashni boshlash"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect salomatlik va fitnes maʼlumotlaringizni xavfsiz saqlaydi va telefondagi boshqa ilovalarga oson sinxronlash imkonini beradi"</string>
     <string name="share_data" msgid="3461840023402996573">"Ilovalarga axborot ulashish"</string>

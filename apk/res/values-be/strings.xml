@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Здароўе і спорт"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Дазволы і даныя"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"Праглядайце на тэлефоне даныя пра здароўе і фізічную актыўнасць. Кіруйце гэтымі данымі і доступам праграм да іх"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"Кіруйце на тэлефоне данымі пра здароўе і фізічную актыўнасць, а таксама доступам праграм да гэтай інфармацыі"</string>
     <string name="data_title" msgid="6928287139074878977">"Даныя і доступ"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Усе катэгорыі"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Праглядзець усе катэгорыі"</string>
     <string name="no_data" msgid="1120552294863595549">"Няма даных"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"Праглядзець даныя і нядаўнія дзеянні ў праграме"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Дазволы праграм"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Кіраваць праграмамі і дазволамі"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Апошні доступ да даных геалакацыі"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"У апошні час праграмы не атрымлівалі доступу да Здароўя і спорту"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"Паказаць усе"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Паказаць усе нядаўнія выпадкі доступу"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Паглядзіце, якія праграмы мелі доступ да вашых даных у апошнія 24 гадз"</string>
     <string name="today_header" msgid="3128127066599449902">"Сёння"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"Учора"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"Счытана: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Запісана: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Актыўнасць"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"актыўнасць"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Параметры цела"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"цэрвікальная слізь"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Счытваць даныя пра цэрвікальную слізь"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Запісваць даныя пра цэрвікальную слізь"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Міжменструальны крывацёк"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"міжменструальны крывацёк"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Счытваць міжменструальныя крывацёкі"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Запісваць міжменструальныя крывацёкі"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Менструацыя"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"менструацыя"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Счытваць даныя пра менструацыю"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"Даць праграме \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ да праграмы \"Здароўе і спорт\"?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"Даведацца пра тое, як праграма \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" апрацоўвае вашы даныя, можна ў <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> распрацоўшчыка"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"палітыка прыватнасці"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Выдаліць усе дазволы?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Выдаліць усе"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> больш не зможа счытваць і запісваць даныя з праграмы \"Здароўе і спорт\".\n\nГэта не паўплывае на іншыя дазволы, якія можа мець гэта праграма, напрыклад на доступ да геаданых, камеры ці мікрафона."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Таксама выдаліць даныя праграмы \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" з праграмы \"Здароўе і спорт\""</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Наступны дзень"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Папярэдні дзень"</string>
     <string name="default_error" msgid="7047939092442348839">"Нешта пайшло не так. Паўтарыце спробу."</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Няма дазволеных праграм"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Няма забароненых праграм"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Выдаліць доступ для ўсіх праграм?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Ні адна з вашых праграм не зможа атрымліваць доступ да даных у праграме \"Здароўе і спорт\" ці дадаваць іх. Ужо існуючыя даныя выдалены не будуць."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Ні адна з вашых праграм не зможа атрымліваць доступ да даных у праграме \"Здароўе і спорт\" ці дадаваць іх. Ужо існуючыя даныя застануцца.\n\nГэта не паўплывае на іншыя дазволы, якія можа мець гэта праграма, напрыклад на доступ да геаданых, камеры ці мікрафона."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Выдаліць усе"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Кіраванне праграмай"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Выдаліць даныя праграмы"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Каб кіраваць іншымі дазволамі гэтай праграмы ў Android, адкрыйце \"Налады\" і выберыце \"Праграмы\""</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Азнаёміцца з палітыкай прыватнасці"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Апошні доступ у папярэднія 24 гадзіны"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"Доступы праграмы"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Выдаленыя дазволы праграм"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Дазволы на доступ да даных праграмы \"Здароўе і спорт\" выдалены для праграмы \"<xliff:g id="APP_DATA">%s</xliff:g>\""</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Дазволы на доступ да даных праграмы \"Здароўе і спорт\" выдалены для праграм \"<xliff:g id="APP_DATA_0">%1$s</xliff:g>\" і \"<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>\""</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Дазволы на доступ да даных праграмы \"Здароўе і спорт\" выдалены для праграм \"<xliff:g id="APP_DATA_0">%1$s</xliff:g>\", \"<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>\" і \"<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>\""</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Дазволы на доступ да даных праграмы \"Здароўе і спорт\" выдалены для праграм \"<xliff:g id="APP_DATA_0">%1$s</xliff:g>\", \"<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>\", \"<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>\" і іншых"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Глядзець падрабязнасці"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Чаму выдаляюцца дазволы праграм на доступ да даных праграмы \"Здароўе і спорт\""</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Калі праграма блакіруецца ці выдаляецца з Google Play, аўтаматычна выдаляюцца яе дазволы на доступ да даных у праграме \"Здароўе і спорт\".\n\nТакім чынам, заблакіраваная ці выдаленая праграма страчвае доступ да даных, захаваных у праграме \"Здароўе і спорт\". Калі такая праграма раней запісвала даныя, яна з\'явіцца ў спісе неактыўных праграм."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"OK"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Пачатак працы з праграмай \"Здароўе і спорт\""</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Праграма \"Здароўе і спорт\" захоўвае даныя пра ваша здароўе і фізічную актыўнасць і забяспечвае сінхранізацыю розных праграм на тэлефоне"</string>
     <string name="share_data" msgid="3461840023402996573">"Абагульвайце даныя з праграмамі"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 кіламетр у гадзіну}one{# кіламетр у гадзіну}few{# кіламетры ў гадзіну}many{# кіламетраў у гадзіну}other{# кіламетра ў гадзіну}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"з <xliff:g id="START_TIME">%1$s</xliff:g> да <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"з <xliff:g id="START_TIME">%1$s</xliff:g> да <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 штуршок інваліднай каляскі}one{# штуршок інваліднай каляскі}few{# штуршкі інваліднай каляскі}many{# штуршкоў інваліднай каляскі}other{# штуршка інваліднай каляскі}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 л}one{# л}few{# л}many{# л}other{# л}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 літр}one{# літр}few{# літры}many{# літраў}other{# літра}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 паверх}one{# паверх}few{# паверхі}many{# паверхаў}other{# паверха}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 м}one{# м}few{# м}many{# м}other{# м}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 метр}one{# метр}few{# метры}many{# метраў}other{# метра}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 аб/хв}one{# аб/хв}few{# аб/хв}many{# аб/хв}other{# аб/хв}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 абарот у хвіліну}one{# абарот у хвіліну}few{# абароты ў хвіліну}many{# абаротаў у хвіліну}other{# абароту ў хвіліну}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"<xliff:g id="MIN">%1$s</xliff:g>–<xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"Выконваліся меры засцярогі"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Не выконваліся меры засцярогі"</string>
+    <string name="spotting" msgid="8367146199172958006">"Выдзяленні"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"Выдзяленні"</string>
+    <string name="flow_light" msgid="7714669130547926098">"Слабы крывацёк"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"Умераны крывацёк"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"Моцны крывацёк"</string>
+    <string name="period_day" msgid="7959562867933427299">"Перыяд: дзень <xliff:g id="DAY">%1$d</xliff:g> з <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"Станоўчы"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"Адмоўны"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"Высокая фертыльнасць"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"Недастаткова даных"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 мл/(кг·хв)}one{# мл/(кг·хв)}few{# мл/(кг·хв)}many{# мл/(кг·хв)}other{# мл/(кг·хв)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 мілілітр кіслароду на кілаграм масы цела ў хвіліну}one{# мілілітр кіслароду на кілаграм масы цела ў хвіліну}few{# мілілітры кіслароду на кілаграм масы цела ў хвіліну}many{# мілілітраў кіслароду на кілаграм масы цела ў хвіліну}other{# мілілітра кіслароду на кілаграм масы цела ў хвіліну}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Сістэма \"Metabolic cart\""</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Суадносіны паказчыкаў частаты пульсу"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"Тэст Купера"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Шматэтапны тэст на фізічную нагрузку"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"Тэст Ракпорта на фізічную нагрузку"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"Іншае"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"Сухая"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"Ліпкая"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"Густая"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"Вадзяністая"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"Яечны бялок"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"Незвычайная"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"Мала"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"Умераная колькасць"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"Шмат"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> мм рт. сл."</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> (у міліметрах ртутнага слупка)"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"Стоячы"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"Седзячы"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"Лежачы"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"Седзячы адкінуўшыся"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Левае запясце"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Правае запясце"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Левае плячо"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Правае плячо"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 ммоль/л}one{# ммоль/л}few{# ммолі/л}many{# ммоляў/л}other{# ммоля/л}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 мілімоль на літр}one{# мілімоль на літр}few{# мілімолі на літр}many{# мілімоляў на літр}other{# мілімоля на літр}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Тканкавая вадкасць"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Капілярная кроў"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"Плазма"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"Сываратка"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"Слёзы"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Суцэльная кроў"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"Агульныя патрабаванні"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Нашча"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Перад прыёмам ежы"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Пасля прыёму ежы"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"Тып прыёму ежы"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"Невядома"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"Снеданне"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"Абед"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"Вячэра"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"Перакус"</string>
+    <string name="biotin" msgid="3627884250275404075">"Біяцін"</string>
+    <string name="caffeine" msgid="116658071099408928">"Кафеін"</string>
+    <string name="calcium" msgid="2421306187949865076">"Кальцый"</string>
+    <string name="chloride" msgid="7490996250510177338">"Хлор"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"Халестэрын"</string>
+    <string name="chromium" msgid="1717886909765369185">"Хром"</string>
+    <string name="copper" msgid="4865917412156527453">"Медзь"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"Харчовыя валокны"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"Энергія"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Энергія ад спажывання тлушчаў"</string>
+    <string name="folate" msgid="8173733292245451456">"Фалаты"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"Фоліевая кіслата"</string>
+    <string name="iodine" msgid="6295585927454501032">"Ёд"</string>
+    <string name="iron" msgid="1829192962959178553">"Жалеза"</string>
+    <string name="magnesium" msgid="2378288907103259048">"Магній"</string>
+    <string name="manganese" msgid="4343136164658896416">"марганец"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"Малібдэн"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"Монаненасычаныя тлушчы"</string>
+    <string name="niacin" msgid="2824160609495269089">"Нікацінавая кіслата"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"Пантатэнавая кіслата"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"Фосфар"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Поліненасычаныя тлушчы"</string>
+    <string name="potassium" msgid="707209134595635038">"Калій"</string>
+    <string name="protein" msgid="3822882640861839933">"Бялкі"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"Рыбафлавін"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"Насычаныя тлушчы"</string>
+    <string name="selenium" msgid="9082380472819491510">"Селен"</string>
+    <string name="sodium" msgid="8769822050033855464">"Натрый"</string>
+    <string name="sugar" msgid="5999057784352629476">"Цукар"</string>
+    <string name="thiamin" msgid="3709641915459997520">"Тыямін"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"Усяго вугляводаў"</string>
+    <string name="total_fat" msgid="3978725283210702305">"Усяго тлушчаў"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"Транстлушчы"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"Ненасычаныя тлушчы"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"Вітамін A"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"Вітамін B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"Вітамін B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"Вітамін C"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"Вітамін D"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"Вітамін E"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"Вітамін K"</string>
+    <string name="zinc" msgid="1009892754125043398">"Цынк"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"Назва"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 г}one{# г}few{# г}many{# г}other{# г}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 грам}one{# грам}few{# грамы}many{# грамаў}other{# грама}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 удых/хв}one{# удых/хв}few{# удыхі/хв}many{# удыхаў/хв}other{# удыху/хв}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 удых у хвіліну}one{# удых у хвіліну}few{# удыхі ў хвіліну}many{# удыхаў у хвіліну}other{# удыху ў хвіліну}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 кг}one{# кг}few{# кг}many{# кг}other{# кг}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 фунт}one{# фунт}few{# фунты}many{# фунтаў}other{# фунта}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 стоўн}one{# стоўн}few{# стоўны}many{# стоўнаў}other{# стоўна}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 кілаграм}one{# кілаграм}few{# кілаграмы}many{# кілаграмаў}other{# кілаграма}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 фунт}one{# фунт}few{# фунты}many{# фунтаў}other{# фунта}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 стоўн}one{# стоўн}few{# стоўны}many{# стоўнаў}other{# стоўна}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}one{# ℃}few{# ℃}many{# ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 градус Цэльсія}one{# градус Цэльсія}few{# градусы Цэльсія}many{# градусаў Цэльсія}other{# градуса Цэльсія}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 К}one{# К}few{# К}many{# К}other{# К}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Праграма \"Здароўе і спорт\" будзе аўтаматычна выдаляць новыя даныя праз # месяц. Пры ўключэнні гэтай налады таксама будуць выдалены даныя, старэйшыя за # месяц.}one{Праграма \"Здароўе і спорт\" будзе аўтаматычна выдаляць новыя даныя праз # месяц. Пры ўключэнні гэтай налады таксама будуць выдалены даныя, старэйшыя за # месяц.}few{Праграма \"Здароўе і спорт\" будзе аўтаматычна выдаляць новыя даныя праз # месяцы. Пры ўключэнні гэтай налады таксама будуць выдалены даныя, старэйшыя за # месяцы.}many{Праграма \"Здароўе і спорт\" будзе аўтаматычна выдаляць новыя даныя праз # месяцаў. Пры ўключэнні гэтай налады таксама будуць выдалены даныя, старэйшыя за # месяцаў.}other{Праграма \"Здароўе і спорт\" будзе аўтаматычна выдаляць новыя даныя праз # месяца. Пры ўключэнні гэтай налады таксама будуць выдалены даныя, старэйшыя за # месяца.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Задаць аўтавыдаленне"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Існуючыя даныя будуць выдалены"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Праграма \"Здароўе і спорт\" выдаліць усе даныя, старэйшыя за # месяц. Змяненні ў падключаных праграмах могуць заняць суткі.}one{Праграма \"Здароўе і спорт\" выдаліць усе даныя, старэйшыя за # месяц. Змяненні ў падключаных праграмах могуць заняць суткі.}few{Праграма \"Здароўе і спорт\" выдаліць усе даныя, старэйшыя за # месяцы. Змяненні ў падключаных праграмах могуць заняць суткі.}many{Праграма \"Здароўе і спорт\" выдаліць усе даныя, старэйшыя за # месяцаў .Змяненні ў падключаных праграмах могуць заняць суткі.}other{Праграма \"Здароўе і спорт\" выдаліць усе даныя, старэйшыя за # месяца. Змяненні ў падключаных праграмах могуць заняць суткі.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Будуць выдалены даныя з наступных катэгорый:"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Гатова"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"Задайце прыярытэт праграм"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"Калі праграма \"Здароўе і спорт\" атрымлівае такія даныя, як <xliff:g id="DATA_TYPE">%s</xliff:g>, ад некалькіх праграм, перавага аддаецца праграме, якая стаіць першай у спісе прыярытэтаў. Перацягніце праграмы, каб змяніць іх чарговасць."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Захаваць"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Перамясціць уверх"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Перамясціць уніз"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Перамясціць наверх"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Перамясціць уніз"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"фітнес, здароўе"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"дазволы"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"здароўе і спорт, даныя пра здароўе, катэгорыі здароўя, доступ да даных, актыўнасць, параметры цела, сачэнне за цыклам, харчаванне, сон, паказчыкі арганізма"</string>

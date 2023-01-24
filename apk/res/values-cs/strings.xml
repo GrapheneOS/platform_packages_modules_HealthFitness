@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Oprávnění a data"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"Prohlížejte si a spravujte údaje o zdraví a kondici v telefonu a určete, které aplikace k nim mají přístup"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"Spravujte údaje o zdraví a kondici v telefonu a určete, které aplikace k nim mají přístup"</string>
     <string name="data_title" msgid="6928287139074878977">"Data a přístup"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Všechny kategorie"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Zobrazit všechny kategorie"</string>
     <string name="no_data" msgid="1120552294863595549">"Žádná data"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"Zobrazení dat a nedávné aktivity v aplikacích"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Oprávnění aplikací"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Spravovat aplikace a oprávnění"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Nedávný přístup"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Žádné aplikace ke službě Health Connect v poslední době nepřistupovaly"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"Zobrazit vše"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Zobrazit veškerý nedávný přístup"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Zobrazte, které aplikace měly přístup k vašim datům za posledních 24 hodin"</string>
     <string name="today_header" msgid="3128127066599449902">"Dnes"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"Včera"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"Čtení: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Zápis: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Aktivita"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"aktivita"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Tělesné míry"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"cervikální hlen"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Číst cervikální hlen"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Zapisovat cervikální hlen"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Intermenstruační krvácení"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"intermenstruační krvácení"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Číst intermenstruační krvácení"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Zapisovat intermenstruační krvácení"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruace"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruace"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Číst menstruaci"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup ke službě Health Connect?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> zpracovává vaše data, najdete v <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> vývojáře"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"zásadách ochrany soukromí"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Odebrat všechna oprávnění?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Odstranit vše"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> již nebude moci číst ani zapisovat žádná data ze služby Health Connect.\n\nTato akce nebude mít vliv na ostatní oprávnění, která aplikace má, jako je přístup k poloze, fotoaparátu nebo mikrofonu."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Také vymazat data aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> ze služby Health Connect"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Další den"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Předchozí den"</string>
     <string name="default_error" msgid="7047939092442348839">"Něco se pokazilo. Zkuste to znovu."</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Žádné povolené aplikace"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Žádné zakázané aplikace"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Odebrat přístup všem aplikacím?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Žádné z vašich aplikací nebudou mít přístup k datům služby Health Connect a nebudou moci přidávat nová. Touto akcí nesmažete žádná existující data."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Žádné z vašich aplikací nebudou mít přístup k datům služby Health Connect a nebudou moci přidávat nová. Touto akcí nesmažete žádná existující data.\n\nTato akce nebude mít vliv na ostatní oprávnění, která aplikace má, jako je přístup k poloze, fotoaparátu nebo mikrofonu."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Odstranit vše"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Spravovat aplikaci"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Smazat data aplikace"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Pokud chcete spravovat ostatní oprávnění Androidu, ke kterým má aplikace přístup, přejděte do Nastavení a klepněte na Aplikace"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Zobrazit zásady ochrany soukromí"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Použito během posledních 24 hodin"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"Přístup aplikací"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Odebrání oprávnění aplikacím"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Aplikace Health Connect odebrala oprávnění aplikaci <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Aplikace Health Connect odebrala oprávnění aplikacím <xliff:g id="APP_DATA_0">%1$s</xliff:g> a <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Aplikace Health Connect odebrala oprávnění aplikacím <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> a <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Aplikace Health Connect odebrala oprávnění aplikacím <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> a dalším"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Zobrazit podrobnosti"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Proč aplikace Health Connect aplikacím odebírá oprávnění"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Pokud je aplikace pozastavena nebo odstraněna z Google Play, Health Connect jí automaticky odebere oprávnění.\n\nTo znamená, že aplikace již nebude mít přístup k datům uloženým ve službě Health Connect. Pokud tato aplikace dříve zapsala nějaká data, zobrazí se v seznamu neaktivních aplikací."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"Rozumím"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Začínáme s aplikací Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Služba Health Connect slouží k bezpečnému ukládání údajů o zdraví a kondici, což umožňuje jednoduše synchronizovat různé aplikace v telefonu"</string>
     <string name="share_data" msgid="3461840023402996573">"Sdílejte data se svými aplikacemi"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometr za hodinu}few{# kilometry za hodinu}many{# kilometru za hodinu}other{# kilometrů za hodinu}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 odstrčení invalidního vozíku}few{# odstrčení invalidního vozíku}many{# odstrčení invalidního vozíku}other{# odstrčení invalidního vozíku}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 l}few{# l}many{# l}other{# l}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 litr}few{# litry}many{# litru}other{# litrů}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 podlaží}few{# podlaží}many{# podlaží}other{# podlaží}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}few{# m}many{# m}other{# m}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 metr}few{# metry}many{# metru}other{# metrů}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 ot./min}few{# ot./min}many{# ot./min}other{# ot./min}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 otáčka za minutu}few{# otáčky za minutu}many{# otáčky za minutu}other{# otáček za minutu}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"od <xliff:g id="MIN">%1$s</xliff:g> do <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"Chráněný"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Nechráněný"</string>
+    <string name="spotting" msgid="8367146199172958006">"Špinění"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"Špinění"</string>
+    <string name="flow_light" msgid="7714669130547926098">"Mírné krvácení"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"Střední krvácení"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"Silné krvácení"</string>
+    <string name="period_day" msgid="7959562867933427299">"<xliff:g id="DAY">%1$d</xliff:g>. den periody z <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"Pozitivní"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"Negativní"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"Vysoká"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"Neprůkazný výsledek"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 ml/(kg·min)}few{# ml/(kg·min)}many{# ml/(kg·min)}other{# ml/(kg·min)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 mililitr kyslíku na kilogram tělesné hmotnosti za minutu}few{# mililitry kyslíku na kilogram tělesné hmotnosti za minutu}many{# mililitru kyslíku na kilogram tělesné hmotnosti za minutu}other{# mililitrů kyslíku na kilogram tělesné hmotnosti za minutu}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Metabolický analyzátor"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Poměr tepových frekvencí"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"Cooperův test"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Vytrvalostní člunkový běh (PACER)"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"Rockportův kondiční test"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"Jiné"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"Suchý"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"Lepkavý"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"Krémovitý"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"Vodnatý"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"Bílý jako vejce"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"Neobvyklý"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"Mírný"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"Střední"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"Silný"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> milimetrů rtuti"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"Vestoje"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"Vsedě"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"Vleže"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"V pololehu"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Levé zápěstí"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Pravé zápěstí"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Horní část levé paže"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Horní část pravé paže"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/L}few{# mmol/L}many{# mmol/L}other{# mmol/L}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 milimol na litr}few{# milimoly na litr}many{# milimolu na litr}other{# milimolů na litr}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Tkáňový mok"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Kapilární krev"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"Plazma"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"Sérum"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"Slzy"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Celá krev"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"Obecné"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Na lačno"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Před jídlem"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Po jídle"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"Typ jídla"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"Není známo"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"Snídaně"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"Oběd"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"Večeře"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"Svačina"</string>
+    <string name="biotin" msgid="3627884250275404075">"Biotin"</string>
+    <string name="caffeine" msgid="116658071099408928">"Kofein"</string>
+    <string name="calcium" msgid="2421306187949865076">"Vápník"</string>
+    <string name="chloride" msgid="7490996250510177338">"Chloridy"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"Cholesterol"</string>
+    <string name="chromium" msgid="1717886909765369185">"Chrom"</string>
+    <string name="copper" msgid="4865917412156527453">"Měď"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"Vláknina"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"Energie"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Energie z tuku"</string>
+    <string name="folate" msgid="8173733292245451456">"Folát"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"Kyselina listová"</string>
+    <string name="iodine" msgid="6295585927454501032">"Jód"</string>
+    <string name="iron" msgid="1829192962959178553">"Železo"</string>
+    <string name="magnesium" msgid="2378288907103259048">"Hořčík"</string>
+    <string name="manganese" msgid="4343136164658896416">"Mangan"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"Molybden"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"Mononenasycené tuky"</string>
+    <string name="niacin" msgid="2824160609495269089">"Niacin"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"Kyselina pantothenová"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"Fosfor"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Polynenasycené tuky"</string>
+    <string name="potassium" msgid="707209134595635038">"Draslík"</string>
+    <string name="protein" msgid="3822882640861839933">"Bílkoviny"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"Riboflavin"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"Nasycené tuky"</string>
+    <string name="selenium" msgid="9082380472819491510">"Selen"</string>
+    <string name="sodium" msgid="8769822050033855464">"Sodík"</string>
+    <string name="sugar" msgid="5999057784352629476">"Cukry"</string>
+    <string name="thiamin" msgid="3709641915459997520">"Thiamin"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"Sacharidy celkem"</string>
+    <string name="total_fat" msgid="3978725283210702305">"Tuky celkem"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"Trans tuky"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"Nenasycené tuky"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"Vitamin A"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"Vitamin B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"Vitamin B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"Vitamin C"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"Vitamin D"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"Vitamin E"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"Vitamin K"</string>
+    <string name="zinc" msgid="1009892754125043398">"Zinek"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"Název"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}few{# g}many{# g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 gram}few{# gramy}many{# gramu}other{# gramů}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 ot./min}few{# ot./min}many{# ot./min}other{# ot./min}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 nádech za minutu}few{# nádechy za minutu}many{# nádechu za minutu}other{# nádechů za minutu}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}few{# kg}many{# kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 lb}few{# lb}many{# lb}other{# lb}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 kam.}few{# kam.}many{# kam.}other{# kam.}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 kilogram}few{# kilogramy}many{# kilogramu}other{# kilogramů}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 libra}few{# libry}many{# libry}other{# liber}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 kámen}few{# kameny}many{# kamenu}other{# kamenů}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}few{# ℃}many{# ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 stupeň Celsia}few{# stupně Celsia}many{# stupně Celsia}other{# stupňů Celsia}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}few{# K}many{# K}other{# K}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect automaticky smaže nová data po # měsíci. Když to nastavíte, smažou se také stávající data starší než # měsíc.}few{Health Connect automaticky smaže nová data po # měsících. Když to nastavíte, smažou se také stávající data starší než # měsíce.}many{Health Connect automaticky smaže nová data po # měsíce. Když to nastavíte, smažou se také stávající data starší než # měsíce.}other{Health Connect automaticky smaže nová data po # měsících. Když to nastavíte, smažou se také stávající data starší než # měsíců.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Nastavit automatické mazání"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Stávající data budou vymazána"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect smaže všechna data starší než # měsíc. V připojených aplikacích se změny projeví do jednoho dne.}few{Health Connect smaže všechna data starší než # měsíce. V připojených aplikacích se změny projeví do jednoho dne.}many{Health Connect smaže všechna data starší než # měsíce. V připojených aplikacích se změny projeví do jednoho dne.}other{Health Connect smaže všechna data starší než # měsíců. V připojených aplikacích se změny projeví do jednoho dne.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Data ke smazání"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Hotovo"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"Nastavit prioritu aplikací"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"Pokud data typu <xliff:g id="DATA_TYPE">%s</xliff:g> přidá několik aplikací, upřednostní služba Health Connect aplikaci, která je v tomto seznamu nejvýše. Pořadí aplikací změníte přetažením."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Uložit"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Přesunout nahoru"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Přesunout dolů"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Přesunout na začátek"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Přesunout na konec"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"fitness, wellness"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"oprávnění"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"health connect, zdravotní údaje, zdravotní kategorie, přístup k datům, aktivita, tělesné míry, sledování cyklu, výživa, spánek, vitals"</string>

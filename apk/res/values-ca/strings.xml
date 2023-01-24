@@ -19,20 +19,22 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Salut connectada"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Permisos i dades"</string>
-    <string name="home_subtitle" msgid="2276698589407549546">"Consulta i gestiona les dades de salut i fitnes al telèfon, i controla quines aplicacions poden accedir-hi"</string>
+    <string name="home_subtitle" msgid="7432717346054530246">"Gestiona les dades de salut i fitnes al telèfon, i controla quines aplicacions poden accedir-hi"</string>
     <string name="data_title" msgid="6928287139074878977">"Dades i accés"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Totes les categories"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Mostra totes les categories"</string>
     <string name="no_data" msgid="1120552294863595549">"No hi ha dades"</string>
-    <string name="data_subtitle" msgid="2393062372551179163">"Consulta les dades i l\'activitat recent en aplicacions"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Permisos d\'aplicacions"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Gestiona les aplicacions i els permisos"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Accés recent"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Cap aplicació ha accedit a Salut connectada recentment"</string>
-    <string name="see_all_recent_access" msgid="6703997237436002218">"Mostra-ho tot"</string>
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Consulta tots els accessos recents"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Consulta quines aplicacions han accedit a les teves dades durant les 24 darreres hores"</string>
     <string name="today_header" msgid="3128127066599449902">"Avui"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"Ahir"</string>
+    <string name="read_data_access_label" msgid="6637502477626337989">"Ha llegit: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Ha escrit: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Activitat"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"activitat"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Mesures corporals"</string>
@@ -67,10 +69,10 @@
     <string name="permgroupdesc_health" msgid="44553351410718944">"accedir a les teves dades de salut"</string>
     <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Llegir les calories cremades"</string>
     <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Permet que l\'aplicació llegeixi les calories cremades"</string>
-    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Calories d\'activitat cremades"</string>
-    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"calories d\'activitat cremades"</string>
-    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Llegir calories d\'activitat cremades"</string>
-    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Escriure calories d\'activitat cremades"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Calories actives cremades"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"calories actives cremades"</string>
+    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Llegir calories actives cremades"</string>
+    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Escriure calories actives cremades"</string>
     <string name="exercise_uppercase_label" msgid="8730993778771782694">"Exercici"</string>
     <string name="exercise_lowercase_label" msgid="5171299688710039066">"exercici"</string>
     <string name="exercise_read_content_description" msgid="167419823931295816">"Llegir exercici"</string>
@@ -154,6 +156,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"moc cervical"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Llegir el moc cervical"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Escriure el moc cervical"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Hemorràgia intermenstrual"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"hemorràgia intermenstrual"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Llegir l\'hemorràgia intermenstrual"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Escriure l\'hemorràgia intermenstrual"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruació"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruació"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Llegir la menstruació"</string>
@@ -228,14 +234,10 @@
     <string name="request_permissions_header_title" msgid="547885377986067898">"Vols permetre que <xliff:g id="APP_NAME">%1$s</xliff:g> accedeixi a Salut connectada?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"Pots obtenir informació sobre com <xliff:g id="APP_NAME">%1$s</xliff:g> gestiona les teves dades a la <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> del desenvolupador"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"política de privadesa"</string>
-    <!-- no translation found for permissions_disconnect_dialog_title (4612685175446798383) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_disconnect (2630309099920548178) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_message (5532438515588273748) -->
-    <skip />
-    <!-- no translation found for permissions_disconnect_dialog_checkbox (3405722328391033494) -->
-    <skip />
+    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Vols suprimir tots els permisos?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Suprimeix-ho tot"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> ja no podrà llegir ni escriure dades de Salut connectada.\n\nAixò no afecta altres permisos que pot tenir aquesta aplicació, com ara els relacionats amb la ubicació, la càmera o el micròfon."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Suprimeix també les dades de <xliff:g id="APP_NAME">%1$s</xliff:g> de Salut connectada"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Dia següent"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Dia anterior"</string>
     <string name="default_error" msgid="7047939092442348839">"S\'ha produït un error. Torna-ho a provar."</string>
@@ -251,7 +253,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Cap aplicació amb permís"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Cap aplicació denegada"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Vols suprimir l\'accés per a totes les aplicacions?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7237845713182148255">"Cap de les teves aplicacions no podrà afegir noves dades a Salut connectada ni accedir-hi. Aquesta acció no suprimeix cap de les dades existents."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Cap de les teves aplicacions no podrà afegir noves dades a Salut connectada ni accedir-hi. Aquesta acció no suprimeix cap de les dades existents.\n\nAixò no afecta els altres permisos que aquesta aplicació pugui tenir, com ara els d\'accés a la ubicació, a la càmera o al micròfon."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Suprimeix-ho tot"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Gestiona l\'aplicació"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Suprimeix les dades de l\'aplicació"</string>
@@ -263,6 +265,18 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Per gestionar altres permisos d\'Android a què pot accedir aquesta aplicació, ves a Configuració i, a continuació, toca Aplicacions"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Llegeix la política de privadesa"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"S\'hi ha accedit durant les 24 darreres hores"</string>
+    <string name="app_access_title" msgid="3790585897490185758">"Accés de l\'aplicació"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
+    <skip />
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Aplicacions amb permisos suprimits"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g> i <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> i <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> i altres aplicacions"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Mostra els detalls"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Per què Salut connectada suprimeix els permisos d\'aplicacions"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Si una aplicació se suspèn o suprimeix de Google Play, Salut connectada en suprimeix els permisos automàticament.\n\nAixò significa que l\'aplicació ja no podrà accedir a les dades emmagatzemades a Salut Connectada. Si aquesta aplicació ha escrit dades anteriorment, apareixerà a la llista d\'aplicacions inactives."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"Entesos"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Comença amb Salut connectada"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Salut connectada emmagatzema les teves dades de salut i fitnes, i t\'ofereix una manera senzilla de sincronitzar les diverses aplicacions del telèfon"</string>
     <string name="share_data" msgid="3461840023402996573">"Comparteix dades amb les aplicacions"</string>
@@ -330,250 +344,128 @@
     <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 quilòmetre per hora}other{# quilòmetres per hora}}"</string>
     <string name="time_range_long" msgid="2057628562186177263">"des de les <xliff:g id="START_TIME">%1$s</xliff:g> fins a les <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="5407008354838746975">"des del dia <xliff:g id="START_TIME">%1$s</xliff:g> fins al dia <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <!-- no translation found for wheelchair_pushes (4148251178633825429) -->
-    <skip />
-    <!-- no translation found for liter (731979204626025251) -->
-    <skip />
-    <!-- no translation found for liter_long (7990617316502470494) -->
-    <skip />
-    <!-- no translation found for floors_climbed (4959065562753503155) -->
-    <skip />
-    <!-- no translation found for elevation_meters (6038005925172317213) -->
-    <skip />
-    <!-- no translation found for elevation_meters_long (8569504639047580721) -->
-    <skip />
-    <!-- no translation found for cycling_rpm (695951810426620592) -->
-    <skip />
-    <!-- no translation found for cycling_rpm_long (7197162211135406418) -->
-    <skip />
-    <!-- no translation found for cycling_cadence_series_range_long (2954142244404102123) -->
-    <skip />
-    <!-- no translation found for sexual_activity_protected (8805664653962728953) -->
-    <skip />
-    <!-- no translation found for sexual_activity_unprotected (2622692924114318326) -->
-    <skip />
-    <!-- no translation found for spotting (8367146199172958006) -->
-    <skip />
-    <!-- no translation found for flow_spotting (8313480263034209601) -->
-    <skip />
-    <!-- no translation found for flow_light (7714669130547926098) -->
-    <skip />
-    <!-- no translation found for flow_medium (1120681378064573572) -->
-    <skip />
-    <!-- no translation found for flow_heavy (7611846277419291182) -->
-    <skip />
-    <!-- no translation found for period_day (7959562867933427299) -->
-    <skip />
-    <!-- no translation found for ovulation_positive (2041632905561554787) -->
-    <skip />
-    <!-- no translation found for ovulation_negative (132669521951412311) -->
-    <skip />
-    <!-- no translation found for ovulation_high (2591492801425787141) -->
-    <skip />
-    <!-- no translation found for ovulation_inconclusive (1005696731815082564) -->
-    <skip />
-    <!-- no translation found for vo2_max (9010053102311278194) -->
-    <skip />
-    <!-- no translation found for vo2_max_long (2028203290582321110) -->
-    <skip />
-    <!-- no translation found for vo2_metabolic_cart (3831307270979534301) -->
-    <skip />
-    <!-- no translation found for vo2_heart_rate_ratio (6482555805954225988) -->
-    <skip />
-    <!-- no translation found for vo2_cooper_test (1692373650149960549) -->
-    <skip />
-    <!-- no translation found for vo2_multistage_fitness_test (6062802012318501600) -->
-    <skip />
-    <!-- no translation found for vo2_rockport_fitness_test (6210377990417612886) -->
-    <skip />
-    <!-- no translation found for vo2_other (7156255285130439695) -->
-    <skip />
-    <!-- no translation found for mucus_dry (798150315290557122) -->
-    <skip />
-    <!-- no translation found for mucus_sticky (1550935711891429944) -->
-    <skip />
-    <!-- no translation found for mucus_creamy (6331121251236727520) -->
-    <skip />
-    <!-- no translation found for mucus_watery (8046086206314018549) -->
-    <skip />
-    <!-- no translation found for mucus_egg_white (9035599986758478851) -->
-    <skip />
-    <!-- no translation found for mucus_unusual (3168872819443903646) -->
-    <skip />
-    <!-- no translation found for mucus_light (7872301587428469740) -->
-    <skip />
-    <!-- no translation found for mucus_medium (3752514167673201447) -->
-    <skip />
-    <!-- no translation found for mucus_heavy (585018675901081368) -->
-    <skip />
-    <!-- no translation found for blood_pressure (5997173579668733931) -->
-    <skip />
-    <!-- no translation found for blood_pressure_long (1423162081321056098) -->
-    <skip />
-    <!-- no translation found for body_position_standing_up (8045648865863315072) -->
-    <skip />
-    <!-- no translation found for body_position_sitting_down (6193290868443102468) -->
-    <skip />
-    <!-- no translation found for body_position_lying_down (3349308448798046100) -->
-    <skip />
-    <!-- no translation found for body_position_reclining (1761765938932384014) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_wrist (4437780272482574688) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_wrist (5145136036864054220) -->
-    <skip />
-    <!-- no translation found for blood_pressure_left_arm (507901624658936247) -->
-    <skip />
-    <!-- no translation found for blood_pressure_right_arm (1089013781458804996) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter (3227570763486933183) -->
-    <skip />
-    <!-- no translation found for millimoles_per_liter_long (6808823315735709067) -->
-    <skip />
-    <!-- no translation found for specimen_source_interstitial_fluid (3842382456844622074) -->
-    <skip />
-    <!-- no translation found for specimen_source_capillary_blood (7155562119015861372) -->
-    <skip />
-    <!-- no translation found for specimen_source_plasma (356179067854415315) -->
-    <skip />
-    <!-- no translation found for specimen_source_serum (8289671667279817498) -->
-    <skip />
-    <!-- no translation found for specimen_source_tears (3680494716420004391) -->
-    <skip />
-    <!-- no translation found for specimen_source_whole_blood (1302756259157194021) -->
-    <skip />
-    <!-- no translation found for blood_glucose_general (2955866138191587220) -->
-    <skip />
-    <!-- no translation found for blood_glucose_fasting (1004807809187636134) -->
-    <skip />
-    <!-- no translation found for blood_glucose_before_meal (7321251465123150347) -->
-    <skip />
-    <!-- no translation found for blood_glucose_after_meal (3946745765463573565) -->
-    <skip />
-    <!-- no translation found for mealtype_label (7946924589574443051) -->
-    <skip />
-    <!-- no translation found for mealtype_unknown (2559338548170419838) -->
-    <skip />
-    <!-- no translation found for mealtype_breakfast (2152926220543322905) -->
-    <skip />
-    <!-- no translation found for mealtype_lunch (403599819099429864) -->
-    <skip />
-    <!-- no translation found for mealtype_dinner (1755288392201732372) -->
-    <skip />
-    <!-- no translation found for mealtype_snack (2337826732633152765) -->
-    <skip />
-    <!-- no translation found for biotin (3627884250275404075) -->
-    <skip />
-    <!-- no translation found for caffeine (116658071099408928) -->
-    <skip />
-    <!-- no translation found for calcium (2421306187949865076) -->
-    <skip />
-    <!-- no translation found for chloride (7490996250510177338) -->
-    <skip />
-    <!-- no translation found for cholesterol (6244346992349630002) -->
-    <skip />
-    <!-- no translation found for chromium (1717886909765369185) -->
-    <skip />
-    <!-- no translation found for copper (4865917412156527453) -->
-    <skip />
-    <!-- no translation found for dietary_fiber (6858567136946084886) -->
-    <skip />
-    <!-- no translation found for energy_consumed_total (7091055813340207192) -->
-    <skip />
-    <!-- no translation found for energy_consumed_from_fat (5746039415956745428) -->
-    <skip />
-    <!-- no translation found for folate (8173733292245451456) -->
-    <skip />
-    <!-- no translation found for folic_acid (8591315035224265134) -->
-    <skip />
-    <!-- no translation found for iodine (6295585927454501032) -->
-    <skip />
-    <!-- no translation found for iron (1829192962959178553) -->
-    <skip />
-    <!-- no translation found for magnesium (2378288907103259048) -->
-    <skip />
-    <!-- no translation found for manganese (4343136164658896416) -->
-    <skip />
-    <!-- no translation found for molybdenum (7771581143656671252) -->
-    <skip />
-    <!-- no translation found for monounsaturated_fat (4971508136425798604) -->
-    <skip />
-    <!-- no translation found for niacin (2824160609495269089) -->
-    <skip />
-    <!-- no translation found for pantothenic_acid (7995714572397938859) -->
-    <skip />
-    <!-- no translation found for phosphorus (4952419844375433055) -->
-    <skip />
-    <!-- no translation found for polyunsaturated_fat (8066324913175100033) -->
-    <skip />
-    <!-- no translation found for potassium (707209134595635038) -->
-    <skip />
-    <!-- no translation found for protein (3822882640861839933) -->
-    <skip />
-    <!-- no translation found for riboflavin (2985915835639186827) -->
-    <skip />
-    <!-- no translation found for saturated_fat (9021673028646987453) -->
-    <skip />
-    <!-- no translation found for selenium (9082380472819491510) -->
-    <skip />
-    <!-- no translation found for sodium (8769822050033855464) -->
-    <skip />
-    <!-- no translation found for sugar (5999057784352629476) -->
-    <skip />
-    <!-- no translation found for thiamin (3709641915459997520) -->
-    <skip />
-    <!-- no translation found for total_carbohydrate (232426059808514593) -->
-    <skip />
-    <!-- no translation found for total_fat (3978725283210702305) -->
-    <skip />
-    <!-- no translation found for trans_fat (5328804254745808226) -->
-    <skip />
-    <!-- no translation found for unsaturated_fat (1068875753519369556) -->
-    <skip />
-    <!-- no translation found for vitamin_a (7755534197188927987) -->
-    <skip />
-    <!-- no translation found for vitamin_b12 (1366392000272833307) -->
-    <skip />
-    <!-- no translation found for vitamin_b6 (7372970567028622461) -->
-    <skip />
-    <!-- no translation found for vitamin_c (8347021170400899646) -->
-    <skip />
-    <!-- no translation found for vitamin_d (3643353935248181962) -->
-    <skip />
-    <!-- no translation found for vitamin_e (2134971402339322071) -->
-    <skip />
-    <!-- no translation found for vitamin_k (390827413844437529) -->
-    <skip />
-    <!-- no translation found for zinc (1009892754125043398) -->
-    <skip />
-    <!-- no translation found for nutrient_with_value (1368569847327834479) -->
-    <skip />
-    <!-- no translation found for meal_name (4909433722102389860) -->
-    <skip />
-    <!-- no translation found for gram_short_format (5070017285803939836) -->
-    <skip />
-    <!-- no translation found for gram_long_format (2701869452855193331) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value (4770260418901424862) -->
-    <skip />
-    <!-- no translation found for respiratory_rate_value_long (3980365384181856940) -->
-    <skip />
-    <!-- no translation found for kilograms_short_label (8545064251099734089) -->
-    <skip />
-    <!-- no translation found for pounds_short_label (4061481118724247794) -->
-    <skip />
-    <!-- no translation found for stone_short_label (6814441736900237535) -->
-    <skip />
-    <!-- no translation found for stone_pound_short_label (2238101867607927054) -->
-    <skip />
-    <!-- no translation found for kilograms_long_label (469298748511590170) -->
-    <skip />
-    <!-- no translation found for pounds_long_label (9194527891153003933) -->
-    <skip />
-    <!-- no translation found for stone_long_label (4053870387805972697) -->
-    <skip />
-    <!-- no translation found for stone_pound_long_label (2500593915192658086) -->
-    <skip />
+    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 impuls en cadira de rodes}other{# impulsos en cadira de rodes}}"</string>
+    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 L}other{# L}}"</string>
+    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 litre}other{# litres}}"</string>
+    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 planta}other{# plantes}}"</string>
+    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}other{# m}}"</string>
+    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 metre}other{# metres}}"</string>
+    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
+    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 revolució per minut}other{# revolucions per minut}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"des de <xliff:g id="MIN">%1$s</xliff:g> fins a <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="8805664653962728953">"Amb protecció"</string>
+    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Sense protecció"</string>
+    <string name="spotting" msgid="8367146199172958006">"Espòting"</string>
+    <string name="flow_spotting" msgid="8313480263034209601">"Espòting"</string>
+    <string name="flow_light" msgid="7714669130547926098">"Flux lleuger"</string>
+    <string name="flow_medium" msgid="1120681378064573572">"Flux normal"</string>
+    <string name="flow_heavy" msgid="7611846277419291182">"Flux abundant"</string>
+    <string name="period_day" msgid="7959562867933427299">"Dia <xliff:g id="DAY">%1$d</xliff:g> de <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g> del període menstrual"</string>
+    <string name="ovulation_positive" msgid="2041632905561554787">"Positiva"</string>
+    <string name="ovulation_negative" msgid="132669521951412311">"Negativa"</string>
+    <string name="ovulation_high" msgid="2591492801425787141">"Alta"</string>
+    <string name="ovulation_inconclusive" msgid="1005696731815082564">"No concloent"</string>
+    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·min)}other{# mL/(kg·min)}}"</string>
+    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 mil·lilitre d\'oxigen per quilogram de massa corporal per minut}other{# mil·lilitres d\'oxigen per quilogram de massa corporal per minut}}"</string>
+    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Carro metabòlic"</string>
+    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Ràtio de freqüència cardíaca"</string>
+    <string name="vo2_cooper_test" msgid="1692373650149960549">"Prova de Cooper"</string>
+    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Cursa de llançadora"</string>
+    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"Prova de Rockport"</string>
+    <string name="vo2_other" msgid="7156255285130439695">"Altres"</string>
+    <string name="mucus_dry" msgid="798150315290557122">"Sec"</string>
+    <string name="mucus_sticky" msgid="1550935711891429944">"Enganxós"</string>
+    <string name="mucus_creamy" msgid="6331121251236727520">"Cremós"</string>
+    <string name="mucus_watery" msgid="8046086206314018549">"Aquós"</string>
+    <string name="mucus_egg_white" msgid="9035599986758478851">"Gelatinós"</string>
+    <string name="mucus_unusual" msgid="3168872819443903646">"Inusual"</string>
+    <string name="mucus_light" msgid="7872301587428469740">"Lleuger"</string>
+    <string name="mucus_medium" msgid="3752514167673201447">"Mitjà"</string>
+    <string name="mucus_heavy" msgid="585018675901081368">"Abundant"</string>
+    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
+    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mil·límetres de mercuri"</string>
+    <string name="body_position_standing_up" msgid="8045648865863315072">"Dempeus"</string>
+    <string name="body_position_sitting_down" msgid="6193290868443102468">"Assegut"</string>
+    <string name="body_position_lying_down" msgid="3349308448798046100">"Ajagut"</string>
+    <string name="body_position_reclining" msgid="1761765938932384014">"Reclinat"</string>
+    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Canell esquerre"</string>
+    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Canell dret"</string>
+    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Dalt del braç esquerre"</string>
+    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Dalt del braç dret"</string>
+    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/L}other{# mmol/L}}"</string>
+    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 mil·limol per litre}other{# mil·limols per litre}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Líquid intersticial"</string>
+    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Sang capil·lar"</string>
+    <string name="specimen_source_plasma" msgid="356179067854415315">"Plasma"</string>
+    <string name="specimen_source_serum" msgid="8289671667279817498">"Sèrum"</string>
+    <string name="specimen_source_tears" msgid="3680494716420004391">"Llàgrimes"</string>
+    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Sang completa"</string>
+    <string name="blood_glucose_general" msgid="2955866138191587220">"General"</string>
+    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Dejuni"</string>
+    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Abans de menjar"</string>
+    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Després de menjar"</string>
+    <string name="mealtype_label" msgid="7946924589574443051">"Tipus d\'àpat"</string>
+    <string name="mealtype_unknown" msgid="2559338548170419838">"Desconegut"</string>
+    <string name="mealtype_breakfast" msgid="2152926220543322905">"Esmorzar"</string>
+    <string name="mealtype_lunch" msgid="403599819099429864">"Dinar"</string>
+    <string name="mealtype_dinner" msgid="1755288392201732372">"Sopar"</string>
+    <string name="mealtype_snack" msgid="2337826732633152765">"Piscolabis"</string>
+    <string name="biotin" msgid="3627884250275404075">"Biotina"</string>
+    <string name="caffeine" msgid="116658071099408928">"Cafeïna"</string>
+    <string name="calcium" msgid="2421306187949865076">"Calci"</string>
+    <string name="chloride" msgid="7490996250510177338">"Clorur"</string>
+    <string name="cholesterol" msgid="6244346992349630002">"Colesterol"</string>
+    <string name="chromium" msgid="1717886909765369185">"Crom"</string>
+    <string name="copper" msgid="4865917412156527453">"Coure"</string>
+    <string name="dietary_fiber" msgid="6858567136946084886">"Fibra alimentària"</string>
+    <string name="energy_consumed_total" msgid="7091055813340207192">"Energia"</string>
+    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Energia procedent dels greixos"</string>
+    <string name="folate" msgid="8173733292245451456">"Folat"</string>
+    <string name="folic_acid" msgid="8591315035224265134">"Àcid fòlic"</string>
+    <string name="iodine" msgid="6295585927454501032">"Iode"</string>
+    <string name="iron" msgid="1829192962959178553">"Ferro"</string>
+    <string name="magnesium" msgid="2378288907103259048">"Magnesi"</string>
+    <string name="manganese" msgid="4343136164658896416">"Manganès"</string>
+    <string name="molybdenum" msgid="7771581143656671252">"Molibdè"</string>
+    <string name="monounsaturated_fat" msgid="4971508136425798604">"Greixos monoinsaturats"</string>
+    <string name="niacin" msgid="2824160609495269089">"Niacina"</string>
+    <string name="pantothenic_acid" msgid="7995714572397938859">"Àcid pantotènic"</string>
+    <string name="phosphorus" msgid="4952419844375433055">"Fòsfor"</string>
+    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Greixos poliinsaturats"</string>
+    <string name="potassium" msgid="707209134595635038">"Potassi"</string>
+    <string name="protein" msgid="3822882640861839933">"Proteïna"</string>
+    <string name="riboflavin" msgid="2985915835639186827">"Riboflavina"</string>
+    <string name="saturated_fat" msgid="9021673028646987453">"Greixos saturats"</string>
+    <string name="selenium" msgid="9082380472819491510">"Seleni"</string>
+    <string name="sodium" msgid="8769822050033855464">"Sodi"</string>
+    <string name="sugar" msgid="5999057784352629476">"Sucre"</string>
+    <string name="thiamin" msgid="3709641915459997520">"Tiamina"</string>
+    <string name="total_carbohydrate" msgid="232426059808514593">"Carbohidrats totals"</string>
+    <string name="total_fat" msgid="3978725283210702305">"Greix total"</string>
+    <string name="trans_fat" msgid="5328804254745808226">"Greixos trans"</string>
+    <string name="unsaturated_fat" msgid="1068875753519369556">"Greixos insaturats"</string>
+    <string name="vitamin_a" msgid="7755534197188927987">"Vitamina A"</string>
+    <string name="vitamin_b12" msgid="1366392000272833307">"Vitamina B12"</string>
+    <string name="vitamin_b6" msgid="7372970567028622461">"Vitamina B6"</string>
+    <string name="vitamin_c" msgid="8347021170400899646">"Vitamina C"</string>
+    <string name="vitamin_d" msgid="3643353935248181962">"Vitamina D"</string>
+    <string name="vitamin_e" msgid="2134971402339322071">"Vitamina E"</string>
+    <string name="vitamin_k" msgid="390827413844437529">"Vitamina K"</string>
+    <string name="zinc" msgid="1009892754125043398">"Zinc"</string>
+    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="4909433722102389860">"Nom"</string>
+    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 gram}other{# grams}}"</string>
+    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 respiració per minut}other{# respiracions per minut}}"</string>
+    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 lb}other{# lb}}"</string>
+    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 st}other{# st}}"</string>
+    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 quilogram}other{# quilograms}}"</string>
+    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 lliura}other{# lliures}}"</string>
+    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 stone}other{# stones}}"</string>
+    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
     <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 grau Celsius}other{# graus Celsius}}"</string>
     <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}other{# K}}"</string>
@@ -649,24 +541,16 @@
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Salut connectada suprimirà automàticament les dades noves # mes després. Amb aquesta configuració, també se suprimiran les dades existents anteriors a # mes.}other{Salut connectada suprimirà automàticament les dades noves # mesos després. Amb aquesta configuració, també se suprimiran les dades existents anteriors a # mesos.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Estableix la supressió automàtica"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Les dades existents se suprimiran"</string>
-    <!-- no translation found for deletion_started_x_months (399255633214696136) -->
-    <skip />
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Salut connectada suprimirà totes les dades anteriors a # mes. Pot ser que aquests canvis tardin un dia a aparèixer a les teves aplicacions connectades.}other{Salut connectada suprimirà totes les dades anteriors a # mesos. Pot ser que aquests canvis tardin un dia a aparèixer a les teves aplicacions connectades.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Les dades se suprimiran d\'aquestes categories"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Fet"</string>
-    <!-- no translation found for priority_dialog_title (7095478075034320176) -->
-    <skip />
-    <!-- no translation found for priority_dialog_message (3340579459066951195) -->
-    <skip />
-    <!-- no translation found for priority_dialog_positive_button (2662350313421657980) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_up (4672893112356988839) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_down (1092853846151649508) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_top (2966656544336625803) -->
-    <skip />
-    <!-- no translation found for action_drag_label_move_bottom (5411704363387095937) -->
-    <skip />
+    <string name="priority_dialog_title" msgid="7095478075034320176">"Defineix la prioritat de les aplicacions"</string>
+    <string name="priority_dialog_message" msgid="3340579459066951195">"Si més d\'una aplicació afegeix dades de <xliff:g id="DATA_TYPE">%s</xliff:g>, Salut connectada prioritza l\'aplicació que figura primer en aquesta llista. Arrossega les aplicacions per reordenar-les."</string>
+    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Desa"</string>
+    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Mou cap amunt"</string>
+    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Mou cap avall"</string>
+    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Mou al principi"</string>
+    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Mou al final"</string>
     <string name="search_keywords_home" msgid="9160844866689920918">"fitnes, benestar"</string>
     <string name="search_keywords_permissions" msgid="5833608935281551763">"permisos"</string>
     <string name="search_keywords_data" msgid="3868299259004497681">"salut connectada, dades de salut, categories de salut, accés a les dades, activitat, mesures corporals, seguiment del cicle, nutrició, son, constants vitals"</string>
