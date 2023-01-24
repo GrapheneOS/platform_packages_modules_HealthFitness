@@ -343,7 +343,6 @@
   <string name="not_connected_apps_section_title" description="Title of section containing all the not-connected apps [CHAR_LIMIT=40]">Not allowed access</string>
   <string name="settings_and_help_header" description="Title shown for the section of settings and help [CHAR_LIMIT=70]">Settings &amp; help</string>
   <string name="disconnect_all_apps" description="Button text for removing access to health and fitness data for all apps [CHAR_LIMIT=40]">Remove access for all apps</string>
-  <string name="cant_see_all_your_apps_button" description="Button text for navigating to a help page of advice about connecting more apps [CHAR_LIMIT=40]">Can\'t see all your apps?</string>
   <string name="manage_permissions_read_header" description="Header for list of permissions an app is allowed read access to [CHAR_LIMIT=40]">Allowed to read</string>
   <string name="manage_permissions_write_header" description="Header for list of permissions an app is allowed write access to [CHAR_LIMIT=40]">Allowed to write</string>
   <string name="no_apps_allowed" description="Label when no apps have ben granted access to Health data.[CHAR_LIMIT=40]">No apps allowed</string>
@@ -742,8 +741,8 @@
   <string name="temperature_unit_kelvin_label" translation_description="The label for the Kelvin option within the weight unit preferences menu. [CHAR LIMIT=19]">Kelvin</string>
   <!--endregion-->
 
-  <!-- region Can't See All Your Apps -->
-  <string name="cant_see_all_your_apps_title" description="Title of can't see all your apps screen">Can’t see all your apps?</string>
+  <!-- region Help and Feedback -->
+  <string name="help_and_feedback" description="Label used to display help and feedback">Help &amp; feedback</string>
   <string name="cant_see_all_your_apps_description" description="Description of can't see all your apps screen">If you can’t see an installed app, it may not be compatible with Health&#160;Connect yet</string>
   <string name="things_to_try" description="Label used to show how user can try with different options">Things to try</string>
   <string name="check_for_updates" description="Label for a button that is used to check for updates">Check for updates</string>

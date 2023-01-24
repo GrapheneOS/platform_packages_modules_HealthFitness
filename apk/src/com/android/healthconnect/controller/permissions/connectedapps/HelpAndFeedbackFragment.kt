@@ -26,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /** Can't see all your apps fragment for Health Connect. */
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
-class CantSeeAllYourAppsFragment : Hilt_CantSeeAllYourAppsFragment() {
+class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
     companion object {
         const val CHECK_FOR_UPDATES = "check_for_updates"
@@ -48,7 +48,7 @@ class CantSeeAllYourAppsFragment : Hilt_CantSeeAllYourAppsFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.cant_see_all_your_apps_title)
+        setTitle(R.string.help_and_feedback)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

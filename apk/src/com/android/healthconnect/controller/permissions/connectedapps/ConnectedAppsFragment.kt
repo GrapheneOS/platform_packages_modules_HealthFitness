@@ -55,7 +55,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         private const val TOP_INTRO = "connected_apps_top_intro"
         const val ALLOWED_APPS_CATEGORY = "allowed_apps"
         private const val NOT_ALLOWED_APPS = "not_allowed_apps"
-        private const val CANT_SEE_ALL_YOUR_APPS = "cant_see_apps"
+        private const val HELP_AND_FEEDBACK = "help_and_feedback"
         private const val REMOVE_ALL_APPS = "remove_all_apps"
         private const val INACTIVE_APPS = "inactive_apps"
         private const val THINGS_TO_TRY = "things_to_try_app_permissions_screen"
@@ -92,8 +92,8 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         preferenceScreen.findPreference(SETTINGS_AND_HELP)
     }
 
-    private val mCantSeeAllYourAppsPreference: Preference? by lazy {
-        preferenceScreen.findPreference(CANT_SEE_ALL_YOUR_APPS)
+    private val mHelpAndFeedbackPreference: Preference? by lazy {
+        preferenceScreen.findPreference(HELP_AND_FEEDBACK)
     }
 
     private val mRemoveAllApps: Preference? by lazy {
@@ -114,8 +114,8 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
-        mCantSeeAllYourAppsPreference?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_connectedApps_to_cantSeeAllYourApps)
+        mHelpAndFeedbackPreference?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.action_connectedApps_to_helpAndFeedback)
             true
         }
 
