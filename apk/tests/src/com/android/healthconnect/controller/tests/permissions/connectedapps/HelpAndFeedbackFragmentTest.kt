@@ -18,7 +18,7 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import com.android.healthconnect.controller.permissions.connectedapps.CantSeeAllYourAppsFragment
+import com.android.healthconnect.controller.permissions.connectedapps.HelpAndFeedbackFragment
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -26,13 +26,13 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class CantSeeAllYourAppsFragmentTest {
+class HelpAndFeedbackFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @Test
-    fun cantSeeAllYourAppsFragment_isDisplayedCorrectly() {
-        launchFragment<CantSeeAllYourAppsFragment>(Bundle())
+    fun helpAndFeedbackFragment_isDisplayedCorrectly() {
+        launchFragment<HelpAndFeedbackFragment>(Bundle())
 
         Espresso.onView(
                 ViewMatchers.withText(
@@ -57,8 +57,8 @@ class CantSeeAllYourAppsFragmentTest {
     }
 
     @Test
-    fun cantSeeAllYourAppsFragment_sendFeedbackButton_isClickable() {
-        launchFragment<CantSeeAllYourAppsFragment>(Bundle())
+    fun helpAndFeedbackFragment_sendFeedbackButton_isClickable() {
+        launchFragment<HelpAndFeedbackFragment>(Bundle())
 
         Espresso.onView(ViewMatchers.withText("Send feedback")).perform(ViewActions.click())
     }

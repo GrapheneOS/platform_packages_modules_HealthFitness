@@ -95,8 +95,8 @@
         android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsFragment"
         android:label="@string/connected_apps_title">
         <action
-            android:id="@+id/action_connectedApps_to_cantSeeAllYourApps"
-            app:destination="@id/cantSeeAllYourAppsFragment" />
+            android:id="@+id/action_connectedApps_to_helpAndFeedback"
+            app:destination="@id/helpAndFeedbackFragment" />
         <action
             android:id="@+id/action_connectedApps_to_connectedApp"
             app:destination="@id/connectedAppFragment" />
@@ -119,9 +119,9 @@
             app:destination="@id/connectedAppFragment" />
     </fragment>
     <fragment
-        android:id="@+id/cantSeeAllYourAppsFragment"
-        android:name="com.android.healthconnect.controller.permissions.connectedapps.CantSeeAllYourAppsFragment"
-        android:label="@string/cant_see_all_your_apps_title">
+        android:id="@+id/helpAndFeedbackFragment"
+        android:name="com.android.healthconnect.controller.permissions.connectedapps.HelpAndFeedbackFragment"
+        android:label="@string/help_and_feedback">
         <action
             android:id="@+id/action_cant_see_all_apps_to_play_store"
             app:destination="@id/playstore_activity" />

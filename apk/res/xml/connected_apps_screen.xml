@@ -66,8 +66,8 @@
             android:icon="@drawable/quantum_gm_ic_block_vd_theme_24"
             android:title="@string/disconnect_all_apps" />
         <Preference
-            android:key="cant_see_apps"
+            android:key="help_and_feedback"
             android:icon="@drawable/quantum_gm_ic_support_vd_theme_24"
-            android:title="@string/cant_see_all_your_apps_button"/>
+            android:title="@string/help_and_feedback"/>
     </PreferenceCategory>
 </PreferenceScreen>
