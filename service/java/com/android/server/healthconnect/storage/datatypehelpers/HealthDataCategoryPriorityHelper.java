@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -25,6 +24,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.HealthDataCategory;
@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,8 @@ public class HealthDataCategoryPriorityHelper {
     private static final String HEALTH_DATA_CATEGORY_COLUMN_NAME = "health_data_category";
     private static final String APP_ID_PRIORITY_ORDER_COLUMN_NAME = "app_id_priority_order";
     private static final String TAG = "HealthConnectPrioHelper";
+    private static final String DEFAULT_APP_RESOURCE_NAME =
+            "android:string/config_defaultHealthConnectApp";
     private static HealthDataCategoryPriorityHelper sHealthDataCategoryPriorityHelper;
 
     /**
@@ -104,7 +107,16 @@ public class HealthDataCategoryPriorityHelper {
         newPriorityOrder =
                 new ArrayList<>(getHealthDataCategoryToAppIdPriorityMap().get(dataCategory));
 
-        newPriorityOrder.add(appInfoId);
+        String defaultApp =
+                context.getResources()
+                        .getString(
+                                Resources.getSystem()
+                                        .getIdentifier(DEFAULT_APP_RESOURCE_NAME, null, null));
+        if (Objects.equals(packageName, defaultApp)) {
+            newPriorityOrder.add(0, appInfoId);
+        } else {
+            newPriorityOrder.add(appInfoId);
+        }
         safelyUpdateDBAndUpdateCache(
                 new UpsertTableRequest(
                         TABLE_NAME, getContentValuesFor(dataCategory, newPriorityOrder)),
