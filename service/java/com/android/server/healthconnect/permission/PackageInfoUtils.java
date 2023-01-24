@@ -53,42 +53,34 @@ class PackageInfoUtils {
     }
 
     @NonNull
-    Map<String, Set<Integer>> collectSharedUserNameToUidsMapping(
-            @NonNull Map<UserHandle, List<PackageInfo>> userHandleToPackageInfo) {
+    Map<String, Set<Integer>> collectSharedUserNameToUidsMappingForUser(
+            @NonNull List<PackageInfo> packageInfos, UserHandle user) {
         Map<String, Set<Integer>> sharedUserNameToUids = new ArrayMap<>();
-        for (List<PackageInfo> healthPackagesInfos : userHandleToPackageInfo.values()) {
-            for (PackageInfo info : healthPackagesInfos) {
-                if (info.sharedUserId != null) {
-                    if (sharedUserNameToUids.get(info.sharedUserId) == null) {
-                        sharedUserNameToUids.put(info.sharedUserId, new ArraySet<>());
-                    }
-                    sharedUserNameToUids.get(info.sharedUserId).add(info.applicationInfo.uid);
+        for (PackageInfo info : packageInfos) {
+            if (info.sharedUserId != null) {
+                if (sharedUserNameToUids.get(info.sharedUserId) == null) {
+                    sharedUserNameToUids.put(info.sharedUserId, new ArraySet<>());
                 }
+                sharedUserNameToUids.get(info.sharedUserId).add(info.applicationInfo.uid);
             }
         }
         return sharedUserNameToUids;
     }
 
     @NonNull
-    Map<UserHandle, List<PackageInfo>> getPackagesHoldingHealthPermissions() {
+    List<PackageInfo> getPackagesHoldingHealthPermissions(UserHandle user) {
         // TODO(b/260707328): replace with getPackagesHoldingPermissions
-        Map<UserHandle, List<PackageInfo>> userToHealthAppsInfo = new ArrayMap<>();
-        for (UserHandle user : getAllUserHandles()) {
-            List<PackageInfo> allInfos =
-                    getPackageManagerAsUser(user)
-                            .getInstalledPackages(
-                                    PackageManager.PackageInfoFlags.of(GET_PERMISSIONS));
-            List<PackageInfo> healthAppsInfos = new ArrayList<>();
+        List<PackageInfo> allInfos =
+                getPackageManagerAsUser(user)
+                        .getInstalledPackages(PackageManager.PackageInfoFlags.of(GET_PERMISSIONS));
+        List<PackageInfo> healthAppsInfos = new ArrayList<>();
 
-            for (PackageInfo info : allInfos) {
-                if (anyRequestedHealthPermissionGranted(info)) {
-                    healthAppsInfos.add(info);
-                }
+        for (PackageInfo info : allInfos) {
+            if (anyRequestedHealthPermissionGranted(info)) {
+                healthAppsInfos.add(info);
             }
-            userToHealthAppsInfo.put(user, healthAppsInfos);
         }
-
-        return userToHealthAppsInfo;
+        return healthAppsInfos;
     }
 
     boolean hasGrantedHealthPermissions(@NonNull String[] packageNames, @NonNull UserHandle user) {
