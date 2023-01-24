@@ -16,6 +16,33 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
+// To generate HealthConnectStatsLog for logging.
+genrule {
+    name: "statslog-healthconnect-java-gen",
+    tools: ["stats-log-api-gen"],
+    cmd: "$(location stats-log-api-gen) --java $(out) --module healthconnect" +
+         " --javaPackage android.healthconnect" +
+         " --javaClass HealthConnectStatsLog --minApiLevel 34",
+    out: ["android/healthconnect/HealthConnectStatsLog.java"],
+}
+
+// To disable NewApi checks on the generated HealthConnectStatsLog.
+java_library {
+    name: "healthconnect-statsd",
+    sdk_version: "module_current",
+    min_sdk_version: "UpsideDownCake",
+    srcs: [
+        ":statslog-healthconnect-java-gen",
+    ],
+    libs: [
+        // To add StatsLog as a dependency of the generated file.
+        "framework-statsd.stubs.module_lib",
+    ],
+    apex_available: [
+        "com.android.healthconnect",
+    ],
+}
+
 filegroup {
     name: "framework-healthconnect-sources",
     srcs: [
@@ -38,4 +65,5 @@ java_sdk_library {
     impl_library_visibility: [
         "//packages/modules/HealthConnect:__subpackages__"
     ],
+    static_libs: ["healthconnect-statsd"]
 }
