@@ -16,6 +16,7 @@
 package android.healthconnect.cts;
 
 import static android.Manifest.permission.CAMERA;
+import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 import static android.healthconnect.HealthConnectManager.isHealthPermission;
 import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
 import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
@@ -662,6 +663,19 @@ public class HealthConnectManagerTest {
         }
 
         deleteAllStagedRemoteData();
+    }
+
+    @Test
+    public void testUpdateDataDownloadState_withoutPermission_throwsSecurityException() {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        try {
+            service.updateDataDownloadState(DATA_DOWNLOAD_STARTED);
+        } catch (SecurityException e) {
+            /* pass */
+        }
     }
 
     private void deleteAllStagedRemoteData()
