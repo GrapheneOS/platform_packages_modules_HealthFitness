@@ -75,6 +75,10 @@ public final class PreferenceHelper {
         return getPreferences().get(key);
     }
 
+    public synchronized void clearCache() {
+        mPreferences = null;
+    }
+
     private Map<String, String> getPreferences() {
         if (mPreferences == null) {
             populatePreferences();
@@ -90,11 +94,15 @@ public final class PreferenceHelper {
         return contentValues;
     }
 
-    private void populatePreferences() {
+    private synchronized void populatePreferences() {
+        if (mPreferences != null) {
+            return;
+        }
+
         mPreferences = new ConcurrentHashMap<>();
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        try (SQLiteDatabase db = transactionManager.getReadableDb();
-                Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
+        final SQLiteDatabase db = transactionManager.getReadableDb();
+        try (Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
                 String key = StorageUtils.getCursorString(cursor, KEY_COLUMN_NAME);
                 String value = StorageUtils.getCursorString(cursor, VALUE_COLUMN_NAME);

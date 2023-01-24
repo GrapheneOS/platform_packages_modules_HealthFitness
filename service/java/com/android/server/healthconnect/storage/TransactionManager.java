@@ -24,16 +24,17 @@ import static com.android.server.healthconnect.storage.datatypehelpers.RecordHel
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.healthconnect.Constants;
 import android.healthconnect.datatypes.DataOrigin;
 import android.healthconnect.internal.datatypes.RecordInternal;
+import android.os.UserHandle;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.server.healthconnect.HealthConnectUserContext;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
@@ -49,6 +50,7 @@ import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -60,17 +62,20 @@ import java.util.function.BiConsumer;
  *
  * @hide
  */
-public class TransactionManager {
+public final class TransactionManager {
     private static final String TAG = "HealthConnectTransactionMan";
+    private static final HashMap<UserHandle, HealthConnectDatabase> mUserHandleToDatabaseMap =
+            new HashMap<>();
     private static TransactionManager sTransactionManager;
-    private final HealthConnectDatabase mHealthConnectDatabase;
+    private HealthConnectDatabase mHealthConnectDatabase;
 
-    private TransactionManager(@NonNull Context context) {
+    private TransactionManager(@NonNull HealthConnectUserContext context) {
         mHealthConnectDatabase = new HealthConnectDatabase(context);
+        mUserHandleToDatabaseMap.put(context.getCurrentUserHandle(), mHealthConnectDatabase);
     }
 
     @NonNull
-    public static TransactionManager getInstance(@NonNull Context context) {
+    public static TransactionManager getInstance(@NonNull HealthConnectUserContext context) {
         if (sTransactionManager == null) {
             sTransactionManager = new TransactionManager(context);
         }
@@ -83,6 +88,18 @@ public class TransactionManager {
         Objects.requireNonNull(sTransactionManager);
 
         return sTransactionManager;
+    }
+
+    public void onUserUnlocking(@NonNull HealthConnectUserContext healthConnectUserContext) {
+        if (!mUserHandleToDatabaseMap.containsKey(
+                healthConnectUserContext.getCurrentUserHandle())) {
+            mUserHandleToDatabaseMap.put(
+                    healthConnectUserContext.getCurrentUserHandle(),
+                    new HealthConnectDatabase(healthConnectUserContext));
+        }
+
+        mHealthConnectDatabase =
+                mUserHandleToDatabaseMap.get(healthConnectUserContext.getCurrentUserHandle());
     }
 
     /**
@@ -223,11 +240,11 @@ public class TransactionManager {
         if (request.getReadRequests().size() != 1) {
             throw new IllegalArgumentException("Read requested is not for a single record type");
         }
-        List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+        List<RecordInternal<?>> recordInternalList;
         long token = DEFAULT_LONG;
         ReadTableRequest readTableRequest = request.getReadRequests().get(0);
-        try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-                Cursor cursor = read(db, readTableRequest)) {
+        final SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
+        try (Cursor cursor = read(db, readTableRequest)) {
             recordInternalList =
                     readTableRequest
                             .getRecordHelper()
@@ -410,6 +427,10 @@ public class TransactionManager {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public void onUserSwitching() {
+        mHealthConnectDatabase.close();
     }
 
     private void insertAll(

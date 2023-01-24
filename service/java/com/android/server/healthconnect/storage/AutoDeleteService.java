@@ -45,6 +45,7 @@ public class AutoDeleteService extends JobService {
     private static final long JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(1);
     private static final String TAG = "HealthConnectAutoDelete";
     private static final String EXTRA_USER_ID = "user_id";
+    @UserIdInt private static int mCurrentUserId;
 
     /** Start periodically scheduling this service for this {@code userId} */
     public static void schedule(Context context, @UserIdInt int userId) {
@@ -52,9 +53,10 @@ public class AutoDeleteService extends JobService {
         Objects.requireNonNull(jobScheduler);
         ComponentName componentName = new ComponentName(context, AutoDeleteService.class);
         final PersistableBundle extras = new PersistableBundle();
-        extras.putInt(EXTRA_USER_ID, userId);
+        mCurrentUserId = userId;
+        extras.putInt(EXTRA_USER_ID, mCurrentUserId);
         JobInfo.Builder builder =
-                new JobInfo.Builder(MIN_JOB_ID + userId, componentName)
+                new JobInfo.Builder(MIN_JOB_ID + mCurrentUserId, componentName)
                         .setExtras(extras)
                         .setRequiresDeviceIdle(true)
                         .setRequiresCharging(true)
@@ -72,20 +74,19 @@ public class AutoDeleteService extends JobService {
         Objects.requireNonNull(jobScheduler).cancel(MIN_JOB_ID + userId);
     }
 
-    /** Sets auto delete period for automatically deleting record entries */
-    public static void setRecordRetentionPeriodInDays(int days, @UserIdInt int userId) {
-        PreferenceHelper.getInstance()
-                .insertPreference(AUTO_DELETE_DURATION_RECORDS_KEY + userId, String.valueOf(days));
-    }
-
     /** Gets auto delete period for automatically deleting record entries */
-    public static int getRecordRetentionPeriodInDays(@UserIdInt int userId) {
+    public static int getRecordRetentionPeriodInDays() {
         String result =
-                PreferenceHelper.getInstance()
-                        .getPreference(AUTO_DELETE_DURATION_RECORDS_KEY + userId);
+                PreferenceHelper.getInstance().getPreference(AUTO_DELETE_DURATION_RECORDS_KEY);
 
         if (result == null) return 0;
         return Integer.parseInt(result);
+    }
+
+    /** Sets auto delete period for automatically deleting record entries */
+    public static void setRecordRetentionPeriodInDays(int days) {
+        PreferenceHelper.getInstance()
+                .insertPreference(AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(days));
     }
 
     /** Called everytime when the operation corresponding to this service is to be performed */
@@ -93,15 +94,16 @@ public class AutoDeleteService extends JobService {
     public boolean onStartJob(JobParameters params) {
         try {
             int userId = params.getExtras().getInt(EXTRA_USER_ID, /*defaultValue=*/ DEFAULT_INT);
-            if (userId == DEFAULT_INT) {
+            if (userId == DEFAULT_INT || userId != mCurrentUserId) {
+                // This job is no longer valid, the service should have been stopped. Just ignore
+                // this request in case we still got the request.
                 return false;
             }
 
             // Only do transactional operations here - as this job might get cancelled for
             // several reasons, such as: User switch, low battery etc.
             String recordAutoDeletePeriodString =
-                    PreferenceHelper.getInstance()
-                            .getPreference(AUTO_DELETE_DURATION_RECORDS_KEY + userId);
+                    PreferenceHelper.getInstance().getPreference(AUTO_DELETE_DURATION_RECORDS_KEY);
             int recordAutoDeletePeriod =
                     recordAutoDeletePeriodString == null
                             ? 0

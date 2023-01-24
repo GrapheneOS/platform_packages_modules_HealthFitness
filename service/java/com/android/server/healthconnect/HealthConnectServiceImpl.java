@@ -145,29 +145,6 @@ import java.util.stream.Stream;
 final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // Key for storing the current data download state
     @VisibleForTesting static final String DATA_DOWNLOAD_STATE_KEY = "DATA_DOWNLOAD_STATE_KEY";
-    private static final String TAG = "HealthConnectService";
-    // Permission for test api for deleting staged data
-    private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
-            "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA";
-
-    // Key for storing the current data restore state on disk.
-    private static final String DATA_RESTORE_STATE_KEY = "DATA_RESTORE_STATE_KEY";
-    // Key for storing whether there was any error during the whole data "restore" phase.
-    // The "restore" phase includes downloading, staging, and merging.
-    private static final String WAS_DATA_RESTORE_ERROR_ENCOUNTERED =
-            "WAS_DATA_RESTORE_ERROR_ENCOUNTERED";
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-        DATA_RESTORE_STATE_UNKNOWN,
-        DATA_RESTORE_WAITING_FOR_STAGING,
-        DATA_RESTORE_STAGING_IN_PROGRESS,
-        DATA_RESTORE_STAGING_DONE,
-        DATA_RESTORE_MERGING_IN_PROGRESS,
-        DATA_RESTORE_MERGING_DONE
-    })
-    @interface DataRestoreState {}
-
     // The below values for the IntDef are defined in chronological order of the restore process.
     static final int DATA_RESTORE_STATE_UNKNOWN = 0;
     static final int DATA_RESTORE_WAITING_FOR_STAGING = 1;
@@ -175,7 +152,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     static final int DATA_RESTORE_STAGING_DONE = 3;
     static final int DATA_RESTORE_MERGING_IN_PROGRESS = 4;
     static final int DATA_RESTORE_MERGING_DONE = 5;
-
+    private static final String TAG = "HealthConnectService";
+    // Permission for test api for deleting staged data
+    private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
+            "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA";
+    // Key for storing the current data restore state on disk.
+    private static final String DATA_RESTORE_STATE_KEY = "DATA_RESTORE_STATE_KEY";
+    // Key for storing whether there was any error during the whole data "restore" phase.
+    // The "restore" phase includes downloading, staging, and merging.
+    private static final String WAS_DATA_RESTORE_ERROR_ENCOUNTERED =
+            "WAS_DATA_RESTORE_ERROR_ENCOUNTERED";
     private final TransactionManager mTransactionManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final FirstGrantTimeManager mFirstGrantTimeManager;
@@ -676,8 +662,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        AutoDeleteService.setRecordRetentionPeriodInDays(
-                                days, user.getIdentifier());
+                        AutoDeleteService.setRecordRetentionPeriodInDays(days);
                         callback.onResult();
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
@@ -695,7 +680,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public int getRecordRetentionPeriodInDays(@NonNull UserHandle user) {
         try {
             mContext.enforceCallingPermission(MANAGE_HEALTH_DATA_PERMISSION, null);
-            return AutoDeleteService.getRecordRetentionPeriodInDays(user.getIdentifier());
+            return AutoDeleteService.getRecordRetentionPeriodInDays();
         } catch (Exception e) {
             if (e instanceof SecurityException) {
                 throw e;
@@ -1480,4 +1465,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
     }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+        DATA_RESTORE_STATE_UNKNOWN,
+        DATA_RESTORE_WAITING_FOR_STAGING,
+        DATA_RESTORE_STAGING_IN_PROGRESS,
+        DATA_RESTORE_STAGING_DONE,
+        DATA_RESTORE_MERGING_IN_PROGRESS,
+        DATA_RESTORE_MERGING_DONE
+    })
+    @interface DataRestoreState {}
 }
