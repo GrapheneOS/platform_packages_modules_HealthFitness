@@ -133,11 +133,15 @@ public final class ExerciseSessionRecordHelper
     List<ReadTableRequest> getExtraDataReadRequests(
             ReadRecordsRequestParcel request,
             String packageName,
+            long startDateAccess,
             Map<String, Boolean> extraPermsState) {
         boolean canReadAnyRoute = extraPermsState.get(READ_EXERCISE_ROUTE);
         WhereClauses whereClause =
                 getReadTableWhereClause(
-                        request, packageName, /* enforceSelfRead= */ !canReadAnyRoute);
+                        request,
+                        packageName,
+                        /* enforceSelfRead= */ !canReadAnyRoute,
+                        startDateAccess);
         return List.of(getRouteReadRequest(whereClause));
     }
 
@@ -158,8 +162,9 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids) {
+    List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids, long startDateAccess) {
         WhereClauses whereClause = new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, uuids);
+        whereClause.addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
         return List.of(getRouteReadRequest(whereClause));
     }
 

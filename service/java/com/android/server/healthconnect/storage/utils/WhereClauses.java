@@ -33,11 +33,24 @@ public final class WhereClauses {
     }
 
     public WhereClauses addWhereBetweenTimeClause(String columnName, long startTime, long endTime) {
-        if (startTime < 0 || endTime < 0 || endTime < startTime) {
-            return this;
+        if (endTime < 0 || endTime < startTime) {
+            // Below method has check for startTime less than 0.
+            // If both startTime and endTime are less than 0 then no new time clause will be added
+            // and just return current object.
+            return addWhereLaterThanTimeClause(columnName, startTime);
         }
 
         mClauses.add(columnName + " BETWEEN " + startTime + " AND " + endTime);
+
+        return this;
+    }
+
+    public WhereClauses addWhereLaterThanTimeClause(String columnName, long startTime) {
+        if (startTime < 0) {
+            return this;
+        }
+
+        mClauses.add(columnName + " > " + startTime);
 
         return this;
     }

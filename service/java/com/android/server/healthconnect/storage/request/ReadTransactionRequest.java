@@ -42,6 +42,7 @@ public class ReadTransactionRequest {
     public ReadTransactionRequest(
             String packageName,
             ReadRecordsRequestParcel request,
+            long startDateAccess,
             boolean enforceSelfRead,
             Map<String, Boolean> extraReadPermsMapping) {
         RecordHelper<?> recordHelper =
@@ -49,17 +50,22 @@ public class ReadTransactionRequest {
         mReadTableRequests =
                 Collections.singletonList(
                         recordHelper.getReadTableRequest(
-                                request, packageName, enforceSelfRead, extraReadPermsMapping));
+                                request,
+                                packageName,
+                                enforceSelfRead,
+                                startDateAccess,
+                                extraReadPermsMapping));
     }
 
-    public ReadTransactionRequest(Map<Integer, List<String>> recordTypeToUuids) {
+    public ReadTransactionRequest(
+            Map<Integer, List<String>> recordTypeToUuids, long startDateAccess) {
         mReadTableRequests = new ArrayList<>();
         recordTypeToUuids.forEach(
                 (recordType, uuids) ->
                         mReadTableRequests.add(
                                 RecordHelperProvider.getInstance()
                                         .getRecordHelper(recordType)
-                                        .getReadTableRequest(uuids)));
+                                        .getReadTableRequest(uuids, startDateAccess)));
     }
 
     @NonNull

@@ -166,28 +166,32 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             ReadRecordsRequestParcel request,
             String packageName,
             boolean enforceSelfRead,
+            long startDateAccess,
             Map<String, Boolean> extraPermsState) {
         return new ReadTableRequest(getMainTableName())
                 .setJoinClause(getJoinForReadRequest())
-                .setWhereClause(getReadTableWhereClause(request, packageName, enforceSelfRead))
+                .setWhereClause(
+                        getReadTableWhereClause(
+                                request, packageName, enforceSelfRead, startDateAccess))
                 .setOrderBy(getOrderByClause(request))
                 .setLimit(getLimitSize(request))
                 .setRecordHelper(this)
                 .setExtraReadRequests(
-                        getExtraDataReadRequests(request, packageName, extraPermsState));
+                        getExtraDataReadRequests(
+                                request, packageName, startDateAccess, extraPermsState));
     }
 
-    /**
-     * Returns ReadTableRequest for {@code uuids}
-     *
-     * @return
-     */
-    public ReadTableRequest getReadTableRequest(List<String> uuids) {
+    /** Returns ReadTableRequest for {@code uuids} */
+    public ReadTableRequest getReadTableRequest(List<String> uuids, long startDateAccess) {
         return new ReadTableRequest(getMainTableName())
                 .setJoinClause(getJoinForReadRequest())
-                .setWhereClause(new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, uuids))
+                .setWhereClause(
+                        new WhereClauses()
+                                .addWhereInClause(UUID_COLUMN_NAME, uuids)
+                                .addWhereLaterThanTimeClause(
+                                        getStartTimeColumnName(), startDateAccess))
                 .setRecordHelper(this)
-                .setExtraReadRequests(getExtraDataReadRequests(uuids));
+                .setExtraReadRequests(getExtraDataReadRequests(uuids, startDateAccess));
     }
 
     /**
@@ -197,6 +201,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     List<ReadTableRequest> getExtraDataReadRequests(
             ReadRecordsRequestParcel request,
             String packageName,
+            long startDateAccess,
             Map<String, Boolean> extraPermsState) {
         return Collections.emptyList();
     }
@@ -205,7 +210,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * Returns list if ReadSingleTableRequest for {@code uuids} to populate extra data. Called in
      * change logs read requests.
      */
-    List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids) {
+    List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids, long startDateAccess) {
         return Collections.emptyList();
     }
 
@@ -352,7 +357,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     WhereClauses getReadTableWhereClause(
-            ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
+            ReadRecordsRequestParcel request,
+            String packageName,
+            boolean enforceSelfRead,
+            long startDateAccess) {
         if (request.getRecordIdFiltersParcel() == null) {
             List<Long> appIds =
                     AppInfoHelper.getInstance().getAppInfoIds(request.getPackageFilters()).stream()
@@ -374,7 +382,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             }
 
             return clauses.addWhereBetweenTimeClause(
-                    getStartTimeColumnName(), request.getStartTime(), request.getEndTime());
+                    getStartTimeColumnName(), startDateAccess, request.getEndTime());
         }
 
         // Since for now we don't support mixing IDs and filters, we need to look for IDs now
@@ -393,8 +401,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             }
             whereClauses.addWhereInLongsClause(
                     APP_INFO_ID_COLUMN_NAME, Collections.singletonList(id));
+            return whereClauses.addWhereLaterThanTimeClause(
+                    getStartTimeColumnName(), startDateAccess);
         }
-
         return whereClauses;
     }
 

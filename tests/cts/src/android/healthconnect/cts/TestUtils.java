@@ -67,6 +67,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -80,8 +81,9 @@ import java.util.stream.Collectors;
 public class TestUtils {
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     private static final String TAG = "HCTestUtils";
-    static final Instant START_TIME = Instant.ofEpochMilli((long) 1e4);
-    static final Instant END_TIME = Instant.ofEpochMilli((long) 1e5);
+    static final Instant START_TIME = Instant.now().minus(10, ChronoUnit.DAYS);
+    static final Instant END_TIME =
+            Instant.now().minus(10, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS);
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {

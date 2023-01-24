@@ -34,6 +34,7 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -154,6 +155,30 @@ public class HealthConnectChangeLogsTests {
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedRecordIds().size()).isEqualTo(testRecord.size());
+    }
+
+    @Test
+    public void testChangeLogs_insertAndDelete_beforePermission() throws InterruptedException {
+        ChangeLogTokenResponse tokenResponse =
+                TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
+
+        List<Record> testRecord =
+                Arrays.asList(
+                        StepsRecordTest.getStepsRecord_minusDays(45),
+                        StepsRecordTest.getStepsRecord_minusDays(20),
+                        StepsRecordTest.getStepsRecord_minusDays(5));
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(2);
+        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        TestUtils.deleteRecords(testRecord);
+        response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
+        assertThat(response.getDeletedRecordIds().size()).isEqualTo(3);
     }
 
     @Test

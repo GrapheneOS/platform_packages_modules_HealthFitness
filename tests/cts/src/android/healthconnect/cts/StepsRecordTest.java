@@ -191,6 +191,20 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testReadStepsRecord_beforePermissionGrant() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getStepsRecord_minusDays(45),
+                        getStepsRecord_minusDays(20),
+                        getStepsRecord(10));
+        TestUtils.insertRecords(recordList);
+        List<StepsRecord> newStepsRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+        assertThat(newStepsRecords.size()).isEqualTo(2);
+    }
+
+    @Test
     public void testDeleteStepsRecord_no_filters() throws InterruptedException {
         String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
         TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
@@ -407,6 +421,15 @@ public class StepsRecordTest {
                         testMetadataBuilder.build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
+                        10)
+                .build();
+    }
+
+    static StepsRecord getStepsRecord_minusDays(int days) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now().minus(days, ChronoUnit.DAYS),
+                        Instant.now().minus(days, ChronoUnit.DAYS).plusMillis(1000),
                         10)
                 .build();
     }

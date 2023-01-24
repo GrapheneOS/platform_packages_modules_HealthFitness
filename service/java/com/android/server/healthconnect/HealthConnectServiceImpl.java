@@ -381,11 +381,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         try {
+                            long startDateAccess = request.getStartTime();
+                            if (!holdsDataManagementPermission) {
+                                Instant startInstant =
+                                        mPermissionHelper.getHealthDataStartDateAccess(
+                                                packageName, mContext.getUser());
+                                if (startInstant.toEpochMilli() > startDateAccess) {
+                                    startDateAccess = startInstant.toEpochMilli();
+                                }
+                            }
                             Pair<List<RecordInternal<?>>, Long> readRecordsResponse =
                                     mTransactionManager.readRecordsAndGetNextToken(
                                             new ReadTransactionRequest(
                                                     packageName,
                                                     request,
+                                                    startDateAccess,
                                                     enforceSelfRead.get(),
                                                     extraReadPermsToGrantState));
                             long pageToken =
@@ -536,6 +546,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
+                        long startDateAccess =
+                                mPermissionHelper
+                                        .getHealthDataStartDateAccess(
+                                                packageName, mContext.getUser())
+                                        .toEpochMilli();
                         final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                                 ChangeLogsHelper.getInstance()
                                         .getChangeLogs(changeLogsTokenRequest, token.getPageSize());
@@ -544,7 +559,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 mTransactionManager.readRecords(
                                         new ReadTransactionRequest(
                                                 ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                                                        changeLogsResponse.getChangeLogsMap())));
+                                                        changeLogsResponse.getChangeLogsMap()),
+                                                startDateAccess));
                         callback.onResult(
                                 new ChangeLogsResponseParcel(
                                         new RecordsParcel(recordInternals),
