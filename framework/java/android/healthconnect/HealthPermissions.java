@@ -134,6 +134,19 @@ public final class HealthPermissions {
      * <p>Protection level: dangerous.
      */
     public static final String READ_EXERCISE = "android.permission.health.READ_EXERCISE";
+
+    /**
+     * Allows an application to read any {@link android.healthconnect.datatypes.ExerciseRoute}. Not
+     * connected with READ_EXERCISE permission, as it's used only by HealthConnectController to show
+     * routes in UI and share one particular route with third party app after one-time user consent.
+     *
+     * <p>Protection level: signature.
+     *
+     * @hide
+     */
+    public static final String READ_EXERCISE_ROUTE =
+            "android.permission.health.READ_EXERCISE_ROUTE";
+
     /**
      * Allows an application to read the user's floors climbed data.
      *
