@@ -51,6 +51,7 @@ public final class BasalBodyTemperatureRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(temperature);
+        ValidationUtils.requireInRange(temperature.getInCelsius(), 0.0, 100, "temperature");
         mMeasurementLocation = measurementLocation;
         mTemperature = temperature;
     }

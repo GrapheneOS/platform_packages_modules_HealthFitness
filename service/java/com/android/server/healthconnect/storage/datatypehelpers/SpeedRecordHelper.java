@@ -30,6 +30,7 @@ import android.healthconnect.internal.datatypes.SpeedRecordInternal;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -67,17 +68,17 @@ public class SpeedRecordHelper
     /** Populates the {@code record} with values specific to datatype */
     @Override
     void populateSpecificValues(@NonNull Cursor seriesTableCursor, SpeedRecordInternal record) {
-        List<SpeedRecordInternal.SpeedRecordSample> speedRecordSampleList = new ArrayList<>();
+        HashSet<SpeedRecordInternal.SpeedRecordSample> speedRecordSampleSet = new HashSet<>();
         String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            speedRecordSampleList.add(
+            speedRecordSampleSet.add(
                     new SpeedRecordInternal.SpeedRecordSample(
                             getCursorDouble(seriesTableCursor, SPEED_COLUMN_NAME),
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
         seriesTableCursor.moveToPrevious();
-        record.setSamples(speedRecordSampleList);
+        record.setSamples(speedRecordSampleSet);
     }
 
     @Override

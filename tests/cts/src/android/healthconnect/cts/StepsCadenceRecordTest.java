@@ -278,7 +278,7 @@ public class StepsCadenceRecordTest {
                 new StepsCadenceRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Collections.emptyList());
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -334,7 +334,7 @@ public class StepsCadenceRecordTest {
 
     private static StepsCadenceRecord getBaseStepsCadenceRecord() {
         StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
-                new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now());
+                new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now().plusMillis(100));
         ArrayList<StepsCadenceRecord.StepsCadenceRecordSample> stepsCadenceRecords =
                 new ArrayList<>();
         stepsCadenceRecords.add(stepsCadenceRecord);
@@ -343,7 +343,7 @@ public class StepsCadenceRecordTest {
         return new StepsCadenceRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         stepsCadenceRecords)
                 .build();
     }
@@ -361,7 +361,7 @@ public class StepsCadenceRecordTest {
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("SCR" + Math.random());
         StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
-                new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now());
+                new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now().plusMillis(100));
         ArrayList<StepsCadenceRecord.StepsCadenceRecordSample> stepsCadenceRecords =
                 new ArrayList<>();
         stepsCadenceRecords.add(stepsCadenceRecord);
@@ -370,7 +370,7 @@ public class StepsCadenceRecordTest {
         return new StepsCadenceRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         stepsCadenceRecords)
                 .build();
     }

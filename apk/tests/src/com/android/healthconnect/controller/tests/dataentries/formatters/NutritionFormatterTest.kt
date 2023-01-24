@@ -120,43 +120,43 @@ class NutritionFormatterTest {
                 .setCalcium(fromKilograms(.005))
                 .setEnergyFromFat(fromJoules(123456.0))
                 .setEnergy(fromJoules(123457.0))
-                .setChloride(fromKilograms(.111))
+                .setChloride(fromKilograms(.011))
                 .setCholesterol(fromKilograms(.22))
                 .setChromium(fromKilograms(.01))
-                .setCopper(fromKilograms(.2))
-                .setDietaryFiber(fromKilograms(34.0))
-                .setFolate(fromKilograms(.12))
-                .setFolicAcid(fromKilograms(.22))
+                .setCopper(fromKilograms(.02))
+                .setDietaryFiber(fromKilograms(0.034))
+                .setFolate(fromKilograms(.1))
+                .setFolicAcid(fromKilograms(.09))
                 .setIodine(fromKilograms(.1))
                 .setIron(fromKilograms(1.3))
-                .setMagnesium(fromKilograms(2.3))
-                .setManganese(fromKilograms(0.41))
-                .setMolybdenum(fromKilograms(3.0))
-                .setMonounsaturatedFat(fromKilograms(123.4))
-                .setNiacin(fromKilograms(0.32))
-                .setPantothenicAcid(fromKilograms(0.56))
-                .setPhosphorus(fromKilograms(0.67))
-                .setPolyunsaturatedFat(fromKilograms(67.8))
-                .setPotassium(fromKilograms(23.4))
-                .setProtein(fromKilograms(89.0))
-                .setRiboflavin(fromKilograms(22.33))
-                .setSaturatedFat(fromKilograms(45.0))
-                .setSelenium(fromKilograms(0.43))
-                .setSodium(fromKilograms(22.1))
-                .setSugar(fromKilograms(32.1))
-                .setThiamin(fromKilograms(0.98))
-                .setTotalCarbohydrate(fromKilograms(0.98))
-                .setTotalFat(fromKilograms(234.0))
-                .setTransFat(fromKilograms(233.3))
-                .setUnsaturatedFat(fromKilograms(123.4))
-                .setVitaminA(fromKilograms(0.4))
-                .setVitaminB12(fromKilograms(0.5))
-                .setVitaminB6(fromKilograms(1.0))
-                .setVitaminC(fromKilograms(0.6))
-                .setVitaminD(fromKilograms(0.7))
-                .setVitaminE(fromKilograms(0.8))
-                .setVitaminK(fromKilograms(0.9))
-                .setZinc(fromKilograms(12.0))
+                .setMagnesium(fromKilograms(0.03))
+                .setManganese(fromKilograms(0.041))
+                .setMolybdenum(fromKilograms(0.002))
+                .setMonounsaturatedFat(fromKilograms(0.04))
+                .setNiacin(fromKilograms(0.02))
+                .setPantothenicAcid(fromKilograms(0.056))
+                .setPhosphorus(fromKilograms(0.067))
+                .setPolyunsaturatedFat(fromKilograms(0.067))
+                .setPotassium(fromKilograms(0.023))
+                .setProtein(fromKilograms(0.089))
+                .setRiboflavin(fromKilograms(0.022))
+                .setSaturatedFat(fromKilograms(0.045))
+                .setSelenium(fromKilograms(0.043))
+                .setSodium(fromKilograms(0.022))
+                .setSugar(fromKilograms(0.032))
+                .setThiamin(fromKilograms(0.098))
+                .setTotalCarbohydrate(fromKilograms(0.098))
+                .setTotalFat(fromKilograms(0.023))
+                .setTransFat(fromKilograms(0.023))
+                .setUnsaturatedFat(fromKilograms(0.012))
+                .setVitaminA(fromKilograms(0.04))
+                .setVitaminB12(fromKilograms(0.05))
+                .setVitaminB6(fromKilograms(0.01))
+                .setVitaminC(fromKilograms(0.06))
+                .setVitaminD(fromKilograms(0.07))
+                .setVitaminE(fromKilograms(0.08))
+                .setVitaminK(fromKilograms(0.09))
+                .setZinc(fromKilograms(0.012))
                 .build()
         assertThat(formatter.formatValue(record, preferences))
             .isEqualTo(
@@ -164,44 +164,44 @@ class NutritionFormatterTest {
                     "Biotin: 40 g\n" +
                     "Caffeine: 12 g\n" +
                     "Calcium: 5 g\n" +
-                    "Chloride: 111 g\n" +
+                    "Chloride: 11 g\n" +
                     "Cholesterol: 220 g\n" +
                     "Chromium: 10 g\n" +
-                    "Copper: 200 g\n" +
-                    "Dietary fiber: 34,000 g\n" +
+                    "Copper: 20 g\n" +
+                    "Dietary fiber: 34 g\n" +
                     "Energy: 30 Cal\n" +
                     "Energy from fat: 30 Cal\n" +
-                    "Folate: 120 g\n" +
-                    "Folic acid: 220 g\n" +
+                    "Folate: 100 g\n" +
+                    "Folic acid: 90 g\n" +
                     "Iodine: 100 g\n" +
                     "Iron: 1,300 g\n" +
-                    "Magnesium: 2,300 g\n" +
-                    "manganese: 410 g\n" +
-                    "Molybdenum: 3,000 g\n" +
-                    "Monounsaturated fat: 123,400 g\n" +
-                    "Niacin: 320 g\n" +
-                    "Pantothenic acid: 560 g\n" +
-                    "Phosphorus: 670 g\n" +
-                    "Polyunsaturated fat: 67,800 g\n" +
-                    "Potassium: 23,400 g\n" +
-                    "Riboflavin: 22,330 g\n" +
-                    "Saturated fat: 45,000 g\n" +
-                    "Selenium: 430 g\n" +
-                    "Sodium: 22,100 g\n" +
-                    "Sugar: 32,100 g\n" +
-                    "Thiamin: 980 g\n" +
-                    "Total carbohydrate: 980 g\n" +
-                    "Total fat: 234,000 g\n" +
-                    "Trans fat: 233,300 g\n" +
-                    "Unsaturated fat: 123,400 g\n" +
-                    "Vitamin A: 400 g\n" +
-                    "Vitamin B12: 500 g\n" +
-                    "Vitamin B6: 1,000 g\n" +
-                    "Vitamin C: 600 g\n" +
-                    "Vitamin D: 700 g\n" +
-                    "Vitamin E: 800 g\n" +
-                    "Vitamin K: 900 g\n" +
-                    "Zinc: 12,000 g")
+                    "Magnesium: 30 g\n" +
+                    "manganese: 41 g\n" +
+                    "Molybdenum: 2 g\n" +
+                    "Monounsaturated fat: 40 g\n" +
+                    "Niacin: 20 g\n" +
+                    "Pantothenic acid: 56 g\n" +
+                    "Phosphorus: 67 g\n" +
+                    "Polyunsaturated fat: 67 g\n" +
+                    "Potassium: 23 g\n" +
+                    "Riboflavin: 22 g\n" +
+                    "Saturated fat: 45 g\n" +
+                    "Selenium: 43 g\n" +
+                    "Sodium: 22 g\n" +
+                    "Sugar: 32 g\n" +
+                    "Thiamin: 98 g\n" +
+                    "Total carbohydrate: 98 g\n" +
+                    "Total fat: 23 g\n" +
+                    "Trans fat: 23 g\n" +
+                    "Unsaturated fat: 12 g\n" +
+                    "Vitamin A: 40 g\n" +
+                    "Vitamin B12: 50 g\n" +
+                    "Vitamin B6: 10 g\n" +
+                    "Vitamin C: 60 g\n" +
+                    "Vitamin D: 70 g\n" +
+                    "Vitamin E: 80 g\n" +
+                    "Vitamin K: 90 g\n" +
+                    "Zinc: 12 g")
     }
 
     private fun getBuilder(): NutritionRecord.Builder {

@@ -57,16 +57,16 @@ class HeartRateVariabilityRmssdFormatterTest {
 
     @Test
     fun formatValue() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(), preferences)).isEqualTo("100 ms")
+        assertThat(formatter.formatValue(getRecord(), preferences)).isEqualTo("1 ms")
     }
 
     @Test
     fun formatA11yValue() = runBlocking {
         assertThat(formatter.formatA11yValue(getRecord(), preferences))
-            .isEqualTo("100 milliseconds")
+            .isEqualTo("1 millisecond")
     }
 
     private fun getRecord(): HeartRateVariabilityRmssdRecord {
-        return HeartRateVariabilityRmssdRecord.Builder(getMetaData(), NOW, 100.0).build()
+        return HeartRateVariabilityRmssdRecord.Builder(getMetaData(), NOW, 1.0).build()
     }
 }

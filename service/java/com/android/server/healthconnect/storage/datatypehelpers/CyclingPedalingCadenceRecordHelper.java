@@ -31,6 +31,7 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -71,18 +72,18 @@ public class CyclingPedalingCadenceRecordHelper
     @Override
     void populateSpecificValues(
             @NonNull Cursor seriesTableCursor, CyclingPedalingCadenceRecordInternal record) {
-        List<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample>
-                cyclingPedalingCadenceRecordSampleList = new ArrayList<>();
+        HashSet<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample>
+                cyclingPedalingCadenceRecordSampleSet = new HashSet<>();
         String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            cyclingPedalingCadenceRecordSampleList.add(
+            cyclingPedalingCadenceRecordSampleSet.add(
                     new CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample(
                             getCursorDouble(seriesTableCursor, REVOLUTIONS_PER_MINUTE_COLUMN_NAME),
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
         seriesTableCursor.moveToPrevious();
-        record.setSamples(cyclingPedalingCadenceRecordSampleList);
+        record.setSamples(cyclingPedalingCadenceRecordSampleSet);
     }
 
     @Override

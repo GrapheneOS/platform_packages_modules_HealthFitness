@@ -113,12 +113,11 @@ public class DataMigrationTest {
         migrate(
                 getRecordEntity(
                         "height1",
-                        new HeightRecord.Builder(getMetadata(), mEndTime, fromMeters(183D))
-                                .build()));
+                        new HeightRecord.Builder(getMetadata(), mEndTime, fromMeters(3D)).build()));
 
         final HeightRecord record = getRecords(HeightRecord.class).get(0);
 
-        assertThat(record.getHeight().getInMeters()).isEqualTo(183D);
+        assertThat(record.getHeight().getInMeters()).isEqualTo(3D);
         assertThat(record.getTime()).isEqualTo(mEndTime);
     }
 

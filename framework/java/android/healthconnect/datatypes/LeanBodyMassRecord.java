@@ -46,6 +46,7 @@ public final class LeanBodyMassRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(mass);
+        ValidationUtils.requireInRange(mass.getInKilograms(), 0.0, 1000.0, "mass");
         mMass = mass;
     }
     /**

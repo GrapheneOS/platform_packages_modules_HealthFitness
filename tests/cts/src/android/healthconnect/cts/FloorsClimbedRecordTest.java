@@ -236,7 +236,10 @@ public class FloorsClimbedRecordTest {
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
         FloorsClimbedRecord.Builder builder =
                 new FloorsClimbedRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10);
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10);
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
@@ -289,7 +292,10 @@ public class FloorsClimbedRecordTest {
 
     static FloorsClimbedRecord getBaseFloorsClimbedRecord() {
         return new FloorsClimbedRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10)
                 .build();
     }
 
@@ -306,7 +312,10 @@ public class FloorsClimbedRecordTest {
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("FCR" + Math.random());
         return new FloorsClimbedRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), 10)
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10)
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

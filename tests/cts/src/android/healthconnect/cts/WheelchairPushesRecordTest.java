@@ -132,7 +132,10 @@ public class WheelchairPushesRecordTest {
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
         WheelchairPushesRecord.Builder builder =
                 new WheelchairPushesRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 1);
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        1);
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
@@ -146,13 +149,19 @@ public class WheelchairPushesRecordTest {
 
     static WheelchairPushesRecord getBaseWheelchairPushesRecord() {
         return new WheelchairPushesRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10)
                 .build();
     }
 
     static WheelchairPushesRecord getCompleteWheelchairPushesRecord() {
         return new WheelchairPushesRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10)
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

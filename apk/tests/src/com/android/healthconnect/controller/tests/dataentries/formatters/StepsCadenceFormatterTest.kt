@@ -85,7 +85,7 @@ class StepsCadenceFormatterTest {
         return StepsCadenceRecord.Builder(
                 getMetaData(),
                 NOW,
-                NOW.plusSeconds(samples.size.toLong()),
+                NOW.plusSeconds(samples.size.toLong() + 1),
                 samples.map { rate ->
                     StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
                 })

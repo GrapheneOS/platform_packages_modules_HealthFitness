@@ -51,9 +51,9 @@ class StepsFormatterTest {
 
     @Test
     fun formatValue_returnsStepsValues() {
-        val record = getStepsRecord(100)
+        val record = getStepsRecord(10)
         runBlocking {
-            Truth.assertThat(formatter.formatValue(record, preferences)).isEqualTo("100 steps")
+            Truth.assertThat(formatter.formatValue(record, preferences)).isEqualTo("10 steps")
         }
     }
 
@@ -67,9 +67,9 @@ class StepsFormatterTest {
 
     @Test
     fun formatA11yValue_returnsA11yStepsValue() {
-        val record = getStepsRecord(100)
+        val record = getStepsRecord(10)
         runBlocking {
-            Truth.assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("100 steps")
+            Truth.assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("10 steps")
         }
     }
 }

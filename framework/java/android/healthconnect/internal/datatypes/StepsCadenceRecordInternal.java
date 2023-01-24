@@ -24,8 +24,10 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @see StepsCadenceRecord
@@ -35,11 +37,11 @@ import java.util.Objects;
 public class StepsCadenceRecordInternal
         extends SeriesRecordInternal<
                 StepsCadenceRecord, StepsCadenceRecord.StepsCadenceRecordSample> {
-    private List<StepsCadenceRecordSample> mStepsCadenceRecordSamples = new ArrayList<>();
+    private Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
 
     @Override
     void populateIntervalRecordFrom(@NonNull StepsCadenceRecord stepsCadenceRecord) {
-        mStepsCadenceRecordSamples = new ArrayList<>(stepsCadenceRecord.getSamples().size());
+        mStepsCadenceRecordSamples = new HashSet<>(stepsCadenceRecord.getSamples().size());
         for (StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecordSample :
                 stepsCadenceRecord.getSamples()) {
             mStepsCadenceRecordSamples.add(
@@ -47,19 +49,22 @@ public class StepsCadenceRecordInternal
                             stepsCadenceRecordSample.getRate(),
                             stepsCadenceRecordSample.getTime().toEpochMilli()));
         }
+        if (mStepsCadenceRecordSamples.size() != stepsCadenceRecord.getSamples().size()) {
+            throw new IllegalArgumentException("Duplicate time instant values present.");
+        }
     }
 
     @Override
     @NonNull
-    public List<StepsCadenceRecordSample> getSamples() {
+    public Set<StepsCadenceRecordSample> getSamples() {
         return mStepsCadenceRecordSamples;
     }
 
     @NonNull
     @Override
-    public StepsCadenceRecordInternal setSamples(List<? extends Sample> samples) {
+    public StepsCadenceRecordInternal setSamples(Set<? extends Sample> samples) {
         Objects.requireNonNull(samples);
-        this.mStepsCadenceRecordSamples = (List<StepsCadenceRecordSample>) samples;
+        this.mStepsCadenceRecordSamples = (Set<StepsCadenceRecordSample>) samples;
         return this;
     }
 
@@ -76,7 +81,7 @@ public class StepsCadenceRecordInternal
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
         int size = parcel.readInt();
-        mStepsCadenceRecordSamples = new ArrayList<>(size);
+        mStepsCadenceRecordSamples = new HashSet<>(size);
         for (int i = 0; i < size; i++) {
             mStepsCadenceRecordSamples.add(
                     new StepsCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
@@ -122,6 +127,22 @@ public class StepsCadenceRecordInternal
 
         public long getEpochMillis() {
             return mEpochMillis;
+        }
+
+        @Override
+        public boolean equals(@NonNull Object object) {
+            if (super.equals(object)
+                    && object instanceof StepsCadenceRecordInternal.StepsCadenceRecordSample) {
+                StepsCadenceRecordInternal.StepsCadenceRecordSample other =
+                        (StepsCadenceRecordInternal.StepsCadenceRecordSample) object;
+                return getEpochMillis() == other.getEpochMillis();
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getEpochMillis());
         }
     }
 }

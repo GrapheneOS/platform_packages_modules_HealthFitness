@@ -349,13 +349,13 @@ public class HeartRateVariabilityRmssdRecordTest {
 
     static HeartRateVariabilityRmssdRecord getBaseHeartRateVariabilityRmssdRecord() {
         return new HeartRateVariabilityRmssdRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), 9.9)
+                        new Metadata.Builder().build(), Instant.now(), 0.99)
                 .build();
     }
 
     static HeartRateVariabilityRmssdRecord getHeartRateVariabilityRmssdRecord(double power) {
         return new HeartRateVariabilityRmssdRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), 3.9)
+                        new Metadata.Builder().build(), Instant.now(), 0.39)
                 .build();
     }
 
@@ -373,7 +373,7 @@ public class HeartRateVariabilityRmssdRecordTest {
         testMetadataBuilder.setClientRecordId("HRV" + Math.random());
 
         return new HeartRateVariabilityRmssdRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), 3.0)
+                        testMetadataBuilder.build(), Instant.now(), 0.3)
                 .build();
     }
 }

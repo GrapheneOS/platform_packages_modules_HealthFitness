@@ -73,6 +73,7 @@ public final class WeightRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(weight);
+        ValidationUtils.requireInRange(weight.getInKilograms(), 0.0, 1000.0, "weight");
         mWeight = weight;
     }
     /**

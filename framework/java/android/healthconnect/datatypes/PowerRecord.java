@@ -51,6 +51,10 @@ public final class PowerRecord extends IntervalRecord {
             @NonNull List<PowerRecordSample> powerRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(powerRecordSamples);
+        ValidationUtils.validateSampleStartAndEndTime(
+                startTime,
+                endTime,
+                powerRecordSamples.stream().map(PowerRecord.PowerRecordSample::getTime).toList());
         mPowerRecordSamples = powerRecordSamples;
     }
 
@@ -79,6 +83,7 @@ public final class PowerRecord extends IntervalRecord {
         public PowerRecordSample(@NonNull Power power, @NonNull Instant time) {
             Objects.requireNonNull(time);
             Objects.requireNonNull(power);
+            ValidationUtils.requireInRange(power.getInWatts(), 0.0, 100000.0, "power");
             mTime = time;
             mPower = power;
         }

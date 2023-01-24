@@ -49,6 +49,8 @@ public final class Vo2MaxRecord extends InstantRecord {
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
+        ValidationUtils.requireInRange(
+                vo2MillilitersPerMinuteKilogram, 0.0, 100.0, "vo2MillilitersPerMinuteKilogram");
         mMeasurementMethod = measurementMethod;
         mVo2MillilitersPerMinuteKilogram = vo2MillilitersPerMinuteKilogram;
     }

@@ -44,6 +44,9 @@ public abstract class IntervalRecord extends Record {
         Objects.requireNonNull(startZoneOffset);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(endZoneOffset);
+        if (!endTime.isAfter(startTime)) {
+            throw new IllegalArgumentException("end time needs to be after start time.");
+        }
         mStartTime = startTime;
         mStartZoneOffset = startZoneOffset;
         mEndTime = endTime;

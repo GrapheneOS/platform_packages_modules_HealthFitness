@@ -44,6 +44,12 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
             @NonNull List<CyclingPedalingCadenceRecordSample> cyclingPedalingCadenceRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(cyclingPedalingCadenceRecordSamples);
+        ValidationUtils.validateSampleStartAndEndTime(startTime, endTime,
+                cyclingPedalingCadenceRecordSamples.stream()
+                        .map(
+                                CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
+                                        ::getTime)
+                        .toList());
         mCyclingPedalingCadenceRecordSamples = cyclingPedalingCadenceRecordSamples;
     }
 
@@ -69,6 +75,8 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
         public CyclingPedalingCadenceRecordSample(
                 double revolutionsPerMinute, @NonNull Instant time) {
             Objects.requireNonNull(time);
+            ValidationUtils.requireInRange(
+                    revolutionsPerMinute, 0.0, 10000.0, "revolutionsPerMinute");
             mTime = time;
             mRevolutionsPerMinute = revolutionsPerMinute;
         }

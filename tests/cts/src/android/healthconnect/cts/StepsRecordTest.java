@@ -286,7 +286,10 @@ public class StepsRecordTest {
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
         StepsRecord.Builder builder =
                 new StepsRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10);
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10);
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
@@ -338,7 +341,7 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregation_StepsCountTotal() throws Exception {
-        List<Record> records = Arrays.asList(getStepsRecord(1000), getStepsRecord(1000));
+        List<Record> records = Arrays.asList(getStepsRecord(9), getStepsRecord(9));
         AggregateRecordsResponse<Long> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -349,7 +352,7 @@ public class StepsRecordTest {
                                 .addAggregationType(STEPS_COUNT_TOTAL)
                                 .build(),
                         records);
-        List<Record> recordNew = Arrays.asList(getStepsRecord(1000), getStepsRecord(1000));
+        List<Record> recordNew = Arrays.asList(getStepsRecord(9), getStepsRecord(9));
         AggregateRecordsResponse<Long> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -362,7 +365,7 @@ public class StepsRecordTest {
                         recordNew);
         assertThat(newResponse.get(STEPS_COUNT_TOTAL)).isNotNull();
         assertThat(newResponse.get(STEPS_COUNT_TOTAL))
-                .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 2000);
+                .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 18);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(STEPS_COUNT_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -375,13 +378,19 @@ public class StepsRecordTest {
 
     static StepsRecord getBaseStepsRecord() {
         return new StepsRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), 10)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10)
                 .build();
     }
 
     static StepsRecord getStepsRecord(int count) {
         return new StepsRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), count)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        count)
                 .build();
     }
 
@@ -395,7 +404,10 @@ public class StepsRecordTest {
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("SR" + Math.random());
         return new StepsRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), 10)
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10)
                 .build();
     }
 }

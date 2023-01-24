@@ -51,7 +51,7 @@ abstract class SeriesRecordHelper<
     @Override
     @SuppressWarnings("unchecked")
     final List<UpsertTableRequest> getChildTableUpsertRequests(@NonNull T record) {
-        List<? extends SeriesRecordInternal.Sample> samples = record.getSamples();
+        List<? extends SeriesRecordInternal.Sample> samples = record.getSamples().stream().toList();
         List<UpsertTableRequest> requests = new ArrayList<>(samples.size());
         samples.forEach(
                 (sample -> {

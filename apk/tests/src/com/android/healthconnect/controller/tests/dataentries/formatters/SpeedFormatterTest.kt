@@ -132,7 +132,7 @@ class SpeedFormatterTest {
         return SpeedRecord.Builder(
                 getMetaData(),
                 NOW,
-                NOW.plusSeconds(samples.size.toLong()),
+                NOW.plusSeconds(samples.size.toLong() + 1),
                 samples.mapIndexed { index, value ->
                     SpeedRecord.SpeedRecordSample(
                         Velocity.fromMetersPerSecond(value), NOW.plusSeconds(index.toLong()))

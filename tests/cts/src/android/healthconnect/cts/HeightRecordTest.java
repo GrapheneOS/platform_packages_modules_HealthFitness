@@ -300,9 +300,9 @@ public class HeightRecordTest {
         Context context = ApplicationProvider.getApplicationContext();
         List<Record> records =
                 Arrays.asList(
-                        getBaseHeightRecord(5.0),
-                        getBaseHeightRecord(10.0),
-                        getBaseHeightRecord(15.0));
+                        getBaseHeightRecord(0.5),
+                        getBaseHeightRecord(1.0),
+                        getBaseHeightRecord(1.5));
         AggregateRecordsResponse<Length> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
@@ -323,11 +323,11 @@ public class HeightRecordTest {
         Length minHeight = response.get(HEIGHT_MIN);
         Length avgHeight = response.get(HEIGHT_AVG);
         assertThat(maxHeight).isNotNull();
-        assertThat(maxHeight.getInMeters()).isEqualTo(15.0);
+        assertThat(maxHeight.getInMeters()).isEqualTo(1.5);
         assertThat(minHeight).isNotNull();
-        assertThat(minHeight.getInMeters()).isEqualTo(5.0);
+        assertThat(minHeight.getInMeters()).isEqualTo(0.5);
         assertThat(avgHeight).isNotNull();
-        assertThat(avgHeight.getInMeters()).isEqualTo(10.0);
+        assertThat(avgHeight.getInMeters()).isEqualTo(1.0);
         Set<DataOrigin> dataOrigins = response.getDataOrigins(HEIGHT_AVG);
         for (DataOrigin itr : dataOrigins) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -341,7 +341,7 @@ public class HeightRecordTest {
         final ZoneOffset zoneOffset = ZoneOffset.UTC;
         HeightRecord.Builder builder =
                 new HeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0));
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(1.0));
 
         assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
@@ -349,7 +349,7 @@ public class HeightRecordTest {
 
     private static HeightRecord getBaseHeightRecord() {
         return new HeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(10.0))
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(1.0))
                 .build();
     }
 
@@ -373,7 +373,7 @@ public class HeightRecordTest {
         testMetadataBuilder.setClientRecordId("HR" + Math.random());
 
         return new HeightRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Length.fromMeters(10.0))
+                        testMetadataBuilder.build(), Instant.now(), Length.fromMeters(1.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

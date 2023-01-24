@@ -22,8 +22,8 @@ import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
 /**
- * @see NutritionRecord
  * @hide
+ * @see NutritionRecord
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_NUTRITION)
 public final class NutritionRecordInternal extends IntervalRecordInternal<NutritionRecord> {

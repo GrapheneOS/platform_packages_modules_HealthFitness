@@ -39,6 +39,7 @@ import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -112,17 +113,17 @@ public class PowerRecordHelper
     /** Populates the {@code record} with values specific to datatype */
     @Override
     void populateSpecificValues(@NonNull Cursor seriesTableCursor, PowerRecordInternal record) {
-        List<PowerRecordInternal.PowerRecordSample> powerRecordSampleList = new ArrayList<>();
+        HashSet<PowerRecordInternal.PowerRecordSample> powerRecordSampleSet = new HashSet<>();
         String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            powerRecordSampleList.add(
+            powerRecordSampleSet.add(
                     new PowerRecordInternal.PowerRecordSample(
                             getCursorDouble(seriesTableCursor, POWER_COLUMN_NAME),
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
         seriesTableCursor.moveToPrevious();
-        record.setSamples(powerRecordSampleList);
+        record.setSamples(powerRecordSampleSet);
     }
 
     @Override

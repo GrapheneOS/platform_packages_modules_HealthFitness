@@ -323,7 +323,7 @@ public class HydrationRecordTest {
                 new HydrationRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Volume.fromMilliliters(10.0));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -378,7 +378,7 @@ public class HydrationRecordTest {
         return new HydrationRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Volume.fromMilliliters(10.0))
                 .build();
     }
@@ -398,7 +398,7 @@ public class HydrationRecordTest {
         return new HydrationRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Volume.fromMilliliters(10.0))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))

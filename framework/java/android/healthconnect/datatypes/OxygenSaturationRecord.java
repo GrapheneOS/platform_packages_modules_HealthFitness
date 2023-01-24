@@ -48,6 +48,7 @@ public final class OxygenSaturationRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(percentage);
+        ValidationUtils.requireInRange(percentage.getValue(), 0.0, 100.0, "percentage");
         mPercentage = percentage;
     }
     /**

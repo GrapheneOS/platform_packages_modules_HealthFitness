@@ -59,6 +59,7 @@ public final class BloodGlucoseRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(level);
+        ValidationUtils.requireInRange(level.getInMillimolesPerLiter(), 0.0, 50.0, "level");
         mSpecimenSource = specimenSource;
         mLevel = level;
         mRelationToMeal = relationToMeal;
