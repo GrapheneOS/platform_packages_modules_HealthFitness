@@ -28,6 +28,7 @@ import android.annotation.RequiresPermission;
 import android.annotation.SdkConstant;
 import android.annotation.SystemApi;
 import android.annotation.SystemService;
+import android.annotation.TestApi;
 import android.annotation.UserHandleAware;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -52,6 +53,7 @@ import android.healthconnect.aidl.IActivityDatesResponseCallback;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
 import android.healthconnect.aidl.IApplicationInfoResponseCallback;
 import android.healthconnect.aidl.IChangeLogsResponseCallback;
+import android.healthconnect.aidl.IDataStagingFinishedCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
@@ -73,8 +75,11 @@ import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.internal.datatypes.utils.InternalExternalRecordConverter;
 import android.healthconnect.migration.MigrationEntity;
 import android.healthconnect.migration.MigrationException;
+import android.healthconnect.restore.StageRemoteDataException;
+import android.healthconnect.restore.StageRemoteDataRequest;
 import android.os.Binder;
 import android.os.OutcomeReceiver;
+import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -1187,6 +1192,82 @@ public class HealthConnectManager {
                         }
                     });
 
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Stages all HealthConnect remote data and returns any errors in a callback. Errors encountered
+     * for all the files are shared in the provided callback.
+     *
+     * <p>The staged data will later be restored (integrated) into the existing Health Connect data.
+     * Any existing data will not be affected by the staged data.
+     *
+     * <p>The file names passed should be the same as the ones on the original device that were
+     * backed up or are being transferred directly.
+     *
+     * <p>If a file already exists in the staged data then it will be replaced. However, note that
+     * staging data is a one time process. And if the staged data has already been processed then
+     * any attempt to stage data again will be silently ignored.
+     *
+     * <p>The caller is responsible for closing the original file descriptors. The file descriptors
+     * are duplicated and the originals may be closed by the application at any time after this API
+     * returns.
+     *
+     * @param pfdsByFileName The map of file names and their {@link ParcelFileDescriptor}s.
+     * @param executor The {@link Executor} on which to invoke the callback.
+     * @param callback The callback which will receive the outcome of this call.
+     * @throws NullPointerException if null is passed for any of the required {@link NonNull}
+     *     parameters.
+     * @hide
+     */
+    @SystemApi
+    @UserHandleAware
+    @RequiresPermission(Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA)
+    public void stageAllHealthConnectRemoteData(
+            @NonNull Map<String, ParcelFileDescriptor> pfdsByFileName,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, StageRemoteDataException> callback)
+            throws NullPointerException {
+        Objects.requireNonNull(pfdsByFileName);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.stageAllHealthConnectRemoteData(
+                    new StageRemoteDataRequest(pfdsByFileName),
+                    mContext.getUser(),
+                    new IDataStagingFinishedCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(StageRemoteDataException stageRemoteDataException) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onError(stageRemoteDataException));
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Deletes all previously staged HealthConnect data from the disk. For testing purposes only.
+     *
+     * <p>This deletes only the staged data leaving any other Health Connect data untouched.
+     *
+     * @hide
+     */
+    @TestApi
+    @UserHandleAware
+    public void deleteAllStagedRemoteData() throws NullPointerException {
+        try {
+            mService.deleteAllStagedRemoteData(mContext.getUser());
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
