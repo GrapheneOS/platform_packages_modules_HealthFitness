@@ -45,6 +45,7 @@ import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,7 +64,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var noDataView: TextView
     private lateinit var loadingView: View
     private lateinit var errorView: View
-    private val adapter = DataEntryAdapter()
+    private lateinit var adapter: RecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,6 +92,24 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         noDataView = view.findViewById(R.id.no_data_view)
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
+        adapter =
+            RecyclerViewAdapter.Builder()
+                .setViewBinder(
+                    FormattedDataEntry::class.java,
+                    EntryItemViewBinder(
+                        object : EntryItemViewBinder.OnDeleteEntryClicked {
+                            override fun onDeleteEntryClicked(
+                                dataEntry: FormattedDataEntry,
+                                index: Int
+                            ) {
+                                val deletionType =
+                                    DeletionType.DeleteDataEntry(
+                                        dataEntry.uuid, dataEntry.dataType, index)
+                                childFragmentManager.setFragmentResult(
+                                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+                            }
+                        }))
+                .build()
         entriesRecyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {
                 it.adapter = adapter
@@ -106,15 +125,6 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter.setOnDeleteEntrySelected(
-            object : DataEntryAdapter.OnDeleteEntrySelected {
-                override fun onDeleteEntrySelected(dataEntry: FormattedDataEntry, index: Int) {
-                    val deletionType =
-                        DeletionType.DeleteDataEntry(dataEntry.uuid, dataEntry.dataType, index)
-                    childFragmentManager.setFragmentResult(
-                        START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
-                }
-            })
 
         dataNavigationView.setDateChangedListener(
             object : DateNavigationView.OnDateChangedListener {
