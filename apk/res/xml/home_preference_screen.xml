@@ -26,8 +26,7 @@
         <Preference
             android:key="connected_apps"
             android:icon="@drawable/quantum_gm_ic_link_vd_theme_24"
-            android:title="@string/connected_apps_title"
-            android:summary="@string/connected_apps_subtitle" />
+            android:title="@string/connected_apps_title"/>
         <Preference
             android:key="data_and_access"
             android:icon="@drawable/ic_health_data"

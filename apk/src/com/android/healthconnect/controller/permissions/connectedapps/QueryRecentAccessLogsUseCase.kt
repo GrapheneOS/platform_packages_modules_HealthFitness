@@ -15,30 +15,41 @@ package com.android.healthconnect.controller.permissions.connectedapps
 
 import android.healthconnect.AccessLog
 import android.healthconnect.HealthConnectManager
+import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
-import java.time.Instant
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import java.time.Instant
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /** Query recent access logs for health connect connected apps. */
 @Singleton
 class QueryRecentAccessLogsUseCase
 @Inject
 constructor(
-    private val manager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+        private val manager: HealthConnectManager,
+        @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
+    companion object {
+        private const val TAG = "QueryRecentAccessLogsUseCase"
+    }
+
     suspend fun invoke(): Map<String, Instant> =
-        withContext(dispatcher) {
-            val accessLogs =
-                suspendCancellableCoroutine<List<AccessLog>> { continuation ->
-                    manager.queryAccessLogs(Runnable::run, continuation.asOutcomeReceiver())
+            withContext(dispatcher) {
+                try {
+                    val accessLogs =
+                            suspendCancellableCoroutine<List<AccessLog>> { continuation ->
+                                manager.queryAccessLogs(Runnable::run, continuation.asOutcomeReceiver())
+                            }
+                    accessLogs.associate { it.packageName to it.accessTime }
+                } catch (e: Exception) {
+                    Log.e(TAG, "QueryRecentAccessLogsUseCase ", e)
+                    emptyMap()
                 }
-            accessLogs.associate { it.packageName to it.accessTime }
-        }
+
+            }
 }

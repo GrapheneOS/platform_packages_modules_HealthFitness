@@ -14,18 +14,22 @@
   limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health&#160;Connect</string>
+    <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health&#160;Connect</string>
 
-  <!-- region Home screen -->
-  <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
-  <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Manage the health and fitness data on your phone, and control which apps can access it</string>
-  <string name="data_title" description="Label for a button that takes the user to the data management screens. [CHAR_LIMIT=40]">Data and access</string>
-  <string name="all_categories_title" description="Title of a screen that lists all health data categories. [CHAR_LIMIT=40]">All categories</string>
-  <string name="see_all_categories" description="Label for a button that takes the user to the all categories screens. [CHAR_LIMIT=40]">See all categories</string>
-  <string name="no_data" description="Label that is displayed when the given health data category does not have any data.">No data</string>
-  <string name="connected_apps_title" description="Label for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=40]">App permissions</string>
-  <string name="connected_apps_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]">Manage your apps and permissions</string>
-  <string name="entry_details_title" description="Label for a screen that list an entry details. [CHAR_LIMIT=40]">Entry details</string>
+    <!-- region Home screen -->
+    <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
+    <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Manage the health and fitness data on your phone, and control which apps can access it</string>
+    <string name="data_title" description="Label for a button that takes the user to the data management screens. [CHAR_LIMIT=40]">Data and access</string>
+    <string name="all_categories_title" description="Title of a screen that lists all health data categories. [CHAR_LIMIT=40]">All categories</string>
+    <string name="see_all_categories" description="Label for a button that takes the user to the all categories screens. [CHAR_LIMIT=40]">See all categories</string>
+    <string name="no_data" description="Label that is displayed when the given health data category does not have any data.">No data</string>
+    <string name="connected_apps_title" description="Label for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=40]">App permissions</string>
+    <string name="connected_apps_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]">Manage your apps and permissions</string>
+    <string name="connected_apps_button_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]"><xliff:g id="num_apps_connected" example="1">%1$s</xliff:g> of <xliff:g id="num_possible_apps" example="3">%2$s</xliff:g> apps have access</string>
+    <string name="connected_apps_all_apps_connected_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens when all possible apps are connected. [CHAR_LIMIT=NONE]"><xliff:g id="num_apps_connected" example="1">%1$s</xliff:g> apps have access</string>
+    <string name="connected_apps_one_app_connected_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens with one app connected. [CHAR_LIMIT=NONE]"><xliff:g id="num_apps_connected" example="1">%1$s</xliff:g> app has access</string>
+    <string name="connected_apps_button_no_permissions_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens, when no apps are connected. [CHAR_LIMIT=NONE]">None</string>
+    <string name="entry_details_title" description="Label for a screen that list an entry details. [CHAR_LIMIT=40]">Entry details</string>
   <!--  endregion -->
 
     <!-- region  Recent access -->
@@ -186,10 +190,20 @@
   <string name="height_read_content_description" description="Content description for switch that enables permissions for reading the user's height data [CHAR_LIMIT=NONE]">Read height</string>
   <string name="height_write_content_description" description="Content description for switch that enables permissions for writing the user's height data [CHAR_LIMIT=NONE]">Write height</string>
 
+  <string name="hip_circumference_uppercase_label" description="Uppercase label used to show the user's hip circumference data [CHAR_LIMIT=50]">Hip circumference</string>
+  <string name="hip_circumference_lowercase_label" description="Lowercase label used to show the user's hip circumference data [CHAR_LIMIT=50]">hip circumference</string>
+  <string name="hip_circumference_read_content_description" description="Content description for switch that enables permissions for reading the user's hip circumference data [CHAR_LIMIT=NONE]">Read hip circumference</string>
+  <string name="hip_circumference_write_content_description" description="Content description for switch that enables permissions for writing the user's hip circumference data [CHAR_LIMIT=NONE]">Write hip circumference</string>
+
   <string name="lean_body_mass_uppercase_label" description="Uppercase label used to show the user's lean body mass data [CHAR_LIMIT=50]">Lean body mass</string>
   <string name="lean_body_mass_lowercase_label" description="Lowercase label used to show the user's lean body mass data [CHAR_LIMIT=50]">lean body mass</string>
   <string name="lean_body_mass_read_content_description" description="Content description for switch that enables permissions for reading the user's lean body mass data [CHAR_LIMIT=NONE]">Read lean body mass</string>
   <string name="lean_body_mass_write_content_description" description="Content description for switch that enables permissions for writing the user's lean body mass data [CHAR_LIMIT=NONE]">Write lean body mass</string>
+
+  <string name="waist_circumference_uppercase_label" description="Uppercase label used to show the user's waist circumference data [CHAR_LIMIT=50]">Waist circumference</string>
+  <string name="waist_circumference_lowercase_label" description="Lowercase label used to show the user's waist circumference data [CHAR_LIMIT=50]">waist circumference</string>
+  <string name="waist_circumference_read_content_description" description="Content description for switch that enables permissions for reading the user's waist circumference data [CHAR_LIMIT=NONE]">Read waist circumference</string>
+  <string name="waist_circumference_write_content_description" description="Content description for switch that enables permissions for writing the user's waist circumference data [CHAR_LIMIT=NONE]">Write waist circumference</string>
 
   <string name="weight_uppercase_label" description="Uppercase label used to show the user's weight data [CHAR_LIMIT=50]">Weight</string>
   <string name="weight_lowercase_label" description="Lowercase label used to show the user's weight data [CHAR_LIMIT=50]">weight</string>

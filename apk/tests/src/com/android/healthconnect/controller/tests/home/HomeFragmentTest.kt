@@ -15,25 +15,33 @@
  */
 package com.android.healthconnect.controller.tests.home
 
+import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.android.healthconnect.controller.R
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.home.HomeFragment
 import com.android.healthconnect.controller.home.HomeFragmentViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.tests.utils.TEST_APP
+import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.setLocale
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -43,9 +51,11 @@ import org.mockito.Mockito
 class HomeFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    private lateinit var context: Context
 
     @BindValue
-    val viewModel: HomeFragmentViewModel = Mockito.mock(HomeFragmentViewModel::class.java)
+    val homeFragmentViewModel: HomeFragmentViewModel =
+        Mockito.mock(HomeFragmentViewModel::class.java)
 
     @BindValue
     val recentAccessViewModel: RecentAccessViewModel =
@@ -54,6 +64,9 @@ class HomeFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        context = InstrumentationRegistry.getInstrumentation().context
+        context.setLocale(Locale.US)
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
     }
 
     @Test
@@ -75,11 +88,17 @@ class HomeFragmentTest {
         Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData(listOf(recentApp))
         }
+        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+            MutableLiveData(listOf<ConnectedAppMetadata>())
+        }
         launchFragment<HomeFragment>(Bundle())
 
-        onView(withText("Manage the health and fitness data on your phone, and control which apps can access it")).check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Manage the health and fitness data on your phone, and control which apps can access it"))
+            .check(matches(isDisplayed()))
         onView(withText("App permissions")).check(matches(isDisplayed()))
-        onView(withText("Manage your apps and permissions")).check(matches(isDisplayed()))
+        onView(withText("None")).check(matches(isDisplayed()))
         onView(withText("Data and access")).check(matches(isDisplayed()))
 
         onView(withText("Recent access")).check(matches(isDisplayed()))
@@ -93,14 +112,65 @@ class HomeFragmentTest {
         Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<List<RecentAccessEntry>>(emptyList())
         }
+        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+            MutableLiveData(
+                listOf(
+                    ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
+                    ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.ALLOWED)))
+        }
         launchFragment<HomeFragment>(Bundle())
 
-        onView(withText("Manage the health and fitness data on your phone, and control which apps can access it")).check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Manage the health and fitness data on your phone, and control which apps can access it"))
+            .check(matches(isDisplayed()))
         onView(withText("App permissions")).check(matches(isDisplayed()))
-        onView(withText("Manage your apps and permissions")).check(matches(isDisplayed()))
+        onView(withText("2 apps have access")).check(matches(isDisplayed()))
         onView(withText("Data and access")).check(matches(isDisplayed()))
 
         onView(withText("Recent access")).check(matches(isDisplayed()))
-        onView(withText("No apps recently accessed Health\u00A0Connect")).check(matches(isDisplayed()))
+        onView(withText("No apps recently accessed Health\u00A0Connect"))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_HomeFragment_withOneApp() {
+        Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<List<RecentAccessEntry>>(emptyList())
+        }
+        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+            MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)))
+        }
+        launchFragment<HomeFragment>(Bundle())
+
+        onView(
+                withText(
+                    "Manage the health and fitness data on your phone, and control which apps can access it"))
+            .check(matches(isDisplayed()))
+        onView(withText("App permissions")).check(matches(isDisplayed()))
+        onView(withText("1 app has access")).check(matches(isDisplayed()))
+        onView(withText("Data and access")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_HomeFragment_withOneAppConnected_oneAppNotConnected() {
+        Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<List<RecentAccessEntry>>(emptyList())
+        }
+        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+            MutableLiveData(
+                listOf(
+                    ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
+                    ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)))
+        }
+        launchFragment<HomeFragment>(Bundle())
+
+        onView(
+                withText(
+                    "Manage the health and fitness data on your phone, and control which apps can access it"))
+            .check(matches(isDisplayed()))
+        onView(withText("App permissions")).check(matches(isDisplayed()))
+        onView(withText("1 of 2 apps have access")).check(matches(isDisplayed()))
+        onView(withText("Data and access")).check(matches(isDisplayed()))
     }
 }

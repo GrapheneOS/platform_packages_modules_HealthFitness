@@ -16,8 +16,30 @@
 
 package com.android.healthconnect.controller.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
+import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
-@HiltViewModel class HomeFragmentViewModel @Inject constructor() : ViewModel() {}
+@HiltViewModel
+class HomeFragmentViewModel
+@Inject
+constructor(private val loadHealthPermissionApps: LoadHealthPermissionApps) : ViewModel() {
+
+    private val _connectedApps = MutableLiveData<List<ConnectedAppMetadata>>()
+    val connectedApps: LiveData<List<ConnectedAppMetadata>>
+        get() = _connectedApps
+
+    init {
+        loadConnectedApps()
+    }
+
+    fun loadConnectedApps() {
+        viewModelScope.launch { _connectedApps.postValue(loadHealthPermissionApps.invoke()) }
+    }
+}
