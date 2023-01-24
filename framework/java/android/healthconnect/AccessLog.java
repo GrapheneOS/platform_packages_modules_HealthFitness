@@ -16,12 +16,15 @@
 
 package android.healthconnect;
 
+import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.SystemApi;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.internal.datatypes.utils.RecordMapper;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public class AccessLog {
     private final List<Class<? extends Record>> mRecordTypesList = new ArrayList<>();
     private final String mPackageName;
     private final Instant mAccessTime;
-    @Constants.OperationType private final int mOperationType;
+    @OperationType.OperationTypes private final int mOperationType;
 
     /**
      * Creates an access logs object that can be used to get access log request for {@code
@@ -54,7 +57,7 @@ public class AccessLog {
             @NonNull String packageName,
             @NonNull @RecordTypeIdentifier.RecordType List<Integer> recordTypes,
             long accessTimeInMillis,
-            @Constants.OperationType int operationType) {
+            @OperationType.OperationTypes int operationType) {
         Objects.requireNonNull(packageName);
         Objects.requireNonNull(recordTypes);
 
@@ -87,8 +90,28 @@ public class AccessLog {
     }
 
     /** Returns the type of operation performed by the app */
-    @Constants.OperationType
+    @OperationType.OperationTypes
     public int getOperationType() {
         return mOperationType;
+    }
+
+    /** Identifier for Operation type. */
+    public static final class OperationType {
+
+        /** Identifier for read operation done on user health data. */
+        public static final int OPERATION_TYPE_READ = Constants.READ;
+
+        /** Identifier for update or insert operation done on user health data. */
+        public static final int OPERATION_TYPE_UPSERT = Constants.UPSERT;
+
+        /** Identifier for delete operation done on user health data. */
+        public static final int OPERATION_TYPE_DELETE = Constants.DELETE;
+
+        /** @hide */
+        @IntDef({OPERATION_TYPE_UPSERT, OPERATION_TYPE_DELETE, OPERATION_TYPE_READ})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface OperationTypes {}
+
+        private OperationType() {}
     }
 }

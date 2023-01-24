@@ -66,8 +66,7 @@ android_library {
     min_sdk_version: "UpsideDownCake",
     libs: [
         "kotlin-annotations",
-        //TODO(b/251194265) remove .impl when user permission check is available.
-        "framework-healthconnect.impl"
+        "framework-healthconnect"
     ],
     static_libs: [
         "com.google.android.material_material",

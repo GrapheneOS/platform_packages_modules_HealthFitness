@@ -8,6 +8,12 @@ package android.healthconnect {
     method @NonNull public java.util.List<java.lang.Class<? extends android.healthconnect.datatypes.Record>> getRecordTypes();
   }
 
+  public static final class AccessLog.OperationType {
+    field public static final int OPERATION_TYPE_DELETE = 1; // 0x1
+    field public static final int OPERATION_TYPE_READ = 2; // 0x2
+    field public static final int OPERATION_TYPE_UPSERT = 0; // 0x0
+  }
+
   public class ApplicationInfoResponse {
     method @NonNull public java.util.List<android.healthconnect.datatypes.AppInfo> getApplicationInfoList();
   }

@@ -21,14 +21,14 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedApps.LoadAppPermissionsStatusUseCase
-import com.android.healthconnect.controller.permissions.connectedapps.settings.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import javax.inject.Inject
@@ -39,13 +39,13 @@ import kotlinx.coroutines.launch
 class AppPermissionViewModel
 @Inject
 constructor(
-        private val appInfoReader: AppInfoReader,
-        private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
-        private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
-        private val revokePermissionsStatusUseCase: RevokeHealthPermissionUseCase,
-        private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
-        private val deleteAppDataUseCase: DeleteAppDataUseCase,
-        private val loadAccessDateUseCase: LoadAccessDateUseCase
+    private val appInfoReader: AppInfoReader,
+    private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
+    private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
+    private val revokePermissionsStatusUseCase: RevokeHealthPermissionUseCase,
+    private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
+    private val deleteAppDataUseCase: DeleteAppDataUseCase,
+    private val loadAccessDateUseCase: LoadAccessDateUseCase
 ) : ViewModel() {
 
     private val _appPermissions = MutableLiveData<List<HealthPermissionStatus>>(emptyList())

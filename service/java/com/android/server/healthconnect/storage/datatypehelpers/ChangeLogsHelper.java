@@ -33,7 +33,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.healthconnect.Constants;
+import android.healthconnect.AccessLog.OperationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 import android.util.Pair;
@@ -183,7 +183,7 @@ public final class ChangeLogsHelper {
     private int addChangeLogs(Cursor cursor, Map<Integer, ChangeLogs> changeLogs) {
         @RecordTypeIdentifier.RecordType
         int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
-        @Constants.OperationType
+        @OperationType.OperationTypes
         int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
         List<String> uuidList = getCursorStringList(cursor, UUIDS_COLUMN_NAME, DELIMITER);
 
@@ -207,13 +207,14 @@ public final class ChangeLogsHelper {
 
     public static final class ChangeLogs {
         private final Map<Integer, List<String>> mRecordTypeToUUIDMap = new ArrayMap<>();
-        @Constants.OperationType private final int mOperationType;
+        @OperationType.OperationTypes private final int mOperationType;
         private final String mPackageName;
         /**
          * Create a change logs object that can be used to get change log request for {@code
          * operationType} for {@code packageName}
          */
-        public ChangeLogs(@Constants.OperationType int operationType, @NonNull String packageName) {
+        public ChangeLogs(
+                @OperationType.OperationTypes int operationType, @NonNull String packageName) {
             mOperationType = operationType;
             mPackageName = packageName;
         }
@@ -222,7 +223,7 @@ public final class ChangeLogsHelper {
          * Create a change logs object that can be used to get change log request for {@code
          * operationType} for {@code packageName}
          */
-        public ChangeLogs(@Constants.OperationType int operationType) {
+        public ChangeLogs(@OperationType.OperationTypes int operationType) {
             mOperationType = operationType;
             mPackageName = null;
         }

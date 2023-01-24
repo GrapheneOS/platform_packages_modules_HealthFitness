@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.permissions.connectedapps.settings
+package com.android.healthconnect.controller.permissions.api
 
 import android.healthconnect.HealthConnectManager
 import android.util.Log

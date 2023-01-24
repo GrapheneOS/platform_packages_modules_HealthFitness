@@ -14,7 +14,7 @@ object TemperatureFormatter {
     fun formatValue(
         context: Context,
         temperature: Temperature,
-        @BodyTemperatureMeasurementLocations measurementLocation: Int,
+        measurementLocation: Int,
         unitPreferences: UnitPreferences
     ): String {
         val res =
@@ -36,7 +36,7 @@ object TemperatureFormatter {
     fun formatA11tValue(
         context: Context,
         temperature: Temperature,
-        @BodyTemperatureMeasurementLocations measurementLocation: Int,
+        measurementLocation: Int,
         unitPreferences: UnitPreferences
     ): String {
         val res =
@@ -55,10 +55,7 @@ object TemperatureFormatter {
         }
     }
 
-    private fun formatLocation(
-        context: Context,
-        @BodyTemperatureMeasurementLocations location: Int
-    ): String {
+    private fun formatLocation(context: Context, location: Int): String {
         return when (location) {
             MEASUREMENT_LOCATION_ARMPIT -> context.getString(R.string.temperature_location_armpit)
             MEASUREMENT_LOCATION_FINGER -> context.getString(R.string.temperature_location_finger)

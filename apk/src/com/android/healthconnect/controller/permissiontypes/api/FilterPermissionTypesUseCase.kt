@@ -65,9 +65,9 @@ constructor(
             recordTypeInfoMap.values.filter {
                 fromSdkHealthDataCategory(it.dataCategory) == category &&
                     it.contributingPackages.isNotEmpty() &&
-                    it.contributingPackages.firstOrNull { contributingApp ->
+                    it.contributingPackages.firstNotNullOf { contributingApp ->
                         contributingApp.packageName == selectedAppPackageName
-                    } != null
+                    }
             }
         return filteredRecordTypeInfos.map { recordTypeInfo ->
             fromHealthPermissionCategory(recordTypeInfo.permissionCategory)

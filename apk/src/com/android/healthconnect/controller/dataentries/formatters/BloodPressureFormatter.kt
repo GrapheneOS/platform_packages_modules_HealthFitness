@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -20,9 +22,7 @@ import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurem
 import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_UPPER_ARM
 import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_WRIST
 import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_UNKNOWN
-import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BloodPressureMeasurementLocations
 import android.healthconnect.datatypes.BloodPressureRecord.BodyPosition
-import android.healthconnect.datatypes.BloodPressureRecord.BodyPosition.BodyPositionType
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
@@ -70,7 +70,7 @@ class BloodPressureFormatter @Inject constructor(@ApplicationContext private val
         return stringJoiner.toString()
     }
 
-    private fun getBodyPosition(@BodyPositionType bodyPosition: Int): CharSequence? {
+    private fun getBodyPosition(bodyPosition: Int): CharSequence? {
         return when (bodyPosition) {
             BodyPosition.BODY_POSITION_STANDING_UP ->
                 context.getString(R.string.body_position_standing_up)
@@ -87,7 +87,7 @@ class BloodPressureFormatter @Inject constructor(@ApplicationContext private val
         }
     }
 
-    private fun getMeasurementLocation(@BloodPressureMeasurementLocations location: Int): String {
+    private fun getMeasurementLocation(location: Int): String {
         return when (location) {
             BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_WRIST ->
                 context.getString(R.string.blood_pressure_left_wrist)

@@ -17,7 +17,6 @@
 package com.android.healthconnect.controller.recentaccess
 
 import android.healthconnect.AccessLog
-import android.healthconnect.Constants
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,8 +35,8 @@ import kotlinx.coroutines.launch
 class RecentAccessViewModel
 @Inject
 constructor(
-        private val appInfoReader: AppInfoReader,
-        private val loadRecentAccessUseCase: ILoadRecentAccessUseCase,
+    private val appInfoReader: AppInfoReader,
+    private val loadRecentAccessUseCase: ILoadRecentAccessUseCase,
 ) : ViewModel() {
 
     private val _recentAccessApps = MutableLiveData<List<RecentAccessEntry>>()
@@ -167,7 +166,7 @@ constructor(
         cluster.recentDataAccessEntry.instantTime = accessLog.accessTime
         cluster.recentDataAccessEntry.isToday = (!accessLog.accessTime.isBefore(midnight))
 
-        if (accessLog.operationType == Constants.READ) {
+        if (accessLog.operationType == AccessLog.OperationType.OPERATION_TYPE_READ) {
             cluster.recentDataAccessEntry.dataTypesRead.addAll(
                 accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle })
         } else {

@@ -30,7 +30,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.AccessLog;
-import android.healthconnect.Constants;
+import android.healthconnect.AccessLog.OperationType;
 import android.healthconnect.datatypes.RecordTypeIdentifier;
 import android.util.Pair;
 
@@ -93,7 +93,7 @@ public final class AccessLogsHelper {
                 List<Integer> recordTypes =
                         getCursorIntegerList(cursor, RECORD_TYPE_COLUMN_NAME, DELIMITER);
                 long accessTime = getCursorLong(cursor, ACCESS_TIME_COLUMN_NAME);
-                @Constants.OperationType
+                @OperationType.OperationTypes
                 int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
                 accessLogsList.add(
                         new AccessLog(packageName, recordTypes, accessTime, operationType));
@@ -107,7 +107,7 @@ public final class AccessLogsHelper {
     public void addAccessLog(
             String packageName,
             @RecordTypeIdentifier.RecordType List<Integer> recordTypeList,
-            @Constants.OperationType int operationType) {
+            @OperationType.OperationTypes int operationType) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(
                 RECORD_TYPE_COLUMN_NAME,

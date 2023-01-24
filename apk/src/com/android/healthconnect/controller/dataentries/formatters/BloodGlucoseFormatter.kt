@@ -22,7 +22,6 @@ import android.healthconnect.datatypes.BloodGlucoseRecord.RelationToMealType.REL
 import android.healthconnect.datatypes.BloodGlucoseRecord.RelationToMealType.RELATION_TO_MEAL_BEFORE_MEAL
 import android.healthconnect.datatypes.BloodGlucoseRecord.RelationToMealType.RELATION_TO_MEAL_FASTING
 import android.healthconnect.datatypes.BloodGlucoseRecord.RelationToMealType.RELATION_TO_MEAL_GENERAL
-import android.healthconnect.datatypes.BloodGlucoseRecord.RelationToMealType.RelationToMealTypes
 import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource
 import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_CAPILLARY_BLOOD
 import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_INTERSTITIAL_FLUID
@@ -30,7 +29,6 @@ import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIME
 import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_SERUM
 import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_TEARS
 import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_WHOLE_BLOOD
-import android.healthconnect.datatypes.BloodGlucoseRecord.SpecimenSource.SpecimenSourceType
 import android.healthconnect.datatypes.MealType
 import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
@@ -78,7 +76,7 @@ class BloodGlucoseFormatter @Inject constructor(@ApplicationContext private val 
         return stringJoiner.toString()
     }
 
-    private fun getRelationToMeal(@RelationToMealTypes relation: Int): String {
+    private fun getRelationToMeal(relation: Int): String {
         return when (relation) {
             RELATION_TO_MEAL_AFTER_MEAL -> context.getString(R.string.blood_glucose_after_meal)
             RELATION_TO_MEAL_FASTING -> context.getString(R.string.blood_glucose_fasting)
@@ -90,7 +88,7 @@ class BloodGlucoseFormatter @Inject constructor(@ApplicationContext private val 
         }
     }
 
-    private fun getSpecimenSource(@SpecimenSourceType source: Int): String {
+    private fun getSpecimenSource(source: Int): String {
         return when (source) {
             SPECIMEN_SOURCE_INTERSTITIAL_FLUID -> {
                 context.getString(R.string.specimen_source_interstitial_fluid)

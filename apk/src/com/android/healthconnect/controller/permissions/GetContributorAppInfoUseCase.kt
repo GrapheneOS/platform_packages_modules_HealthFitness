@@ -63,10 +63,13 @@ constructor(
 
     private fun toAppMetadata(appInfo: AppInfo): AppMetadata {
         return AppMetadata(
-            packageName = appInfo.packageName, appName = appInfo.name, icon = getIcon(appInfo.icon))
+            packageName = appInfo.packageName,
+            appName = appInfo.name
+                    ?: appInfo.packageName, // default to package name if appInfo name is null
+            icon = getIcon(appInfo.icon))
     }
 
-    private fun getIcon(bitmap: Bitmap): Drawable {
-        return BitmapDrawable(context.resources, bitmap)
+    private fun getIcon(bitmap: Bitmap?): Drawable? {
+        return bitmap?.let { BitmapDrawable(context.resources, it) }
     }
 }

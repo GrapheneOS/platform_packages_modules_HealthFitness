@@ -2,11 +2,10 @@ package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
 import android.healthconnect.datatypes.MealType
-import android.healthconnect.datatypes.MealType.MealTypes
 import com.android.healthconnect.controller.R
 
 object MealFormatter {
-    fun formatMealType(context: Context, @MealTypes mealType: Int): String {
+    fun formatMealType(context: Context, mealType: Int): String {
         return when (mealType) {
             MealType.MEAL_TYPE_UNKNOWN -> context.getString(R.string.mealtype_unknown)
             MealType.MEAL_TYPE_BREAKFAST -> context.getString(R.string.mealtype_breakfast)
