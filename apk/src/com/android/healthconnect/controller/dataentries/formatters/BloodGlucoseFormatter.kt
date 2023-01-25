@@ -33,6 +33,7 @@ import android.healthconnect.datatypes.MealType
 import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
@@ -40,7 +41,7 @@ import javax.inject.Inject
 
 /** Formatter for printing BloodGlucoseRecord data. */
 class BloodGlucoseFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<BloodGlucoseRecord>(context) {
+    EntryFormatter<BloodGlucoseRecord>(context) {
 
     override suspend fun formatValue(
         record: BloodGlucoseRecord,

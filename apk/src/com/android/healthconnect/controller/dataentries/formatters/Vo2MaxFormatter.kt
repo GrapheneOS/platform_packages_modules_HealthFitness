@@ -26,13 +26,14 @@ import android.healthconnect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEAS
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing Vo2MaxRecord data. */
 class Vo2MaxFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<Vo2MaxRecord>(context) {
+    EntryFormatter<Vo2MaxRecord>(context) {
 
     override suspend fun formatValue(
         record: Vo2MaxRecord,

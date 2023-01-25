@@ -41,6 +41,7 @@ import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.RespiratoryRateRecord
 import android.healthconnect.datatypes.RestingHeartRateRecord
 import android.healthconnect.datatypes.SexualActivityRecord
+import android.healthconnect.datatypes.SleepSessionRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
@@ -48,7 +49,7 @@ import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
 import android.healthconnect.datatypes.Vo2MaxRecord
 import android.healthconnect.datatypes.WeightRecord
 import android.healthconnect.datatypes.WheelchairPushesRecord
-import com.android.healthconnect.controller.dataentries.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.shared.AppInfoReader
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -57,42 +58,43 @@ import javax.inject.Singleton
 class HealthDataEntryFormatter
 @Inject
 constructor(
-        private val appInfoReader: AppInfoReader,
-        private val heartRateFormatter: HeartRateFormatter,
-        private val stepsFormatter: StepsFormatter,
-        private val stepsCadenceFormatter: StepsCadenceFormatter,
-        private val basalMetabolicRateFormatter: BasalMetabolicRateFormatter,
-        private val speedFormatter: SpeedFormatter,
-        private val distanceFormatter: DistanceFormatter,
-        private val powerFormatter: PowerFormatter,
-        private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter,
-        private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
-        private val heightFormatter: HeightFormatter,
-        private val bodyFatFormatter: BodyFatFormatter,
-        private val oxygenSaturationFormatter: OxygenSaturationFormatter,
-        private val basalBodyTemperatureFormatter: BasalBodyTemperatureFormatter,
-        private val bodyTemperatureFormatter: BodyTemperatureFormatter,
-        private val wheelchairPushesFormatter: WheelchairPushesFormatter,
-        private val restingHeartRateFormatter: RestingHeartRateFormatter,
-        private val respiratoryRateFormatter: RespiratoryRateFormatter,
-        private val hydrationFormatter: HydrationFormatter,
-        private val floorsFormatter: FloorsFormatter,
-        private val elevationGainedFormatter: ElevationGainedFormatter,
-        private val weightFormatter: WeightFormatter,
-        private val leanBodyMassFormatter: LeanBodyMassFormatter,
-        private val boneMassFormatter: BoneMassFormatter,
-        private val bloodGlucoseFormatter: BloodGlucoseFormatter,
-        private val nutritionFormatter: NutritionFormatter,
-        private val bloodPressureFormatter: BloodPressureFormatter,
-        private val cyclingPedalingCadenceFormatter: CyclingPedalingCadenceFormatter,
-        private val vo2MaxFormatter: Vo2MaxFormatter,
-        private val cervicalMucusFormatter: CervicalMucusFormatter,
-        private val menstruationFlowFormatter: MenstruationFlowFormatter,
-        private val ovulationTestFormatter: OvulationTestFormatter,
-        private val sexualActivityFormatter: SexualActivityFormatter,
+    private val appInfoReader: AppInfoReader,
+    private val heartRateFormatter: HeartRateFormatter,
+    private val stepsFormatter: StepsFormatter,
+    private val stepsCadenceFormatter: StepsCadenceFormatter,
+    private val basalMetabolicRateFormatter: BasalMetabolicRateFormatter,
+    private val speedFormatter: SpeedFormatter,
+    private val distanceFormatter: DistanceFormatter,
+    private val powerFormatter: PowerFormatter,
+    private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter,
+    private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
+    private val heightFormatter: HeightFormatter,
+    private val bodyFatFormatter: BodyFatFormatter,
+    private val oxygenSaturationFormatter: OxygenSaturationFormatter,
+    private val basalBodyTemperatureFormatter: BasalBodyTemperatureFormatter,
+    private val bodyTemperatureFormatter: BodyTemperatureFormatter,
+    private val wheelchairPushesFormatter: WheelchairPushesFormatter,
+    private val restingHeartRateFormatter: RestingHeartRateFormatter,
+    private val respiratoryRateFormatter: RespiratoryRateFormatter,
+    private val hydrationFormatter: HydrationFormatter,
+    private val floorsFormatter: FloorsFormatter,
+    private val elevationGainedFormatter: ElevationGainedFormatter,
+    private val weightFormatter: WeightFormatter,
+    private val leanBodyMassFormatter: LeanBodyMassFormatter,
+    private val boneMassFormatter: BoneMassFormatter,
+    private val bloodGlucoseFormatter: BloodGlucoseFormatter,
+    private val nutritionFormatter: NutritionFormatter,
+    private val bloodPressureFormatter: BloodPressureFormatter,
+    private val cyclingPedalingCadenceFormatter: CyclingPedalingCadenceFormatter,
+    private val vo2MaxFormatter: Vo2MaxFormatter,
+    private val cervicalMucusFormatter: CervicalMucusFormatter,
+    private val menstruationFlowFormatter: MenstruationFlowFormatter,
+    private val ovulationTestFormatter: OvulationTestFormatter,
+    private val sexualActivityFormatter: SexualActivityFormatter,
+    private val sleepSessionFormatter: SleepSessionFormatter,
 ) {
 
-    suspend fun format(record: Record): FormattedDataEntry {
+    suspend fun format(record: Record): FormattedEntry {
         val appName = getAppName(record)
         return when (record) {
             is HeartRateRecord -> heartRateFormatter.format(record, appName)
@@ -128,6 +130,7 @@ constructor(
             is SexualActivityRecord -> sexualActivityFormatter.format(record, appName)
             is OvulationTestRecord -> ovulationTestFormatter.format(record, appName)
             is MenstruationFlowRecord -> menstruationFlowFormatter.format(record, appName)
+            is SleepSessionRecord -> sleepSessionFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

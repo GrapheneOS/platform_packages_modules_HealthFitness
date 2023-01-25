@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
 import android.healthconnect.datatypes.BodyTemperatureRecord
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -27,7 +28,7 @@ import javax.inject.Singleton
 class BodyTemperatureFormatter
 @Inject
 constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<BodyTemperatureRecord>(context) {
+    EntryFormatter<BodyTemperatureRecord>(context) {
 
     override suspend fun formatValue(
         record: BodyTemperatureRecord,

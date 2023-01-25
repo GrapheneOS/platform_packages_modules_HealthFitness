@@ -17,6 +17,7 @@ import android.content.Context
 import android.healthconnect.datatypes.WheelchairPushesRecord
 import android.icu.text.MessageFormat.*
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class WheelchairPushesFormatter
 @Inject
 constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<WheelchairPushesRecord>(context) {
+    EntryFormatter<WheelchairPushesRecord>(context) {
 
     override suspend fun formatValue(
         record: WheelchairPushesRecord,

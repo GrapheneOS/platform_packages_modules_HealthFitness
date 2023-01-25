@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatter.formatEnergyA11yValue
 import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatter.formatEnergyValue
 import com.android.healthconnect.controller.dataentries.formatters.MealFormatter.formatMealType
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
@@ -33,7 +34,7 @@ import javax.inject.Inject
 
 /** Formatter for printing NutritionRecord data. */
 class NutritionFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<NutritionRecord>(context) {
+    EntryFormatter<NutritionRecord>(context) {
 
     override suspend fun formatValue(
         record: NutritionRecord,

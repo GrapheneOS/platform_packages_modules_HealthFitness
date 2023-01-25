@@ -17,13 +17,14 @@ import android.content.Context
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing FloorsRecord data. */
 class FloorsFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<FloorsClimbedRecord>(context) {
+    EntryFormatter<FloorsClimbedRecord>(context) {
 
     override suspend fun formatValue(
         record: FloorsClimbedRecord,

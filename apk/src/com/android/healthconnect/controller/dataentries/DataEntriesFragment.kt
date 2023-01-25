@@ -35,6 +35,8 @@ import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewM
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -45,6 +47,7 @@ import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
@@ -94,21 +97,8 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         loadingView = view.findViewById(R.id.loading)
         adapter =
             RecyclerViewAdapter.Builder()
-                .setViewBinder(
-                    FormattedDataEntry::class.java,
-                    EntryItemViewBinder(
-                        object : EntryItemViewBinder.OnDeleteEntryClicked {
-                            override fun onDeleteEntryClicked(
-                                dataEntry: FormattedDataEntry,
-                                index: Int
-                            ) {
-                                val deletionType =
-                                    DeletionType.DeleteDataEntry(
-                                        dataEntry.uuid, dataEntry.dataType, index)
-                                childFragmentManager.setFragmentResult(
-                                    START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
-                            }
-                        }))
+                .setViewBinder(FormattedDataEntry::class.java, entryViewBinder)
+                .setViewBinder(FormattedSessionEntry::class.java, sessionViewBinder)
                 .build()
         entriesRecyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {
@@ -174,5 +164,31 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 }
             }
         }
+    }
+
+    private val entryViewBinder =
+        EntryItemViewBinder(
+            object : EntryItemViewBinder.OnDeleteEntryClicked {
+                override fun onDeleteEntryClicked(dataEntry: FormattedDataEntry, index: Int) {
+                    deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
+                }
+            })
+
+    private val sessionViewBinder =
+        SessionItemViewBinder(
+            object : SessionItemViewBinder.SessionItemActionListener {
+                override fun onDeleteEntryClicked(dataEntry: FormattedSessionEntry, index: Int) {
+                    deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
+                }
+
+                override fun onItemClicked(dataEntry: FormattedSessionEntry) {
+                    // TODO(b/265667215) navigate to data entry details screen
+                }
+            })
+
+    private fun deleteEntry(uuid: String, dataType: DataType, index: Int) {
+        val deletionType = DeletionType.DeleteDataEntry(uuid, dataType, index)
+        childFragmentManager.setFragmentResult(
+            START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
     }
 }
