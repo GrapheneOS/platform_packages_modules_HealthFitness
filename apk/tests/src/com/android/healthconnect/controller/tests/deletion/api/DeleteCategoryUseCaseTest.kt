@@ -37,7 +37,6 @@ import com.android.healthconnect.controller.deletion.api.DeleteCategoryUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -51,6 +50,7 @@ import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import java.time.Instant
 
 @HiltAndroidTest
 class DeleteCategoryUseCaseTest {
@@ -105,8 +105,8 @@ class DeleteCategoryUseCaseTest {
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
         val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Void, *>
-            receiver.onResult(null)
+            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
+            receiver.onResult(Any())
             null
         }
         return answer
