@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.List;
 
 public class SleepSessionRecordTest {
@@ -58,10 +57,8 @@ public class SleepSessionRecordTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSleepSession_sleepStageEndTimeIllegal_throwsException() {
-        new SleepSessionRecord.Builder(
-                        TestUtils.generateMetadata(),
-                        START_TIME,
-                        INTERMEDIATE_TIME,
+        new SleepSessionRecord.Builder(TestUtils.generateMetadata(), START_TIME, INTERMEDIATE_TIME)
+                .setStages(
                         List.of(
                                 new SleepSessionRecord.Stage(
                                         START_TIME,
@@ -73,10 +70,8 @@ public class SleepSessionRecordTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSleepSession_stagesOverlap_throwsException() {
-        new SleepSessionRecord.Builder(
-                        TestUtils.generateMetadata(),
-                        START_TIME,
-                        END_TIME,
+        new SleepSessionRecord.Builder(TestUtils.generateMetadata(), START_TIME, END_TIME)
+                .setStages(
                         List.of(
                                 new SleepSessionRecord.Stage(
                                         START_TIME,
@@ -101,7 +96,7 @@ public class SleepSessionRecordTest {
     }
 
     @Test
-    public void testSleepSession_addStagesOneByOne_objectsAreEqual() {
+    public void testSleepSession_setsStagesOneByOne_stagesEqualsToLastSet() {
         SleepSessionRecord.Stage stage1 =
                 new SleepSessionRecord.Stage(
                         START_TIME,
@@ -113,20 +108,17 @@ public class SleepSessionRecordTest {
                         END_TIME,
                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP);
         SleepSessionRecord record =
-                new SleepSessionRecord.Builder(
-                                TestUtils.generateMetadata(), START_TIME, END_TIME, List.of())
-                        .addStage(stage1)
-                        .addStage(stage2)
+                new SleepSessionRecord.Builder(TestUtils.generateMetadata(), START_TIME, END_TIME)
+                        .setStages(List.of(stage1))
+                        .setStages(List.of(stage2))
                         .build();
-        assertThat(record.getStages()).isEqualTo(List.of(stage1, stage2));
+        assertThat(record.getStages()).isEqualTo(List.of(stage2));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSleepSession_sleepStageStartTimeIllegal_throwsException() {
-        new SleepSessionRecord.Builder(
-                        TestUtils.generateMetadata(),
-                        INTERMEDIATE_TIME,
-                        END_TIME,
+        new SleepSessionRecord.Builder(TestUtils.generateMetadata(), INTERMEDIATE_TIME, END_TIME)
+                .setStages(
                         List.of(
                                 new SleepSessionRecord.Stage(
                                         START_TIME,
@@ -141,10 +133,8 @@ public class SleepSessionRecordTest {
     @Test
     public void testSleepSession_buildSession_buildsCorrectObject() {
         SleepSessionRecord record =
-                new SleepSessionRecord.Builder(
-                                TestUtils.generateMetadata(),
-                                START_TIME,
-                                END_TIME,
+                new SleepSessionRecord.Builder(TestUtils.generateMetadata(), START_TIME, END_TIME)
+                        .setStages(
                                 List.of(
                                         new SleepSessionRecord.Stage(
                                                 START_TIME,
@@ -174,10 +164,7 @@ public class SleepSessionRecordTest {
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
         SleepSessionRecord.Builder builder =
                 new SleepSessionRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now(),
-                        Collections.emptyList());
+                        new Metadata.Builder().build(), Instant.now(), Instant.now());
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
