@@ -25,6 +25,7 @@
   <string name="no_data" description="Label that is displayed when the given health data category does not have any data.">No data</string>
   <string name="connected_apps_title" description="Label for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=40]">App permissions</string>
   <string name="connected_apps_subtitle" description="Description for a button that takes the user to the connected apps' permissions screens. [CHAR_LIMIT=NONE]">Manage your apps and permissions</string>
+  <string name="entry_details_title" description="Label for a screen that list an entry details. [CHAR_LIMIT=40]">Entry details</string>
   <!--  endregion -->
 
     <!-- region  Recent access -->
