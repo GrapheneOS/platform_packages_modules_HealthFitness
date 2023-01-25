@@ -64,8 +64,6 @@ public class HealthPermissionCategory {
     public static final int BONE_MASS = 12;
     /** Permission category for {HeightRecord} */
     public static final int HEIGHT = 13;
-    /** Permission category for {HipCircumferenceRecord} */
-    public static final int HIP_CIRCUMFERENCE = 14;
     /** Permission category for {LeanBodyMassRecord} */
     public static final int LEAN_BODY_MASS = 15;
     /** Permission category for {@link android.healthconnect.datatypes.PowerRecord} */
@@ -76,8 +74,6 @@ public class HealthPermissionCategory {
     public static final int TOTAL_CALORIES_BURNED = 35;
     /** Permission category for {Vo2MaxRecord} */
     public static final int VO2_MAX = 7;
-    /** Permission category for {WaistCircumferenceRecord} */
-    public static final int WAIST_CIRCUMFERENCE = 16;
     /** Permission category for {WeightRecord} */
     public static final int WEIGHT = 17;
     /** Permission category for {WheelChairPushesRecord} */
@@ -160,9 +156,7 @@ public class HealthPermissionCategory {
         HEART_RATE_VARIABILITY,
         OXYGEN_SATURATION,
         RESPIRATORY_RATE,
-        RESTING_HEART_RATE,
-        HIP_CIRCUMFERENCE,
-        WAIST_CIRCUMFERENCE
+        RESTING_HEART_RATE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}

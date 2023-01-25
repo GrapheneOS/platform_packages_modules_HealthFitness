@@ -111,7 +111,6 @@ package android.healthconnect {
     field public static final String READ_HEART_RATE = "android.permission.health.READ_HEART_RATE";
     field public static final String READ_HEART_RATE_VARIABILITY = "android.permission.health.READ_HEART_RATE_VARIABILITY";
     field public static final String READ_HEIGHT = "android.permission.health.READ_HEIGHT";
-    field public static final String READ_HIP_CIRCUMFERENCE = "android.permission.health.READ_HIP_CIRCUMFERENCE";
     field public static final String READ_HYDRATION = "android.permission.health.READ_HYDRATION";
     field public static final String READ_INTERMENSTRUAL_BLEEDING = "android.permission.health.READ_INTERMENSTRUAL_BLEEDING";
     field public static final String READ_LEAN_BODY_MASS = "android.permission.health.READ_LEAN_BODY_MASS";
@@ -128,7 +127,6 @@ package android.healthconnect {
     field public static final String READ_STEPS = "android.permission.health.READ_STEPS";
     field public static final String READ_TOTAL_CALORIES_BURNED = "android.permission.health.READ_TOTAL_CALORIES_BURNED";
     field public static final String READ_VO2_MAX = "android.permission.health.READ_VO2_MAX";
-    field public static final String READ_WAIST_CIRCUMFERENCE = "android.permission.health.READ_WAIST_CIRCUMFERENCE";
     field public static final String READ_WEIGHT = "android.permission.health.READ_WEIGHT";
     field public static final String READ_WHEELCHAIR_PUSHES = "android.permission.health.READ_WHEELCHAIR_PUSHES";
     field public static final String WRITE_ACTIVE_CALORIES_BURNED = "android.permission.health.WRITE_ACTIVE_CALORIES_BURNED";
@@ -149,7 +147,6 @@ package android.healthconnect {
     field public static final String WRITE_HEART_RATE = "android.permission.health.WRITE_HEART_RATE";
     field public static final String WRITE_HEART_RATE_VARIABILITY = "android.permission.health.WRITE_HEART_RATE_VARIABILITY";
     field public static final String WRITE_HEIGHT = "android.permission.health.WRITE_HEIGHT";
-    field public static final String WRITE_HIP_CIRCUMFERENCE = "android.permission.health.WRITE_HIP_CIRCUMFERENCE";
     field public static final String WRITE_HYDRATION = "android.permission.health.WRITE_HYDRATION";
     field public static final String WRITE_INTERMENSTRUAL_BLEEDING = "android.permission.health.WRITE_INTERMENSTRUAL_BLEEDING";
     field public static final String WRITE_LEAN_BODY_MASS = "android.permission.health.WRITE_LEAN_BODY_MASS";
@@ -166,7 +163,6 @@ package android.healthconnect {
     field public static final String WRITE_STEPS = "android.permission.health.WRITE_STEPS";
     field public static final String WRITE_TOTAL_CALORIES_BURNED = "android.permission.health.WRITE_TOTAL_CALORIES_BURNED";
     field public static final String WRITE_VO2_MAX = "android.permission.health.WRITE_VO2_MAX";
-    field public static final String WRITE_WAIST_CIRCUMFERENCE = "android.permission.health.WRITE_WAIST_CIRCUMFERENCE";
     field public static final String WRITE_WEIGHT = "android.permission.health.WRITE_WEIGHT";
     field public static final String WRITE_WHEELCHAIR_PUSHES = "android.permission.health.WRITE_WHEELCHAIR_PUSHES";
   }

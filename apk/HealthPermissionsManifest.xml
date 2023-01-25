@@ -122,20 +122,8 @@
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
-        android:name="android.permission.health.READ_HIP_CIRCUMFERENCE"
-        android:label="@string/hip_circumference_read_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <permission
         android:name="android.permission.health.READ_LEAN_BODY_MASS"
         android:label="@string/lean_body_mass_read_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <permission
-        android:name="android.permission.health.READ_WAIST_CIRCUMFERENCE"
-        android:label="@string/waist_circumference_read_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
@@ -357,20 +345,8 @@
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
-        android:name="android.permission.health.WRITE_HIP_CIRCUMFERENCE"
-        android:label="@string/hip_circumference_write_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <permission
         android:name="android.permission.health.WRITE_LEAN_BODY_MASS"
         android:label="@string/lean_body_mass_write_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <permission
-        android:name="android.permission.health.WRITE_WAIST_CIRCUMFERENCE"
-        android:label="@string/waist_circumference_write_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 

@@ -212,26 +212,12 @@ public final class HealthPermissions {
      */
     public static final String READ_HEIGHT = "android.permission.health.READ_HEIGHT";
     /**
-     * Allows an application to read the user's hip circumference data.
-     *
-     * <p>Protection level: dangerous.
-     */
-    public static final String READ_HIP_CIRCUMFERENCE =
-            "android.permission.health.READ_HIP_CIRCUMFERENCE";
-    /**
      * Allows an application to read the user's lean body mass data.
      *
      * <p>Protection level: dangerous.
      */
     public static final String READ_LEAN_BODY_MASS =
             "android.permission.health.READ_LEAN_BODY_MASS";
-    /**
-     * Allows an application to read the user's waist circumference data.
-     *
-     * <p>Protection level: dangerous.
-     */
-    public static final String READ_WAIST_CIRCUMFERENCE =
-            "android.permission.health.READ_WAIST_CIRCUMFERENCE";
     /**
      * Allows an application to read the user's weight data.
      *
@@ -463,26 +449,12 @@ public final class HealthPermissions {
      */
     public static final String WRITE_HEIGHT = "android.permission.health.WRITE_HEIGHT";
     /**
-     * Allows an application to write the user's hip circumference data.
-     *
-     * <p>Protection level: dangerous.
-     */
-    public static final String WRITE_HIP_CIRCUMFERENCE =
-            "android.permission.health.WRITE_HIP_CIRCUMFERENCE";
-    /**
      * Allows an application to write the user's lean body mass data.
      *
      * <p>Protection level: dangerous.
      */
     public static final String WRITE_LEAN_BODY_MASS =
             "android.permission.health.WRITE_LEAN_BODY_MASS";
-    /**
-     * Allows an application to write the user's waist circumference data.
-     *
-     * <p>Protection level: dangerous.
-     */
-    public static final String WRITE_WAIST_CIRCUMFERENCE =
-            "android.permission.health.WRITE_WAIST_CIRCUMFERENCE";
     /**
      * Allows an application to write the user's weight data.
      *
@@ -623,9 +595,7 @@ public final class HealthPermissions {
                             WRITE_BODY_WATER_MASS,
                             WRITE_BONE_MASS,
                             WRITE_HEIGHT,
-                            WRITE_HIP_CIRCUMFERENCE,
                             WRITE_LEAN_BODY_MASS,
-                            WRITE_WAIST_CIRCUMFERENCE,
                             WRITE_WEIGHT,
                             WRITE_CERVICAL_MUCUS,
                             WRITE_MENSTRUATION,
@@ -824,8 +794,6 @@ public final class HealthPermissions {
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_BONE_MASS, BODY_MEASUREMENTS);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_HEIGHT, BODY_MEASUREMENTS);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_LEAN_BODY_MASS, BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_WAIST_CIRCUMFERENCE, BODY_MEASUREMENTS);
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_WEIGHT, BODY_MEASUREMENTS);
 
         sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_CERVICAL_MUCUS, CYCLE_TRACKING);
@@ -876,7 +844,6 @@ public final class HealthPermissions {
                     WRITE_BONE_MASS,
                     WRITE_HEIGHT,
                     WRITE_LEAN_BODY_MASS,
-                    WRITE_WAIST_CIRCUMFERENCE,
                     WRITE_WEIGHT
                 });
 

@@ -185,20 +185,10 @@
   <string name="height_read_content_description" description="Content description for switch that enables permissions for reading the user's height data [CHAR_LIMIT=NONE]">Read height</string>
   <string name="height_write_content_description" description="Content description for switch that enables permissions for writing the user's height data [CHAR_LIMIT=NONE]">Write height</string>
 
-  <string name="hip_circumference_uppercase_label" description="Uppercase label used to show the user's hip circumference data [CHAR_LIMIT=50]">Hip circumference</string>
-  <string name="hip_circumference_lowercase_label" description="Lowercase label used to show the user's hip circumference data [CHAR_LIMIT=50]">hip circumference</string>
-  <string name="hip_circumference_read_content_description" description="Content description for switch that enables permissions for reading the user's hip circumference data [CHAR_LIMIT=NONE]">Read hip circumference</string>
-  <string name="hip_circumference_write_content_description" description="Content description for switch that enables permissions for writing the user's hip circumference data [CHAR_LIMIT=NONE]">Write hip circumference</string>
-
   <string name="lean_body_mass_uppercase_label" description="Uppercase label used to show the user's lean body mass data [CHAR_LIMIT=50]">Lean body mass</string>
   <string name="lean_body_mass_lowercase_label" description="Lowercase label used to show the user's lean body mass data [CHAR_LIMIT=50]">lean body mass</string>
   <string name="lean_body_mass_read_content_description" description="Content description for switch that enables permissions for reading the user's lean body mass data [CHAR_LIMIT=NONE]">Read lean body mass</string>
   <string name="lean_body_mass_write_content_description" description="Content description for switch that enables permissions for writing the user's lean body mass data [CHAR_LIMIT=NONE]">Write lean body mass</string>
-
-  <string name="waist_circumference_uppercase_label" description="Uppercase label used to show the user's waist circumference data [CHAR_LIMIT=50]">Waist circumference</string>
-  <string name="waist_circumference_lowercase_label" description="Lowercase label used to show the user's waist circumference data [CHAR_LIMIT=50]">waist circumference</string>
-  <string name="waist_circumference_read_content_description" description="Content description for switch that enables permissions for reading the user's waist circumference data [CHAR_LIMIT=NONE]">Read waist circumference</string>
-  <string name="waist_circumference_write_content_description" description="Content description for switch that enables permissions for writing the user's waist circumference data [CHAR_LIMIT=NONE]">Write waist circumference</string>
 
   <string name="weight_uppercase_label" description="Uppercase label used to show the user's weight data [CHAR_LIMIT=50]">Weight</string>
   <string name="weight_lowercase_label" description="Lowercase label used to show the user's weight data [CHAR_LIMIT=50]">weight</string>

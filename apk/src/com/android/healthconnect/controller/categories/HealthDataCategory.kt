@@ -139,9 +139,7 @@ private object CategoriesMappers {
             HealthPermissionType.BODY_WATER_MASS,
             HealthPermissionType.BONE_MASS,
             HealthPermissionType.HEIGHT,
-            HealthPermissionType.HIP_CIRCUMFERENCE,
             HealthPermissionType.LEAN_BODY_MASS,
-            HealthPermissionType.WAIST_CIRCUMFERENCE,
             HealthPermissionType.WEIGHT)
 
     val CYCLE_TRACKING_PERMISSION_GROUPS =
