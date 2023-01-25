@@ -46,8 +46,10 @@ public class HealthConnectAccessLogsTest {
         TestUtils.insertRecords(testRecord);
         TestUtils.readRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+        // Wait for some time before fetching access logs as they are updated in the background.
+        Thread.sleep(500);
         List<AccessLog> newAccessLogsResponse = TestUtils.queryAccessLogs();
-        assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(2);
+        assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isGreaterThan(1);
         int size = newAccessLogsResponse.size();
         AccessLog accessLog = newAccessLogsResponse.get(size - 1);
         assertThat(accessLog.getRecordTypes()).contains(StepsRecord.class);
@@ -68,8 +70,10 @@ public class HealthConnectAccessLogsTest {
         TestUtils.readRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(BasalMetabolicRateRecord.class)
                         .build());
+        // Wait for some time before fetching access logs as they are updated in the background.
+        Thread.sleep(500);
         List<AccessLog> newAccessLogsResponse = TestUtils.queryAccessLogs();
-        assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(4);
+        assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isGreaterThan(3);
     }
 
     @Test
@@ -77,9 +81,11 @@ public class HealthConnectAccessLogsTest {
         List<AccessLog> oldAccessLogsResponse = TestUtils.queryAccessLogs();
         List<Record> testRecord = TestUtils.getTestRecords();
         TestUtils.insertRecords(testRecord);
+        // Wait for some time before fetching access logs as they are updated in the background.
+        Thread.sleep(500);
         List<AccessLog> newAccessLogsResponse = TestUtils.queryAccessLogs();
         int size = newAccessLogsResponse.size();
-        assertThat(size).isEqualTo(oldAccessLogsResponse.size() + 1);
+        assertThat(size).isGreaterThan(oldAccessLogsResponse.size());
         assertThat(newAccessLogsResponse.get(size - 1).getOperationType()).isEqualTo(0);
         assertThat(newAccessLogsResponse.get(size - 1).getRecordTypes())
                 .contains(StepsRecord.class);

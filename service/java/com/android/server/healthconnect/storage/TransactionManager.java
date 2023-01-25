@@ -122,20 +122,6 @@ public class TransactionManager {
         insertAll(upsertTableRequests, this::insertRecord);
     }
 
-    private void insertAll(
-            @NonNull List<UpsertTableRequest> upsertTableRequests,
-            @NonNull BiConsumer<SQLiteDatabase, UpsertTableRequest> insert) {
-        final SQLiteDatabase db = getWritableDb();
-        db.beginTransaction();
-        try {
-            upsertTableRequests.forEach(
-                    (upsertTableRequest) -> insert.accept(db, upsertTableRequest));
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
-    }
-
     /**
      * Deletes all the {@link RecordInternal} in {@code request} into the HealthConnect database.
      *
@@ -420,6 +406,20 @@ public class TransactionManager {
                     ChangeLogsHelper.getInstance()
                             .getDeleteRequestForAutoDelete()
                             .getDeleteCommand());
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    private void insertAll(
+            @NonNull List<UpsertTableRequest> upsertTableRequests,
+            @NonNull BiConsumer<SQLiteDatabase, UpsertTableRequest> insert) {
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            upsertTableRequests.forEach(
+                    (upsertTableRequest) -> insert.accept(db, upsertTableRequest));
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();

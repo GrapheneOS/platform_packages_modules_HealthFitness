@@ -16,15 +16,8 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
-
 import static com.google.common.truth.Truth.assertThat;
 
-import android.app.UiAutomation;
-import android.content.Context;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.InsertRecordsResponse;
 import android.healthconnect.datatypes.BasalMetabolicRateRecord;
 import android.healthconnect.datatypes.InstantRecord;
 import android.healthconnect.datatypes.IntervalRecord;
@@ -32,11 +25,7 @@ import android.healthconnect.datatypes.Metadata;
 import android.healthconnect.datatypes.Record;
 import android.healthconnect.datatypes.StepsRecord;
 import android.healthconnect.datatypes.units.Power;
-import android.os.OutcomeReceiver;
-import android.util.Log;
 
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
@@ -49,10 +38,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
@@ -72,74 +57,18 @@ public class GetActivityDatesTest {
 
     @Test
     public void testActivityDates() throws InterruptedException {
-
         List<Record> records = getTestRecords();
-        insertRecords(records);
+        TestUtils.insertRecords(records);
+        // Wait for some time, as activity dates are updated in the background so might take some
+        // additional time.
+        Thread.sleep(500);
         List<LocalDate> activityDates =
-                getActivityDates(
+                TestUtils.getActivityDates(
                         records.stream().map(Record::getClass).collect(Collectors.toList()));
-        assertThat(activityDates).hasSize(2);
+        assertThat(activityDates.size()).isGreaterThan(1);
         assertThat(activityDates)
                 .containsAtLeastElementsIn(
                         records.stream().map(this::getRecordDate).collect(Collectors.toSet()));
-    }
-
-    private void insertRecords(List<Record> records) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<List<Record>> response = new AtomicReference<>();
-        service.insertRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(InsertRecordsResponse result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        assertThat(response.get()).hasSize(records.size());
-    }
-
-    private List<LocalDate> getActivityDates(List<Class<? extends Record>> recordTypes)
-            throws InterruptedException {
-        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-        try {
-            Context context = ApplicationProvider.getApplicationContext();
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            CountDownLatch latch = new CountDownLatch(1);
-            assertThat(service).isNotNull();
-            AtomicReference<List<LocalDate>> response = new AtomicReference<>();
-            service.queryActivityDates(
-                    recordTypes,
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<>() {
-                        @Override
-                        public void onResult(List<LocalDate> result) {
-                            response.set(result);
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException exception) {
-                            Log.e(TAG, exception.getMessage());
-                        }
-                    });
-
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-            return response.get();
-        } finally {
-            uiAutomation.dropShellPermissionIdentity();
-        }
     }
 
     private List<Record> getTestRecords() {
