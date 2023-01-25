@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect;
 
+import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_RESTORE_STAGING_IN_PROGRESS;
+import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_RESTORE_WAITING_FOR_STAGING;
+
 import android.annotation.NonNull;
 import android.content.Context;
 import android.healthconnect.HealthConnectManager;
@@ -45,6 +48,7 @@ public class HealthConnectManagerService extends SystemService {
     private final HealthPermissionIntentAppsTracker mPermissionIntentTracker;
     private final PackagePermissionChangesMonitor mPackageMonitor;
     private final FirstGrantTimeManager mFirstGrantTimeManager;
+    private final HealthConnectServiceImpl mHealthConnectService;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -66,15 +70,22 @@ public class HealthConnectManagerService extends SystemService {
                         mPermissionIntentTracker, mFirstGrantTimeManager);
         mTransactionManager = TransactionManager.getInstance(getContext());
         mContext = context;
+        mHealthConnectService =
+                new HealthConnectServiceImpl(
+                        mTransactionManager, mPermissionHelper, mFirstGrantTimeManager, mContext);
     }
 
     @Override
     public void onStart() {
         mPackageMonitor.registerBroadcastReceiver(mContext);
-        publishBinderService(
-                Context.HEALTHCONNECT_SERVICE,
-                new HealthConnectServiceImpl(
-                        mTransactionManager, mPermissionHelper, mFirstGrantTimeManager, mContext));
+
+        // TODO(b/264791313) Refactor restore related functionality into a separate class
+        @HealthConnectServiceImpl.DataRestoreState
+        int currentDataRestoreState = mHealthConnectService.getDataRestoreState(0);
+        if (currentDataRestoreState == DATA_RESTORE_STAGING_IN_PROGRESS) {
+            mHealthConnectService.setDataRestoreState(DATA_RESTORE_WAITING_FOR_STAGING, 0, true);
+        }
+        publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
     }
 
     @Override
