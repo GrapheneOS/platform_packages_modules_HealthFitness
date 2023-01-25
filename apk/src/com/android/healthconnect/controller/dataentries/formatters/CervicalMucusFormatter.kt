@@ -29,6 +29,7 @@ import android.healthconnect.datatypes.CervicalMucusRecord.CervicalMucusSensatio
 import android.healthconnect.datatypes.CervicalMucusRecord.CervicalMucusSensation.SENSATION_MEDIUM
 import android.healthconnect.datatypes.CervicalMucusRecord.CervicalMucusSensation.SENSATION_UNKNOWN
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
@@ -36,7 +37,7 @@ import javax.inject.Inject
 
 /** Formatter for printing CervicalMucusRecord data. */
 class CervicalMucusFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<CervicalMucusRecord>(context) {
+    EntryFormatter<CervicalMucusRecord>(context) {
 
     override suspend fun formatValue(
         record: CervicalMucusRecord,

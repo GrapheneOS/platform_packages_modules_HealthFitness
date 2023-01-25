@@ -25,6 +25,7 @@ import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurem
 import android.healthconnect.datatypes.BloodPressureRecord.BodyPosition
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Locale
@@ -33,7 +34,7 @@ import javax.inject.Inject
 
 /** Formatter for printing BloodPressureRecord data. */
 class BloodPressureFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<BloodPressureRecord>(context) {
+    EntryFormatter<BloodPressureRecord>(context) {
 
     override suspend fun formatValue(
         record: BloodPressureRecord,

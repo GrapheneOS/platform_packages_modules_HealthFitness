@@ -508,6 +508,38 @@
   <string name="ovulation_high" description="The high fertility result of a user's ovulation test. [CHAR LIMIT=50]">High</string>
   <string name="ovulation_inconclusive" description="The inconclusive result of a user's ovulation test. [CHAR LIMIT=50]">Inconclusive</string>
 
+  <!--  region sleep -->
+  <string name="sleep_session_default" description="Label that shows sleep session duration.[CHAR LIMIT=80]"><xliff:g example="4 hours" id="duration"> %1$s</xliff:g> sleeping</string>
+  <string name="sleep_stage_default" description="Label that shows sleep session duration.[CHAR LIMIT=80]"><xliff:g example="4 hours" id="duration">%1$s</xliff:g> <xliff:g example="light sleep" id="name">%2$s</xliff:g></string>
+  <string name="sleep_session_with_one_field" translatable="false"><xliff:g example="My Oura sleep" id="title">%1$s</xliff:g></string>
+  <string name="sleep_session_with_notes" translatable="false"><xliff:g example="My Oura sleep" id="title">%1$s</xliff:g> \n<xliff:g example="This was a peaceful night" id="notes">%2$s</xliff:g></string>
+  <string name="sleep_stage_awake" description="Awake stage throughout the sleep session. [CHAR LIMIT=50]">awake</string>
+  <string name="sleep_stage_sleeping" description="Sleeping stage throughout the sleep session. [CHAR LIMIT=50]">sleeping</string>
+  <string name="sleep_stage_out_of_bed" description="Out of bed stage throughout the sleep session. [CHAR LIMIT=50]">out of bed</string>
+  <string name="sleep_stage_rem" description="REM stage throughout the sleep session. [CHAR LIMIT=50]">REM sleep</string>
+  <string name="sleep_stage_light" description="Light sleep stage throughout the sleep session. [CHAR LIMIT=50]">light sleep</string>
+  <string name="sleep_stage_deep" description="Deep sleep stage throughout the sleep session. [CHAR LIMIT=50]">deep sleep</string>
+  <string name="sleep_stage_unknown" description="Unknown sleep stage throughout the sleep session. [CHAR LIMIT=50]">unknown</string>
+  <!--  endregion -->
+
+  <!-- region Duration -->
+  <string translation_description="minute duration representation [CHAR LIMIT=8]"
+      name="minute_duration"><xliff:g id="minute" example="1">%1$s</xliff:g>m</string>
+  <string translation_description="Hour and minute time duration representation [CHAR LIMIT=8]"
+      name="hour_minute_duration_short"><xliff:g id="hour" example="1">%1$s</xliff:g>h <xliff:g id="min" example="31">%2$s</xliff:g>m</string>
+  <string translation_description="hour duration representation [CHAR LIMIT=8]"
+      name="hour_duration"><xliff:g id="hour" example="1">%1$s</xliff:g>h</string>
+
+  <string name="hour_minute_duration_accessibility"
+      translation_description="Hour and minute time duration representation used by accessibility, 'space' between minute and second should be deleted or replaced according to each language to translate [CHAR LIMIT=NONE]">
+  <xliff:g example="2 hours" id="hours">%1$s</xliff:g> <xliff:g example="2 minutes" id="minutes">%2$s</xliff:g>
+  </string>
+  <string translation_description="Hour and minute time duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]"
+      name="hour_duration_accessibility">{count, plural, =1 {1 hour} other {# hours}}</string>
+  <string translation_description="minute duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]"
+      name="minute_duration_accessibility">{count, plural, =1 {1 minute} other {# minutes}}</string>
+  <!-- endregion -->
+
   <!--  region vo2 max-->
   <string name="vo2_max" description="VO₂ max value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 mL/(kg·min)} other {# mL/(kg·min)}}</string>
   <string name="vo2_max_long" description="VO₂ max value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1  milliliter of oxygen per kilogram of body mass per minute} other {#  milliliters of oxygen per kilogram of body mass per minute}}</string>

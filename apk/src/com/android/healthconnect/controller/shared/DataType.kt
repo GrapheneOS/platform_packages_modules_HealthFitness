@@ -41,6 +41,7 @@ import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.RespiratoryRateRecord
 import android.healthconnect.datatypes.RestingHeartRateRecord
 import android.healthconnect.datatypes.SexualActivityRecord
+import android.healthconnect.datatypes.SleepSessionRecord
 import android.healthconnect.datatypes.SpeedRecord
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
@@ -82,4 +83,5 @@ enum class DataType(val recordClass: Class<out Record>) {
     SEXUAL_ACTIVITY(SexualActivityRecord::class.java),
     OVULATION_TEST(OvulationTestRecord::class.java),
     MENSTRUATION(MenstruationFlowRecord::class.java),
+    SLEEP(SleepSessionRecord::class.java),
 }

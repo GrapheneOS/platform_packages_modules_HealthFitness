@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -18,33 +18,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 
-/** ViewBinder for FormattedDataEntry. */
-class EntryItemViewBinder(private val onDeleteEntryClicked: OnDeleteEntryClicked) :
-    ViewBinder<FormattedDataEntry, View> {
+class SessionItemViewBinder(private val listener: SessionItemActionListener) :
+    ViewBinder<FormattedSessionEntry, View> {
 
     override fun newView(parent: ViewGroup): View {
-        return LayoutInflater.from(parent.context).inflate(R.layout.item_data_entry, parent, false)
+        return LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_data_session_entry, parent, false)
     }
 
-    override fun bind(view: View, data: FormattedDataEntry, index: Int) {
+    override fun bind(view: View, data: FormattedSessionEntry, index: Int) {
+        val container = view.findViewById<TextView>(R.id.item_data_entry_container)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
+        val notes = view.findViewById<TextView>(R.id.item_data_entry_notes)
         val deleteButton = view.findViewById<ImageButton>(R.id.item_data_entry_delete)
 
         title.text = data.title
         title.contentDescription = data.titleA11y
-
         header.text = data.header
         header.contentDescription = data.headerA11y
+        notes.isVisible = !data.notes.isNullOrBlank()
 
-        deleteButton.setOnClickListener { onDeleteEntryClicked.onDeleteEntryClicked(data, index) }
+        notes.text = data.notes
+
+        deleteButton.setOnClickListener { listener.onDeleteEntryClicked(data, index) }
+        container.setOnClickListener { listener.onItemClicked(data) }
     }
 
-    interface OnDeleteEntryClicked {
-        fun onDeleteEntryClicked(dataEntry: FormattedDataEntry, index: Int)
+    interface SessionItemActionListener {
+        fun onDeleteEntryClicked(dataEntry: FormattedSessionEntry, index: Int)
+        fun onItemClicked(dataEntry: FormattedSessionEntry)
     }
 }

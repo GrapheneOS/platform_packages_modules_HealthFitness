@@ -19,6 +19,7 @@ import android.healthconnect.datatypes.units.Length
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -27,7 +28,7 @@ import javax.inject.Inject
 class ElevationGainedFormatter
 @Inject
 constructor(@ApplicationContext private val context: Context) :
-    DataEntriesFormatter<ElevationGainedRecord>(context) {
+    EntryFormatter<ElevationGainedRecord>(context) {
 
     override suspend fun formatValue(
         record: ElevationGainedRecord,
