@@ -277,7 +277,7 @@ class PermissionsActivityTest {
     fun sendsOkResult_requestWithPermissionsSomeDenied() {
         val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
         `when`(viewModel.request(anyString())).then {
-           mapOf(
+            mapOf(
                 fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
                 fromPermissionString(READ_HEART_RATE) to PermissionState.GRANTED,
                 fromPermissionString(WRITE_DISTANCE) to PermissionState.NOT_GRANTED,
