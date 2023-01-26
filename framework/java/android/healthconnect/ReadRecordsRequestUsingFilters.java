@@ -86,7 +86,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         return mPageSize;
     }
 
-    /** Returns page token to read the next page of the result. -1 if none available */
+    /** Returns page token to read the current page of the result. -1 if none available */
     public long getPageToken() {
         return mPageToken;
     }

@@ -218,7 +218,7 @@ package android.healthconnect {
   }
 
   public class ReadRecordsResponse<T extends android.healthconnect.datatypes.Record> {
-    method public long getPageToken();
+    method public long getNextPageToken();
     method @NonNull public java.util.List<T> getRecords();
   }
 

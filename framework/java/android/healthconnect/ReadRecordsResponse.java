@@ -29,17 +29,17 @@ import java.util.List;
  */
 public class ReadRecordsResponse<T extends Record> {
     private final List<T> mRecords;
-    private final long mPageToken;
+    private final long mNextPageToken;
 
     /**
      * @param records List of records of type T
-     * @param pageToken the token value of the read result which can be used as input token for next
-     *     read request
+     * @param nextPageToken the token value of the read result which can be used as input token for
+     *     next read request.
      * @hide
      */
-    public ReadRecordsResponse(@NonNull List<T> records, long pageToken) {
+    public ReadRecordsResponse(@NonNull List<T> records, long nextPageToken) {
         mRecords = records;
-        mPageToken = pageToken;
+        mNextPageToken = nextPageToken;
     }
 
     @NonNull
@@ -47,8 +47,11 @@ public class ReadRecordsResponse<T extends Record> {
         return mRecords;
     }
 
-    /** Returns a page token to read the next page of the result. -1 if none available */
-    public long getPageToken() {
-        return mPageToken;
+    /**
+     * Returns a page token to read the next page of the result. -1 if there are no more pages
+     * available.
+     */
+    public long getNextPageToken() {
+        return mNextPageToken;
     }
 }
