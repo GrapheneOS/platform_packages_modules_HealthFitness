@@ -428,7 +428,7 @@ public class TransactionManager {
 
     /** Note: NEVER close this DB */
     @NonNull
-    private SQLiteDatabase getWritableDb() {
+    public SQLiteDatabase getWritableDb() {
         SQLiteDatabase sqLiteDatabase = mHealthConnectDatabase.getWritableDatabase();
 
         if (sqLiteDatabase == null) {
@@ -438,7 +438,7 @@ public class TransactionManager {
     }
 
     /** Assumes that caller will be closing {@code db} and handling the transaction if required */
-    private long insertRecord(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
+    public long insertRecord(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
         long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
         request.getChildTableRequests()
                 .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
