@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -64,6 +65,8 @@ class AutoDeleteFragmentTest {
                 withText(
                     "Control how long your data is stored in Health\u00A0Connect by scheduling it to delete after a set time"))
             .check(matches(isDisplayed()))
+        // Need to provide id as well, otherwise both TextView and TextLinkView are found.
+        onView(allOf(withText("Learn more"), withId(R.id.link))).check(matches(isDisplayed()))
         onView(withText("Auto-delete data")).check(matches(isDisplayed()))
         onView(withText("After 3 months")).check(matches(isDisplayed()))
         onView(withText("After 18 months")).check(matches(isDisplayed()))

@@ -15,9 +15,9 @@
   limitations under the License.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.android.settingslib.widget.TopIntroPreference
-        android:key="auto_delete_top_intro"
-        android:title="@string/auto_delete_header"/>
+    <PreferenceCategory
+        android:key="header">
+    </PreferenceCategory>
     <PreferenceCategory
         android:key="auto_delete_section"
         android:title="@string/auto_delete_section">
