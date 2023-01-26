@@ -17,7 +17,7 @@
     android:key="permission_types_screen">
     <com.android.settingslib.widget.AppHeaderPreference
         android:key="permission_types_header"
-        android:order="0"/>
+        android:order="0" />
     <PreferenceCategory
         android:key="app_filters_preference"
         android:order="1" />

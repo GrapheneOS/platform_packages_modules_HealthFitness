@@ -64,6 +64,7 @@
         <item name="recentAccessTimelineDividerHeight">@dimen/timeline_divider_height</item>
         <item name="recentAccessTimelineDividerDrawable">@drawable/timeline_divider</item>
 
+        <item name="spinnerStyle">@style/Widget.HealthConnect.CalendarSpinner</item>
     </style>
 
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />

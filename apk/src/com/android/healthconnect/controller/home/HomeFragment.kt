@@ -143,7 +143,7 @@ class HomeFragment : Hilt_HomeFragment() {
             val seeAllPreference =
                 Preference(requireContext()).also {
                     it.setTitle(R.string.show_recent_access_entries_button_title)
-                    it.setIcon(R.drawable.ic_arrow_forward)
+                    it.setIcon(R.drawable.quantum_gm_ic_keyboard_arrow_right_vd_theme_24)
                 }
             seeAllPreference.setOnPreferenceClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_recentAccessFragment)

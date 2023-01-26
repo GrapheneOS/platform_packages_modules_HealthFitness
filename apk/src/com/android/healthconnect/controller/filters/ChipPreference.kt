@@ -40,23 +40,24 @@ constructor(
     init {
         layoutResource = R.layout.widget_horizontal_chip_preference
         isSelectable = false
-        key = "chip_preference"
     }
 
-    lateinit var chipGroup: RadioGroup
+    var chipGroup: RadioGroup? = null
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        chipGroup = holder.findViewById(R.id.chip_group) as RadioGroup
+        if (chipGroup == null) {
+            // onBindViewHolder is called multiple times so just add the filters once
+            chipGroup = holder.findViewById(R.id.chip_group) as RadioGroup
 
-        // prevents chip duplication as the onBindViewHolder method is called twice
-        chipGroup.removeAllViews()
+            chipGroup?.removeAllViews()
 
-        addAllAppsFilterChip(chipGroup)
+            addAllAppsFilterChip(chipGroup!!)
 
-        for (appMetadata in appMetadataList) {
-            addFilterChip(appMetadata, chipGroup)
+            for (appMetadata in appMetadataList) {
+                addFilterChip(appMetadata, chipGroup!!)
+            }
         }
     }
 }

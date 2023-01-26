@@ -53,7 +53,7 @@ constructor(
 ) : AppCompatRadioButton(context, attrs, defStyleAttr) {
 
     private var selectedIcon: Drawable? = null
-    private var unSelectedIcon: Drawable? = null
+    var unSelectedIcon: Drawable? = null
 
     fun setSelectedIcon(res: Drawable?) {
         selectedIcon = res
@@ -65,6 +65,10 @@ constructor(
         buttonDrawable = makeSelector()
     }
 
+    private val spacingXSmallPx = (context.resources.getDimension(R.dimen.spacing_xsmall)).toInt()
+    private val spacingSmallPx = (context.resources.getDimension(R.dimen.spacing_small)).toInt()
+    private val spacingNormalPx = (context.resources.getDimension(R.dimen.spacing_normal)).toInt()
+
     init {
 
         val params =
@@ -75,28 +79,32 @@ constructor(
         params.setMargins(0, 0, px, 0)
         this.layoutParams = params
 
+        if (unSelectedIcon == null) {
+
+            // Padding needs to be changed programmatically when no button icon is used
+            setChipPadding(this.isChecked)
+        }
+
         buttonDrawable = makeSelector()
     }
 
-    private val spacingXSmallPx = (context.resources.getDimension(R.dimen.spacing_xsmall)).toInt()
-    private val spacingSmallPx = (context.resources.getDimension(R.dimen.spacing_small)).toInt()
-    private val spacingNormalPx = (context.resources.getDimension(R.dimen.spacing_normal)).toInt()
+    private fun setChipPadding(isChecked: Boolean) {
+        // Padding needs to be changed programmatically when no button icon is used
+        if (isChecked) {
+            this.setPadding(spacingSmallPx, spacingXSmallPx, spacingNormalPx, spacingXSmallPx)
+        } else {
+            this.setPadding(spacingNormalPx, spacingXSmallPx, spacingNormalPx, spacingXSmallPx)
+        }
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
         this.setOnCheckedChangeListener { buttonView, isChecked ->
             if (unSelectedIcon == null) {
-                // Padding needs to be changed programmatically when no button icon is used
-                if (isChecked) {
-                    this.setPadding(
-                        spacingSmallPx, spacingXSmallPx, spacingNormalPx, spacingXSmallPx)
-                } else {
-                    this.setPadding(
-                        spacingNormalPx, spacingXSmallPx, spacingNormalPx, spacingXSmallPx)
-                }
+                setChipPadding(isChecked)
+                animateLayoutChanges(buttonView)
             }
-            animateLayoutChanges(buttonView)
         }
     }
 

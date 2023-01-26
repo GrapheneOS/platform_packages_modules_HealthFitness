@@ -21,4 +21,5 @@
     <color name="filter_chip_outline_color">?android:attr/textColorPrimary</color>
     <color name="filter_chip_selected_text_color">@color/filter_chip_text_color</color>
     <color name="filter_chip_selected_icon_color">?android:attr/textColorPrimary</color>
+    <color name="spinner_text_color">@color/date_dropdown_text_color</color>
 </resources>

@@ -66,6 +66,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+
         setPreferencesFromResource(R.xml.health_data_categories_screen, rootKey)
 
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
@@ -106,6 +107,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         setupSharedMenu(viewLifecycleOwner)
 
@@ -169,7 +171,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                 mBrowseDataCategory?.addPreference(
                     Preference(requireContext()).also {
                         it.setTitle(R.string.see_all_categories)
-                        it.setIcon(R.drawable.ic_arrow_forward)
+                        it.setIcon(R.drawable.quantum_gm_ic_keyboard_arrow_right_vd_theme_24)
                         it.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 findNavController()

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,11 +50,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        style="@style/Widget.HealthConnect.CalendarSpinner"
+        style="?attr/spinnerStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/navigation_next_day"
         app:layout_constraintStart_toStartOf="@+id/navigation_previous_day"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Jan 16, 2023"/>
+        tools:text="Jan 16, 2023" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

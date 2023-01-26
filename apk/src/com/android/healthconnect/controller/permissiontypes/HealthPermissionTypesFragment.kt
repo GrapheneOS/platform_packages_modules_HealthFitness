@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
@@ -110,14 +111,16 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSharedMenu(viewLifecycleOwner)
-        mPermissionTypesHeader?.icon = requireContext().resources.getDrawable(category.icon)
+        mPermissionTypesHeader?.icon =
+            ResourcesCompat.getDrawable(resources, category.icon, requireContext().theme)
         mPermissionTypesHeader?.title = getString(category.uppercaseTitle)
         viewModel.loadData(category)
+        viewModel.loadAppsWithData(category)
+
         viewModel.permissionTypesData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is HealthPermissionTypesViewModel.PermissionTypesState.Loading -> {}
                 is HealthPermissionTypesViewModel.PermissionTypesState.WithData -> {
-                    viewModel.loadAppsWithData(category)
                     updatePermissionTypesList(state.permissionTypes)
                 }
             }
@@ -197,9 +200,13 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
 
     private fun addFilterChip(appMetadata: AppMetadata, chipGroup: RadioGroup) {
         val newFilterChip = FilterChip(requireContext())
+        newFilterChip.id = View.generateViewId()
         newFilterChip.setUnselectedIcon(appMetadata.icon)
         newFilterChip.text = appMetadata.appName
-        newFilterChip.isChecked = appMetadata.appName == viewModel.selectedAppFilter.value
+        if (appMetadata.appName == viewModel.selectedAppFilter.value) {
+            newFilterChip.isChecked = true
+            viewModel.filterPermissionTypes(category, appMetadata.packageName)
+        }
         newFilterChip.setOnClickListener {
             viewModel.setAppFilter(appMetadata.appName)
             viewModel.filterPermissionTypes(category, appMetadata.packageName)
@@ -209,16 +216,18 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
 
     private fun addAllAppsFilterChip(chipGroup: RadioGroup) {
         val allAppsButton = FilterChip(requireContext())
+        val selectAllAppsTitle = resources.getString(R.string.select_all_apps_title)
         allAppsButton.id = R.id.select_all_chip
+        allAppsButton.setUnselectedIcon(null)
         allAppsButton.text = requireContext().resources.getString(R.string.select_all_apps_title)
-        allAppsButton.isChecked =
-            viewModel.selectedAppFilter.value ==
-                requireContext().resources.getString(R.string.select_all_apps_title)
+        if (viewModel.selectedAppFilter.value == selectAllAppsTitle) {
+            allAppsButton.isChecked = true
+            viewModel.filterPermissionTypes(category, selectAllAppsTitle)
+        }
+
         allAppsButton.setOnClickListener {
-            viewModel.setAppFilter(
-                requireContext().resources.getString(R.string.select_all_apps_title))
-            viewModel.filterPermissionTypes(
-                category, requireContext().resources.getString(R.string.select_all_apps_title))
+            viewModel.setAppFilter(selectAllAppsTitle)
+            viewModel.filterPermissionTypes(category, selectAllAppsTitle)
         }
         chipGroup.addView(allAppsButton)
     }
