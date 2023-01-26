@@ -15,18 +15,31 @@ package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
 import android.healthconnect.datatypes.SleepSessionRecord
+import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE
+import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE_OUT_OF_BED
+import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING
+import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP
+import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_LIGHT
+import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_REM
+import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_UNKNOWN
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationLong
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationShort
+import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.SessionFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import javax.inject.Inject
 
 /** Formatter for printing SleepSessionRecord data. */
 class SleepSessionFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    SessionFormatter<SleepSessionRecord>(context) {
+    SessionFormatter<SleepSessionRecord>(context), SessionDetailsFormatter<SleepSessionRecord> {
+
+    private val timeFormatter = LocalDateTimeFormatter(context)
 
     override suspend fun formatValue(
         record: SleepSessionRecord,
@@ -60,5 +73,44 @@ class SleepSessionFormatter @Inject constructor(@ApplicationContext private val 
             val duration = Duration.between(record.startTime, record.endTime)
             context.getString(R.string.sleep_session_default, formatDuration(duration))
         }
+    }
+
+    override suspend fun formatRecordDetails(record: SleepSessionRecord): List<FormattedEntry> {
+        return record.stages?.map { stage -> formatSleepStage(record.metadata.id, stage) }.orEmpty()
+    }
+
+    private fun formatSleepStage(id: String, stage: SleepSessionRecord.Stage): FormattedEntry {
+        return FormattedSessionDetail(
+            uuid = id,
+            startTime = stage.startTime,
+            header = timeFormatter.formatTimeRange(stage.startTime, stage.endTime),
+            headerA11y = timeFormatter.formatTimeRangeA11y(stage.startTime, stage.endTime),
+            title = formatStageType(stage) { duration -> formatDurationShort(context, duration) },
+            titleA11y =
+                formatStageType(stage) { duration -> formatDurationLong(context, duration) },
+        )
+    }
+
+    private fun formatStageType(
+        stage: SleepSessionRecord.Stage,
+        formatDuration: (duration: Duration) -> String
+    ): String {
+        val stageStringRes =
+            when (stage.type) {
+                STAGE_TYPE_UNKNOWN -> R.string.sleep_stage_unknown
+                STAGE_TYPE_AWAKE -> R.string.sleep_stage_awake
+                STAGE_TYPE_SLEEPING_DEEP -> R.string.sleep_stage_deep
+                STAGE_TYPE_SLEEPING_LIGHT -> R.string.sleep_stage_light
+                STAGE_TYPE_AWAKE_OUT_OF_BED -> R.string.sleep_stage_out_of_bed
+                STAGE_TYPE_SLEEPING_REM -> R.string.sleep_stage_rem
+                STAGE_TYPE_SLEEPING -> R.string.sleep_stage_sleeping
+                else -> {
+                    throw IllegalArgumentException("Unrecognised sleep stage.")
+                }
+            }
+        val stageString = context.getString(stageStringRes)
+        val duration = Duration.between(stage.startTime, stage.endTime)
+        return context.getString(
+            R.string.sleep_stage_default, formatDuration(duration), stageString)
     }
 }
