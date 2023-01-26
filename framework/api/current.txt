@@ -1151,13 +1151,13 @@ package android.healthconnect.datatypes {
   }
 
   public static final class SleepSessionRecord.Builder {
-    ctor public SleepSessionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.SleepSessionRecord.Stage>);
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder addStage(@NonNull android.healthconnect.datatypes.SleepSessionRecord.Stage);
+    ctor public SleepSessionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
     method @NonNull public android.healthconnect.datatypes.SleepSessionRecord build();
     method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder clearEndZoneOffset();
     method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder clearStartZoneOffset();
     method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setNotes(@Nullable CharSequence);
+    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setStages(@NonNull java.util.List<android.healthconnect.datatypes.SleepSessionRecord.Stage>);
     method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setTitle(@Nullable CharSequence);
   }

@@ -221,7 +221,7 @@ public final class SleepSessionRecord extends IntervalRecord {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private List<Stage> mStages;
+        private final List<Stage> mStages;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
         private CharSequence mNotes;
@@ -229,22 +229,18 @@ public final class SleepSessionRecord extends IntervalRecord {
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
-         * @param startTime Start time of this activity
-         * @param endTime End time of this activity
+         * @param startTime Start time of this sleep session
+         * @param endTime End time of this sleep session
          */
         public Builder(
-                @NonNull Metadata metadata,
-                @NonNull Instant startTime,
-                @NonNull Instant endTime,
-                @NonNull List<Stage> stages) {
+                @NonNull Metadata metadata, @NonNull Instant startTime, @NonNull Instant endTime) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
-            Objects.requireNonNull(stages);
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mStages = new ArrayList<>(stages);
+            mStages = new ArrayList<>();
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
@@ -303,14 +299,15 @@ public final class SleepSessionRecord extends IntervalRecord {
         }
 
         /**
-         * Adds stage to the existing list of sleep stages. Returns Object with updated stages.
+         * Set stages to this sleep session. Returns Object with updated stages.
          *
-         * @param stage stage to add
+         * @param stages list of stages to set
          */
         @NonNull
-        public Builder addStage(@NonNull Stage stage) {
-            Objects.requireNonNull(stage);
-            mStages.add(stage);
+        public Builder setStages(@NonNull List<Stage> stages) {
+            Objects.requireNonNull(stages);
+            mStages.clear();
+            mStages.addAll(stages);
             return this;
         }
 
