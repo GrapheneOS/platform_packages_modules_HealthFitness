@@ -37,6 +37,7 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
 
     companion object {
         private const val AUTO_DELETE_SECTION = "auto_delete_section"
+        private const val HEADER = "header"
     }
 
     private val viewModel: AutoDeleteViewModel by activityViewModels()
@@ -44,6 +45,8 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
     private val mAutoDeleteSection: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(AUTO_DELETE_SECTION)
     }
+
+    private val mHeaderSection: PreferenceGroup? by lazy { preferenceScreen.findPreference(HEADER) }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.auto_delete_screen, rootKey)
@@ -70,6 +73,9 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
                 }
             }
         }
+
+        mHeaderSection?.removeAll()
+        mHeaderSection?.addPreference(HeaderPreference(requireContext(), requireActivity()))
 
         childFragmentManager.setFragmentResultListener(SET_TO_NEVER_EVENT, this) { _, _ ->
             viewModel.updateAutoDeleteRange(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
