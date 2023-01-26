@@ -16,21 +16,6 @@
  *
  */
 
-/**
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * ```
- *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.android.healthconnect.controller.dataentries.formatters.shared
 
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
@@ -45,6 +30,7 @@ import android.healthconnect.datatypes.CervicalMucusRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
+import android.healthconnect.datatypes.ExerciseSessionRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
@@ -80,6 +66,7 @@ import com.android.healthconnect.controller.dataentries.formatters.CervicalMucus
 import com.android.healthconnect.controller.dataentries.formatters.CyclingPedalingCadenceFormatter
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
 import com.android.healthconnect.controller.dataentries.formatters.ElevationGainedFormatter
+import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.FloorsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter
 import com.android.healthconnect.controller.dataentries.formatters.HeightFormatter
@@ -143,6 +130,7 @@ constructor(
     private val ovulationTestFormatter: OvulationTestFormatter,
     private val sexualActivityFormatter: SexualActivityFormatter,
     private val sleepSessionFormatter: SleepSessionFormatter,
+    private val exerciseSessionFormatter: ExerciseSessionFormatter,
 ) {
 
     suspend fun format(record: Record): FormattedEntry {
@@ -182,6 +170,7 @@ constructor(
             is OvulationTestRecord -> ovulationTestFormatter.format(record, appName)
             is MenstruationFlowRecord -> menstruationFlowFormatter.format(record, appName)
             is SleepSessionRecord -> sleepSessionFormatter.format(record, appName)
+            is ExerciseSessionRecord -> exerciseSessionFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

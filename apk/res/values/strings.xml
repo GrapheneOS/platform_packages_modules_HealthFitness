@@ -509,6 +509,100 @@
   <string name="ovulation_high" description="The high fertility result of a user's ovulation test. [CHAR LIMIT=50]">High</string>
   <string name="ovulation_inconclusive" description="The inconclusive result of a user's ovulation test. [CHAR LIMIT=50]">Inconclusive</string>
 
+  <!--  region activity -->
+  <string name="session_title" translatable="false"><xliff:g example="My Strava workout" id="title">%1$s</xliff:g>, <xliff:g example="Strength training" id="type">%2$s</xliff:g></string>
+  <string name="repetitions_format" translatable="false"><xliff:g example="Push up" id="type">%1$s</xliff:g>: <xliff:g example="20" id="count">%2$s</xliff:g></string>
+  <string name="repetitions" description="Repetitions of an exercise set. [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 rep} other {# reps}}</string>
+  <string name="repetitions_long" description="Repetitions of an exercise set.  [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 repetition} other {# repetitions}}</string>
+  <string name="exercise_segments_header" description="Header for a group of exercise segments. [CHAR LIMIT=50]">Exercise segments</string>
+  <string name="exercise_laps_header" description="Header for a group of exercise laps. [CHAR LIMIT=50]">Laps</string>
+  <string name="back_extension" description="Name of the back extension gym exercise. [CHAR LIMIT=50]">Back extension</string>
+  <string name="badminton" description="Activity type: playing badminton. [CHAR LIMIT=50]">Badminton</string>
+  <string name="barbell_shoulder_press" description="Name of the back extension gym exercise. [CHAR LIMIT=50] [CHAR LIMIT=50]">Barbell shoulder press</string>
+  <string name="baseball" description="Activity type: playing baseball. [CHAR LIMIT=50]">Baseball</string>
+  <string name="basketball" description="Activity type: playing basketball. [CHAR LIMIT=50]">Basketball</string>
+  <string name="bench_press" description="Name of the bench press gym exercise. [CHAR LIMIT=50]">Bench press</string>
+  <string name="bench_sit_up" description="Name of the bench sit up gym exercise. [CHAR LIMIT=50]">Bench sit up</string>
+  <string name="biking" description="Activity type: riding a bike. [CHAR LIMIT=50]">Biking</string>
+  <string name="biking_stationary" description="Activity type: riding a stationary bike. [CHAR LIMIT=50]">Biking stationary</string>
+  <string name="boot_camp" description="Activity type: boot camp class. [CHAR LIMIT=50]">Boot camp</string>
+  <string name="boxing" description="Activity type: boxing. [CHAR LIMIT=50]">Boxing</string>
+  <string name="burpee" description="Name of the burpee gym exercise. [CHAR LIMIT=50]">Burpee</string>
+  <string name="calisthenics" description="Activity type: calisthenics. [CHAR LIMIT=50]">Calisthenics</string>
+  <string name="cricket" description="Activity type: playing cricket. [CHAR LIMIT=50]">Cricket</string>
+  <string name="crunch" description="Name of the crunch gym exercise. [CHAR LIMIT=50]">Crunch</string>
+  <string name="dancing" description="Activity type: dancing. [CHAR LIMIT=50]">Dancing</string>
+  <string name="deadlift" description="Name of the deadlift gym exercise. [CHAR LIMIT=50]">Deadlift</string>
+  <string name="dumbbell_curl_left_arm" description="Name of the dumbbell curl gym exercise on the left arm. [CHAR LIMIT=50]">Left arm dumbbell curl</string>
+  <string name="dumbbell_curl_right_arm" description="Name of the dumbbell curl gym exercise on the right arm. [CHAR LIMIT=50]">Right arm dumbbell curl</string>
+  <string name="dumbbell_front_raise" description="Name of the dumbbell front raise gym exercise. [CHAR LIMIT=50]">Dumbbell front raise</string>
+  <string name="dumbbell_lateral_raise" description="Name of the dumbbell front raise gym exercise. [CHAR LIMIT=50]">Dumbbell lateral raise</string>
+  <string name="dumbbell_triceps_extension_left_arm" description="Name of the dumbbell triceps extension gym exercise on the left arm. [CHAR LIMIT=50]">Left arm dumbbell triceps extension</string>
+  <string name="dumbbell_triceps_extension_right_arm" description="Name of the dumbbell triceps extension gym exercise on the right arm. [CHAR LIMIT=50]">Right arm dumbbell triceps extension</string>
+  <string name="dumbbell_triceps_extension_two_arm" description="Name of the dumbbell triceps extension gym exercise done with both arms. [CHAR LIMIT=50]">Two arm dumbbell triceps extension</string>
+  <string name="elliptical" description="Activity type: dancing. [CHAR LIMIT=50]">Elliptical</string>
+  <string name="exercise_class" description="Activity type: participation in an exercise class. [CHAR LIMIT=50]">Exercise class</string>
+  <string name="fencing" description="Activity type: fencing. [CHAR LIMIT=50]">Fencing</string>
+  <string name="football_american" description="Activity type: playing American football. [CHAR LIMIT=50]">American football</string>
+  <string name="football_australian" description="Activity type: playing Australian football. [CHAR LIMIT=50]">Australian football</string>
+  <string name="forward_twist" description="Name of the forward twist gym exercise. [CHAR LIMIT=50]">Forward twist</string>
+  <string name="frisbee_disc" description="Activity type: playing frisbee. [CHAR LIMIT=50]">Frisbee</string>
+  <string name="golf" description="Activity type: playing golf. [CHAR LIMIT=50]">Golf</string>
+  <string name="guided_breathing" description="Activity type: guided breathing. [CHAR LIMIT=50]">Guided breathing</string>
+  <string name="gymnastics" description="Activity type: doing gymnastics. [CHAR LIMIT=50]">Gymnastics</string>
+  <string name="handball" description="Activity type: playing handball. [CHAR LIMIT=50]">Handball</string>
+  <string name="high_intensity_interval_training" description="Activity type: performing high intensity interval training (HIIT). [CHAR LIMIT=50]">High intensity interval training</string>
+  <string name="hiking" description="Activity type: hiking. [CHAR LIMIT=50]">Hiking</string>
+  <string name="ice_hockey" description="Activity type: playing ice hokey. [CHAR LIMIT=50]">Ice hockey</string>
+  <string name="ice_skating" description="Activity type: ice skating. [CHAR LIMIT=50]">Ice skating</string>
+  <string name="jumping_jack" description="Name of the jumping jack gym exercise. [CHAR LIMIT=50]">Jumping jack</string>
+  <string name="jump_rope" description="Activity type: rope jumping. [CHAR LIMIT=50]">Jump rope</string>
+  <string name="lat_pull_down" description="Name of the lat pulldown gym exercise. [CHAR LIMIT=50]">Lat pulldown</string>
+  <string name="lunge" description="Name of the lunge gym exercise. [CHAR LIMIT=50]">Lunge</string>
+  <string name="martial_arts" description="Activity type: martial arts practice. [CHAR LIMIT=50]">Martial arts</string>
+  <string name="meditation" description="Activity type: performing meditation. [CHAR LIMIT=50]">Meditation</string>
+  <string name="paddling" description="Activity type: paddling. [CHAR LIMIT=50]">Paddling</string>
+  <string name="paragliding" description="Activity type: paragliding. [CHAR LIMIT=50]">Paragliding</string>
+  <string name="pilates" description="Activity type: doing pilates. [CHAR LIMIT=50]">Pilates</string>
+  <string name="plank" description="Name of the plank gym exercise. [CHAR LIMIT=50]">Plank</string>
+  <string name="racquetball" description="Activity type: playing racquetball. [CHAR LIMIT=50]">Racquetball</string>
+  <string name="rock_climbing" description="Activity type: rock climbing. [CHAR LIMIT=50]">Rock climbing</string>
+  <string name="roller_hockey" description="Activity type: playing roller hockey. [CHAR LIMIT=50]">Roller hockey</string>
+  <string name="rowing" description="Activity type: rowing. [CHAR LIMIT=50]">Rowing</string>
+  <string name="rowing_machine" description="Activity type: rowing on a rowing machine. [CHAR LIMIT=50]">Rowing machine</string>
+  <string name="rugby" description="Activity type: playing rugby. [CHAR LIMIT=50]">Rugby</string>
+  <string name="running" description="Activity type: running. [CHAR LIMIT=50]">Running</string>
+  <string name="running_treadmill" description="Activity type: treadmill running. [CHAR LIMIT=50]">Treadmill running</string>
+  <string name="sailing" description="Activity type: sailing. [CHAR LIMIT=50]">Sailing</string>
+  <string name="scuba_diving" description="Activity type: scuba diving. [CHAR LIMIT=50]">Scuba diving</string>
+  <string name="skating" description="Activity type: skating. [CHAR LIMIT=50]">Skating</string>
+  <string name="skiing" description="Activity type: skiing. [CHAR LIMIT=50]">Skiing</string>
+  <string name="snowboarding" description="Activity type: snowboarding. [CHAR LIMIT=50]">Snowboarding</string>
+  <string name="snowshoeing" description="Activity type: snowshoeing. [CHAR LIMIT=50]">Snowshoeing</string>
+  <string name="soccer" description="Activity type: playing soccer. [CHAR LIMIT=50]">Soccer</string>
+  <string name="softball" description="Activity type: playing softball. [CHAR LIMIT=50]">Softball</string>
+  <string name="squash" description="Activity type: playing squash. [CHAR LIMIT=50]">Squash</string>
+  <string name="squat" description="Name of the squat gym exercise. [CHAR LIMIT=50]">Squat</string>
+  <string name="stair_climbing" description="Activity type: stair climbing. [CHAR LIMIT=50]">Stair climbing</string>
+  <string name="stair_climbing_machine" description="Activity type: stair climbing on a machine. [CHAR LIMIT=50]">Stair climbing machine</string>
+  <string name="strength_training" description="Activity type: generic strength training. [CHAR LIMIT=50]">Strength training</string>
+  <string name="stretching" description="Name of the stretching exercise. [CHAR LIMIT=50]">Stretching</string>
+  <string name="surfing" description="Activity type: surfing. [CHAR LIMIT=50]">Surfing</string>
+  <string name="swimming_open_water" description="Activity type: swimming in open water. [CHAR LIMIT=50]">Open water swimming</string>
+  <string name="swimming_pool" description="Activity type: swimming in a pool. [CHAR LIMIT=50]">Pool swimming</string>
+  <string name="table_tennis" description="Activity type: playing table tennis. [CHAR LIMIT=50]">Table tennis</string>
+  <string name="tennis" description="Activity type: playing tennis. [CHAR LIMIT=50]">Tennis</string>
+  <string name="upper_twist" description="Name of the upper twist gym exercise. [CHAR LIMIT=50]">Upper twist</string>
+  <string name="volleyball" description="Activity type: playing volleyball. [CHAR LIMIT=50]">Volleyball</string>
+  <string name="walking" description="Activity type: walking. [CHAR LIMIT=50]">Walking</string>
+  <string name="water_polo" description="Activity type: playing water polo. [CHAR LIMIT=50]">Water polo</string>
+  <string name="weightlifting" description="Activity type: generic weightlifting training. [CHAR LIMIT=50]">Weightlifting</string>
+  <string name="wheelchair" description="Activity type: wheelchair. [CHAR LIMIT=50]">Wheelchair</string>
+  <string name="workout" description="Activity type: generic workout. [CHAR LIMIT=50]">Workout</string>
+  <string name="yoga" description="Activity type: yoga. [CHAR LIMIT=50]">Yoga</string>
+  <string name="activity_type_australian_football" translation_description="Activity type: playing australian football. [CHAR LIMIT=40]">Australian football</string>
+  <!--  endregion-->
+
   <!--  region sleep -->
   <string name="sleep_session_default" description="Label that shows sleep session duration.[CHAR LIMIT=80]"><xliff:g example="4 hours" id="duration"> %1$s</xliff:g> sleeping</string>
   <string name="sleep_stage_default" description="Label that shows sleep session duration.[CHAR LIMIT=80]"><xliff:g example="4 hours" id="duration">%1$s</xliff:g> <xliff:g example="light sleep" id="name">%2$s</xliff:g></string>

@@ -17,14 +17,8 @@ package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
 import android.healthconnect.datatypes.DistanceRecord
-import android.healthconnect.datatypes.units.Length
-import android.icu.text.MessageFormat
-import androidx.annotation.StringRes
-import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
-import com.android.healthconnect.controller.dataentries.units.LengthConverter
+import com.android.healthconnect.controller.dataentries.formatters.shared.LengthFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -37,34 +31,13 @@ class DistanceFormatter @Inject constructor(@ApplicationContext private val cont
         record: DistanceRecord,
         unitPreferences: UnitPreferences
     ): String {
-        val res =
-            when (unitPreferences.getDistanceUnit()) {
-                KILOMETERS -> R.string.distance_km
-                MILES -> R.string.distance_miles
-            }
-        return formatSample(res, record.distance, unitPreferences)
+        return LengthFormatter.formatValue(context, record.distance, unitPreferences)
     }
 
     override suspend fun formatA11yValue(
         record: DistanceRecord,
         unitPreferences: UnitPreferences
     ): String {
-        val res =
-            when (unitPreferences.getDistanceUnit()) {
-                KILOMETERS -> R.string.distance_km_long
-                MILES -> R.string.distance_miles_long
-            }
-        return formatSample(res, record.distance, unitPreferences)
-    }
-
-    private fun formatSample(
-        @StringRes res: Int,
-        length: Length,
-        unitPreferences: UnitPreferences
-    ): String {
-        val value =
-            LengthConverter.convertDistanceFromMeters(
-                unitPreferences.getDistanceUnit(), length.inMeters)
-        return MessageFormat.format(context.getString(res), mapOf("dist" to value))
+        return LengthFormatter.formatA11yValue(context, record.distance, unitPreferences)
     }
 }

@@ -36,8 +36,7 @@ abstract class EntryFormatter<T : Record>(context: Context) : BaseFormatter<T>(c
             headerA11y = headerA11y,
             title = formatValue(record, unitPreferences),
             titleA11y = formatA11yValue(record, unitPreferences),
-            dataType = getDataType(record),
-            startTime = getStartTime(record))
+            dataType = getDataType(record))
     }
 
     abstract suspend fun formatValue(record: T, unitPreferences: UnitPreferences): String

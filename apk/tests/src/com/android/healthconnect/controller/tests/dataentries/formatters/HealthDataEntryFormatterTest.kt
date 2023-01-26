@@ -20,7 +20,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.shared.DataType
-import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
 import com.android.healthconnect.controller.tests.utils.getStepsRecord
@@ -67,8 +66,7 @@ class HealthDataEntryFormatterTest {
                         headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
                         title = "80 bpm - 100 bpm",
                         titleA11y = "from 80 beats per minute to 100 beats per minute",
-                        dataType = DataType.HEART_RATE,
-                        startTime = NOW))
+                        dataType = DataType.HEART_RATE))
         }
     }
 
@@ -84,8 +82,7 @@ class HealthDataEntryFormatterTest {
                         headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
                         title = "12 steps",
                         titleA11y = "12 steps",
-                        dataType = DataType.STEPS,
-                        startTime = NOW))
+                        dataType = DataType.STEPS))
         }
     }
 
@@ -101,7 +98,6 @@ class HealthDataEntryFormatterTest {
                     headerA11y = "7:06 AM • Health Connect test app",
                     title = "1,548 Cal",
                     titleA11y = "1,548 calories",
-                    dataType = DataType.BASAL_METABOLIC_RATE,
-                    startTime = NOW))
+                    dataType = DataType.BASAL_METABOLIC_RATE))
     }
 }
