@@ -39,6 +39,11 @@ public final class TimeInstantRangeFilter implements TimeRangeFilter {
         if (startTime == null && endTime == null) {
             throw new IllegalArgumentException("Both start time and end time cannot be null.");
         }
+        if (startTime != null && endTime != null) {
+            if (!endTime.isAfter(startTime)) {
+                throw new IllegalArgumentException("end time needs to be after start time.");
+            }
+        }
         mStartTime = startTime != null ? startTime : Instant.MIN;
         mEndTime = endTime != null ? endTime : Instant.MAX;
     }
