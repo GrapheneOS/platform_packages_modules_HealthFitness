@@ -89,6 +89,9 @@
         <action
             android:id="@+id/action_dataEntriesFragment_to_unitsFragment"
             app:destination="@+id/unitFragment" />
+        <action
+            android:id="@+id/action_dataEntriesFragment_to_dataEntryDetailsFragment"
+            app:destination="@id/dataEntryDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/connectedAppsFragment"
@@ -159,4 +162,12 @@
         android:id="@+id/unitFragment"
         android:name="com.android.healthconnect.controller.dataentries.units.UnitsFragment"
         android:label="@string/units_title" />
+    <fragment
+        android:id="@+id/dataEntryDetailsFragment"
+        android:name="com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment"
+        android:label="DataEntryDetailsFragment" >
+        <action
+            android:id="@+id/action_dataEntryDetailsFragment_to_unitFragment"
+            app:destination="@id/unitFragment" />
+    </fragment>
 </navigation>

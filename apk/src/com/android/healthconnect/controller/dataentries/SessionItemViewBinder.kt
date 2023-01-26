@@ -17,14 +17,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
+import com.android.healthconnect.controller.dataentries.SessionItemViewBinder.OnItemClickedListener
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 
-class SessionItemViewBinder(private val listener: SessionItemActionListener) :
-    ViewBinder<FormattedSessionEntry, View> {
+class SessionItemViewBinder(
+    private val showSecondAction: Boolean = true,
+    private val onItemClickedListener: OnItemClickedListener?,
+    private val onDeleteEntryClicked: OnDeleteEntryClicked?,
+) : ViewBinder<FormattedSessionEntry, View> {
 
     override fun newView(parent: ViewGroup): View {
         return LayoutInflater.from(parent.context)
@@ -32,7 +38,8 @@ class SessionItemViewBinder(private val listener: SessionItemActionListener) :
     }
 
     override fun bind(view: View, data: FormattedSessionEntry, index: Int) {
-        val container = view.findViewById<TextView>(R.id.item_data_entry_container)
+        val container = view.findViewById<RelativeLayout>(R.id.item_data_entry_container)
+        val divider = view.findViewById<LinearLayout>(R.id.item_data_entry_divider)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
         val notes = view.findViewById<TextView>(R.id.item_data_entry_notes)
@@ -43,15 +50,19 @@ class SessionItemViewBinder(private val listener: SessionItemActionListener) :
         header.text = data.header
         header.contentDescription = data.headerA11y
         notes.isVisible = !data.notes.isNullOrBlank()
-
         notes.text = data.notes
+        deleteButton.isVisible = showSecondAction
+        divider.isVisible = showSecondAction
 
-        deleteButton.setOnClickListener { listener.onDeleteEntryClicked(data, index) }
-        container.setOnClickListener { listener.onItemClicked(data) }
+        deleteButton.setOnClickListener { onDeleteEntryClicked?.onDeleteEntryClicked(data, index) }
+        container.setOnClickListener { onItemClickedListener?.onItemClicked(data) }
     }
 
-    interface SessionItemActionListener {
+    interface OnDeleteEntryClicked {
         fun onDeleteEntryClicked(dataEntry: FormattedSessionEntry, index: Int)
+    }
+
+    interface OnItemClickedListener {
         fun onItemClicked(dataEntry: FormattedSessionEntry)
     }
 }

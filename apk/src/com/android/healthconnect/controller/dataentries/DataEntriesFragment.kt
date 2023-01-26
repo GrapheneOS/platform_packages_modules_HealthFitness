@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -44,6 +44,7 @@ import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionState
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
+import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
@@ -68,6 +69,36 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var loadingView: View
     private lateinit var errorView: View
     private lateinit var adapter: RecyclerViewAdapter
+    private val entryViewBinder by lazy {
+        EntryItemViewBinder(
+            object : EntryItemViewBinder.OnDeleteEntryClicked {
+                override fun onDeleteEntryClicked(dataEntry: FormattedDataEntry, index: Int) {
+                    deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
+                }
+            })
+    }
+    private val sessionViewBinder by lazy {
+        SessionItemViewBinder(
+            onDeleteEntryClicked =
+                object : SessionItemViewBinder.OnDeleteEntryClicked {
+                    override fun onDeleteEntryClicked(
+                        dataEntry: FormattedSessionEntry,
+                        index: Int
+                    ) {
+                        deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
+                    }
+                },
+            onItemClickedListener =
+                object : SessionItemViewBinder.OnItemClickedListener {
+                    override fun onItemClicked(dataEntry: FormattedSessionEntry) {
+                        findNavController()
+                            .navigate(
+                                R.id.action_dataEntriesFragment_to_dataEntryDetailsFragment,
+                                DataEntryDetailsFragment.createBundle(
+                                    permissionType = permissionType, entryId = dataEntry.uuid))
+                    }
+                })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -165,26 +196,6 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
             }
         }
     }
-
-    private val entryViewBinder =
-        EntryItemViewBinder(
-            object : EntryItemViewBinder.OnDeleteEntryClicked {
-                override fun onDeleteEntryClicked(dataEntry: FormattedDataEntry, index: Int) {
-                    deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
-                }
-            })
-
-    private val sessionViewBinder =
-        SessionItemViewBinder(
-            object : SessionItemViewBinder.SessionItemActionListener {
-                override fun onDeleteEntryClicked(dataEntry: FormattedSessionEntry, index: Int) {
-                    deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
-                }
-
-                override fun onItemClicked(dataEntry: FormattedSessionEntry) {
-                    // TODO(b/265667215) navigate to data entry details screen
-                }
-            })
 
     private fun deleteEntry(uuid: String, dataType: DataType, index: Int) {
         val deletionType = DeletionType.DeleteDataEntry(uuid, dataType, index)

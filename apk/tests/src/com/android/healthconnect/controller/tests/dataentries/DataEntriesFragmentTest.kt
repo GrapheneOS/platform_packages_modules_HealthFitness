@@ -108,7 +108,7 @@ class DataEntriesFragmentTest {
     }
 
     @Test
-    fun dataEntries_withData_showsPopupMenu() {
+    fun dataEntries_withData_showsDeleteAction() {
         Mockito.`when`(viewModel.dataEntries)
             .thenReturn(MutableLiveData(WithData(FORMATTED_STEPS_LIST)))
 
