@@ -65,7 +65,7 @@ public class FloorsClimbedRecordTest {
     @Test
     public void testInsertFloorsClimbedRecord() throws InterruptedException {
         List<Record> records =
-                List.of(getBaseFloorsClimbedRecord(), getCompleteFloorsClimbedRecord());
+                List.of(getBaseFloorsClimbedRecord(1), getCompleteFloorsClimbedRecord());
         TestUtils.insertRecords(records);
     }
 
@@ -190,7 +190,7 @@ public class FloorsClimbedRecordTest {
     @Test
     public void testAggregation_FloorsClimbedTotal() throws Exception {
         List<Record> records =
-                Arrays.asList(getBaseFloorsClimbedRecord(), getBaseFloorsClimbedRecord());
+                Arrays.asList(getBaseFloorsClimbedRecord(1), getBaseFloorsClimbedRecord(2));
         AggregateRecordsResponse<Double> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Double>(
@@ -202,7 +202,7 @@ public class FloorsClimbedRecordTest {
                                 .build(),
                         records);
         List<Record> recordNew =
-                Arrays.asList(getBaseFloorsClimbedRecord(), getBaseFloorsClimbedRecord());
+                Arrays.asList(getBaseFloorsClimbedRecord(3), getBaseFloorsClimbedRecord(4));
         AggregateRecordsResponse<Double> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Double>(
@@ -291,11 +291,11 @@ public class FloorsClimbedRecordTest {
         }
     }
 
-    static FloorsClimbedRecord getBaseFloorsClimbedRecord() {
+    static FloorsClimbedRecord getBaseFloorsClimbedRecord(int days) {
         return new FloorsClimbedRecord.Builder(
                         new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000),
+                        Instant.now().minus(days, ChronoUnit.DAYS),
+                        Instant.now().minus(days, ChronoUnit.DAYS).plus(30, ChronoUnit.MINUTES),
                         10)
                 .build();
     }

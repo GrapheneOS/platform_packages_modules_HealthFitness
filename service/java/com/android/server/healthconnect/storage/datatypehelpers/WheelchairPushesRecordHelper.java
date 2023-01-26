@@ -29,6 +29,9 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.WheelchairPushesRecordInternal;
 import android.util.Pair;
 
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,16 +49,15 @@ public final class WheelchairPushesRecordHelper
 
     @Override
     public AggregateResult<?> getAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
-        long aggregateValue;
+            Cursor results, AggregationType<?> aggregationType, double aggregation) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
-                aggregateValue = results.getLong(results.getColumnIndex(COUNT_COLUMN_NAME));
-                break;
+                results.moveToFirst();
+                ZoneOffset zoneOffset = getZoneOffset(results);
+                return new AggregateResult<>((long) aggregation).setZoneOffset(zoneOffset);
             default:
                 return null;
         }
-        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
     }
 
     @Override
@@ -69,13 +71,14 @@ public final class WheelchairPushesRecordHelper
         List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
-                columnNames = Collections.singletonList(COUNT_COLUMN_NAME);
-                break;
+                return new AggregateParams(
+                        WHEELCHAIR_PUSHES_RECORD_TABLE_NAME,
+                        new ArrayList(Arrays.asList(COUNT_COLUMN_NAME)),
+                        START_TIME_COLUMN_NAME,
+                        Long.class);
             default:
                 return null;
         }
-        return new AggregateParams(
-                WHEELCHAIR_PUSHES_RECORD_TABLE_NAME, columnNames, START_TIME_COLUMN_NAME);
     }
 
     @Override

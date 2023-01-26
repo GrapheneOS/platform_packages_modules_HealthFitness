@@ -88,7 +88,7 @@ public class WheelchairPushesRecordTest {
     @Test
     public void testAggregation_countTotal() throws Exception {
         List<Record> records =
-                Arrays.asList(getBaseWheelchairPushesRecord(), getBaseWheelchairPushesRecord());
+                Arrays.asList(getBaseWheelchairPushesRecord(1), getBaseWheelchairPushesRecord(2));
         AggregateRecordsResponse<Long> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -100,7 +100,7 @@ public class WheelchairPushesRecordTest {
                                 .build(),
                         records);
         List<Record> recordNew =
-                Arrays.asList(getBaseWheelchairPushesRecord(), getBaseWheelchairPushesRecord());
+                Arrays.asList(getBaseWheelchairPushesRecord(3), getBaseWheelchairPushesRecord(4));
         AggregateRecordsResponse<Long> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -153,6 +153,13 @@ public class WheelchairPushesRecordTest {
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         10)
+                .build();
+    }
+
+    static WheelchairPushesRecord getBaseWheelchairPushesRecord(int days) {
+        Instant startTime = Instant.now().minus(days, ChronoUnit.DAYS);
+        return new WheelchairPushesRecord.Builder(
+                        new Metadata.Builder().build(), startTime, startTime.plusMillis(1000), 10)
                 .build();
     }
 

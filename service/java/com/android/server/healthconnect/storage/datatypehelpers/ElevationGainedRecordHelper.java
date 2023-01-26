@@ -29,6 +29,9 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ElevationGainedRecordInternal;
 import android.util.Pair;
 
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,12 +49,12 @@ public final class ElevationGainedRecordHelper
 
     @Override
     public AggregateResult<?> getAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, double aggregation) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case ELEVATION_RECORD_ELEVATION_GAINED_TOTAL:
-                return new AggregateResult<>(
-                                results.getDouble(results.getColumnIndex(ELEVATION_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                results.moveToFirst();
+                ZoneOffset zoneOffset = getZoneOffset(results);
+                return new AggregateResult<>(aggregation).setZoneOffset(zoneOffset);
 
             default:
                 return null;
@@ -70,8 +73,9 @@ public final class ElevationGainedRecordHelper
             case ELEVATION_RECORD_ELEVATION_GAINED_TOTAL:
                 return new AggregateParams(
                         ELEVATION_GAINED_RECORD_TABLE_NAME,
-                        Collections.singletonList(ELEVATION_COLUMN_NAME),
-                        START_TIME_COLUMN_NAME);
+                        new ArrayList(Arrays.asList(ELEVATION_COLUMN_NAME)),
+                        START_TIME_COLUMN_NAME,
+                        Double.class);
             default:
                 return null;
         }

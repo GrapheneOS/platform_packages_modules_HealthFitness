@@ -21,6 +21,8 @@ import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.health.connect.AggregateRecordsGroupedByDurationResponse;
+import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
@@ -43,7 +45,9 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -64,7 +68,7 @@ public class StepsRecordTest {
                 StepsRecord.class,
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
+                        .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
                         .build());
     }
 
@@ -438,7 +442,8 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregation_StepsCountTotal() throws Exception {
-        List<Record> records = Arrays.asList(getStepsRecord(9), getStepsRecord(9));
+        List<Record> records =
+                Arrays.asList(getStepsRecord(1000, 1, 1), getStepsRecord(1000, 2, 1));
         AggregateRecordsRequest<Long> aggregateRecordsRequest =
                 new AggregateRecordsRequest.Builder<Long>(
                                 new TimeInstantRangeFilter.Builder()
@@ -452,7 +457,8 @@ public class StepsRecordTest {
         assertThat(aggregateRecordsRequest.getDataOriginsFilters()).isNotNull();
         AggregateRecordsResponse<Long> oldResponse =
                 TestUtils.getAggregateResponse(aggregateRecordsRequest, records);
-        List<Record> recordNew = Arrays.asList(getStepsRecord(9), getStepsRecord(9));
+        List<Record> recordNew =
+                Arrays.asList(getStepsRecord(1000, 3, 1), getStepsRecord(1000, 4, 1));
         AggregateRecordsResponse<Long> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -465,7 +471,7 @@ public class StepsRecordTest {
                         recordNew);
         assertThat(newResponse.get(STEPS_COUNT_TOTAL)).isNotNull();
         assertThat(newResponse.get(STEPS_COUNT_TOTAL))
-                .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 18);
+                .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 2000);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(STEPS_COUNT_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -473,6 +479,207 @@ public class StepsRecordTest {
         Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(STEPS_COUNT_TOTAL);
         for (DataOrigin itr : oldDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        StepsRecord record = getStepsRecord(1000, 5, 1);
+        List<Record> recordNew2 = Arrays.asList(record, record);
+        AggregateRecordsResponse<Long> newResponse2 =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        recordNew2);
+        assertThat(newResponse2.get(STEPS_COUNT_TOTAL)).isNotNull();
+        assertThat(newResponse2.get(STEPS_COUNT_TOTAL))
+                .isEqualTo(newResponse.get(STEPS_COUNT_TOTAL) + 1000);
+    }
+
+    @Test
+    public void testStepsCountAggregation_groupBy_Period() throws Exception {
+        Instant start = Instant.now().minus(10, ChronoUnit.DAYS);
+        Instant end = start.plus(10, ChronoUnit.DAYS);
+        List<Record> records =
+                Arrays.asList(
+                        getStepsRecord(1000, 1, 1),
+                        getStepsRecord(1000, 2, 1),
+                        getStepsRecord(1000, 3, 1),
+                        getStepsRecord(1000, 4, 1));
+        TestUtils.insertRecords(records);
+        List<AggregateRecordsGroupedByPeriodResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByPeriod(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(start)
+                                                .setEndTime(end)
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Period.ofDays(1));
+        assertThat(responses.size()).isAtLeast(3);
+        for (AggregateRecordsGroupedByPeriodResponse<Long> response : responses) {
+            if (start.toEpochMilli()
+                    < response.getStartTime()
+                            .atZone(ZoneOffset.systemDefault())
+                            .toInstant()
+                            .toEpochMilli()) {
+                Long count = response.get(STEPS_COUNT_TOTAL);
+                ZoneOffset zoneOffset = response.getZoneOffset(STEPS_COUNT_TOTAL);
+
+                if (count == null) {
+                    assertThat(zoneOffset).isNull();
+                } else {
+                    assertThat(zoneOffset).isNotNull();
+                }
+                // skip the check if our request doesn't fall with in the instant time we inserted
+                // the record
+                continue;
+            }
+
+            if (end.toEpochMilli()
+                    > response.getEndTime()
+                            .atZone(ZoneOffset.systemDefault())
+                            .toInstant()
+                            .toEpochMilli()) {
+                Long steps = response.get(STEPS_COUNT_TOTAL);
+                ZoneOffset zoneOffset = response.getZoneOffset(STEPS_COUNT_TOTAL);
+
+                if (steps == null) {
+                    assertThat(zoneOffset).isNull();
+                } else {
+                    assertThat(zoneOffset).isNotNull();
+                }
+                // skip the check if our request doesn't fall with in the instant time we inserted
+                // the record
+                continue;
+            }
+
+            assertThat(response.get(STEPS_COUNT_TOTAL)).isNotNull();
+            assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(4000);
+            assertThat(response.getZoneOffset(STEPS_COUNT_TOTAL))
+                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        }
+    }
+
+    @Test
+    public void testAggregation_Count_groupBy_Duration() throws Exception {
+        Instant start = Instant.now().minus(3, ChronoUnit.DAYS);
+        Instant end = Instant.now();
+        insertStepsRecordWithDelay(1000, 3);
+
+        List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(start)
+                                                .setEndTime(end)
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Duration.ofDays(1));
+        assertThat(responses.size()).isEqualTo(3);
+        for (AggregateRecordsGroupedByDurationResponse<Long> response : responses) {
+            assertThat(response.get(STEPS_COUNT_TOTAL)).isNotNull();
+            assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
+            assertThat(response.getZoneOffset(STEPS_COUNT_TOTAL))
+                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        }
+    }
+
+    @Test
+    public void testAggregation_Count_groupBy_Duration_hours() throws Exception {
+        Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant end = Instant.now();
+        for (int i = 0; i < 10; i++) {
+            Instant st = start.plus(i, ChronoUnit.HOURS);
+            List<Record> records =
+                    Arrays.asList(
+                            new StepsRecord.Builder(
+                                            new Metadata.Builder().build(),
+                                            st,
+                                            st.plus(1, ChronoUnit.HOURS),
+                                            1000)
+                                    .build());
+            TestUtils.insertRecords(records);
+            Thread.sleep(1000);
+        }
+
+        start = start.plus(30, ChronoUnit.MINUTES);
+        List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(start)
+                                                .setEndTime(end)
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Duration.ofHours(1));
+        assertThat(responses.size()).isEqualTo(23);
+        for (int i = 0; i < responses.size(); i++) {
+            AggregateRecordsGroupedByDurationResponse<Long> response = responses.get(i);
+            assertThat(response.get(STEPS_COUNT_TOTAL)).isNotNull();
+            if (i == 0 || i == 9) {
+                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(500);
+            } else if (i > 0 && i < 9) {
+                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
+            } else {
+                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(0);
+            }
+        }
+    }
+
+    @Test
+    public void testAggregation_StepsCountTotal_withDuplicateEntry() throws Exception {
+        List<Record> records =
+                Arrays.asList(getStepsRecord(1000, 1, 1), getStepsRecord(1000, 2, 1));
+        AggregateRecordsResponse<Long> oldResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        records);
+        List<Record> recordNew =
+                Arrays.asList(getStepsRecord(1000, 3, 1), getStepsRecord(1000, 3, 1));
+        AggregateRecordsResponse<Long> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(STEPS_COUNT_TOTAL)).isNotNull();
+        assertThat(newResponse.get(STEPS_COUNT_TOTAL))
+                .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 1000);
+        Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(STEPS_COUNT_TOTAL);
+        for (DataOrigin itr : newDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+        Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(STEPS_COUNT_TOTAL);
+        for (DataOrigin itr : oldDataOrigin) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+    }
+
+    private void insertStepsRecordWithDelay(long delayInMillis, int times)
+            throws InterruptedException {
+        for (int i = 0; i < times; i++) {
+            List<Record> records =
+                    Arrays.asList(
+                            getStepsRecord(1000, 1, 1),
+                            getStepsRecord(1000, 2, 1),
+                            getStepsRecord(1000, 3, 1));
+            TestUtils.insertRecords(records);
+            Thread.sleep(delayInMillis);
         }
     }
 
@@ -490,6 +697,17 @@ public class StepsRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
+                        count)
+                .build();
+    }
+
+    static StepsRecord getStepsRecord(int count, int daysPast, int durationInHours) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now().minus(daysPast, ChronoUnit.DAYS),
+                        Instant.now()
+                                .minus(daysPast, ChronoUnit.DAYS)
+                                .plus(durationInHours, ChronoUnit.HOURS),
                         count)
                 .build();
     }

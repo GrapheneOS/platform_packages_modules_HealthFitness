@@ -89,7 +89,7 @@ public class TotalCaloriesBurnedRecordTest {
         Context context = ApplicationProvider.getApplicationContext();
         List<Record> records =
                 Arrays.asList(
-                        getBaseTotalCaloriesBurnedRecord(), getBaseTotalCaloriesBurnedRecord());
+                        getBaseTotalCaloriesBurnedRecord(1), getBaseTotalCaloriesBurnedRecord(2));
         AggregateRecordsResponse<Energy> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Energy>(
@@ -106,7 +106,7 @@ public class TotalCaloriesBurnedRecordTest {
                         records);
         List<Record> newRecords =
                 Arrays.asList(
-                        getBaseTotalCaloriesBurnedRecord(), getBaseTotalCaloriesBurnedRecord());
+                        getBaseTotalCaloriesBurnedRecord(3), getBaseTotalCaloriesBurnedRecord(4));
         AggregateRecordsResponse<Energy> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Energy>(
@@ -166,6 +166,16 @@ public class TotalCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
+                        Energy.fromJoules(10.0))
+                .build();
+    }
+
+    static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord(int days) {
+        Instant startTime = Instant.now().minus(days, ChronoUnit.DAYS);
+        return new TotalCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        startTime,
+                        startTime.plusMillis(1000),
                         Energy.fromJoules(10.0))
                 .build();
     }

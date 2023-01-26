@@ -29,6 +29,9 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ActiveCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,12 +49,12 @@ public final class ActiveCaloriesBurnedRecordHelper
 
     @Override
     public AggregateResult<?> getAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, double aggregation) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL:
-                return new AggregateResult<>(
-                                results.getDouble(results.getColumnIndex(ENERGY_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                results.moveToFirst();
+                ZoneOffset zoneOffset = getZoneOffset(results);
+                return new AggregateResult<>(aggregation).setZoneOffset(zoneOffset);
             default:
                 return null;
         }
@@ -69,8 +72,9 @@ public final class ActiveCaloriesBurnedRecordHelper
             case ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL:
                 return new AggregateParams(
                         ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME,
-                        Collections.singletonList(ENERGY_COLUMN_NAME),
-                        START_TIME_COLUMN_NAME);
+                        new ArrayList(Arrays.asList(ENERGY_COLUMN_NAME)),
+                        START_TIME_COLUMN_NAME,
+                        Double.class);
             default:
                 return null;
         }

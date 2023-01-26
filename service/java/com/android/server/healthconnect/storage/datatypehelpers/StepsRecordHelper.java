@@ -29,6 +29,9 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.util.Pair;
 
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,13 +47,12 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
 
     @Override
     public AggregateResult<?> getAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, double aggregation) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case STEPS_RECORD_COUNT_TOTAL:
-                return new AggregateResult<>(
-                                results.getLong(results.getColumnIndex(COUNT_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
-
+                results.moveToFirst();
+                ZoneOffset zoneOffset = getZoneOffset(results);
+                return new AggregateResult<>((long) aggregation).setZoneOffset(zoneOffset);
             default:
                 return null;
         }
@@ -68,8 +70,9 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
             case STEPS_RECORD_COUNT_TOTAL:
                 return new AggregateParams(
                         STEPS_TABLE_NAME,
-                        Collections.singletonList(COUNT_COLUMN_NAME),
-                        START_TIME_COLUMN_NAME);
+                        new ArrayList(Arrays.asList(COUNT_COLUMN_NAME)),
+                        START_TIME_COLUMN_NAME,
+                        Long.class);
             default:
                 return null;
         }
