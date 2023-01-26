@@ -39,4 +39,13 @@ sealed class FormattedEntry(open val uuid: String, open val startTime: Instant) 
         val dataType: DataType,
         val notes: String?
     ) : FormattedEntry(uuid, startTime)
+
+    data class FormattedSessionDetail(
+        override val uuid: String,
+        override val startTime: Instant,
+        val header: String,
+        val headerA11y: String,
+        val title: String,
+        val titleA11y: String,
+    ) : FormattedEntry(uuid, startTime)
 }

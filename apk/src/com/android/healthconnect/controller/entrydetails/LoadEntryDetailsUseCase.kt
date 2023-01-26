@@ -16,12 +16,11 @@ package com.android.healthconnect.controller.entrydetails
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.ReadRecordsRequestUsingIds
 import android.healthconnect.ReadRecordsResponse
-import android.healthconnect.datatypes.ExerciseSessionRecord
 import android.healthconnect.datatypes.Record
-import android.healthconnect.datatypes.SleepSessionRecord
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.FormattedEntry
-import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryDetailsFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
@@ -34,7 +33,8 @@ class LoadEntryDetailsUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    private val healthDataEntryFormatter: HealthDataEntryFormatter,
+    private val entryFormatter: HealthDataEntryFormatter,
+    private val entryDetailsFormatter: HealthDataEntryDetailsFormatter,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseUseCase<LoadDataEntryInput, List<FormattedEntry>>(dispatcher) {
 
@@ -61,22 +61,11 @@ constructor(
     }
 
     private suspend fun formatEntry(record: Record): List<FormattedEntry> {
-        return when (record) {
-            is SleepSessionRecord -> {
-                buildList {
-                    // header
-                    add(healthDataEntryFormatter.format(record))
-                    // TODO(b/265667215) Add elements details
-                }
-            }
-            is ExerciseSessionRecord -> {
-                buildList {
-                    // header
-                    add(healthDataEntryFormatter.format(record))
-                    // TODO(b/265667215) Add elements details
-                }
-            }
-            else -> throw IllegalArgumentException("Record is not supported!")
+        return buildList {
+            // header
+            add(entryFormatter.format(record))
+            // details
+            addAll(entryDetailsFormatter.formatDetails(record).sortedBy { it.startTime })
         }
     }
 }

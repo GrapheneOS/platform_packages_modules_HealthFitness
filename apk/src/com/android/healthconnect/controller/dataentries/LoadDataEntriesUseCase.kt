@@ -21,7 +21,7 @@ import android.healthconnect.ReadRecordsResponse
 import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.dataentries.formatters.HealthDataEntryFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes

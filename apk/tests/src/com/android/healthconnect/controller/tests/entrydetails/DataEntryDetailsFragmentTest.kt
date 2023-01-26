@@ -38,6 +38,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel
@@ -124,5 +125,53 @@ class DataEntryDetailsFragmentTest {
         onView(withText("7:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
         onView(withText("notes")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataEntriesDetailsInit_withDetails_showsItem_showsDetails() {
+        val list = buildList {
+            add(getFormattedSleepSession())
+            addAll(getSleepStages())
+        }
+        whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
+
+        launchFragment<DataEntryDetailsFragment>(
+            DataEntryDetailsFragment.createBundle(permissionType = STEPS, entryId = "1"))
+
+        onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
+        onView(withText("6 hour light sleeping")).check(matches(isDisplayed()))
+        onView(withText("6 hour deep sleeping")).check(matches(isDisplayed()))
+    }
+
+    private fun getSleepStages(): List<FormattedEntry> {
+        return listOf(
+            FormattedEntry.FormattedSessionDetail(
+                uuid = "1",
+                header = "7:06 AM • TEST_APP_NAME",
+                headerA11y = "7:06 AM • TEST_APP_NAME",
+                title = "6 hour light sleeping",
+                titleA11y = "6 hour light sleeping",
+                startTime = NOW,
+            ),
+            FormattedEntry.FormattedSessionDetail(
+                uuid = "1",
+                header = "7:06 AM • TEST_APP_NAME",
+                headerA11y = "7:06 AM • TEST_APP_NAME",
+                title = "6 hour deep sleeping",
+                titleA11y = "6 hour deep sleeping",
+                startTime = NOW,
+            ))
+    }
+
+    private fun getFormattedSleepSession(): FormattedSessionEntry {
+        return FormattedSessionEntry(
+            uuid = "1",
+            header = "7:06 AM • TEST_APP_NAME",
+            headerA11y = "7:06 AM • TEST_APP_NAME",
+            title = "12 hour sleeping",
+            titleA11y = "12 hour sleeping",
+            dataType = DataType.SLEEP,
+            startTime = NOW,
+            notes = "notes")
     }
 }
