@@ -495,7 +495,7 @@ public class TestUtils {
                     @Override
                     public void onResult(ReadRecordsResponse<T> result) {
                         response.set(result.getRecords());
-                        pageToken.set(result.getPageToken());
+                        pageToken.set(result.getNextPageToken());
                         latch.countDown();
                     }
 
