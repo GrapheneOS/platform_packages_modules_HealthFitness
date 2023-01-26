@@ -36,6 +36,11 @@ public final class LocalTimeRangeFilter implements TimeRangeFilter {
         if (localStartTime == null && localEndTime == null) {
             throw new IllegalArgumentException("Both start time and end time cannot be null.");
         }
+        if (localStartTime != null && localEndTime != null) {
+            if (!localEndTime.isAfter(localStartTime)) {
+                throw new IllegalArgumentException("end time needs to be after start time.");
+            }
+        }
 
         mLocalStartTime = localStartTime != null ? localStartTime : LocalDateTime.MIN;
         mLocalEndTime = localEndTime != null ? localEndTime : LocalDateTime.MAX;
