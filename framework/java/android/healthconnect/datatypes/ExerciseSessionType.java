@@ -68,7 +68,7 @@ public final class ExerciseSessionType {
     /** Use this type for the American football playing session. */
     public static final int EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN = 13;
 
-    /** Use this type for the fencing session. */
+    /** Use this type for the Australian football playing session. */
     public static final int EXERCISE_SESSION_TYPE_FOOTBALL_AUSTRALIAN = 14;
 
     /** Use this type for the frisbee disc playing session. */
