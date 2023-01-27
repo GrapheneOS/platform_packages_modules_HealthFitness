@@ -18,8 +18,19 @@ package com.android.healthconnect.controller.searchindexables
 
 import android.database.Cursor
 import android.database.MatrixCursor
-import android.healthconnect.HealthConnectManager.*
-import android.provider.SearchIndexablesContract.*
+import android.healthconnect.HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS
+import android.healthconnect.HealthConnectManager.ACTION_MANAGE_HEALTH_DATA
+import android.healthconnect.HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS
+import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_INTENT_ACTION
+import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_INTENT_TARGET_PACKAGE
+import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_KEY
+import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_KEYWORDS
+import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_SCREEN_TITLE
+import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_SUMMARY_ON
+import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_TITLE
+import android.provider.SearchIndexablesContract.INDEXABLES_RAW_COLUMNS
+import android.provider.SearchIndexablesContract.INDEXABLES_XML_RES_COLUMNS
+import android.provider.SearchIndexablesContract.NON_INDEXABLES_KEYS_COLUMNS
 import android.provider.SearchIndexablesProvider
 import com.android.healthconnect.controller.R
 
@@ -58,8 +69,6 @@ class HealthConnectSearchIndexablesProvider : SearchIndexablesProvider() {
         val permissionsIndex = arrayOfNulls<String>(INDEXABLES_RAW_COLUMNS.size)
         permissionsIndex[COLUMN_INDEX_RAW_TITLE] =
             requireContext().getString(R.string.connected_apps_title)
-        permissionsIndex[COLUMN_INDEX_RAW_SUMMARY_ON] =
-            requireContext().getString(R.string.connected_apps_subtitle)
         permissionsIndex[COLUMN_INDEX_RAW_SCREEN_TITLE] =
             requireContext().getString(R.string.search_breadcrumbs_permissions)
         permissionsIndex[COLUMN_INDEX_RAW_KEYWORDS] =

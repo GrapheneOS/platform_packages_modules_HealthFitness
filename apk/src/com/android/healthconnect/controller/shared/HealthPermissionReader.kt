@@ -33,25 +33,29 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     companion object {
         private const val RESOLVE_INFO_FLAG: Long = PackageManager.MATCH_ALL.toLong()
         private const val PACKAGE_INFO_PERMISSIONS_FLAG: Long =
-            PackageManager.GET_PERMISSIONS.toLong()
+                PackageManager.GET_PERMISSIONS.toLong()
     }
 
     suspend fun getAppsWithHealthPermissions(): List<String> {
-        return context.packageManager
-            .queryIntentActivities(getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
-            .map { it.activityInfo.packageName }
+        return try {
+            context.packageManager
+                    .queryIntentActivities(getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
+                    .map { it.activityInfo.packageName }
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     suspend fun getDeclaredPermissions(packageName: String): List<HealthPermission> {
         return try {
             val appInfo =
-                context.packageManager.getPackageInfo(
-                    packageName, PackageInfoFlags.of(PACKAGE_INFO_PERMISSIONS_FLAG))
+                    context.packageManager.getPackageInfo(
+                            packageName, PackageInfoFlags.of(PACKAGE_INFO_PERMISSIONS_FLAG))
             val healthPermissions = getHealthPermissions()
             appInfo.requestedPermissions
-                ?.filter { it in healthPermissions }
-                ?.mapNotNull { permission -> parsePermission(permission) }
-                .orEmpty()
+                    ?.filter { it in healthPermissions }
+                    ?.mapNotNull { permission -> parsePermission(permission) }
+                    .orEmpty()
         } catch (e: NameNotFoundException) {
             emptyList()
         }
@@ -60,8 +64,8 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     fun getApplicationRationaleIntent(packageName: String): Intent {
         val intent = getRationaleIntent(packageName)
         val resolvedInfo =
-            context.packageManager.queryIntentActivities(
-                intent, ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
+                context.packageManager.queryIntentActivities(
+                        intent, ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
         resolvedInfo.forEach { info -> intent.setClassName(packageName, info.activityInfo.name) }
         return intent
     }
@@ -71,19 +75,18 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     }
 
     private fun getHealthPermissions(): List<String> =
-        context.packageManager.queryPermissionsByGroup("android.permission-group.HEALTH", 0).map {
-            permissionInfo ->
-            permissionInfo.name
-        }
+            context.packageManager.queryPermissionsByGroup("android.permission-group.HEALTH", 0).map { permissionInfo ->
+                permissionInfo.name
+            }
 
     private fun getRationaleIntent(packageName: String? = null): Intent {
         val intent =
-            Intent(Intent.ACTION_VIEW_PERMISSION_USAGE).apply {
-                addCategory(HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS)
-                if (packageName != null) {
-                    setPackage(packageName)
+                Intent(Intent.ACTION_VIEW_PERMISSION_USAGE).apply {
+                    addCategory(HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS)
+                    if (packageName != null) {
+                        setPackage(packageName)
+                    }
                 }
-            }
         return intent
     }
 }

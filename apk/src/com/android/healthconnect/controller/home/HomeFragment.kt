@@ -25,6 +25,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
@@ -45,7 +47,8 @@ class HomeFragment : Hilt_HomeFragment() {
         @JvmStatic fun newInstance() = HomeFragment()
     }
 
-    private val viewModel: RecentAccessViewModel by viewModels()
+    private val recentAccessViewModel: RecentAccessViewModel by viewModels()
+    private val homeFragmentViewModel: HomeFragmentViewModel by viewModels()
 
     private val mDataAndAccessPreference: Preference? by lazy {
         preferenceScreen.findPreference(DATA_AND_ACCESS_PREFERENCE_KEY)
@@ -74,15 +77,45 @@ class HomeFragment : Hilt_HomeFragment() {
     override fun onResume() {
         super.onResume()
         setTitle(R.string.app_label)
+        homeFragmentViewModel.loadConnectedApps()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupSharedMenu(viewLifecycleOwner = viewLifecycleOwner)
-        viewModel.loadRecentAccessApps(maxNumEntries = 3)
-        viewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
+        recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
+        recentAccessViewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
             updateRecentApps(recentApps)
+        }
+        homeFragmentViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
+            updateConnectedApps(connectedApps)
+        }
+    }
+
+    private fun updateConnectedApps(connectedApps: List<ConnectedAppMetadata>) {
+        val connectedAppsGroup = connectedApps.groupBy { it.status }
+        val numAllowedApps = connectedAppsGroup[ConnectedAppStatus.ALLOWED].orEmpty().size
+        val numNotAllowedApps = connectedAppsGroup[ConnectedAppStatus.DENIED].orEmpty().size
+        val numTotalApps = numAllowedApps + numNotAllowedApps
+
+        if (numTotalApps == 0) {
+            mConnectedAppsPreference?.summary =
+                getString(R.string.connected_apps_button_no_permissions_subtitle)
+        } else if (numAllowedApps == 1 && numAllowedApps == numTotalApps) {
+            mConnectedAppsPreference?.summary =
+                getString(
+                    R.string.connected_apps_one_app_connected_subtitle, numAllowedApps.toString())
+        } else if (numAllowedApps == numTotalApps) {
+            mConnectedAppsPreference?.summary =
+                getString(
+                    R.string.connected_apps_all_apps_connected_subtitle, numAllowedApps.toString())
+        } else {
+            mConnectedAppsPreference?.summary =
+                getString(
+                    R.string.connected_apps_button_subtitle,
+                    numAllowedApps.toString(),
+                    numTotalApps.toString())
         }
     }
 
