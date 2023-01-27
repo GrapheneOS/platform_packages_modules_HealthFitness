@@ -54,7 +54,7 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
             val healthPermissions = getHealthPermissions()
             appInfo.requestedPermissions
                     ?.filter { it in healthPermissions }
-                    ?.mapNotNull { permission -> parsePermission(permission) }
+                    ?.map { permission -> parsePermission(permission) }
                     .orEmpty()
         } catch (e: NameNotFoundException) {
             emptyList()
@@ -70,7 +70,7 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
         return intent
     }
 
-    private fun parsePermission(permission: String): HealthPermission? {
+    private fun parsePermission(permission: String): HealthPermission {
         return HealthPermission.fromPermissionString(permission)
     }
 

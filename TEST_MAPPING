@@ -6,7 +6,7 @@
                 {
                     "exclude-filter": "com.android.healthconnect.controller.tests.dataentries.LoadDataEntriesUseCaseTest"
                 }
-	]
+      ]
     },
     {
       "name": "CtsHealthConnectDeviceTestCases[com.google.android.healthconnect.apex]"
@@ -23,6 +23,9 @@
                     "exclude-filter": "com.android.healthconnect.controller.tests.dataentries.LoadDataEntriesUseCaseTest"
                 }
         ]
+    },
+    {
+      "name" : "HealthConnectToolboxUITests"
     },
     {
       "name": "CtsHealthConnectDeviceTestCases"

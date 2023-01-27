@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.categories
 
-import android.healthconnect.HealthDataCategory as sdkHealthDataCategory
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
@@ -26,6 +25,7 @@ import com.android.healthconnect.controller.categories.CategoriesMappers.NUTRITI
 import com.android.healthconnect.controller.categories.CategoriesMappers.SLEEP_PERMISSION_GROUPS
 import com.android.healthconnect.controller.categories.CategoriesMappers.VITALS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import android.healthconnect.HealthDataCategory as sdkHealthDataCategory
 
 /** Represents Category group for HealthConnect data. */
 enum class HealthDataCategory(
@@ -130,6 +130,7 @@ private object CategoriesMappers {
             HealthPermissionType.TOTAL_CALORIES_BURNED,
             HealthPermissionType.VO2_MAX,
             HealthPermissionType.WHEELCHAIR_PUSHES,
+            HealthPermissionType.EXERCISE_ROUTE,
         )
 
     val BODY_MEASUREMENTS_PERMISSION_GROUPS =

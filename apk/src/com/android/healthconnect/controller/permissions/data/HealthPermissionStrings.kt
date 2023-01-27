@@ -268,4 +268,13 @@ private val PERMISSION_TYPE_STRINGS: ImmutableMap<HealthPermissionType, HealthPe
                 R.string.resting_heart_rate_lowercase_label,
                 R.string.resting_heart_rate_read_content_description,
                 R.string.resting_heart_rate_write_content_description))
+        .put(
+            HealthPermissionType.EXERCISE_ROUTE,
+            HealthPermissionStrings(
+                R.string.exercise_route_uppercase_label,
+                R.string.exercise_route_lowercase_label,
+                R.string.exercise_route_read_content_description,
+                R.string.exercise_route_write_content_description,
+            )
+        )
         .buildOrThrow()

@@ -16,6 +16,8 @@ package com.android.healthconnect.testapps.toolbox
 import android.os.Bundle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -36,7 +38,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DataTypeListFragmentTest {
 
-    @get:Rule val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    @get:Rule
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
     fun showCorrectDataType_vitalsCategory() {
@@ -52,7 +55,8 @@ class DataTypeListFragmentTest {
         launchScenario(HealthDataCategory.ACTIVITY)
 
         for (permissionGroup in ACTIVITY_PERMISSION_GROUPS) {
-            onView(withText(permissionGroup.title)).check(matches(isDisplayed()))
+            onView(withText(permissionGroup.title)).perform(scrollTo())
+                .check(matches(isDisplayed()))
         }
     }
 

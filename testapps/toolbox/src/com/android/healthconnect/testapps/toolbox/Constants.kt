@@ -70,6 +70,7 @@ object Constants {
             "android.permission.health.READ_TOTAL_CALORIES_BURNED",
             "android.permission.health.READ_VO2_MAX",
             "android.permission.health.READ_WEIGHT",
+            "android.permission.health.READ_INTERMENSTRUAL_BLEEDING",
             "android.permission.health.READ_WHEELCHAIR_PUSHES",
             "android.permission.health.WRITE_ACTIVE_CALORIES_BURNED",
             "android.permission.health.WRITE_BASAL_BODY_TEMPERATURE",
@@ -105,6 +106,8 @@ object Constants {
             "android.permission.health.WRITE_VO2_MAX",
             "android.permission.health.WRITE_WEIGHT",
             "android.permission.health.WRITE_WHEELCHAIR_PUSHES",
+            "android.permission.health.WRITE_INTERMENSTRUAL_BLEEDING",
+            "android.permission.health.WRITE_EXERCISE_ROUTE"
         )
 
     /** Represents Category group for HealthConnect data. */

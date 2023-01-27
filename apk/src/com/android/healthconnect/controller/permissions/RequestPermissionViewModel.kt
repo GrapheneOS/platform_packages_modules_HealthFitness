@@ -10,21 +10,21 @@ import com.android.healthconnect.controller.permissions.api.GrantHealthPermissio
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
-import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /** View model for {@link PermissionsFragment} . */
 @HiltViewModel
 class RequestPermissionViewModel
 @Inject
 constructor(
-        private val appInfoReader: AppInfoReader,
-        private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
-        private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
-        private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase
+    private val appInfoReader: AppInfoReader,
+    private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
+    private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
+    private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase
 ) : ViewModel() {
 
     private val _appMetaData = MutableLiveData<AppMetadata>()
@@ -78,9 +78,7 @@ constructor(
         val filteredPermissions =
             permissions
                 .filter { permissionString -> !grantedPermissions.contains(permissionString) }
-                .mapNotNull { permissionString ->
-                    HealthPermission.fromPermissionString(permissionString)
-                }
+                .map { permissionString -> HealthPermission.fromPermissionString(permissionString) }
 
         _permissionsList.postValue(filteredPermissions)
     }

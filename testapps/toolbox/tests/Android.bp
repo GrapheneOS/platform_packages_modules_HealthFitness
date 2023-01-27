@@ -39,6 +39,7 @@ android_test {
         "kotlin-annotations",
         "android.test.base",
         "android.test.mock.stubs",
+        "framework-healthconnect.impl"
     ],
     kotlincflags: ["-Xjvm-default=all"],
     test_suites: [

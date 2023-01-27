@@ -30,6 +30,7 @@ enum class HealthPermissionType {
     WHEELCHAIR_PUSHES,
     POWER,
     SPEED,
+    EXERCISE_ROUTE,
 
     // BODY_MEASUREMENTS
     BASAL_METABOLIC_RATE,
