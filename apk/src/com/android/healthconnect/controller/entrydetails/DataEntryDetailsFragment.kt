@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.dataentries.SessionItemViewBinder
 import com.android.healthconnect.controller.deletion.DeletionConstants
 import com.android.healthconnect.controller.deletion.DeletionType
@@ -76,6 +77,7 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
                 })
     }
     private val sessionDetailViewBinder by lazy { SessionDetailViewBinder() }
+    private val sessionHeaderViewBinder by lazy { SessionHeaderViewBinder() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,6 +99,7 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             RecyclerViewAdapter.Builder()
                 .setViewBinder(FormattedSessionEntry::class.java, sessionViewBinder)
                 .setViewBinder(FormattedSessionDetail::class.java, sessionDetailViewBinder)
+                .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
                 .build()
         recyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).apply {

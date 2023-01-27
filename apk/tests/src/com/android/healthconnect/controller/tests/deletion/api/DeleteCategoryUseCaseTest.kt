@@ -22,6 +22,7 @@ import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
+import android.healthconnect.datatypes.ExerciseSessionRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.SpeedRecord
@@ -37,6 +38,7 @@ import com.android.healthconnect.controller.deletion.api.DeleteCategoryUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -50,7 +52,6 @@ import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
-import java.time.Instant
 
 @HiltAndroidTest
 class DeleteCategoryUseCaseTest {
@@ -78,10 +79,9 @@ class DeleteCategoryUseCaseTest {
 
         val deleteCategory = DeletionType.DeletionTypeCategoryData(HealthDataCategory.ACTIVITY)
 
-        useCase.invoke(deleteCategory, TimeInstantRangeFilter.Builder()
-                .setStartTime(startTime)
-                .setEndTime(endTime)
-                .build())
+        useCase.invoke(
+            deleteCategory,
+            TimeInstantRangeFilter.Builder().setStartTime(startTime).setEndTime(endTime).build())
 
         Mockito.verify(manager, Mockito.times(1))
             .deleteRecords(filtersCaptor.capture(), any(), any())
@@ -104,8 +104,8 @@ class DeleteCategoryUseCaseTest {
                 FloorsClimbedRecord::class.java,
                 ElevationGainedRecord::class.java,
                 Vo2MaxRecord::class.java,
-                CyclingPedalingCadenceRecord::class.java
-            )
+                CyclingPedalingCadenceRecord::class.java,
+                ExerciseSessionRecord::class.java)
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

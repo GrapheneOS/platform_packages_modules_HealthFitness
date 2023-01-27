@@ -16,36 +16,34 @@
 package com.android.healthconnect.controller.dataentries
 
 import com.android.healthconnect.controller.shared.DataType
-import java.time.Instant
 
-sealed class FormattedEntry(open val uuid: String, open val startTime: Instant) {
+sealed class FormattedEntry(open val uuid: String) {
     data class FormattedDataEntry(
         override val uuid: String,
-        override val startTime: Instant,
         val header: String,
         val headerA11y: String,
         val title: String,
         val titleA11y: String,
         val dataType: DataType
-    ) : FormattedEntry(uuid, startTime)
+    ) : FormattedEntry(uuid)
 
     data class FormattedSessionEntry(
         override val uuid: String,
-        override val startTime: Instant,
         val header: String,
         val headerA11y: String,
         val title: String,
         val titleA11y: String,
         val dataType: DataType,
         val notes: String?
-    ) : FormattedEntry(uuid, startTime)
+    ) : FormattedEntry(uuid)
+
+    data class SessionHeader(val header: String) : FormattedEntry(uuid = "")
 
     data class FormattedSessionDetail(
         override val uuid: String,
-        override val startTime: Instant,
         val header: String,
         val headerA11y: String,
         val title: String,
         val titleA11y: String,
-    ) : FormattedEntry(uuid, startTime)
+    ) : FormattedEntry(uuid)
 }

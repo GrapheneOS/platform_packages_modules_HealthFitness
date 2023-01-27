@@ -65,7 +65,7 @@ constructor(
             // header
             add(entryFormatter.format(record))
             // details
-            addAll(entryDetailsFormatter.formatDetails(record).sortedBy { it.startTime })
+            addAll(entryDetailsFormatter.formatDetails(record))
         }
     }
 }

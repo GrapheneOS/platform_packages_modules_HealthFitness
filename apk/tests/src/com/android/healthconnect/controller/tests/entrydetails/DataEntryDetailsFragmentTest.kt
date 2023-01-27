@@ -46,9 +46,7 @@ import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewMod
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SLEEP
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.shared.DataType
-import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -116,11 +114,10 @@ class DataEntryDetailsFragmentTest {
                                 title = "12 hour sleeping",
                                 titleA11y = "12 hour sleeping",
                                 dataType = DataType.SLEEP,
-                                startTime = NOW,
                                 notes = "notes")))))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = STEPS, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
 
         onView(withText("7:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
@@ -136,7 +133,7 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = STEPS, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
 
         onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
         onView(withText("6 hour light sleeping")).check(matches(isDisplayed()))
@@ -145,13 +142,13 @@ class DataEntryDetailsFragmentTest {
 
     private fun getSleepStages(): List<FormattedEntry> {
         return listOf(
+            FormattedEntry.SessionHeader(header = "Stages"),
             FormattedEntry.FormattedSessionDetail(
                 uuid = "1",
                 header = "7:06 AM • TEST_APP_NAME",
                 headerA11y = "7:06 AM • TEST_APP_NAME",
                 title = "6 hour light sleeping",
                 titleA11y = "6 hour light sleeping",
-                startTime = NOW,
             ),
             FormattedEntry.FormattedSessionDetail(
                 uuid = "1",
@@ -159,7 +156,6 @@ class DataEntryDetailsFragmentTest {
                 headerA11y = "7:06 AM • TEST_APP_NAME",
                 title = "6 hour deep sleeping",
                 titleA11y = "6 hour deep sleeping",
-                startTime = NOW,
             ))
     }
 
@@ -171,7 +167,6 @@ class DataEntryDetailsFragmentTest {
             title = "12 hour sleeping",
             titleA11y = "12 hour sleeping",
             dataType = DataType.SLEEP,
-            startTime = NOW,
             notes = "notes")
     }
 }

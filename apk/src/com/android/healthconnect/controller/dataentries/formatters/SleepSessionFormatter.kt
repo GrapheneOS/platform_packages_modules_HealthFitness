@@ -63,12 +63,8 @@ class SleepSessionFormatter @Inject constructor(@ApplicationContext private val 
         record: SleepSessionRecord,
         formatDuration: (duration: Duration) -> String
     ): String {
-        return if (!record.title.isNullOrBlank() && !record.notes.isNullOrBlank()) {
-            context.getString(R.string.sleep_session_with_notes, record.title, record.notes)
-        } else if (!record.title.isNullOrBlank()) {
+        return if (!record.title.isNullOrBlank()) {
             context.getString(R.string.sleep_session_with_one_field, record.title)
-        } else if (!record.notes.isNullOrBlank()) {
-            context.getString(R.string.sleep_session_with_one_field, record.notes)
         } else {
             val duration = Duration.between(record.startTime, record.endTime)
             context.getString(R.string.sleep_session_default, formatDuration(duration))
@@ -76,13 +72,13 @@ class SleepSessionFormatter @Inject constructor(@ApplicationContext private val 
     }
 
     override suspend fun formatRecordDetails(record: SleepSessionRecord): List<FormattedEntry> {
-        return record.stages?.map { stage -> formatSleepStage(record.metadata.id, stage) }.orEmpty()
+        val sortedStages = record.stages.sortedBy { it.startTime }
+        return sortedStages.map { stage -> formatSleepStage(record.metadata.id, stage) }
     }
 
     private fun formatSleepStage(id: String, stage: SleepSessionRecord.Stage): FormattedEntry {
         return FormattedSessionDetail(
             uuid = id,
-            startTime = stage.startTime,
             header = timeFormatter.formatTimeRange(stage.startTime, stage.endTime),
             headerA11y = timeFormatter.formatTimeRangeA11y(stage.startTime, stage.endTime),
             title = formatStageType(stage) { duration -> formatDurationShort(context, duration) },

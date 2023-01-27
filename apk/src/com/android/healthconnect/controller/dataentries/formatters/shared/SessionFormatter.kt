@@ -34,7 +34,6 @@ abstract class SessionFormatter<T : Record>(context: Context) : BaseFormatter<T>
             title = formatValue(record, unitPreferences),
             titleA11y = formatA11yValue(record, unitPreferences),
             dataType = getDataType(record),
-            startTime = getStartTime(record),
             notes = getNotes(record))
     }
 
