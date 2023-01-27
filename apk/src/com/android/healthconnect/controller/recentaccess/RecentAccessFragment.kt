@@ -92,14 +92,18 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
                             !recentAppsList[index + 1].isToday)
                 val newPreference =
                     RecentAccessPreference(requireContext(), recentApp, true).also {
-                        it.setOnPreferenceClickListener {
-                            findNavController()
-                                .navigate(
-                                    R.id.action_recentAccessFragment_to_connectedAppFragment,
-                                    bundleOf(
-                                        Intent.EXTRA_PACKAGE_NAME to recentApp.metadata.packageName,
-                                        Constants.EXTRA_APP_NAME to recentApp.metadata.appName))
-                            true
+                        if (!recentApp.isInactive) {
+                            // Do not set click listeners for inactive apps
+                            it.setOnPreferenceClickListener {
+                                findNavController()
+                                    .navigate(
+                                        R.id.action_recentAccessFragment_to_connectedAppFragment,
+                                        bundleOf(
+                                            Intent.EXTRA_PACKAGE_NAME to
+                                                recentApp.metadata.packageName,
+                                            Constants.EXTRA_APP_NAME to recentApp.metadata.appName))
+                                true
+                            }
                         }
                     }
                 if (recentApp.isToday) {

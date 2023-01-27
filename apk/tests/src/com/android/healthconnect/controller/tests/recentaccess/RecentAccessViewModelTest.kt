@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.dataTypeToCategory
+import com.android.healthconnect.controller.tests.utils.FakeHealthPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.FakeRecentAccessUseCase
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.MIDNIGHT
@@ -38,36 +39,36 @@ import com.android.healthconnect.controller.tests.utils.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Duration
+import java.time.Instant
+import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.time.Duration
-import java.time.Instant
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
 class RecentAccessViewModelTest {
 
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
+    @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Inject
-    lateinit var appInfoReader: AppInfoReader
+    @Inject lateinit var appInfoReader: AppInfoReader
 
     private val timeSource = TestTimeSource
-    private val fakeUseCase = FakeRecentAccessUseCase()
+    private val fakeRecentAccessUseCase = FakeRecentAccessUseCase()
+    private val fakeHealthPermissionAppsUseCase = FakeHealthPermissionAppsUseCase()
     private lateinit var viewModel: RecentAccessViewModel
 
     @Before
     fun setup() {
         hiltRule.inject()
-        viewModel = RecentAccessViewModel(appInfoReader, fakeUseCase)
+        viewModel =
+            RecentAccessViewModel(
+                appInfoReader, fakeHealthPermissionAppsUseCase, fakeRecentAccessUseCase)
     }
 
     @Test
@@ -80,52 +81,53 @@ class RecentAccessViewModelTest {
         val time4 = time3.minusMillis(1)
         val time5 = time1.minusMillis(1)
         val accessLogs =
-                listOf(
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time1.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time2.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time3.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
-                                time4.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time5.toEpochMilli(),
-                                Constants.UPSERT))
-                        .sortedByDescending { it.accessTime }
+            listOf(
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time1.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time2.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time3.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
+                        time4.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time5.toEpochMilli(),
+                        Constants.UPSERT))
+                .sortedByDescending { it.accessTime }
 
-        fakeUseCase.updateList(accessLogs)
+        fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
         val actual = viewModel.recentAccessApps.getOrAwaitValue()
         val expected =
-                listOf(
-                        RecentAccessEntry(
-                                metadata = TEST_APP_2,
-                                instantTime = time4,
-                                isToday = true,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle)))
+            listOf(
+                RecentAccessEntry(
+                    metadata = TEST_APP_2,
+                    instantTime = time4,
+                    isToday = true,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle)))
         assertRecentAccessEquality(actual, expected)
     }
 
@@ -141,80 +143,82 @@ class RecentAccessViewModelTest {
         val time5 = time1.minusMillis(1)
 
         val accessLogs =
-                listOf(
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time1.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time2.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time3.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
-                                time4.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time5.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName2,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time1.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName2,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time2.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName2,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time3.toEpochMilli(),
-                                Constants.UPSERT),
+            listOf(
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time1.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time2.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time3.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
+                        time4.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time5.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName2,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time1.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName2,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time2.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName2,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time3.toEpochMilli(),
+                        Constants.UPSERT),
                 )
-                        .sortedByDescending { it.accessTime }
+                .sortedByDescending { it.accessTime }
 
-        fakeUseCase.updateList(accessLogs)
+        fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
         val actual = viewModel.recentAccessApps.getOrAwaitValue()
         val expected =
-                listOf(
-                        RecentAccessEntry(
-                                metadata = TEST_APP_2,
-                                instantTime = time3,
-                                isToday = true,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                ),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle)),
-                        RecentAccessEntry(
-                                metadata = TEST_APP,
-                                instantTime = time4,
-                                isToday = true,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle)))
+            listOf(
+                RecentAccessEntry(
+                    metadata = TEST_APP_2,
+                    instantTime = time3,
+                    isToday = true,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                        ),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle)),
+                RecentAccessEntry(
+                    metadata = TEST_APP,
+                    instantTime = time4,
+                    isToday = true,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle)))
 
         assertRecentAccessEquality(actual, expected)
     }
@@ -230,61 +234,62 @@ class RecentAccessViewModelTest {
         val time5 = time4.minusSeconds(60).minusMillis(1)
 
         val accessLogs =
-                listOf(
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time1.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time2.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time3.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
-                                time4.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time5.toEpochMilli(),
-                                Constants.UPSERT))
-                        .sortedByDescending { it.accessTime }
+            listOf(
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time1.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time2.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time3.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
+                        time4.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time5.toEpochMilli(),
+                        Constants.UPSERT))
+                .sortedByDescending { it.accessTime }
 
-        fakeUseCase.updateList(accessLogs)
+        fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
         val actual = viewModel.recentAccessApps.getOrAwaitValue()
         val expected =
-                listOf(
-                        RecentAccessEntry(
-                                metadata = TEST_APP,
-                                instantTime = time4,
-                                isToday = true,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle)),
-                        RecentAccessEntry(
-                                metadata = TEST_APP,
-                                instantTime = time5,
-                                isToday = true,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
-                                ),
-                                dataTypesRead = mutableSetOf()),
-                )
+            listOf(
+                RecentAccessEntry(
+                    metadata = TEST_APP,
+                    instantTime = time4,
+                    isToday = true,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle)),
+                RecentAccessEntry(
+                    metadata = TEST_APP,
+                    instantTime = time5,
+                    isToday = true,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
+                        ),
+                    dataTypesRead = mutableSetOf()),
+            )
         assertRecentAccessEquality(actual, expected)
     }
 
@@ -292,42 +297,42 @@ class RecentAccessViewModelTest {
     fun loadRecentAccessApps_logsLessThan1MinApartButForMoreThan10Min_returns2Entries() = runTest {
         val packageName = TEST_APP_PACKAGE_NAME_2
         val accessLogs =
-                (0..11)
-                        .map {
-                            AccessLog(
-                                    packageName,
-                                    listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                    NOW.minus(Duration.ofMinutes(it.toLong())).toEpochMilli(),
-                                    Constants.READ)
-                        }
-                        .toList()
-                        .sortedByDescending { it.accessTime }
+            (0..11)
+                .map {
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        NOW.minus(Duration.ofMinutes(it.toLong())).toEpochMilli(),
+                        Constants.READ)
+                }
+                .toList()
+                .sortedByDescending { it.accessTime }
 
-        fakeUseCase.updateList(accessLogs)
+        fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
         val actual = viewModel.recentAccessApps.getOrAwaitValue()
 
         val expected =
-                listOf(
-                        RecentAccessEntry(
-                                metadata = TEST_APP_2,
-                                instantTime = NOW.minus(Duration.ofMinutes(10)),
-                                isToday = true,
-                                dataTypesWritten = mutableSetOf(),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                )),
-                        RecentAccessEntry(
-                                metadata = TEST_APP_2,
-                                instantTime = NOW.minus(Duration.ofMinutes(11)),
-                                isToday = true,
-                                dataTypesWritten = mutableSetOf(),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                )),
-                )
+            listOf(
+                RecentAccessEntry(
+                    metadata = TEST_APP_2,
+                    instantTime = NOW.minus(Duration.ofMinutes(10)),
+                    isToday = true,
+                    dataTypesWritten = mutableSetOf(),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                        )),
+                RecentAccessEntry(
+                    metadata = TEST_APP_2,
+                    instantTime = NOW.minus(Duration.ofMinutes(11)),
+                    isToday = true,
+                    dataTypesWritten = mutableSetOf(),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                        )),
+            )
 
         assertRecentAccessEquality(actual, expected)
     }
@@ -341,41 +346,42 @@ class RecentAccessViewModelTest {
         val time3 = time2.minusSeconds(60)
 
         val accessLogs =
-                listOf(
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time1.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time2.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time3.toEpochMilli(),
-                                Constants.UPSERT))
-                        .sortedByDescending { it.accessTime }
+            listOf(
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time1.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time2.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time3.toEpochMilli(),
+                        Constants.UPSERT))
+                .sortedByDescending { it.accessTime }
 
-        fakeUseCase.updateList(accessLogs)
+        fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
         val actual = viewModel.recentAccessApps.getOrAwaitValue()
         val expected =
-                listOf(
-                        RecentAccessEntry(
-                                metadata = TEST_APP,
-                                instantTime = time3,
-                                isToday = false,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                ),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle)))
+            listOf(
+                RecentAccessEntry(
+                    metadata = TEST_APP,
+                    instantTime = time3,
+                    isToday = false,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                        ),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle)))
         assertRecentAccessEquality(actual, expected)
     }
 
@@ -388,41 +394,42 @@ class RecentAccessViewModelTest {
         val time3 = MIDNIGHT.minusSeconds(60)
 
         val accessLogs =
-                listOf(
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time1.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time2.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time3.toEpochMilli(),
-                                Constants.UPSERT))
-                        .sortedByDescending { it.accessTime }
+            listOf(
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time1.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time2.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time3.toEpochMilli(),
+                        Constants.UPSERT))
+                .sortedByDescending { it.accessTime }
 
-        fakeUseCase.updateList(accessLogs)
+        fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
         val actual = viewModel.recentAccessApps.getOrAwaitValue()
         val expected =
-                listOf(
-                        RecentAccessEntry(
-                                metadata = TEST_APP,
-                                instantTime = time3,
-                                isToday = false,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                ),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle)))
+            listOf(
+                RecentAccessEntry(
+                    metadata = TEST_APP,
+                    instantTime = time3,
+                    isToday = false,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                        ),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle)))
         assertRecentAccessEquality(actual, expected)
     }
 
@@ -458,77 +465,78 @@ class RecentAccessViewModelTest {
         val time6 = time5.minusSeconds(600) // cluster 6, app 2
 
         val accessLogs =
-                listOf(
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time1.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time2.toEpochMilli(),
-                                Constants.READ),
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
-                                time3.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName1,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
-                                time4.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName2,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
-                                time5.toEpochMilli(),
-                                Constants.UPSERT),
-                        AccessLog(
-                                packageName2,
-                                listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
-                                time6.toEpochMilli(),
-                                Constants.READ),
+            listOf(
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time1.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time2.toEpochMilli(),
+                        Constants.READ),
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_STEPS),
+                        time3.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName1,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
+                        time4.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName2,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE),
+                        time5.toEpochMilli(),
+                        Constants.UPSERT),
+                    AccessLog(
+                        packageName2,
+                        listOf(RecordTypeIdentifier.RECORD_TYPE_WEIGHT),
+                        time6.toEpochMilli(),
+                        Constants.READ),
                 )
-                        .sortedByDescending { it.accessTime }
+                .sortedByDescending { it.accessTime }
 
-        fakeUseCase.updateList(accessLogs)
+        fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(maxNumEntries = 3, timeSource = timeSource)
         val actual = viewModel.recentAccessApps.getOrAwaitValue()
         val expected =
-                listOf(
-                        RecentAccessEntry(
-                                metadata = TEST_APP,
-                                instantTime = time1,
-                                isToday = true,
-                                dataTypesWritten = mutableSetOf(),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                                )),
-                        RecentAccessEntry(
-                                metadata = TEST_APP_2,
-                                instantTime = time5,
-                                isToday = true,
-                                dataTypesWritten =
-                                mutableSetOf(
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle),
-                                dataTypesRead = mutableSetOf()),
-                        RecentAccessEntry(
-                                metadata = TEST_APP,
-                                instantTime = time2,
-                                isToday = true,
-                                dataTypesWritten = mutableSetOf(),
-                                dataTypesRead =
-                                mutableSetOf(
-                                        dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
-                                )))
+            listOf(
+                RecentAccessEntry(
+                    metadata = TEST_APP,
+                    instantTime = time1,
+                    isToday = true,
+                    dataTypesWritten = mutableSetOf(),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                        )),
+                RecentAccessEntry(
+                    metadata = TEST_APP_2,
+                    instantTime = time5,
+                    isToday = true,
+                    dataTypesWritten =
+                        mutableSetOf(
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle),
+                    dataTypesRead = mutableSetOf()),
+                RecentAccessEntry(
+                    metadata = TEST_APP,
+                    instantTime = time2,
+                    isToday = true,
+                    dataTypesWritten = mutableSetOf(),
+                    dataTypesRead =
+                        mutableSetOf(
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
+                        )))
         assertRecentAccessEquality(actual, expected)
     }
 
     private fun assertRecentAccessEquality(
-            actualValues: List<RecentAccessEntry>,
-            expectedValues: List<RecentAccessEntry>
+        actualValues: List<RecentAccessEntry>,
+        expectedValues: List<RecentAccessEntry>
     ) {
         assertThat(actualValues).isNotNull()
         assertThat(actualValues).hasSize(expectedValues.size)
@@ -540,13 +548,13 @@ class RecentAccessViewModelTest {
             // when the icon is null
             assertThat(actualElement.metadata.appName).isEqualTo(expectedElement.metadata.appName)
             assertThat(actualElement.metadata.packageName)
-                    .isEqualTo(expectedElement.metadata.packageName)
+                .isEqualTo(expectedElement.metadata.packageName)
             assertThat(actualElement.isToday).isEqualTo(expectedElement.isToday)
             assertThat(actualElement.instantTime).isEqualTo(expectedElement.instantTime)
             assertThat(actualElement.dataTypesWritten)
-                    .containsExactlyElementsIn(expectedElement.dataTypesWritten)
+                .containsExactlyElementsIn(expectedElement.dataTypesWritten)
             assertThat(actualElement.dataTypesRead)
-                    .containsExactlyElementsIn(expectedElement.dataTypesRead)
+                .containsExactlyElementsIn(expectedElement.dataTypesRead)
         }
     }
 }

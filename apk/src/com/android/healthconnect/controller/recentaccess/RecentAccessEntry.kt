@@ -24,6 +24,7 @@ data class RecentAccessEntry(
     val metadata: AppMetadata,
     var instantTime: Instant = Instant.MIN,
     var isToday: Boolean = false,
+    var isInactive: Boolean = false,
     var dataTypesWritten: MutableSet<Int> = mutableSetOf(),
     var dataTypesRead: MutableSet<Int> = mutableSetOf()
 )
