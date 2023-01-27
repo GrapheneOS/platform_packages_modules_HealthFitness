@@ -73,6 +73,8 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                     healthPermissionReader.getApplicationRationaleIntent(app.packageName)
                 startActivity(startRationaleIntent)
             }
+            mReadPermissionCategory?.title = getString(R.string.read_permission_category, app.appName)
+            mWritePermissionCategory?.title = getString(R.string.write_permission_category, app.appName)
         }
         viewModel.permissionsList.observe(viewLifecycleOwner) { permissions ->
             updateDataList(permissions)
