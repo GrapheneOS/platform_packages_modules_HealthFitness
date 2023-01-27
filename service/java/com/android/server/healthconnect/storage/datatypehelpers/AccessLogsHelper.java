@@ -29,9 +29,9 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.healthconnect.AccessLog;
-import android.healthconnect.AccessLog.OperationType;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.health.connect.AccessLog;
+import android.health.connect.AccessLog.OperationType;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;

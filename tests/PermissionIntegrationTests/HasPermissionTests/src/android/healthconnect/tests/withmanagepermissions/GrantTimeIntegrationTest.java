@@ -25,8 +25,8 @@ import static org.junit.Assert.fail;
 
 import android.Manifest;
 import android.content.Context;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.HealthPermissions;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;

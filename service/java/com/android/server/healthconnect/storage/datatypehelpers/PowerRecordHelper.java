@@ -16,9 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_AVG;
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_MAX;
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_MIN;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_AVG;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_MAX;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.POWER_RECORD_POWER_MIN;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
@@ -29,10 +29,10 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.AggregateResult;
-import android.healthconnect.datatypes.AggregationType;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.PowerRecordInternal;
+import android.health.connect.AggregateResult;
+import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.PowerRecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.utils.SqlJoin;

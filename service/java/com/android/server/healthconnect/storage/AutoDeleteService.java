@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.storage;
 
-import static android.healthconnect.Constants.DEFAULT_INT;
+import static android.health.connect.Constants.DEFAULT_INT;
 
 import android.annotation.UserIdInt;
 import android.app.job.JobInfo;

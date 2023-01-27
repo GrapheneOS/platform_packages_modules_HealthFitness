@@ -15,7 +15,7 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
@@ -23,10 +23,10 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.AggregateResult;
-import android.healthconnect.datatypes.AggregationType;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
+import android.health.connect.AggregateResult;
+import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
 import java.util.Collections;

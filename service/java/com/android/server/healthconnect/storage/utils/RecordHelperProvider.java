@@ -19,7 +19,7 @@ package com.android.server.healthconnect.storage.utils;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 
 import com.android.server.healthconnect.storage.datatypehelpers.ActiveCaloriesBurnedRecordHelper;

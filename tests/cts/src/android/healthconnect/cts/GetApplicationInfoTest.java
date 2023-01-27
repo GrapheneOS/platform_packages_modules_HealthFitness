@@ -22,10 +22,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
 import android.content.Context;
-import android.healthconnect.ApplicationInfoResponse;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.datatypes.AppInfo;
+import android.health.connect.ApplicationInfoResponse;
+import android.health.connect.HealthConnectException;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.datatypes.AppInfo;
 import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
 import android.util.Log;

@@ -31,7 +31,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.healthconnect.aidl.ChangeLogTokenRequestParcel;
+import android.health.connect.aidl.ChangeLogTokenRequestParcel;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -65,6 +65,7 @@ public final class ChangeLogsRequestHelper {
     private static final String ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME = "row_id_change_logs_table";
     private static final String TIME_COLUMN_NAME = "time";
     private static ChangeLogsRequestHelper sChangeLogsRequestHelper;
+
     private ChangeLogsRequestHelper() {}
 
     @NonNull

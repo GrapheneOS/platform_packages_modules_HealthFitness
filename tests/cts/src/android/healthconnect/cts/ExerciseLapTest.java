@@ -18,8 +18,8 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.datatypes.ExerciseLap;
-import android.healthconnect.datatypes.units.Length;
+import android.health.connect.datatypes.ExerciseLap;
+import android.health.connect.datatypes.units.Length;
 
 import org.junit.Test;
 

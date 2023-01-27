@@ -19,7 +19,7 @@ package com.android.server.healthconnect.storage.request;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 
 import android.annotation.NonNull;
-import android.healthconnect.Constants;
+import android.health.connect.Constants;
 import android.util.Pair;
 import android.util.Slog;
 

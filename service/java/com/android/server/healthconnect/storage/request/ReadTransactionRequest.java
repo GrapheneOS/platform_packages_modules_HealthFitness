@@ -17,7 +17,7 @@
 package com.android.server.healthconnect.storage.request;
 
 import android.annotation.NonNull;
-import android.healthconnect.aidl.ReadRecordsRequestParcel;
+import android.health.connect.aidl.ReadRecordsRequestParcel;
 
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;

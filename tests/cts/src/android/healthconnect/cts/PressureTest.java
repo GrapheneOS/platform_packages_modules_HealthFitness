@@ -18,7 +18,7 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.datatypes.units.Pressure;
+import android.health.connect.datatypes.units.Pressure;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.runner.AndroidJUnit4;

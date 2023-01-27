@@ -16,21 +16,21 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.datatypes.FloorsClimbedRecord.FLOORS_CLIMBED_TOTAL;
+import static android.health.connect.datatypes.FloorsClimbedRecord.FLOORS_CLIMBED_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.AggregateRecordsRequest;
-import android.healthconnect.AggregateRecordsResponse;
-import android.healthconnect.ReadRecordsRequestUsingFilters;
-import android.healthconnect.ReadRecordsRequestUsingIds;
-import android.healthconnect.TimeInstantRangeFilter;
-import android.healthconnect.datatypes.DataOrigin;
-import android.healthconnect.datatypes.Device;
-import android.healthconnect.datatypes.FloorsClimbedRecord;
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.Record;
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.FloorsClimbedRecord;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;

@@ -16,9 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static android.healthconnect.Constants.DEFAULT_LONG;
-import static android.healthconnect.Constants.DELETE;
-import static android.healthconnect.Constants.UPSERT;
+import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.DELETE;
+import static android.health.connect.Constants.UPSERT;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
@@ -33,8 +33,8 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.healthconnect.AccessLog.OperationType;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.health.connect.AccessLog.OperationType;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 import android.util.Pair;
 

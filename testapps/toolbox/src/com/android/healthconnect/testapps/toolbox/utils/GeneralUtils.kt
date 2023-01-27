@@ -16,13 +16,13 @@
 package com.android.healthconnect.testapps.toolbox.utils
 
 import android.content.Context
-import android.healthconnect.HealthConnectException
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.InsertRecordsResponse
-import android.healthconnect.datatypes.DataOrigin
-import android.healthconnect.datatypes.Device
-import android.healthconnect.datatypes.Metadata
-import android.healthconnect.datatypes.Record
+import android.health.connect.HealthConnectException
+import android.health.connect.HealthConnectManager
+import android.health.connect.InsertRecordsResponse
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.Metadata
+import android.health.connect.datatypes.Record
 import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
 import androidx.core.os.asOutcomeReceiver

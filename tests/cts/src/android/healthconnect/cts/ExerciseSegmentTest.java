@@ -18,8 +18,8 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.datatypes.ExerciseSegment;
-import android.healthconnect.datatypes.ExerciseSegmentType;
+import android.health.connect.datatypes.ExerciseSegment;
+import android.health.connect.datatypes.ExerciseSegmentType;
 
 import org.junit.Test;
 

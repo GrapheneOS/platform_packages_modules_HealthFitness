@@ -19,8 +19,8 @@ package android.healthconnect.tests.withoutmanagepermissions;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.HealthPermissions;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
@@ -30,11 +30,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Integration tests for {@link android.healthconnect.HealthConnectManager} Permission-related APIs.
+ * Integration tests for {@link HealthConnectManager} Permission-related APIs.
  *
  * <p><b>Note:</b> These tests operate while <b>not</b> holding {@link
- * android.healthconnect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS}. For tests asserting that the
- * API behaves as expected for holders of the permission, please see {@link
+ * HealthPermissions.MANAGE_HEALTH_PERMISSIONS}. For tests asserting that the API behaves as
+ * expected for holders of the permission, please see {@link
  * android.healthconnect.tests.withmanagepermissions.HealthConnectWithManagePermissionsTest}.
  *
  * <p><b>Build/Install/Run:</b> {@code atest HealthConnectWithoutManagePermissionsIntegrationTests}.

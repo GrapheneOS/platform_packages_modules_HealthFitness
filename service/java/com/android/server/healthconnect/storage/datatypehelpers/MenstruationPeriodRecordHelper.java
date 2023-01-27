@@ -18,8 +18,8 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.MenstruationPeriodRecordInternal;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.MenstruationPeriodRecordInternal;
 import android.util.Pair;
 
 import java.util.Collections;

@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

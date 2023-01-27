@@ -16,21 +16,21 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.datatypes.WheelchairPushesRecord.WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
+import static android.health.connect.datatypes.WheelchairPushesRecord.WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.AggregateRecordsRequest;
-import android.healthconnect.AggregateRecordsResponse;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.InsertRecordsResponse;
-import android.healthconnect.TimeInstantRangeFilter;
-import android.healthconnect.datatypes.DataOrigin;
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.WheelchairPushesRecord;
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.HealthConnectException;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.InsertRecordsResponse;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 

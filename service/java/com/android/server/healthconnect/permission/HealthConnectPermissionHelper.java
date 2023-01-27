@@ -25,7 +25,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.healthconnect.HealthPermissions;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissions;
 import android.os.Binder;
 import android.os.UserHandle;
 
@@ -82,7 +83,7 @@ public final class HealthConnectPermissionHelper {
     }
 
     /**
-     * See {@link android.healthconnect.HealthConnectManager#grantHealthPermission}.
+     * See {@link HealthConnectManager#grantHealthPermission}.
      *
      * <p>NOTE: Once permission grant is successful, the package name will also be appended to the
      * end of the priority list corresponding to {@code permissionName}'s health permission
@@ -113,7 +114,7 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
-    /** See {@link android.healthconnect.HealthConnectManager#revokeHealthPermission}. */
+    /** See {@link HealthConnectManager#revokeHealthPermission}. */
     public void revokeHealthPermission(
             @NonNull String packageName,
             @NonNull String permissionName,
@@ -151,7 +152,7 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
-    /** See {@link android.healthconnect.HealthConnectManager#revokeAllHealthPermissions}. */
+    /** See {@link HealthConnectManager#revokeAllHealthPermissions}. */
     public void revokeAllHealthPermissions(
             @NonNull String packageName, @Nullable String reason, @NonNull UserHandle user) {
         Objects.requireNonNull(packageName);
@@ -166,7 +167,7 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
-    /** See {@link android.healthconnect.HealthConnectManager#getGrantedHealthPermissions}. */
+    /** See {@link HealthConnectManager#getGrantedHealthPermissions}. */
     @NonNull
     public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
@@ -193,7 +194,7 @@ public final class HealthConnectPermissionHelper {
 
     /**
      * Returns the date from which an app can read / write health data. See {@link
-     * android.healthconnect.HealthConnectManager#getHealthDataHistoricalAccessStartDate}
+     * HealthConnectManager#getHealthDataHistoricalAccessStartDate}
      */
     @Nullable
     public Instant getHealthDataStartDateAccess(String packageName, UserHandle user)

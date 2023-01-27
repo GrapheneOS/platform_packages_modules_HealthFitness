@@ -27,9 +27,9 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.healthconnect.datatypes.Record;
-import android.healthconnect.internal.datatypes.RecordInternal;
-import android.healthconnect.internal.datatypes.utils.RecordMapper;
+import android.health.connect.datatypes.Record;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;

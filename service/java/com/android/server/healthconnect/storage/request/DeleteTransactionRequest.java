@@ -16,15 +16,15 @@
 
 package com.android.server.healthconnect.storage.request;
 
-import static android.healthconnect.Constants.DELETE;
+import static android.health.connect.Constants.DELETE;
 
 import android.annotation.NonNull;
 import android.content.Context;
-import android.healthconnect.Constants;
-import android.healthconnect.RecordIdFilter;
-import android.healthconnect.aidl.DeleteUsingFiltersRequestParcel;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.utils.RecordMapper;
+import android.health.connect.Constants;
+import android.health.connect.RecordIdFilter;
+import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;

@@ -16,7 +16,9 @@
 
 package android.healthconnect.internal.datatypes;
 
-import android.healthconnect.datatypes.ExerciseSessionType;
+import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.internal.datatypes.ExerciseRouteInternal;
+import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 
 import java.util.List;
 

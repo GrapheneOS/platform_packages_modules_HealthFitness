@@ -19,15 +19,16 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.IntermenstrualBleedingRecordInternal;
+import android.health.connect.datatypes.IntermenstrualBleedingRecord;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.IntermenstrualBleedingRecordInternal;
 import android.util.Pair;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Helper class for {@link android.healthconnect.datatypes.IntermenstrualBleedingRecord}.
+ * Helper class for {@link IntermenstrualBleedingRecord}.
  *
  * @hide
  */

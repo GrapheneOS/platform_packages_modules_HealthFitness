@@ -16,23 +16,23 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.HealthDataCategory.ACTIVITY;
-import static android.healthconnect.HealthDataCategory.BODY_MEASUREMENTS;
-import static android.healthconnect.HealthDataCategory.CYCLE_TRACKING;
-import static android.healthconnect.HealthDataCategory.NUTRITION;
-import static android.healthconnect.HealthDataCategory.SLEEP;
-import static android.healthconnect.HealthDataCategory.VITALS;
+import static android.health.connect.HealthDataCategory.ACTIVITY;
+import static android.health.connect.HealthDataCategory.BODY_MEASUREMENTS;
+import static android.health.connect.HealthDataCategory.CYCLE_TRACKING;
+import static android.health.connect.HealthDataCategory.NUTRITION;
+import static android.health.connect.HealthDataCategory.SLEEP;
+import static android.health.connect.HealthDataCategory.VITALS;
 import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
 import android.content.Context;
-import android.healthconnect.FetchDataOriginsPriorityOrderResponse;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.UpdateDataOriginPriorityOrderRequest;
-import android.healthconnect.datatypes.DataOrigin;
+import android.health.connect.FetchDataOriginsPriorityOrderResponse;
+import android.health.connect.HealthConnectException;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.UpdateDataOriginPriorityOrderRequest;
+import android.health.connect.datatypes.DataOrigin;
 import android.os.OutcomeReceiver;
 
 import androidx.test.InstrumentationRegistry;

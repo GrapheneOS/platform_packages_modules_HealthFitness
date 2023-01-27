@@ -18,7 +18,7 @@ package android.healthconnect;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import android.healthconnect.datatypes.ExerciseSegmentType;
+import android.health.connect.datatypes.ExerciseSegmentType;
 import android.util.ArraySet;
 
 import org.junit.Test;

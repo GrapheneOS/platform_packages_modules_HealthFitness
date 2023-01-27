@@ -16,13 +16,13 @@
 
 package com.android.server.healthconnect.storage.request;
 
-import static android.healthconnect.Constants.UPSERT;
+import static android.health.connect.Constants.UPSERT;
 
 import android.annotation.NonNull;
 import android.content.Context;
-import android.healthconnect.Constants;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.RecordInternal;
+import android.health.connect.Constants;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.ArraySet;
 import android.util.Slog;
 
@@ -69,7 +69,7 @@ public class UpsertTransactionRequest {
         for (RecordInternal<?> recordInternal : recordInternals) {
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
             AppInfoHelper.getInstance()
-                    .populateAppInfoId(recordInternal, context, /*requireAllFields=*/ true);
+                    .populateAppInfoId(recordInternal, context, /* requireAllFields= */ true);
             DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);
 
             if (isInsertRequest) {

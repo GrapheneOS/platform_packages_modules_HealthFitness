@@ -17,13 +17,13 @@
 package com.android.server.healthconnect.storage.request;
 
 import android.annotation.NonNull;
-import android.healthconnect.AggregateRecordsResponse;
-import android.healthconnect.AggregateResult;
-import android.healthconnect.TimeRangeFilter;
-import android.healthconnect.aidl.AggregateDataRequestParcel;
-import android.healthconnect.aidl.AggregateDataResponseParcel;
-import android.healthconnect.datatypes.AggregationType;
-import android.healthconnect.internal.datatypes.utils.AggregationTypeIdMapper;
+import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.AggregateResult;
+import android.health.connect.TimeRangeFilter;
+import android.health.connect.aidl.AggregateDataRequestParcel;
+import android.health.connect.aidl.AggregateDataResponseParcel;
+import android.health.connect.datatypes.AggregationType;
+import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.util.ArrayMap;
 
 import com.android.server.healthconnect.storage.TransactionManager;

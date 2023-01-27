@@ -18,9 +18,10 @@ package android.healthconnect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.datatypes.ExerciseRoute;
-import android.healthconnect.datatypes.ExerciseSessionRecord;
-import android.healthconnect.datatypes.RecordUtils;
+import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.RecordUtils;
+import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.os.Parcel;
 
 import org.junit.Test;

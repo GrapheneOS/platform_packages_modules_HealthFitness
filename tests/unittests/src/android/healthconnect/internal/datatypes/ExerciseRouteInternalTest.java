@@ -18,6 +18,7 @@ package android.healthconnect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.os.Parcel;
 
 import org.junit.Test;

@@ -16,26 +16,26 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.datatypes.HeightRecord.HEIGHT_AVG;
-import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MAX;
-import static android.healthconnect.datatypes.HeightRecord.HEIGHT_MIN;
+import static android.health.connect.datatypes.HeightRecord.HEIGHT_AVG;
+import static android.health.connect.datatypes.HeightRecord.HEIGHT_MAX;
+import static android.health.connect.datatypes.HeightRecord.HEIGHT_MIN;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.AggregateRecordsRequest;
-import android.healthconnect.AggregateRecordsResponse;
-import android.healthconnect.DeleteUsingFiltersRequest;
-import android.healthconnect.ReadRecordsRequestUsingFilters;
-import android.healthconnect.ReadRecordsRequestUsingIds;
-import android.healthconnect.RecordIdFilter;
-import android.healthconnect.TimeInstantRangeFilter;
-import android.healthconnect.datatypes.DataOrigin;
-import android.healthconnect.datatypes.Device;
-import android.healthconnect.datatypes.HeightRecord;
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.units.Length;
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.RecordIdFilter;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.HeightRecord;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.units.Length;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.core.app.ApplicationProvider;

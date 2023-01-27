@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
 import android.health.connect.datatypes.StepsRecord
-import android.icu.text.MessageFormat
+import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.UnitFormatter

@@ -18,7 +18,7 @@ package com.android.server.healthconnect.permission;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.healthconnect.Constants;
+import android.health.connect.Constants;
 import android.os.Environment;
 import android.os.UserHandle;
 import android.util.ArrayMap;
@@ -194,31 +194,31 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
             }
             switch (parser.getName()) {
                 case TAG_PACKAGE:
-                {
-                    String packageName =
-                            parser.getAttributeValue(/* namespace= */ null, ATTRIBUTE_NAME);
-                    Instant firstGrantTime =
-                            Instant.parse(
-                                    parser.getAttributeValue(
-                                            /* namespace= */ null, ATTRIBUTE_FIRST_GRANT_TIME));
-                    packagePermissions.put(packageName, firstGrantTime);
-                    break;
-                }
+                    {
+                        String packageName =
+                                parser.getAttributeValue(/* namespace= */ null, ATTRIBUTE_NAME);
+                        Instant firstGrantTime =
+                                Instant.parse(
+                                        parser.getAttributeValue(
+                                                /* namespace= */ null, ATTRIBUTE_FIRST_GRANT_TIME));
+                        packagePermissions.put(packageName, firstGrantTime);
+                        break;
+                    }
                 case TAG_SHARED_USER:
-                {
-                    String sharedUserName =
-                            parser.getAttributeValue(/* namespace= */ null, ATTRIBUTE_NAME);
-                    Instant firstGrantTime =
-                            Instant.parse(
-                                    parser.getAttributeValue(
-                                            /* namespace= */ null, ATTRIBUTE_FIRST_GRANT_TIME));
-                    sharedUserPermissions.put(sharedUserName, firstGrantTime);
-                    break;
-                }
+                    {
+                        String sharedUserName =
+                                parser.getAttributeValue(/* namespace= */ null, ATTRIBUTE_NAME);
+                        Instant firstGrantTime =
+                                Instant.parse(
+                                        parser.getAttributeValue(
+                                                /* namespace= */ null, ATTRIBUTE_FIRST_GRANT_TIME));
+                        sharedUserPermissions.put(sharedUserName, firstGrantTime);
+                        break;
+                    }
                 default:
-                {
-                    Log.w(TAG, "Tag " + parser.getName() + " is not parsed");
-                }
+                    {
+                        Log.w(TAG, "Tag " + parser.getName() + " is not parsed");
+                    }
             }
             type = parser.next();
         }
