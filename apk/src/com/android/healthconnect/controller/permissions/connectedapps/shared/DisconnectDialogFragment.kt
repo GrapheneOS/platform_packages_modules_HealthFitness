@@ -63,7 +63,7 @@ class DisconnectDialogFragment(
                         DISCONNECT_ALL_EVENT, bundleOf(KEY_DELETE_DATA to checkBox.isChecked))
                 }
                 .create()
-
+        dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 }
