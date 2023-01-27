@@ -99,8 +99,8 @@ class PermissionsFragmentTest {
         }
         launchFragment<PermissionsFragment>(bundleOf())
 
-        onView(withText(R.string.read_permission_category)).check(matches(isDisplayed()))
-        onView(withText(R.string.write_permission_category)).check(matches(isDisplayed()))
+        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read")).check(matches(isDisplayed()))
+        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(matches(isDisplayed()))
     }
 
     @Test

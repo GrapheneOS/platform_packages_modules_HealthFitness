@@ -21,10 +21,8 @@
         android:key="allow_all_preference"
         android:title="@string/request_permissions_allow_all"/>
     <PreferenceCategory
-        android:key="read_permission_category"
-        android:title="@string/read_permission_category" />
+        android:key="read_permission_category"/>
     <PreferenceCategory
-        android:key="write_permission_category"
-        android:title="@string/write_permission_category">
+        android:key="write_permission_category">
     </PreferenceCategory>
 </PreferenceScreen>

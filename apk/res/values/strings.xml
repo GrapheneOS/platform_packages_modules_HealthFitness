@@ -314,8 +314,8 @@
   <!--endregion-->
 
   <!-- region Permissions -->
-  <string name="read_permission_category" description="Title for read permission category in the app permission screen">Can read from Health&#160;Connect</string>
-  <string name="write_permission_category" description="Title for write permission category in the app permission screen">Can write to Health&#160;Connect</string>
+  <string name="read_permission_category" description="Title for read permission category in the app permission screen">Allow &#8220;<xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g>&#8221; to read</string>
+  <string name="write_permission_category" description="Title for write permission category in the app permission screen">Allow &#8220;<xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g>&#8221; to write</string>
   <string name="request_permissions_cancel" description="Label for button to cancel an app's request for permissions [CHAR_LIMIT=20]">Cancel</string>
   <string name="request_permissions_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow</string>
   <string name="request_permissions_allow_all" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow all</string>
