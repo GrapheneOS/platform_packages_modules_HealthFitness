@@ -66,7 +66,8 @@ public class ApplicationInfoResponseParcel implements Parcelable {
             String packageName = in.readString();
             String name = in.readString();
             byte[] icon = in.createByteArray();
-            Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
+            Bitmap bitmap =
+                    icon != null ? BitmapFactory.decodeByteArray(icon, 0, icon.length) : null;
             mAppInfoList.add(new AppInfo.Builder(packageName, name, bitmap).build());
         }
     }
@@ -96,12 +97,14 @@ public class ApplicationInfoResponseParcel implements Parcelable {
                     dest.writeString(appInfo.getPackageName());
                     dest.writeString(appInfo.getName());
                     Bitmap bitmap = appInfo.getIcon();
-                    byte[] bitmapData;
-                    try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-                        bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
-                        bitmapData = stream.toByteArray();
-                    } catch (IOException exception) {
-                        throw new IllegalArgumentException(exception);
+                    byte[] bitmapData = null;
+                    if (bitmap != null) {
+                        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+                            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
+                            bitmapData = stream.toByteArray();
+                        } catch (IOException exception) {
+                            throw new IllegalArgumentException(exception);
+                        }
                     }
                     dest.writeByteArray(bitmapData);
                 }));

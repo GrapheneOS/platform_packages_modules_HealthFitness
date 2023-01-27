@@ -29,10 +29,12 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.ApplicationInfoFlags;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -100,6 +102,38 @@ public final class AppInfoHelper {
         return sAppInfoHelper;
     }
 
+    @Nullable
+    private static byte[] encodeBitmap(@Nullable Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
+            return stream.toByteArray();
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(exception);
+        }
+    }
+
+    @Nullable
+    private static Bitmap decodeBitmap(@Nullable byte[] bytes) {
+        return bytes != null ? BitmapFactory.decodeByteArray(bytes, 0, bytes.length) : null;
+    }
+
+    @NonNull
+    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp =
+                Bitmap.createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
+    }
+
     /** Deletes all entries from the database and clears the cache. */
     public synchronized void clearData(TransactionManager transactionManager) {
         transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
@@ -141,10 +175,36 @@ public final class AppInfoHelper {
                 appInfo = new AppInfoInternal(DEFAULT_LONG, packageName, record.getAppName(), null);
             }
 
-            insertAppInfo(packageName, appInfo);
+            upsertAppInfo(packageName, appInfo);
         }
 
         record.setAppInfoId(appInfo.getId());
+    }
+
+    /**
+     * Inserts or replaces the application info of the specified {@code packageName} with the
+     * specified {@code name} and {@code icon}, only if the corresponding application is not
+     * currently installed.
+     */
+    public void updateAppInfoIfNotInstalled(
+            @NonNull Context context,
+            @NonNull String packageName,
+            @Nullable String name,
+            @Nullable byte[] icon) {
+        if (!isAppInstalled(context, packageName) && containsAppInfo(packageName)) {
+            upsertAppInfo(
+                    packageName,
+                    new AppInfoInternal(DEFAULT_LONG, packageName, name, decodeBitmap(icon)));
+        }
+    }
+
+    private boolean isAppInstalled(@NonNull Context context, @NonNull String packageName) {
+        try {
+            context.getPackageManager().getApplicationInfo(packageName, ApplicationInfoFlags.of(0));
+            return true;
+        } catch (NameNotFoundException e) {
+            return false;
+        }
     }
 
     /**
@@ -173,6 +233,10 @@ public final class AppInfoHelper {
         }
 
         return appInfo.getId();
+    }
+
+    private boolean containsAppInfo(String packageName) {
+        return getAppInfoMap().containsKey(packageName);
     }
 
     /**
@@ -239,7 +303,7 @@ public final class AppInfoHelper {
                 throw new IllegalArgumentException("Could not find package info for package", e);
             }
 
-            insertAppInfo(packageName, appInfoInternal);
+            upsertAppInfo(packageName, appInfoInternal);
         }
 
         return appInfoInternal.getId();
@@ -260,7 +324,7 @@ public final class AppInfoHelper {
                 String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
                 String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
                 byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
+                Bitmap bitmap = decodeBitmap(icon);
                 appInfoMap.put(
                         packageName, new AppInfoInternal(rowId, packageName, appName, bitmap));
                 idPackageNameMap.put(rowId, packageName);
@@ -298,10 +362,10 @@ public final class AppInfoHelper {
         return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap);
     }
 
-    private void insertAppInfo(@NonNull String packageName, @NonNull AppInfoInternal appInfo) {
+    private void upsertAppInfo(@NonNull String packageName, @NonNull AppInfoInternal appInfo) {
         long rowId =
                 TransactionManager.getInitialisedInstance()
-                        .insert(
+                        .insertOrReplace(
                                 new UpsertTableRequest(
                                         TABLE_NAME, getContentValues(packageName, appInfo)));
         appInfo.setId(rowId);
@@ -314,18 +378,8 @@ public final class AppInfoHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
         contentValues.put(APPLICATION_COLUMN_NAME, appInfo.getName());
-        contentValues.put(APP_ICON_COLUMN_NAME, getBytesFromBitmap(appInfo.getIcon()));
+        contentValues.put(APP_ICON_COLUMN_NAME, encodeBitmap(appInfo.getIcon()));
         return contentValues;
-    }
-
-    private byte[] getBytesFromBitmap(Bitmap bitmap) {
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
-            byte[] bitmapData = stream.toByteArray();
-            return bitmapData;
-        } catch (IOException exception) {
-            throw new IllegalArgumentException(exception);
-        }
     }
 
     /**
@@ -345,18 +399,5 @@ public final class AppInfoHelper {
         columnInfo.add(new Pair<>(APP_ICON_COLUMN_NAME, BLOB));
 
         return columnInfo;
-    }
-
-    @NonNull
-    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
-        final Bitmap bmp =
-                Bitmap.createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bmp);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bmp;
     }
 }

@@ -34,6 +34,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
@@ -41,6 +43,7 @@ import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.HeightRecord;
@@ -49,6 +52,7 @@ import android.health.connect.datatypes.PowerRecord;
 import android.health.connect.datatypes.PowerRecord.PowerRecordSample;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.migration.AppInfoMigrationPayload;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.migration.PermissionMigrationPayload;
@@ -59,11 +63,16 @@ import android.os.UserHandle;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.google.common.truth.Expect;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -80,6 +89,12 @@ public class DataMigrationTest {
 
     private static final String PACKAGE_NAME = "android.healthconnect.cts";
     private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
+    private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
+    private static final String APP_NAME = "Test App";
+    private static final String APP_NAME_NEW = "Test App 2";
+
+    @Rule public final Expect expect = Expect.create();
+
     private final Executor mOutcomeExecutor = Executors.newSingleThreadExecutor();
     private final Instant mEndTime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
     private final Instant mStartTime = mEndTime.minus(Duration.ofHours(1));
@@ -109,6 +124,19 @@ public class DataMigrationTest {
         return new Metadata.Builder()
                 .setDevice(new Device.Builder().setManufacturer("Device").setModel("Model").build())
                 .build();
+    }
+
+    private static byte[] getBitmapBytes(Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            return stream.toByteArray();
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(exception);
+        }
     }
 
     @Before
@@ -198,7 +226,7 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migratePermissions_invalidPermission_failsWith_ERROR_MIGRATE_ENTITY() {
+    public void migratePermissions_invalidPermission_throwsMigrationException() {
         revokeAppPermissions(READ_HEIGHT, WRITE_HEIGHT);
 
         final MigrationEntity entity =
@@ -230,6 +258,74 @@ public class DataMigrationTest {
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
+    @Test
+    public void migrateAppInfo_notInstalledAppAndRecordsMigrated_appInfoSaved() {
+        final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
+        final byte[] iconBytes = getBitmapBytes(icon);
+
+        migrate(
+                getRecordEntity(
+                        PACKAGE_NAME_NOT_INSTALLED,
+                        "steps1",
+                        new StepsRecord.Builder(getMetadata(), mStartTime, mEndTime, 10).build()));
+
+        migrate(
+                new MigrationEntity(
+                        "appInfo1",
+                        new AppInfoMigrationPayload.Builder(PACKAGE_NAME_NOT_INSTALLED, APP_NAME)
+                                .setAppIcon(iconBytes)
+                                .build()));
+
+        final AppInfo appInfo = getContributorApplicationInfo(PACKAGE_NAME_NOT_INSTALLED);
+
+        expect.that(appInfo).isNotNull();
+        expect.that(appInfo.getName()).isEqualTo(APP_NAME);
+        expect.that(getBitmapBytes(appInfo.getIcon())).isEqualTo(iconBytes);
+    }
+
+    @Test
+    public void migrateAppInfo_notInstalledAppAndRecordsNotMigrated_appInfoNotSaved() {
+        final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
+        final byte[] iconBytes = getBitmapBytes(icon);
+
+        migrate(
+                new MigrationEntity(
+                        "appInfo1",
+                        new AppInfoMigrationPayload.Builder(
+                                        PACKAGE_NAME_NOT_INSTALLED, APP_NAME_NEW)
+                                .setAppIcon(iconBytes)
+                                .build()));
+
+        final AppInfo appInfo = getContributorApplicationInfo(PACKAGE_NAME_NOT_INSTALLED);
+
+        assertThat(appInfo).isNull();
+    }
+
+    @Test
+    public void migrateAppInfo_installedAppAndRecordsMigrated_appInfoNotSaved() {
+        final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
+        final byte[] iconBytes = getBitmapBytes(icon);
+
+        migrate(
+                getRecordEntity(
+                        APP_PACKAGE_NAME,
+                        "steps1",
+                        new StepsRecord.Builder(getMetadata(), mStartTime, mEndTime, 10).build()));
+
+        migrate(
+                new MigrationEntity(
+                        "appInfo1",
+                        new AppInfoMigrationPayload.Builder(APP_PACKAGE_NAME, APP_NAME_NEW)
+                                .setAppIcon(iconBytes)
+                                .build()));
+
+        final AppInfo appInfo = getContributorApplicationInfo(APP_PACKAGE_NAME);
+
+        expect.that(appInfo).isNotNull();
+        expect.that(appInfo.getName()).isNotEqualTo(APP_NAME_NEW);
+        expect.that(getBitmapBytes(appInfo.getIcon())).isNotEqualTo(iconBytes);
+    }
+
     private void migrate(MigrationEntity... entities) {
         DataMigrationTest.<Void, MigrationException>blockingCallWithPermissions(
                 callback -> mManager.startMigration(mOutcomeExecutor, callback),
@@ -242,9 +338,13 @@ public class DataMigrationTest {
     }
 
     private MigrationEntity getRecordEntity(String entityId, Record record) {
+        return getRecordEntity(PACKAGE_NAME, entityId, record);
+    }
+
+    private MigrationEntity getRecordEntity(String packageName, String entityId, Record record) {
         return new MigrationEntity(
                 entityId,
-                new RecordMigrationPayload.Builder(PACKAGE_NAME, "Example App", record).build());
+                new RecordMigrationPayload.Builder(packageName, "Example App", record).build());
     }
 
     private <T extends Record> List<T> getRecords(Class<T> clazz) {
@@ -336,6 +436,25 @@ public class DataMigrationTest {
                                 .getPackageManager()
                                 .getPackageInfo(
                                         APP_PACKAGE_NAME, PackageInfoFlags.of(GET_PERMISSIONS)));
+    }
+
+    private AppInfo getContributorApplicationInfo(String packageName) {
+        return getContributorApplicationsInfo().stream()
+                .filter(ai -> ai.getPackageName().equals(packageName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private List<AppInfo> getContributorApplicationsInfo() {
+        final ApplicationInfoResponse response =
+                runWithShellPermissionIdentity(
+                        () -> blockingCall(this::getContributorApplicationsInfoAsync));
+        return response.getApplicationInfoList();
+    }
+
+    private void getContributorApplicationsInfoAsync(
+            OutcomeReceiver<ApplicationInfoResponse, HealthConnectException> callback) {
+        mManager.getContributorApplicationsInfo(mOutcomeExecutor, callback);
     }
 
     @SuppressWarnings("NewClassNamingConvention") // False positive
