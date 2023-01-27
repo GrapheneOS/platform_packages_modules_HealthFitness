@@ -524,6 +524,9 @@
   <string name="ovulation_high" description="The high fertility result of a user's ovulation test. [CHAR LIMIT=50]">High</string>
   <string name="ovulation_inconclusive" description="The inconclusive result of a user's ovulation test. [CHAR LIMIT=50]">Inconclusive</string>
 
+  <string name="milliseconds" description="Heart rate variability value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 ms} other {# ms}}</string>
+  <string name="milliseconds_long" description="Heart rate variability value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 millisecond} other {# milliseconds}}</string>
+
   <!--  region activity -->
   <string name="session_title" translatable="false"><xliff:g example="My Strava workout" id="title">%1$s</xliff:g>, <xliff:g example="Strength training" id="type">%2$s</xliff:g></string>
   <string name="repetitions_format" translatable="false"><xliff:g example="Push up" id="type">%1$s</xliff:g>: <xliff:g example="20" id="count">%2$s</xliff:g></string>

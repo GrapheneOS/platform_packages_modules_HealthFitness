@@ -25,6 +25,7 @@ import android.healthconnect.datatypes.BloodGlucoseRecord
 import android.healthconnect.datatypes.BloodPressureRecord
 import android.healthconnect.datatypes.BodyFatRecord
 import android.healthconnect.datatypes.BodyTemperatureRecord
+import android.healthconnect.datatypes.BodyWaterMassRecord
 import android.healthconnect.datatypes.BoneMassRecord
 import android.healthconnect.datatypes.CervicalMucusRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
@@ -33,8 +34,10 @@ import android.healthconnect.datatypes.ElevationGainedRecord
 import android.healthconnect.datatypes.ExerciseSessionRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.HeartRateRecord
+import android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord
 import android.healthconnect.datatypes.HeightRecord
 import android.healthconnect.datatypes.HydrationRecord
+import android.healthconnect.datatypes.IntermenstrualBleedingRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
 import android.healthconnect.datatypes.MenstruationFlowRecord
 import android.healthconnect.datatypes.NutritionRecord
@@ -61,6 +64,7 @@ import com.android.healthconnect.controller.dataentries.formatters.BloodGlucoseF
 import com.android.healthconnect.controller.dataentries.formatters.BloodPressureFormatter
 import com.android.healthconnect.controller.dataentries.formatters.BodyFatFormatter
 import com.android.healthconnect.controller.dataentries.formatters.BodyTemperatureFormatter
+import com.android.healthconnect.controller.dataentries.formatters.BodyWaterMassFormatter
 import com.android.healthconnect.controller.dataentries.formatters.BoneMassFormatter
 import com.android.healthconnect.controller.dataentries.formatters.CervicalMucusFormatter
 import com.android.healthconnect.controller.dataentries.formatters.CyclingPedalingCadenceFormatter
@@ -69,8 +73,10 @@ import com.android.healthconnect.controller.dataentries.formatters.ElevationGain
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.FloorsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter
+import com.android.healthconnect.controller.dataentries.formatters.HeartRateVariabilityRmssdFormatter
 import com.android.healthconnect.controller.dataentries.formatters.HeightFormatter
 import com.android.healthconnect.controller.dataentries.formatters.HydrationFormatter
+import com.android.healthconnect.controller.dataentries.formatters.IntermenstrualBleedingFormatter
 import com.android.healthconnect.controller.dataentries.formatters.LeanBodyMassFormatter
 import com.android.healthconnect.controller.dataentries.formatters.MenstruationFlowFormatter
 import com.android.healthconnect.controller.dataentries.formatters.NutritionFormatter
@@ -131,6 +137,9 @@ constructor(
     private val sexualActivityFormatter: SexualActivityFormatter,
     private val sleepSessionFormatter: SleepSessionFormatter,
     private val exerciseSessionFormatter: ExerciseSessionFormatter,
+    private val bodyWaterMassFormatter: BodyWaterMassFormatter,
+    private val intermenstrualBleedingFormatter: IntermenstrualBleedingFormatter,
+    private val heartRateVariabilityRmssdFormatter: HeartRateVariabilityRmssdFormatter,
 ) {
 
     suspend fun format(record: Record): FormattedEntry {
@@ -171,6 +180,11 @@ constructor(
             is MenstruationFlowRecord -> menstruationFlowFormatter.format(record, appName)
             is SleepSessionRecord -> sleepSessionFormatter.format(record, appName)
             is ExerciseSessionRecord -> exerciseSessionFormatter.format(record, appName)
+            is BodyWaterMassRecord -> bodyWaterMassFormatter.format(record, appName)
+            is IntermenstrualBleedingRecord ->
+                intermenstrualBleedingFormatter.format(record, appName)
+            is HeartRateVariabilityRmssdRecord ->
+                heartRateVariabilityRmssdFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }
