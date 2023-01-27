@@ -19,6 +19,8 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.healthconnect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
+import android.healthconnect.HealthConnectManager.EXTRA_SESSION_ID
 import android.healthconnect.datatypes.ExerciseRoute
 import android.widget.Button
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
@@ -42,11 +44,6 @@ import org.junit.Test
 
 @HiltAndroidTest
 class RouteRequestActivityTest {
-
-    companion object {
-        private const val EXTRA_SESSION_ID = "android.healthconnect.extra.SESSION_ID"
-        private const val EXTRA_EXERCISE_ROUTE = "android.healthconnect.extra.EXERCISE_ROUTE"
-    }
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 

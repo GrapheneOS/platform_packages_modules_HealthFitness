@@ -79,6 +79,10 @@
             android:name="com.android.healthconnect.controller.route.RouteRequestActivity"
             android:excludeFromRecents="true"
             android:exported="true">
+            <intent-filter android:priority="1">
+                <action android:name="android.healthconnect.action.REQUEST_EXERCISE_ROUTE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity
