@@ -24,15 +24,18 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults.Failed
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.Instant
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 
 /** View model for {@link DataEntriesFragment} . */
 @HiltViewModel
 class DataEntriesFragmentViewModel
 @Inject
-constructor(private val loadDataEntriesUseCase: LoadDataEntriesUseCase) : ViewModel() {
+constructor(
+    private val loadDataEntriesUseCase: LoadDataEntriesUseCase,
+    private val loadMenstruationDataUseCase: LoadMenstruationDataUseCase
+) : ViewModel() {
 
     companion object {
         private const val TAG = "DataEntriesFragmentView"
@@ -45,8 +48,18 @@ constructor(private val loadDataEntriesUseCase: LoadDataEntriesUseCase) : ViewMo
     fun loadData(permissionType: HealthPermissionType, selectedDate: Instant) {
         _dataEntries.postValue(DataEntriesFragmentState.Loading)
         viewModelScope.launch {
-            val input = LoadDataEntriesInput(permissionType, selectedDate)
-            when (val result = loadDataEntriesUseCase.invoke(input)) {
+            val result =
+                when (permissionType) {
+                    // Special-casing Menstruation as it spans multiple days
+                    HealthPermissionType.MENSTRUATION -> {
+                        loadMenstruationDataUseCase.invoke(selectedDate)
+                    }
+                    else -> {
+                        val input = LoadDataEntriesInput(permissionType, selectedDate)
+                        loadDataEntriesUseCase.invoke(input)
+                    }
+                }
+            when (result) {
                 is Success -> {
                     _dataEntries.postValue(
                         if (result.data.isEmpty()) {
