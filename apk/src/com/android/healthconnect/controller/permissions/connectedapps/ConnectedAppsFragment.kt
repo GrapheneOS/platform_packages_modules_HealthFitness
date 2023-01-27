@@ -134,33 +134,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
         mSendFeedback?.setOnPreferenceClickListener {
             val intent = Intent(Intent.ACTION_BUG_REPORT)
-            getActivity()?.startActivityForResult(intent, 0)
+            requireActivity().startActivity(intent)
             true
         }
-        // TODO (b/245515046) add denied apps flow
-        //        val appName1 = "Run Tracker"
-        //        val bannerPreference = DeniedAppsBannerPreference(
-        //                requireContext()
-        //        ) {
-        //            openDeniedAppsDialog()
-        //        }.also {
-        //            it.title = getString(R.string.denied_apps_banner_title)
-        //            it.summary = getString(R.string.denied_apps_banner_message_one_app, appName1)
-        //            it.order = 1}
-        //
-        //        preferenceScreen.addPreference(
-        //                bannerPreference
-        //        )
-    }
-
-    private fun openDeniedAppsDialog() {
-        AlertDialogBuilder(this)
-            .setTitle(R.string.denied_apps_dialog_title)
-            .setMessage(R.string.denied_apps_dialog_message)
-            .setPositiveButton(R.string.denied_apps_dialog_got_it_button)
-            .setIcon(R.attr.disconnectIcon)
-            .create()
-            .show()
     }
 
     private fun openRemoveAllAppsAccessDialog(apps: List<ConnectedAppMetadata>) {
@@ -219,6 +195,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
                 val activeApps: MutableList<ConnectedAppMetadata> = allowedApps.toMutableList()
                 activeApps.addAll(notAllowedApps)
+                mRemoveAllApps?.isEnabled = allowedApps.isNotEmpty()
                 mRemoveAllApps?.setOnPreferenceClickListener {
                     openRemoveAllAppsAccessDialog(activeApps)
                     true
