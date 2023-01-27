@@ -605,7 +605,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mTransactionManager.deleteAll(
-                                new DeleteTransactionRequest(packageName, request, mContext)
+                                new DeleteTransactionRequest(packageName, request)
                                         .setHasManageHealthDataPermission(
                                                 hasDataManagementPermission(uid, pid)));
                         callback.onResult();
