@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,14 +16,14 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.BloodPressureRecord
-import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM
-import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_UNKNOWN
-import android.healthconnect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BloodPressureMeasurementLocations
-import android.healthconnect.datatypes.BloodPressureRecord.BodyPosition.BODY_POSITION_STANDING_UP
-import android.healthconnect.datatypes.BloodPressureRecord.BodyPosition.BODY_POSITION_UNKNOWN
-import android.healthconnect.datatypes.BloodPressureRecord.BodyPosition.BodyPositionType
-import android.healthconnect.datatypes.units.Pressure
+import android.health.connect.datatypes.BloodPressureRecord
+import android.health.connect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM
+import android.health.connect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_UNKNOWN
+import android.health.connect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BloodPressureMeasurementLocations
+import android.health.connect.datatypes.BloodPressureRecord.BodyPosition.BODY_POSITION_STANDING_UP
+import android.health.connect.datatypes.BloodPressureRecord.BodyPosition.BODY_POSITION_UNKNOWN
+import android.health.connect.datatypes.BloodPressureRecord.BodyPosition.BodyPositionType
+import android.health.connect.datatypes.units.Pressure
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.BloodPressureFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
@@ -98,7 +100,8 @@ class BloodPressureFormatterTest {
                 diastolic = 81.7,
                 location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("123/82 mmHg Left upper arm")
+        assertThat(formatter.formatValue(record, preferences))
+            .isEqualTo("123/82 mmHg Left upper arm")
     }
 
     @Test
@@ -138,8 +141,6 @@ class BloodPressureFormatterTest {
         assertThat(formatter.formatA11yValue(record, preferences))
             .isEqualTo("123/82 millimetre of mercury Left upper arm Standing up")
     }
-
-
 
     private fun getRecord(
         @BloodPressureMeasurementLocations

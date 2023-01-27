@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.MenstruationPeriodRecord
+import android.health.connect.datatypes.MenstruationPeriodRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter

@@ -15,9 +15,9 @@
  */
 package com.android.healthconnect.controller.tests.deletion.api
 
-import android.healthconnect.DeleteUsingFiltersRequest
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeInstantRangeFilter
+import android.health.connect.DeleteUsingFiltersRequest
+import android.health.connect.HealthConnectManager
+import android.health.connect.TimeInstantRangeFilter
 import com.android.healthconnect.controller.deletion.api.DeleteAllDataUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule

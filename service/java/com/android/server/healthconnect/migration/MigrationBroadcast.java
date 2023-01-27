@@ -58,9 +58,9 @@ public class MigrationBroadcast {
 
     /**
      * Sends a broadcast with action {@link
-     * android.healthconnect.HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY} to
+     * android.health.connect.HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY} to
      * applications which hold {@link android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA} and
-     * handle {@link android.healthconnect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
+     * handle {@link android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
      */
     public void sendInvocationBroadcast() throws Exception {
         Slog.i(TAG, "Calling sendInvocationBroadcast()");
@@ -109,7 +109,7 @@ public class MigrationBroadcast {
 
     /**
      * Filters and returns the package names of applications which handle intent {@link
-     * android.healthconnect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
+     * android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
      *
      * @param permissionFilteredPackages List of app package names holding permission {@link
      *     android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA}

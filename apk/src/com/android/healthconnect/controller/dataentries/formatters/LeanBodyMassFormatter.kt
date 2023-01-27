@@ -14,7 +14,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.LeanBodyMassRecord
+import android.health.connect.datatypes.LeanBodyMassRecord
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext

@@ -15,13 +15,13 @@
  */
 package com.android.healthconnect.controller.dataentries
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.ReadRecordsRequestUsingFilters
-import android.healthconnect.ReadRecordsResponse
-import android.healthconnect.TimeInstantRangeFilter
-import android.healthconnect.datatypes.InstantRecord
-import android.healthconnect.datatypes.IntervalRecord
-import android.healthconnect.datatypes.Record
+import android.health.connect.HealthConnectManager
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
+import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.InstantRecord
+import android.health.connect.datatypes.IntervalRecord
+import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType

@@ -15,13 +15,13 @@
  */
 package com.android.healthconnect.controller.tests.permissions
 
-import android.healthconnect.HealthPermissions.READ_DISTANCE
-import android.healthconnect.HealthPermissions.READ_HEART_RATE
-import android.healthconnect.HealthPermissions.READ_STEPS
-import android.healthconnect.HealthPermissions.WRITE_DISTANCE
-import android.healthconnect.HealthPermissions.WRITE_EXERCISE
-import android.healthconnect.HealthPermissions.WRITE_HEART_RATE
-import android.healthconnect.HealthPermissions.WRITE_STEPS
+import android.health.connect.HealthPermissions.READ_DISTANCE
+import android.health.connect.HealthPermissions.READ_HEART_RATE
+import android.health.connect.HealthPermissions.READ_STEPS
+import android.health.connect.HealthPermissions.WRITE_DISTANCE
+import android.health.connect.HealthPermissions.WRITE_EXERCISE
+import android.health.connect.HealthPermissions.WRITE_HEART_RATE
+import android.health.connect.HealthPermissions.WRITE_STEPS
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView

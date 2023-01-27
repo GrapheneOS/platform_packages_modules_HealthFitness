@@ -1,7 +1,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.MealType
+import android.health.connect.datatypes.MealType
 import com.android.healthconnect.controller.R
 
 object MealFormatter {

@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.RespiratoryRateRecord
+import android.health.connect.datatypes.RespiratoryRateRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.RespiratoryRateFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

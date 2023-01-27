@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.BasalBodyTemperatureRecord
+import android.health.connect.datatypes.BasalBodyTemperatureRecord
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext

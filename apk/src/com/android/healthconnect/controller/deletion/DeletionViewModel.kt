@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.deletion
 
-import android.healthconnect.TimeInstantRangeFilter
+import android.health.connect.TimeInstantRangeFilter
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

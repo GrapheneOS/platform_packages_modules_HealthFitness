@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.PowerRecord
-import android.healthconnect.datatypes.PowerRecord.PowerRecordSample
+import android.health.connect.datatypes.PowerRecord
+import android.health.connect.datatypes.PowerRecord.PowerRecordSample
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

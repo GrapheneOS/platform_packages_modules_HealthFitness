@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.deletion.api
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.RecordIdFilter
+import android.health.connect.HealthConnectManager
+import android.health.connect.RecordIdFilter
 import com.android.healthconnect.controller.deletion.DeletionType.DeleteDataEntry
 import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject

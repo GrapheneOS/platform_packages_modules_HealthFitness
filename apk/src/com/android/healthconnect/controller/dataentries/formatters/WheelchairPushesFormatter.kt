@@ -14,7 +14,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.WheelchairPushesRecord
+import android.health.connect.datatypes.WheelchairPushesRecord
 import android.icu.text.MessageFormat.*
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter

@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.WheelchairPushesRecord
+import android.health.connect.datatypes.WheelchairPushesRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.WheelchairPushesFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

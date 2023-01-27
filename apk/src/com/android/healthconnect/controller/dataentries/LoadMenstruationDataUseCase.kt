@@ -18,12 +18,12 @@
 
 package com.android.healthconnect.controller.dataentries
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.ReadRecordsRequestUsingFilters
-import android.healthconnect.ReadRecordsResponse
-import android.healthconnect.TimeInstantRangeFilter
-import android.healthconnect.datatypes.MenstruationFlowRecord
-import android.healthconnect.datatypes.MenstruationPeriodRecord
+import android.health.connect.HealthConnectManager
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
+import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.MenstruationFlowRecord
+import android.health.connect.datatypes.MenstruationPeriodRecord
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter

@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord
+import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord
 import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

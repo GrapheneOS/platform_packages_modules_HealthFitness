@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
+import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatter.formatEnergyA11yValue
 import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatter.formatEnergyValue
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter

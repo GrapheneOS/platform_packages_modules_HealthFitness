@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.permissions.data
 
-import android.healthconnect.HealthPermissionCategory
+import android.health.connect.HealthPermissionCategory
 
 enum class HealthPermissionType {
     // ACTIVITY

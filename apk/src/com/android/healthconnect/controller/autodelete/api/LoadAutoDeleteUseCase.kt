@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.autodelete.api
 
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import javax.inject.Inject

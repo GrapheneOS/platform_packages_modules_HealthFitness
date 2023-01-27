@@ -15,10 +15,10 @@
  */
 package com.android.healthconnect.controller.deletion.api
 
-import android.healthconnect.DeleteUsingFiltersRequest
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeInstantRangeFilter
-import android.healthconnect.datatypes.DataOrigin
+import android.health.connect.DeleteUsingFiltersRequest
+import android.health.connect.HealthConnectManager
+import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.service.IoDispatcher

@@ -14,14 +14,14 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.SleepSessionRecord
-import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE
-import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE_OUT_OF_BED
-import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING
-import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP
-import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_LIGHT
-import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_REM
-import android.healthconnect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_UNKNOWN
+import android.health.connect.datatypes.SleepSessionRecord
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE_OUT_OF_BED
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_LIGHT
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_REM
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_UNKNOWN
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail

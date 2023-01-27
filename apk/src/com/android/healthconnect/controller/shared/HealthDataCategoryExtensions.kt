@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.shared
 
-import android.healthconnect.HealthDataCategory
+import android.health.connect.HealthDataCategory
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.CategoriesMappers.ACTIVITY_PERMISSION_GROUPS

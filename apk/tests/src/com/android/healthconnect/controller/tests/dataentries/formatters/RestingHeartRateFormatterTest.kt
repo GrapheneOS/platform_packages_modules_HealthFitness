@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.RestingHeartRateRecord
+import android.health.connect.datatypes.RestingHeartRateRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.RestingHeartRateFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

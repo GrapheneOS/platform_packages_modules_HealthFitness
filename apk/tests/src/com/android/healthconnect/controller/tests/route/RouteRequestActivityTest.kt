@@ -19,9 +19,9 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.healthconnect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
-import android.healthconnect.HealthConnectManager.EXTRA_SESSION_ID
-import android.healthconnect.datatypes.ExerciseRoute
+import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
+import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
+import android.health.connect.datatypes.ExerciseRoute
 import android.widget.Button
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView

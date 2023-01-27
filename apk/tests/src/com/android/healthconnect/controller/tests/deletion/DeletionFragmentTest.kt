@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.deletion
 
-import android.healthconnect.HealthDataCategory
+import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData

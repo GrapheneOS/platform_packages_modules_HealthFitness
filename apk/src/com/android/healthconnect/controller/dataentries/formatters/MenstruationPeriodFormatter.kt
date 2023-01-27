@@ -19,8 +19,8 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.MenstruationPeriodRecord
-import android.healthconnect.datatypes.Record
+import android.health.connect.datatypes.MenstruationPeriodRecord
+import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.shared.AppInfoReader

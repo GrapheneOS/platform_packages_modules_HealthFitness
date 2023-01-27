@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord
+import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateVariabilityRmssdFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
@@ -29,14 +29,14 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.runBlocking
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
+import kotlinx.coroutines.runBlocking
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
 @HiltAndroidTest
 class HeartRateVariabilityRmssdFormatterTest {

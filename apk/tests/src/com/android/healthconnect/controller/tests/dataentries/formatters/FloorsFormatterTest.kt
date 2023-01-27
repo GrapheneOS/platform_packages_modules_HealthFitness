@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.FloorsClimbedRecord
+import android.health.connect.datatypes.FloorsClimbedRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.FloorsFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

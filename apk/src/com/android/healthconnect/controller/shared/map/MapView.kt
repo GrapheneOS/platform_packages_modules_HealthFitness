@@ -19,8 +19,8 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import android.healthconnect.datatypes.ExerciseRoute
-import android.healthconnect.datatypes.ExerciseRoute.Location
+import android.health.connect.datatypes.ExerciseRoute
+import android.health.connect.datatypes.ExerciseRoute.Location
 import android.util.AttributeSet
 import android.view.View
 import com.android.healthconnect.controller.R

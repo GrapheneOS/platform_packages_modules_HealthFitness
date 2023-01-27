@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.tests.permissions.data
 
 import android.content.Context
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString

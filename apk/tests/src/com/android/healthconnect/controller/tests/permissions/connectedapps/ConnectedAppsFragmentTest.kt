@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.permissions.connectedapps
 
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView

@@ -1,6 +1,6 @@
 package com.android.healthconnect.controller.tests.utils
 
-import android.healthconnect.datatypes.ExerciseRoute
+import android.health.connect.datatypes.ExerciseRoute
 import java.time.Instant
 
 /** Test data for route rendering. */

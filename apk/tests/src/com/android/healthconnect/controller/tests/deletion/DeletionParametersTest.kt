@@ -1,6 +1,6 @@
 package com.android.healthconnect.controller.tests.deletion
 
-import android.healthconnect.HealthDataCategory
+import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import com.android.healthconnect.controller.deletion.ChosenRange
 import com.android.healthconnect.controller.deletion.DeletionParameters

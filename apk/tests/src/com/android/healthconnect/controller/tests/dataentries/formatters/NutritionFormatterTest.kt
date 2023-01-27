@@ -16,9 +16,9 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.NutritionRecord
-import android.healthconnect.datatypes.units.Energy.*
-import android.healthconnect.datatypes.units.Mass.*
+import android.health.connect.datatypes.NutritionRecord
+import android.health.connect.datatypes.units.Energy.*
+import android.health.connect.datatypes.units.Mass.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.NutritionFormatter
 import com.android.healthconnect.controller.dataentries.units.EnergyUnit

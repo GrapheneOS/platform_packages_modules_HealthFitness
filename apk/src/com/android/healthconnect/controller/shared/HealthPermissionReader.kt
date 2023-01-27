@@ -21,14 +21,14 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.ResolveInfoFlags
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /**
  * Class that read permissions declared by Health Connect clients as a string array in their XML
- * resources. see android.healthconnect.HealthPermissions
+ * resources. see android.health.connect.HealthPermissions
  */
 class HealthPermissionReader @Inject constructor(@ApplicationContext private val context: Context) {
 

@@ -13,7 +13,7 @@
  */
 package com.android.healthconnect.controller.permissions.api
 
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import android.util.Log
 import java.time.Instant
 import javax.inject.Inject

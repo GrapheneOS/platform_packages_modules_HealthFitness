@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.IntermenstrualBleedingRecord
+import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

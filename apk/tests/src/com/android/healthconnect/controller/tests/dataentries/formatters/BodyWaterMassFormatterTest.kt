@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.BodyWaterMassRecord
-import android.healthconnect.datatypes.units.Mass
+import android.health.connect.datatypes.BodyWaterMassRecord
+import android.health.connect.datatypes.units.Mass
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.BodyWaterMassFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

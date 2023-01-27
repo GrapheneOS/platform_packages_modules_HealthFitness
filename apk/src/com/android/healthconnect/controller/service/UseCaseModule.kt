@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.service
 
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps

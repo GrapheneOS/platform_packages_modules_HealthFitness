@@ -15,9 +15,9 @@
  */
 package com.android.healthconnect.controller.categories
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.RecordTypeInfoResponse
-import android.healthconnect.datatypes.Record
+import android.health.connect.HealthConnectManager
+import android.health.connect.RecordTypeInfoResponse
+import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HEALTH_DATA_CATEGORIES

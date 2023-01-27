@@ -19,13 +19,13 @@
 package com.android.healthconnect.controller.tests.shared
 
 import android.content.Context
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.HealthDataCategory.ACTIVITY
-import android.healthconnect.HealthDataCategory.BODY_MEASUREMENTS
-import android.healthconnect.HealthDataCategory.CYCLE_TRACKING
-import android.healthconnect.HealthDataCategory.NUTRITION
-import android.healthconnect.HealthDataCategory.SLEEP
-import android.healthconnect.HealthDataCategory.VITALS
+import android.health.connect.HealthConnectManager
+import android.health.connect.HealthDataCategory.ACTIVITY
+import android.health.connect.HealthDataCategory.BODY_MEASUREMENTS
+import android.health.connect.HealthDataCategory.CYCLE_TRACKING
+import android.health.connect.HealthDataCategory.NUTRITION
+import android.health.connect.HealthDataCategory.SLEEP
+import android.health.connect.HealthDataCategory.VITALS
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission

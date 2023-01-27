@@ -18,9 +18,9 @@
 
 package com.android.healthconnect.controller.dataentries.formatters.shared
 
-import android.healthconnect.datatypes.ExerciseSessionRecord
-import android.healthconnect.datatypes.Record
-import android.healthconnect.datatypes.SleepSessionRecord
+import android.health.connect.datatypes.ExerciseSessionRecord
+import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SleepSessionRecord
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter

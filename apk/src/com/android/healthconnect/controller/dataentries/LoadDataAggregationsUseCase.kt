@@ -18,17 +18,17 @@
 
 package com.android.healthconnect.controller.dataentries
 
-import android.healthconnect.AggregateRecordsRequest
-import android.healthconnect.AggregateRecordsResponse
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.TimeInstantRangeFilter
-import android.healthconnect.datatypes.AggregationType
-import android.healthconnect.datatypes.DataOrigin
-import android.healthconnect.datatypes.DistanceRecord
-import android.healthconnect.datatypes.StepsRecord
-import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
-import android.healthconnect.datatypes.units.Energy
-import android.healthconnect.datatypes.units.Length
+import android.health.connect.AggregateRecordsRequest
+import android.health.connect.AggregateRecordsResponse
+import android.health.connect.HealthConnectManager
+import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.AggregationType
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.TotalCaloriesBurnedRecord
+import android.health.connect.datatypes.units.Energy
+import android.health.connect.datatypes.units.Length
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter

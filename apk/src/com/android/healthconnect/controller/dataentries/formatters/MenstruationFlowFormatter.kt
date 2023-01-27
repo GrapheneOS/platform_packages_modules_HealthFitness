@@ -16,10 +16,10 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.MenstruationFlowRecord
-import android.healthconnect.datatypes.MenstruationFlowRecord.MenstruationFlowType.FLOW_HEAVY
-import android.healthconnect.datatypes.MenstruationFlowRecord.MenstruationFlowType.FLOW_LIGHT
-import android.healthconnect.datatypes.MenstruationFlowRecord.MenstruationFlowType.FLOW_MEDIUM
+import android.health.connect.datatypes.MenstruationFlowRecord
+import android.health.connect.datatypes.MenstruationFlowRecord.MenstruationFlowType.FLOW_HEAVY
+import android.health.connect.datatypes.MenstruationFlowRecord.MenstruationFlowType.FLOW_LIGHT
+import android.health.connect.datatypes.MenstruationFlowRecord.MenstruationFlowType.FLOW_MEDIUM
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
