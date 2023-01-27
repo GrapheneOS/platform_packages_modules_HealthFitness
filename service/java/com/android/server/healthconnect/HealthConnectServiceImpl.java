@@ -189,6 +189,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final PermissionManager mPermissionManager;
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
 
+    // Tells whether we are currently ACTIVELY staging remote data.
+    private boolean mActivelyStagingRemoteData = false;
+
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
             HealthConnectPermissionHelper permissionHelper,
@@ -923,6 +926,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         });
                 return;
             }
+            mActivelyStagingRemoteData = true;
             setDataRestoreState(
                     INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
                     userHandle.getIdentifier(),
@@ -1003,6 +1007,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 INTERNAL_RESTORE_STATE_STAGING_DONE,
                                 userHandle.getIdentifier(),
                                 false /* force */);
+                        mActivelyStagingRemoteData = false;
 
                         // Share the result / exception with the caller.
                         try {
@@ -1179,6 +1184,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 currentRestoreState = Integer.parseInt(restoreStateOnDisk);
             } catch (Exception e) {
                 Slog.e(TAG, "Exception parsing restoreStateOnDisk: " + restoreStateOnDisk, e);
+            }
+            // If we are not actively staging the data right now but the disk still reflects that we
+            // are then that means we died in the middle of staging.  We should be waiting for the
+            // remote data to be staged now.
+            if (!mActivelyStagingRemoteData
+                    && currentRestoreState == INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
+                currentRestoreState = INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING;
             }
             return currentRestoreState;
         } finally {
