@@ -20,6 +20,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -29,7 +30,9 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessFragment
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.tests.utils.TEST_APP
+import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import dagger.hilt.android.testing.BindValue
@@ -63,11 +66,12 @@ class RecentAccessFragmentTest {
 
     @Test
     fun test_RecentAccessFragment_displaysCorrectly() {
-        val recentApp =
+        val recentApp1 =
             RecentAccessEntry(
                 metadata = TEST_APP,
                 instantTime = Instant.parse("2022-10-20T18:40:13.00Z"),
                 isToday = true,
+                isInactive = false,
                 dataTypesWritten =
                     mutableSetOf(
                         HealthDataCategory.ACTIVITY.uppercaseTitle,
@@ -77,7 +81,24 @@ class RecentAccessFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle,
                         HealthDataCategory.NUTRITION.uppercaseTitle))
 
-        Mockito.`when`(viewModel.recentAccessApps).then { MutableLiveData(listOf(recentApp)) }
+        val recentApp2 =
+            RecentAccessEntry(
+                metadata = TEST_APP_2,
+                instantTime = Instant.parse("2022-10-20T19:40:13.00Z"),
+                isToday = true,
+                isInactive = true,
+                dataTypesWritten =
+                    mutableSetOf(
+                        HealthDataCategory.SLEEP.uppercaseTitle,
+                        HealthDataCategory.NUTRITION.uppercaseTitle),
+                dataTypesRead =
+                    mutableSetOf(
+                        HealthDataCategory.ACTIVITY.uppercaseTitle,
+                        HealthDataCategory.VITALS.uppercaseTitle))
+
+        Mockito.`when`(viewModel.recentAccessApps).then {
+            MutableLiveData(listOf(recentApp1, recentApp2))
+        }
 
         launchFragment<RecentAccessFragment>(Bundle())
         onView(withText("Today")).check(matches(isDisplayed()))
@@ -85,5 +106,54 @@ class RecentAccessFragmentTest {
         onView(withText("18:40")).check(matches(isDisplayed()))
         onView(withText("Read: Nutrition, Sleep")).check(matches(isDisplayed()))
         onView(withText("Write: Activity, Vitals")).check(matches(isDisplayed()))
+
+        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+        onView(withText("19:40")).check(matches(isDisplayed()))
+        onView(withText("Read: Activity, Vitals")).check(matches(isDisplayed()))
+        onView(withText("Write: Nutrition, Sleep")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_RecentAccessFragment_inactiveApp_doesNotNavigate() {
+        val recentApp1 =
+            RecentAccessEntry(
+                metadata = TEST_APP,
+                instantTime = Instant.parse("2022-10-20T18:40:13.00Z"),
+                isToday = true,
+                isInactive = false,
+                dataTypesWritten =
+                    mutableSetOf(
+                        HealthDataCategory.ACTIVITY.uppercaseTitle,
+                        HealthDataCategory.VITALS.uppercaseTitle),
+                dataTypesRead =
+                    mutableSetOf(
+                        HealthDataCategory.SLEEP.uppercaseTitle,
+                        HealthDataCategory.NUTRITION.uppercaseTitle))
+
+        val recentApp2 =
+            RecentAccessEntry(
+                metadata = TEST_APP_2,
+                instantTime = Instant.parse("2022-10-20T19:40:13.00Z"),
+                isToday = true,
+                isInactive = true,
+                dataTypesWritten =
+                    mutableSetOf(
+                        HealthDataCategory.ACTIVITY.uppercaseTitle,
+                        HealthDataCategory.VITALS.uppercaseTitle),
+                dataTypesRead =
+                    mutableSetOf(
+                        HealthDataCategory.SLEEP.uppercaseTitle,
+                        HealthDataCategory.NUTRITION.uppercaseTitle))
+
+        Mockito.`when`(viewModel.recentAccessApps).then {
+            MutableLiveData(listOf(recentApp1, recentApp2))
+        }
+
+        launchFragment<RecentAccessFragment>(Bundle())
+
+        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+        onView(withText(TEST_APP_NAME_2)).perform(click())
+
+        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
     }
 }

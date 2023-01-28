@@ -21,6 +21,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
+import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.dataTypeToCategory
 import com.android.healthconnect.controller.utils.SystemTimeSource
@@ -36,6 +38,7 @@ class RecentAccessViewModel
 @Inject
 constructor(
     private val appInfoReader: AppInfoReader,
+    private val loadHealthPermissionApps: ILoadHealthPermissionApps,
     private val loadRecentAccessUseCase: ILoadRecentAccessUseCase,
 ) : ViewModel() {
 
@@ -50,7 +53,19 @@ constructor(
     fun loadRecentAccessApps(maxNumEntries: Int = -1, timeSource: TimeSource = SystemTimeSource) {
         viewModelScope.launch {
             val accessLogs = loadRecentAccessUseCase.invoke()
+            val connectedApps = loadHealthPermissionApps.invoke()
+            val inactiveApps =
+                connectedApps
+                    .groupBy { it.status }[ConnectedAppStatus.INACTIVE]
+                    .orEmpty()
+                    .map { connectedAppMetadata -> connectedAppMetadata.appMetadata.packageName }
+
             val clusters = clusterEntries(accessLogs, maxNumEntries, timeSource)
+            clusters.forEach {
+                if (inactiveApps.contains(it.metadata.packageName)) {
+                    it.isInactive = true
+                }
+            }
             _recentAccessApps.postValue(clusters)
         }
     }

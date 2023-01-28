@@ -128,14 +128,17 @@ class HomeFragment : Hilt_HomeFragment() {
             recentAppsList.forEach { recentApp ->
                 val newRecentAccessPreference =
                     RecentAccessPreference(requireContext(), recentApp, false).also {
-                        it.setOnPreferenceClickListener {
-                            findNavController()
-                                .navigate(
-                                    R.id.action_homeFragment_to_connectedAppFragment,
-                                    bundleOf(
-                                        Intent.EXTRA_PACKAGE_NAME to recentApp.metadata.packageName,
-                                        Constants.EXTRA_APP_NAME to recentApp.metadata.appName))
-                            true
+                        if (!recentApp.isInactive) {
+                            it.setOnPreferenceClickListener {
+                                findNavController()
+                                    .navigate(
+                                        R.id.action_homeFragment_to_connectedAppFragment,
+                                        bundleOf(
+                                            Intent.EXTRA_PACKAGE_NAME to
+                                                recentApp.metadata.packageName,
+                                            Constants.EXTRA_APP_NAME to recentApp.metadata.appName))
+                                true
+                            }
                         }
                     }
                 mRecentAccessPreference?.addPreference(newRecentAccessPreference)

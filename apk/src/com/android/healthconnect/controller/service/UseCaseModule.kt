@@ -16,8 +16,15 @@
 package com.android.healthconnect.controller.service
 
 import android.healthconnect.HealthConnectManager
+import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
+import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
+import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
+import com.android.healthconnect.controller.permissions.connectedapps.QueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.recentaccess.LoadRecentAccessUseCase
+import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,9 +36,27 @@ import kotlinx.coroutines.CoroutineDispatcher
 class UseCaseModule {
     @Provides
     fun providesLoadRecentAccessUseCase(
-            manager: HealthConnectManager,
-            @IoDispatcher dispatcher: CoroutineDispatcher
+        manager: HealthConnectManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher
     ): ILoadRecentAccessUseCase {
         return LoadRecentAccessUseCase(manager, dispatcher)
+    }
+
+    @Provides
+    fun providesLoadHealthPermissionAppsUseCase(
+        healthPermissionReader: HealthPermissionReader,
+        loadGrantedPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
+        getContributorAppInfoUseCase: GetContributorAppInfoUseCase,
+        queryRecentAccessUseCase: QueryRecentAccessLogsUseCase,
+        appInfoReader: AppInfoReader,
+        @IoDispatcher dispatcher: CoroutineDispatcher
+    ): ILoadHealthPermissionApps {
+        return LoadHealthPermissionApps(
+            healthPermissionReader,
+            loadGrantedPermissionsUseCase,
+            getContributorAppInfoUseCase,
+            queryRecentAccessUseCase,
+            appInfoReader,
+            dispatcher)
     }
 }
