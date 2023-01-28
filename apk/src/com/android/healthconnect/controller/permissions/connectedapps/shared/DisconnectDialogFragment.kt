@@ -40,7 +40,7 @@ class DisconnectDialogFragment(
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val body = layoutInflater.inflate(R.layout.widget_message_with_checkbox, null)
+        val body = layoutInflater.inflate(R.layout.dialog_message_with_checkbox, null)
         body.findViewById<TextView>(R.id.dialog_message).apply {
             text = getString(R.string.permissions_disconnect_dialog_message, appName)
         }

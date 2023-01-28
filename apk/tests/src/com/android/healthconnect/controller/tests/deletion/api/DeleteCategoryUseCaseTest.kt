@@ -22,7 +22,6 @@ import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
 import android.healthconnect.datatypes.DistanceRecord
 import android.healthconnect.datatypes.ElevationGainedRecord
-import android.healthconnect.datatypes.ExerciseSessionRecord
 import android.healthconnect.datatypes.FloorsClimbedRecord
 import android.healthconnect.datatypes.PowerRecord
 import android.healthconnect.datatypes.SpeedRecord
@@ -31,7 +30,6 @@ import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
 import android.healthconnect.datatypes.Vo2MaxRecord
 import android.healthconnect.datatypes.WheelchairPushesRecord
-import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.api.DeleteCategoryUseCase
@@ -104,16 +102,13 @@ class DeleteCategoryUseCaseTest {
                 FloorsClimbedRecord::class.java,
                 ElevationGainedRecord::class.java,
                 Vo2MaxRecord::class.java,
-                CyclingPedalingCadenceRecord::class.java,
-                ExerciseSessionRecord::class.java)
+                CyclingPedalingCadenceRecord::class.java)
+        // TODO (b/266963766) enable when ExerciseSessionRecord supported
+        // ExerciseSessionRecord::class.java)
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
-            receiver.onResult(Any())
-            null
-        }
+        val answer = { _: InvocationOnMock -> null }
         return answer
     }
 }

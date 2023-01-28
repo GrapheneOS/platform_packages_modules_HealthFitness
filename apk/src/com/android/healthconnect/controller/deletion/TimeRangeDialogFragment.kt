@@ -37,7 +37,7 @@ class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
     private val viewModel: DeletionViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view: View = layoutInflater.inflate(R.layout.time_range_picker, null)
+        val view: View = layoutInflater.inflate(R.layout.dialog_message_time_range_picker, null)
         val radioGroup: RadioGroup = view.findViewById(R.id.radio_group)
         val messageView: TextView = view.findViewById(R.id.time_range_message)
         messageView.text = buildMessage()

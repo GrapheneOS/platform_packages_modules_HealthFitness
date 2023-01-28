@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -19,10 +21,10 @@ import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.DialogTitle
 import androidx.fragment.app.Fragment
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.AttributeResolver
@@ -34,6 +36,8 @@ class AlertDialogBuilder(fragment: Fragment) {
     private var alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
     private var customTitleLayout: View =
         LayoutInflater.from(context).inflate(R.layout.dialog_title, null)
+    private var customMessageLayout: View =
+        LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
 
     fun setIcon(@AttrRes iconId: Int): AlertDialogBuilder {
         val iconView: ImageView = customTitleLayout.findViewById(R.id.dialog_icon)
@@ -48,7 +52,7 @@ class AlertDialogBuilder(fragment: Fragment) {
 
     /** Sets the title in the custom title layout using the given resource id. */
     fun setTitle(@StringRes titleId: Int): AlertDialogBuilder {
-        val titleView: DialogTitle = customTitleLayout.findViewById(R.id.dialog_title)
+        val titleView: TextView = customTitleLayout.findViewById(R.id.dialog_title)
         titleView.setText(titleId)
         alertDialogBuilder.setCustomTitle(customTitleLayout)
         return this
@@ -56,7 +60,7 @@ class AlertDialogBuilder(fragment: Fragment) {
 
     /** Sets the title in the custom title layout. */
     fun setTitle(titleString: String): AlertDialogBuilder {
-        val titleView: DialogTitle = customTitleLayout.findViewById(R.id.dialog_title)
+        val titleView: TextView = customTitleLayout.findViewById(R.id.dialog_title)
         titleView.text = titleString
         alertDialogBuilder.setCustomTitle(customTitleLayout)
         return this
@@ -64,13 +68,24 @@ class AlertDialogBuilder(fragment: Fragment) {
 
     /** Sets the message to be displayed in the dialog using the given resource id. */
     fun setMessage(@StringRes messageId: Int): AlertDialogBuilder {
-        alertDialogBuilder.setMessage(messageId)
+        val messageView: TextView = customMessageLayout.findViewById(R.id.dialog_custom_message)
+        messageView.text = context.getString(messageId)
+        alertDialogBuilder.setView(customMessageLayout)
         return this
     }
 
     /** Sets the message to be displayed in the dialog. */
     fun setMessage(message: CharSequence?): AlertDialogBuilder {
-        alertDialogBuilder.setMessage(message)
+        val messageView: TextView = customMessageLayout.findViewById(R.id.dialog_custom_message)
+        messageView.text = message
+        alertDialogBuilder.setView(customMessageLayout)
+        return this
+    }
+
+    fun setMessage(message: String): AlertDialogBuilder {
+        val messageView: TextView = customMessageLayout.findViewById(R.id.dialog_custom_message)
+        messageView.text = message
+        alertDialogBuilder.setView(customMessageLayout)
         return this
     }
 
@@ -92,11 +107,6 @@ class AlertDialogBuilder(fragment: Fragment) {
         onClickListener: DialogInterface.OnClickListener? = null
     ): AlertDialogBuilder {
         alertDialogBuilder.setNegativeButton(textId, onClickListener)
-        return this
-    }
-
-    fun setMessage(message: String): AlertDialogBuilder {
-        alertDialogBuilder.setMessage(message)
         return this
     }
 

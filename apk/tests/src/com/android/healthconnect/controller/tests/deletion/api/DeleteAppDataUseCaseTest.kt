@@ -19,12 +19,13 @@ import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.DataOrigin
-import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.api.DeleteAppDataUseCase
+import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.google.common.truth.Truth
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -35,7 +36,6 @@ import org.mockito.Captor
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
-import java.time.Instant
 
 @HiltAndroidTest
 class DeleteAppDataUseCaseTest {
@@ -50,7 +50,8 @@ class DeleteAppDataUseCaseTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        useCase = DeleteAppDataUseCase(manager, Dispatchers.Main)
+        val revokePermissionsUseCase = RevokeAllHealthPermissionsUseCase(manager)
+        useCase = DeleteAppDataUseCase(manager, revokePermissionsUseCase, Dispatchers.Main)
     }
 
     @Test
@@ -66,10 +67,9 @@ class DeleteAppDataUseCaseTest {
         val deleteAppData =
             DeletionType.DeletionTypeAppData(packageName = "package.name", appName = "APP_NAME")
 
-        useCase.invoke(deleteAppData, TimeInstantRangeFilter.Builder()
-                .setStartTime(startTime)
-                .setEndTime(endTime)
-                .build())
+        useCase.invoke(
+            deleteAppData,
+            TimeInstantRangeFilter.Builder().setStartTime(startTime).setEndTime(endTime).build())
 
         Mockito.verify(manager, Mockito.times(1))
             .deleteRecords(filtersCaptor.capture(), Mockito.any(), Mockito.any())
@@ -83,11 +83,7 @@ class DeleteAppDataUseCaseTest {
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
-            receiver.onResult(Any())
-            null
-        }
+        val answer = { _: InvocationOnMock -> null }
         return answer
     }
 }

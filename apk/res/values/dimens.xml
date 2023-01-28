@@ -37,6 +37,7 @@
     <dimen name="banner_alpha_selected" type="float">0.14</dimen>
 
     <dimen name="filter_corner_radius">8dp</dimen>
+    <dimen name="button_corner_radius">50dp</dimen>
 
     <dimen name="timeline_divider_height">26dp</dimen>
 

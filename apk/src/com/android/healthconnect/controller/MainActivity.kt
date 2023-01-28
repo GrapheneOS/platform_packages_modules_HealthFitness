@@ -38,7 +38,7 @@ class MainActivity : Hilt_MainActivity() {
         /** Displaying onboarding screen if user is opening Health Connect app for the first time */
         val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
         val previouslyOpened =
-            sharedPreference.getBoolean(getString(R.string.previously_opened), false)
+                sharedPreference.getBoolean(getString(R.string.previously_opened), false)
         if (!previouslyOpened && savedInstanceState == null) {
             val intent = Intent(this, OnboardingActivity::class.java)
             startActivityForResult(intent, 0)
@@ -49,11 +49,11 @@ class MainActivity : Hilt_MainActivity() {
         super.onStart()
         if (intent.action == HealthConnectManager.ACTION_MANAGE_HEALTH_DATA) {
             findNavController(R.id.nav_host_fragment)
-                .navigate(R.id.action_deeplink_to_healthDataCategoriesFragment)
+                    .navigate(R.id.action_deeplink_to_healthDataCategoriesFragment)
         }
         getAppBarLayout()?.let { appBarLayout ->
             findNavController(R.id.nav_host_fragment)
-                .addOnDestinationChangedListener(DestinationChangedListener(appBarLayout))
+                    .addOnDestinationChangedListener(DestinationChangedListener(appBarLayout))
         }
     }
 

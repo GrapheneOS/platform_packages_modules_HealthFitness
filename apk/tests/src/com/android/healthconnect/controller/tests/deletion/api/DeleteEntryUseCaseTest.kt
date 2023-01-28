@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.tests.deletion.api
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.RecordIdFilter
 import android.healthconnect.datatypes.StepsRecord
-import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.deletion.DeletionType.DeleteDataEntry
 import com.android.healthconnect.controller.deletion.api.DeleteEntryUseCase
 import com.android.healthconnect.controller.shared.DataType
@@ -71,11 +70,7 @@ class DeleteEntryUseCaseTest {
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
-            receiver.onResult(Any())
-            null
-        }
+        val answer = { _: InvocationOnMock -> null }
         return answer
     }
 }

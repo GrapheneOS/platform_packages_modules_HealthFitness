@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMAT
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_INACTIVE_APP_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.TIME_RANGE_SELECTION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.TRY_AGAIN_EVENT
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,7 +60,15 @@ class DeletionFragment : Hilt_DeletionFragment() {
         parentFragmentManager.setFragmentResultListener(START_DELETION_EVENT, this) { _, bundle ->
             val deletionType = bundle.getParcelable(DELETION_TYPE, DeletionType::class.java)
             viewModel.setDeletionType(deletionType!!)
-            showFirstDialog(deletionType)
+            showFirstDialog(deletionType, false)
+        }
+
+        parentFragmentManager.setFragmentResultListener(START_INACTIVE_APP_DELETION_EVENT, this) {
+            _,
+            bundle ->
+            val deletionType = bundle.getParcelable(DELETION_TYPE, DeletionType::class.java)
+            viewModel.setDeletionType(deletionType!!)
+            showFirstDialog(deletionType, true)
         }
 
         // time range selection
@@ -125,8 +134,18 @@ class DeletionFragment : Hilt_DeletionFragment() {
     }
 
     private fun showConfirmationDialog() {
-        DeletionConfirmationDialogFragment()
-            .show(childFragmentManager, DeletionConfirmationDialogFragment.TAG)
+        if (viewModel.deletionParameters.value?.deletionType is DeletionType.DeletionTypeAppData &&
+            viewModel.deletionParameters.value?.chosenRange == ChosenRange.DELETE_RANGE_ALL_DATA) {
+            showAppDeleteConfirmationDialog()
+        } else {
+            DeletionConfirmationDialogFragment()
+                .show(childFragmentManager, DeletionConfirmationDialogFragment.TAG)
+        }
+    }
+
+    private fun showAppDeleteConfirmationDialog() {
+        DeletionAppDataConfirmationDialogFragment()
+            .show(childFragmentManager, DeletionAppDataConfirmationDialogFragment.TAG)
     }
 
     private fun showTimeRagePickerDialog() {
@@ -147,13 +166,15 @@ class DeletionFragment : Hilt_DeletionFragment() {
         FailedDialogFragment().show(childFragmentManager, FailedDialogFragment.TAG)
     }
 
-    private fun showFirstDialog(deletionType: DeletionType) {
-        when (deletionType) {
-            is DeletionType.DeleteDataEntry -> showConfirmationDialog()
-            else -> showTimeRagePickerDialog()
+    private fun showFirstDialog(deletionType: DeletionType, isInactiveApp: Boolean) {
+        if (isInactiveApp) {
+            showAppDeleteConfirmationDialog()
+        } else {
+            when (deletionType) {
+                is DeletionType.DeleteDataEntry -> showConfirmationDialog()
+                else -> showTimeRagePickerDialog()
+            }
         }
-
-        // TODO(b/246161850) implement other flows which do not require TimeRangePicker
     }
 
     private fun hideProgressDialog() {
