@@ -20,11 +20,8 @@ import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_RES
 import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_RESTORE_WAITING_FOR_STAGING;
 
 import android.annotation.NonNull;
-import android.annotation.Nullable;
 import android.content.Context;
 import android.healthconnect.HealthConnectManager;
-import android.os.UserHandle;
-import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.server.SystemService;
@@ -36,10 +33,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.permission.PackagePermissionChangesMonitor;
 import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.util.Objects;
 
@@ -51,58 +44,41 @@ import java.util.Objects;
 public class HealthConnectManagerService extends SystemService {
     private static final String TAG = "HealthConnectManagerService";
     private final Context mContext;
-    private final PackagePermissionChangesMonitor mPackageMonitor;
-    private final HealthConnectServiceImpl mHealthConnectService;
+    private final HealthConnectPermissionHelper mPermissionHelper;
     private final TransactionManager mTransactionManager;
-    private final UserManager mUserManager;
-    private UserHandle mCurrentUser;
+    private final HealthPermissionIntentAppsTracker mPermissionIntentTracker;
+    private final PackagePermissionChangesMonitor mPackageMonitor;
+    private final FirstGrantTimeManager mFirstGrantTimeManager;
+    private final HealthConnectServiceImpl mHealthConnectService;
 
     public HealthConnectManagerService(Context context) {
         super(context);
-        HealthPermissionIntentAppsTracker permissionIntentTracker =
-                new HealthPermissionIntentAppsTracker(context);
-        FirstGrantTimeManager firstGrantTimeManager =
+        mPermissionIntentTracker = new HealthPermissionIntentAppsTracker(context);
+        mFirstGrantTimeManager =
                 new FirstGrantTimeManager(
-                        context, permissionIntentTracker, FirstGrantTimeDatastore.createInstance());
-        HealthConnectPermissionHelper permissionHelper =
+                        context,
+                        mPermissionIntentTracker,
+                        FirstGrantTimeDatastore.createInstance());
+        mPermissionHelper =
                 new HealthConnectPermissionHelper(
                         context,
                         context.getPackageManager(),
                         HealthConnectManager.getHealthPermissions(context),
-                        permissionIntentTracker,
-                        firstGrantTimeManager);
+                        mPermissionIntentTracker,
+                        mFirstGrantTimeManager);
         mPackageMonitor =
-                new PackagePermissionChangesMonitor(permissionIntentTracker, firstGrantTimeManager);
-        mCurrentUser = context.getUser();
+                new PackagePermissionChangesMonitor(
+                        mPermissionIntentTracker, mFirstGrantTimeManager);
+        mTransactionManager = TransactionManager.getInstance(getContext());
         mContext = context;
-        mUserManager = mContext.getSystemService(UserManager.class);
-        mTransactionManager =
-                TransactionManager.getInstance(
-                        new HealthConnectUserContext(mContext, mCurrentUser));
         mHealthConnectService =
                 new HealthConnectServiceImpl(
-                        mTransactionManager, permissionHelper, firstGrantTimeManager, mContext);
+                        mTransactionManager, mPermissionHelper, mFirstGrantTimeManager, mContext);
     }
 
     @Override
     public void onStart() {
         mPackageMonitor.registerBroadcastReceiver(mContext);
-        publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
-    }
-
-    @Override
-    public void onUserSwitching(@Nullable TargetUser from, @NonNull TargetUser to) {
-        HealthConnectThreadScheduler.shutdownThreadPools();
-        AppInfoHelper.getInstance().clearCache();
-        DeviceInfoHelper.getInstance().clearCache();
-        HealthDataCategoryPriorityHelper.getInstance().clearCache();
-        PreferenceHelper.getInstance().clearCache();
-        mTransactionManager.onUserSwitching();
-    }
-
-    @Override
-    public void onUserUnlocking(@NonNull TargetUser user) {
-        Objects.requireNonNull(user);
 
         // TODO(b/264791313) Refactor restore related functionality into a separate class
         @HealthConnectServiceImpl.DataRestoreState
@@ -110,28 +86,20 @@ public class HealthConnectManagerService extends SystemService {
         if (currentDataRestoreState == DATA_RESTORE_STAGING_IN_PROGRESS) {
             mHealthConnectService.setDataRestoreState(DATA_RESTORE_WAITING_FOR_STAGING, 0, true);
         }
+        publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
+    }
 
-        if (user.getUserHandle().equals(mCurrentUser)) {
-            // The current setup in place is for {@code user} only, so just ignore this request
-            return;
-        }
-
-        mCurrentUser = user.getUserHandle();
-        mTransactionManager.onUserUnlocking(new HealthConnectUserContext(mContext, mCurrentUser));
-        HealthConnectThreadScheduler.resetThreadPools();
+    @Override
+    public void onUserUnlocking(@NonNull TargetUser user) {
+        Objects.requireNonNull(user);
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        AutoDeleteService.schedule(mContext, mCurrentUser.getIdentifier());
+                        AutoDeleteService.schedule(mContext, user.getUserHandle().getIdentifier());
                     } catch (Exception e) {
                         Slog.e(TAG, "Auto delete schedule failed", e);
                     }
                 });
-    }
-
-    @Override
-    public boolean isUserSupported(@NonNull TargetUser user) {
-        return !mUserManager.isManagedProfile(user.getUserHandle().getIdentifier());
     }
 
     @Override

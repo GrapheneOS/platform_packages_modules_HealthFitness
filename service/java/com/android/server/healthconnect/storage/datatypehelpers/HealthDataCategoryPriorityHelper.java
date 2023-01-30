@@ -195,10 +195,6 @@ public class HealthDataCategoryPriorityHelper {
                 newPriorityOrder);
     }
 
-    public synchronized void clearCache() {
-        mHealthDataCategoryToAppIdPriorityMap = null;
-    }
-
     private Map<Integer, List<Long>> getHealthDataCategoryToAppIdPriorityMap() {
         if (mHealthDataCategoryToAppIdPriorityMap == null) {
             populateDataCategoryToAppIdPriorityMap();

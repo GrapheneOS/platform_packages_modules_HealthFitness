@@ -115,11 +115,6 @@ public class DeviceInfoHelper {
         // empty by default
     }
 
-    public synchronized void clearCache() {
-        mDeviceInfoMap = null;
-        mIdDeviceInfoMap = null;
-    }
-
     private synchronized void populateDeviceInfoMap() {
         if (mDeviceInfoMap != null) {
             return;
