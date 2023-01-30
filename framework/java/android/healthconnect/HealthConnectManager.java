@@ -215,6 +215,36 @@ public class HealthConnectManager {
     public static final String ACTION_MANAGE_HEALTH_DATA =
             "android.healthconnect.action.MANAGE_HEALTH_DATA";
 
+    /**
+     * Activity action: Display information regarding migration - e.g. asking the user to take some
+     * action (e.g. update the system) so that migration can take place.
+     *
+     * <p><b>Note:</b> Callers of the migration APIs must handle this intent.
+     *
+     * @hide
+     */
+    @SystemApi
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_SHOW_MIGRATION_INFO =
+            "android.healthconnect.action.SHOW_MIGRATION_INFO";
+
+    /**
+     * Broadcast Action: Health Connect is ready to accept migrated data.
+     *
+     * <p class="note">This broadcast is explicitly sent to Health Connect migration aware
+     * applications to prompt them to start/continue HC data migration. Migration aware applications
+     * are those that both hold {@code android.permission.MIGRATE_HEALTH_CONNECT_DATA} and handle
+     * {@code android.healthconnect.action.SHOW_MIGRATION_INFO}.
+     *
+     * <p class="note">This is a protected intent that can only be sent by the system.
+     *
+     * @hide
+     */
+    @SdkConstant(SdkConstant.SdkConstantType.BROADCAST_INTENT_ACTION)
+    @SystemApi
+    public static final String ACTION_HEALTH_CONNECT_MIGRATION_READY =
+            "android.healthconnect.action.HEALTH_CONNECT_MIGRATION_READY";
+
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     private static volatile Set<String> sHealthPermissions;

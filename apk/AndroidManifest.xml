@@ -17,12 +17,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.healthconnect.controller">
 
+    <protected-broadcast android:name="android.healthconnect.action.HEALTH_CONNECT_MIGRATION_READY" />
+
     <uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" />
     <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <uses-permission android:name="android.permission.START_VIEW_PERMISSION_USAGE" />
     <uses-permission android:name="android.permission.health.READ_EXERCISE_ROUTE" />
-    
+
     <application
         android:name=".HealthConnectApplication"
         android:icon="@drawable/health_connect_logo"
