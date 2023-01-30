@@ -16,9 +16,9 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps.set
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsManageAppPermissionsFragment
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment

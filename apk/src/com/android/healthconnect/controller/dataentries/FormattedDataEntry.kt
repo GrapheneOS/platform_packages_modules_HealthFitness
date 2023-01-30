@@ -46,4 +46,10 @@ sealed class FormattedEntry(open val uuid: String) {
         val title: String,
         val titleA11y: String,
     ) : FormattedEntry(uuid)
+
+    data class FormattedAggregation(
+        val aggregation: String,
+        val aggregationA11y: String,
+        val contributingApps: String
+    ) : FormattedEntry(aggregation)
 }
