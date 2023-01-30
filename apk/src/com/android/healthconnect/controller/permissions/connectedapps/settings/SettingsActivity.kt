@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -19,6 +21,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,11 +36,12 @@ class SettingsActivity : Hilt_SettingsActivity() {
 
     override fun onStart() {
         super.onStart()
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.addOnDestinationChangedListener(DestinationChangedListener(this))
         if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
-            findNavController(R.id.nav_host_fragment)
-                .navigate(
-                    R.id.action_deeplink_to_settingsManageAppPermissionsFragment,
-                    bundleOf(EXTRA_PACKAGE_NAME to intent.getStringExtra(EXTRA_PACKAGE_NAME)))
+            navController.navigate(
+                R.id.action_deeplink_to_settingsManageAppPermissionsFragment,
+                bundleOf(EXTRA_PACKAGE_NAME to intent.getStringExtra(EXTRA_PACKAGE_NAME)))
         }
     }
 

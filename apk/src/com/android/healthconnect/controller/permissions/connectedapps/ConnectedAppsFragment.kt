@@ -40,7 +40,6 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppPreference
@@ -154,7 +153,6 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.connected_apps_title)
         viewModel.loadConnectedApps()
     }
 

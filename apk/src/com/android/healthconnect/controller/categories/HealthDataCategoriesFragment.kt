@@ -36,7 +36,6 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.START_DEL
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -83,11 +82,6 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             true
         }
         mDeleteAllData?.isEnabled = false
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.data_title)
     }
 
     private fun buildSummary(autoDeleteRange: AutoDeleteRange): String {

@@ -31,7 +31,6 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -72,7 +71,6 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.app_label)
         viewModel.loadConnectedApps()
     }
 

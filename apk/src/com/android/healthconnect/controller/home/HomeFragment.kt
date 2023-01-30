@@ -31,7 +31,6 @@ import com.android.healthconnect.controller.permissions.connectedapps.shared.Con
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -76,7 +75,6 @@ class HomeFragment : Hilt_HomeFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.app_label)
         homeFragmentViewModel.loadConnectedApps()
     }
 

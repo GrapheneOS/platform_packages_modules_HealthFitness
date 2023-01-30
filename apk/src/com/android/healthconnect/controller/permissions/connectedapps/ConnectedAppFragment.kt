@@ -42,7 +42,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionStr
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
@@ -245,10 +244,5 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                 healthPermissionReader.getApplicationRationaleIntent(packageName)
             startActivity(startRationaleIntent)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.app_access_title)
     }
 }

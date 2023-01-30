@@ -43,7 +43,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment.Companion.PRIORITY_UPDATED_EVENT
 import com.android.healthconnect.controller.shared.AppMetadata
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -230,10 +229,5 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
             viewModel.filterPermissionTypes(category, selectAllAppsTitle)
         }
         chipGroup.addView(allAppsButton)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.permission_types_title)
     }
 }

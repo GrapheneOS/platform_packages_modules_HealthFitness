@@ -27,7 +27,6 @@ import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDia
 import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.NEW_AUTO_DELETE_RANGE_BUNDLE
 import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.OLD_AUTO_DELETE_RANGE_BUNDLE
 import com.android.healthconnect.controller.autodelete.AutoDeleteRangePickerPreference.Companion.SET_TO_NEVER_EVENT
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,11 +49,6 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.auto_delete_screen, rootKey)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.auto_delete_title)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
