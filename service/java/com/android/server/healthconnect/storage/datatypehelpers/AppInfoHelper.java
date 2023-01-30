@@ -99,9 +99,17 @@ public final class AppInfoHelper {
         return sAppInfoHelper;
     }
 
-    public synchronized void clearCache() {
-        mAppInfoMap = null;
-        mIdPackageNameMap = null;
+    @NonNull
+    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp =
+                Bitmap.createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
     }
 
     /**
@@ -109,7 +117,7 @@ public final class AppInfoHelper {
      * helper
      */
     @NonNull
-    public CreateTableRequest getCreateTableRequest() {
+    public final CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo());
     }
 
@@ -338,18 +346,5 @@ public final class AppInfoHelper {
         columnInfo.add(new Pair<>(APP_ICON_COLUMN_NAME, BLOB));
 
         return columnInfo;
-    }
-
-    @NonNull
-    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
-        final Bitmap bmp =
-                Bitmap.createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bmp);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bmp;
     }
 }

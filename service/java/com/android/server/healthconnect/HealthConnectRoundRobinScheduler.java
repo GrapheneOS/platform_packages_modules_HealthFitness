@@ -17,7 +17,6 @@
 package com.android.server.healthconnect;
 
 import android.annotation.NonNull;
-import android.util.Log;
 
 import com.android.internal.annotations.GuardedBy;
 
@@ -32,40 +31,22 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @hide
  */
 public final class HealthConnectRoundRobinScheduler {
-    private static final String TAG = "HealthConnectScheduler";
     private final ConcurrentSkipListMap<Integer, Queue<Runnable>> mTasks =
             new ConcurrentSkipListMap<>();
     private final Object mLock = new Object();
 
     @GuardedBy("mLock")
-    private boolean mPauseScheduler;
-
-    @GuardedBy("mLock")
     private Integer mLastKeyUsed;
 
-    void resume() {
+    public void addTask(int uid, Runnable task) {
         synchronized (mLock) {
-            mPauseScheduler = false;
-        }
-    }
-
-    void addTask(int uid, Runnable task) {
-        synchronized (mLock) {
-            // If the scheduler is currently paused (this can happen if the platform is doing a user
-            // switch), ignore this request. This most likely means that we won't be able to deliver
-            // the result back anyway.
-            if (mPauseScheduler) {
-                Log.e(TAG, "Unable to schedule task for uid: " + uid);
-                return;
-            }
-
             mTasks.putIfAbsent(uid, new LinkedBlockingQueue<>());
             mTasks.get(uid).add(task);
         }
     }
 
     @NonNull
-    Runnable getNextTask() {
+    public Runnable getNextTask() {
         synchronized (mLock) {
             if (mLastKeyUsed == null) {
                 mLastKeyUsed = mTasks.firstKey();
@@ -92,13 +73,6 @@ public final class HealthConnectRoundRobinScheduler {
             }
 
             throw new InternalError("Task scheduled but none found");
-        }
-    }
-
-    void killTasksAndPauseScheduler() {
-        synchronized (mLock) {
-            mPauseScheduler = true;
-            mTasks.clear();
         }
     }
 }
