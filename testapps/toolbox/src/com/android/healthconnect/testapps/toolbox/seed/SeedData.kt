@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -20,6 +22,9 @@ import android.healthconnect.datatypes.DataOrigin
 import android.healthconnect.datatypes.Device
 import android.healthconnect.datatypes.HeartRateRecord
 import android.healthconnect.datatypes.HeightRecord
+import android.healthconnect.datatypes.MenstruationFlowRecord
+import android.healthconnect.datatypes.MenstruationFlowRecord.MenstruationFlowType
+import android.healthconnect.datatypes.MenstruationPeriodRecord
 import android.healthconnect.datatypes.Metadata
 import android.healthconnect.datatypes.Record
 import android.healthconnect.datatypes.StepsRecord
@@ -30,6 +35,7 @@ import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
 import android.util.Log
 import android.widget.Toast
+import java.time.Duration.ofDays
 import java.time.Duration.ofMinutes
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -47,12 +53,17 @@ class SeedData(private val context: Context) {
         seedStepsData()
         seedHeartRateData()
         seedBodyMeasurementData()
+        seedMenstruationData()
     }
 
     private fun seedBodyMeasurementData() {
         val records = mutableListOf<Record>()
-        records.add(HeightRecord.Builder(getMetaData(), Instant.now(), Length.fromMeters(1.75)).build())
-        records.add(WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromKilograms(70.0)).build())
+        records.add(
+            HeightRecord.Builder(getMetaData(), Instant.now(), Length.fromMeters(1.75)).build()
+        )
+        records.add(
+            WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromKilograms(70.0)).build()
+        )
         insertRecord(records)
     }
 
@@ -63,6 +74,26 @@ class SeedData(private val context: Context) {
         insertRecord(records)
     }
 
+    private fun seedMenstruationData() {
+        val today = Instant.now()
+        val periodRecord =
+            MenstruationPeriodRecord.Builder(getMetaData(), today.minus(ofDays(5L)), today).build()
+        val flowRecords =
+            (-5..0).map { days ->
+                MenstruationFlowRecord.Builder(
+                    getMetaData(),
+                    today.minus(ofDays(days.toLong())),
+                    MenstruationFlowType.FLOW_MEDIUM
+                )
+                    .build()
+            }
+        insertRecord(
+            buildList {
+                add(periodRecord)
+                addAll(flowRecords)
+            })
+    }
+
     private fun seedHeartRateData() {
         val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val random = Random()
@@ -71,12 +102,14 @@ class SeedData(private val context: Context) {
                 val hrSamples = ArrayList<Pair<Long, Instant>>()
                 repeat(100) { i ->
                     hrSamples.add(
-                        Pair(getValidHeartRate(random), start.plus(ofMinutes(timeOffset + i))))
+                        Pair(getValidHeartRate(random), start.plus(ofMinutes(timeOffset + i)))
+                    )
                 }
                 getHeartRateRecord(
                     hrSamples,
                     start.plus(ofMinutes(timeOffset)),
-                    start.plus(ofMinutes(timeOffset + 100)))
+                    start.plus(ofMinutes(timeOffset + 100))
+                )
             }
         insertRecord(records)
     }
@@ -86,9 +119,10 @@ class SeedData(private val context: Context) {
             manager.insertRecords(records, Runnable::run) { response ->
                 Log.i(TAG, "onResult: ${response.records.size}")
                 Toast.makeText(
-                        context,
-                        "${response.records.size} steps records added!",
-                        Toast.LENGTH_SHORT)
+                    context,
+                    "${response.records.size} steps records added!",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         } catch (ex: HealthConnectException) {
@@ -104,10 +138,10 @@ class SeedData(private val context: Context) {
         end: Instant
     ): HeartRateRecord {
         return HeartRateRecord.Builder(
-                getMetaData(),
-                start,
-                end,
-                heartRateValues.map { HeartRateRecord.HeartRateSample(it.first, it.second) })
+            getMetaData(),
+            start,
+            end,
+            heartRateValues.map { HeartRateRecord.HeartRateSample(it.first, it.second) })
             .build()
     }
 

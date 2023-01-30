@@ -37,6 +37,7 @@ import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.IntermenstrualBleedingRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
 import android.healthconnect.datatypes.MenstruationFlowRecord
+import android.healthconnect.datatypes.MenstruationPeriodRecord
 import android.healthconnect.datatypes.NutritionRecord
 import android.healthconnect.datatypes.OvulationTestRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
@@ -86,7 +87,8 @@ enum class DataType(val recordClass: Class<out Record>) {
     CERVICAL_MUCUS(CervicalMucusRecord::class.java),
     SEXUAL_ACTIVITY(SexualActivityRecord::class.java),
     OVULATION_TEST(OvulationTestRecord::class.java),
-    MENSTRUATION(MenstruationFlowRecord::class.java),
+    MENSTRUATION_FLOW(MenstruationFlowRecord::class.java),
+    MENSTRUATION_PERIOD(MenstruationPeriodRecord::class.java),
     SLEEP(SleepSessionRecord::class.java),
     EXERCISE(ExerciseSessionRecord::class.java),
     BODY_WATER_MASS(BodyWaterMassRecord::class.java),

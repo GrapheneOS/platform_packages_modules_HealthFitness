@@ -37,6 +37,7 @@ import android.healthconnect.datatypes.HydrationRecord
 import android.healthconnect.datatypes.IntermenstrualBleedingRecord
 import android.healthconnect.datatypes.LeanBodyMassRecord
 import android.healthconnect.datatypes.MenstruationFlowRecord
+import android.healthconnect.datatypes.MenstruationPeriodRecord
 import android.healthconnect.datatypes.NutritionRecord
 import android.healthconnect.datatypes.OvulationTestRecord
 import android.healthconnect.datatypes.OxygenSaturationRecord
@@ -125,7 +126,8 @@ object HealthPermissionToDatatypeMapper {
             CERVICAL_MUCUS to listOf(CervicalMucusRecord::class.java),
             SEXUAL_ACTIVITY to listOf(SexualActivityRecord::class.java),
             OVULATION_TEST to listOf(OvulationTestRecord::class.java),
-            MENSTRUATION to listOf(MenstruationFlowRecord::class.java),
+            MENSTRUATION to
+                listOf(MenstruationFlowRecord::class.java, MenstruationPeriodRecord::class.java),
             SLEEP to listOf(SleepSessionRecord::class.java),
             BODY_WATER_MASS to listOf(BodyWaterMassRecord::class.java),
             INTERMENSTRUAL_BLEEDING to listOf(IntermenstrualBleedingRecord::class.java),
