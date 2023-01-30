@@ -13,8 +13,8 @@ import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 /** View model for {@link PermissionsFragment} . */
 @HiltViewModel

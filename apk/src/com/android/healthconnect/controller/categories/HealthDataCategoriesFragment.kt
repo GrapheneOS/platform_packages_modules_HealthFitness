@@ -36,6 +36,8 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.START_DEL
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,7 +46,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     companion object {
-        const val CATEGORY_NAME_KEY = "category_name_key"
+        const val CATEGORY_KEY = "category_key"
         private const val BROWSE_DATA_CATEGORY = "browse_data_category"
         private const val AUTO_DELETE_BUTTON = "auto_delete_button"
         private const val DELETE_ALL_DATA_BUTTON = "delete_all_data"
@@ -135,9 +137,9 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
         }
     }
 
-    private fun updateDataList(categoriesList: List<HealthDataCategory>) {
-        val sortedCategoriesList: List<HealthDataCategory> =
-            categoriesList.sortedBy { getString(it.uppercaseTitle) }
+    private fun updateDataList(categoriesList: List<Int>) {
+        val sortedCategoriesList: List<Int> =
+            categoriesList.sortedBy { getString(it.uppercaseTitle()) }
         mBrowseDataCategory?.removeAll()
         if (sortedCategoriesList.isEmpty()) {
             mBrowseDataCategory?.addPreference(
@@ -146,14 +148,14 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             sortedCategoriesList.forEach { category ->
                 mBrowseDataCategory?.addPreference(
                     Preference(requireContext()).also {
-                        it.setTitle(category.uppercaseTitle)
-                        it.setIcon(category.icon)
+                        it.setTitle(category.uppercaseTitle())
+                        it.setIcon(category.icon())
                         it.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 findNavController()
                                     .navigate(
                                         R.id.action_healthDataCategories_to_healthPermissionTypes,
-                                        bundleOf(CATEGORY_NAME_KEY to category.name))
+                                        bundleOf(CATEGORY_KEY to category))
                                 true
                             }
                     })

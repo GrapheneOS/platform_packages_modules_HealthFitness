@@ -17,12 +17,11 @@ package com.android.healthconnect.controller.permissiontypes.api
 
 import android.healthconnect.FetchDataOriginsPriorityOrderResponse
 import android.healthconnect.HealthConnectManager
+import android.healthconnect.HealthDataCategory
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.categories.HealthDataCategory
-import com.android.healthconnect.controller.categories.toSdkHealthDataCategory
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,19 +32,18 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 class LoadPriorityListUseCase
 @Inject
 constructor(
-        private val healthConnectManager: HealthConnectManager,
-        private val appInfoReader: AppInfoReader,
-        @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : BaseUseCase<HealthDataCategory, List<AppMetadata>>(dispatcher) {
+    private val healthConnectManager: HealthConnectManager,
+    private val appInfoReader: AppInfoReader,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
+) : BaseUseCase<Int, List<AppMetadata>>(dispatcher) {
 
     /** Returns list of [AppMetadata]s for given [HealthDataCategory] in priority order. */
-    override suspend fun execute(input: HealthDataCategory): List<AppMetadata> {
+    override suspend fun execute(input: Int): List<AppMetadata> {
         val dataOriginPriorityOrderResponse: FetchDataOriginsPriorityOrderResponse =
-                suspendCancellableCoroutine { continuation ->
-                    healthConnectManager.fetchDataOriginsPriorityOrder(
-                            toSdkHealthDataCategory(input),
-                            Runnable::run, continuation.asOutcomeReceiver())
-                }
+            suspendCancellableCoroutine { continuation ->
+                healthConnectManager.fetchDataOriginsPriorityOrder(
+                    input, Runnable::run, continuation.asOutcomeReceiver())
+            }
         return dataOriginPriorityOrderResponse.dataOriginsPriorityOrder.map { dataOrigin ->
             appInfoReader.getAppMetadata(dataOrigin.packageName)
         }

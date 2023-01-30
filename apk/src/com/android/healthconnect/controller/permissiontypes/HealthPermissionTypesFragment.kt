@@ -28,9 +28,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_NAME_KEY
-import com.android.healthconnect.controller.categories.HealthDataCategory
-import com.android.healthconnect.controller.categories.fromName
+import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -43,6 +41,9 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment
 import com.android.healthconnect.controller.permissiontypes.prioritylist.PriorityListDialogFragment.Companion.PRIORITY_UPDATED_EVENT
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +61,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         private const val DELETE_CATEGORY_DATA_BUTTON = "delete_category_data"
     }
 
-    private lateinit var category: HealthDataCategory
+    private var category: Int = 0
 
     private val viewModel: HealthPermissionTypesViewModel by viewModels()
 
@@ -87,10 +88,9 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.health_permission_types_screen, rootKey)
 
-        if (requireArguments().containsKey(CATEGORY_NAME_KEY) &&
-            (requireArguments().getString(CATEGORY_NAME_KEY) != null)) {
-            val categoryName = requireArguments().getString(CATEGORY_NAME_KEY)!!
-            category = fromName(categoryName)
+        if (requireArguments().containsKey(CATEGORY_KEY) &&
+            (requireArguments().getInt(CATEGORY_KEY) != null)) {
+            category = requireArguments().getInt(CATEGORY_KEY)
         }
 
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
@@ -98,7 +98,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         }
 
         mDeleteCategoryData?.title =
-            getString(R.string.delete_category_data_button, getString(category.lowercaseTitle))
+            getString(R.string.delete_category_data_button, getString(category.lowercaseTitle()))
         mDeleteCategoryData?.setOnPreferenceClickListener {
             val deletionType = DeletionType.DeletionTypeCategoryData(category = category)
             childFragmentManager.setFragmentResult(
@@ -111,8 +111,8 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         super.onViewCreated(view, savedInstanceState)
         setupSharedMenu(viewLifecycleOwner)
         mPermissionTypesHeader?.icon =
-            ResourcesCompat.getDrawable(resources, category.icon, requireContext().theme)
-        mPermissionTypesHeader?.title = getString(category.uppercaseTitle)
+            ResourcesCompat.getDrawable(resources, category.icon(), requireContext().theme)
+        mPermissionTypesHeader?.title = getString(category.uppercaseTitle())
         viewModel.loadData(category)
         viewModel.loadAppsWithData(category)
 
@@ -164,7 +164,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         mAppPriorityButton?.isVisible = true
         mAppPriorityButton?.summary = priorityList.first().appName
         mAppPriorityButton?.setOnPreferenceClickListener {
-            PriorityListDialogFragment(priorityList, getString(category.lowercaseTitle))
+            PriorityListDialogFragment(priorityList, getString(category.lowercaseTitle()))
                 .show(childFragmentManager, PriorityListDialogFragment.TAG)
             true
         }

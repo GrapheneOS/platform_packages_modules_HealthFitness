@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -33,14 +35,14 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     companion object {
         private const val RESOLVE_INFO_FLAG: Long = PackageManager.MATCH_ALL.toLong()
         private const val PACKAGE_INFO_PERMISSIONS_FLAG: Long =
-                PackageManager.GET_PERMISSIONS.toLong()
+            PackageManager.GET_PERMISSIONS.toLong()
     }
 
     suspend fun getAppsWithHealthPermissions(): List<String> {
         return try {
             context.packageManager
-                    .queryIntentActivities(getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
-                    .map { it.activityInfo.packageName }
+                .queryIntentActivities(getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
+                .map { it.activityInfo.packageName }
         } catch (e: Exception) {
             emptyList()
         }
@@ -49,13 +51,13 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     suspend fun getDeclaredPermissions(packageName: String): List<HealthPermission> {
         return try {
             val appInfo =
-                    context.packageManager.getPackageInfo(
-                            packageName, PackageInfoFlags.of(PACKAGE_INFO_PERMISSIONS_FLAG))
+                context.packageManager.getPackageInfo(
+                    packageName, PackageInfoFlags.of(PACKAGE_INFO_PERMISSIONS_FLAG))
             val healthPermissions = getHealthPermissions()
             appInfo.requestedPermissions
-                    ?.filter { it in healthPermissions }
-                    ?.map { permission -> parsePermission(permission) }
-                    .orEmpty()
+                ?.filter { it in healthPermissions }
+                ?.map { permission -> parsePermission(permission) }
+                .orEmpty()
         } catch (e: NameNotFoundException) {
             emptyList()
         }
@@ -64,8 +66,8 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     fun getApplicationRationaleIntent(packageName: String): Intent {
         val intent = getRationaleIntent(packageName)
         val resolvedInfo =
-                context.packageManager.queryIntentActivities(
-                        intent, ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
+            context.packageManager.queryIntentActivities(
+                intent, ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
         resolvedInfo.forEach { info -> intent.setClassName(packageName, info.activityInfo.name) }
         return intent
     }
@@ -75,18 +77,19 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
     }
 
     private fun getHealthPermissions(): List<String> =
-            context.packageManager.queryPermissionsByGroup("android.permission-group.HEALTH", 0).map { permissionInfo ->
-                permissionInfo.name
-            }
+        context.packageManager.queryPermissionsByGroup("android.permission-group.HEALTH", 0).map {
+            permissionInfo ->
+            permissionInfo.name
+        }
 
     private fun getRationaleIntent(packageName: String? = null): Intent {
         val intent =
-                Intent(Intent.ACTION_VIEW_PERMISSION_USAGE).apply {
-                    addCategory(HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS)
-                    if (packageName != null) {
-                        setPackage(packageName)
-                    }
+            Intent(Intent.ACTION_VIEW_PERMISSION_USAGE).apply {
+                addCategory(HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS)
+                if (packageName != null) {
+                    setPackage(packageName)
                 }
+            }
         return intent
     }
 }

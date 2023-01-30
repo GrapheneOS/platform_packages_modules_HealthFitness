@@ -67,6 +67,6 @@ constructor(
 
     sealed class CategoriesFragmentState {
         object Loading : CategoriesFragmentState()
-        data class WithData(val categories: List<HealthDataCategory>) : CategoriesFragmentState()
+        data class WithData(val categories: List<Int>) : CategoriesFragmentState()
     }
 }

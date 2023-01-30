@@ -16,14 +16,15 @@
 package com.android.healthconnect.controller.permissiontypes.api
 
 import android.healthconnect.HealthConnectManager
+import android.healthconnect.HealthDataCategory
 import android.healthconnect.RecordTypeInfoResponse
 import android.healthconnect.datatypes.Record
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -43,7 +44,7 @@ constructor(
     }
 
     /** Returns list of available [HealthPermissionType]s within given [HealthDataCategory]. */
-    suspend fun invoke(category: HealthDataCategory): List<HealthPermissionType> =
+    suspend fun invoke(category: Int): List<HealthPermissionType> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
@@ -51,7 +52,7 @@ constructor(
                         healthConnectManager.queryAllRecordTypesInfo(
                             Runnable::run, continuation.asOutcomeReceiver())
                     }
-                category.healthPermissionTypes.filter { hasData(it, recordTypeInfoMap) }
+                category.healthPermissionTypes().filter { hasData(it, recordTypeInfoMap) }
             } catch (e: Exception) {
                 Log.e(TAG, "GetPermissionTypesWithDataUseCase", e)
                 emptyList()
