@@ -87,12 +87,14 @@ public final class ExerciseSegment {
         if (this == o) return true;
         if (!(o instanceof ExerciseSegment)) return false;
         ExerciseSegment that = (ExerciseSegment) o;
-        return mSegmentType == that.mSegmentType && mRepetitionsCount == that.mRepetitionsCount;
+        return mSegmentType == that.mSegmentType
+                && mRepetitionsCount == that.mRepetitionsCount
+                && Objects.equals(mInterval, that.mInterval);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mSegmentType, mRepetitionsCount);
+        return Objects.hash(mSegmentType, mRepetitionsCount, mInterval);
     }
 
     /** Builder class for {@link ExerciseSegment} */

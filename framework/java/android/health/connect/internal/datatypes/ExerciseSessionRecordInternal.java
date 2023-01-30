@@ -24,8 +24,10 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @see ExerciseSessionRecord
@@ -38,6 +40,10 @@ public final class ExerciseSessionRecordInternal
     private int mExerciseType;
     private String mTitle;
     private ExerciseRouteInternal mExerciseRoute;
+
+    private List<ExerciseLapInternal> mExerciseLaps;
+
+    private List<ExerciseSegmentInternal> mExerciseSegments;
     private boolean mHasRoute;
 
     @Nullable
@@ -107,6 +113,30 @@ public final class ExerciseSessionRecordInternal
         return this;
     }
 
+    /** returns laps of this session */
+    @Nullable
+    public List<ExerciseLapInternal> getLaps() {
+        return mExerciseLaps;
+    }
+
+    /** returns this object with exercise laps set */
+    public ExerciseSessionRecordInternal setExerciseLaps(List<ExerciseLapInternal> exerciseLaps) {
+        mExerciseLaps = new ArrayList<>(exerciseLaps);
+        return this;
+    }
+
+    @Nullable
+    public List<ExerciseSegmentInternal> getSegments() {
+        return mExerciseSegments;
+    }
+
+    /** returns this object with exercise segments set */
+    public ExerciseSessionRecordInternal setExerciseSegments(
+            List<ExerciseSegmentInternal> exerciseSegments) {
+        mExerciseSegments = new ArrayList<>(exerciseSegments);
+        return this;
+    }
+
     @NonNull
     @Override
     public ExerciseSessionRecord toExternalRecord() {
@@ -135,6 +165,14 @@ public final class ExerciseSessionRecordInternal
         }
 
         builder.setHasRoute(mHasRoute);
+
+        if (getLaps() != null) {
+            builder.setLaps(ExerciseLapInternal.getExternalLaps(mExerciseLaps));
+        }
+
+        if (getSegments() != null) {
+            builder.setSegments(ExerciseSegmentInternal.getExternalSegments(mExerciseSegments));
+        }
         return builder.build();
     }
 
@@ -155,6 +193,21 @@ public final class ExerciseSessionRecordInternal
                     ExerciseRouteInternal.fromExternalRoute(exerciseSessionRecord.getRoute());
         }
         mHasRoute = exerciseSessionRecord.hasRoute();
+
+        if (exerciseSessionRecord.getLaps() != null && !exerciseSessionRecord.getLaps().isEmpty()) {
+            mExerciseLaps =
+                    exerciseSessionRecord.getLaps().stream()
+                            .map(ExerciseLapInternal::fromExternalLap)
+                            .collect(Collectors.toList());
+        }
+
+        if (exerciseSessionRecord.getSegments() != null
+                && !exerciseSessionRecord.getSegments().isEmpty()) {
+            mExerciseSegments =
+                    exerciseSessionRecord.getSegments().stream()
+                            .map(ExerciseSegmentInternal::fromExternalSegment)
+                            .collect(Collectors.toList());
+        }
     }
 
     @Override
@@ -164,6 +217,8 @@ public final class ExerciseSessionRecordInternal
         parcel.writeString(mTitle);
         parcel.writeBoolean(mHasRoute);
         ExerciseRouteInternal.writeToParcel(mExerciseRoute, parcel);
+        ExerciseLapInternal.writeLapsToParcel(mExerciseLaps, parcel);
+        ExerciseSegmentInternal.writeSegmentsToParcel(mExerciseSegments, parcel);
     }
 
     @Override
@@ -173,6 +228,8 @@ public final class ExerciseSessionRecordInternal
         mTitle = parcel.readString();
         mHasRoute = parcel.readBoolean();
         mExerciseRoute = ExerciseRouteInternal.readFromParcel(parcel);
+        mExerciseLaps = ExerciseLapInternal.populateLapsFromParcel(parcel);
+        mExerciseSegments = ExerciseSegmentInternal.populateSegmentsFromParcel(parcel);
     }
 
     /** Add route location to the session */
@@ -194,11 +251,20 @@ public final class ExerciseSessionRecordInternal
                 && hasRoute() == that.hasRoute()
                 && Objects.equals(getNotes(), that.getNotes())
                 && Objects.equals(getTitle(), that.getTitle())
-                && Objects.equals(getRoute(), that.getRoute());
+                && Objects.equals(getRoute(), that.getRoute())
+                && Objects.equals(getLaps(), that.getLaps())
+                && Objects.equals(getSegments(), that.getSegments());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNotes(), getExerciseType(), getTitle(), mExerciseRoute, mHasRoute);
+        return Objects.hash(
+                getNotes(),
+                getExerciseType(),
+                getTitle(),
+                mExerciseRoute,
+                mHasRoute,
+                getLaps(),
+                getSegments());
     }
 }

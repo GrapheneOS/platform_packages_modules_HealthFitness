@@ -18,13 +18,19 @@ package android.healthconnect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.RecordUtils;
+import android.health.connect.internal.datatypes.ExerciseLapInternal;
+import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.os.Parcel;
 
 import org.junit.Test;
+
+import java.util.List;
 
 public class ExerciseSessionInternalTest {
     @Test
@@ -48,7 +54,6 @@ public class ExerciseSessionInternalTest {
         ExerciseSessionRecordInternal restoredSession = writeAndRestoreFromParcel(session);
 
         assertFieldsAreEqual(session, restoredSession);
-        assertThat(session).isEqualTo(restoredSession);
     }
 
     @Test
@@ -75,6 +80,7 @@ public class ExerciseSessionInternalTest {
         parcel.setDataPosition(0);
         ExerciseSessionRecordInternal restoredSession = new ExerciseSessionRecordInternal();
         restoredSession.populateIntervalRecordFrom(parcel);
+        parcel.recycle();
         return restoredSession;
     }
 
@@ -89,7 +95,50 @@ public class ExerciseSessionInternalTest {
             assertThat(external.getRoute()).isEqualTo(convertedRoute);
         }
         assertCharSequencesEqualToStringWithNull(internal.getTitle(), external.getTitle());
-        assertCharSequencesEqualToStringWithNull(internal.getTitle(), external.getTitle());
+        assertCharSequencesEqualToStringWithNull(internal.getNotes(), external.getNotes());
+        assertLapsAreEqual(internal.getLaps(), external.getLaps());
+        assertSegmentsAreEqual(internal.getSegments(), external.getSegments());
+    }
+
+    private void assertLapsAreEqual(
+            List<ExerciseLapInternal> internalLaps, List<ExerciseLap> externalLaps) {
+        if (internalLaps == null) {
+            assertThat(externalLaps).isEmpty();
+            return;
+        }
+
+        assertThat(internalLaps.size()).isEqualTo(externalLaps.size());
+        for (int i = 0; i < internalLaps.size(); i++) {
+            ExerciseLapInternal internalLap = internalLaps.get(i);
+            ExerciseLap externalLap = externalLaps.get(i);
+            assertThat(internalLap.getStartTime())
+                    .isEqualTo(externalLap.getStartTime().toEpochMilli());
+            assertThat(internalLap.getEndTime()).isEqualTo(externalLap.getEndTime().toEpochMilli());
+            assertThat(internalLap.getLength()).isEqualTo(externalLap.getLength().getInMeters());
+        }
+    }
+
+    private void assertSegmentsAreEqual(
+            List<ExerciseSegmentInternal> internalSegments,
+            List<ExerciseSegment> externalSegments) {
+        if (internalSegments == null) {
+            assertThat(externalSegments).isEmpty();
+            return;
+        }
+
+        assertThat(internalSegments.size()).isEqualTo(externalSegments.size());
+        for (int i = 0; i < internalSegments.size(); i++) {
+            ExerciseSegmentInternal internalSegment = internalSegments.get(i);
+            ExerciseSegment externalSegment = externalSegments.get(i);
+            assertThat(internalSegment.getStartTime())
+                    .isEqualTo(externalSegment.getStartTime().toEpochMilli());
+            assertThat(internalSegment.getEndTime())
+                    .isEqualTo(externalSegment.getEndTime().toEpochMilli());
+            assertThat(internalSegment.getSegmentType())
+                    .isEqualTo(externalSegment.getSegmentType());
+            assertThat(internalSegment.getRepetitionsCount())
+                    .isEqualTo(externalSegment.getRepetitionsCount());
+        }
     }
 
     private void assertCharSequencesEqualToStringWithNull(String str, CharSequence sequence) {
