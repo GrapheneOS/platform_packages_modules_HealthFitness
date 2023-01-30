@@ -105,6 +105,8 @@ import android.util.Pair;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.LocalManagerRegistry;
+import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.migration.DataMigrationManager;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
@@ -199,6 +201,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private final DataPermissionEnforcer mDataPermissionEnforcer;
 
+    private final AppOpsManagerLocal mAppOpsManagerLocal;
+
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
             HealthConnectPermissionHelper permissionHelper,
@@ -211,6 +215,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
         mMigrationStateManager = MigrationStateManager.getInstance();
         mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
+        mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
     }
 
     @Override
@@ -322,6 +327,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         if (!holdsDataManagementPermission) {
             mDataPermissionEnforcer.enforceRecordIdsReadPermissions(recordTypesToTest, uid);
+            if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
+                tryAndThrowException(
+                        callback,
+                        new SecurityException(
+                                packageName + " must be in foreground to call aggregate method"),
+                        HealthConnectException.ERROR_SECURITY);
+            }
         }
 
         HealthConnectThreadScheduler.schedule(
@@ -369,6 +381,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             enforceSelfRead.set(
                     mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
                             request.getRecordType(), uid));
+            if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
+                tryAndThrowException(
+                        callback,
+                        new SecurityException(
+                                packageName + " must be in foreground to read the change logs"),
+                        HealthConnectException.ERROR_SECURITY);
+            }
         }
 
         final Map<String, Boolean> extraReadPermsToGrantState =
@@ -542,6 +561,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 ChangeLogsRequestHelper.getRequest(packageName, token.getToken());
         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                 changeLogsTokenRequest.getRecordTypes(), uid);
+        if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
+            tryAndThrowException(
+                    callback,
+                    new SecurityException(
+                            packageName + " must be in foreground to read the change logs"),
+                    HealthConnectException.ERROR_SECURITY);
+        }
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
