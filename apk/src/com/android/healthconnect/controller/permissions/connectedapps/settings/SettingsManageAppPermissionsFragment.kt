@@ -100,6 +100,8 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
 
     private fun setupHeader() {
         viewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
+            appName = appMetadata.appName
+            packageName = appMetadata.packageName
             header?.apply {
                 setIcon(appMetadata.icon)
                 setTitle(appMetadata.appName)
