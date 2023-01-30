@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewM
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
@@ -69,6 +70,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var loadingView: View
     private lateinit var errorView: View
     private lateinit var adapter: RecyclerViewAdapter
+    private val aggregationViewBinder by lazy { AggregationViewBinder() }
     private val entryViewBinder by lazy {
         EntryItemViewBinder(
             object : EntryItemViewBinder.OnDeleteEntryClicked {
@@ -130,6 +132,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
             RecyclerViewAdapter.Builder()
                 .setViewBinder(FormattedDataEntry::class.java, entryViewBinder)
                 .setViewBinder(FormattedSessionEntry::class.java, sessionViewBinder)
+                .setViewBinder(FormattedAggregation::class.java, aggregationViewBinder)
                 .build()
         entriesRecyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {

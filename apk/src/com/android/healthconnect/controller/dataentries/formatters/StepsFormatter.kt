@@ -17,9 +17,10 @@ package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
 import android.healthconnect.datatypes.StepsRecord
-import android.icu.text.MessageFormat
+import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.UnitFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -28,20 +29,27 @@ import javax.inject.Singleton
 /** Formatter for printing Steps data. */
 @Singleton
 class StepsFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<StepsRecord>(context) {
+    EntryFormatter<StepsRecord>(context), UnitFormatter<Long> {
 
     override suspend fun formatValue(
         record: StepsRecord,
         unitPreferences: UnitPreferences
     ): String {
-        return MessageFormat.format(
-            context.getString(R.string.steps_value), mapOf("count" to record.count))
+        return formatUnit(record.count)
     }
 
     override suspend fun formatA11yValue(
         record: StepsRecord,
         unitPreferences: UnitPreferences
     ): String {
-        return formatValue(record, unitPreferences)
+        return formatA11yUnit(record.count)
+    }
+
+    override fun formatUnit(unit: Long): String {
+        return format(context.getString(R.string.steps_value), mapOf("count" to unit))
+    }
+
+    override fun formatA11yUnit(unit: Long): String {
+        return formatUnit(unit)
     }
 }

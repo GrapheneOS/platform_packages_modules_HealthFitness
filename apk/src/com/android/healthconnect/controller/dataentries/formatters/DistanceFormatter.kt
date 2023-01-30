@@ -17,15 +17,17 @@ package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
 import android.healthconnect.datatypes.DistanceRecord
+import android.healthconnect.datatypes.units.Length
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.LengthFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.UnitFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing Distance data. */
 class DistanceFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<DistanceRecord>(context) {
+    EntryFormatter<DistanceRecord>(context), UnitFormatter<Length> {
 
     override suspend fun formatValue(
         record: DistanceRecord,
@@ -39,5 +41,13 @@ class DistanceFormatter @Inject constructor(@ApplicationContext private val cont
         unitPreferences: UnitPreferences
     ): String {
         return LengthFormatter.formatA11yValue(context, record.distance, unitPreferences)
+    }
+
+    override fun formatUnit(unit: Length): String {
+        return LengthFormatter.formatValue(context, unit, unitPreferences)
+    }
+
+    override fun formatA11yUnit(unit: Length): String {
+        return LengthFormatter.formatA11yValue(context, unit, unitPreferences)
     }
 }
