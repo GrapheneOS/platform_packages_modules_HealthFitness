@@ -16,9 +16,6 @@
 
 package com.android.server.healthconnect;
 
-import static com.android.server.healthconnect.HealthConnectServiceImpl.INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
-import static com.android.server.healthconnect.HealthConnectServiceImpl.INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING;
-
 import android.annotation.NonNull;
 import android.content.Context;
 import android.healthconnect.HealthConnectManager;
@@ -79,14 +76,6 @@ public class HealthConnectManagerService extends SystemService {
     @Override
     public void onStart() {
         mPackageMonitor.registerBroadcastReceiver(mContext);
-
-        // TODO(b/264791313) Refactor restore related functionality into a separate class
-        @HealthConnectServiceImpl.InternalRestoreState
-        int currentDataRestoreState = mHealthConnectService.getDataRestoreState(0);
-        if (currentDataRestoreState == INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
-            mHealthConnectService.setDataRestoreState(
-                    INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING, 0, true);
-        }
         publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
     }
 
