@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *    http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -16,7 +18,6 @@ package com.android.healthconnect.testapps.toolbox
 import android.os.Bundle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -38,8 +39,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DataTypeListFragmentTest {
 
-    @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    @get:Rule val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
     fun showCorrectDataType_vitalsCategory() {
@@ -55,7 +55,8 @@ class DataTypeListFragmentTest {
         launchScenario(HealthDataCategory.ACTIVITY)
 
         for (permissionGroup in ACTIVITY_PERMISSION_GROUPS) {
-            onView(withText(permissionGroup.title)).perform(scrollTo())
+            onView(withText(permissionGroup.title))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()))
         }
     }

@@ -24,6 +24,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -60,7 +62,7 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
 
     private fun updateAllDataList(categoriesList: List<AllCategoriesScreenHealthDataCategory>) {
         val sortedAllCategoriesList: List<AllCategoriesScreenHealthDataCategory> =
-            categoriesList.sortedBy { getString(it.category.uppercaseTitle) }
+            categoriesList.sortedBy { getString(it.category.uppercaseTitle()) }
         mAllDataCategories?.removeAll()
         if (sortedAllCategoriesList.isEmpty()) {
             mAllDataCategories?.addPreference(
@@ -69,8 +71,8 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
             sortedAllCategoriesList.forEach { categoryInfo ->
                 mAllDataCategories?.addPreference(
                     Preference(requireContext()).also {
-                        it.setTitle(categoryInfo.category.uppercaseTitle)
-                        it.setIcon(categoryInfo.category.icon)
+                        it.setTitle(categoryInfo.category.uppercaseTitle())
+                        it.setIcon(categoryInfo.category.icon())
                         if (categoryInfo.noData) {
                             it.setSummary(R.string.no_data)
                             it.setEnabled(false)
@@ -82,8 +84,8 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
                                             R.id
                                                 .action_healthDataAllCategories_to_healthPermissionTypes,
                                             bundleOf(
-                                                HealthDataCategoriesFragment.CATEGORY_NAME_KEY to
-                                                    categoryInfo.category.name))
+                                                HealthDataCategoriesFragment.CATEGORY_KEY to
+                                                    categoryInfo.category))
                                     true
                                 }
                         }

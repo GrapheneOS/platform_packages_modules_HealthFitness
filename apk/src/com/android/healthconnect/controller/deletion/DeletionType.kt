@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.deletion
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.DataType
 
@@ -73,13 +72,9 @@ sealed class DeletionType : Parcelable {
         }
     }
 
-    data class DeletionTypeCategoryData(val category: HealthDataCategory) : DeletionType() {
+    data class DeletionTypeCategoryData(val category: Int) : DeletionType() {
         // TODO default value
-        constructor(
-            parcel: Parcel
-        ) : this(
-            HealthDataCategory.valueOf(
-                parcel.readString() ?: HealthDataCategory.ACTIVITY.toString())) {}
+        constructor(parcel: Parcel) : this(parcel.readInt()) {}
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
             parcel.writeString(category.toString())

@@ -20,6 +20,7 @@ import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeInstantRangeFilter
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -41,7 +42,8 @@ constructor(
     ) {
         val deleteRequest = DeleteUsingFiltersRequest.Builder().setTimeRangeFilter(timeRangeFilter)
 
-        deleteCategory.category.healthPermissionTypes
+        deleteCategory.category
+            .healthPermissionTypes()
             .map { healthPermissionType ->
                 HealthPermissionToDatatypeMapper.getDataTypes(healthPermissionType)
             }

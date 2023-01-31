@@ -16,10 +16,9 @@
 package com.android.healthconnect.controller.permissiontypes.api
 
 import android.healthconnect.HealthConnectManager
+import android.healthconnect.HealthDataCategory
 import android.healthconnect.UpdateDataOriginPriorityOrderRequest
 import android.healthconnect.datatypes.DataOrigin
-import com.android.healthconnect.controller.categories.HealthDataCategory
-import com.android.healthconnect.controller.categories.toSdkHealthDataCategory
 import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,7 +34,7 @@ constructor(
 ) {
 
     /** Updates the priority list of the stored [DataOrigin]s for given [HealthDataCategory]. */
-    suspend operator fun invoke(priorityList: List<String>, category: HealthDataCategory) {
+    suspend operator fun invoke(priorityList: List<String>, category: Int) {
         withContext(dispatcher) {
             val dataOrigins: List<DataOrigin> =
                 priorityList
@@ -43,9 +42,7 @@ constructor(
                     .map { packageName -> DataOrigin.Builder().setPackageName(packageName).build() }
                     .toList()
             healthConnectManager.updateDataOriginPriorityOrder(
-                UpdateDataOriginPriorityOrderRequest(
-                    dataOrigins, toSdkHealthDataCategory(category)),
-                Runnable::run) {}
+                UpdateDataOriginPriorityOrderRequest(dataOrigins, category), Runnable::run) {}
         }
     }
 }

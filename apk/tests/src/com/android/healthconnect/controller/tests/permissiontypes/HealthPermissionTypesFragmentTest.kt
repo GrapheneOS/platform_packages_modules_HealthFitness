@@ -280,7 +280,7 @@ class HealthPermissionTypesFragmentTest {
 
     private fun activityCategoryBundle(): Bundle {
         val bundle = Bundle()
-        bundle.putString(HealthDataCategoriesFragment.CATEGORY_NAME_KEY, "ACTIVITY")
+        bundle.putInt(HealthDataCategoriesFragment.CATEGORY_KEY, 1)
         return bundle
     }
 }

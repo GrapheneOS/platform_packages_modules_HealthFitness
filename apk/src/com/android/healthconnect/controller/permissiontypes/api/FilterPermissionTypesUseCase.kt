@@ -1,11 +1,10 @@
 package com.android.healthconnect.controller.permissiontypes.api
 
 import android.healthconnect.HealthConnectManager
+import android.healthconnect.HealthDataCategory
 import android.healthconnect.RecordTypeInfoResponse
 import android.healthconnect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.categories.HealthDataCategory
-import com.android.healthconnect.controller.categories.fromSdkHealthDataCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.service.IoDispatcher
@@ -25,7 +24,7 @@ constructor(
 
     /** Returns list of [HealthPermissionType] for selected app under [HealthDataCategory] */
     suspend operator fun invoke(
-        category: HealthDataCategory,
+        category: Int,
         selectedAppPackageName: String
     ): List<HealthPermissionType> =
         withContext(dispatcher) {
@@ -36,7 +35,7 @@ constructor(
 
     /** Returns list of [HealthPermissionType] for selected app under [HealthDataCategory] */
     private suspend fun getFilteredHealthPermissionTypes(
-        category: HealthDataCategory,
+        category: Int,
         selectedAppPackageName: String
     ): List<HealthPermissionType> =
         withContext(dispatcher) {
@@ -57,13 +56,13 @@ constructor(
      * record type information
      */
     private fun filterHealthPermissionTypes(
-        category: HealthDataCategory,
+        category: Int,
         selectedAppPackageName: String,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
     ): List<HealthPermissionType> {
         val filteredRecordTypeInfos =
             recordTypeInfoMap.values.filter {
-                fromSdkHealthDataCategory(it.dataCategory) == category &&
+                it.dataCategory == category &&
                     it.contributingPackages.isNotEmpty() &&
                     it.contributingPackages.firstNotNullOf { contributingApp ->
                         contributingApp.packageName == selectedAppPackageName

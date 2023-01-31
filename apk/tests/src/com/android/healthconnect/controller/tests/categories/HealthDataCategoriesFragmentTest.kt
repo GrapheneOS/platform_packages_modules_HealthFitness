@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.categories
 
+import android.healthconnect.HealthDataCategory
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
@@ -27,7 +28,6 @@ import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
 import com.android.healthconnect.controller.categories.AllCategoriesScreenHealthDataCategory
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment
-import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
@@ -38,6 +38,21 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
+
+/** List of all Health data categories. */
+private val HEALTH_DATA_ALL_CATEGORIES =
+    listOf(
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.ACTIVITY, noData = false),
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
+        AllCategoriesScreenHealthDataCategory(category = HealthDataCategory.SLEEP, noData = false),
+        AllCategoriesScreenHealthDataCategory(category = HealthDataCategory.VITALS, noData = false),
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.CYCLE_TRACKING, noData = false),
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.NUTRITION, noData = true),
+    )
 
 @HiltAndroidTest
 class HealthDataCategoriesFragmentTest {
@@ -50,23 +65,6 @@ class HealthDataCategoriesFragmentTest {
 
     @BindValue
     val autoDeleteViewModel: AutoDeleteViewModel = Mockito.mock(AutoDeleteViewModel::class.java)
-
-    /** List of all Health data categories. */
-    val HEALTH_DATA_ALL_CATEGORIES =
-        listOf(
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.ACTIVITY, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.SLEEP, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.VITALS, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.CYCLE_TRACKING, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.NUTRITION, noData = true),
-        )
 
     @Before
     fun setup() {

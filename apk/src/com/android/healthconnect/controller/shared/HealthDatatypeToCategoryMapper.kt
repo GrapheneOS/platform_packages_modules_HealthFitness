@@ -16,16 +16,14 @@
 package com.android.healthconnect.controller.shared
 
 import android.healthconnect.datatypes.Record
-import com.android.healthconnect.controller.categories.HealthDataCategory
-import com.android.healthconnect.controller.categories.fromHealthPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 
-fun dataTypeToCategory(dataType: Class<out Record>): HealthDataCategory {
+fun dataTypeToCategory(dataType: Class<out Record>): Int {
     val allPermissionToDataTypes = HealthPermissionToDatatypeMapper.getAllDataTypes()
     allPermissionToDataTypes.forEach {
         if (it.value.contains(dataType)) {
             return fromHealthPermissionType(it.key)
         }
     }
-    throw UnsupportedOperationException(
-            "This data type is not mapped to any category.")
+    throw UnsupportedOperationException("This data type is not mapped to any category.")
 }

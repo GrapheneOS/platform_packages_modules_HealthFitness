@@ -8,11 +8,12 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.categories.fromHealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.requestpermissions.RequestPermissionHeaderPreference
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.children
 import com.android.settingslib.widget.MainSwitchPreference
@@ -73,8 +74,10 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
                     healthPermissionReader.getApplicationRationaleIntent(app.packageName)
                 startActivity(startRationaleIntent)
             }
-            mReadPermissionCategory?.title = getString(R.string.read_permission_category, app.appName)
-            mWritePermissionCategory?.title = getString(R.string.write_permission_category, app.appName)
+            mReadPermissionCategory?.title =
+                getString(R.string.read_permission_category, app.appName)
+            mWritePermissionCategory?.title =
+                getString(R.string.write_permission_category, app.appName)
         }
         viewModel.permissionsList.observe(viewLifecycleOwner) { permissions ->
             updateDataList(permissions)
@@ -119,7 +122,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
     ): Preference {
         return SwitchPreference(requireContext()).also {
             val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
-            it.setIcon(healthCategory.icon)
+            it.setIcon(healthCategory.icon())
             it.setDefaultValue(defaultValue)
             it.setTitle(
                 HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)

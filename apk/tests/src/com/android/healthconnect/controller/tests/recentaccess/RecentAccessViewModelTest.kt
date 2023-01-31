@@ -24,6 +24,7 @@ import android.healthconnect.datatypes.WeightRecord
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.dataTypeToCategory
 import com.android.healthconnect.controller.tests.utils.FakeHealthPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.FakeRecentAccessUseCase
@@ -120,14 +121,15 @@ class RecentAccessViewModelTest {
                     isToday = true,
                     dataTypesWritten =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
-                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle(),
+                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle()),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
-                                .uppercaseTitle)))
+                                .uppercaseTitle())))
         assertRecentAccessEquality(actual, expected)
     }
 
@@ -198,27 +200,28 @@ class RecentAccessViewModelTest {
                     isToday = true,
                     dataTypesWritten =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                         ),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
-                                .uppercaseTitle)),
+                                .uppercaseTitle())),
                 RecentAccessEntry(
                     metadata = TEST_APP,
                     instantTime = time4,
                     isToday = true,
                     dataTypesWritten =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
-                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle(),
+                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle()),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
-                                .uppercaseTitle)))
+                                .uppercaseTitle())))
 
         assertRecentAccessEquality(actual, expected)
     }
@@ -273,20 +276,21 @@ class RecentAccessViewModelTest {
                     isToday = true,
                     dataTypesWritten =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
-                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle),
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
+                            dataTypeToCategory(WeightRecord::class.java).uppercaseTitle()),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
-                                .uppercaseTitle)),
+                                .uppercaseTitle())),
                 RecentAccessEntry(
                     metadata = TEST_APP,
                     instantTime = time5,
                     isToday = true,
                     dataTypesWritten =
                         mutableSetOf(
-                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle(),
                         ),
                     dataTypesRead = mutableSetOf()),
             )
@@ -321,7 +325,7 @@ class RecentAccessViewModelTest {
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                         )),
                 RecentAccessEntry(
                     metadata = TEST_APP_2,
@@ -330,7 +334,7 @@ class RecentAccessViewModelTest {
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                         )),
             )
 
@@ -375,13 +379,13 @@ class RecentAccessViewModelTest {
                     isToday = false,
                     dataTypesWritten =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                         ),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
-                                .uppercaseTitle)))
+                                .uppercaseTitle())))
         assertRecentAccessEquality(actual, expected)
     }
 
@@ -423,13 +427,13 @@ class RecentAccessViewModelTest {
                     isToday = false,
                     dataTypesWritten =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                         ),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
-                                .uppercaseTitle)))
+                                .uppercaseTitle())))
         assertRecentAccessEquality(actual, expected)
     }
 
@@ -511,7 +515,7 @@ class RecentAccessViewModelTest {
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
                         )),
                 RecentAccessEntry(
                     metadata = TEST_APP_2,
@@ -520,7 +524,7 @@ class RecentAccessViewModelTest {
                     dataTypesWritten =
                         mutableSetOf(
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
-                                .uppercaseTitle),
+                                .uppercaseTitle()),
                     dataTypesRead = mutableSetOf()),
                 RecentAccessEntry(
                     metadata = TEST_APP,
@@ -529,7 +533,8 @@ class RecentAccessViewModelTest {
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(
-                            dataTypeToCategory(BasalMetabolicRateRecord::class.java).uppercaseTitle,
+                            dataTypeToCategory(BasalMetabolicRateRecord::class.java)
+                                .uppercaseTitle(),
                         )))
         assertRecentAccessEquality(actual, expected)
     }

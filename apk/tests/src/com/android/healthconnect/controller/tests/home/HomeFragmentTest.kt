@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.home
 
 import android.content.Context
+import android.healthconnect.HealthDataCategory
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
@@ -23,13 +24,13 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.home.HomeFragment
 import com.android.healthconnect.controller.home.HomeFragmentViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -78,12 +79,12 @@ class HomeFragmentTest {
                 isToday = true,
                 dataTypesWritten =
                     mutableSetOf(
-                        HealthDataCategory.ACTIVITY.uppercaseTitle,
-                        HealthDataCategory.VITALS.uppercaseTitle),
+                        HealthDataCategory.ACTIVITY.uppercaseTitle(),
+                        HealthDataCategory.VITALS.uppercaseTitle()),
                 dataTypesRead =
                     mutableSetOf(
-                        HealthDataCategory.SLEEP.uppercaseTitle,
-                        HealthDataCategory.NUTRITION.uppercaseTitle))
+                        HealthDataCategory.SLEEP.uppercaseTitle(),
+                        HealthDataCategory.NUTRITION.uppercaseTitle()))
 
         Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData(listOf(recentApp))

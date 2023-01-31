@@ -1,12 +1,11 @@
 package com.android.healthconnect.controller.permissiontypes.api
 
 import android.healthconnect.HealthConnectManager
+import android.healthconnect.HealthDataCategory
 import android.healthconnect.RecordTypeInfoResponse
 import android.healthconnect.datatypes.DataOrigin
 import android.healthconnect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.categories.HealthDataCategory
-import com.android.healthconnect.controller.categories.fromSdkHealthDataCategory
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
@@ -26,7 +25,7 @@ constructor(
 ) {
 
     /** Returns list of contributing apps for selected [HealthDataCategory] */
-    suspend operator fun invoke(category: HealthDataCategory): List<AppMetadata> =
+    suspend operator fun invoke(category: Int): List<AppMetadata> =
         withContext(dispatcher) {
             val appsList: MutableSet<AppMetadata> = mutableSetOf()
             val contributingAppsList = getListOfContributingApps(category)
@@ -39,7 +38,7 @@ constructor(
         }
 
     /** Returns list of contributing apps for selected [HealthDataCategory] */
-    private suspend fun getListOfContributingApps(category: HealthDataCategory): List<String> =
+    private suspend fun getListOfContributingApps(category: Int): List<String> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
@@ -58,14 +57,11 @@ constructor(
      * information
      */
     private fun filterContributingApps(
-        category: HealthDataCategory,
+        category: Int,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
     ): List<DataOrigin> =
         recordTypeInfoMap.values
-            .filter {
-                fromSdkHealthDataCategory(it.dataCategory) == category &&
-                    it.contributingPackages.isNotEmpty()
-            }
+            .filter { it.dataCategory == category && it.contributingPackages.isNotEmpty() }
             .map { it.contributingPackages }
             .flatten()
 

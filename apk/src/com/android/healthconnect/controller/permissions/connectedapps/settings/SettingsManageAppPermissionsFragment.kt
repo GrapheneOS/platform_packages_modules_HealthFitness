@@ -23,13 +23,14 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.categories.fromHealthPermissionType
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -153,7 +154,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
             category?.addPreference(
                 SwitchPreference(requireContext()).also {
                     val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
-                    it.setIcon(healthCategory.icon)
+                    it.setIcon(healthCategory.icon())
                     it.setTitle(
                         HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
                             .uppercaseLabel)

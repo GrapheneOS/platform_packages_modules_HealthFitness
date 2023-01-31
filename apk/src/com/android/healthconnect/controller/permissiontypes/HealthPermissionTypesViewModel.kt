@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.api.FilterPermissionTypesUseCase
 import com.android.healthconnect.controller.permissiontypes.api.LoadContributingAppsUseCase
@@ -78,7 +77,7 @@ constructor(
         _selectedAppFilter.postValue(selectedAppFilter)
     }
 
-    fun loadData(category: HealthDataCategory) {
+    fun loadData(category: Int) {
         _permissionTypesData.postValue(PermissionTypesState.Loading)
         _priorityList.postValue(PriorityListState.Loading)
 
@@ -103,7 +102,7 @@ constructor(
         }
     }
 
-    fun loadAppsWithData(category: HealthDataCategory) {
+    fun loadAppsWithData(category: Int) {
         _appsWithData.postValue(AppsWithDataFragmentState.Loading)
         viewModelScope.launch {
             val appsWithHealthPermissions = loadContributingAppsUseCase.invoke(category)
@@ -111,7 +110,7 @@ constructor(
         }
     }
 
-    fun filterPermissionTypes(category: HealthDataCategory, selectedAppPackageName: String) {
+    fun filterPermissionTypes(category: Int, selectedAppPackageName: String) {
         _permissionTypesData.postValue(PermissionTypesState.Loading)
         viewModelScope.launch {
             val permissionTypes =
@@ -125,7 +124,7 @@ constructor(
         }
     }
 
-    fun updatePriorityList(category: HealthDataCategory, newPriorityList: List<String>) {
+    fun updatePriorityList(category: Int, newPriorityList: List<String>) {
         _priorityList.postValue(PriorityListState.Loading)
         viewModelScope.launch {
             updatePriorityListUseCase.invoke(newPriorityList, category)

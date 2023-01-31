@@ -20,6 +20,7 @@ import android.healthconnect.RecordTypeInfoResponse
 import android.healthconnect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.HEALTH_DATA_CATEGORIES
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,7 +36,7 @@ constructor(
 ) {
 
     /** Returns list of available data categories. */
-    suspend operator fun invoke(): List<HealthDataCategory> =
+    suspend operator fun invoke(): List<Int> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
@@ -50,12 +51,11 @@ constructor(
         }
 
     private fun hasData(
-        category: HealthDataCategory,
+        category: Int,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
     ): Boolean =
         recordTypeInfoMap.values.firstOrNull {
-            fromSdkHealthDataCategory(it.dataCategory) == category &&
-                it.contributingPackages.isNotEmpty()
+            it.dataCategory == category && it.contributingPackages.isNotEmpty()
         } != null
 }
 
@@ -64,7 +64,7 @@ class LoadCategoriesUseCase
 @Inject
 constructor(private val categoriesUseCase: LoadCategoriesWithDataUseCase) {
     /** Returns list of data categories that have data. */
-    suspend fun invoke(): List<HealthDataCategory> = categoriesUseCase()
+    suspend fun invoke(): List<Int> = categoriesUseCase()
 }
 
 @Singleton
@@ -79,3 +79,6 @@ constructor(private val categoriesUseCase: LoadCategoriesWithDataUseCase) {
         }
     }
 }
+
+/** Represents Category group for HealthConnect data in All Categories screen. */
+data class AllCategoriesScreenHealthDataCategory(val category: Int, val noData: Boolean)

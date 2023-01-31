@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.deletion.api
 
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
+import android.healthconnect.HealthDataCategory
 import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
 import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
@@ -30,7 +31,6 @@ import android.healthconnect.datatypes.StepsRecord
 import android.healthconnect.datatypes.TotalCaloriesBurnedRecord
 import android.healthconnect.datatypes.Vo2MaxRecord
 import android.healthconnect.datatypes.WheelchairPushesRecord
-import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.api.DeleteCategoryUseCase
 import com.google.common.truth.Truth.assertThat

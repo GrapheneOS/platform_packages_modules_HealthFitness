@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.tests.categories
 
+import android.healthconnect.HealthDataCategory
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
@@ -25,7 +26,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.AllCategoriesScreenHealthDataCategory
 import com.android.healthconnect.controller.categories.HealthDataAllCategoriesFragment
-import com.android.healthconnect.controller.categories.HealthDataCategory
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
@@ -36,6 +36,21 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 
+/** List of all Health data categories. */
+private val HEALTH_DATA_ALL_CATEGORIES =
+    listOf(
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.ACTIVITY, noData = false),
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
+        AllCategoriesScreenHealthDataCategory(category = HealthDataCategory.SLEEP, noData = false),
+        AllCategoriesScreenHealthDataCategory(category = HealthDataCategory.VITALS, noData = false),
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.CYCLE_TRACKING, noData = false),
+        AllCategoriesScreenHealthDataCategory(
+            category = HealthDataCategory.NUTRITION, noData = true),
+    )
+
 @HiltAndroidTest
 class HealthDataAllCategoriesFragmentTest {
 
@@ -44,23 +59,6 @@ class HealthDataAllCategoriesFragmentTest {
     @BindValue
     val viewModel: HealthDataCategoryViewModel =
         Mockito.mock(HealthDataCategoryViewModel::class.java)
-
-    /** List of all Health data categories. */
-    val HEALTH_DATA_ALL_CATEGORIES =
-        listOf(
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.ACTIVITY, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.SLEEP, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.VITALS, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.CYCLE_TRACKING, noData = false),
-            AllCategoriesScreenHealthDataCategory(
-                category = HealthDataCategory.NUTRITION, noData = true),
-        )
 
     @Before
     fun setup() {

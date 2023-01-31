@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.dataTypeToCategory
 import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
@@ -183,10 +184,10 @@ constructor(
 
         if (accessLog.operationType == AccessLog.OperationType.OPERATION_TYPE_READ) {
             cluster.recentDataAccessEntry.dataTypesRead.addAll(
-                accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle })
+                accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle() })
         } else {
             cluster.recentDataAccessEntry.dataTypesWritten.addAll(
-                accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle })
+                accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle() })
         }
     }
 }

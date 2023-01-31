@@ -25,7 +25,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.categories.fromHealthPermissionType
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -40,6 +39,8 @@ import com.android.healthconnect.controller.permissions.connectedapps.shared.Dis
 import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment.Companion.KEY_DELETE_DATA
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.setupSharedMenu
@@ -200,7 +201,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
             category?.addPreference(
                 SwitchPreference(requireContext()).also {
                     val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
-                    it.setIcon(healthCategory.icon)
+                    it.setIcon(healthCategory.icon())
                     it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
                     it.isChecked = permissionStatus.isGranted
                     it.setOnPreferenceChangeListener { _, newValue ->
