@@ -15,16 +15,16 @@
  */
 package com.android.healthconnect.testapps.toolbox
 
-import android.healthconnect.datatypes.ActiveCaloriesBurnedRecord
-import android.healthconnect.datatypes.BasalMetabolicRateRecord
-import android.healthconnect.datatypes.CyclingPedalingCadenceRecord
-import android.healthconnect.datatypes.DistanceRecord
-import android.healthconnect.datatypes.ElevationGainedRecord
-import android.healthconnect.datatypes.HeartRateRecord
-import android.healthconnect.datatypes.PowerRecord
-import android.healthconnect.datatypes.Record
-import android.healthconnect.datatypes.SpeedRecord
-import android.healthconnect.datatypes.StepsRecord
+import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
+import android.health.connect.datatypes.BasalMetabolicRateRecord
+import android.health.connect.datatypes.CyclingPedalingCadenceRecord
+import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.ElevationGainedRecord
+import android.health.connect.datatypes.HeartRateRecord
+import android.health.connect.datatypes.PowerRecord
+import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SpeedRecord
+import android.health.connect.datatypes.StepsRecord
 import android.text.InputType
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

@@ -23,7 +23,7 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.healthconnect.HealthConnectManager;
+import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.ArrayMap;

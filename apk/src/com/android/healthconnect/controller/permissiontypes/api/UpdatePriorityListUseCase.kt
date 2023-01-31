@@ -15,10 +15,10 @@
  */
 package com.android.healthconnect.controller.permissiontypes.api
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.HealthDataCategory
-import android.healthconnect.UpdateDataOriginPriorityOrderRequest
-import android.healthconnect.datatypes.DataOrigin
+import android.health.connect.HealthConnectManager
+import android.health.connect.UpdateDataOriginPriorityOrderRequest
+import android.health.connect.HealthDataCategory
+import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -1,8 +1,8 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.BodyTemperatureMeasurementLocation.*
-import android.healthconnect.datatypes.units.Temperature
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.*
+import android.health.connect.datatypes.units.Temperature
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

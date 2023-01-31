@@ -18,7 +18,7 @@
 
 package com.android.healthconnect.controller.dataentries.formatters.shared
 
-import android.healthconnect.datatypes.Record
+import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 
 interface SessionDetailsFormatter<T : Record> {

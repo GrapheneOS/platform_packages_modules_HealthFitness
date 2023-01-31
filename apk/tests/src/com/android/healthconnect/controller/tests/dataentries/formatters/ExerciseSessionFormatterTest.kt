@@ -19,12 +19,12 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.ExerciseLap
-import android.healthconnect.datatypes.ExerciseSegment
-import android.healthconnect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_JUMPING_JACK
-import android.healthconnect.datatypes.ExerciseSessionRecord
-import android.healthconnect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING
-import android.healthconnect.datatypes.units.Length
+import android.health.connect.datatypes.ExerciseLap
+import android.health.connect.datatypes.ExerciseSegment
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_JUMPING_JACK
+import android.health.connect.datatypes.ExerciseSessionRecord
+import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING
+import android.health.connect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter

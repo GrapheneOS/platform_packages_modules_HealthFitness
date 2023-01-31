@@ -16,8 +16,8 @@
 
 package com.android.server.healthconnect.storage;
 
-import static android.healthconnect.Constants.DEFAULT_LONG;
-import static android.healthconnect.Constants.DEFAULT_PAGE_SIZE;
+import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
@@ -28,9 +28,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.healthconnect.Constants;
-import android.healthconnect.datatypes.DataOrigin;
-import android.healthconnect.internal.datatypes.RecordInternal;
+import android.health.connect.Constants;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 import android.util.Slog;
 

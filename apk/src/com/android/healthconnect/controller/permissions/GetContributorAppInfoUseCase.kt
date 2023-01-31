@@ -19,9 +19,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.healthconnect.ApplicationInfoResponse
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.datatypes.AppInfo
+import android.health.connect.ApplicationInfoResponse
+import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.AppInfo
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher

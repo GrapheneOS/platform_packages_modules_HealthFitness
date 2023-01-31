@@ -18,14 +18,14 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.datatypes.ExerciseLap;
-import android.healthconnect.datatypes.ExerciseRoute;
-import android.healthconnect.datatypes.ExerciseSegment;
-import android.healthconnect.datatypes.ExerciseSegmentType;
-import android.healthconnect.datatypes.ExerciseSessionRecord;
-import android.healthconnect.datatypes.ExerciseSessionType;
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.units.Length;
+import android.health.connect.datatypes.ExerciseLap;
+import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseSegment;
+import android.health.connect.datatypes.ExerciseSegmentType;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.units.Length;
 
 import androidx.test.runner.AndroidJUnit4;
 

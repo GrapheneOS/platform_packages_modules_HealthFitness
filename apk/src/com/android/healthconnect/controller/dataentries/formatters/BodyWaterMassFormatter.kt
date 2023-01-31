@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.BodyWaterMassRecord
+import android.health.connect.datatypes.BodyWaterMassRecord
 import com.android.healthconnect.controller.dataentries.formatters.MassFormatter.formatA11yValue
 import com.android.healthconnect.controller.dataentries.formatters.MassFormatter.formatValue
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter

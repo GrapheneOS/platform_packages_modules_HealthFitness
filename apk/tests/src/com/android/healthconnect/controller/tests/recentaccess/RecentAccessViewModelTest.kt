@@ -15,12 +15,12 @@
  */
 package com.android.healthconnect.controller.tests.recentaccess
 
-import android.healthconnect.AccessLog
-import android.healthconnect.Constants
-import android.healthconnect.datatypes.BasalMetabolicRateRecord
-import android.healthconnect.datatypes.RecordTypeIdentifier
-import android.healthconnect.datatypes.StepsRecord
-import android.healthconnect.datatypes.WeightRecord
+import android.health.connect.AccessLog
+import android.health.connect.Constants
+import android.health.connect.datatypes.BasalMetabolicRateRecord
+import android.health.connect.datatypes.RecordTypeIdentifier
+import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.WeightRecord
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.shared.AppInfoReader

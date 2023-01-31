@@ -16,13 +16,13 @@
 
 package com.android.server.healthconnect.storage.request;
 
-import static android.healthconnect.Constants.DEFAULT_PAGE_SIZE;
+import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.LIMIT_SIZE;
 
 import android.annotation.NonNull;
-import android.healthconnect.Constants;
+import android.health.connect.Constants;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;

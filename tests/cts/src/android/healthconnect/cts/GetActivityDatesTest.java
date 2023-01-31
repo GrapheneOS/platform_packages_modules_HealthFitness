@@ -18,13 +18,13 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
-import android.healthconnect.datatypes.InstantRecord;
-import android.healthconnect.datatypes.IntervalRecord;
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.StepsRecord;
-import android.healthconnect.datatypes.units.Power;
+import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.health.connect.datatypes.InstantRecord;
+import android.health.connect.datatypes.IntervalRecord;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.units.Power;
 
 import androidx.test.runner.AndroidJUnit4;
 

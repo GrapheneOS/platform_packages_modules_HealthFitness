@@ -16,13 +16,13 @@
 
 package com.android.server.healthconnect.storage.request;
 
-import static android.healthconnect.Constants.DEFAULT_LONG;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
+import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.healthconnect.Constants;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
+import android.health.connect.Constants;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.utils.WhereClauses;

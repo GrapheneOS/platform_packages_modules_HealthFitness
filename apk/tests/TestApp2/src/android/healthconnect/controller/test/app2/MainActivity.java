@@ -20,6 +20,6 @@ import android.app.Activity;
 
 /**
  * This app is used as an external package to test system api {@link
- * android.healthconnect.HealthConnectManager} permission-related APIs.
+ * android.health.connect.HealthConnectManager} permission-related APIs.
  */
 public class MainActivity extends Activity {}

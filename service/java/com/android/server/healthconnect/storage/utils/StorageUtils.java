@@ -27,9 +27,9 @@ import android.annotation.Nullable;
 import android.annotation.StringDef;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.RecordIdFilter;
-import android.healthconnect.internal.datatypes.RecordInternal;
-import android.healthconnect.internal.datatypes.utils.RecordMapper;
+import android.health.connect.RecordIdFilter;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.RecordMapper;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 

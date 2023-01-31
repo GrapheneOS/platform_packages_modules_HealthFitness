@@ -17,9 +17,9 @@ package com.android.healthconnect.controller.tests.permissions
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.healthconnect.ApplicationInfoResponse
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.datatypes.AppInfo
+import android.health.connect.ApplicationInfoResponse
+import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.AppInfo
 import android.os.OutcomeReceiver
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap

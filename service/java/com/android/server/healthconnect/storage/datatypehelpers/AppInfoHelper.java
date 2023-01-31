@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.DEFAULT_LONG;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -40,10 +40,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.healthconnect.Constants;
-import android.healthconnect.datatypes.AppInfo;
-import android.healthconnect.internal.datatypes.AppInfoInternal;
-import android.healthconnect.internal.datatypes.RecordInternal;
+import android.health.connect.Constants;
+import android.health.connect.datatypes.AppInfo;
+import android.health.connect.internal.datatypes.AppInfoInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;

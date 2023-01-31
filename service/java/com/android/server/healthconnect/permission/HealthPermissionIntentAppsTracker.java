@@ -21,8 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.healthconnect.Constants;
-import android.healthconnect.HealthConnectManager;
+import android.health.connect.Constants;
+import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.ArraySet;
@@ -37,7 +37,7 @@ import java.util.Set;
 
 /**
  * Tracks apps which support {@link android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} with {@link
- * android.healthconnect.HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS}.
+ * HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS}.
  *
  * @hide
  */
@@ -59,7 +59,7 @@ public class HealthPermissionIntentAppsTracker {
 
     /**
      * Checks if the given app supports {@link android.content.Intent#ACTION_VIEW_PERMISSION_USAGE}
-     * with {@link android.healthconnect.HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS}
+     * with {@link HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS}
      *
      * @param packageName: name of the package to check
      * @param userHandle: the user to query

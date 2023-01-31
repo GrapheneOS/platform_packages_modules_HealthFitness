@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.StepsCadenceRecord
-import android.healthconnect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample
+import android.health.connect.datatypes.StepsCadenceRecord
+import android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

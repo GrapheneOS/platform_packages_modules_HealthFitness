@@ -16,7 +16,7 @@
 
 package android.healthconnect;
 
-import static android.healthconnect.HealthPermissions.HEALTH_PERMISSION_GROUP;
+import static android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -24,6 +24,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
 

@@ -1,49 +1,49 @@
 // Signature format: 2.0
-package android.healthconnect {
+package android.health.connect {
 
   public final class AggregateRecordsGroupedByDurationResponse<T> {
-    method @Nullable public T get(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+    method @Nullable public T get(@NonNull android.health.connect.datatypes.AggregationType<T>);
     method @NonNull public java.time.Instant getEndTime();
     method @NonNull public java.time.Instant getStartTime();
-    method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+    method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.health.connect.datatypes.AggregationType<T>);
   }
 
   public final class AggregateRecordsGroupedByPeriodResponse<T> {
-    method @Nullable public T get(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+    method @Nullable public T get(@NonNull android.health.connect.datatypes.AggregationType<T>);
     method @NonNull public java.time.LocalDateTime getEndTime();
     method @NonNull public java.time.LocalDateTime getStartTime();
-    method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+    method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.health.connect.datatypes.AggregationType<T>);
   }
 
   public final class AggregateRecordsRequest<T> {
-    method @NonNull public java.util.Set<android.healthconnect.datatypes.AggregationType<T>> getAggregationTypes();
-    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOriginsFilters();
-    method @NonNull public android.healthconnect.TimeRangeFilter getTimeRangeFilter();
+    method @NonNull public java.util.Set<android.health.connect.datatypes.AggregationType<T>> getAggregationTypes();
+    method @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getDataOriginsFilters();
+    method @NonNull public android.health.connect.TimeRangeFilter getTimeRangeFilter();
   }
 
   public static final class AggregateRecordsRequest.Builder<T> {
-    ctor public AggregateRecordsRequest.Builder(@NonNull android.healthconnect.TimeRangeFilter);
-    method @NonNull public android.healthconnect.AggregateRecordsRequest.Builder<T> addAggregationType(@NonNull android.healthconnect.datatypes.AggregationType<T>);
-    method @NonNull public android.healthconnect.AggregateRecordsRequest.Builder<T> addDataOriginsFilter(@NonNull android.healthconnect.datatypes.DataOrigin);
-    method @NonNull public android.healthconnect.AggregateRecordsRequest<T> build();
+    ctor public AggregateRecordsRequest.Builder(@NonNull android.health.connect.TimeRangeFilter);
+    method @NonNull public android.health.connect.AggregateRecordsRequest.Builder<T> addAggregationType(@NonNull android.health.connect.datatypes.AggregationType<T>);
+    method @NonNull public android.health.connect.AggregateRecordsRequest.Builder<T> addDataOriginsFilter(@NonNull android.health.connect.datatypes.DataOrigin);
+    method @NonNull public android.health.connect.AggregateRecordsRequest<T> build();
   }
 
   public final class AggregateRecordsResponse<T> {
-    method @Nullable public T get(@NonNull android.healthconnect.datatypes.AggregationType<T>);
-    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins(@NonNull android.healthconnect.datatypes.AggregationType<T>);
-    method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.healthconnect.datatypes.AggregationType<T>);
+    method @Nullable public T get(@NonNull android.health.connect.datatypes.AggregationType<T>);
+    method @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getDataOrigins(@NonNull android.health.connect.datatypes.AggregationType<T>);
+    method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.health.connect.datatypes.AggregationType<T>);
   }
 
   public final class ChangeLogTokenRequest {
-    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOriginFilters();
-    method @NonNull public java.util.Set<java.lang.Class<? extends android.healthconnect.datatypes.Record>> getRecordTypes();
+    method @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getDataOriginFilters();
+    method @NonNull public java.util.Set<java.lang.Class<? extends android.health.connect.datatypes.Record>> getRecordTypes();
   }
 
   public static final class ChangeLogTokenRequest.Builder {
     ctor public ChangeLogTokenRequest.Builder();
-    method @NonNull public android.healthconnect.ChangeLogTokenRequest.Builder addDataOriginFilter(@NonNull android.healthconnect.datatypes.DataOrigin);
-    method @NonNull public android.healthconnect.ChangeLogTokenRequest.Builder addRecordType(@NonNull Class<? extends android.healthconnect.datatypes.Record>);
-    method @NonNull public android.healthconnect.ChangeLogTokenRequest build();
+    method @NonNull public android.health.connect.ChangeLogTokenRequest.Builder addDataOriginFilter(@NonNull android.health.connect.datatypes.DataOrigin);
+    method @NonNull public android.health.connect.ChangeLogTokenRequest.Builder addRecordType(@NonNull Class<? extends android.health.connect.datatypes.Record>);
+    method @NonNull public android.health.connect.ChangeLogTokenRequest build();
   }
 
   public class ChangeLogTokenResponse {
@@ -57,14 +57,14 @@ package android.healthconnect {
 
   public static final class ChangeLogsRequest.Builder {
     ctor public ChangeLogsRequest.Builder(@NonNull String);
-    method @NonNull public android.healthconnect.ChangeLogsRequest build();
-    method @NonNull public android.healthconnect.ChangeLogsRequest.Builder setPageSize(int);
+    method @NonNull public android.health.connect.ChangeLogsRequest build();
+    method @NonNull public android.health.connect.ChangeLogsRequest.Builder setPageSize(int);
   }
 
   public class ChangeLogsResponse {
     method @NonNull public java.util.List<java.lang.String> getDeletedRecordIds();
     method @NonNull public String getNextChangesToken();
-    method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getUpsertedRecords();
+    method @NonNull public java.util.List<android.health.connect.datatypes.Record> getUpsertedRecords();
     method public boolean hasMorePages();
   }
 
@@ -79,21 +79,21 @@ package android.healthconnect {
   }
 
   public class HealthConnectManager {
-    method @NonNull public <T> void aggregate(@NonNull android.healthconnect.AggregateRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.AggregateRecordsResponse<T>,android.healthconnect.HealthConnectException>);
-    method public <T> void aggregateGroupByDuration(@NonNull android.healthconnect.AggregateRecordsRequest<T>, @NonNull java.time.Duration, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.healthconnect.AggregateRecordsGroupedByDurationResponse<T>>,android.healthconnect.HealthConnectException>);
-    method public <T> void aggregateGroupByPeriod(@NonNull android.healthconnect.AggregateRecordsRequest<T>, @NonNull java.time.Period, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.healthconnect.AggregateRecordsGroupedByPeriodResponse<T>>,android.healthconnect.HealthConnectException>);
-    method public void deleteRecords(@NonNull java.util.List<android.healthconnect.RecordIdFilter>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
-    method public void deleteRecords(@NonNull Class<? extends android.healthconnect.datatypes.Record>, @NonNull android.healthconnect.TimeRangeFilter, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
-    method public void getChangeLogToken(@NonNull android.healthconnect.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ChangeLogTokenResponse,android.healthconnect.HealthConnectException>);
-    method public void getChangeLogs(@NonNull android.healthconnect.ChangeLogsRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ChangeLogsResponse,android.healthconnect.HealthConnectException>);
-    method public void insertRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.InsertRecordsResponse,android.healthconnect.HealthConnectException>);
-    method public <T extends android.healthconnect.datatypes.Record> void readRecords(@NonNull android.healthconnect.ReadRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.healthconnect.ReadRecordsResponse<T>,android.healthconnect.HealthConnectException>);
-    method public void updateRecords(@NonNull java.util.List<android.healthconnect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.healthconnect.HealthConnectException>);
-    field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS = "android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS";
-    field public static final String ACTION_REQUEST_EXERCISE_ROUTE = "android.healthconnect.action.REQUEST_EXERCISE_ROUTE";
+    method @NonNull public <T> void aggregate(@NonNull android.health.connect.AggregateRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.AggregateRecordsResponse<T>,android.health.connect.HealthConnectException>);
+    method public <T> void aggregateGroupByDuration(@NonNull android.health.connect.AggregateRecordsRequest<T>, @NonNull java.time.Duration, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.AggregateRecordsGroupedByDurationResponse<T>>,android.health.connect.HealthConnectException>);
+    method public <T> void aggregateGroupByPeriod(@NonNull android.health.connect.AggregateRecordsRequest<T>, @NonNull java.time.Period, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.AggregateRecordsGroupedByPeriodResponse<T>>,android.health.connect.HealthConnectException>);
+    method public void deleteRecords(@NonNull java.util.List<android.health.connect.RecordIdFilter>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
+    method public void deleteRecords(@NonNull Class<? extends android.health.connect.datatypes.Record>, @NonNull android.health.connect.TimeRangeFilter, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
+    method public void getChangeLogToken(@NonNull android.health.connect.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ChangeLogTokenResponse,android.health.connect.HealthConnectException>);
+    method public void getChangeLogs(@NonNull android.health.connect.ChangeLogsRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ChangeLogsResponse,android.health.connect.HealthConnectException>);
+    method public void insertRecords(@NonNull java.util.List<android.health.connect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.InsertRecordsResponse,android.health.connect.HealthConnectException>);
+    method public <T extends android.health.connect.datatypes.Record> void readRecords(@NonNull android.health.connect.ReadRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ReadRecordsResponse<T>,android.health.connect.HealthConnectException>);
+    method public void updateRecords(@NonNull java.util.List<android.health.connect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
+    field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS = "android.health.connect.action.MANAGE_HEALTH_PERMISSIONS";
+    field public static final String ACTION_REQUEST_EXERCISE_ROUTE = "android.health.connect.action.REQUEST_EXERCISE_ROUTE";
     field public static final String CATEGORY_HEALTH_PERMISSIONS = "android.intent.category.HEALTH_PERMISSIONS";
-    field public static final String EXTRA_EXERCISE_ROUTE = "android.healthconnect.extra.EXERCISE_ROUTE";
-    field public static final String EXTRA_SESSION_ID = "android.healthconnect.extra.SESSION_ID";
+    field public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
+    field public static final String EXTRA_SESSION_ID = "android.health.connect.extra.SESSION_ID";
   }
 
   public final class HealthPermissions {
@@ -171,10 +171,10 @@ package android.healthconnect {
   }
 
   public class InsertRecordsResponse {
-    method @NonNull public java.util.List<android.healthconnect.datatypes.Record> getRecords();
+    method @NonNull public java.util.List<android.health.connect.datatypes.Record> getRecords();
   }
 
-  public final class LocalTimeRangeFilter implements android.healthconnect.TimeRangeFilter {
+  public final class LocalTimeRangeFilter implements android.health.connect.TimeRangeFilter {
     method @Nullable public java.time.LocalDateTime getEndTime();
     method @Nullable public java.time.LocalDateTime getStartTime();
     method @NonNull public boolean isBounded();
@@ -182,58 +182,58 @@ package android.healthconnect {
 
   public static final class LocalTimeRangeFilter.Builder {
     ctor public LocalTimeRangeFilter.Builder();
-    method @NonNull public android.healthconnect.LocalTimeRangeFilter build();
-    method @NonNull public android.healthconnect.LocalTimeRangeFilter.Builder setEndTime(@Nullable java.time.LocalDateTime);
-    method @NonNull public android.healthconnect.LocalTimeRangeFilter.Builder setStartTime(@Nullable java.time.LocalDateTime);
+    method @NonNull public android.health.connect.LocalTimeRangeFilter build();
+    method @NonNull public android.health.connect.LocalTimeRangeFilter.Builder setEndTime(@Nullable java.time.LocalDateTime);
+    method @NonNull public android.health.connect.LocalTimeRangeFilter.Builder setStartTime(@Nullable java.time.LocalDateTime);
   }
 
-  public abstract class ReadRecordsRequest<T extends android.healthconnect.datatypes.Record> {
+  public abstract class ReadRecordsRequest<T extends android.health.connect.datatypes.Record> {
     method @NonNull public Class<T> getRecordType();
   }
 
-  public final class ReadRecordsRequestUsingFilters<T extends android.healthconnect.datatypes.Record> extends android.healthconnect.ReadRecordsRequest<T> {
-    method @NonNull public java.util.Set<android.healthconnect.datatypes.DataOrigin> getDataOrigins();
+  public final class ReadRecordsRequestUsingFilters<T extends android.health.connect.datatypes.Record> extends android.health.connect.ReadRecordsRequest<T> {
+    method @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getDataOrigins();
     method @IntRange(from=1, to=5000) public int getPageSize();
     method public long getPageToken();
-    method @Nullable public android.healthconnect.TimeRangeFilter getTimeRangeFilter();
+    method @Nullable public android.health.connect.TimeRangeFilter getTimeRangeFilter();
     method public boolean isAscending();
   }
 
-  public static final class ReadRecordsRequestUsingFilters.Builder<T extends android.healthconnect.datatypes.Record> {
+  public static final class ReadRecordsRequestUsingFilters.Builder<T extends android.health.connect.datatypes.Record> {
     ctor public ReadRecordsRequestUsingFilters.Builder(@NonNull Class<T>);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> addDataOrigins(@NonNull android.healthconnect.datatypes.DataOrigin);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters<T> build();
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setAscending(boolean);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setPageSize(@IntRange(from=1, to=5000) int);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setPageToken(long);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingFilters.Builder<T> setTimeRangeFilter(@Nullable android.healthconnect.TimeRangeFilter);
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingFilters.Builder<T> addDataOrigins(@NonNull android.health.connect.datatypes.DataOrigin);
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingFilters<T> build();
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingFilters.Builder<T> setAscending(boolean);
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingFilters.Builder<T> setPageSize(@IntRange(from=1, to=5000) int);
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingFilters.Builder<T> setPageToken(long);
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingFilters.Builder<T> setTimeRangeFilter(@Nullable android.health.connect.TimeRangeFilter);
   }
 
-  public final class ReadRecordsRequestUsingIds<T extends android.healthconnect.datatypes.Record> extends android.healthconnect.ReadRecordsRequest<T> {
-    method @NonNull public java.util.List<android.healthconnect.RecordIdFilter> getRecordIdFilters();
+  public final class ReadRecordsRequestUsingIds<T extends android.health.connect.datatypes.Record> extends android.health.connect.ReadRecordsRequest<T> {
+    method @NonNull public java.util.List<android.health.connect.RecordIdFilter> getRecordIdFilters();
   }
 
-  public static final class ReadRecordsRequestUsingIds.Builder<T extends android.healthconnect.datatypes.Record> {
+  public static final class ReadRecordsRequestUsingIds.Builder<T extends android.health.connect.datatypes.Record> {
     ctor public ReadRecordsRequestUsingIds.Builder(@NonNull Class<T>);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingIds.Builder<T> addClientRecordId(@NonNull String);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingIds.Builder<T> addId(@NonNull String);
-    method @NonNull public android.healthconnect.ReadRecordsRequestUsingIds<T> build();
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingIds.Builder<T> addClientRecordId(@NonNull String);
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingIds.Builder<T> addId(@NonNull String);
+    method @NonNull public android.health.connect.ReadRecordsRequestUsingIds<T> build();
   }
 
-  public class ReadRecordsResponse<T extends android.healthconnect.datatypes.Record> {
+  public class ReadRecordsResponse<T extends android.health.connect.datatypes.Record> {
     method public long getNextPageToken();
     method @NonNull public java.util.List<T> getRecords();
   }
 
   public class RecordIdFilter {
-    method @NonNull public static android.healthconnect.RecordIdFilter fromClientRecordId(@NonNull Class<? extends android.healthconnect.datatypes.Record>, @NonNull String);
-    method @NonNull public static android.healthconnect.RecordIdFilter fromId(@NonNull Class<? extends android.healthconnect.datatypes.Record>, @NonNull String);
+    method @NonNull public static android.health.connect.RecordIdFilter fromClientRecordId(@NonNull Class<? extends android.health.connect.datatypes.Record>, @NonNull String);
+    method @NonNull public static android.health.connect.RecordIdFilter fromId(@NonNull Class<? extends android.health.connect.datatypes.Record>, @NonNull String);
     method @Nullable public String getClientRecordId();
     method @Nullable public String getId();
-    method @NonNull public Class<? extends android.healthconnect.datatypes.Record> getRecordType();
+    method @NonNull public Class<? extends android.health.connect.datatypes.Record> getRecordType();
   }
 
-  public final class TimeInstantRangeFilter implements android.healthconnect.TimeRangeFilter {
+  public final class TimeInstantRangeFilter implements android.health.connect.TimeRangeFilter {
     method @Nullable public java.time.Instant getEndTime();
     method @Nullable public java.time.Instant getStartTime();
     method @NonNull public boolean isBounded();
@@ -241,9 +241,9 @@ package android.healthconnect {
 
   public static final class TimeInstantRangeFilter.Builder {
     ctor public TimeInstantRangeFilter.Builder();
-    method @NonNull public android.healthconnect.TimeInstantRangeFilter build();
-    method @NonNull public android.healthconnect.TimeInstantRangeFilter.Builder setEndTime(@Nullable java.time.Instant);
-    method @NonNull public android.healthconnect.TimeInstantRangeFilter.Builder setStartTime(@Nullable java.time.Instant);
+    method @NonNull public android.health.connect.TimeInstantRangeFilter build();
+    method @NonNull public android.health.connect.TimeInstantRangeFilter.Builder setEndTime(@Nullable java.time.Instant);
+    method @NonNull public android.health.connect.TimeInstantRangeFilter.Builder setStartTime(@Nullable java.time.Instant);
   }
 
   public interface TimeRangeFilter {
@@ -251,20 +251,20 @@ package android.healthconnect {
 
 }
 
-package android.healthconnect.datatypes {
+package android.health.connect.datatypes {
 
-  public final class ActiveCaloriesBurnedRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Energy getEnergy();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Energy> ACTIVE_CALORIES_TOTAL;
+  public final class ActiveCaloriesBurnedRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public android.health.connect.datatypes.units.Energy getEnergy();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Energy> ACTIVE_CALORIES_TOTAL;
   }
 
   public static final class ActiveCaloriesBurnedRecord.Builder {
-    ctor public ActiveCaloriesBurnedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Energy);
-    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord build();
-    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.ActiveCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public ActiveCaloriesBurnedRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Energy);
+    method @NonNull public android.health.connect.datatypes.ActiveCaloriesBurnedRecord build();
+    method @NonNull public android.health.connect.datatypes.ActiveCaloriesBurnedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.ActiveCaloriesBurnedRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.ActiveCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.ActiveCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class AggregationType<T> {
@@ -276,42 +276,42 @@ package android.healthconnect.datatypes {
     method @NonNull public String getPackageName();
   }
 
-  public final class BasalBodyTemperatureRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class BasalBodyTemperatureRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getMeasurementLocation();
-    method @NonNull public android.healthconnect.datatypes.units.Temperature getTemperature();
+    method @NonNull public android.health.connect.datatypes.units.Temperature getTemperature();
   }
 
   public static final class BasalBodyTemperatureRecord.Builder {
-    ctor public BasalBodyTemperatureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Temperature);
-    method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord build();
-    method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BasalBodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BasalBodyTemperatureRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.health.connect.datatypes.units.Temperature);
+    method @NonNull public android.health.connect.datatypes.BasalBodyTemperatureRecord build();
+    method @NonNull public android.health.connect.datatypes.BasalBodyTemperatureRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BasalBodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class BasalMetabolicRateRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Power getBasalMetabolicRate();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Power> BASAL_CALORIES_TOTAL;
+  public final class BasalMetabolicRateRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Power getBasalMetabolicRate();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Power> BASAL_CALORIES_TOTAL;
   }
 
   public static final class BasalMetabolicRateRecord.Builder {
-    ctor public BasalMetabolicRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Power);
-    method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord build();
-    method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BasalMetabolicRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BasalMetabolicRateRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Power);
+    method @NonNull public android.health.connect.datatypes.BasalMetabolicRateRecord build();
+    method @NonNull public android.health.connect.datatypes.BasalMetabolicRateRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BasalMetabolicRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class BloodGlucoseRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.BloodGlucose getLevel();
+  public final class BloodGlucoseRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.BloodGlucose getLevel();
     method public int getMealType();
     method public int getRelationToMeal();
     method public int getSpecimenSource();
   }
 
   public static final class BloodGlucoseRecord.Builder {
-    ctor public BloodGlucoseRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.BloodGlucose, int, int);
-    method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord build();
-    method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BloodGlucoseRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BloodGlucoseRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.health.connect.datatypes.units.BloodGlucose, int, int);
+    method @NonNull public android.health.connect.datatypes.BloodGlucoseRecord build();
+    method @NonNull public android.health.connect.datatypes.BloodGlucoseRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BloodGlucoseRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class BloodGlucoseRecord.RelationToMealType {
@@ -332,11 +332,11 @@ package android.healthconnect.datatypes {
     field public static final int SPECIMEN_SOURCE_WHOLE_BLOOD = 6; // 0x6
   }
 
-  public final class BloodPressureRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class BloodPressureRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getBodyPosition();
-    method @NonNull public android.healthconnect.datatypes.units.Pressure getDiastolic();
+    method @NonNull public android.health.connect.datatypes.units.Pressure getDiastolic();
     method public int getMeasurementLocation();
-    method @NonNull public android.healthconnect.datatypes.units.Pressure getSystolic();
+    method @NonNull public android.health.connect.datatypes.units.Pressure getSystolic();
   }
 
   public static final class BloodPressureRecord.BloodPressureMeasurementLocation {
@@ -356,21 +356,21 @@ package android.healthconnect.datatypes {
   }
 
   public static final class BloodPressureRecord.Builder {
-    ctor public BloodPressureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Pressure, @NonNull android.healthconnect.datatypes.units.Pressure, int);
-    method @NonNull public android.healthconnect.datatypes.BloodPressureRecord build();
-    method @NonNull public android.healthconnect.datatypes.BloodPressureRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BloodPressureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BloodPressureRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.health.connect.datatypes.units.Pressure, @NonNull android.health.connect.datatypes.units.Pressure, int);
+    method @NonNull public android.health.connect.datatypes.BloodPressureRecord build();
+    method @NonNull public android.health.connect.datatypes.BloodPressureRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BloodPressureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class BodyFatRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Percentage getPercentage();
+  public final class BodyFatRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Percentage getPercentage();
   }
 
   public static final class BodyFatRecord.Builder {
-    ctor public BodyFatRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Percentage);
-    method @NonNull public android.healthconnect.datatypes.BodyFatRecord build();
-    method @NonNull public android.healthconnect.datatypes.BodyFatRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BodyFatRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BodyFatRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Percentage);
+    method @NonNull public android.health.connect.datatypes.BodyFatRecord build();
+    method @NonNull public android.health.connect.datatypes.BodyFatRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BodyFatRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class BodyTemperatureMeasurementLocation {
@@ -387,50 +387,50 @@ package android.healthconnect.datatypes {
     field public static final int MEASUREMENT_LOCATION_WRIST = 9; // 0x9
   }
 
-  public final class BodyTemperatureRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class BodyTemperatureRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getMeasurementLocation();
-    method @NonNull public android.healthconnect.datatypes.units.Temperature getTemperature();
+    method @NonNull public android.health.connect.datatypes.units.Temperature getTemperature();
   }
 
   public static final class BodyTemperatureRecord.Builder {
-    ctor public BodyTemperatureRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.healthconnect.datatypes.units.Temperature);
-    method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord build();
-    method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BodyTemperatureRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int, @NonNull android.health.connect.datatypes.units.Temperature);
+    method @NonNull public android.health.connect.datatypes.BodyTemperatureRecord build();
+    method @NonNull public android.health.connect.datatypes.BodyTemperatureRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BodyTemperatureRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class BodyWaterMassRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Mass getBodyWaterMass();
+  public final class BodyWaterMassRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Mass getBodyWaterMass();
   }
 
   public static final class BodyWaterMassRecord.Builder {
-    ctor public BodyWaterMassRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.BodyWaterMassRecord build();
-    method @NonNull public android.healthconnect.datatypes.BodyWaterMassRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BodyWaterMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BodyWaterMassRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.BodyWaterMassRecord build();
+    method @NonNull public android.health.connect.datatypes.BodyWaterMassRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BodyWaterMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class BoneMassRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Mass getMass();
+  public final class BoneMassRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Mass getMass();
   }
 
   public static final class BoneMassRecord.Builder {
-    ctor public BoneMassRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.BoneMassRecord build();
-    method @NonNull public android.healthconnect.datatypes.BoneMassRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.BoneMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public BoneMassRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.BoneMassRecord build();
+    method @NonNull public android.health.connect.datatypes.BoneMassRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.BoneMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class CervicalMucusRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class CervicalMucusRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getAppearance();
     method public int getSensation();
   }
 
   public static final class CervicalMucusRecord.Builder {
-    ctor public CervicalMucusRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, int);
-    method @NonNull public android.healthconnect.datatypes.CervicalMucusRecord build();
-    method @NonNull public android.healthconnect.datatypes.CervicalMucusRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.CervicalMucusRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public CervicalMucusRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int, int);
+    method @NonNull public android.health.connect.datatypes.CervicalMucusRecord build();
+    method @NonNull public android.health.connect.datatypes.CervicalMucusRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.CervicalMucusRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class CervicalMucusRecord.CervicalMucusAppearance {
@@ -450,17 +450,17 @@ package android.healthconnect.datatypes {
     field public static final int SENSATION_UNKNOWN = 0; // 0x0
   }
 
-  public final class CyclingPedalingCadenceRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public java.util.List<android.healthconnect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> getSamples();
+  public final class CyclingPedalingCadenceRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> getSamples();
   }
 
   public static final class CyclingPedalingCadenceRecord.Builder {
-    ctor public CyclingPedalingCadenceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>);
-    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord build();
-    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.CyclingPedalingCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public CyclingPedalingCadenceRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>);
+    method @NonNull public android.health.connect.datatypes.CyclingPedalingCadenceRecord build();
+    method @NonNull public android.health.connect.datatypes.CyclingPedalingCadenceRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.CyclingPedalingCadenceRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.CyclingPedalingCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.CyclingPedalingCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample {
@@ -475,8 +475,8 @@ package android.healthconnect.datatypes {
 
   public static final class DataOrigin.Builder {
     ctor public DataOrigin.Builder();
-    method @NonNull public android.healthconnect.datatypes.DataOrigin build();
-    method @NonNull public android.healthconnect.datatypes.DataOrigin.Builder setPackageName(@NonNull String);
+    method @NonNull public android.health.connect.datatypes.DataOrigin build();
+    method @NonNull public android.health.connect.datatypes.DataOrigin.Builder setPackageName(@NonNull String);
   }
 
   public final class Device {
@@ -496,78 +496,78 @@ package android.healthconnect.datatypes {
 
   public static final class Device.Builder {
     ctor public Device.Builder();
-    method @NonNull public android.healthconnect.datatypes.Device build();
-    method @NonNull public android.healthconnect.datatypes.Device.Builder setManufacturer(@Nullable String);
-    method @NonNull public android.healthconnect.datatypes.Device.Builder setModel(@Nullable String);
-    method @NonNull public android.healthconnect.datatypes.Device.Builder setType(int);
+    method @NonNull public android.health.connect.datatypes.Device build();
+    method @NonNull public android.health.connect.datatypes.Device.Builder setManufacturer(@Nullable String);
+    method @NonNull public android.health.connect.datatypes.Device.Builder setModel(@Nullable String);
+    method @NonNull public android.health.connect.datatypes.Device.Builder setType(int);
   }
 
-  public final class DistanceRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Length getDistance();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> DISTANCE_TOTAL;
+  public final class DistanceRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public android.health.connect.datatypes.units.Length getDistance();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Length> DISTANCE_TOTAL;
   }
 
   public static final class DistanceRecord.Builder {
-    ctor public DistanceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
-    method @NonNull public android.healthconnect.datatypes.DistanceRecord build();
-    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.DistanceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public DistanceRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Length);
+    method @NonNull public android.health.connect.datatypes.DistanceRecord build();
+    method @NonNull public android.health.connect.datatypes.DistanceRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.DistanceRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.DistanceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.DistanceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class ElevationGainedRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Length getElevation();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> ELEVATION_GAINED_TOTAL;
+  public final class ElevationGainedRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public android.health.connect.datatypes.units.Length getElevation();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Length> ELEVATION_GAINED_TOTAL;
   }
 
   public static final class ElevationGainedRecord.Builder {
-    ctor public ElevationGainedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
-    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord build();
-    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.ElevationGainedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public ElevationGainedRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Length);
+    method @NonNull public android.health.connect.datatypes.ElevationGainedRecord build();
+    method @NonNull public android.health.connect.datatypes.ElevationGainedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.ElevationGainedRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.ElevationGainedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.ElevationGainedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class ExerciseLap {
     method @NonNull public java.time.Instant getEndTime();
-    method @Nullable public android.healthconnect.datatypes.units.Length getLength();
+    method @Nullable public android.health.connect.datatypes.units.Length getLength();
     method @NonNull public java.time.Instant getStartTime();
   }
 
   public static final class ExerciseLap.Builder {
     ctor public ExerciseLap.Builder(@NonNull java.time.Instant, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.ExerciseLap build();
-    method @NonNull public android.healthconnect.datatypes.ExerciseLap.Builder setLength(@NonNull android.healthconnect.datatypes.units.Length);
+    method @NonNull public android.health.connect.datatypes.ExerciseLap build();
+    method @NonNull public android.health.connect.datatypes.ExerciseLap.Builder setLength(@NonNull android.health.connect.datatypes.units.Length);
   }
 
   public final class ExerciseRoute implements android.os.Parcelable {
-    ctor public ExerciseRoute(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location>);
+    ctor public ExerciseRoute(@NonNull java.util.List<android.health.connect.datatypes.ExerciseRoute.Location>);
     method public int describeContents();
-    method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseRoute.Location> getRouteLocations();
+    method @NonNull public java.util.List<android.health.connect.datatypes.ExerciseRoute.Location> getRouteLocations();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
-    field @NonNull public static final android.os.Parcelable.Creator<android.healthconnect.datatypes.ExerciseRoute> CREATOR;
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.datatypes.ExerciseRoute> CREATOR;
   }
 
   public static final class ExerciseRoute.Location implements android.os.Parcelable {
     method public int describeContents();
-    method @Nullable public android.healthconnect.datatypes.units.Length getAltitude();
-    method @Nullable public android.healthconnect.datatypes.units.Length getHorizontalAccuracy();
+    method @Nullable public android.health.connect.datatypes.units.Length getAltitude();
+    method @Nullable public android.health.connect.datatypes.units.Length getHorizontalAccuracy();
     method @FloatRange(from=-90.0, to=90.0) public double getLatitude();
     method @FloatRange(from=-180.0, to=180.0) public double getLongitude();
     method @NonNull public java.time.Instant getTime();
-    method @Nullable public android.healthconnect.datatypes.units.Length getVerticalAccuracy();
+    method @Nullable public android.health.connect.datatypes.units.Length getVerticalAccuracy();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
-    field @NonNull public static final android.os.Parcelable.Creator<android.healthconnect.datatypes.ExerciseRoute.Location> CREATOR;
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.datatypes.ExerciseRoute.Location> CREATOR;
   }
 
   public static final class ExerciseRoute.Location.Builder {
     ctor public ExerciseRoute.Location.Builder(@NonNull java.time.Instant, @FloatRange(from=-90.0, to=90.0) double, @FloatRange(from=-180.0, to=180.0) double);
-    method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location build();
-    method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location.Builder setAltitude(@NonNull android.healthconnect.datatypes.units.Length);
-    method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location.Builder setHorizontalAccuracy(@NonNull android.healthconnect.datatypes.units.Length);
-    method @NonNull public android.healthconnect.datatypes.ExerciseRoute.Location.Builder setVerticalAccuracy(@NonNull android.healthconnect.datatypes.units.Length);
+    method @NonNull public android.health.connect.datatypes.ExerciseRoute.Location build();
+    method @NonNull public android.health.connect.datatypes.ExerciseRoute.Location.Builder setAltitude(@NonNull android.health.connect.datatypes.units.Length);
+    method @NonNull public android.health.connect.datatypes.ExerciseRoute.Location.Builder setHorizontalAccuracy(@NonNull android.health.connect.datatypes.units.Length);
+    method @NonNull public android.health.connect.datatypes.ExerciseRoute.Location.Builder setVerticalAccuracy(@NonNull android.health.connect.datatypes.units.Length);
   }
 
   public final class ExerciseSegment {
@@ -579,8 +579,8 @@ package android.healthconnect.datatypes {
 
   public static final class ExerciseSegment.Builder {
     ctor public ExerciseSegment.Builder(@NonNull java.time.Instant, @NonNull java.time.Instant, int);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSegment build();
-    method @NonNull public android.healthconnect.datatypes.ExerciseSegment.Builder setRepetitionsCount(@IntRange(from=0) int);
+    method @NonNull public android.health.connect.datatypes.ExerciseSegment build();
+    method @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setRepetitionsCount(@IntRange(from=0) int);
   }
 
   public final class ExerciseSegmentType {
@@ -654,28 +654,28 @@ package android.healthconnect.datatypes {
     field public static final int EXERCISE_SEGMENT_TYPE_YOGA = 65; // 0x41
   }
 
-  public final class ExerciseSessionRecord extends android.healthconnect.datatypes.IntervalRecord {
+  public final class ExerciseSessionRecord extends android.health.connect.datatypes.IntervalRecord {
     method public int getExerciseType();
-    method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseLap> getLaps();
+    method @NonNull public java.util.List<android.health.connect.datatypes.ExerciseLap> getLaps();
     method @Nullable public CharSequence getNotes();
-    method @Nullable public android.healthconnect.datatypes.ExerciseRoute getRoute();
-    method @NonNull public java.util.List<android.healthconnect.datatypes.ExerciseSegment> getSegments();
+    method @Nullable public android.health.connect.datatypes.ExerciseRoute getRoute();
+    method @NonNull public java.util.List<android.health.connect.datatypes.ExerciseSegment> getSegments();
     method @Nullable public CharSequence getTitle();
     method @NonNull public boolean hasRoute();
   }
 
   public static final class ExerciseSessionRecord.Builder {
-    ctor public ExerciseSessionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord build();
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setLaps(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseLap>);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setNotes(@Nullable CharSequence);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setRoute(@Nullable android.healthconnect.datatypes.ExerciseRoute);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setSegments(@NonNull java.util.List<android.healthconnect.datatypes.ExerciseSegment>);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.ExerciseSessionRecord.Builder setTitle(@Nullable CharSequence);
+    ctor public ExerciseSessionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord build();
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setLaps(@NonNull java.util.List<android.health.connect.datatypes.ExerciseLap>);
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setNotes(@Nullable CharSequence);
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setRoute(@Nullable android.health.connect.datatypes.ExerciseRoute);
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setSegments(@NonNull java.util.List<android.health.connect.datatypes.ExerciseSegment>);
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setTitle(@Nullable CharSequence);
   }
 
   public final class ExerciseSessionType {
@@ -743,35 +743,35 @@ package android.healthconnect.datatypes {
     field public static final int EXERCISE_SESSION_TYPE_YOGA = 57; // 0x39
   }
 
-  public final class FloorsClimbedRecord extends android.healthconnect.datatypes.IntervalRecord {
+  public final class FloorsClimbedRecord extends android.health.connect.datatypes.IntervalRecord {
     method @IntRange(from=0, to=1000000) public int getFloors();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> FLOORS_CLIMBED_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> FLOORS_CLIMBED_TOTAL;
   }
 
   public static final class FloorsClimbedRecord.Builder {
-    ctor public FloorsClimbedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
-    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord build();
-    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.FloorsClimbedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public FloorsClimbedRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord build();
+    method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class HeartRateRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample> getSamples();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_AVG;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> HEART_MEASUREMENTS_COUNT;
+  public final class HeartRateRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.health.connect.datatypes.HeartRateRecord.HeartRateSample> getSamples();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_AVG;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> HEART_MEASUREMENTS_COUNT;
   }
 
   public static final class HeartRateRecord.Builder {
-    ctor public HeartRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.HeartRateRecord.HeartRateSample>);
-    method @NonNull public android.healthconnect.datatypes.HeartRateRecord build();
-    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.HeartRateRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public HeartRateRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.health.connect.datatypes.HeartRateRecord.HeartRateSample>);
+    method @NonNull public android.health.connect.datatypes.HeartRateRecord build();
+    method @NonNull public android.health.connect.datatypes.HeartRateRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.HeartRateRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.HeartRateRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.HeartRateRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class HeartRateRecord.HeartRateSample {
@@ -780,76 +780,76 @@ package android.healthconnect.datatypes {
     method @NonNull public java.time.Instant getTime();
   }
 
-  public final class HeartRateVariabilityRmssdRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class HeartRateVariabilityRmssdRecord extends android.health.connect.datatypes.InstantRecord {
     method public double getHeartRateVariabilityMillis();
   }
 
   public static final class HeartRateVariabilityRmssdRecord.Builder {
-    ctor public HeartRateVariabilityRmssdRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, double);
-    method @NonNull public android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord build();
-    method @NonNull public android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.HeartRateVariabilityRmssdRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public HeartRateVariabilityRmssdRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, double);
+    method @NonNull public android.health.connect.datatypes.HeartRateVariabilityRmssdRecord build();
+    method @NonNull public android.health.connect.datatypes.HeartRateVariabilityRmssdRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.HeartRateVariabilityRmssdRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class HeightRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Length getHeight();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> HEIGHT_AVG;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> HEIGHT_MAX;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Length> HEIGHT_MIN;
+  public final class HeightRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Length getHeight();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Length> HEIGHT_AVG;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Length> HEIGHT_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Length> HEIGHT_MIN;
   }
 
   public static final class HeightRecord.Builder {
-    ctor public HeightRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Length);
-    method @NonNull public android.healthconnect.datatypes.HeightRecord build();
-    method @NonNull public android.healthconnect.datatypes.HeightRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.HeightRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public HeightRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Length);
+    method @NonNull public android.health.connect.datatypes.HeightRecord build();
+    method @NonNull public android.health.connect.datatypes.HeightRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.HeightRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class HydrationRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Volume getVolume();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Volume> VOLUME_TOTAL;
+  public final class HydrationRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public android.health.connect.datatypes.units.Volume getVolume();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Volume> VOLUME_TOTAL;
   }
 
   public static final class HydrationRecord.Builder {
-    ctor public HydrationRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Volume);
-    method @NonNull public android.healthconnect.datatypes.HydrationRecord build();
-    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.HydrationRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public HydrationRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Volume);
+    method @NonNull public android.health.connect.datatypes.HydrationRecord build();
+    method @NonNull public android.health.connect.datatypes.HydrationRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.HydrationRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.HydrationRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.HydrationRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public abstract class InstantRecord extends android.healthconnect.datatypes.Record {
+  public abstract class InstantRecord extends android.health.connect.datatypes.Record {
     method @NonNull public java.time.Instant getTime();
     method @NonNull public java.time.ZoneOffset getZoneOffset();
   }
 
-  public final class IntermenstrualBleedingRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class IntermenstrualBleedingRecord extends android.health.connect.datatypes.InstantRecord {
   }
 
   public static final class IntermenstrualBleedingRecord.Builder {
-    ctor public IntermenstrualBleedingRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.IntermenstrualBleedingRecord build();
-    method @NonNull public android.healthconnect.datatypes.IntermenstrualBleedingRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.IntermenstrualBleedingRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public IntermenstrualBleedingRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.IntermenstrualBleedingRecord build();
+    method @NonNull public android.health.connect.datatypes.IntermenstrualBleedingRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.IntermenstrualBleedingRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public abstract class IntervalRecord extends android.healthconnect.datatypes.Record {
+  public abstract class IntervalRecord extends android.health.connect.datatypes.Record {
     method @NonNull public java.time.Instant getEndTime();
     method @NonNull public java.time.ZoneOffset getEndZoneOffset();
     method @NonNull public java.time.Instant getStartTime();
     method @NonNull public java.time.ZoneOffset getStartZoneOffset();
   }
 
-  public final class LeanBodyMassRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Mass getMass();
+  public final class LeanBodyMassRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Mass getMass();
   }
 
   public static final class LeanBodyMassRecord.Builder {
-    ctor public LeanBodyMassRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.LeanBodyMassRecord build();
-    method @NonNull public android.healthconnect.datatypes.LeanBodyMassRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.LeanBodyMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public LeanBodyMassRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.LeanBodyMassRecord build();
+    method @NonNull public android.health.connect.datatypes.LeanBodyMassRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.LeanBodyMassRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class MealType {
@@ -860,15 +860,15 @@ package android.healthconnect.datatypes {
     field public static final int MEAL_TYPE_UNKNOWN = 0; // 0x0
   }
 
-  public final class MenstruationFlowRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class MenstruationFlowRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getFlow();
   }
 
   public static final class MenstruationFlowRecord.Builder {
-    ctor public MenstruationFlowRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int);
-    method @NonNull public android.healthconnect.datatypes.MenstruationFlowRecord build();
-    method @NonNull public android.healthconnect.datatypes.MenstruationFlowRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.MenstruationFlowRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public MenstruationFlowRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int);
+    method @NonNull public android.health.connect.datatypes.MenstruationFlowRecord build();
+    method @NonNull public android.health.connect.datatypes.MenstruationFlowRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.MenstruationFlowRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class MenstruationFlowRecord.MenstruationFlowType {
@@ -878,188 +878,188 @@ package android.healthconnect.datatypes {
     field public static final int FLOW_UNKNOWN = 0; // 0x0
   }
 
-  public final class MenstruationPeriodRecord extends android.healthconnect.datatypes.IntervalRecord {
+  public final class MenstruationPeriodRecord extends android.health.connect.datatypes.IntervalRecord {
   }
 
   public static final class MenstruationPeriodRecord.Builder {
-    ctor public MenstruationPeriodRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord build();
-    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.MenstruationPeriodRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public MenstruationPeriodRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.MenstruationPeriodRecord build();
+    method @NonNull public android.health.connect.datatypes.MenstruationPeriodRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.MenstruationPeriodRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.MenstruationPeriodRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.MenstruationPeriodRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class Metadata {
     method @Nullable public String getClientRecordId();
     method public long getClientRecordVersion();
-    method @NonNull public android.healthconnect.datatypes.DataOrigin getDataOrigin();
-    method @NonNull public android.healthconnect.datatypes.Device getDevice();
+    method @NonNull public android.health.connect.datatypes.DataOrigin getDataOrigin();
+    method @NonNull public android.health.connect.datatypes.Device getDevice();
     method @NonNull public String getId();
     method @NonNull public java.time.Instant getLastModifiedTime();
   }
 
   public static final class Metadata.Builder {
     ctor public Metadata.Builder();
-    method @NonNull public android.healthconnect.datatypes.Metadata build();
-    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setClientRecordId(@Nullable String);
-    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setClientRecordVersion(long);
-    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setDataOrigin(@NonNull android.healthconnect.datatypes.DataOrigin);
-    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setDevice(@NonNull android.healthconnect.datatypes.Device);
-    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setId(@NonNull String);
-    method @NonNull public android.healthconnect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.Metadata build();
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setClientRecordId(@Nullable String);
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setClientRecordVersion(long);
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setDataOrigin(@NonNull android.health.connect.datatypes.DataOrigin);
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setDevice(@NonNull android.health.connect.datatypes.Device);
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setId(@NonNull String);
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
   }
 
-  public final class NutritionRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @Nullable public android.healthconnect.datatypes.units.Mass getBiotin();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getCaffeine();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getCalcium();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getChloride();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getCholesterol();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getChromium();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getCopper();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getDietaryFiber();
-    method @Nullable public android.healthconnect.datatypes.units.Energy getEnergy();
-    method @Nullable public android.healthconnect.datatypes.units.Energy getEnergyFromFat();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getFolate();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getFolicAcid();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getIodine();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getIron();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getMagnesium();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getManganese();
+  public final class NutritionRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @Nullable public android.health.connect.datatypes.units.Mass getBiotin();
+    method @Nullable public android.health.connect.datatypes.units.Mass getCaffeine();
+    method @Nullable public android.health.connect.datatypes.units.Mass getCalcium();
+    method @Nullable public android.health.connect.datatypes.units.Mass getChloride();
+    method @Nullable public android.health.connect.datatypes.units.Mass getCholesterol();
+    method @Nullable public android.health.connect.datatypes.units.Mass getChromium();
+    method @Nullable public android.health.connect.datatypes.units.Mass getCopper();
+    method @Nullable public android.health.connect.datatypes.units.Mass getDietaryFiber();
+    method @Nullable public android.health.connect.datatypes.units.Energy getEnergy();
+    method @Nullable public android.health.connect.datatypes.units.Energy getEnergyFromFat();
+    method @Nullable public android.health.connect.datatypes.units.Mass getFolate();
+    method @Nullable public android.health.connect.datatypes.units.Mass getFolicAcid();
+    method @Nullable public android.health.connect.datatypes.units.Mass getIodine();
+    method @Nullable public android.health.connect.datatypes.units.Mass getIron();
+    method @Nullable public android.health.connect.datatypes.units.Mass getMagnesium();
+    method @Nullable public android.health.connect.datatypes.units.Mass getManganese();
     method @Nullable public String getMealName();
     method public int getMealType();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getMolybdenum();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getMonounsaturatedFat();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getNiacin();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getPantothenicAcid();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getPhosphorus();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getPolyunsaturatedFat();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getPotassium();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getProtein();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getRiboflavin();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getSaturatedFat();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getSelenium();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getSodium();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getSugar();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getThiamin();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getTotalCarbohydrate();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getTotalFat();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getTransFat();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getUnsaturatedFat();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminA();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminB12();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminB6();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminC();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminD();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminE();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getVitaminK();
-    method @Nullable public android.healthconnect.datatypes.units.Mass getZinc();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> BIOTIN_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CAFFEINE_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CALCIUM_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CHLORIDE_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CHOLESTEROL_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> CHROMIUM_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> COPPER_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> DIETARY_FIBER_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Energy> ENERGY_FROM_FAT_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Energy> ENERGY_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> FOLATE_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> FOLIC_ACID_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> IODINE_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> IRON_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MAGNESIUM_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MANGANESE_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MOLYBDENUM_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> MONOUNSATURATED_FAT_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> NIACIN_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> PANTOTHENIC_ACID_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> PHOSPHORUS_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> POLYUNSATURATED_FAT_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> POTASSIUM_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> PROTEIN_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> RIBOFLAVIN_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> SATURATED_FAT_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> SELENIUM_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> SODIUM_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> SUGAR_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> THIAMIN_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> TOTAL_CARBOHYDRATE_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> TOTAL_FAT_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> UNSATURATED_FAT_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_A_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_B12_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_B6_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_C_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_D_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_E_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> VITAMIN_K_TOTAL;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> ZINC_TOTAL;
+    method @Nullable public android.health.connect.datatypes.units.Mass getMolybdenum();
+    method @Nullable public android.health.connect.datatypes.units.Mass getMonounsaturatedFat();
+    method @Nullable public android.health.connect.datatypes.units.Mass getNiacin();
+    method @Nullable public android.health.connect.datatypes.units.Mass getPantothenicAcid();
+    method @Nullable public android.health.connect.datatypes.units.Mass getPhosphorus();
+    method @Nullable public android.health.connect.datatypes.units.Mass getPolyunsaturatedFat();
+    method @Nullable public android.health.connect.datatypes.units.Mass getPotassium();
+    method @Nullable public android.health.connect.datatypes.units.Mass getProtein();
+    method @Nullable public android.health.connect.datatypes.units.Mass getRiboflavin();
+    method @Nullable public android.health.connect.datatypes.units.Mass getSaturatedFat();
+    method @Nullable public android.health.connect.datatypes.units.Mass getSelenium();
+    method @Nullable public android.health.connect.datatypes.units.Mass getSodium();
+    method @Nullable public android.health.connect.datatypes.units.Mass getSugar();
+    method @Nullable public android.health.connect.datatypes.units.Mass getThiamin();
+    method @Nullable public android.health.connect.datatypes.units.Mass getTotalCarbohydrate();
+    method @Nullable public android.health.connect.datatypes.units.Mass getTotalFat();
+    method @Nullable public android.health.connect.datatypes.units.Mass getTransFat();
+    method @Nullable public android.health.connect.datatypes.units.Mass getUnsaturatedFat();
+    method @Nullable public android.health.connect.datatypes.units.Mass getVitaminA();
+    method @Nullable public android.health.connect.datatypes.units.Mass getVitaminB12();
+    method @Nullable public android.health.connect.datatypes.units.Mass getVitaminB6();
+    method @Nullable public android.health.connect.datatypes.units.Mass getVitaminC();
+    method @Nullable public android.health.connect.datatypes.units.Mass getVitaminD();
+    method @Nullable public android.health.connect.datatypes.units.Mass getVitaminE();
+    method @Nullable public android.health.connect.datatypes.units.Mass getVitaminK();
+    method @Nullable public android.health.connect.datatypes.units.Mass getZinc();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> BIOTIN_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> CAFFEINE_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> CALCIUM_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> CHLORIDE_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> CHOLESTEROL_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> CHROMIUM_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> COPPER_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> DIETARY_FIBER_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Energy> ENERGY_FROM_FAT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Energy> ENERGY_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> FOLATE_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> FOLIC_ACID_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> IODINE_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> IRON_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> MAGNESIUM_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> MANGANESE_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> MOLYBDENUM_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> MONOUNSATURATED_FAT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> NIACIN_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> PANTOTHENIC_ACID_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> PHOSPHORUS_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> POLYUNSATURATED_FAT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> POTASSIUM_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> PROTEIN_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> RIBOFLAVIN_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> SATURATED_FAT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> SELENIUM_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> SODIUM_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> SUGAR_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> THIAMIN_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> TOTAL_CARBOHYDRATE_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> TOTAL_FAT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> UNSATURATED_FAT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_A_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_B12_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_B6_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_C_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_D_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_E_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_K_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> ZINC_TOTAL;
   }
 
   public static final class NutritionRecord.Builder {
-    ctor public NutritionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord build();
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setBiotin(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCaffeine(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCalcium(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setChloride(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCholesterol(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setChromium(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setCopper(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setDietaryFiber(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setEnergy(@Nullable android.healthconnect.datatypes.units.Energy);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setEnergyFromFat(@Nullable android.healthconnect.datatypes.units.Energy);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setFolate(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setFolicAcid(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setIodine(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setIron(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMagnesium(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setManganese(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMealName(@NonNull String);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMealType(int);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMolybdenum(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setMonounsaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setNiacin(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPantothenicAcid(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPhosphorus(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPolyunsaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setPotassium(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setProtein(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setRiboflavin(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSelenium(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSodium(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setSugar(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setThiamin(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setTotalCarbohydrate(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setTotalFat(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setTransFat(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setUnsaturatedFat(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminA(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminB12(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminB6(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminC(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminD(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminE(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setVitaminK(@Nullable android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.NutritionRecord.Builder setZinc(@Nullable android.healthconnect.datatypes.units.Mass);
+    ctor public NutritionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord build();
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setBiotin(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setCaffeine(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setCalcium(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setChloride(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setCholesterol(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setChromium(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setCopper(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setDietaryFiber(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setEnergy(@Nullable android.health.connect.datatypes.units.Energy);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setEnergyFromFat(@Nullable android.health.connect.datatypes.units.Energy);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setFolate(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setFolicAcid(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setIodine(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setIron(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setMagnesium(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setManganese(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setMealName(@NonNull String);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setMealType(int);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setMolybdenum(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setMonounsaturatedFat(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setNiacin(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setPantothenicAcid(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setPhosphorus(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setPolyunsaturatedFat(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setPotassium(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setProtein(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setRiboflavin(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setSaturatedFat(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setSelenium(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setSodium(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setSugar(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setThiamin(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setTotalCarbohydrate(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setTotalFat(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setTransFat(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setUnsaturatedFat(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setVitaminA(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setVitaminB12(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setVitaminB6(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setVitaminC(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setVitaminD(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setVitaminE(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setVitaminK(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NutritionRecord.Builder setZinc(@Nullable android.health.connect.datatypes.units.Mass);
   }
 
-  public final class OvulationTestRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class OvulationTestRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getResult();
   }
 
   public static final class OvulationTestRecord.Builder {
-    ctor public OvulationTestRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int);
-    method @NonNull public android.healthconnect.datatypes.OvulationTestRecord build();
-    method @NonNull public android.healthconnect.datatypes.OvulationTestRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.OvulationTestRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public OvulationTestRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int);
+    method @NonNull public android.health.connect.datatypes.OvulationTestRecord build();
+    method @NonNull public android.health.connect.datatypes.OvulationTestRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.OvulationTestRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class OvulationTestRecord.OvulationTestResult {
@@ -1069,76 +1069,76 @@ package android.healthconnect.datatypes {
     field public static final int RESULT_POSITIVE = 1; // 0x1
   }
 
-  public final class OxygenSaturationRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Percentage getPercentage();
+  public final class OxygenSaturationRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Percentage getPercentage();
   }
 
   public static final class OxygenSaturationRecord.Builder {
-    ctor public OxygenSaturationRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Percentage);
-    method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord build();
-    method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.OxygenSaturationRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public OxygenSaturationRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Percentage);
+    method @NonNull public android.health.connect.datatypes.OxygenSaturationRecord build();
+    method @NonNull public android.health.connect.datatypes.OxygenSaturationRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.OxygenSaturationRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class PowerRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public java.util.List<android.healthconnect.datatypes.PowerRecord.PowerRecordSample> getSamples();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Power> POWER_AVG;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Power> POWER_MAX;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Power> POWER_MIN;
+  public final class PowerRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.health.connect.datatypes.PowerRecord.PowerRecordSample> getSamples();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Power> POWER_AVG;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Power> POWER_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Power> POWER_MIN;
   }
 
   public static final class PowerRecord.Builder {
-    ctor public PowerRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.PowerRecord.PowerRecordSample>);
-    method @NonNull public android.healthconnect.datatypes.PowerRecord build();
-    method @NonNull public android.healthconnect.datatypes.PowerRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.PowerRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.PowerRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.PowerRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public PowerRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.health.connect.datatypes.PowerRecord.PowerRecordSample>);
+    method @NonNull public android.health.connect.datatypes.PowerRecord build();
+    method @NonNull public android.health.connect.datatypes.PowerRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.PowerRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.PowerRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.PowerRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class PowerRecord.PowerRecordSample {
-    ctor public PowerRecord.PowerRecordSample(@NonNull android.healthconnect.datatypes.units.Power, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.units.Power getPower();
+    ctor public PowerRecord.PowerRecordSample(@NonNull android.health.connect.datatypes.units.Power, @NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.units.Power getPower();
     method @NonNull public java.time.Instant getTime();
   }
 
   public abstract class Record {
-    method @NonNull public android.healthconnect.datatypes.Metadata getMetadata();
+    method @NonNull public android.health.connect.datatypes.Metadata getMetadata();
   }
 
-  public final class RespiratoryRateRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class RespiratoryRateRecord extends android.health.connect.datatypes.InstantRecord {
     method public double getRate();
   }
 
   public static final class RespiratoryRateRecord.Builder {
-    ctor public RespiratoryRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @FloatRange(from=0, to=1000) double);
-    method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord build();
-    method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.RespiratoryRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public RespiratoryRateRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @FloatRange(from=0, to=1000) double);
+    method @NonNull public android.health.connect.datatypes.RespiratoryRateRecord build();
+    method @NonNull public android.health.connect.datatypes.RespiratoryRateRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.RespiratoryRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class RestingHeartRateRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class RestingHeartRateRecord extends android.health.connect.datatypes.InstantRecord {
     method public long getBeatsPerMinute();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
   }
 
   public static final class RestingHeartRateRecord.Builder {
-    ctor public RestingHeartRateRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @IntRange(from=1, to=300) long);
-    method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord build();
-    method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.RestingHeartRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public RestingHeartRateRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @IntRange(from=1, to=300) long);
+    method @NonNull public android.health.connect.datatypes.RestingHeartRateRecord build();
+    method @NonNull public android.health.connect.datatypes.RestingHeartRateRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.RestingHeartRateRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class SexualActivityRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class SexualActivityRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getProtectionUsed();
   }
 
   public static final class SexualActivityRecord.Builder {
-    ctor public SexualActivityRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int);
-    method @NonNull public android.healthconnect.datatypes.SexualActivityRecord build();
-    method @NonNull public android.healthconnect.datatypes.SexualActivityRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.SexualActivityRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public SexualActivityRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int);
+    method @NonNull public android.health.connect.datatypes.SexualActivityRecord build();
+    method @NonNull public android.health.connect.datatypes.SexualActivityRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.SexualActivityRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class SexualActivityRecord.SexualActivityProtectionUsed {
@@ -1147,22 +1147,22 @@ package android.healthconnect.datatypes {
     field public static final int PROTECTION_USED_UNPROTECTED = 2; // 0x2
   }
 
-  public final class SleepSessionRecord extends android.healthconnect.datatypes.IntervalRecord {
+  public final class SleepSessionRecord extends android.health.connect.datatypes.IntervalRecord {
     method @Nullable public CharSequence getNotes();
-    method @NonNull public java.util.List<android.healthconnect.datatypes.SleepSessionRecord.Stage> getStages();
+    method @NonNull public java.util.List<android.health.connect.datatypes.SleepSessionRecord.Stage> getStages();
     method @Nullable public CharSequence getTitle();
   }
 
   public static final class SleepSessionRecord.Builder {
-    ctor public SleepSessionRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord build();
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setNotes(@Nullable CharSequence);
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setStages(@NonNull java.util.List<android.healthconnect.datatypes.SleepSessionRecord.Stage>);
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.SleepSessionRecord.Builder setTitle(@Nullable CharSequence);
+    ctor public SleepSessionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord build();
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord.Builder setNotes(@Nullable CharSequence);
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord.Builder setStages(@NonNull java.util.List<android.health.connect.datatypes.SleepSessionRecord.Stage>);
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.SleepSessionRecord.Builder setTitle(@Nullable CharSequence);
   }
 
   public static class SleepSessionRecord.Stage {
@@ -1183,36 +1183,36 @@ package android.healthconnect.datatypes {
     field public static final int STAGE_TYPE_UNKNOWN = 0; // 0x0
   }
 
-  public final class SpeedRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public java.util.List<android.healthconnect.datatypes.SpeedRecord.SpeedRecordSample> getSamples();
+  public final class SpeedRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.health.connect.datatypes.SpeedRecord.SpeedRecordSample> getSamples();
   }
 
   public static final class SpeedRecord.Builder {
-    ctor public SpeedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.SpeedRecord.SpeedRecordSample>);
-    method @NonNull public android.healthconnect.datatypes.SpeedRecord build();
-    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.SpeedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public SpeedRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.health.connect.datatypes.SpeedRecord.SpeedRecordSample>);
+    method @NonNull public android.health.connect.datatypes.SpeedRecord build();
+    method @NonNull public android.health.connect.datatypes.SpeedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.SpeedRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.SpeedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.SpeedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class SpeedRecord.SpeedRecordSample {
-    ctor public SpeedRecord.SpeedRecordSample(@NonNull android.healthconnect.datatypes.units.Velocity, @NonNull java.time.Instant);
-    method @NonNull public android.healthconnect.datatypes.units.Velocity getSpeed();
+    ctor public SpeedRecord.SpeedRecordSample(@NonNull android.health.connect.datatypes.units.Velocity, @NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.units.Velocity getSpeed();
     method @NonNull public java.time.Instant getTime();
   }
 
-  public final class StepsCadenceRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public java.util.List<android.healthconnect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample> getSamples();
+  public final class StepsCadenceRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public java.util.List<android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample> getSamples();
   }
 
   public static final class StepsCadenceRecord.Builder {
-    ctor public StepsCadenceRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.healthconnect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample>);
-    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord build();
-    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.StepsCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public StepsCadenceRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull java.util.List<android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample>);
+    method @NonNull public android.health.connect.datatypes.StepsCadenceRecord build();
+    method @NonNull public android.health.connect.datatypes.StepsCadenceRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.StepsCadenceRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.StepsCadenceRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.StepsCadenceRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class StepsCadenceRecord.StepsCadenceRecordSample {
@@ -1221,44 +1221,44 @@ package android.healthconnect.datatypes {
     method @NonNull public java.time.Instant getTime();
   }
 
-  public final class StepsRecord extends android.healthconnect.datatypes.IntervalRecord {
+  public final class StepsRecord extends android.health.connect.datatypes.IntervalRecord {
     method public long getCount();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> STEPS_COUNT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> STEPS_COUNT_TOTAL;
   }
 
   public static final class StepsRecord.Builder {
-    ctor public StepsRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, long);
-    method @NonNull public android.healthconnect.datatypes.StepsRecord build();
-    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public StepsRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, long);
+    method @NonNull public android.health.connect.datatypes.StepsRecord build();
+    method @NonNull public android.health.connect.datatypes.StepsRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.StepsRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.StepsRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class TotalCaloriesBurnedRecord extends android.healthconnect.datatypes.IntervalRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Energy getEnergy();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Energy> ENERGY_TOTAL;
+  public final class TotalCaloriesBurnedRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public android.health.connect.datatypes.units.Energy getEnergy();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Energy> ENERGY_TOTAL;
   }
 
   public static final class TotalCaloriesBurnedRecord.Builder {
-    ctor public TotalCaloriesBurnedRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Energy);
-    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord build();
-    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.TotalCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public TotalCaloriesBurnedRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Energy);
+    method @NonNull public android.health.connect.datatypes.TotalCaloriesBurnedRecord build();
+    method @NonNull public android.health.connect.datatypes.TotalCaloriesBurnedRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.TotalCaloriesBurnedRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.TotalCaloriesBurnedRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.TotalCaloriesBurnedRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class Vo2MaxRecord extends android.healthconnect.datatypes.InstantRecord {
+  public final class Vo2MaxRecord extends android.health.connect.datatypes.InstantRecord {
     method public int getMeasurementMethod();
     method public double getVo2MillilitersPerMinuteKilogram();
   }
 
   public static final class Vo2MaxRecord.Builder {
-    ctor public Vo2MaxRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, int, @FloatRange(from=0, to=100) double);
-    method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord build();
-    method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.Vo2MaxRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public Vo2MaxRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int, @FloatRange(from=0, to=100) double);
+    method @NonNull public android.health.connect.datatypes.Vo2MaxRecord build();
+    method @NonNull public android.health.connect.datatypes.Vo2MaxRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.Vo2MaxRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public static final class Vo2MaxRecord.Vo2MaxMeasurementMethod {
@@ -1270,95 +1270,95 @@ package android.healthconnect.datatypes {
     field public static final int MEASUREMENT_METHOD_ROCKPORT_FITNESS_TEST = 5; // 0x5
   }
 
-  public final class WeightRecord extends android.healthconnect.datatypes.InstantRecord {
-    method @NonNull public android.healthconnect.datatypes.units.Mass getWeight();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> WEIGHT_AVG;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> WEIGHT_MAX;
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<android.healthconnect.datatypes.units.Mass> WEIGHT_MIN;
+  public final class WeightRecord extends android.health.connect.datatypes.InstantRecord {
+    method @NonNull public android.health.connect.datatypes.units.Mass getWeight();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> WEIGHT_AVG;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> WEIGHT_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> WEIGHT_MIN;
   }
 
   public static final class WeightRecord.Builder {
-    ctor public WeightRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.healthconnect.datatypes.units.Mass);
-    method @NonNull public android.healthconnect.datatypes.WeightRecord build();
-    method @NonNull public android.healthconnect.datatypes.WeightRecord.Builder clearZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.WeightRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public WeightRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.WeightRecord build();
+    method @NonNull public android.health.connect.datatypes.WeightRecord.Builder clearZoneOffset();
+    method @NonNull public android.health.connect.datatypes.WeightRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public final class WheelchairPushesRecord extends android.healthconnect.datatypes.IntervalRecord {
+  public final class WheelchairPushesRecord extends android.health.connect.datatypes.IntervalRecord {
     method public long getCount();
-    field @NonNull public static final android.healthconnect.datatypes.AggregationType<java.lang.Long> WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
   }
 
   public static final class WheelchairPushesRecord.Builder {
-    ctor public WheelchairPushesRecord.Builder(@NonNull android.healthconnect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @IntRange(from=1, to=1000000) long);
-    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord build();
-    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder clearEndZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.healthconnect.datatypes.WheelchairPushesRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+    ctor public WheelchairPushesRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, @IntRange(from=1, to=1000000) long);
+    method @NonNull public android.health.connect.datatypes.WheelchairPushesRecord build();
+    method @NonNull public android.health.connect.datatypes.WheelchairPushesRecord.Builder clearEndZoneOffset();
+    method @NonNull public android.health.connect.datatypes.WheelchairPushesRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.WheelchairPushesRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.WheelchairPushesRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
 }
 
-package android.healthconnect.datatypes.units {
+package android.health.connect.datatypes.units {
 
-  public final class BloodGlucose implements java.lang.Comparable<android.healthconnect.datatypes.units.BloodGlucose> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.BloodGlucose);
-    method @NonNull public static android.healthconnect.datatypes.units.BloodGlucose fromMillimolesPerLiter(double);
+  public final class BloodGlucose implements java.lang.Comparable<android.health.connect.datatypes.units.BloodGlucose> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.BloodGlucose);
+    method @NonNull public static android.health.connect.datatypes.units.BloodGlucose fromMillimolesPerLiter(double);
     method public double getInMillimolesPerLiter();
   }
 
-  public final class Energy implements java.lang.Comparable<android.healthconnect.datatypes.units.Energy> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Energy);
-    method @NonNull public static android.healthconnect.datatypes.units.Energy fromJoules(double);
+  public final class Energy implements java.lang.Comparable<android.health.connect.datatypes.units.Energy> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Energy);
+    method @NonNull public static android.health.connect.datatypes.units.Energy fromJoules(double);
     method public double getInJoules();
   }
 
-  public final class Length implements java.lang.Comparable<android.healthconnect.datatypes.units.Length> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Length);
-    method @NonNull public static android.healthconnect.datatypes.units.Length fromMeters(double);
+  public final class Length implements java.lang.Comparable<android.health.connect.datatypes.units.Length> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Length);
+    method @NonNull public static android.health.connect.datatypes.units.Length fromMeters(double);
     method public double getInMeters();
   }
 
-  public final class Mass implements java.lang.Comparable<android.healthconnect.datatypes.units.Mass> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Mass);
-    method @NonNull public static android.healthconnect.datatypes.units.Mass fromKilograms(double);
+  public final class Mass implements java.lang.Comparable<android.health.connect.datatypes.units.Mass> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Mass);
+    method @NonNull public static android.health.connect.datatypes.units.Mass fromKilograms(double);
     method public double getInKilograms();
   }
 
-  public final class Percentage implements java.lang.Comparable<android.healthconnect.datatypes.units.Percentage> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Percentage);
-    method @NonNull public static android.healthconnect.datatypes.units.Percentage fromValue(double);
+  public final class Percentage implements java.lang.Comparable<android.health.connect.datatypes.units.Percentage> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Percentage);
+    method @NonNull public static android.health.connect.datatypes.units.Percentage fromValue(double);
     method public double getValue();
   }
 
-  public final class Power implements java.lang.Comparable<android.healthconnect.datatypes.units.Power> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Power);
-    method @NonNull public static android.healthconnect.datatypes.units.Power fromWatts(double);
+  public final class Power implements java.lang.Comparable<android.health.connect.datatypes.units.Power> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Power);
+    method @NonNull public static android.health.connect.datatypes.units.Power fromWatts(double);
     method public double getInWatts();
   }
 
-  public final class Pressure implements java.lang.Comparable<android.healthconnect.datatypes.units.Pressure> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Pressure);
-    method @NonNull public static android.healthconnect.datatypes.units.Pressure fromMillimetersOfMercury(double);
+  public final class Pressure implements java.lang.Comparable<android.health.connect.datatypes.units.Pressure> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Pressure);
+    method @NonNull public static android.health.connect.datatypes.units.Pressure fromMillimetersOfMercury(double);
     method public double getInMillimetersOfMercury();
   }
 
-  public final class Temperature implements java.lang.Comparable<android.healthconnect.datatypes.units.Temperature> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Temperature);
-    method @NonNull public static android.healthconnect.datatypes.units.Temperature fromCelsius(double);
+  public final class Temperature implements java.lang.Comparable<android.health.connect.datatypes.units.Temperature> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Temperature);
+    method @NonNull public static android.health.connect.datatypes.units.Temperature fromCelsius(double);
     method public double getInCelsius();
   }
 
-  public final class Velocity implements java.lang.Comparable<android.healthconnect.datatypes.units.Velocity> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Velocity);
-    method @NonNull public static android.healthconnect.datatypes.units.Velocity fromMetersPerSecond(double);
+  public final class Velocity implements java.lang.Comparable<android.health.connect.datatypes.units.Velocity> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Velocity);
+    method @NonNull public static android.health.connect.datatypes.units.Velocity fromMetersPerSecond(double);
     method public double getInMetersPerSecond();
   }
 
-  public final class Volume implements java.lang.Comparable<android.healthconnect.datatypes.units.Volume> {
-    method public int compareTo(@NonNull android.healthconnect.datatypes.units.Volume);
-    method @NonNull public static android.healthconnect.datatypes.units.Volume fromMilliliters(double);
+  public final class Volume implements java.lang.Comparable<android.health.connect.datatypes.units.Volume> {
+    method public int compareTo(@NonNull android.health.connect.datatypes.units.Volume);
+    method @NonNull public static android.health.connect.datatypes.units.Volume fromMilliliters(double);
     method public double getInMilliliters();
   }
 

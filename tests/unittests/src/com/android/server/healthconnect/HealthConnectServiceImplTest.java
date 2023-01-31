@@ -16,8 +16,8 @@
 
 package com.android.server.healthconnect;
 
-import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
-import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
+import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
+import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
 
 import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_DOWNLOAD_STATE_KEY;
 
@@ -33,8 +33,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.healthconnect.aidl.IDataStagingFinishedCallback;
-import android.healthconnect.restore.StageRemoteDataRequest;
+import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;

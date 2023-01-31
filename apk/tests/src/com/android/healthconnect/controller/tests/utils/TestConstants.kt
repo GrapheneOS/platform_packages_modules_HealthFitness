@@ -15,13 +15,13 @@
  */
 package com.android.healthconnect.controller.tests.utils
 
-import android.healthconnect.datatypes.BasalMetabolicRateRecord
-import android.healthconnect.datatypes.DataOrigin
-import android.healthconnect.datatypes.Device
-import android.healthconnect.datatypes.HeartRateRecord
-import android.healthconnect.datatypes.Metadata
-import android.healthconnect.datatypes.StepsRecord
-import android.healthconnect.datatypes.units.Power
+import android.health.connect.datatypes.BasalMetabolicRateRecord
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.HeartRateRecord
+import android.health.connect.datatypes.Metadata
+import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.units.Power
 import com.android.healthconnect.controller.dataentries.units.PowerConverter
 import com.android.healthconnect.controller.shared.AppMetadata
 import java.time.Instant

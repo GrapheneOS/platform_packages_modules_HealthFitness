@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.HydrationRecord
-import android.healthconnect.datatypes.units.Volume
+import android.health.connect.datatypes.HydrationRecord
+import android.health.connect.datatypes.units.Volume
 import android.icu.text.MessageFormat.*
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

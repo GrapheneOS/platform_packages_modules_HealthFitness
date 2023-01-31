@@ -20,8 +20,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.fail;
 
-import android.healthconnect.datatypes.ExerciseRoute;
-import android.healthconnect.datatypes.units.Length;
+import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.units.Length;
 import android.os.Parcel;
 
 import androidx.test.runner.AndroidJUnit4;

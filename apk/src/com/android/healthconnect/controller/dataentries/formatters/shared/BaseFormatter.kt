@@ -14,9 +14,9 @@
 package com.android.healthconnect.controller.dataentries.formatters.shared
 
 import android.content.Context
-import android.healthconnect.datatypes.InstantRecord
-import android.healthconnect.datatypes.IntervalRecord
-import android.healthconnect.datatypes.Record
+import android.health.connect.datatypes.InstantRecord
+import android.health.connect.datatypes.IntervalRecord
+import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

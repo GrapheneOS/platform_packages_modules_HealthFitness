@@ -16,10 +16,10 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_AVG;
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MAX;
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MIN;
-import static android.healthconnect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_MEASUREMENTS_COUNT;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_AVG;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MAX;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_BPM_MIN;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.HEART_RATE_RECORD_MEASUREMENTS_COUNT;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
@@ -28,10 +28,10 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.AggregateResult;
-import android.healthconnect.datatypes.AggregationType;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.HeartRateRecordInternal;
+import android.health.connect.AggregateResult;
+import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.HeartRateRecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.utils.SqlJoin;

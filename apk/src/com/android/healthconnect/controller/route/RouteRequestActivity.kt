@@ -18,9 +18,9 @@ package com.android.healthconnect.controller.route
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.healthconnect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
-import android.healthconnect.HealthConnectManager.EXTRA_SESSION_ID
-import android.healthconnect.datatypes.ExerciseRoute
+import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
+import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
+import android.health.connect.datatypes.ExerciseRoute
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button

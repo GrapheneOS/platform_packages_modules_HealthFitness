@@ -18,7 +18,9 @@ package com.android.server.healthconnect;
 
 import android.annotation.NonNull;
 import android.content.Context;
-import android.healthconnect.HealthConnectManager;
+import android.health.connect.HealthConnectManager;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.server.SystemService;

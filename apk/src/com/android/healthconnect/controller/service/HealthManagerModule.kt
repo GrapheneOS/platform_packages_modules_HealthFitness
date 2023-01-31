@@ -17,7 +17,7 @@
 package com.android.healthconnect.controller.service
 
 import android.content.Context
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import android.os.Process
 import dagger.Module
 import dagger.Provides

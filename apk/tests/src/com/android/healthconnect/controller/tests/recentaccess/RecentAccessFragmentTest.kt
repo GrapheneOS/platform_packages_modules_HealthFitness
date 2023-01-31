@@ -17,7 +17,7 @@
 package com.android.healthconnect.controller.tests.recentaccess
 
 import android.content.Context
-import android.healthconnect.HealthDataCategory
+import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView

@@ -47,12 +47,12 @@
             </intent-filter>
             <!-- Deeplink to Home screen -->
             <intent-filter>
-                <action android:name="android.healthconnect.action.HEALTH_HOME_SETTINGS" />
+                <action android:name="android.health.connect.action.HEALTH_HOME_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- Deeplink to Data and access screen -->
             <intent-filter>
-                <action android:name="android.healthconnect.action.MANAGE_HEALTH_DATA" />
+                <action android:name="android.health.connect.action.MANAGE_HEALTH_DATA" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -62,7 +62,7 @@
             android:exported="true">
             <!-- Deeplink to Allowed Apps and App Access screen -->
             <intent-filter>
-                <action android:name="android.healthconnect.action.MANAGE_HEALTH_PERMISSIONS" />
+                <action android:name="android.health.connect.action.MANAGE_HEALTH_PERMISSIONS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -73,7 +73,7 @@
             android:exported="true"
             android:permission="android.permission.GRANT_RUNTIME_PERMISSIONS">
             <intent-filter android:priority="1">
-                <action android:name="android.healthconnect.action.REQUEST_HEALTH_PERMISSIONS" />
+                <action android:name="android.health.connect.action.REQUEST_HEALTH_PERMISSIONS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -83,7 +83,7 @@
             android:excludeFromRecents="true"
             android:exported="true">
             <intent-filter android:priority="1">
-                <action android:name="android.healthconnect.action.REQUEST_EXERCISE_ROUTE" />
+                <action android:name="android.health.connect.action.REQUEST_EXERCISE_ROUTE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

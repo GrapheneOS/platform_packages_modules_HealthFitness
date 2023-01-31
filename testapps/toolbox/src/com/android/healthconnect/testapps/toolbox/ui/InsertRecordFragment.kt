@@ -15,13 +15,13 @@
  */
 package com.android.healthconnect.testapps.toolbox.ui
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.datatypes.InstantRecord
-import android.healthconnect.datatypes.IntervalRecord
-import android.healthconnect.datatypes.Record
-import android.healthconnect.datatypes.units.Energy
-import android.healthconnect.datatypes.units.Length
-import android.healthconnect.datatypes.units.Power
+import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.InstantRecord
+import android.health.connect.datatypes.IntervalRecord
+import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.units.Energy
+import android.health.connect.datatypes.units.Length
+import android.health.connect.datatypes.units.Power
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

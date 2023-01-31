@@ -13,10 +13,10 @@
  */
 package com.android.healthconnect.controller.entrydetails
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.ReadRecordsRequestUsingIds
-import android.healthconnect.ReadRecordsResponse
-import android.healthconnect.datatypes.Record
+import android.health.connect.HealthConnectManager
+import android.health.connect.ReadRecordsRequestUsingIds
+import android.health.connect.ReadRecordsResponse
+import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryDetailsFormatter

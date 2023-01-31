@@ -21,7 +21,7 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.healthconnect.Constants;
+import android.health.connect.Constants;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 import android.util.ArraySet;

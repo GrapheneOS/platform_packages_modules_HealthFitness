@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.OxygenSaturationRecord
+import android.health.connect.datatypes.OxygenSaturationRecord
 import android.icu.text.MessageFormat
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter

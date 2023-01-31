@@ -25,11 +25,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.PackageInfoFlags;
 import android.database.sqlite.SQLiteDatabase;
-import android.healthconnect.internal.datatypes.RecordInternal;
-import android.healthconnect.migration.MigrationEntity;
-import android.healthconnect.migration.MigrationPayload;
-import android.healthconnect.migration.PermissionMigrationPayload;
-import android.healthconnect.migration.RecordMigrationPayload;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.migration.MigrationEntity;
+import android.health.connect.migration.MigrationPayload;
+import android.health.connect.migration.PermissionMigrationPayload;
+import android.health.connect.migration.RecordMigrationPayload;
 import android.os.UserHandle;
 
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;

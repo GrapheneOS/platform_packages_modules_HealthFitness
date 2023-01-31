@@ -1,6 +1,6 @@
 package com.android.healthconnect.testapps.toolbox
 
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth
 import org.junit.Test

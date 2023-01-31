@@ -13,7 +13,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
-import android.healthconnect.TimeInstantRangeFilter
+import android.health.connect.TimeInstantRangeFilter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,7 +37,8 @@ import kotlinx.coroutines.launch
 /** View model for {@link ConnectedAppFragment} . */
 @HiltViewModel
 class AppPermissionViewModel
-@Inject constructor(
+@Inject
+constructor(
     private val appInfoReader: AppInfoReader,
     private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
     private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
@@ -108,7 +109,8 @@ class AppPermissionViewModel
     fun deleteAppData(packageName: String, appName: String) {
         viewModelScope.launch {
             val appData = DeletionType.DeletionTypeAppData(packageName, appName)
-            val timeRangeFilter = TimeInstantRangeFilter.Builder()
+            val timeRangeFilter =
+                TimeInstantRangeFilter.Builder()
                     .setStartTime(Instant.EPOCH)
                     .setEndTime(Instant.ofEpochMilli(Long.MAX_VALUE))
                     .build()

@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static android.healthconnect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.DEFAULT_LONG;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -29,8 +29,8 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.healthconnect.datatypes.Device.DeviceType;
-import android.healthconnect.internal.datatypes.RecordInternal;
+import android.health.connect.datatypes.Device.DeviceType;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;

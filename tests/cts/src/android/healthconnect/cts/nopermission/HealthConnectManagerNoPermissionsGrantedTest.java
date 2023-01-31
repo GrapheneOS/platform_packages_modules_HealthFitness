@@ -16,20 +16,20 @@
 
 package android.healthconnect.cts.nopermission;
 
-import static android.healthconnect.datatypes.HeartRateRecord.BPM_MAX;
-import static android.healthconnect.datatypes.HeartRateRecord.BPM_MIN;
+import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
+import static android.health.connect.datatypes.HeartRateRecord.BPM_MIN;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.healthconnect.AggregateRecordsRequest;
-import android.healthconnect.ChangeLogTokenRequest;
-import android.healthconnect.ChangeLogTokenResponse;
-import android.healthconnect.ChangeLogsRequest;
-import android.healthconnect.ReadRecordsRequestUsingFilters;
-import android.healthconnect.TimeInstantRangeFilter;
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.ChangeLogTokenRequest;
+import android.health.connect.ChangeLogTokenResponse;
+import android.health.connect.ChangeLogsRequest;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.TestUtils;
-import android.healthconnect.datatypes.DataOrigin;
-import android.healthconnect.datatypes.Record;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.runner.AndroidJUnit4;

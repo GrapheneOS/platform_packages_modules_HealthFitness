@@ -15,9 +15,9 @@
  */
 package com.android.healthconnect.controller.permissiontypes.api
 
-import android.healthconnect.FetchDataOriginsPriorityOrderResponse
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.HealthDataCategory
+import android.health.connect.FetchDataOriginsPriorityOrderResponse
+import android.health.connect.HealthConnectManager
+import android.health.connect.HealthDataCategory
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader

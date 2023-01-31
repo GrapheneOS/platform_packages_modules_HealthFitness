@@ -17,37 +17,37 @@ package android.healthconnect.cts;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
-import static android.healthconnect.HealthConnectDataState.MIGRATION_STATE_IDLE;
-import static android.healthconnect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
-import static android.healthconnect.HealthConnectDataState.RESTORE_ERROR_NONE;
-import static android.healthconnect.HealthConnectDataState.RESTORE_STATE_IDLE;
-import static android.healthconnect.HealthConnectDataState.RESTORE_STATE_PENDING;
-import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE;
-import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
-import static android.healthconnect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
-import static android.healthconnect.HealthConnectManager.isHealthPermission;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
+import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
+import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
+import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IDLE;
+import static android.health.connect.HealthConnectDataState.RESTORE_STATE_PENDING;
+import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE;
+import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
+import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
+import static android.health.connect.HealthConnectManager.isHealthPermission;
 import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
-import static android.healthconnect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
 import android.content.Context;
-import android.healthconnect.HealthConnectDataState;
-import android.healthconnect.HealthConnectException;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.HealthPermissions;
-import android.healthconnect.datatypes.BasalMetabolicRateRecord;
-import android.healthconnect.datatypes.DataOrigin;
-import android.healthconnect.datatypes.Device;
-import android.healthconnect.datatypes.HeartRateRecord;
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.StepsRecord;
-import android.healthconnect.datatypes.units.Power;
-import android.healthconnect.restore.StageRemoteDataException;
+import android.health.connect.HealthConnectDataState;
+import android.health.connect.HealthConnectException;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissions;
+import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.HeartRateRecord;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.units.Power;
+import android.health.connect.restore.StageRemoteDataException;
 import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.annotations.AppModeFull;
@@ -183,8 +183,7 @@ public class HealthConnectManagerTest {
     */
 
     /**
-     * Test to verify the working of {@link
-     * android.healthconnect.HealthConnectManager#updateRecords(java.util.List,
+     * Test to verify the working of {@link HealthConnectManager#updateRecords(java.util.List,
      * java.util.concurrent.Executor, android.os.OutcomeReceiver)}.
      *
      * <p>Insert a sample record of each dataType, update them and check by reading them.
@@ -252,8 +251,7 @@ public class HealthConnectManagerTest {
     }
 
     /**
-     * Test to verify the working of {@link
-     * android.healthconnect.HealthConnectManager#updateRecords(java.util.List,
+     * Test to verify the working of {@link HealthConnectManager#updateRecords(java.util.List,
      * java.util.concurrent.Executor, android.os.OutcomeReceiver)}.
      *
      * <p>Insert a sample record of each dataType, while updating provide input with a few invalid
@@ -330,8 +328,7 @@ public class HealthConnectManagerTest {
     }
 
     /**
-     * Test to verify the working of {@link
-     * android.healthconnect.HealthConnectManager#updateRecords(java.util.List,
+     * Test to verify the working of {@link HealthConnectManager#updateRecords(java.util.List,
      * java.util.concurrent.Executor, android.os.OutcomeReceiver)}.
      *
      * <p>Insert a sample record of each dataType, while updating add an input record with an

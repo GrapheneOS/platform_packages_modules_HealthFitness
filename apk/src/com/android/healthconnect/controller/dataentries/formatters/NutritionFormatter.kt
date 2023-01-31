@@ -16,10 +16,10 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.MealType
-import android.healthconnect.datatypes.NutritionRecord
-import android.healthconnect.datatypes.units.Energy
-import android.healthconnect.datatypes.units.Mass
+import android.health.connect.datatypes.MealType
+import android.health.connect.datatypes.NutritionRecord
+import android.health.connect.datatypes.units.Energy
+import android.health.connect.datatypes.units.Mass
 import android.icu.text.MessageFormat.*
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

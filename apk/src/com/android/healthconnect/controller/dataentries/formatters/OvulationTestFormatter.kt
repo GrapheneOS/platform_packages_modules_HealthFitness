@@ -16,11 +16,11 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.OvulationTestRecord
-import android.healthconnect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_HIGH
-import android.healthconnect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_INCONCLUSIVE
-import android.healthconnect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_NEGATIVE
-import android.healthconnect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_POSITIVE
+import android.health.connect.datatypes.OvulationTestRecord
+import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_HIGH
+import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_INCONCLUSIVE
+import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_NEGATIVE
+import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_POSITIVE
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

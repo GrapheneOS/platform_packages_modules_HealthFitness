@@ -15,9 +15,9 @@
  */
 package com.android.healthconnect.controller.tests.deletion.api
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.RecordIdFilter
-import android.healthconnect.datatypes.StepsRecord
+import android.health.connect.HealthConnectManager
+import android.health.connect.RecordIdFilter
+import android.health.connect.datatypes.StepsRecord
 import com.android.healthconnect.controller.deletion.DeletionType.DeleteDataEntry
 import com.android.healthconnect.controller.deletion.api.DeleteEntryUseCase
 import com.android.healthconnect.controller.shared.DataType

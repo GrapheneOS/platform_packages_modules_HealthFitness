@@ -17,9 +17,10 @@
 package android.healthconnect.test.app;
 
 import android.app.Activity;
+import android.health.connect.HealthConnectManager;
 
 /**
- * This app is used as an external package to test system api {@link
- * android.healthconnect.HealthConnectManager} permission-related APIs.
+ * This app is used as an external package to test system api {@link HealthConnectManager}
+ * permission-related APIs.
  */
 public class MainActivity extends Activity {}

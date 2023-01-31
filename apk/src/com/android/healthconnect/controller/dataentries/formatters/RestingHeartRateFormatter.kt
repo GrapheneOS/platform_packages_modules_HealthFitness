@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.RestingHeartRateRecord
+import android.health.connect.datatypes.RestingHeartRateRecord
 import android.icu.text.MessageFormat.*
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

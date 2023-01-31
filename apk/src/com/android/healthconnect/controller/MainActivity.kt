@@ -18,7 +18,7 @@ package com.android.healthconnect.controller
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.healthconnect.HealthConnectManager
+import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController

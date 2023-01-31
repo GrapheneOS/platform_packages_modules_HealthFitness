@@ -21,8 +21,8 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.internal.datatypes.BodyFatRecordInternal;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.BodyFatRecordInternal;
 import android.util.Pair;
 
 import java.util.Arrays;

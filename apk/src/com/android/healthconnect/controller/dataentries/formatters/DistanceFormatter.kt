@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.DistanceRecord
-import android.healthconnect.datatypes.units.Length
+import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.units.Length
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.LengthFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.UnitFormatter

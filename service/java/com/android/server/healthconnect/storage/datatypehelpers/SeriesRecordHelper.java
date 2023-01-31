@@ -21,7 +21,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.internal.datatypes.SeriesRecordInternal;
+import android.health.connect.internal.datatypes.SeriesRecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;

@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.HydrationRecord
-import android.healthconnect.datatypes.units.Volume
+import android.health.connect.datatypes.HydrationRecord
+import android.health.connect.datatypes.units.Volume
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.HydrationFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences

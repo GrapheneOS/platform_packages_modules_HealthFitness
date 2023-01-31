@@ -23,7 +23,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.healthconnect.internal.datatypes.InstantRecordInternal;
+import android.health.connect.internal.datatypes.InstantRecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.utils.StorageUtils;

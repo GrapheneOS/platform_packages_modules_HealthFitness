@@ -20,7 +20,7 @@ import static org.junit.Assume.assumeTrue;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.healthconnect.HealthPermissions;
+import android.health.connect.HealthPermissions;
 
 public class PermissionsTestUtils {
 

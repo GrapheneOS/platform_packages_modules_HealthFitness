@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.healthconnect.HealthConnectManager;
+import android.health.connect.HealthConnectManager;
 import android.os.Process;
 import android.os.UserHandle;
 import android.util.Slog;
@@ -39,9 +39,9 @@ import java.util.stream.Collectors;
  *   <li>Filter and get the package names of migration aware apps present on the device. Migration
  *       aware apps are those that both hold {@link
  *       android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA} and handle {@link
- *       android.healthconnect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
+ *       android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
  *   <li>Send an explicit broadcast with action {@link
- *       android.healthconnect.HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY} to
+ *       android.health.connect.HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY} to
  *       migration aware apps to prompt them to start/continue HC data migration.
  * </ul>
  *
@@ -58,9 +58,9 @@ public class MigrationBroadcast {
 
     /**
      * Sends a broadcast with action {@link
-     * android.healthconnect.HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY} to
+     * android.health.connect.HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY} to
      * applications which hold {@link android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA} and
-     * handle {@link android.healthconnect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
+     * handle {@link android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
      */
     public void sendInvocationBroadcast() throws Exception {
         Slog.i(TAG, "Calling sendInvocationBroadcast()");
@@ -116,7 +116,7 @@ public class MigrationBroadcast {
 
     /**
      * Filters and returns the package names of applications which handle intent {@link
-     * android.healthconnect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
+     * android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
      *
      * @param permissionFilteredPackages List of app package names holding permission {@link
      *     android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA}

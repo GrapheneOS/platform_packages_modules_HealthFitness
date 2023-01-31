@@ -19,13 +19,13 @@ package android.healthconnect.cts;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.healthconnect.ChangeLogTokenRequest;
-import android.healthconnect.ChangeLogTokenResponse;
-import android.healthconnect.ChangeLogsRequest;
-import android.healthconnect.ChangeLogsResponse;
-import android.healthconnect.datatypes.DataOrigin;
-import android.healthconnect.datatypes.Record;
-import android.healthconnect.datatypes.StepsRecord;
+import android.health.connect.ChangeLogTokenRequest;
+import android.health.connect.ChangeLogTokenResponse;
+import android.health.connect.ChangeLogsRequest;
+import android.health.connect.ChangeLogsResponse;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.core.app.ApplicationProvider;

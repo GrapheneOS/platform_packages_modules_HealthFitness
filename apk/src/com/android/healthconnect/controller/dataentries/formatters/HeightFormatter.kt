@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.dataentries.formatters
 
 import android.content.Context
-import android.healthconnect.datatypes.HeightRecord
-import android.healthconnect.datatypes.units.Length
+import android.health.connect.datatypes.HeightRecord
+import android.health.connect.datatypes.units.Length
 import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R

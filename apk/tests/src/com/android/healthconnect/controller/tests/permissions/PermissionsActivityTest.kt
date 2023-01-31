@@ -23,10 +23,10 @@ import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.healthconnect.HealthPermissions.READ_HEART_RATE
-import android.healthconnect.HealthPermissions.READ_STEPS
-import android.healthconnect.HealthPermissions.WRITE_DISTANCE
-import android.healthconnect.HealthPermissions.WRITE_EXERCISE
+import android.health.connect.HealthPermissions.READ_HEART_RATE
+import android.health.connect.HealthPermissions.READ_STEPS
+import android.health.connect.HealthPermissions.WRITE_DISTANCE
+import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData

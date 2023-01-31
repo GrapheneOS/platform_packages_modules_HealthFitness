@@ -20,8 +20,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.fail;
 
-import android.healthconnect.datatypes.Metadata;
-import android.healthconnect.datatypes.SleepSessionRecord;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.SleepSessionRecord;
 
 import org.junit.Test;
 

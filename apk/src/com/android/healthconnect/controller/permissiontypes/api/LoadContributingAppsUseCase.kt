@@ -1,10 +1,10 @@
 package com.android.healthconnect.controller.permissiontypes.api
 
-import android.healthconnect.HealthConnectManager
-import android.healthconnect.HealthDataCategory
-import android.healthconnect.RecordTypeInfoResponse
-import android.healthconnect.datatypes.DataOrigin
-import android.healthconnect.datatypes.Record
+import android.health.connect.HealthConnectManager
+import android.health.connect.RecordTypeInfoResponse
+import android.health.connect.HealthDataCategory
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader

@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.shared
 
-import android.healthconnect.datatypes.Record
+import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 
 fun dataTypeToCategory(dataType: Class<out Record>): Int {

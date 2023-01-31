@@ -16,22 +16,22 @@
 
 package com.android.server.healthconnect.storage.request;
 
-import static android.healthconnect.datatypes.AggregationType.AVG;
-import static android.healthconnect.datatypes.AggregationType.COUNT;
-import static android.healthconnect.datatypes.AggregationType.MAX;
-import static android.healthconnect.datatypes.AggregationType.MIN;
-import static android.healthconnect.datatypes.AggregationType.SUM;
+import static android.health.connect.datatypes.AggregationType.AVG;
+import static android.health.connect.datatypes.AggregationType.COUNT;
+import static android.health.connect.datatypes.AggregationType.MAX;
+import static android.health.connect.datatypes.AggregationType.MIN;
+import static android.health.connect.datatypes.AggregationType.SUM;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.database.Cursor;
-import android.healthconnect.AggregateResult;
-import android.healthconnect.Constants;
-import android.healthconnect.TimeRangeFilter;
-import android.healthconnect.TimeRangeFilterHelper;
-import android.healthconnect.datatypes.AggregationType;
+import android.health.connect.AggregateResult;
+import android.health.connect.Constants;
+import android.health.connect.TimeRangeFilter;
+import android.health.connect.TimeRangeFilterHelper;
+import android.health.connect.datatypes.AggregationType;
 import android.util.ArrayMap;
 import android.util.Slog;
 

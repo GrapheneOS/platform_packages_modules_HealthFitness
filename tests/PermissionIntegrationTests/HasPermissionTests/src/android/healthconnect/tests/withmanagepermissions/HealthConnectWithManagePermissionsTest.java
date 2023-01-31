@@ -25,8 +25,8 @@ import static org.junit.Assert.fail;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.healthconnect.HealthConnectManager;
-import android.healthconnect.HealthPermissions;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Integration tests for {@link android.healthconnect.HealthConnectManager} Permission-related APIs.
+ * Integration tests for {@link HealthConnectManager} Permission-related APIs.
  *
  * <p><b>Note:</b> These tests operate while holding {@link
  * HealthPermissions.MANAGE_HEALTH_PERMISSIONS}. For tests asserting that non-holders of the
