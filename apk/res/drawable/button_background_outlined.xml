@@ -13,13 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
-    <color name="onboarding_title_color">#1F1F1F</color>
-    <color name="onboarding_description_color">#3C4043</color>
-    <color name="onboarding_item_view_description_color">#444746</color>
-    <color name="button_background_color_filled">?android:attr/colorAccent</color>
-    <color name="filter_chip_outline_color">?android:attr/textColorPrimary</color>
-    <color name="filter_chip_selected_text_color">@color/filter_chip_text_color</color>
-    <color name="filter_chip_selected_icon_color">?android:attr/textColorPrimary</color>
-    <color name="spinner_text_color">@color/date_dropdown_text_color</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke android:width="1dp"
+        android:color="@color/button_background_color"/>
+    <corners android:radius="@dimen/button_corner_radius"/>
+</shape>

@@ -18,11 +18,11 @@ package com.android.healthconnect.controller.tests.deletion.api
 import android.healthconnect.DeleteUsingFiltersRequest
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeInstantRangeFilter
-import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.deletion.api.DeleteAllDataUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -37,7 +37,6 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
-import java.time.Instant
 
 @HiltAndroidTest
 class DeleteAllDataUseCaseTest {
@@ -63,10 +62,8 @@ class DeleteAllDataUseCaseTest {
         val startTime = Instant.now().minusSeconds(10)
         val endTime = Instant.now()
 
-        useCase.invoke(TimeInstantRangeFilter.Builder()
-                .setStartTime(startTime)
-                .setEndTime(endTime)
-                .build())
+        useCase.invoke(
+            TimeInstantRangeFilter.Builder().setStartTime(startTime).setEndTime(endTime).build())
 
         verify(manager, times(1)).deleteRecords(filtersCaptor.capture(), any(), any())
         assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
@@ -78,11 +75,7 @@ class DeleteAllDataUseCaseTest {
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
-            receiver.onResult(Any())
-            null
-        }
+        val answer = { _: InvocationOnMock -> null }
         return answer
     }
 }

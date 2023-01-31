@@ -28,6 +28,7 @@
         <item name="disconnectIcon">@drawable/quantum_gm_ic_link_off_vd_theme_24</item>
         <item name="deniedAppsBannerIcon">@drawable/quantum_gm_ic_error_outline_vd_theme_24</item>
         <item name="dialogGravity">@integer/dialog_gravity</item>
+        <item name="dialogPreferredPadding">@dimen/spacing_large</item>
         <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
         <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>
         <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>

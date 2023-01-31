@@ -219,7 +219,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                                 DeletionType.DeletionTypeAppData(
                                     app.appMetadata.packageName, app.appMetadata.appName)
                             childFragmentManager.setFragmentResult(
-                                DeletionConstants.START_DELETION_EVENT,
+                                DeletionConstants.START_INACTIVE_APP_DELETION_EVENT,
                                 bundleOf(DELETION_TYPE to appDeletionType))
                         }
                     }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,20 +16,21 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/spacing_small"
-        android:paddingVertical="@dimen/spacing_large"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/time_range_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:paddingVertical="@dimen/spacing_small"
-            style="@android:style/TextAppearance.Material.Subhead"
+            android:paddingBottom="@dimen/spacing_small"
+            style="?attr/textAppearanceSummary"
             android:text="@string/time_range_message_all" />
         <!-- by default the first radio button is checked -->
         <RadioGroup
@@ -40,6 +40,7 @@
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
             android:checkedButton="@+id/radio_button_one_day">
+
             <RadioButton
                 android:id="@+id/radio_button_one_day"
                 android:text="@string/time_range_one_day"
@@ -49,6 +50,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="0dp"
                 style="@android:style/TextAppearance.Material.Subhead" />
+
             <RadioButton
                 android:id="@+id/radio_button_one_week"
                 android:text="@string/time_range_one_week"
@@ -58,6 +60,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="0dp"
                 style="@android:style/TextAppearance.Material.Subhead" />
+
             <RadioButton
                 android:id="@+id/radio_button_one_month"
                 android:text="@string/time_range_one_month"
@@ -67,6 +70,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="0dp"
                 style="@android:style/TextAppearance.Material.Subhead" />
+
             <RadioButton
                 android:id="@+id/radio_button_all"
                 android:text="@string/time_range_all"

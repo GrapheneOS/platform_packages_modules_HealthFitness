@@ -20,13 +20,13 @@ import android.healthconnect.HealthConnectManager
 import android.healthconnect.TimeInstantRangeFilter
 import android.healthconnect.datatypes.StepsCadenceRecord
 import android.healthconnect.datatypes.StepsRecord
-import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.api.DeletePermissionTypeUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.google.common.truth.Truth
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -39,7 +39,6 @@ import org.mockito.Mockito
 import org.mockito.Mockito.doAnswer
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
-import java.time.Instant
 
 @HiltAndroidTest
 class DeletePermissionTypeUseCaseTest {
@@ -69,10 +68,9 @@ class DeletePermissionTypeUseCaseTest {
         val deletePermissionType =
             DeletionType.DeletionTypeHealthPermissionTypeData(HealthPermissionType.STEPS)
 
-        useCase.invoke(deletePermissionType, TimeInstantRangeFilter.Builder()
-                .setStartTime(startTime)
-                .setEndTime(endTime)
-                .build())
+        useCase.invoke(
+            deletePermissionType,
+            TimeInstantRangeFilter.Builder().setStartTime(startTime).setEndTime(endTime).build())
 
         Mockito.verify(manager, Mockito.times(1))
             .deleteRecords(filtersCaptor.capture(), any(), any())
@@ -88,11 +86,7 @@ class DeletePermissionTypeUseCaseTest {
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
-            receiver.onResult(Any())
-            null
-        }
+        val answer = { _: InvocationOnMock -> null }
         return answer
     }
 }

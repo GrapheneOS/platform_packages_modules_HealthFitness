@@ -35,11 +35,11 @@ import kotlinx.coroutines.launch
 class DeletionViewModel
 @Inject
 constructor(
-        private val deleteAllDataUseCase: DeleteAllDataUseCase,
-        private val deleteCategoryUseCase: DeleteCategoryUseCase,
-        private val deletePermissionTypeUseCase: DeletePermissionTypeUseCase,
-        private val deleteEntryUseCase: DeleteEntryUseCase,
-        private val deleteAppDataUseCase: DeleteAppDataUseCase
+    private val deleteAllDataUseCase: DeleteAllDataUseCase,
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val deletePermissionTypeUseCase: DeletePermissionTypeUseCase,
+    private val deleteEntryUseCase: DeleteEntryUseCase,
+    private val deleteAppDataUseCase: DeleteAppDataUseCase
 ) : ViewModel() {
 
     companion object {
@@ -47,6 +47,7 @@ constructor(
     }
 
     private val _deletionParameters = MutableLiveData(DeletionParameters())
+    private var _removePermissions = false
 
     val deletionParameters: LiveData<DeletionParameters>
         get() = _deletionParameters
@@ -56,18 +57,21 @@ constructor(
 
     private fun currentDeletionParameters() = _deletionParameters.value!!
 
+    fun setRemovePermissions(boolean: Boolean) {
+        _removePermissions = boolean
+    }
+
     fun setDeletionType(deletionType: DeletionType) {
         val showTimeRangePickerDialog =
-                when (deletionType) {
-                    is DeletionType.DeleteDataEntry -> false
-                    // TODO (teog) cover other flows
-                    else -> true
-                }
+            when (deletionType) {
+                is DeletionType.DeleteDataEntry -> false
+                else -> true
+            }
         _deletionParameters.value =
-                currentDeletionParameters()
-                        .copy(
-                                showTimeRangePickerDialog = showTimeRangePickerDialog,
-                                deletionType = deletionType)
+            currentDeletionParameters()
+                .copy(
+                    showTimeRangePickerDialog = showTimeRangePickerDialog,
+                    deletionType = deletionType)
     }
 
     fun setChosenRange(chosenRange: ChosenRange) {
@@ -76,32 +80,36 @@ constructor(
 
     fun setEndTime(endTime: Instant) {
         _deletionParameters.value =
-                _deletionParameters.value?.copy(endTimeMs = endTime.toEpochMilli())
+            _deletionParameters.value?.copy(endTimeMs = endTime.toEpochMilli())
     }
 
     private var _categoriesReloadNeeded = MutableLiveData(false)
+    private val _appPermissionReloadNeeded = MutableLiveData(false)
 
     // Whether the categories screen needs to be reloaded after category data deletion.
     val categoriesReloadNeeded: LiveData<Boolean>
         get() = _categoriesReloadNeeded
+
+    val appPermissionReloadNeeded: LiveData<Boolean>
+        get() = _appPermissionReloadNeeded
 
     private fun setDeletionState(newState: DeletionState) {
         _deletionParameters.value = currentDeletionParameters().copy(deletionState = newState)
     }
 
     fun delete() {
-
         viewModelScope.launch {
             setDeletionState(DeletionState.STATE_DELETION_STARTED)
 
             try {
+
                 setDeletionState(DeletionState.STATE_PROGRESS_INDICATOR_STARTED)
 
                 val timeRangeFilter =
-                        TimeInstantRangeFilter.Builder().setStartTime(
-                                currentDeletionParameters().getStartTimeInstant()).setEndTime(
-                                currentDeletionParameters().getEndTimeInstant())
-                                .build()
+                    TimeInstantRangeFilter.Builder()
+                        .setStartTime(currentDeletionParameters().getStartTimeInstant())
+                        .setEndTime(currentDeletionParameters().getEndTimeInstant())
+                        .build()
 
                 when (val deletionType = currentDeletionParameters().deletionType) {
                     is DeletionType.DeleteDataEntry -> {
@@ -125,16 +133,19 @@ constructor(
                     }
                     is DeletionType.DeletionTypeAppData -> {
                         deletionParameters.value?.let {
-                            deleteAppDataUseCase.invoke(deletionType, timeRangeFilter)
+                            deleteAppDataUseCase.invoke(
+                                deletionType, timeRangeFilter, _removePermissions)
+                            if (_removePermissions) {
+                                _appPermissionReloadNeeded.value = true
+                            }
                         }
                     }
-                    else -> {
-                        // TODO other deletion flows
-                    }
+                    else -> {}
                 }
                 setDeletionState(DeletionState.STATE_DELETION_SUCCESSFUL)
             } catch (error: Exception) {
                 Log.e(TAG, "Failed to delete data ${currentDeletionParameters()}", error)
+
                 setDeletionState(DeletionState.STATE_DELETION_FAILED)
             } finally {
                 setDeletionState(DeletionState.STATE_PROGRESS_INDICATOR_CAN_END)

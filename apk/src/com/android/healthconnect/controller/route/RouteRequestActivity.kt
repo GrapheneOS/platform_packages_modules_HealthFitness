@@ -25,8 +25,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.VisibleForTesting
-import androidx.appcompat.widget.DialogTitle
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.map.MapView
@@ -81,7 +81,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         view
             .findViewById<ImageView>(R.id.dialog_icon)
             .setImageDrawable(getDrawable(R.drawable.health_connect_icon))
-        view.findViewById<DialogTitle>(R.id.dialog_title).text = title
+        view.findViewById<TextView>(R.id.dialog_title).text = title
         view.findViewById<MapView>(R.id.map_view).setRoute(WARSAW_ROUTE)
 
         view.findViewById<Button>(R.id.route_dont_allow_button).setOnClickListener {

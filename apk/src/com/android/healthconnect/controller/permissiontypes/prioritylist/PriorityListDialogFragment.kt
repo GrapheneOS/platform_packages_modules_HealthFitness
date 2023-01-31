@@ -28,7 +28,6 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 
 /** A {@link DialogFragment} that displays the apps in priority order. */
 @AndroidEntryPoint(DialogFragment::class)
@@ -38,7 +37,8 @@ class PriorityListDialogFragment(
 ) : Hilt_PriorityListDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val parentView: View = LayoutInflater.from(context).inflate(R.layout.dialog_priority, null)
+        val parentView: View =
+            LayoutInflater.from(context).inflate(R.layout.dialog_layout_priority, null)
         val priorityListView: RecyclerView =
             parentView.findViewById(R.id.priority_list_recycle_view)
         val adapter = PriorityListAdapter(priorityList)

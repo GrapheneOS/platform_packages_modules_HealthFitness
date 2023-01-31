@@ -17,13 +17,11 @@ package com.android.healthconnect.controller.deletion.api
 
 import android.healthconnect.HealthConnectManager
 import android.healthconnect.RecordIdFilter
-import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.deletion.DeletionType.DeleteDataEntry
 import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 @Singleton
@@ -38,9 +36,6 @@ constructor(
             val recordIdFilter =
                 RecordIdFilter.fromId(deleteEntry.dataType.recordClass, deleteEntry.id)
 
-            suspendCancellableCoroutine<Void> { continuation ->
-                healthConnectManager.deleteRecords(
-                    listOf(recordIdFilter), Runnable::run, continuation.asOutcomeReceiver())
-            }
+            healthConnectManager.deleteRecords(listOf(recordIdFilter), Runnable::run) {}
         }
 }
