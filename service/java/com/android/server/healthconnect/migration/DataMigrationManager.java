@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.PackageInfoFlags;
+import android.database.sqlite.SQLiteDatabase;
 import android.healthconnect.internal.datatypes.RecordInternal;
 import android.healthconnect.migration.MigrationEntity;
 import android.healthconnect.migration.MigrationPayload;
@@ -81,26 +82,49 @@ public final class DataMigrationManager {
      *
      * @param entities a collection of {@link MigrationEntity} to be applied.
      */
-    public void apply(@NonNull Collection<MigrationEntity> entities) {
+    public void apply(@NonNull Collection<MigrationEntity> entities) throws EntityWriteException {
         migrateRecords(entities);
         migratePermissions(entities);
     }
 
-    private void migrateRecords(@NonNull Collection<MigrationEntity> entities) {
-        final List<UpsertTableRequest> requests = parseRecords(entities);
-        if (!requests.isEmpty()) {
-            mTransactionManager.insertAll(requests);
+    private void migrateRecords(@NonNull Collection<MigrationEntity> entities)
+            throws EntityWriteException {
+        final List<EntityInsertRequest> requests = parseRecords(entities);
+        if (requests.isEmpty()) {
+            return;
+        }
+
+        final SQLiteDatabase db = mTransactionManager.getWritableDb();
+        db.beginTransaction();
+        try {
+            for (EntityInsertRequest request : requests) {
+                try {
+                    mTransactionManager.insertRecord(db, request.request);
+                } catch (RuntimeException e) {
+                    throw new EntityWriteException(request.entityId, e);
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
     }
 
     @NonNull
-    private List<UpsertTableRequest> parseRecords(@NonNull Collection<MigrationEntity> entities) {
-        final List<UpsertTableRequest> list = new ArrayList<>();
+    private List<EntityInsertRequest> parseRecords(@NonNull Collection<MigrationEntity> entities)
+            throws EntityWriteException {
+        final List<EntityInsertRequest> list = new ArrayList<>();
 
         for (MigrationEntity entity : entities) {
             final MigrationPayload payload = entity.getPayload();
             if (payload instanceof RecordMigrationPayload) {
-                list.add(parseRecord((RecordMigrationPayload) payload));
+                final UpsertTableRequest request;
+                try {
+                    request = parseRecord((RecordMigrationPayload) payload);
+                } catch (RuntimeException e) {
+                    throw new EntityWriteException(entity.getEntityId(), e);
+                }
+                list.add(new EntityInsertRequest(entity.getEntityId(), request));
             }
         }
 
@@ -120,11 +144,16 @@ public final class DataMigrationManager {
     }
 
     @NonNull
-    private void migratePermissions(@NonNull Collection<MigrationEntity> entities) {
+    private void migratePermissions(@NonNull Collection<MigrationEntity> entities)
+            throws EntityWriteException {
         for (MigrationEntity entity : entities) {
             final MigrationPayload payload = entity.getPayload();
             if (payload instanceof PermissionMigrationPayload) {
-                migratePermissions((PermissionMigrationPayload) payload);
+                try {
+                    migratePermissions((PermissionMigrationPayload) payload);
+                } catch (RuntimeException e) {
+                    throw new EntityWriteException(entity.getEntityId(), e);
+                }
             }
         }
     }
@@ -159,6 +188,36 @@ public final class DataMigrationManager {
                     .applicationInfo;
         } catch (PackageManager.NameNotFoundException e) {
             return null;
+        }
+    }
+
+    /** Indicates an error during entity migration. */
+    public static final class EntityWriteException extends Exception {
+        private final String mEntityId;
+
+        private EntityWriteException(@NonNull String entityId, @Nullable Throwable cause) {
+            super("Error writing entity: " + entityId, cause);
+
+            mEntityId = entityId;
+        }
+
+        /**
+         * Returns an identifier of the failed entity, as specified in {@link
+         * MigrationEntity#getEntityId()}.
+         */
+        @NonNull
+        public String getEntityId() {
+            return mEntityId;
+        }
+    }
+
+    private static final class EntityInsertRequest {
+        @NonNull public final String entityId;
+        @NonNull public final UpsertTableRequest request;
+
+        private EntityInsertRequest(@NonNull String entityId, @NonNull UpsertTableRequest request) {
+            this.entityId = entityId;
+            this.request = request;
         }
     }
 }

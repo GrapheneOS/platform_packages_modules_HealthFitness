@@ -27,6 +27,9 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -178,14 +181,44 @@ public class DataMigrationTest {
         assertThat(getGrantedAppPermissions()).containsAtLeast(READ_HEIGHT, WRITE_HEIGHT);
     }
 
+    @Test
+    public void migratePermissions_invalidPermission_failsWith_ERROR_MIGRATE_ENTITY() {
+        revokeAppPermissions(READ_HEIGHT, WRITE_HEIGHT);
+
+        final MigrationEntity entity =
+                new MigrationEntity(
+                        "permissions1",
+                        new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
+                                .addPermission("invalid.permission")
+                                .build());
+        try {
+            migrate(entity);
+            fail("Expected to fail with MigrationException but didn't");
+        } catch (MigrationException e) {
+            assertEquals(MigrationException.ERROR_MIGRATE_ENTITY, e.getErrorCode());
+        }
+    }
+
     private void migrate(MigrationEntity... entities) {
+        final MigrationException[] error = new MigrationException[1];
+
+        // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException
         runWithShellPermissionIdentity(
-                () ->
+                () -> {
+                    try {
                         DataMigrationTest.<Void, MigrationException>blockingCall(
                                 outcomeReceiver ->
                                         mManager.writeMigrationData(
-                                                List.of(entities), Runnable::run, outcomeReceiver)),
+                                                List.of(entities), Runnable::run, outcomeReceiver));
+                    } catch (MigrationException e) {
+                        error[0] = e;
+                    }
+                },
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
+        if (error[0] != null) {
+            throw error[0];
+        }
     }
 
     private MigrationEntity getRecordEntity(String entityId, Record record) {

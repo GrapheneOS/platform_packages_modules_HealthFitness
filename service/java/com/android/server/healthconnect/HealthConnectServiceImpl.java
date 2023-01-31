@@ -834,7 +834,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
-                        // TODO(b/263897830): Send errors properly
+                        // TODO(b/263897830): Verify migration state and send errors properly
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
@@ -855,7 +855,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
-                        // TODO(b/263897830): Send errors properly
+                        // TODO(b/263897830): Verify migration state and send errors properly
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
@@ -874,9 +874,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         getDataMigrationManager(getCallingUserHandle()).apply(entities);
                         callback.onSuccess();
-                    } catch (Exception e) {
+                    } catch (DataMigrationManager.EntityWriteException e) {
                         Slog.e(TAG, "Exception: ", e);
-                        // TODO(b/263897830): Send errors properly
+                        tryAndThrowException(
+                                callback,
+                                e,
+                                MigrationException.ERROR_MIGRATE_ENTITY,
+                                e.getEntityId());
+                    } catch (Exception e) {
+                        // TODO(b/263897830): Verify migration state and send errors properly
+                        Slog.e(TAG, "Exception: ", e);
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
