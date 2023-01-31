@@ -19,7 +19,9 @@
           package="android.healthconnect.cts"
           android:targetSandboxVersion="2">
 
-    <application android:debuggable="true">
+    <application
+      android:debuggable="true"
+      android:largeHeap="true">
       <uses-library android:name="android.test.runner"/>
       <activity android:name=".EmptyActivity"
                 android:label="EmptyActivity"

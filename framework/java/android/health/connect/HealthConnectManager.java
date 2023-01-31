@@ -244,25 +244,6 @@ public class HealthConnectManager {
     @SystemApi
     public static final String ACTION_HEALTH_CONNECT_MIGRATION_READY =
             "android.health.connect.action.HEALTH_CONNECT_MIGRATION_READY";
-
-    private static final String TAG = "HealthConnectManager";
-    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
-    private static volatile Set<String> sHealthPermissions;
-    private final Context mContext;
-    private final IHealthConnectService mService;
-    private final InternalExternalRecordConverter mInternalExternalRecordConverter;
-
-    /** @hide */
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-        DATA_DOWNLOAD_STATE_UNKNOWN,
-        DATA_DOWNLOAD_STARTED,
-        DATA_DOWNLOAD_RETRY,
-        DATA_DOWNLOAD_FAILED,
-        DATA_DOWNLOAD_COMPLETE
-    })
-    public @interface DataDownloadState {}
-
     /**
      * Unknown download state considered to be the default download state.
      *
@@ -271,7 +252,6 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi public static final int DATA_DOWNLOAD_STATE_UNKNOWN = 0;
-
     /**
      * Indicates that the download has started.
      *
@@ -280,7 +260,6 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi public static final int DATA_DOWNLOAD_STARTED = 1;
-
     /**
      * Indicates that the download is being retried.
      *
@@ -289,7 +268,6 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi public static final int DATA_DOWNLOAD_RETRY = 2;
-
     /**
      * Indicates that the download has failed.
      *
@@ -298,7 +276,6 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi public static final int DATA_DOWNLOAD_FAILED = 3;
-
     /**
      * Indicates that the download has completed.
      *
@@ -307,6 +284,13 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi public static final int DATA_DOWNLOAD_COMPLETE = 4;
+
+    private static final String TAG = "HealthConnectManager";
+    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
+    private static volatile Set<String> sHealthPermissions;
+    private final Context mContext;
+    private final IHealthConnectService mService;
+    private final InternalExternalRecordConverter mInternalExternalRecordConverter;
 
     /** @hide */
     HealthConnectManager(@NonNull Context context, @NonNull IHealthConnectService service) {
@@ -371,25 +355,6 @@ public class HealthConnectManager {
         }
         sHealthPermissions = Collections.unmodifiableSet(permissions);
         return sHealthPermissions;
-    }
-
-    @NonNull
-    private static IMigrationCallback wrapMigrationCallback(
-            @NonNull @CallbackExecutor Executor executor,
-            @NonNull OutcomeReceiver<Void, MigrationException> callback) {
-        return new IMigrationCallback.Stub() {
-            @Override
-            public void onSuccess() {
-                Binder.clearCallingIdentity();
-                executor.execute(() -> callback.onResult(null));
-            }
-
-            @Override
-            public void onError(MigrationException exception) {
-                Binder.clearCallingIdentity();
-                executor.execute(() -> callback.onError(exception));
-            }
-        };
     }
 
     /**
@@ -1461,43 +1426,6 @@ public class HealthConnectManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
-            @NonNull Executor executor,
-            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
-        return new IReadRecordsResponseCallback.Stub() {
-            @Override
-            public void onResult(ReadRecordsResponseParcel parcel) {
-                Binder.clearCallingIdentity();
-                try {
-                    List<T> externalRecords =
-                            (List<T>)
-                                    mInternalExternalRecordConverter.getExternalRecords(
-                                            parcel.getRecordsParcel().getRecords());
-                    executor.execute(
-                            () ->
-                                    callback.onResult(
-                                            new ReadRecordsResponse<>(
-                                                    externalRecords, parcel.getPageToken())));
-                } catch (ClassCastException castException) {
-                    HealthConnectException healthConnectException =
-                            new HealthConnectException(
-                                    HealthConnectException.ERROR_INTERNAL,
-                                    castException.getMessage());
-                    returnError(
-                            executor,
-                            new HealthConnectExceptionParcel(healthConnectException),
-                            callback);
-                }
-            }
-
-            @Override
-            public void onError(HealthConnectExceptionParcel exception) {
-                returnError(executor, exception, callback);
-            }
-        };
-    }
-
     /**
      * Returns a list of unique dates for which the DB has at least one entry.
      *
@@ -1648,6 +1576,43 @@ public class HealthConnectManager {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+        return new IReadRecordsResponseCallback.Stub() {
+            @Override
+            public void onResult(ReadRecordsResponseParcel parcel) {
+                Binder.clearCallingIdentity();
+                try {
+                    List<T> externalRecords =
+                            (List<T>)
+                                    mInternalExternalRecordConverter.getExternalRecords(
+                                            parcel.getRecordsParcel().getRecords());
+                    executor.execute(
+                            () ->
+                                    callback.onResult(
+                                            new ReadRecordsResponse<>(
+                                                    externalRecords, parcel.getPageToken())));
+                } catch (ClassCastException castException) {
+                    HealthConnectException healthConnectException =
+                            new HealthConnectException(
+                                    HealthConnectException.ERROR_INTERNAL,
+                                    castException.getMessage());
+                    returnError(
+                            executor,
+                            new HealthConnectExceptionParcel(healthConnectException),
+                            callback);
+                }
+            }
+
+            @Override
+            public void onError(HealthConnectExceptionParcel exception) {
+                returnError(executor, exception, callback);
+            }
+        };
+    }
+
     private List<Record> getRecordsWithUids(List<Record> records, List<String> uids) {
         int i = 0;
         for (Record record : records) {
@@ -1664,4 +1629,34 @@ public class HealthConnectManager {
         Binder.clearCallingIdentity();
         executor.execute(() -> callback.onError(exception.getHealthConnectException()));
     }
+
+    @NonNull
+    private static IMigrationCallback wrapMigrationCallback(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, MigrationException> callback) {
+        return new IMigrationCallback.Stub() {
+            @Override
+            public void onSuccess() {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onResult(null));
+            }
+
+            @Override
+            public void onError(MigrationException exception) {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onError(exception));
+            }
+        };
+    }
+
+    /** @hide */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+        DATA_DOWNLOAD_STATE_UNKNOWN,
+        DATA_DOWNLOAD_STARTED,
+        DATA_DOWNLOAD_RETRY,
+        DATA_DOWNLOAD_FAILED,
+        DATA_DOWNLOAD_COMPLETE
+    })
+    public @interface DataDownloadState {}
 }
