@@ -307,7 +307,7 @@ public class PowerRecordTest {
                 new PowerRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Collections.emptyList());
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -361,25 +361,33 @@ public class PowerRecordTest {
 
     private static PowerRecord getBasePowerRecord() {
         PowerRecord.PowerRecordSample powerRecord =
-                new PowerRecord.PowerRecordSample(Power.fromWatts(10.0), Instant.now());
+                new PowerRecord.PowerRecordSample(
+                        Power.fromWatts(10.0), Instant.now().plusMillis(100));
         ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
         powerRecords.add(powerRecord);
         powerRecords.add(powerRecord);
 
         return new PowerRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), powerRecords)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        powerRecords)
                 .build();
     }
 
     static PowerRecord getPowerRecord(double power) {
         PowerRecord.PowerRecordSample powerRecord =
-                new PowerRecord.PowerRecordSample(Power.fromWatts(power), Instant.now());
+                new PowerRecord.PowerRecordSample(
+                        Power.fromWatts(power), Instant.now().plusMillis(100));
         ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
         powerRecords.add(powerRecord);
         powerRecords.add(powerRecord);
 
         return new PowerRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), powerRecords)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        powerRecords)
                 .build();
     }
 
@@ -398,14 +406,18 @@ public class PowerRecordTest {
         testMetadataBuilder.setClientRecordId("PR" + Math.random());
 
         PowerRecord.PowerRecordSample powerRecord =
-                new PowerRecord.PowerRecordSample(Power.fromWatts(10.0), Instant.now());
+                new PowerRecord.PowerRecordSample(
+                        Power.fromWatts(10.0), Instant.now().plusMillis(100));
 
         ArrayList<PowerRecord.PowerRecordSample> powerRecords = new ArrayList<>();
         powerRecords.add(powerRecord);
         powerRecords.add(powerRecord);
 
         return new PowerRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), powerRecords)
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        powerRecords)
                 .build();
     }
 }

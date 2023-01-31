@@ -25,8 +25,10 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @see PowerRecord
@@ -35,12 +37,12 @@ import java.util.Objects;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_POWER)
 public class PowerRecordInternal
         extends SeriesRecordInternal<PowerRecord, PowerRecord.PowerRecordSample> {
-    private List<PowerRecordSample> mPowerRecordSamples = new ArrayList<>();
+    private Set<PowerRecordSample> mPowerRecordSamples;
 
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
         int size = parcel.readInt();
-        mPowerRecordSamples = new ArrayList<>(size);
+        mPowerRecordSamples = new HashSet<>(size);
         for (int i = 0; i < size; i++) {
             mPowerRecordSamples.add(new PowerRecordSample(parcel.readDouble(), parcel.readLong()));
         }
@@ -48,15 +50,15 @@ public class PowerRecordInternal
 
     @Override
     @NonNull
-    public List<PowerRecordSample> getSamples() {
+    public Set<PowerRecordSample> getSamples() {
         return mPowerRecordSamples;
     }
 
     @NonNull
     @Override
-    public PowerRecordInternal setSamples(List<? extends Sample> samples) {
+    public PowerRecordInternal setSamples(Set<? extends Sample> samples) {
         Objects.requireNonNull(samples);
-        this.mPowerRecordSamples = (List<PowerRecordSample>) samples;
+        this.mPowerRecordSamples = (Set<PowerRecordSample>) samples;
         return this;
     }
 
@@ -72,12 +74,16 @@ public class PowerRecordInternal
 
     @Override
     void populateIntervalRecordFrom(@NonNull PowerRecord powerRecord) {
-        mPowerRecordSamples = new ArrayList<>(powerRecord.getSamples().size());
+        mPowerRecordSamples = new HashSet<>(powerRecord.getSamples().size());
         for (PowerRecord.PowerRecordSample powerRecordSample : powerRecord.getSamples()) {
             mPowerRecordSamples.add(
                     new PowerRecordSample(
                             powerRecordSample.getPower().getInWatts(),
                             powerRecordSample.getTime().toEpochMilli()));
+        }
+
+        if (mPowerRecordSamples.size() != powerRecord.getSamples().size()) {
+            throw new IllegalArgumentException("Duplicate time instant values present.");
         }
     }
 
@@ -120,6 +126,21 @@ public class PowerRecordInternal
 
         public long getEpochMillis() {
             return mEpochMillis;
+        }
+
+        @Override
+        public boolean equals(@NonNull Object object) {
+            if (super.equals(object) && object instanceof PowerRecordInternal.PowerRecordSample) {
+                PowerRecordInternal.PowerRecordSample other =
+                        (PowerRecordInternal.PowerRecordSample) object;
+                return getEpochMillis() == other.getEpochMillis();
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getEpochMillis());
         }
     }
 }

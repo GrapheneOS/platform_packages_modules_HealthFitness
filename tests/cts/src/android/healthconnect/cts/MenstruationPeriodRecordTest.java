@@ -328,7 +328,9 @@ public class MenstruationPeriodRecordTest {
 
     static MenstruationPeriodRecord getBaseMenstruationPeriodRecord() {
         return new MenstruationPeriodRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now())
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000))
                 .build();
     }
 
@@ -347,7 +349,7 @@ public class MenstruationPeriodRecordTest {
         testMetadataBuilder.setClientRecordId("MPR" + Math.random());
 
         return new MenstruationPeriodRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now())
+                        testMetadataBuilder.build(), Instant.now(), Instant.now().plusMillis(1000))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

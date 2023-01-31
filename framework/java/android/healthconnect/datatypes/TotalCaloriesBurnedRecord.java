@@ -69,6 +69,7 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(energy);
+        ValidationUtils.requireInRange(energy.getInJoules(), 0.0, 4184000000.0, "energy");
         mEnergy = energy;
     }
 

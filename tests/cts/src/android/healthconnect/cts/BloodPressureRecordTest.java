@@ -316,7 +316,7 @@ public class BloodPressureRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         1,
-                        Pressure.fromMillimetersOfMercury(10.0),
+                        Pressure.fromMillimetersOfMercury(20.0),
                         Pressure.fromMillimetersOfMercury(10.0),
                         1);
 
@@ -329,7 +329,7 @@ public class BloodPressureRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         1,
-                        Pressure.fromMillimetersOfMercury(10.0),
+                        Pressure.fromMillimetersOfMercury(20.0),
                         Pressure.fromMillimetersOfMercury(10.0),
                         1)
                 .build();
@@ -352,7 +352,7 @@ public class BloodPressureRecordTest {
                         testMetadataBuilder.build(),
                         Instant.now(),
                         1,
-                        Pressure.fromMillimetersOfMercury(10.0),
+                        Pressure.fromMillimetersOfMercury(20.0),
                         Pressure.fromMillimetersOfMercury(10.0),
                         1)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))

@@ -45,6 +45,7 @@ public final class RespiratoryRateRecord extends InstantRecord {
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
+        ValidationUtils.requireInRange(rate, 0.0, 1000.0, "rate");
         mRate = rate;
     }
 

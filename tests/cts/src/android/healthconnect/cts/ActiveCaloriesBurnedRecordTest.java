@@ -361,7 +361,7 @@ public class ActiveCaloriesBurnedRecordTest {
                 new ActiveCaloriesBurnedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Energy.fromJoules(10.0));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -417,7 +417,7 @@ public class ActiveCaloriesBurnedRecordTest {
         return new ActiveCaloriesBurnedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Energy.fromJoules(10.0))
                 .build();
     }
@@ -426,7 +426,7 @@ public class ActiveCaloriesBurnedRecordTest {
         return new ActiveCaloriesBurnedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Energy.fromJoules(energy))
                 .build();
     }
@@ -447,7 +447,7 @@ public class ActiveCaloriesBurnedRecordTest {
         return new ActiveCaloriesBurnedRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Energy.fromJoules(10.0))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))

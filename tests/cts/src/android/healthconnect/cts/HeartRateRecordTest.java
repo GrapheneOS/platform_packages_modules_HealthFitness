@@ -346,7 +346,7 @@ public class HeartRateRecordTest {
         final ZoneOffset startZoneOffset = ZoneOffset.UTC;
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
         HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(10, Instant.now());
+                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
@@ -354,7 +354,7 @@ public class HeartRateRecordTest {
                 new HeartRateRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(500),
                         heartRateRecords);
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -409,7 +409,7 @@ public class HeartRateRecordTest {
 
     private static HeartRateRecord getBaseHeartRateRecord() {
         HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(10, Instant.now());
+                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
@@ -417,7 +417,7 @@ public class HeartRateRecordTest {
         return new HeartRateRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(500),
                         heartRateRecords)
                 .build();
     }
@@ -437,14 +437,17 @@ public class HeartRateRecordTest {
         testMetadataBuilder.setClientRecordId("HRR" + Math.random());
 
         HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(10, Instant.now());
+                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
 
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
 
         return new HeartRateRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), heartRateRecords)
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(500),
+                        heartRateRecords)
                 .build();
     }
 

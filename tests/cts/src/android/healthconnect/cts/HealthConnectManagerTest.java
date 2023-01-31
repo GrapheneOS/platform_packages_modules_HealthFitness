@@ -1241,16 +1241,20 @@ public class HealthConnectManagerTest {
                         .build();
         switch (record.getRecordType()) {
             case RECORD_TYPE_STEPS:
-                return new StepsRecord.Builder(metadataWithId, Instant.now(), Instant.now(), 10)
+                return new StepsRecord.Builder(
+                                metadataWithId, Instant.now(), Instant.now().plusMillis(1000), 10)
                         .build();
             case RECORD_TYPE_HEART_RATE:
                 HeartRateRecord.HeartRateSample heartRateSample =
-                        new HeartRateRecord.HeartRateSample(72, Instant.now());
+                        new HeartRateRecord.HeartRateSample(72, Instant.now().plusMillis(100));
                 ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
                 heartRateSamples.add(heartRateSample);
                 heartRateSamples.add(heartRateSample);
                 return new HeartRateRecord.Builder(
-                                metadataWithId, Instant.now(), Instant.now(), heartRateSamples)
+                                metadataWithId,
+                                Instant.now(),
+                                Instant.now().plusMillis(1000),
+                                heartRateSamples)
                         .build();
             case RECORD_TYPE_BASAL_METABOLIC_RATE:
                 return new BasalMetabolicRateRecord.Builder(
@@ -1278,13 +1282,16 @@ public class HealthConnectManagerTest {
             testMetadataBuilder.setClientRecordId("SR" + Math.random());
         }
         return new StepsRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), 10)
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        10)
                 .build();
     }
 
     private HeartRateRecord getHeartRateRecord(boolean isSetClientRecordId) {
         HeartRateRecord.HeartRateSample heartRateSample =
-                new HeartRateRecord.HeartRateSample(72, Instant.now());
+                new HeartRateRecord.HeartRateSample(72, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
         heartRateSamples.add(heartRateSample);
         heartRateSamples.add(heartRateSample);
@@ -1298,7 +1305,10 @@ public class HealthConnectManagerTest {
             testMetadataBuilder.setClientRecordId("HR" + Math.random());
         }
         return new HeartRateRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), heartRateSamples)
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        heartRateSamples)
                 .build();
     }
 

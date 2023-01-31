@@ -19,7 +19,7 @@ package android.healthconnect.internal.datatypes;
 import android.annotation.NonNull;
 import android.healthconnect.datatypes.IntervalRecord;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Parent class for all the Series type records.
@@ -31,10 +31,10 @@ import java.util.List;
 public abstract class SeriesRecordInternal<T extends IntervalRecord, U>
         extends IntervalRecordInternal<T> {
     @NonNull
-    public abstract List<? extends Sample> getSamples();
+    public abstract Set<? extends Sample> getSamples();
 
     @NonNull
-    public abstract SeriesRecordInternal setSamples(List<? extends Sample> samples);
+    public abstract SeriesRecordInternal setSamples(Set<? extends Sample> samples);
 
     /** Base class for the series data stored in {@link SeriesRecordInternal} types */
     public interface Sample {}

@@ -54,6 +54,8 @@ public final class ElevationGainedRecord extends IntervalRecord {
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
             Objects.requireNonNull(elevation);
+            ValidationUtils.requireInRange(
+                    elevation.getInMeters(), -1000000.0, 1000000.0, "elevation");
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;

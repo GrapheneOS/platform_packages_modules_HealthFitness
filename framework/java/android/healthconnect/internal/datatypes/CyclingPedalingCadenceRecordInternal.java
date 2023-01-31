@@ -24,8 +24,10 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @see CyclingPedalingCadenceRecord
@@ -36,14 +38,13 @@ public class CyclingPedalingCadenceRecordInternal
         extends SeriesRecordInternal<
                 CyclingPedalingCadenceRecord,
                 CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> {
-    private List<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples =
-            new ArrayList<>();
+    private Set<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples;
 
     @Override
     void populateIntervalRecordFrom(
             @NonNull CyclingPedalingCadenceRecord cyclingPedalingCadenceRecord) {
         mCyclingPedalingCadenceRecordSamples =
-                new ArrayList<>(cyclingPedalingCadenceRecord.getSamples().size());
+                new HashSet<>(cyclingPedalingCadenceRecord.getSamples().size());
         for (CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
                 cyclingPedalingCadenceRecordSample : cyclingPedalingCadenceRecord.getSamples()) {
             mCyclingPedalingCadenceRecordSamples.add(
@@ -51,20 +52,25 @@ public class CyclingPedalingCadenceRecordInternal
                             cyclingPedalingCadenceRecordSample.getRevolutionsPerMinute(),
                             cyclingPedalingCadenceRecordSample.getTime().toEpochMilli()));
         }
+
+        if (mCyclingPedalingCadenceRecordSamples.size()
+                != cyclingPedalingCadenceRecord.getSamples().size()) {
+            throw new IllegalArgumentException("Duplicate time instant values present.");
+        }
     }
 
     @Override
     @NonNull
-    public List<CyclingPedalingCadenceRecordSample> getSamples() {
+    public Set<CyclingPedalingCadenceRecordSample> getSamples() {
         return mCyclingPedalingCadenceRecordSamples;
     }
 
     @NonNull
     @Override
-    public CyclingPedalingCadenceRecordInternal setSamples(List<? extends Sample> samples) {
+    public CyclingPedalingCadenceRecordInternal setSamples(Set<? extends Sample> samples) {
         Objects.requireNonNull(samples);
         this.mCyclingPedalingCadenceRecordSamples =
-                (List<CyclingPedalingCadenceRecordSample>) samples;
+               (Set<CyclingPedalingCadenceRecordSample>) samples;
         return this;
     }
 
@@ -81,7 +87,7 @@ public class CyclingPedalingCadenceRecordInternal
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
         int size = parcel.readInt();
-        mCyclingPedalingCadenceRecordSamples = new ArrayList<>(size);
+        mCyclingPedalingCadenceRecordSamples = new HashSet<>(size);
         for (int i = 0; i < size; i++) {
             mCyclingPedalingCadenceRecordSamples.add(
                     new CyclingPedalingCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
@@ -132,6 +138,26 @@ public class CyclingPedalingCadenceRecordInternal
 
         public long getEpochMillis() {
             return mEpochMillis;
+        }
+
+        @Override
+        public boolean equals(@NonNull Object object) {
+            if (super.equals(object)
+                    && object
+                            instanceof
+                            CyclingPedalingCadenceRecordInternal
+                                    .CyclingPedalingCadenceRecordSample) {
+                CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample other =
+                        (CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample)
+                                object;
+                return getEpochMillis() == other.getEpochMillis();
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getEpochMillis());
         }
     }
 }

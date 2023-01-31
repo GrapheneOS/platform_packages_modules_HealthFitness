@@ -52,9 +52,11 @@ public final class BodyTemperatureRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(temperature);
+        ValidationUtils.requireInRange(temperature.getInCelsius(), 0.0, 100, "temperature");
         mMeasurementLocation = measurementLocation;
         mTemperature = temperature;
     }
+
     /**
      * @return measurementLocation
      */
@@ -62,6 +64,7 @@ public final class BodyTemperatureRecord extends InstantRecord {
     public int getMeasurementLocation() {
         return mMeasurementLocation;
     }
+
     /**
      * @return temperature in {@link Temperature} unit.
      */

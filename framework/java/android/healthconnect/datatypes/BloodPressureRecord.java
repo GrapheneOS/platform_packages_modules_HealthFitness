@@ -60,11 +60,16 @@ public final class BloodPressureRecord extends InstantRecord {
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(systolic);
         Objects.requireNonNull(diastolic);
+        ValidationUtils.requireInRange(
+                systolic.getInMillimetersOfMercury(), 20.0, 200.0, "systolic");
+        ValidationUtils.requireInRange(
+                diastolic.getInMillimetersOfMercury(), 10.0, 180.0, "diastolic");
         mMeasurementLocation = measurementLocation;
         mSystolic = systolic;
         mDiastolic = diastolic;
         mBodyPosition = bodyPosition;
     }
+
     /**
      * @return measurementLocation
      */
@@ -72,6 +77,7 @@ public final class BloodPressureRecord extends InstantRecord {
     public int getMeasurementLocation() {
         return mMeasurementLocation;
     }
+
     /**
      * @return systolic
      */
@@ -79,6 +85,7 @@ public final class BloodPressureRecord extends InstantRecord {
     public Pressure getSystolic() {
         return mSystolic;
     }
+
     /**
      * @return diastolic
      */
@@ -86,6 +93,7 @@ public final class BloodPressureRecord extends InstantRecord {
     public Pressure getDiastolic() {
         return mDiastolic;
     }
+
     /**
      * @return bodyPosition
      */

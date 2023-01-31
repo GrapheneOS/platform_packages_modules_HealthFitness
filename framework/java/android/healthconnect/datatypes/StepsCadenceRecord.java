@@ -44,6 +44,8 @@ public final class StepsCadenceRecord extends IntervalRecord {
             @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(stepsCadenceRecordSamples);
+        ValidationUtils.validateSampleStartAndEndTime(startTime, endTime,
+                stepsCadenceRecordSamples.stream().map(StepsCadenceRecordSample::getTime).toList());
         mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
     }
 
@@ -68,6 +70,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
          */
         public StepsCadenceRecordSample(double rate, @NonNull Instant time) {
             Objects.requireNonNull(time);
+            ValidationUtils.requireInRange(rate, 0.0, 10000.0, "rate");
             mTime = time;
             mRate = rate;
         }

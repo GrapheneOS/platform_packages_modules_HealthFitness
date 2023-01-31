@@ -59,6 +59,7 @@ public final class FloorsClimbedRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @IntRange(from = 0, to = 1000000) int floors) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+        ValidationUtils.requireInRange(floors, 0, 1000000, "floors");
         mFloors = floors;
     }
 

@@ -38,6 +38,7 @@ import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -114,17 +115,17 @@ public class HeartRateRecordHelper
 
     @Override
     void populateSpecificValues(Cursor seriesTableCursor, HeartRateRecordInternal record) {
-        List<HeartRateRecordInternal.HeartRateSample> heartRateSamplesList = new ArrayList<>();
+        HashSet<HeartRateRecordInternal.HeartRateSample> heartRateSamplesSet = new HashSet<>();
         String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            heartRateSamplesList.add(
+            heartRateSamplesSet.add(
                     new HeartRateRecordInternal.HeartRateSample(
                             getCursorInt(seriesTableCursor, BEATS_PER_MINUTE_COLUMN_NAME),
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
         seriesTableCursor.moveToPrevious();
-        record.setSamples(heartRateSamplesList);
+        record.setSamples(heartRateSamplesSet);
     }
 
     @Override

@@ -30,6 +30,7 @@ import android.healthconnect.internal.datatypes.StepsCadenceRecordInternal;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -68,18 +69,18 @@ public class StepsCadenceRecordHelper
     @Override
     void populateSpecificValues(
             @NonNull Cursor seriesTableCursor, StepsCadenceRecordInternal record) {
-        List<StepsCadenceRecordInternal.StepsCadenceRecordSample> stepsCadenceRecordSampleList =
-                new ArrayList<>();
+        HashSet<StepsCadenceRecordInternal.StepsCadenceRecordSample> stepsCadenceRecordSampleSet =
+                new HashSet<>();
         String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            stepsCadenceRecordSampleList.add(
+            stepsCadenceRecordSampleSet.add(
                     new StepsCadenceRecordInternal.StepsCadenceRecordSample(
                             getCursorDouble(seriesTableCursor, RATE_COLUMN_NAME),
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
         seriesTableCursor.moveToPrevious();
-        record.setSamples(stepsCadenceRecordSampleList);
+        record.setSamples(stepsCadenceRecordSampleSet);
     }
 
     @Override

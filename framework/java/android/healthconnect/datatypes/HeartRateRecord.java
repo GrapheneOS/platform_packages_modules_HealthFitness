@@ -90,6 +90,8 @@ public final class HeartRateRecord extends IntervalRecord {
             @NonNull List<HeartRateSample> heartRateSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(heartRateSamples);
+        ValidationUtils.validateSampleStartAndEndTime(startTime, endTime,
+                heartRateSamples.stream().map(HeartRateSample::getTime).toList());
         mHeartRateSamples = heartRateSamples;
     }
 
@@ -144,6 +146,7 @@ public final class HeartRateRecord extends IntervalRecord {
          */
         public HeartRateSample(long beatsPerMinute, @NonNull Instant time) {
             Objects.requireNonNull(time);
+            ValidationUtils.requireInRange(beatsPerMinute, 0, (long) 250, "beatsPerMinute");
 
             mBeatsPerMinute = beatsPerMinute;
             mTime = time;

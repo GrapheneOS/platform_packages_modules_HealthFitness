@@ -241,7 +241,7 @@ public class TestUtils {
                                 .setClientRecordId("SR" + Math.random())
                                 .build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         10)
                 .build();
     }
@@ -250,7 +250,7 @@ public class TestUtils {
         Context context = ApplicationProvider.getApplicationContext();
 
         HeartRateRecord.HeartRateSample heartRateSample =
-                new HeartRateRecord.HeartRateSample(72, Instant.now());
+                new HeartRateRecord.HeartRateSample(72, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
         heartRateSamples.add(heartRateSample);
         heartRateSamples.add(heartRateSample);
@@ -266,14 +266,14 @@ public class TestUtils {
                                 .setClientRecordId("HR" + Math.random())
                                 .build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(500),
                         heartRateSamples)
                 .build();
     }
 
     public static HeartRateRecord getHeartRateRecord(int heartRate) {
         HeartRateRecord.HeartRateSample heartRateSample =
-                new HeartRateRecord.HeartRateSample(heartRate, Instant.now());
+                new HeartRateRecord.HeartRateSample(heartRate, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
         heartRateSamples.add(heartRateSample);
         heartRateSamples.add(heartRateSample);
@@ -281,7 +281,7 @@ public class TestUtils {
         return new HeartRateRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(500),
                         heartRateSamples)
                 .build();
     }
@@ -294,7 +294,10 @@ public class TestUtils {
         heartRateSamples.add(heartRateSample);
 
         return new HeartRateRecord.Builder(
-                        new Metadata.Builder().build(), instant, instant, heartRateSamples)
+                        new Metadata.Builder().build(),
+                        instant,
+                        instant.plusMillis(1000),
+                        heartRateSamples)
                 .build();
     }
 

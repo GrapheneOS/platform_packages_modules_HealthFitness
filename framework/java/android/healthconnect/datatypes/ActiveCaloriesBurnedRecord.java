@@ -56,6 +56,7 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
             Objects.requireNonNull(energy);
+            ValidationUtils.requireInRange(energy.getInJoules(), 0.0, 4184000000.0, "energy");
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;

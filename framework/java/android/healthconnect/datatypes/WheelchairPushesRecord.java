@@ -69,6 +69,7 @@ public final class WheelchairPushesRecord extends IntervalRecord {
         Objects.requireNonNull(startZoneOffset);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(endZoneOffset);
+        ValidationUtils.requireInRange(count, 0, 1000000, "count");
         mCount = count;
     }
 

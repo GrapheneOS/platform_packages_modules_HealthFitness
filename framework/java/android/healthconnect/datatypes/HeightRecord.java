@@ -83,6 +83,7 @@ public final class HeightRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(height);
+        ValidationUtils.requireInRange(height.getInMeters(), 0.0, 3.0, "height");
         mHeight = height;
     }
     /**

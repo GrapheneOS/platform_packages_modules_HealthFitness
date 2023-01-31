@@ -39,6 +39,8 @@ public final class ExerciseLap {
 
     private ExerciseLap(@NonNull TimeInterval interval, @Nullable Length length) {
         Objects.requireNonNull(interval);
+        ValidationUtils.requireInRangeIfExists(
+                length, Length.fromMeters(0.0), Length.fromMeters(1000000.0), "length");
         mInterval = interval;
         mLength = length;
     }

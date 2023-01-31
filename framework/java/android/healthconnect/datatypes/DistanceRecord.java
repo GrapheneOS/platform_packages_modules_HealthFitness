@@ -62,6 +62,8 @@ public final class DistanceRecord extends IntervalRecord {
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
             Objects.requireNonNull(distance);
+            ValidationUtils.requireInRange(
+                    distance.getInMeters(), 0.0, 1000000.0, "revolutionsPerMinute");
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;

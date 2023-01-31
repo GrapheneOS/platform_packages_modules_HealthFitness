@@ -25,7 +25,10 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @see HeartRateRecord
@@ -50,19 +53,34 @@ public class HeartRateRecordInternal
         public long getEpochMillis() {
             return mEpochMillis;
         }
+
+        @Override
+        public boolean equals(@NonNull Object object) {
+            if (super.equals(object) && object instanceof HeartRateRecordInternal.HeartRateSample) {
+                HeartRateRecordInternal.HeartRateSample other =
+                        (HeartRateRecordInternal.HeartRateSample) object;
+                return getEpochMillis() == other.getEpochMillis();
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getEpochMillis());
+        }
     }
 
-    private List<HeartRateSample> mHeartRateHeartRateSamples;
+    private Set<HeartRateSample> mHeartRateHeartRateSamples;
 
     @Override
     @Nullable
-    public List<HeartRateSample> getSamples() {
+    public Set<HeartRateSample> getSamples() {
         return mHeartRateHeartRateSamples;
     }
 
     @Override
-    public HeartRateRecordInternal setSamples(List<? extends Sample> samples) {
-        this.mHeartRateHeartRateSamples = (List<HeartRateSample>) samples;
+    public HeartRateRecordInternal setSamples(Set<? extends Sample> samples) {
+        this.mHeartRateHeartRateSamples = (Set<HeartRateSample>) samples;
         return this;
     }
 
@@ -79,7 +97,7 @@ public class HeartRateRecordInternal
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
         int size = parcel.readInt();
-        mHeartRateHeartRateSamples = new ArrayList<>(size);
+        mHeartRateHeartRateSamples = new HashSet<>(size);
         for (int i = 0; i < size; i++) {
             mHeartRateHeartRateSamples.add(
                     new HeartRateSample(parcel.readLong(), parcel.readLong()));
@@ -88,12 +106,15 @@ public class HeartRateRecordInternal
 
     @Override
     void populateIntervalRecordFrom(@NonNull HeartRateRecord heartRateRecord) {
-        mHeartRateHeartRateSamples = new ArrayList<>(heartRateRecord.getSamples().size());
+        mHeartRateHeartRateSamples = new HashSet<>(heartRateRecord.getSamples().size());
         for (HeartRateRecord.HeartRateSample heartRateSample : heartRateRecord.getSamples()) {
             mHeartRateHeartRateSamples.add(
                     new HeartRateSample(
                             heartRateSample.getBeatsPerMinute(),
                             heartRateSample.getTime().toEpochMilli()));
+        }
+        if (mHeartRateHeartRateSamples.size() != heartRateRecord.getSamples().size()) {
+            throw new IllegalArgumentException("Duplicate time instant values present.");
         }
     }
 

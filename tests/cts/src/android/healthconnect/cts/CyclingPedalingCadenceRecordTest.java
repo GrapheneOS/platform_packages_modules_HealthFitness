@@ -312,7 +312,7 @@ public class CyclingPedalingCadenceRecordTest {
                 new CyclingPedalingCadenceRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Collections.emptyList());
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -373,7 +373,7 @@ public class CyclingPedalingCadenceRecordTest {
         CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
                 cyclingPedalingCadenceRecord =
                         new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
-                                1, Instant.now());
+                                1, Instant.now().plusMillis(100));
         ArrayList<CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>
                 cyclingPedalingCadenceRecords = new ArrayList<>();
         cyclingPedalingCadenceRecords.add(cyclingPedalingCadenceRecord);
@@ -382,7 +382,7 @@ public class CyclingPedalingCadenceRecordTest {
         return new CyclingPedalingCadenceRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         cyclingPedalingCadenceRecords)
                 .build();
     }
@@ -404,7 +404,7 @@ public class CyclingPedalingCadenceRecordTest {
         CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
                 cyclingPedalingCadenceRecord =
                         new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
-                                1, Instant.now());
+                                1, Instant.now().plusMillis(100));
 
         ArrayList<CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>
                 cyclingPedalingCadenceRecords = new ArrayList<>();
@@ -414,7 +414,7 @@ public class CyclingPedalingCadenceRecordTest {
         return new CyclingPedalingCadenceRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         cyclingPedalingCadenceRecords)
                 .build();
     }

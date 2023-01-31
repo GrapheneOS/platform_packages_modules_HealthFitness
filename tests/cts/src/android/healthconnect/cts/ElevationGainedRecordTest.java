@@ -380,7 +380,7 @@ public class ElevationGainedRecordTest {
                 new ElevationGainedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Length.fromMeters(10.0));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -397,7 +397,7 @@ public class ElevationGainedRecordTest {
         return new ElevationGainedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Length.fromMeters(10.0))
                 .build();
     }
@@ -406,7 +406,7 @@ public class ElevationGainedRecordTest {
         return new ElevationGainedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Length.fromMeters(elevation))
                 .build();
     }
@@ -428,7 +428,7 @@ public class ElevationGainedRecordTest {
         return new ElevationGainedRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Length.fromMeters(10.0))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))

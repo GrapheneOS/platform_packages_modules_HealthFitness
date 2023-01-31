@@ -59,6 +59,8 @@ public final class HydrationRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull Volume volume) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+        Objects.requireNonNull(volume);
+        ValidationUtils.requireInRange(volume.getInMilliliters(), 0.0, 100000.0, "volume");
         mVolume = volume;
     }
 

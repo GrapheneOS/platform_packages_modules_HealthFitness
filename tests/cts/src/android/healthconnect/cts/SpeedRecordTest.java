@@ -265,7 +265,7 @@ public class SpeedRecordTest {
                 new SpeedRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now(),
-                        Instant.now(),
+                        Instant.now().plusMillis(1000),
                         Collections.emptyList());
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -320,13 +320,16 @@ public class SpeedRecordTest {
     private static SpeedRecord getBaseSpeedRecord() {
         SpeedRecord.SpeedRecordSample speedRecord =
                 new SpeedRecord.SpeedRecordSample(
-                        Velocity.fromMetersPerSecond(10.0), Instant.now());
+                        Velocity.fromMetersPerSecond(10.0), Instant.now().plusMillis(100));
         ArrayList<SpeedRecord.SpeedRecordSample> speedRecords = new ArrayList<>();
         speedRecords.add(speedRecord);
         speedRecords.add(speedRecord);
 
         return new SpeedRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now(), speedRecords)
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        speedRecords)
                 .build();
     }
 
@@ -346,14 +349,17 @@ public class SpeedRecordTest {
 
         SpeedRecord.SpeedRecordSample speedRecord =
                 new SpeedRecord.SpeedRecordSample(
-                        Velocity.fromMetersPerSecond(10.0), Instant.now());
+                        Velocity.fromMetersPerSecond(10.0), Instant.now().plusMillis(100));
 
         ArrayList<SpeedRecord.SpeedRecordSample> speedRecords = new ArrayList<>();
         speedRecords.add(speedRecord);
         speedRecords.add(speedRecord);
 
         return new SpeedRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now(), speedRecords)
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        speedRecords)
                 .build();
     }
 }

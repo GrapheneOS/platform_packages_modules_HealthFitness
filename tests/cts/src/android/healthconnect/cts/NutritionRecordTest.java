@@ -347,7 +347,7 @@ public class NutritionRecordTest {
             Mass oldTotal = oldResponse.get(type);
             assertThat(newTotal).isNotNull();
             assertThat(oldTotal).isNotNull();
-            assertThat(newTotal.getInKilograms() - oldTotal.getInKilograms()).isEqualTo(20);
+            assertThat(newTotal.getInKilograms() - oldTotal.getInKilograms()).isEqualTo(0.2);
             Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(type);
             for (DataOrigin itr : newDataOrigin) {
                 assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -393,13 +393,15 @@ public class NutritionRecordTest {
         assertThat(oldEnergy).isNotNull();
         assertThat(newFatEnergy).isNotNull();
         assertThat(oldFatEnergy).isNotNull();
-        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(10);
-        assertThat(newFatEnergy.getInJoules() - oldFatEnergy.getInJoules()).isEqualTo(10);
+        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(0.1);
+        assertThat(newFatEnergy.getInJoules() - oldFatEnergy.getInJoules()).isEqualTo(0.1);
     }
 
     static NutritionRecord getBaseNutritionRecord() {
         return new NutritionRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now())
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000))
                 .build();
     }
 
@@ -417,51 +419,51 @@ public class NutritionRecordTest {
         testMetadataBuilder.setClientRecordId("NTR" + Math.random());
 
         return new NutritionRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now())
-                .setUnsaturatedFat(Mass.fromKilograms(10.0))
-                .setPotassium(Mass.fromKilograms(10.0))
-                .setThiamin(Mass.fromKilograms(10.0))
+                        testMetadataBuilder.build(), Instant.now(), Instant.now().plusMillis(1000))
+                .setUnsaturatedFat(Mass.fromKilograms(0.1))
+                .setPotassium(Mass.fromKilograms(0.1))
+                .setThiamin(Mass.fromKilograms(0.1))
                 .setMealType(1)
-                .setTransFat(Mass.fromKilograms(10.0))
-                .setManganese(Mass.fromKilograms(10.0))
-                .setEnergyFromFat(Energy.fromJoules(10.0))
-                .setCaffeine(Mass.fromKilograms(10.0))
-                .setDietaryFiber(Mass.fromKilograms(10.0))
-                .setSelenium(Mass.fromKilograms(10.0))
-                .setVitaminB6(Mass.fromKilograms(10.0))
-                .setProtein(Mass.fromKilograms(10.0))
-                .setChloride(Mass.fromKilograms(10.0))
-                .setCholesterol(Mass.fromKilograms(10.0))
-                .setCopper(Mass.fromKilograms(10.0))
-                .setIodine(Mass.fromKilograms(10.0))
-                .setVitaminB12(Mass.fromKilograms(10.0))
-                .setZinc(Mass.fromKilograms(10.0))
-                .setRiboflavin(Mass.fromKilograms(10.0))
-                .setEnergy(Energy.fromJoules(10.0))
-                .setMolybdenum(Mass.fromKilograms(10.0))
-                .setPhosphorus(Mass.fromKilograms(10.0))
-                .setChromium(Mass.fromKilograms(10.0))
-                .setTotalFat(Mass.fromKilograms(10.0))
-                .setCalcium(Mass.fromKilograms(10.0))
-                .setVitaminC(Mass.fromKilograms(10.0))
-                .setVitaminE(Mass.fromKilograms(10.0))
-                .setBiotin(Mass.fromKilograms(10.0))
-                .setVitaminD(Mass.fromKilograms(10.0))
-                .setNiacin(Mass.fromKilograms(10.0))
-                .setMagnesium(Mass.fromKilograms(10.0))
-                .setTotalCarbohydrate(Mass.fromKilograms(10.0))
-                .setVitaminK(Mass.fromKilograms(10.0))
-                .setPolyunsaturatedFat(Mass.fromKilograms(10.0))
-                .setSaturatedFat(Mass.fromKilograms(10.0))
-                .setSodium(Mass.fromKilograms(10.0))
-                .setFolate(Mass.fromKilograms(10.0))
-                .setMonounsaturatedFat(Mass.fromKilograms(10.0))
-                .setPantothenicAcid(Mass.fromKilograms(10.0))
+                .setTransFat(Mass.fromKilograms(0.1))
+                .setManganese(Mass.fromKilograms(0.1))
+                .setEnergyFromFat(Energy.fromJoules(0.1))
+                .setCaffeine(Mass.fromKilograms(0.1))
+                .setDietaryFiber(Mass.fromKilograms(0.1))
+                .setSelenium(Mass.fromKilograms(0.1))
+                .setVitaminB6(Mass.fromKilograms(0.1))
+                .setProtein(Mass.fromKilograms(0.1))
+                .setChloride(Mass.fromKilograms(0.1))
+                .setCholesterol(Mass.fromKilograms(0.1))
+                .setCopper(Mass.fromKilograms(0.1))
+                .setIodine(Mass.fromKilograms(0.1))
+                .setVitaminB12(Mass.fromKilograms(0.1))
+                .setZinc(Mass.fromKilograms(0.1))
+                .setRiboflavin(Mass.fromKilograms(0.1))
+                .setEnergy(Energy.fromJoules(0.1))
+                .setMolybdenum(Mass.fromKilograms(0.1))
+                .setPhosphorus(Mass.fromKilograms(0.1))
+                .setChromium(Mass.fromKilograms(0.1))
+                .setTotalFat(Mass.fromKilograms(0.1))
+                .setCalcium(Mass.fromKilograms(0.1))
+                .setVitaminC(Mass.fromKilograms(0.1))
+                .setVitaminE(Mass.fromKilograms(0.1))
+                .setBiotin(Mass.fromKilograms(0.1))
+                .setVitaminD(Mass.fromKilograms(0.1))
+                .setNiacin(Mass.fromKilograms(0.1))
+                .setMagnesium(Mass.fromKilograms(0.1))
+                .setTotalCarbohydrate(Mass.fromKilograms(0.1))
+                .setVitaminK(Mass.fromKilograms(0.1))
+                .setPolyunsaturatedFat(Mass.fromKilograms(0.1))
+                .setSaturatedFat(Mass.fromKilograms(0.1))
+                .setSodium(Mass.fromKilograms(0.1))
+                .setFolate(Mass.fromKilograms(0.1))
+                .setMonounsaturatedFat(Mass.fromKilograms(0.1))
+                .setPantothenicAcid(Mass.fromKilograms(0.1))
                 .setMealName("Brunch")
-                .setIron(Mass.fromKilograms(10.0))
-                .setVitaminA(Mass.fromKilograms(10.0))
-                .setFolicAcid(Mass.fromKilograms(10.0))
-                .setSugar(Mass.fromKilograms(10.0))
+                .setIron(Mass.fromKilograms(0.1))
+                .setVitaminA(Mass.fromKilograms(0.1))
+                .setFolicAcid(Mass.fromKilograms(0.1))
+                .setSugar(Mass.fromKilograms(0.1))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
@@ -475,7 +477,9 @@ public class NutritionRecordTest {
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
         NutritionRecord.Builder builder =
                 new NutritionRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now());
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
