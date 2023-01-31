@@ -900,30 +900,36 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingPermission(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
 
-        setDataDownloadState(DATA_DOWNLOAD_COMPLETE, userHandle.getIdentifier(), false /* force */);
-        @InternalRestoreState
-        int curDataRestoreState = getDataRestoreState(userHandle.getIdentifier());
-        if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
-            if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_DONE) {
-                Slog.w(TAG, "Staging is already done. Cur state " + curDataRestoreState);
-            } else {
-                // Maybe the caller died and is trying to stage the data again.
-                Slog.w(TAG, "Already in the process of staging.");
+        mStatesLock.writeLock().lock();
+        try {
+            setDataDownloadState(
+                    DATA_DOWNLOAD_COMPLETE, userHandle.getIdentifier(), false /* force */);
+            @InternalRestoreState
+            int curDataRestoreState = getDataRestoreState(userHandle.getIdentifier());
+            if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
+                if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_DONE) {
+                    Slog.w(TAG, "Staging is already done. Cur state " + curDataRestoreState);
+                } else {
+                    // Maybe the caller died and is trying to stage the data again.
+                    Slog.w(TAG, "Already in the process of staging.");
+                }
+                HealthConnectThreadScheduler.scheduleInternalTask(
+                        () -> {
+                            try {
+                                callback.onResult();
+                            } catch (RemoteException e) {
+                                Log.e(TAG, "Restore response could not be sent to the caller.", e);
+                            }
+                        });
+                return;
             }
-            HealthConnectThreadScheduler.scheduleInternalTask(
-                    () -> {
-                        try {
-                            callback.onResult();
-                        } catch (RemoteException e) {
-                            Log.e(TAG, "Restore response could not be sent to the caller.", e);
-                        }
-                    });
-            return;
+            setDataRestoreState(
+                    INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
+                    userHandle.getIdentifier(),
+                    false /* force */);
+        } finally {
+            mStatesLock.writeLock().unlock();
         }
-        setDataRestoreState(
-                INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
-                userHandle.getIdentifier(),
-                false /* force */);
 
         Map<String, ParcelFileDescriptor> origPfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
