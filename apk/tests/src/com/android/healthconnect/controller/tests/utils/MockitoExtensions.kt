@@ -14,5 +14,17 @@
 package com.android.healthconnect.controller.tests.utils
 
 import org.mockito.Matchers.eq
+import org.mockito.Mockito.`when`
+import org.mockito.stubbing.OngoingStubbing
+import org.mockito.stubbing.Stubber
 
 fun <T : Any> safeEq(value: T): T = eq(value) ?: value
+
+/**
+ * Helper function for stubbing methods without the need to use backticks.
+ *
+ * @see Mockito.when
+ */
+fun <T> whenever(methodCall: T): OngoingStubbing<T> = `when`(methodCall)
+
+fun <T> Stubber.whenever(mock: T): T = `when`(mock)

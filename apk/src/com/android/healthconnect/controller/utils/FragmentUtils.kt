@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.dialog.ProgressDialogFragment
 import com.android.healthconnect.controller.utils.ExternalActivityLauncher.openHCGetStartedLink
 import com.android.healthconnect.controller.utils.ExternalActivityLauncher.openSendFeedbackActivity
 
@@ -72,4 +73,15 @@ fun Fragment.setupSharedMenu(
     onMenuItemSelected: (MenuItem) -> Boolean = { false }
 ) {
     setupMenu(menuRes, viewLifecycleOwner, onMenuItemSelected)
+}
+
+fun Fragment.showLoadingDialog() {
+    ProgressDialogFragment().show(childFragmentManager, ProgressDialogFragment.TAG)
+}
+
+fun Fragment.dismissLoadingDialog() {
+    val dialog = childFragmentManager.findFragmentByTag(ProgressDialogFragment.TAG)
+    if (dialog != null && dialog is ProgressDialogFragment) {
+        dialog.dismiss()
+    }
 }

@@ -37,11 +37,14 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
+import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -158,6 +161,24 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeConnectedApps()
+        observeRevokeAllAppsPermissions()
+    }
+
+    private fun observeRevokeAllAppsPermissions() {
+        viewModel.disconnectAllState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is DisconnectAllState.Loading -> {
+                    showLoadingDialog()
+                }
+                else -> {
+                    dismissLoadingDialog()
+                }
+            }
+        }
+    }
+
+    private fun observeConnectedApps() {
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             if (connectedApps.isEmpty()) {
                 setupSharedMenu(viewLifecycleOwner)

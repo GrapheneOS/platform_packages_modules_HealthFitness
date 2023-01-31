@@ -27,11 +27,13 @@ import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissi
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedApps.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 /** View model for {@link ConnectedAppFragment} . */
@@ -45,7 +47,8 @@ constructor(
     private val revokePermissionsStatusUseCase: RevokeHealthPermissionUseCase,
     private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
     private val deleteAppDataUseCase: DeleteAppDataUseCase,
-    private val loadAccessDateUseCase: LoadAccessDateUseCase
+    private val loadAccessDateUseCase: LoadAccessDateUseCase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _appPermissions = MutableLiveData<List<HealthPermissionStatus>>(emptyList())
@@ -63,6 +66,11 @@ constructor(
     private val _appInfo = MutableLiveData<AppMetadata>()
     val appInfo: LiveData<AppMetadata>
         get() = _appInfo
+
+    private val _revokeAllPermissionsState =
+        MutableLiveData<RevokeAllState>(RevokeAllState.NotStarted)
+    val revokeAllPermissionsState: LiveData<RevokeAllState>
+        get() = _revokeAllPermissionsState
 
     fun loadForPackage(packageName: String) {
         viewModelScope.launch {
@@ -99,10 +107,11 @@ constructor(
     }
 
     fun revokeAllPermissions(packageName: String) {
-        viewModelScope.launch {
-            // TODO(b/245514289) move this to a background thread.
+        viewModelScope.launch(ioDispatcher) {
+            _revokeAllPermissionsState.postValue(RevokeAllState.Loading)
             revokeAllHealthPermissionsUseCase.invoke(packageName)
             loadForPackage(packageName)
+            _revokeAllPermissionsState.postValue(RevokeAllState.Updated)
         }
     }
 
@@ -116,5 +125,11 @@ constructor(
                     .build()
             deleteAppDataUseCase.invoke(appData, timeRangeFilter)
         }
+    }
+
+    sealed class RevokeAllState {
+        object NotStarted : RevokeAllState()
+        object Loading : RevokeAllState()
+        object Updated : RevokeAllState()
     }
 }
