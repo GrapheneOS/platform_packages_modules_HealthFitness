@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 public class MigrationBroadcast {
 
     private final Context mContext;
-    private static final String TAG = "MigrationBroadcast";
+    private static final String TAG = "HealthConnectMigrationBroadcast";
 
     public MigrationBroadcast(@NonNull Context context) {
         mContext = context;
@@ -70,17 +70,24 @@ public class MigrationBroadcast {
         List<String> permissionFilteredPackages = filterPermissions();
         List<String> filteredPackages = filterIntent(permissionFilteredPackages);
 
-        if (filteredPackages.size() > 1) {
+        int numPackages = filteredPackages.size();
+
+        if (numPackages == 0) {
+            Slog.i(TAG, "There are no migration aware apps");
+        } else if (numPackages == 1) {
+            Intent intent =
+                    new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
+                            .setPackage(filteredPackages.get(0));
+
+            mContext.sendBroadcastAsUser(
+                    intent, user, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
+            Slog.i(TAG, "Sent broadcast to migration aware application.");
+        } else {
+            // TODO(b/267255123): Explicitly check for certificate and only send to that if
+            // that filters it down to one package name
             throw new Exception("Multiple packages are migration aware");
         }
-
-        Intent intent =
-                new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
-                        .setPackage(filteredPackages.get(0));
-
-        mContext.sendBroadcastAsUser(intent, user, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-
-        Slog.i(TAG, "Sent broadcast to migration aware application.");
     }
 
     /**
