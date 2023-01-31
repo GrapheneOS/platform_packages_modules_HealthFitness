@@ -46,7 +46,7 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.cant_see_all_your_apps_screen, rootKey)
+        setPreferencesFromResource(R.xml.help_and_feedback_screen, rootKey)
 
         mCheckForUpdates?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_cant_see_all_apps_to_updated_apps)
