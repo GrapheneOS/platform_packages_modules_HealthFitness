@@ -35,6 +35,7 @@ apex {
         "HealthConnectController",
     ],
     prebuilts: [
+        "current_sdkinfo",
         "privapp_allowlist_com.android.healthconnect.controller.xml",
     ],
     key: "com.android.healthconnect.key",
