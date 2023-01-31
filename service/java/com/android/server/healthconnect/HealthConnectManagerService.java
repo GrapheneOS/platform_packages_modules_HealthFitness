@@ -94,7 +94,7 @@ public class HealthConnectManagerService extends SystemService {
 
     @Override
     public void onUserUnlocked(@NonNull TargetUser user) {
-        // TODO(b/265119843) Run on a background thread and send broadcast
+        // TODO(b/267255123) Run on a background thread and send broadcast
         // up to 10 times with a 60s delay
         Objects.requireNonNull(user);
         try {
