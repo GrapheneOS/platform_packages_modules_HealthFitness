@@ -28,6 +28,7 @@ import com.android.healthconnect.controller.permissiontypes.api.LoadPriorityList
 import com.android.healthconnect.controller.permissiontypes.api.UpdatePriorityListUseCase
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -77,7 +78,7 @@ constructor(
         _selectedAppFilter.postValue(selectedAppFilter)
     }
 
-    fun loadData(category: Int) {
+    fun loadData(category: @HealthDataCategoryInt Int) {
         _permissionTypesData.postValue(PermissionTypesState.Loading)
         _priorityList.postValue(PriorityListState.Loading)
 
@@ -102,7 +103,7 @@ constructor(
         }
     }
 
-    fun loadAppsWithData(category: Int) {
+    fun loadAppsWithData(category: @HealthDataCategoryInt Int) {
         _appsWithData.postValue(AppsWithDataFragmentState.Loading)
         viewModelScope.launch {
             val appsWithHealthPermissions = loadContributingAppsUseCase.invoke(category)
@@ -110,7 +111,10 @@ constructor(
         }
     }
 
-    fun filterPermissionTypes(category: Int, selectedAppPackageName: String) {
+    fun filterPermissionTypes(
+        category: @HealthDataCategoryInt Int,
+        selectedAppPackageName: String
+    ) {
         _permissionTypesData.postValue(PermissionTypesState.Loading)
         viewModelScope.launch {
             val permissionTypes =
@@ -124,7 +128,7 @@ constructor(
         }
     }
 
-    fun updatePriorityList(category: Int, newPriorityList: List<String>) {
+    fun updatePriorityList(category: @HealthDataCategoryInt Int, newPriorityList: List<String>) {
         _priorityList.postValue(PriorityListState.Loading)
         viewModelScope.launch {
             updatePriorityListUseCase.invoke(newPriorityList, category)

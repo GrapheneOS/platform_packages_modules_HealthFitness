@@ -22,6 +22,7 @@ import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,10 +36,10 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : BaseUseCase<Int, List<AppMetadata>>(dispatcher) {
+) : BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher) {
 
     /** Returns list of [AppMetadata]s for given [HealthDataCategory] in priority order. */
-    override suspend fun execute(input: Int): List<AppMetadata> {
+    override suspend fun execute(input: @HealthDataCategoryInt Int): List<AppMetadata> {
         val dataOriginPriorityOrderResponse: FetchDataOriginsPriorityOrderResponse =
             suspendCancellableCoroutine { continuation ->
                 healthConnectManager.fetchDataOriginsPriorityOrder(

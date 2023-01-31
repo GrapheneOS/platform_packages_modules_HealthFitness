@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -44,7 +45,7 @@ constructor(
     }
 
     /** Returns list of available [HealthPermissionType]s within given [HealthDataCategory]. */
-    suspend fun invoke(category: Int): List<HealthPermissionType> =
+    suspend fun invoke(category: @HealthDataCategoryInt Int): List<HealthPermissionType> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =

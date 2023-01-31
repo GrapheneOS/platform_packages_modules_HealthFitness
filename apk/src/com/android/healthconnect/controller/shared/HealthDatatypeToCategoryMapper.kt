@@ -18,7 +18,7 @@ package com.android.healthconnect.controller.shared
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 
-fun dataTypeToCategory(dataType: Class<out Record>): Int {
+fun dataTypeToCategory(dataType: Class<out Record>): @HealthDataCategoryInt Int {
     val allPermissionToDataTypes = HealthPermissionToDatatypeMapper.getAllDataTypes()
     allPermissionToDataTypes.forEach {
         if (it.value.contains(dataType)) {

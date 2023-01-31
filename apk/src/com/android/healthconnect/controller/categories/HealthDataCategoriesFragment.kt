@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -137,8 +138,8 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
         }
     }
 
-    private fun updateDataList(categoriesList: List<Int>) {
-        val sortedCategoriesList: List<Int> =
+    private fun updateDataList(categoriesList: List<@HealthDataCategoryInt Int>) {
+        val sortedCategoriesList: List<@HealthDataCategoryInt Int> =
             categoriesList.sortedBy { getString(it.uppercaseTitle()) }
         mBrowseDataCategory?.removeAll()
         if (sortedCategoriesList.isEmpty()) {

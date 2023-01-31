@@ -9,6 +9,7 @@ import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,7 +26,7 @@ constructor(
 ) {
 
     /** Returns list of contributing apps for selected [HealthDataCategory] */
-    suspend operator fun invoke(category: Int): List<AppMetadata> =
+    suspend operator fun invoke(category: @HealthDataCategoryInt Int): List<AppMetadata> =
         withContext(dispatcher) {
             val appsList: MutableSet<AppMetadata> = mutableSetOf()
             val contributingAppsList = getListOfContributingApps(category)
@@ -38,7 +39,9 @@ constructor(
         }
 
     /** Returns list of contributing apps for selected [HealthDataCategory] */
-    private suspend fun getListOfContributingApps(category: Int): List<String> =
+    private suspend fun getListOfContributingApps(
+        category: @HealthDataCategoryInt Int
+    ): List<String> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
@@ -57,7 +60,7 @@ constructor(
      * information
      */
     private fun filterContributingApps(
-        category: Int,
+        category: @HealthDataCategoryInt Int,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
     ): List<DataOrigin> =
         recordTypeInfoMap.values

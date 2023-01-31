@@ -44,6 +44,7 @@ import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +62,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         private const val DELETE_CATEGORY_DATA_BUTTON = "delete_category_data"
     }
 
-    private var category: Int = 0
+    @HealthDataCategoryInt private var category: Int = 0
 
     private val viewModel: HealthPermissionTypesViewModel by viewModels()
 
@@ -88,8 +89,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.health_permission_types_screen, rootKey)
 
-        if (requireArguments().containsKey(CATEGORY_KEY) &&
-            (requireArguments().getInt(CATEGORY_KEY) != null)) {
+        if (requireArguments().containsKey(CATEGORY_KEY)) {
             category = requireArguments().getInt(CATEGORY_KEY)
         }
 

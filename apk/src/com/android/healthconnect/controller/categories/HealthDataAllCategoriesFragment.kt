@@ -75,7 +75,7 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
                         it.setIcon(categoryInfo.category.icon())
                         if (categoryInfo.noData) {
                             it.setSummary(R.string.no_data)
-                            it.setEnabled(false)
+                            it.isEnabled = false
                         } else {
                             it.onPreferenceClickListener =
                                 Preference.OnPreferenceClickListener {

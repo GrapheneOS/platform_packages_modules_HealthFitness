@@ -19,6 +19,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.DataType
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 
 /** Represents the types of deletion that the user can perform. */
 sealed class DeletionType : Parcelable {
@@ -72,7 +73,7 @@ sealed class DeletionType : Parcelable {
         }
     }
 
-    data class DeletionTypeCategoryData(val category: Int) : DeletionType() {
+    data class DeletionTypeCategoryData(val category: @HealthDataCategoryInt Int) : DeletionType() {
         // TODO default value
         constructor(parcel: Parcel) : this(parcel.readInt()) {}
 

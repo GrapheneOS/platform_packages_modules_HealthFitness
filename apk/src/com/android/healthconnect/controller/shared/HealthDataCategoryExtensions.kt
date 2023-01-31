@@ -16,6 +16,8 @@
 package com.android.healthconnect.controller.shared
 
 import android.health.connect.HealthDataCategory
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.CategoriesMappers.ACTIVITY_PERMISSION_GROUPS
@@ -26,7 +28,7 @@ import com.android.healthconnect.controller.shared.CategoriesMappers.SLEEP_PERMI
 import com.android.healthconnect.controller.shared.CategoriesMappers.VITALS_PERMISSION_GROUPS
 
 object HealthDataCategoryExtensions {
-    fun Int.healthPermissionTypes(): List<HealthPermissionType> {
+    fun @receiver:HealthDataCategoryInt Int.healthPermissionTypes(): List<HealthPermissionType> {
         return when (this) {
             HealthDataCategory.ACTIVITY -> ACTIVITY_PERMISSION_GROUPS
             HealthDataCategory.BODY_MEASUREMENTS -> BODY_MEASUREMENTS_PERMISSION_GROUPS
@@ -38,7 +40,8 @@ object HealthDataCategoryExtensions {
         }
     }
 
-    fun Int.lowercaseTitle(): Int {
+    @StringRes
+    fun @receiver:HealthDataCategoryInt Int.lowercaseTitle(): Int {
         return when (this) {
             HealthDataCategory.ACTIVITY -> R.string.activity_category_lowercase
             HealthDataCategory.BODY_MEASUREMENTS -> R.string.body_measurements_category_lowercase
@@ -50,7 +53,8 @@ object HealthDataCategoryExtensions {
         }
     }
 
-    fun Int.uppercaseTitle(): Int {
+    @StringRes
+    fun @receiver:HealthDataCategoryInt Int.uppercaseTitle(): Int {
         return when (this) {
             HealthDataCategory.ACTIVITY -> R.string.activity_category_uppercase
             HealthDataCategory.BODY_MEASUREMENTS -> R.string.body_measurements_category_uppercase
@@ -62,7 +66,8 @@ object HealthDataCategoryExtensions {
         }
     }
 
-    fun Int.icon(): Int {
+    @DrawableRes
+    fun @receiver:HealthDataCategoryInt Int.icon(): Int {
         return when (this) {
             HealthDataCategory.ACTIVITY -> R.drawable.quantum_gm_ic_directions_run_vd_theme_24
             HealthDataCategory.BODY_MEASUREMENTS -> R.drawable.quantum_gm_ic_straighten_vd_theme_24
@@ -74,6 +79,7 @@ object HealthDataCategoryExtensions {
         }
     }
 
+    @HealthDataCategoryInt
     fun fromHealthPermissionType(type: HealthPermissionType): Int {
         for (category in HEALTH_DATA_CATEGORIES) {
             if (category.healthPermissionTypes().contains(type)) {
@@ -148,3 +154,15 @@ val HEALTH_DATA_CATEGORIES =
         HealthDataCategory.SLEEP,
         HealthDataCategory.VITALS,
     )
+
+/** Denotes that the annotated [Integer] represents a [HealthDataCategory]. */
+@Retention(AnnotationRetention.BINARY)
+@Target(
+    AnnotationTarget.VALUE_PARAMETER,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER,
+    AnnotationTarget.LOCAL_VARIABLE,
+    AnnotationTarget.FIELD,
+    AnnotationTarget.TYPE)
+annotation class HealthDataCategoryInt

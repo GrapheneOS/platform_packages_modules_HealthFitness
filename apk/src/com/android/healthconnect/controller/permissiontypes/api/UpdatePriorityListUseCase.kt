@@ -20,6 +20,7 @@ import android.health.connect.UpdateDataOriginPriorityOrderRequest
 import android.health.connect.HealthDataCategory
 import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -34,7 +35,7 @@ constructor(
 ) {
 
     /** Updates the priority list of the stored [DataOrigin]s for given [HealthDataCategory]. */
-    suspend operator fun invoke(priorityList: List<String>, category: Int) {
+    suspend operator fun invoke(priorityList: List<String>, category: @HealthDataCategoryInt Int) {
         withContext(dispatcher) {
             val dataOrigins: List<DataOrigin> =
                 priorityList

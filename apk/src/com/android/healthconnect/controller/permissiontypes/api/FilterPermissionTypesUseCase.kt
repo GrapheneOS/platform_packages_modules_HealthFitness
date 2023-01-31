@@ -8,6 +8,7 @@ import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,7 +25,7 @@ constructor(
 
     /** Returns list of [HealthPermissionType] for selected app under [HealthDataCategory] */
     suspend operator fun invoke(
-        category: Int,
+        category: @HealthDataCategoryInt Int,
         selectedAppPackageName: String
     ): List<HealthPermissionType> =
         withContext(dispatcher) {
@@ -35,7 +36,7 @@ constructor(
 
     /** Returns list of [HealthPermissionType] for selected app under [HealthDataCategory] */
     private suspend fun getFilteredHealthPermissionTypes(
-        category: Int,
+        category: @HealthDataCategoryInt Int,
         selectedAppPackageName: String
     ): List<HealthPermissionType> =
         withContext(dispatcher) {
@@ -56,7 +57,7 @@ constructor(
      * record type information
      */
     private fun filterHealthPermissionTypes(
-        category: Int,
+        category: @HealthDataCategoryInt Int,
         selectedAppPackageName: String,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
     ): List<HealthPermissionType> {
