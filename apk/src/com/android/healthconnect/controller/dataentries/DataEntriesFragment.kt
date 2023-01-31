@@ -60,11 +60,15 @@ import java.time.Instant
 @AndroidEntryPoint(Fragment::class)
 class DataEntriesFragment : Hilt_DataEntriesFragment() {
 
+    companion object {
+        private const val SELECTED_DATE_KEY = "SELECTED_DATE_KEY"
+    }
+
     private lateinit var permissionType: HealthPermissionType
     private val entriesViewModel: DataEntriesFragmentViewModel by viewModels()
     private val deletionViewModel: DeletionViewModel by activityViewModels()
 
-    private lateinit var dataNavigationView: DateNavigationView
+    private lateinit var dateNavigationView: DateNavigationView
     private lateinit var entriesRecyclerView: RecyclerView
     private lateinit var noDataView: TextView
     private lateinit var loadingView: View
@@ -124,7 +128,16 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
             }
         }
 
-        dataNavigationView = view.findViewById(R.id.date_navigation_view)
+        dateNavigationView = view.findViewById(R.id.date_navigation_view)
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(SELECTED_DATE_KEY)) {
+                val date =
+                    savedInstanceState.getSerializable(SELECTED_DATE_KEY, Instant::class.java)
+                if (date != null) {
+                    dateNavigationView.setDate(date)
+                }
+            }
+        }
         noDataView = view.findViewById(R.id.no_data_view)
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
@@ -150,25 +163,33 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataNavigationView.setDateChangedListener(
+        dateNavigationView.setDateChangedListener(
             object : DateNavigationView.OnDateChangedListener {
                 override fun onDateChanged(selectedDate: Instant) {
                     entriesViewModel.loadData(permissionType, selectedDate)
                 }
             })
-        entriesViewModel.loadData(permissionType, dataNavigationView.getDate())
+        entriesViewModel.loadData(permissionType, dateNavigationView.getDate())
+        observeDeleteState()
+        observeEntriesUpdates()
+    }
+
+    private fun observeDeleteState() {
         deletionViewModel.deletionParameters.observe(viewLifecycleOwner) { params ->
             when (params.deletionState) {
                 DeletionState.STATE_DELETION_SUCCESSFUL -> {
                     val index = (params.deletionType as DeletionType.DeleteDataEntry).index
                     adapter.notifyItemRemoved(index)
-                    entriesViewModel.loadData(permissionType, dataNavigationView.getDate())
+                    entriesViewModel.loadData(permissionType, dateNavigationView.getDate())
                 }
                 else -> {
                     // do nothing
                 }
             }
         }
+    }
+
+    private fun observeEntriesUpdates() {
         entriesViewModel.dataEntries.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Loading -> {
@@ -198,6 +219,11 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(SELECTED_DATE_KEY, dateNavigationView.getDate())
     }
 
     private fun deleteEntry(uuid: String, dataType: DataType, index: Int) {
