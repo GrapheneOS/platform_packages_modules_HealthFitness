@@ -142,6 +142,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -186,6 +187,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final Context mContext;
     private final PermissionManager mPermissionManager;
+    private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
 
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
@@ -1144,66 +1146,86 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     void setDataRestoreState(
             @InternalRestoreState int dataRestoreState, int userID, boolean force) {
         @InternalRestoreState int currentRestoreState = getDataRestoreState(userID);
-        if (!force && currentRestoreState >= dataRestoreState) {
-            Slog.w(
-                    TAG,
-                    "Attempt to update data restore state in wrong order from "
-                            + currentRestoreState
-                            + " to "
-                            + dataRestoreState);
-            return;
+        mStatesLock.writeLock().lock();
+        try {
+            if (!force && currentRestoreState >= dataRestoreState) {
+                Slog.w(
+                        TAG,
+                        "Attempt to update data restore state in wrong order from "
+                                + currentRestoreState
+                                + " to "
+                                + dataRestoreState);
+                return;
+            }
+            // TODO(b/264070899) Store on a per user basis when we have per user db
+            PreferenceHelper.getInstance()
+                    .insertPreference(DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
+        } finally {
+            mStatesLock.writeLock().unlock();
         }
-        // TODO(b/264070899) Store on a per user basis when we have per user db
-        PreferenceHelper.getInstance()
-                .insertPreference(DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
     }
 
     @InternalRestoreState
     int getDataRestoreState(int userId) {
-        // TODO(b/264070899) Get on a per user basis when we have per user db
-        String restoreStateOnDisk =
-                PreferenceHelper.getInstance().getPreference(DATA_RESTORE_STATE_KEY);
-        @InternalRestoreState int currentRestoreState = INTERNAL_RESTORE_STATE_UNKNOWN;
-        if (restoreStateOnDisk == null) {
-            return currentRestoreState;
-        }
+        mStatesLock.readLock().lock();
         try {
-            currentRestoreState = Integer.parseInt(restoreStateOnDisk);
-        } catch (Exception e) {
-            Slog.e(TAG, "Exception parsing restoreStateOnDisk: " + restoreStateOnDisk, e);
+            // TODO(b/264070899) Get on a per user basis when we have per user db
+            String restoreStateOnDisk =
+                    PreferenceHelper.getInstance().getPreference(DATA_RESTORE_STATE_KEY);
+            @InternalRestoreState int currentRestoreState = INTERNAL_RESTORE_STATE_UNKNOWN;
+            if (restoreStateOnDisk == null) {
+                return currentRestoreState;
+            }
+            try {
+                currentRestoreState = Integer.parseInt(restoreStateOnDisk);
+            } catch (Exception e) {
+                Slog.e(TAG, "Exception parsing restoreStateOnDisk: " + restoreStateOnDisk, e);
+            }
+            return currentRestoreState;
+        } finally {
+            mStatesLock.readLock().unlock();
         }
-        return currentRestoreState;
     }
 
     @DataDownloadState
     private int getDataDownloadState(int userId) {
-        // TODO(b/264070899) Get on a per user basis when we have per user db
-        String downloadStateOnDisk =
-                PreferenceHelper.getInstance().getPreference(DATA_DOWNLOAD_STATE_KEY);
-        @DataDownloadState int currentDownloadState = DATA_DOWNLOAD_STATE_UNKNOWN;
-        if (downloadStateOnDisk == null) {
-            return currentDownloadState;
-        }
+        mStatesLock.readLock().lock();
         try {
-            currentDownloadState = Integer.parseInt(downloadStateOnDisk);
-        } catch (Exception e) {
-            Slog.e(TAG, "Exception parsing downloadStateOnDisk " + downloadStateOnDisk, e);
+            // TODO(b/264070899) Get on a per user basis when we have per user db
+            String downloadStateOnDisk =
+                    PreferenceHelper.getInstance().getPreference(DATA_DOWNLOAD_STATE_KEY);
+            @DataDownloadState int currentDownloadState = DATA_DOWNLOAD_STATE_UNKNOWN;
+            if (downloadStateOnDisk == null) {
+                return currentDownloadState;
+            }
+            try {
+                currentDownloadState = Integer.parseInt(downloadStateOnDisk);
+            } catch (Exception e) {
+                Slog.e(TAG, "Exception parsing downloadStateOnDisk " + downloadStateOnDisk, e);
+            }
+            return currentDownloadState;
+        } finally {
+            mStatesLock.readLock().unlock();
         }
-        return currentDownloadState;
     }
 
     private void setDataDownloadState(
             @DataDownloadState int downloadState, int userId, boolean force) {
-        @DataDownloadState int currentDownloadState = getDataDownloadState(userId);
-        if (!force
-                && (currentDownloadState == DATA_DOWNLOAD_FAILED
-                        || currentDownloadState == DATA_DOWNLOAD_COMPLETE)) {
-            Slog.w(TAG, "HC data download already in terminal state.");
-            return;
+        mStatesLock.writeLock().lock();
+        try {
+            @DataDownloadState int currentDownloadState = getDataDownloadState(userId);
+            if (!force
+                    && (currentDownloadState == DATA_DOWNLOAD_FAILED
+                            || currentDownloadState == DATA_DOWNLOAD_COMPLETE)) {
+                Slog.w(TAG, "HC data download already in terminal state.");
+                return;
+            }
+            // TODO(b/264070899) Store on a per user basis when we have per user db
+            PreferenceHelper.getInstance()
+                    .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
+        } finally {
+            mStatesLock.writeLock().unlock();
         }
-        // TODO(b/264070899) Store on a per user basis when we have per user db
-        PreferenceHelper.getInstance()
-                .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
     }
 
     // Creating a separate single line method to keep this code close to the rest of the code that
