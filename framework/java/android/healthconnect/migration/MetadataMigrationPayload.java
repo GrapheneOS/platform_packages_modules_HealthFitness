@@ -18,6 +18,7 @@ package android.healthconnect.migration;
 
 import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -26,6 +27,7 @@ import android.os.Parcelable;
  *
  * @hide
  */
+@SystemApi
 public final class MetadataMigrationPayload extends MigrationPayload implements Parcelable {
 
     @NonNull
@@ -33,6 +35,7 @@ public final class MetadataMigrationPayload extends MigrationPayload implements 
             new Creator<>() {
                 @Override
                 public MetadataMigrationPayload createFromParcel(Parcel in) {
+                    in.readInt(); // Skip the type
                     return new MetadataMigrationPayload(in);
                 }
 
@@ -48,12 +51,14 @@ public final class MetadataMigrationPayload extends MigrationPayload implements 
         mRecordRetentionPeriodDays = recordRetentionPeriodDays;
     }
 
-    private MetadataMigrationPayload(@NonNull Parcel in) {
+    MetadataMigrationPayload(@NonNull Parcel in) {
         mRecordRetentionPeriodDays = in.readInt();
     }
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(TYPE_METADATA);
+
         dest.writeInt(mRecordRetentionPeriodDays);
     }
 
@@ -62,7 +67,7 @@ public final class MetadataMigrationPayload extends MigrationPayload implements 
         return 0;
     }
 
-    /** @hide */
+    /** Returns record retention period in days. */
     public int getRecordRetentionPeriodDays() {
         return mRecordRetentionPeriodDays;
     }
@@ -74,7 +79,7 @@ public final class MetadataMigrationPayload extends MigrationPayload implements 
 
         private int mRecordRetentionPeriodDays = 0;
 
-        /** Sets {@code recordRetentionPeriodDays} to the specified value. */
+        /** Sets the value for {@link MetadataMigrationPayload#getRecordRetentionPeriodDays()}. */
         @NonNull
         public Builder setRecordRetentionPeriodDays(
                 @IntRange(from = MIN_RRP, to = MAX_RRP) int recordRetentionPeriodDays) {

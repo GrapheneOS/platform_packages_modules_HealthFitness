@@ -1568,6 +1568,7 @@ public class HealthConnectManager {
      * @hide
      */
     @RequiresPermission(Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA)
+    @SystemApi
     public void writeMigrationData(
             @NonNull List<MigrationEntity> entities,
             @NonNull @CallbackExecutor Executor executor,

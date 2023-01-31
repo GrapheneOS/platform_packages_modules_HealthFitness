@@ -24,7 +24,10 @@ android_test {
         "android.test.base",
         "framework-healthconnect",
     ],
-    srcs: ["src/android/healthconnect/cts/*.java"],
+    srcs: [
+        ":healthconnect-cts-testapp-srcs",
+        "src/android/healthconnect/cts/*.java",
+    ],
     // Tag this module as a cts test artifact
     test_suites: [
         "cts",
@@ -41,6 +44,9 @@ android_test {
     ],
     min_sdk_version: "UpsideDownCake",
     sdk_version: "module_current",
+    data: [
+        ":HealthConnectCtsTestApp",
+    ],
 }
 
 android_test {

@@ -19,6 +19,7 @@ package android.healthconnect.migration;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -31,6 +32,7 @@ import java.util.List;
  *
  * @hide
  */
+@SystemApi
 public final class PermissionMigrationPayload extends MigrationPayload implements Parcelable {
 
     @NonNull
@@ -38,6 +40,7 @@ public final class PermissionMigrationPayload extends MigrationPayload implement
             new Creator<>() {
                 @Override
                 public PermissionMigrationPayload createFromParcel(Parcel in) {
+                    in.readInt(); // Skip the type
                     return new PermissionMigrationPayload(in);
                 }
 
@@ -60,7 +63,7 @@ public final class PermissionMigrationPayload extends MigrationPayload implement
         mPermissions = permissions;
     }
 
-    private PermissionMigrationPayload(@NonNull Parcel in) {
+    PermissionMigrationPayload(@NonNull Parcel in) {
         mHoldingPackageName = in.readString();
         mFirstGrantTime = in.readSerializable(Instant.class.getClassLoader(), Instant.class);
         mPermissions = in.createStringArrayList();
@@ -68,6 +71,8 @@ public final class PermissionMigrationPayload extends MigrationPayload implement
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(TYPE_PACKAGE_PERMISSIONS);
+
         dest.writeString(mHoldingPackageName);
         dest.writeSerializable(mFirstGrantTime);
         dest.writeStringList(mPermissions);
@@ -78,17 +83,20 @@ public final class PermissionMigrationPayload extends MigrationPayload implement
         return 0;
     }
 
-    /** @hide */
+    /** Returns package name of the application holding the permissions. */
+    @NonNull
     public String getHoldingPackageName() {
         return mHoldingPackageName;
     }
 
-    /** @hide */
+    /** Returns {@link Instant} time when the permissions were first granted. */
+    @NonNull
     public Instant getFirstGrantTime() {
         return mFirstGrantTime;
     }
 
-    /** @hide */
+    /** Returns a list of permission names. */
+    @NonNull
     public List<String> getPermissions() {
         return mPermissions;
     }
@@ -111,7 +119,7 @@ public final class PermissionMigrationPayload extends MigrationPayload implement
             mFirstGrantTime = firstGrantTime;
         }
 
-        /** Sets {@code holdingPackageName} to the specified value. */
+        /** Sets the value for {@link PermissionMigrationPayload#getHoldingPackageName()}. */
         @NonNull
         public Builder setHoldingPackageName(@NonNull String holdingPackageName) {
             requireNonNull(holdingPackageName);
@@ -119,7 +127,7 @@ public final class PermissionMigrationPayload extends MigrationPayload implement
             return this;
         }
 
-        /** Sets {@code firstGrantTime} to the specified value. */
+        /** Sets the value for {@link PermissionMigrationPayload#getFirstGrantTime()} ()}. */
         @NonNull
         public Builder setFirstGrantTime(@NonNull Instant firstGrantTime) {
             requireNonNull(firstGrantTime);
@@ -127,7 +135,7 @@ public final class PermissionMigrationPayload extends MigrationPayload implement
             return this;
         }
 
-        /** Adds the specified {@code permission} to the list. */
+        /** Adds the value for {@link PermissionMigrationPayload#getPermissions()}. */
         @NonNull
         public Builder addPermission(@NonNull String permission) {
             requireNonNull(permission);

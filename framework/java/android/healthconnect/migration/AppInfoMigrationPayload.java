@@ -20,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -28,6 +29,7 @@ import android.os.Parcelable;
  *
  * @hide
  */
+@SystemApi
 public final class AppInfoMigrationPayload extends MigrationPayload implements Parcelable {
 
     @NonNull
@@ -35,6 +37,7 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
             new Creator<>() {
                 @Override
                 public AppInfoMigrationPayload createFromParcel(Parcel in) {
+                    in.readInt(); // Skip the type
                     return new AppInfoMigrationPayload(in);
                 }
 
@@ -55,7 +58,7 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
         mAppIcon = appIcon;
     }
 
-    private AppInfoMigrationPayload(@NonNull Parcel in) {
+    AppInfoMigrationPayload(@NonNull Parcel in) {
         mPackageName = in.readString();
         mAppName = in.readString();
         mAppIcon = in.createByteArray();
@@ -63,6 +66,8 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(TYPE_APP_INFO);
+
         dest.writeString(mPackageName);
         dest.writeString(mAppName);
         dest.writeByteArray(mAppIcon);
@@ -73,19 +78,19 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
         return 0;
     }
 
-    /** @hide */
+    /** Returns package name of this app info payload. */
     @NonNull
     public String getPackageName() {
         return mPackageName;
     }
 
-    /** @hide */
+    /** Returns application name of this app info payload. */
     @NonNull
     public String getAppName() {
         return mAppName;
     }
 
-    /** @hide */
+    /** Returns icon bitmap encoded as a byte array. */
     @Nullable
     public byte[] getAppIcon() {
         return mAppIcon;
@@ -105,7 +110,7 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
             mAppName = appName;
         }
 
-        /** Sets {@code packageName} to the specified value. */
+        /** Sets the value for {@link AppInfoMigrationPayload#getPackageName()}. */
         @NonNull
         public Builder setPackageName(@NonNull String packageName) {
             requireNonNull(packageName);
@@ -113,7 +118,7 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
             return this;
         }
 
-        /** Sets {@code appName} to the specified value. */
+        /** Sets the value for {@link AppInfoMigrationPayload#getAppName()}. */
         @NonNull
         public Builder setAppName(@NonNull String appName) {
             requireNonNull(appName);
@@ -121,7 +126,7 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
             return this;
         }
 
-        /** Sets {@code appIcon} to the specified value. */
+        /** Sets the value for {@link AppInfoMigrationPayload#getAppIcon()}. */
         @NonNull
         public Builder setAppIcon(@Nullable byte[] appIcon) {
             mAppIcon = appIcon;

@@ -19,6 +19,7 @@ package android.healthconnect.migration;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -27,43 +28,8 @@ import android.os.Parcelable;
  *
  * @hide
  */
+@SystemApi
 public final class MigrationException extends RuntimeException implements Parcelable {
-    @ErrorCode private final int mErrorCode;
-    private final String mErrorMessage;
-    private final String mFailedEntityId;
-
-    public MigrationException(
-            @ErrorCode int errorCode,
-            @Nullable String errorMessage,
-            @Nullable String failedEntityId) {
-        mErrorCode = errorCode;
-        mErrorMessage = errorMessage;
-        mFailedEntityId = failedEntityId;
-    }
-
-    /** Returns the migration error code. Must be one of the values in {@link ErrorCode}. */
-    @ErrorCode
-    public int getErrorCode() {
-        return mErrorCode;
-    }
-
-    /** Returns an optional error message for this error. */
-    @Nullable
-    public String getErrorMessage() {
-        return mErrorMessage;
-    }
-
-    /** Returns an optional id of the first failed entity */
-    @Nullable
-    public String getFailedEntityId() {
-        return mFailedEntityId;
-    }
-
-    private MigrationException(@NonNull Parcel in) {
-        mErrorCode = in.readInt();
-        mErrorMessage = in.readString();
-        mFailedEntityId = in.readString();
-    }
 
     @NonNull
     public static final Creator<MigrationException> CREATOR =
@@ -79,6 +45,61 @@ public final class MigrationException extends RuntimeException implements Parcel
                 }
             };
 
+    /** An internal error occurred during migration. Retrying should resolve the problem. */
+    public static final int ERROR_INTERNAL = 1;
+
+    /**
+     * An error occurred during migration of an entity, {@link #getFailedEntityId()} is guaranteed
+     * to be not null.
+     */
+    public static final int ERROR_MIGRATE_ENTITY = 2;
+
+    /**
+     * Indicates that the module does not accept migration data anymore, the caller should stop the
+     * migration process altogether.
+     */
+    public static final int ERROR_MIGRATION_UNAVAILABLE = 3;
+
+    @ErrorCode private final int mErrorCode;
+    private final String mErrorMessage;
+    private final String mFailedEntityId;
+
+    public MigrationException(
+            @ErrorCode int errorCode,
+            @Nullable String errorMessage,
+            @Nullable String failedEntityId) {
+        mErrorCode = errorCode;
+        mErrorMessage = errorMessage;
+        mFailedEntityId = failedEntityId;
+    }
+
+    private MigrationException(@NonNull Parcel in) {
+        mErrorCode = in.readInt();
+        mErrorMessage = in.readString();
+        mFailedEntityId = in.readString();
+    }
+
+    /** Returns the migration error code. */
+    @ErrorCode
+    public int getErrorCode() {
+        return mErrorCode;
+    }
+
+    /** Returns an optional error message for this error. */
+    @Nullable
+    public String getErrorMessage() {
+        return mErrorMessage;
+    }
+
+    /**
+     * Returns an optional id of the first failed entity, populated when the error code is {@link
+     * MigrationException#ERROR_MIGRATE_ENTITY}.
+     */
+    @Nullable
+    public String getFailedEntityId() {
+        return mFailedEntityId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -91,9 +112,15 @@ public final class MigrationException extends RuntimeException implements Parcel
         dest.writeString(mFailedEntityId);
     }
 
-    /** List of possible error codes returned by the migration APIs. */
-    public static final int ERROR_UNKNOWN = 0;
-
-    @IntDef({ERROR_UNKNOWN})
+    /**
+     * List of possible error codes returned by the migration APIs.
+     *
+     * @hide
+     */
+    @IntDef({
+        ERROR_INTERNAL,
+        ERROR_MIGRATE_ENTITY,
+        ERROR_MIGRATION_UNAVAILABLE,
+    })
     public @interface ErrorCode {}
 }

@@ -23,6 +23,7 @@
     <target_preparer class="com.android.tradefed.targetprep.suite.SuiteApkInstaller">
         <option name="cleanup-apks" value="true"/>
         <option name="test-file-name" value="CtsHealthConnectDeviceTestCases.apk"/>
+        <option name="test-file-name" value="HealthConnectCtsTestApp.apk"/>
     </target_preparer>
 
     <option
