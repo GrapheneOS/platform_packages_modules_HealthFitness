@@ -39,7 +39,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -107,7 +106,6 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
                 adapter = detailsAdapter
             }
         viewModel.loadEntryData(permissionType, entryId)
-        setTitle(R.string.entry_details_title)
         setupMenu(R.menu.data_entries, viewLifecycleOwner) { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_open_units -> {

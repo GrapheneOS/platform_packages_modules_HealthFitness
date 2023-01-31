@@ -27,7 +27,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants
-import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Recent access fragment showing a timeline of apps that have recently accessed Health Connect. */
@@ -56,11 +55,6 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.recent_access_preference_screen, rootKey)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.recent_access_header)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

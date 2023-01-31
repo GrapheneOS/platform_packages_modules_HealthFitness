@@ -20,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,11 +43,6 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
     private val mSendFeedback: Preference? by lazy {
         preferenceScreen.findPreference(SEND_FEEDBACK)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.help_and_feedback)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

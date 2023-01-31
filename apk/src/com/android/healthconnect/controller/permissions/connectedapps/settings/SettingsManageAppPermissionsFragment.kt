@@ -30,7 +30,6 @@ import com.android.healthconnect.controller.permissions.connectedapps.shared.Con
 import com.android.healthconnect.controller.permissions.connectedapps.shared.DisconnectDialogFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,11 +70,6 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_manage_app_permission_screen, rootKey)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.app_label)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

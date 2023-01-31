@@ -157,7 +157,8 @@
     </fragment>
     <fragment
         android:id="@+id/autoDeleteFragment"
-        android:name="com.android.healthconnect.controller.autodelete.AutoDeleteFragment" />
+        android:name="com.android.healthconnect.controller.autodelete.AutoDeleteFragment"
+        android:label="@string/auto_delete_title"/>
     <fragment
         android:id="@+id/unitFragment"
         android:name="com.android.healthconnect.controller.dataentries.units.UnitsFragment"
@@ -165,7 +166,7 @@
     <fragment
         android:id="@+id/dataEntryDetailsFragment"
         android:name="com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment"
-        android:label="DataEntryDetailsFragment" >
+        android:label="@string/entry_details_title" >
         <action
             android:id="@+id/action_dataEntryDetailsFragment_to_unitFragment"
             app:destination="@id/unitFragment" />

@@ -24,7 +24,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,7 +47,6 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(R.string.all_categories_title)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

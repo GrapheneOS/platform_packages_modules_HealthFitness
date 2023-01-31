@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -33,7 +35,6 @@ import com.android.healthconnect.controller.dataentries.units.UnitPreferencesStr
 import com.android.healthconnect.controller.dataentries.units.WeightUnit.KILOGRAM
 import com.android.healthconnect.controller.dataentries.units.WeightUnit.POUND
 import com.android.healthconnect.controller.dataentries.units.WeightUnit.STONE
-import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -45,7 +46,6 @@ class UnitsFragment : Hilt_UnitsFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.units_screen, rootKey)
 
-        setTitle(R.string.units_title)
         val height =
             createUnitPreference(
                 HEIGHT_UNIT_PREF_KEY,
