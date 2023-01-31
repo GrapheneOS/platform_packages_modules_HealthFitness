@@ -57,6 +57,7 @@ import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IDataStagingFinishedCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
+import android.healthconnect.aidl.IGetHealthConnectDataStateCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.IHealthConnectService;
 import android.healthconnect.aidl.IInsertRecordsResponseCallback;
@@ -1430,6 +1431,55 @@ public class HealthConnectManager {
     public void updateDataDownloadState(@DataDownloadState int downloadState) {
         try {
             mService.updateDataDownloadState(downloadState, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Asynchronously returns the current state of the Health Connect data as it goes through the
+     * Data-Restore and/or the Data-Migration process. In case there was an error reading the data
+     * on the disk the error will be returned in the callback.
+     *
+     * <p>See also {@link HealthConnectDataState} object describing the HealthConnect state.
+     *
+     * @param executor The {@link Executor} on which to invoke the callback.
+     * @param callback The callback which will receive the current {@link HealthConnectDataState} or
+     *     the {@link HealthConnectException}.
+     * @throws NullPointerException if null is passed for any of the required {@link NonNull}
+     *     parameters.
+     * @hide
+     */
+    @SystemApi
+    @UserHandleAware
+    @RequiresPermission(
+            anyOf = {
+                MANAGE_HEALTH_DATA_PERMISSION,
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA
+            })
+    @NonNull
+    public void getHealthConnectDataState(
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<HealthConnectDataState, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.getHealthConnectDataState(
+                    mContext.getUser(),
+                    new IGetHealthConnectDataStateCallback.Stub() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(healthConnectDataState));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

@@ -1,5 +1,6 @@
 package android.healthconnect.aidl;
 
+import android.healthconnect.HealthConnectDataState;
 import android.healthconnect.aidl.ActivityDatesRequestParcel;
 import android.healthconnect.aidl.AggregateDataRequestParcel;
 import android.healthconnect.aidl.IAggregateRecordsResponseCallback;
@@ -11,6 +12,7 @@ import android.healthconnect.aidl.IChangeLogsResponseCallback;
 import android.healthconnect.aidl.IDataStagingFinishedCallback;
 import android.healthconnect.aidl.IEmptyResponseCallback;
 import android.healthconnect.aidl.IGetChangeLogTokenCallback;
+import android.healthconnect.aidl.IGetHealthConnectDataStateCallback;
 import android.healthconnect.aidl.IGetPriorityResponseCallback;
 import android.healthconnect.aidl.RecordsParcel;
 import android.healthconnect.aidl.IMigrationCallback;
@@ -241,4 +243,15 @@ interface IHealthConnectService {
      * @hide
      */
      void updateDataDownloadState(int downloadState, in UserHandle userHandle);
+
+    /**
+     * Asynchronously returns the current state of the Health Connect data as it goes through the Data-Restore and/or the Data-Migration process.
+     *
+     * <p>See also {@link HealthConnectDataState} object describing the HealthConnect state.
+     *
+     * @param callback The callback which will receive the current {@link HealthConnectDataState}.
+     *
+     * @hide
+     */
+    void getHealthConnectDataState(in UserHandle userHandle, in IGetHealthConnectDataStateCallback callback);
 }
