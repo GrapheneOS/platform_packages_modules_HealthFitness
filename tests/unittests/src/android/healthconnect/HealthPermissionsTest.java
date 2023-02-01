@@ -17,7 +17,9 @@
 package android.healthconnect;
 
 import static android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP;
+import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import android.content.Context;
@@ -145,15 +147,36 @@ public class HealthPermissionsTest {
                 .isEqualTo(ALL_EXPECTED_HEALTH_PERMISSIONS);
     }
 
+    @Test
+    public void testReadExerciseRoutePerm_hasSignatureProtection() throws Exception {
+        assertThat(
+                        mPackageManager
+                                .getPermissionInfo(READ_EXERCISE_ROUTE, /* flags= */ 0)
+                                .getProtection())
+                .isEqualTo(PermissionInfo.PROTECTION_SIGNATURE);
+    }
+
+    @Test
+    public void testReadExerciseRoutePerm_controllerUiHoldsIt() throws Exception {
+        String healthControllerPackageName = getControllerUiPackageName();
+        assertThat(
+                        mContext.getPackageManager()
+                                .checkPermission(READ_EXERCISE_ROUTE, healthControllerPackageName))
+                .isEqualTo(PackageManager.PERMISSION_GRANTED);
+    }
+
     private PermissionInfo[] getHealthPermissionInfos() throws Exception {
-        String healthControllerPackageName =
-                mPackageManager.getPermissionInfo(HealthPermissions.READ_STEPS, /* flags= */ 0)
-                        .packageName;
+        String healthControllerPackageName = getControllerUiPackageName();
 
         PackageInfo packageInfo =
                 mPackageManager.getPackageInfo(
                         healthControllerPackageName,
                         PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
         return packageInfo.permissions;
+    }
+
+    private String getControllerUiPackageName() throws Exception {
+        return mPackageManager.getPermissionInfo(HealthPermissions.READ_STEPS, /* flags= */ 0)
+                .packageName;
     }
 }

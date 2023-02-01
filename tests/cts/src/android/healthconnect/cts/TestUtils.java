@@ -47,6 +47,8 @@ import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
@@ -64,6 +66,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -77,6 +80,8 @@ import java.util.stream.Collectors;
 public class TestUtils {
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     private static final String TAG = "HCTestUtils";
+    static final Instant START_TIME = Instant.ofEpochMilli((long) 1e4);
+    static final Instant END_TIME = Instant.ofEpochMilli((long) 1e5);
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
@@ -200,13 +205,6 @@ public class TestUtils {
         return response.get();
     }
 
-    public static Metadata generateMetadata() {
-        return new Metadata.Builder()
-                .setDevice(buildDevice())
-                .setClientRecordId("ExerciseSession" + Math.random())
-                .build();
-    }
-
     public static Device buildDevice() {
         return new Device.Builder()
                 .setManufacturer("google")
@@ -216,7 +214,11 @@ public class TestUtils {
     }
 
     public static List<Record> getTestRecords() {
-        return Arrays.asList(getStepsRecord(), getHeartRateRecord(), getBasalMetabolicRateRecord());
+        return Arrays.asList(
+                getStepsRecord(),
+                getHeartRateRecord(),
+                getBasalMetabolicRateRecord(),
+                buildExerciseSession());
     }
 
     public static List<RecordAndIdentifier> getRecordsAndIdentifiers() {
@@ -725,6 +727,10 @@ public class TestUtils {
         }
     }
 
+    public static ExerciseSessionRecord buildExerciseSession() {
+        return buildExerciseSession(buildExerciseRoute(), "Morning training", "rain");
+    }
+
     public static boolean isApiBlocked() {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
@@ -818,5 +824,32 @@ public class TestUtils {
         public Record getRecordClass() {
             return recordClass;
         }
+    }
+
+    static Metadata generateMetadata() {
+        Context context = ApplicationProvider.getApplicationContext();
+        return new Metadata.Builder()
+                .setDevice(buildDevice())
+                .setId("recordId" + Math.random())
+                .setClientRecordId("clientRecordId" + Math.random())
+                .setDataOrigin(
+                        new DataOrigin.Builder().setPackageName(context.getPackageName()).build())
+                .setDevice(buildDevice())
+                .build();
+    }
+
+    private static ExerciseSessionRecord buildExerciseSession(
+            ExerciseRoute route, String title, String notes) {
+        return new ExerciseSessionRecord.Builder(
+                        generateMetadata(),
+                        START_TIME,
+                        END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .setRoute(route)
+                .setEndZoneOffset(ZoneOffset.MAX)
+                .setStartZoneOffset(ZoneOffset.MIN)
+                .setNotes(notes)
+                .setTitle(title)
+                .build();
     }
 }

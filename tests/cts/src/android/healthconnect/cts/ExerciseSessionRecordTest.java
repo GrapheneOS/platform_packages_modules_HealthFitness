@@ -16,13 +16,15 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.cts.TestUtils.END_TIME;
+import static android.healthconnect.cts.TestUtils.START_TIME;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.DataOrigin;
-import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.ExerciseSegment;
@@ -48,8 +50,6 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class ExerciseSessionRecordTest {
-    private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e4);
-    private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e5);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -173,7 +173,8 @@ public class ExerciseSessionRecordTest {
 
     @Test
     public void testInsertRecord_apiReturnsRequestedRecords() throws InterruptedException {
-        List<Record> records = Arrays.asList(buildSession(), buildSession());
+        List<Record> records =
+                Arrays.asList(TestUtils.buildExerciseSession(), TestUtils.buildExerciseSession());
         List<Record> insertedRecords = TestUtils.insertRecords(records);
 
         records.sort(Comparator.comparing(item -> item.getMetadata().getId()));
@@ -183,7 +184,7 @@ public class ExerciseSessionRecordTest {
 
     @Test
     public void testReadById_insertAndReadById_recordsAreEqual() throws InterruptedException {
-        List<Record> records = List.of(buildSession(), buildSessionMinimal());
+        List<Record> records = List.of(TestUtils.buildExerciseSession(), buildSessionMinimal());
         TestUtils.insertRecords(records);
 
         ReadRecordsRequestUsingIds.Builder<ExerciseSessionRecord> request =
@@ -196,7 +197,7 @@ public class ExerciseSessionRecordTest {
 
     @Test
     public void testReadById_insertAndReadByIdOne_recordsAreEqual() throws InterruptedException {
-        List<Record> records = List.of(buildSession());
+        List<Record> records = List.of(TestUtils.buildExerciseSession());
         TestUtils.insertRecords(records);
 
         ReadRecordsRequestUsingIds.Builder<ExerciseSessionRecord> request =
@@ -213,7 +214,7 @@ public class ExerciseSessionRecordTest {
     @Test
     public void testReadByClientId_insertAndReadByClientId_recordsAreEqual()
             throws InterruptedException {
-        List<Record> records = List.of(buildSession(), buildSessionMinimal());
+        List<Record> records = List.of(TestUtils.buildExerciseSession(), buildSessionMinimal());
         TestUtils.insertRecords(records);
 
         ReadRecordsRequestUsingIds.Builder<ExerciseSessionRecord> request =
@@ -227,7 +228,7 @@ public class ExerciseSessionRecordTest {
     @Test
     public void testReadByClientId_insertAndReadByDefaultFilter_filteredAll()
             throws InterruptedException {
-        List<Record> records = List.of(buildSession(), buildSessionMinimal());
+        List<Record> records = List.of(TestUtils.buildExerciseSession(), buildSessionMinimal());
         TestUtils.insertRecords(records);
 
         List<ExerciseSessionRecord> readRecords =
@@ -240,7 +241,7 @@ public class ExerciseSessionRecordTest {
     @Test
     public void testReadByClientId_insertAndReadByTimeFilter_filteredCorrectly()
             throws InterruptedException {
-        List<Record> records = List.of(buildSession(), buildSessionMinimal());
+        List<Record> records = List.of(TestUtils.buildExerciseSession(), buildSessionMinimal());
         TestUtils.insertRecords(records);
 
         TimeInstantRangeFilter filter =
@@ -264,7 +265,7 @@ public class ExerciseSessionRecordTest {
     @Test
     public void testDeleteRecords_insertAndDeleteById_recordsNotFoundAnymore()
             throws InterruptedException {
-        List<Record> records = List.of(buildSession(), buildSessionMinimal());
+        List<Record> records = List.of(TestUtils.buildExerciseSession(), buildSessionMinimal());
         List<Record> insertedRecords = TestUtils.insertRecords(records);
 
         TestUtils.assertRecordFound(
@@ -291,28 +292,9 @@ public class ExerciseSessionRecordTest {
         assertThat(result).isEqualTo(recordsExercises);
     }
 
-    private static ExerciseSessionRecord buildSession() {
-        return buildSession(TestUtils.buildExerciseRoute(), "Morning training", "rain");
-    }
-
-    private static ExerciseSessionRecord buildSession(
-            ExerciseRoute route, String title, String notes) {
-        return new ExerciseSessionRecord.Builder(
-                        generateMetadata(),
-                        START_TIME,
-                        END_TIME,
-                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
-                .setRoute(route)
-                .setEndZoneOffset(ZoneOffset.MAX)
-                .setStartZoneOffset(ZoneOffset.MIN)
-                .setNotes(notes)
-                .setTitle(title)
-                .build();
-    }
-
     private static ExerciseSessionRecord buildSession(Instant startTime, Instant endTime) {
         return new ExerciseSessionRecord.Builder(
-                        generateMetadata(),
+                        TestUtils.generateMetadata(),
                         startTime,
                         endTime,
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
@@ -337,26 +319,6 @@ public class ExerciseSessionRecordTest {
                         START_TIME,
                         END_TIME,
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
-                .build();
-    }
-
-    private static Metadata generateMetadata() {
-        return new Metadata.Builder()
-                .setDevice(buildDevice())
-                .setId("ExerciseSession" + Math.random())
-                .setClientRecordId("ExerciseSessionClient" + Math.random())
-                .setDataOrigin(
-                        new DataOrigin.Builder()
-                                .setPackageName("android.healthconnect.cts")
-                                .build())
-                .build();
-    }
-
-    private static Device buildDevice() {
-        return new Device.Builder()
-                .setManufacturer("google")
-                .setModel("Pixel4a")
-                .setType(2)
                 .build();
     }
 }

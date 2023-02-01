@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
+import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.ExerciseRouteRecordHelper.EXERCISE_ROUTE_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_FALSE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_TRUE_VALUE;
@@ -31,6 +34,7 @@ import android.database.Cursor;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
@@ -129,11 +133,28 @@ public final class ExerciseSessionRecordHelper
     List<ReadTableRequest> getExtraDataReadRequests(
             ReadRecordsRequestParcel request,
             String packageName,
-            Map<String, Boolean> extraReadPermToState) {
-        // TODO(b/262734718): Allow ui apk to read any route.
-        // Always enforce selfRead for the route.
-        WhereClauses whereClause = getReadTableWhereClause(request, packageName, true);
+            Map<String, Boolean> extraPermsState) {
+        boolean canReadAnyRoute = extraPermsState.get(READ_EXERCISE_ROUTE);
+        WhereClauses whereClause =
+                getReadTableWhereClause(
+                        request, packageName, /* enforceSelfRead= */ !canReadAnyRoute);
         return List.of(getRouteReadRequest(whereClause));
+    }
+
+    /** Returns extra permissions required to write given record. */
+    @Override
+    public List<String> getExtraWritePermissionsToCheck(RecordInternal<?> recordInternal) {
+        ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
+        if (session.getRoute() != null) {
+            return Collections.singletonList(WRITE_EXERCISE_ROUTE);
+        }
+        return Collections.emptyList();
+    }
+
+    /** Returns permissions required to read extra record data. */
+    @Override
+    public List<String> getExtraReadPermissions() {
+        return Collections.singletonList(READ_EXERCISE_ROUTE);
     }
 
     @Override

@@ -19,7 +19,6 @@ package com.android.server.healthconnect.storage.request;
 import static android.health.connect.Constants.DELETE;
 
 import android.annotation.NonNull;
-import android.content.Context;
 import android.health.connect.Constants;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
@@ -49,8 +48,7 @@ public final class DeleteTransactionRequest {
     private final long mRequestingPackageNameId;
     private boolean mHasHealthDataManagementPermission;
 
-    public DeleteTransactionRequest(
-            String packageName, DeleteUsingFiltersRequestParcel request, Context context) {
+    public DeleteTransactionRequest(String packageName, DeleteUsingFiltersRequestParcel request) {
         Objects.requireNonNull(packageName);
         mDeleteTableRequests = new ArrayList<>(request.getRecordTypeFilters().size());
         mChangeLogs = new ChangeLogsHelper.ChangeLogs(DELETE, packageName);
