@@ -33,7 +33,7 @@
  */
 package com.android.healthconnect.controller.permissions.shared
 
-import android.health.connect.AccessLog
+import android.health.connect.accesslog.AccessLog
 import android.health.connect.HealthConnectManager
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver

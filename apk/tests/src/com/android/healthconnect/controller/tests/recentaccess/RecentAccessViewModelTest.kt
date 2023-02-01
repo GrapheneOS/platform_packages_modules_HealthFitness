@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.recentaccess
 
-import android.health.connect.AccessLog
+import android.health.connect.accesslog.AccessLog
 import android.health.connect.Constants
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.RecordTypeIdentifier

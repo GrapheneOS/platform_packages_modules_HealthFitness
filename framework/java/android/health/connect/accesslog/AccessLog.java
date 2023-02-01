@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package android.health.connect;
+package android.health.connect.accesslog;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.SystemApi;
+import android.health.connect.Constants;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -37,7 +40,7 @@ import java.util.Objects;
  * @hide
  */
 @SystemApi
-public class AccessLog {
+public final class AccessLog implements Parcelable {
     private final List<Class<? extends Record>> mRecordTypesList = new ArrayList<>();
     private final String mPackageName;
     private final Instant mAccessTime;
@@ -70,6 +73,31 @@ public class AccessLog {
         mAccessTime = Instant.ofEpochMilli(accessTimeInMillis);
         mOperationType = operationType;
     }
+
+    private AccessLog(Parcel in) {
+        RecordMapper recordMapper = RecordMapper.getInstance();
+        for (@RecordTypeIdentifier.RecordType int recordType : in.createIntArray()) {
+            mRecordTypesList.add(
+                    recordMapper.getRecordIdToExternalRecordClassMap().get(recordType));
+        }
+        mPackageName = in.readString();
+        mAccessTime = Instant.ofEpochMilli(in.readLong());
+        mOperationType = in.readInt();
+    }
+
+    @NonNull
+    public static final Creator<AccessLog> CREATOR =
+            new Creator<>() {
+                @Override
+                public AccessLog createFromParcel(Parcel in) {
+                    return new AccessLog(in);
+                }
+
+                @Override
+                public AccessLog[] newArray(int size) {
+                    return new AccessLog[size];
+                }
+            };
 
     /** Returns List of Record types that was accessed by the app */
     @NonNull
@@ -113,5 +141,31 @@ public class AccessLog {
         public @interface OperationTypes {}
 
         private OperationType() {}
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Flatten this object in to a Parcel.
+     *
+     * @param dest The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written. May be 0 or {@link
+     *     #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        int recordTypeCount = mRecordTypesList.size();
+        RecordMapper recordMapper = RecordMapper.getInstance();
+        @RecordTypeIdentifier.RecordType int[] recordTypes = new int[recordTypeCount];
+        for (int i = 0; i < recordTypeCount; i++) {
+            recordTypes[i] = recordMapper.getRecordType(mRecordTypesList.get(i));
+        }
+        dest.writeIntArray(recordTypes);
+        dest.writeString(mPackageName);
+        dest.writeLong(mAccessTime.toEpochMilli());
+        dest.writeInt(mOperationType);
     }
 }

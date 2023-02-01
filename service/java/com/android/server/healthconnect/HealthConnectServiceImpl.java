@@ -39,7 +39,6 @@ import android.annotation.Nullable;
 import android.content.AttributionSource;
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
-import android.health.connect.AccessLog;
 import android.health.connect.Constants;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.HealthConnectDataState;
@@ -48,7 +47,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectManager.DataDownloadState;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
-import android.health.connect.aidl.AccessLogsResponseParcel;
+import android.health.connect.accesslog.AccessLog;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
@@ -819,7 +818,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         final List<AccessLog> accessLogsList =
                                 AccessLogsHelper.getInstance().queryAccessLogs();
-                        callback.onResult(new AccessLogsResponseParcel(accessLogsList));
+                        callback.onResult(accessLogsList);
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
                         tryAndThrowException(

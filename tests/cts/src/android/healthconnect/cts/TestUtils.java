@@ -24,7 +24,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
 import android.content.Context;
-import android.health.connect.AccessLog;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
@@ -43,6 +42,7 @@ import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;

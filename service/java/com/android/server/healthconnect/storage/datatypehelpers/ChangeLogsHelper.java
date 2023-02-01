@@ -33,7 +33,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.health.connect.AccessLog.OperationType;
+import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 import android.util.Pair;

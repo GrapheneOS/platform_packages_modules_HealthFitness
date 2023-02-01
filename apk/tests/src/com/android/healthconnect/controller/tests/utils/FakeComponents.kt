@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.utils
 
-import android.health.connect.AccessLog
+import android.health.connect.accesslog.AccessLog
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata

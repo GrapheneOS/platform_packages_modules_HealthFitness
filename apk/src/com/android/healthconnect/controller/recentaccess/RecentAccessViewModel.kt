@@ -16,7 +16,7 @@
 
 package com.android.healthconnect.controller.recentaccess
 
-import android.health.connect.AccessLog
+import android.health.connect.accesslog.AccessLog
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -1,19 +1,6 @@
 // Signature format: 2.0
 package android.health.connect {
 
-  public class AccessLog {
-    method @NonNull public java.time.Instant getAccessTime();
-    method public int getOperationType();
-    method @NonNull public String getPackageName();
-    method @NonNull public java.util.List<java.lang.Class<? extends android.health.connect.datatypes.Record>> getRecordTypes();
-  }
-
-  public static final class AccessLog.OperationType {
-    field public static final int OPERATION_TYPE_DELETE = 1; // 0x1
-    field public static final int OPERATION_TYPE_READ = 2; // 0x2
-    field public static final int OPERATION_TYPE_UPSERT = 0; // 0x0
-  }
-
   public class ApplicationInfoResponse {
     method @NonNull public java.util.List<android.health.connect.datatypes.AppInfo> getApplicationInfoList();
   }
@@ -70,7 +57,7 @@ package android.health.connect {
     method @IntRange(from=0, to=7300) @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public int getRecordRetentionPeriodInDays();
     method @RequiresPermission(android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA) public void insertMinDataMigrationSdkExtensionVersion(int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.migration.MigrationException>);
     method public static boolean isHealthPermission(@NonNull android.content.Context, @NonNull String);
-    method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAccessLogs(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.AccessLog>,android.health.connect.HealthConnectException>);
+    method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAccessLogs(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.accesslog.AccessLog>,android.health.connect.HealthConnectException>);
     method @NonNull @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryActivityDates(@NonNull java.util.List<java.lang.Class<? extends android.health.connect.datatypes.Record>>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<java.time.LocalDate>,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAllRecordTypesInfo(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.Map<java.lang.Class<? extends android.health.connect.datatypes.Record>,android.health.connect.RecordTypeInfoResponse>,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void setRecordRetentionPeriodInDays(@IntRange(from=0, to=7300) int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
@@ -156,6 +143,26 @@ package android.health.connect {
     ctor public UpdateDataOriginPriorityOrderRequest(@NonNull java.util.List<android.health.connect.datatypes.DataOrigin>, int);
     method public int getDataCategory();
     method @NonNull public java.util.List<android.health.connect.datatypes.DataOrigin> getDataOriginInOrder();
+  }
+
+}
+
+package android.health.connect.accesslog {
+
+  public final class AccessLog implements android.os.Parcelable {
+    method public int describeContents();
+    method @NonNull public java.time.Instant getAccessTime();
+    method public int getOperationType();
+    method @NonNull public String getPackageName();
+    method @NonNull public java.util.List<java.lang.Class<? extends android.health.connect.datatypes.Record>> getRecordTypes();
+    method public void writeToParcel(@NonNull android.os.Parcel, int);
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.accesslog.AccessLog> CREATOR;
+  }
+
+  public static final class AccessLog.OperationType {
+    field public static final int OPERATION_TYPE_DELETE = 1; // 0x1
+    field public static final int OPERATION_TYPE_READ = 2; // 0x2
+    field public static final int OPERATION_TYPE_UPSERT = 0; // 0x0
   }
 
 }

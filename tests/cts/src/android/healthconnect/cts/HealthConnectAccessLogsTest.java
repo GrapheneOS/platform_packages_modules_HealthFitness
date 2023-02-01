@@ -18,9 +18,9 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.AccessLog;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Record;
