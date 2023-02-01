@@ -50,8 +50,13 @@
                 <action android:name="android.health.connect.action.HEALTH_HOME_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <!-- Deeplink to Data and access screen -->
-            <intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".data.DataManagementActivity"
+            android:exported="true">
+            <intent-filter android:priority="1">
                 <action android:name="android.health.connect.action.MANAGE_HEALTH_DATA" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

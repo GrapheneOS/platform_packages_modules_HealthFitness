@@ -18,24 +18,15 @@
     android:id="@+id/home_nav_graph"
     app:startDestination="@id/homeFragment">
 
-    <action
-        android:id="@+id/action_deeplink_to_healthDataCategoriesFragment"
-        app:destination="@+id/healthDataCategoriesFragment"
-        app:popUpTo="@+id/healthDataCategoriesFragment"
-        app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/recentAccessFragment"
+        android:name="com.android.healthconnect.controller.recentaccess.RecentAccessFragment"
+        android:label="@string/recent_access_header">
+        <action
+            android:id="@+id/action_recentAccessFragment_to_connectedAppFragment"
+            app:destination="@id/connectedAppFragment" />
+    </fragment>
 
-    <activity
-        android:id="@+id/playstore_activity"
-        android:label="@string/playstore_app_title"
-        app:action="android.intent.action.VIEW"
-        app:data="@string/playstore_collection_url"
-        app:targetPackage="@string/playstore_package_name" />
-    <activity
-        android:id="@+id/update_apps_activity"
-        app:action="android.intent.action.VIEW"
-        android:label="@string/playstore_app_title"
-        app:data="@string/playstore_manage_apps_url"
-        app:targetPackage="@string/playstore_package_name" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.android.healthconnect.controller.home.HomeFragment"
@@ -45,54 +36,19 @@
             app:destination="@id/connectedAppFragment" />
         <action
             android:id="@+id/action_homeFragment_to_healthDataCategoriesFragment"
-            app:destination="@id/healthDataCategoriesFragment" />
+            app:destination="@id/data_activity" />
         <action
             android:id="@+id/action_homeFragment_to_recentAccessFragment"
             app:destination="@id/recentAccessFragment" />
-        <action
+       <action
             android:id="@+id/action_homeFragment_to_connectedAppsFragment"
             app:destination="@id/connectedAppsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/healthDataCategoriesFragment"
-        android:name="com.android.healthconnect.controller.categories.HealthDataCategoriesFragment"
-        android:label="@string/data_title">
-        <action
-            android:id="@+id/action_healthDataCategories_to_healthDataAllCategories"
-            app:destination="@id/healthDataAllCategoriesFragment" />
-        <action
-            android:id="@+id/action_healthDataCategories_to_autoDelete"
-            app:destination="@id/autoDeleteFragment" />
-        <action
-            android:id="@+id/action_healthDataCategories_to_healthPermissionTypes"
-            app:destination="@id/healthPermissionTypesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/recentAccessFragment"
-        android:name="com.android.healthconnect.controller.recentaccess.RecentAccessFragment"
-        android:label="@string/recent_access_header">
-        <action
-            android:id="@+id/action_recentAccessFragment_to_connectedAppFragment"
-            app:destination="@id/connectedAppFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/healthDataAllCategoriesFragment"
-        android:name="com.android.healthconnect.controller.categories.HealthDataAllCategoriesFragment"
-        android:label="@string/see_all_categories">
-        <action
-            android:id="@+id/action_healthDataAllCategories_to_healthPermissionTypes"
-            app:destination="@id/healthPermissionTypesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/dataEntriesFragment"
-        android:name="com.android.healthconnect.controller.dataentries.DataEntriesFragment">
-        <action
-            android:id="@+id/action_dataEntriesFragment_to_unitsFragment"
-            app:destination="@+id/unitFragment" />
-        <action
-            android:id="@+id/action_dataEntriesFragment_to_dataEntryDetailsFragment"
-            app:destination="@id/dataEntryDetailsFragment" />
-    </fragment>
+
+    <activity
+        android:id="@+id/data_activity"
+        app:action="android.health.connect.action.MANAGE_HEALTH_DATA" />
+
     <fragment
         android:id="@+id/connectedAppsFragment"
         android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsFragment"
@@ -113,7 +69,18 @@
         <action
             android:id="@+id/action_connected_apps_to_play_store"
             app:destination="@id/playstore_activity" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/connectedAppFragment"
+        android:label="@string/app_access_title"
+        android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment">
+        <argument
+            android:name="android.intent.extra.PACKAGE_NAME"
+            app:argType="string" />
+    </fragment>
+
     <fragment
         android:id="@+id/searchConnectedApps"
         android:name="com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchAppsFragment">
@@ -121,6 +88,7 @@
             android:id="@+id/action_searchApps_to_connectedApp"
             app:destination="@id/connectedAppFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/helpAndFeedbackFragment"
         android:name="com.android.healthconnect.controller.permissions.connectedapps.HelpAndFeedbackFragment"
@@ -132,43 +100,19 @@
             android:id="@+id/action_cant_see_all_apps_to_updated_apps"
             app:destination="@id/update_apps_activity" />
     </fragment>
-    <fragment
-        android:id="@+id/healthPermissionTypesFragment"
-        android:name="com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment"
-        android:label="@string/permission_types_title">
-        <action
-            android:id="@+id/action_healthPermissionTypes_to_healthDataAccess"
-            app:destination="@id/healthDataAccessFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/healthDataAccessFragment"
-        android:name="com.android.healthconnect.controller.dataaccess.HealthDataAccessFragment">
-        <action
-            android:id="@+id/action_healthDataAccess_to_dataEntries"
-            app:destination="@id/dataEntriesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/connectedAppFragment"
-        android:label="@string/app_access_title"
-        android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment">
-        <argument
-            android:name="android.intent.extra.PACKAGE_NAME"
-            app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/autoDeleteFragment"
-        android:name="com.android.healthconnect.controller.autodelete.AutoDeleteFragment"
-        android:label="@string/auto_delete_title"/>
-    <fragment
-        android:id="@+id/unitFragment"
-        android:name="com.android.healthconnect.controller.dataentries.units.UnitsFragment"
-        android:label="@string/units_title" />
-    <fragment
-        android:id="@+id/dataEntryDetailsFragment"
-        android:name="com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment"
-        android:label="@string/entry_details_title" >
-        <action
-            android:id="@+id/action_dataEntryDetailsFragment_to_unitFragment"
-            app:destination="@id/unitFragment" />
-    </fragment>
+
+    <activity
+        android:id="@+id/playstore_activity"
+        android:label="@string/playstore_app_title"
+        app:action="android.intent.action.VIEW"
+        app:data="@string/playstore_collection_url"
+        app:targetPackage="@string/playstore_package_name" />
+
+    <activity
+        android:id="@+id/update_apps_activity"
+        app:action="android.intent.action.VIEW"
+        android:label="@string/playstore_app_title"
+        app:data="@string/playstore_manage_apps_url"
+        app:targetPackage="@string/playstore_package_name" />
+
 </navigation>
