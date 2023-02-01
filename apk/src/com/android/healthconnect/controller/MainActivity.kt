@@ -18,9 +18,7 @@ package com.android.healthconnect.controller
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.health.connect.HealthConnectManager
 import android.os.Bundle
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
@@ -47,15 +45,12 @@ class MainActivity : Hilt_MainActivity() {
 
     override fun onStart() {
         super.onStart()
-        val navController = findNavController(R.id.nav_host_fragment)
-        navController.addOnDestinationChangedListener(DestinationChangedListener(this))
-        if (intent.action == HealthConnectManager.ACTION_MANAGE_HEALTH_DATA) {
-            navController.navigate(R.id.action_deeplink_to_healthDataCategoriesFragment)
-        }
+        findNavController(R.id.nav_host_fragment)
+            .addOnDestinationChangedListener(DestinationChangedListener(this))
     }
 
     override fun onNavigateUp(): Boolean {
-        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val navController = findNavController(R.id.nav_host_fragment)
         if (!navController.popBackStack()) {
             finish()
         }
