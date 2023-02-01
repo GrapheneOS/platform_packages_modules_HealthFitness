@@ -20,7 +20,15 @@
           android:targetSandboxVersion="2">
 
     <application android:debuggable="true">
-        <uses-library android:name="android.test.runner"/>
+      <uses-library android:name="android.test.runner"/>
+      <activity android:name=".EmptyActivity"
+                android:label="EmptyActivity"
+                android:exported="true">
+          <intent-filter>
+              <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+              <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+          </intent-filter>
+      </activity>
     </application>
 
     <!-- To get visibility of the app with health permissions definitions,
