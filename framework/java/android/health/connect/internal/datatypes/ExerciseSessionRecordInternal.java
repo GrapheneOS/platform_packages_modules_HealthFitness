@@ -24,6 +24,7 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,8 +38,9 @@ public final class ExerciseSessionRecordInternal
     private int mExerciseType;
     private String mTitle;
     private ExerciseRouteInternal mExerciseRoute;
+    private boolean mHasRoute;
 
-    @NonNull
+    @Nullable
     public String getNotes() {
         return mNotes;
     }
@@ -62,7 +64,7 @@ public final class ExerciseSessionRecordInternal
         return this;
     }
 
-    @NonNull
+    @Nullable
     public String getTitle() {
         return mTitle;
     }
@@ -83,17 +85,26 @@ public final class ExerciseSessionRecordInternal
     }
 
     /** returns this object with the specified route */
-    @Nullable
+    @NonNull
     public ExerciseSessionRecordInternal setRoute(ExerciseRouteInternal route) {
         this.mExerciseRoute = route;
+        this.mHasRoute = true;
         return this;
     }
 
-    /**
-     * @return if this activity has route
-     */
+    /** returns if this session has route */
     public boolean hasRoute() {
-        return mExerciseRoute != null;
+        return mHasRoute;
+    }
+
+    /** returns this object with hasRoute set */
+    @NonNull
+    public ExerciseSessionRecordInternal setHasRoute(boolean hasRoute) {
+        if (mExerciseRoute != null && !hasRoute) {
+            throw new IllegalArgumentException("HasRoute must be true if the route is not null");
+        }
+        this.mHasRoute = hasRoute;
+        return this;
     }
 
     @NonNull
@@ -119,9 +130,11 @@ public final class ExerciseSessionRecordInternal
             builder.setTitle(getTitle());
         }
 
-        if (hasRoute()) {
+        if (mExerciseRoute != null) {
             builder.setRoute(mExerciseRoute.toExternalRoute());
         }
+
+        builder.setHasRoute(mHasRoute);
         return builder.build();
     }
 
@@ -141,6 +154,7 @@ public final class ExerciseSessionRecordInternal
             mExerciseRoute =
                     ExerciseRouteInternal.fromExternalRoute(exerciseSessionRecord.getRoute());
         }
+        mHasRoute = exerciseSessionRecord.hasRoute();
     }
 
     @Override
@@ -148,6 +162,7 @@ public final class ExerciseSessionRecordInternal
         parcel.writeString(mNotes);
         parcel.writeInt(mExerciseType);
         parcel.writeString(mTitle);
+        parcel.writeBoolean(mHasRoute);
         ExerciseRouteInternal.writeToParcel(mExerciseRoute, parcel);
     }
 
@@ -156,7 +171,18 @@ public final class ExerciseSessionRecordInternal
         mNotes = parcel.readString();
         mExerciseType = parcel.readInt();
         mTitle = parcel.readString();
+        mHasRoute = parcel.readBoolean();
         mExerciseRoute = ExerciseRouteInternal.readFromParcel(parcel);
+    }
+
+    /** Add route location to the session */
+    public void addRouteLocation(ExerciseRouteInternal.LocationInternal location) {
+        if (mExerciseRoute == null) {
+            mExerciseRoute = new ExerciseRouteInternal(List.of(location));
+            mHasRoute = true;
+        } else {
+            mExerciseRoute.addLocation(location);
+        }
     }
 
     @Override
@@ -165,6 +191,7 @@ public final class ExerciseSessionRecordInternal
         if (!(o instanceof ExerciseSessionRecordInternal)) return false;
         ExerciseSessionRecordInternal that = (ExerciseSessionRecordInternal) o;
         return getExerciseType() == that.getExerciseType()
+                && hasRoute() == that.hasRoute()
                 && Objects.equals(getNotes(), that.getNotes())
                 && Objects.equals(getTitle(), that.getTitle())
                 && Objects.equals(getRoute(), that.getRoute());
@@ -172,6 +199,6 @@ public final class ExerciseSessionRecordInternal
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNotes(), getExerciseType(), getTitle(), mExerciseRoute);
+        return Objects.hash(getNotes(), getExerciseType(), getTitle(), mExerciseRoute, mHasRoute);
     }
 }

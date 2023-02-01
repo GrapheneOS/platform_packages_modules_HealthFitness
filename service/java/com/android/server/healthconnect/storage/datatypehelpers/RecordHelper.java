@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
@@ -155,23 +156,50 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
     }
 
-    /** Returns ReadTableRequest for {@code request} and package name {@code packageName} */
+    /**
+     * Returns ReadSingleTableRequest for {@code request} and package name {@code packageName}
+     *
+     * @return
+     */
     public ReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
         return new ReadTableRequest(getMainTableName())
-                .setJoinClause(getInnerJoinFoReadRequest())
+                .setJoinClause(getJoinForReadRequest())
                 .setWhereClause(getReadTableWhereClause(request, packageName, enforceSelfRead))
                 .setOrderBy(getOrderByClause(request))
                 .setLimit(getLimitSize(request))
-                .setRecordHelper(this);
+                .setRecordHelper(this)
+                .setExtraReadRequests(getExtraDataReadRequests(request, packageName));
     }
 
-    /** Returns ReadTableRequest for {@code uuids} */
+    /**
+     * Returns ReadTableRequest for {@code uuids}
+     *
+     * @return
+     */
     public ReadTableRequest getReadTableRequest(List<String> uuids) {
         return new ReadTableRequest(getMainTableName())
-                .setJoinClause(getInnerJoinFoReadRequest())
+                .setJoinClause(getJoinForReadRequest())
                 .setWhereClause(new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, uuids))
-                .setRecordHelper(this);
+                .setRecordHelper(this)
+                .setExtraReadRequests(getExtraDataReadRequests(uuids));
+    }
+
+    /**
+     * Returns a list of ReadSingleTableRequest for {@code request} and package name {@code
+     * packageName} to populate extra data. Called in database read requests.
+     */
+    List<ReadTableRequest> getExtraDataReadRequests(
+            ReadRecordsRequestParcel request, String packageName) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * Returns list if ReadSingleTableRequest for {@code uuids} to populate extra data. Called in
+     * change logs read requests.
+     */
+    List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids) {
+        return Collections.emptyList();
     }
 
     /**
@@ -203,6 +231,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
                 record.setClientRecordVersion(
                         getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
+                record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
                 long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
                 DeviceInfoHelper.getInstance().populateRecordWithValue(deviceInfoId, record);
                 long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
@@ -221,6 +250,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             }
         }
         return recordInternalList;
+    }
+
+    /** Populate internalRecords fields using extraDataCursor */
+    @SuppressWarnings("unchecked")
+    public void updateInternalRecordsWithExtraFields(
+            List<RecordInternal<?>> internalRecords, Cursor cursorExtraData, String tableName) {
+        readExtraData((List<T>) internalRecords, cursorExtraData, tableName);
     }
 
     public DeleteTableRequest getDeleteTableRequest(
@@ -245,6 +281,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public abstract String getPeriodGroupByColumnName();
 
     public abstract String getStartTimeColumnName();
+
+    /** Populate internalRecords with extra data. */
+    void readExtraData(List<T> internalRecords, Cursor cursorExtraData, String tableName) {}
 
     /**
      * Child classes should implement this if it wants to create additional tables, apart from the
@@ -293,7 +332,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Collections.emptyList();
     }
 
-    SqlJoin getInnerJoinFoReadRequest() {
+    SqlJoin getJoinForReadRequest() {
         return null;
     }
 
@@ -305,7 +344,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
     }
 
-    private WhereClauses getReadTableWhereClause(
+    WhereClauses getReadTableWhereClause(
             ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
         if (request.getRecordIdFiltersParcel() == null) {
             List<Long> appIds =

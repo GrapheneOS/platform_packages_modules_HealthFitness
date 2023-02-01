@@ -30,6 +30,7 @@ import android.health.connect.datatypes.CervicalMucusRecord;
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ElevationGainedRecord;
+import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.FloorsClimbedRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord;
@@ -68,6 +69,7 @@ import android.health.connect.internal.datatypes.CervicalMucusRecordInternal;
 import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 import android.health.connect.internal.datatypes.DistanceRecordInternal;
 import android.health.connect.internal.datatypes.ElevationGainedRecordInternal;
+import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.FloorsClimbedRecordInternal;
 import android.health.connect.internal.datatypes.HeartRateRecordInternal;
 import android.health.connect.internal.datatypes.HeartRateVariabilityRmssdRecordInternal;
@@ -200,6 +202,9 @@ public final class RecordMapper {
                 RecordTypeIdentifier.RECORD_TYPE_HEIGHT, HeightRecordInternal.class);
         mRecordIdToInternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS, LeanBodyMassRecordInternal.class);
+        mRecordIdToInternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
+                ExerciseSessionRecordInternal.class);
 
         mRecordIdToExternalRecordClassMap = new ArrayMap<>(NUM_ENTRIES);
         mRecordIdToExternalRecordClassMap.put(
@@ -286,6 +291,8 @@ public final class RecordMapper {
         mRecordIdToExternalRecordClassMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
                 IntermenstrualBleedingRecord.class);
+        mRecordIdToExternalRecordClassMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, ExerciseSessionRecord.class);
 
         mExternalRecordClassToRecordIdMap =
                 new ArrayMap<>(mRecordIdToExternalRecordClassMap.size());

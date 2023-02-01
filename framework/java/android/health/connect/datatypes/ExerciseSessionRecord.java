@@ -42,6 +42,9 @@ public final class ExerciseSessionRecord extends IntervalRecord {
     private final CharSequence mTitle;
     private final ExerciseRoute mRoute;
 
+    // Represents if the route is recorded for this session, even if mRoute is null.
+    private final boolean mHasRoute;
+
     private final List<ExerciseSegment> mSegments;
     private final List<ExerciseLap> mLaps;
 
@@ -66,13 +69,18 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             @NonNull @ExerciseSessionType.ExerciseSessionTypes int exerciseType,
             @Nullable CharSequence title,
             @Nullable ExerciseRoute route,
+            boolean hasRoute,
             @NonNull List<ExerciseSegment> segments,
             @NonNull List<ExerciseLap> laps) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         mNotes = notes;
         mExerciseType = exerciseType;
         mTitle = title;
+        if (route != null && !hasRoute) {
+            throw new IllegalArgumentException("HasRoute must be true if the route is not null");
+        }
         mRoute = route;
+        mHasRoute = hasRoute;
         mSegments = Collections.unmodifiableList(segments);
         mLaps = Collections.unmodifiableList(laps);
     }
@@ -118,10 +126,10 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         return mLaps;
     }
 
-    /** Returns if this session has route. */
+    /** Returns if this session has recorded route. */
     @NonNull
     public boolean hasRoute() {
-        return mRoute != null;
+        return mHasRoute;
     }
 
     @Override
@@ -134,7 +142,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                 && RecordUtils.isEqualNullableCharSequences(getNotes(), that.getNotes())
                 && RecordUtils.isEqualNullableCharSequences(getTitle(), that.getTitle())
                 && Objects.equals(getRoute(), that.getRoute())
-                && Objects.equals(getSegments(), that.getSegments());
+                && Objects.equals(getSegments(), that.getSegments())
+                && Objects.equals(getLaps(), that.getLaps());
     }
 
     @Override
@@ -145,7 +154,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                 getNotes(),
                 getTitle(),
                 getRoute(),
-                getSegments());
+                getSegments(),
+                getLaps());
     }
 
     /** Builder class for {@link ExerciseSessionRecord} */
@@ -159,8 +169,9 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         private CharSequence mNotes;
         private CharSequence mTitle;
         private ExerciseRoute mRoute;
-        private List<ExerciseSegment> mSegments;
-        private List<ExerciseLap> mLaps;
+        private final List<ExerciseSegment> mSegments;
+        private final List<ExerciseLap> mLaps;
+        private boolean mHasRoute;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -249,6 +260,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         @NonNull
         public Builder setRoute(@Nullable ExerciseRoute route) {
             mRoute = route;
+            mHasRoute = (route != null);
             return this;
         }
 
@@ -278,6 +290,19 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             return this;
         }
 
+        /**
+         * Sets if the session contains route. Set by platform to indicate whether the route can be
+         * requested via UI intent.
+         *
+         * @param hasRoute flag whether the session has recorded {@link ExerciseRoute}
+         * @hide
+         */
+        @NonNull
+        public Builder setHasRoute(boolean hasRoute) {
+            mHasRoute = hasRoute;
+            return this;
+        }
+
         /** Returns {@link ExerciseSessionRecord} */
         @NonNull
         public ExerciseSessionRecord build() {
@@ -291,6 +316,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                     mExerciseType,
                     mTitle,
                     mRoute,
+                    mHasRoute,
                     mSegments,
                     mLaps);
         }

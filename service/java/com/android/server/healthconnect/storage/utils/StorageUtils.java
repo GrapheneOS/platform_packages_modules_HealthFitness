@@ -68,6 +68,8 @@ public final class StorageUtils {
     public static final String BLOB = "BLOB";
     public static final String SELECT_ALL = "SELECT * FROM ";
     public static final String LIMIT_SIZE = " LIMIT ";
+    public static final int BOOLEAN_FALSE_VALUE = 0;
+    public static final int BOOLEAN_TRUE_VALUE = 1;
 
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
         byte[] clientIDBlob;
@@ -134,6 +136,11 @@ public final class StorageUtils {
 
     public static int getCursorInt(Cursor cursor, String columnName) {
         return cursor.getInt(cursor.getColumnIndex(columnName));
+    }
+
+    /** Reads integer and converts to true anything apart from 0. */
+    public static boolean getIntegerAndConvertToBoolean(Cursor cursor, String columnName) {
+        return cursor.getInt(cursor.getColumnIndex(columnName)) != BOOLEAN_FALSE_VALUE;
     }
 
     public static long getCursorLong(Cursor cursor, String columnName) {

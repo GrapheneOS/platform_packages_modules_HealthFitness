@@ -16,6 +16,7 @@
 
 package android.health.connect.internal.datatypes;
 
+import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
 
 import android.annotation.NonNull;
@@ -50,6 +51,7 @@ public abstract class RecordInternal<T extends Record> {
     private int mDeviceType;
     private long mDeviceInfoId = DEFAULT_LONG;
     private long mAppInfoId = DEFAULT_LONG;
+    private int mRowId = DEFAULT_INT;
 
     RecordInternal() {
         Identifier annotation = this.getClass().getAnnotation(Identifier.class);
@@ -123,6 +125,17 @@ public abstract class RecordInternal<T extends Record> {
     @NonNull
     public RecordInternal<T> setPackageName(@Nullable String packageName) {
         this.mPackageName = packageName;
+        return this;
+    }
+
+    /** Gets row id of this record. */
+    public int getRowId() {
+        return mRowId;
+    }
+
+    /** Sets the row id for this record. */
+    public RecordInternal<T> setRowId(int rowId) {
+        mRowId = rowId;
         return this;
     }
 

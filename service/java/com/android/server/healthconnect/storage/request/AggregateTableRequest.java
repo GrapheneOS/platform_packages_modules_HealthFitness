@@ -123,6 +123,7 @@ public class AggregateTableRequest {
         return aggregateResults;
     }
 
+    /** Returns SQL join class. */
     public AggregateTableRequest setSqlJoin(SqlJoin sqlJoin) {
         mSqlJoin = sqlJoin;
         return this;
@@ -265,7 +266,7 @@ public class AggregateTableRequest {
 
         builder.append(" FROM ").append(mTableName);
         if (mSqlJoin != null) {
-            builder.append(mSqlJoin.getInnerJoinClause());
+            builder.append(mSqlJoin.getJoinClause());
         }
 
         WhereClauses whereClauses = new WhereClauses();

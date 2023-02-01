@@ -22,6 +22,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMI
 import static com.android.server.healthconnect.storage.utils.StorageUtils.LIMIT_SIZE;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.Constants;
 import android.util.Slog;
 
@@ -31,6 +32,7 @@ import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,6 +53,7 @@ public class ReadTableRequest {
     private OrderByClause mOrderByClause = new OrderByClause();
     private String mLimitClause = "";
     private int mPageSize = DEFAULT_PAGE_SIZE;
+    private List<ReadTableRequest> mExtraReadRequests;
 
     public ReadTableRequest(@NonNull String tableName) {
         Objects.requireNonNull(tableName);
@@ -117,7 +120,7 @@ public class ReadTableRequest {
 
         String readQuery = builder.toString();
         if (mJoinClause != null) {
-            readQuery = mJoinClause.getInnerQueryJoinClause(readQuery);
+            readQuery = mJoinClause.getQueryJoinClause(readQuery);
         }
         builder.append(mLimitClause);
 
@@ -126,6 +129,23 @@ public class ReadTableRequest {
         }
 
         return readQuery;
+    }
+
+    /** Get requests for populating extra data */
+    @Nullable
+    public List<ReadTableRequest> getExtraReadRequests() {
+        return mExtraReadRequests;
+    }
+
+    /** Sets requests to populate extra data */
+    public ReadTableRequest setExtraReadRequests(List<ReadTableRequest> extraDataReadRequests) {
+        mExtraReadRequests = new ArrayList<>(extraDataReadRequests);
+        return this;
+    }
+
+    /** Get table name of the request */
+    public String getTableName() {
+        return mTableName;
     }
 
     /** Sets order by clause for the read query */

@@ -35,6 +35,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.CervicalMucusRec
 import com.android.server.healthconnect.storage.datatypehelpers.CyclingPedalingCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ElevationGainedRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.FloorsClimbedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateVariabilityRmssdHelper;
@@ -157,6 +158,9 @@ public final class RecordHelperProvider {
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD,
                 new MenstruationPeriodRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
+                new ExerciseSessionRecordHelper());
 
         mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
     }

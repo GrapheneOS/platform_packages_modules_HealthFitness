@@ -199,10 +199,15 @@ public class TransactionManager {
                         (readTableRequest -> {
                             try (Cursor cursor = read(db, readTableRequest)) {
                                 Objects.requireNonNull(readTableRequest.getRecordHelper());
-                                recordInternals.addAll(
+                                List<RecordInternal<?>> internalRecords =
                                         readTableRequest
                                                 .getRecordHelper()
-                                                .getInternalRecords(cursor, DEFAULT_PAGE_SIZE));
+                                                .getInternalRecords(cursor, DEFAULT_PAGE_SIZE);
+
+                                populateInternalRecordsWithExtraData(
+                                        db, internalRecords, readTableRequest);
+
+                                recordInternals.addAll(internalRecords);
                             }
                         }));
         return recordInternals;
@@ -228,10 +233,12 @@ public class TransactionManager {
         ReadTableRequest readTableRequest = request.getReadRequests().get(0);
         try (SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
                 Cursor cursor = read(db, readTableRequest)) {
-            recordInternalList =
-                    readTableRequest
-                            .getRecordHelper()
-                            .getInternalRecords(cursor, readTableRequest.getPageSize());
+            RecordHelper<?> helper = readTableRequest.getRecordHelper();
+            Objects.requireNonNull(helper);
+
+            recordInternalList = helper.getInternalRecords(cursor, readTableRequest.getPageSize());
+
+            populateInternalRecordsWithExtraData(db, recordInternalList, readTableRequest);
             if (cursor.moveToNext()) {
                 token = getCursorLong(cursor, PRIMARY_COLUMN_NAME);
             }
@@ -490,6 +497,23 @@ public class TransactionManager {
             // If the record was deleted successfully then re-insert the record with the
             // updated contents.
             insertRecord(db, request);
+        }
+    }
+
+    /**
+     * Do extra sql requests to populate optional extra data. Used to populate {@link
+     * android.healthconnect.internal.datatypes.ExerciseRouteInternal}.
+     */
+    private void populateInternalRecordsWithExtraData(
+            SQLiteDatabase readableDb, List<RecordInternal<?>> records, ReadTableRequest request) {
+        if (request.getExtraReadRequests() == null) {
+            return;
+        }
+        for (ReadTableRequest extraDataRequest : request.getExtraReadRequests()) {
+            Cursor cursorExtraData = read(readableDb, extraDataRequest);
+            request.getRecordHelper()
+                    .updateInternalRecordsWithExtraFields(
+                            records, cursorExtraData, extraDataRequest.getTableName());
         }
     }
 

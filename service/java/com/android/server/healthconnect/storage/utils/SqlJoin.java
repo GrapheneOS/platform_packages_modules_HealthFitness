@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,62 +16,15 @@
 
 package com.android.server.healthconnect.storage.utils;
 
-import static com.android.server.healthconnect.storage.utils.StorageUtils.SELECT_ALL;
+/**
+ * Interface of the join SQL class.
+ *
+ * @hide
+ */
+public interface SqlJoin {
+    /** Get join SQL clause. */
+    String getJoinClause();
 
-/** @hide */
-public final class SqlJoin {
-    private final String mSelfTableName;
-    private final String mTableNameToJoinOn;
-    private final String mSelfColumnNameToMatch;
-    private final String mJoiningColumnNameToMatch;
-
-    public SqlJoin(
-            String selfTableName,
-            String tableNameToJoinOn,
-            String selfColumnNameToMatch,
-            String joiningColumnNameToMatch) {
-        mSelfTableName = selfTableName;
-        mTableNameToJoinOn = tableNameToJoinOn;
-        mSelfColumnNameToMatch = selfColumnNameToMatch;
-        mJoiningColumnNameToMatch = joiningColumnNameToMatch;
-    }
-
-    /**
-     * Returns query by applying JOIN condition on the innerQuery
-     *
-     * @param innerQuery An inner query to be used for the JOIN
-     * @return Final query with JOIN condition
-     */
-    public String getInnerQueryJoinClause(String innerQuery) {
-        if (innerQuery == null) {
-            throw new IllegalArgumentException("Inner query cannot be null");
-        }
-        return SELECT_ALL
-                + "( "
-                + innerQuery
-                + " ) JOIN "
-                + mTableNameToJoinOn
-                + " ON "
-                + mSelfColumnNameToMatch
-                + " = "
-                + mJoiningColumnNameToMatch;
-    }
-
-    /** Returns query with INNER JOIN condition */
-    public String getInnerJoinClause() {
-        return " INNER JOIN "
-                + mTableNameToJoinOn
-                + " ON "
-                + mSelfTableName
-                + "."
-                + mSelfColumnNameToMatch
-                + " = "
-                + mTableNameToJoinOn
-                + "."
-                + mJoiningColumnNameToMatch;
-    }
-
-    public String getOrderByClause() {
-        return " ORDER BY " + mSelfColumnNameToMatch;
-    }
+    /** Get join with another SQL query. */
+    String getQueryJoinClause(String innerQuery);
 }
