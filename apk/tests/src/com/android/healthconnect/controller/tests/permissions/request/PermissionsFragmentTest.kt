@@ -33,10 +33,10 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.*
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.request.PermissionsFragment
-import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.permissions.request.PermissionsFragment
+import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -47,6 +47,7 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -54,6 +55,7 @@ import org.mockito.Matchers.eq
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 
+@ExperimentalCoroutinesApi
 @HiltAndroidTest
 class PermissionsFragmentTest {
 
@@ -76,26 +78,13 @@ class PermissionsFragmentTest {
         `when`(viewModel.grantedPermissions).then { MutableLiveData(emptySet<HealthPermission>()) }
     }
 
-    // TODO(b/264511693) find a way to wait for liveData before checking the UI.
-    //    @Test
-    //    fun test_doesNotDisplayEmptyCategories() {
-    //        `when`(viewModel.permissionsList).then {
-    //            MutableLiveData(emptyList<HealthPermission>())
-    //        }
-    //
-    //        launchFragment<PermissionsFragment>(bundleOf())
-    //
-    //        onView(withText(R.string.read_permission_category)).check(doesNotExist())
-    //        onView(withText(R.string.write_permission_category)).check(doesNotExist())
-    //    }
-
     @Test
     fun test_displaysCategories() {
         `when`(viewModel.permissionsList).then {
             val permissions =
                 listOf(
                     fromPermissionString(READ_STEPS),
-                    fromPermissionString(READ_HEART_RATE),
+                    fromPermissionString(WRITE_HEART_RATE),
                 )
             MutableLiveData(permissions)
         }
