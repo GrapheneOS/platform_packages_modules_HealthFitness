@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2023 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *
+ */
+
 /**
  * Copyright (C) 2022 The Android Open Source Project
  *
@@ -11,7 +29,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.permissions.connectedapps
+package com.android.healthconnect.controller.permissions.app
 
 import android.health.connect.TimeInstantRangeFilter
 import androidx.lifecycle.LiveData
@@ -24,17 +42,15 @@ import com.android.healthconnect.controller.permissions.api.GrantHealthPermissio
 import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
-import com.android.healthconnect.controller.permissions.connectedApps.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.Instant
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import java.time.Instant
+import javax.inject.Inject
 
 /** View model for {@link ConnectedAppFragment} . */
 @HiltViewModel
@@ -55,7 +71,7 @@ constructor(
     val appPermissions: LiveData<List<HealthPermissionStatus>>
         get() = _appPermissions
 
-    private val _allAppPermissionsGranted = MutableLiveData<Boolean>(false)
+    private val _allAppPermissionsGranted = MutableLiveData(false)
     val allAppPermissionsGranted: LiveData<Boolean>
         get() = _allAppPermissionsGranted
 
@@ -93,8 +109,7 @@ constructor(
         if (grant) {
             grantPermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
         } else {
-            // TODO(magdi) find revoke permission reasons
-            revokePermissionsStatusUseCase.invoke(packageName, healthPermission.toString(), "user")
+            revokePermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
         }
         loadForPackage(packageName)
     }

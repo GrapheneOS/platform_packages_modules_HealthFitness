@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.permissions.connectedapps.shared
+package com.android.healthconnect.controller.permissions.shared
 
 object Constants {
     const val EXTRA_APP_NAME = "app_name_extras"

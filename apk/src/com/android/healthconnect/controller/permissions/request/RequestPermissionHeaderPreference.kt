@@ -13,7 +13,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.permissions.requestpermissions
+package com.android.healthconnect.controller.permissions.request
 
 import android.content.Context
 import android.util.AttributeSet

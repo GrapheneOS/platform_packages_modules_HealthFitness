@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/settingsManagePermissionFragment"
-        android:name="com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsManagePermissionFragment"
+        android:name="com.android.healthconnect.controller.permissions.connectedapps.SettingsManagePermissionFragment"
         android:label="@string/app_label">
         <action
             android:id="@+id/action_settingsManagePermission_to_settingsManageAppPermissions"
@@ -38,6 +38,6 @@
     <fragment
         android:id="@+id/settingsManageAppPermissionsFragment"
         android:label="@string/app_label"
-        android:name="com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsManageAppPermissionsFragment"
+        android:name="com.android.healthconnect.controller.permissions.app.SettingsManageAppPermissionsFragment"
         />
 </navigation>

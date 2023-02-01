@@ -20,7 +20,7 @@ import com.android.healthconnect.controller.permissions.GetContributorAppInfoUse
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
-import com.android.healthconnect.controller.permissions.connectedapps.QueryRecentAccessLogsUseCase
+import com.android.healthconnect.controller.permissions.shared.QueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.recentaccess.LoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.AppInfoReader

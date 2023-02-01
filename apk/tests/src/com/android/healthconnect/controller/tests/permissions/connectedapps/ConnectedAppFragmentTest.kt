@@ -29,11 +29,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
-import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel
-import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel.RevokeAllState.NotStarted
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment
-import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
+import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
+import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
+import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel.RevokeAllState.NotStarted
+import com.android.healthconnect.controller.permissions.app.ConnectedAppFragment
+import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.EXERCISE

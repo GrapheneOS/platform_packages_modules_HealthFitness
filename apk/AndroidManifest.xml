@@ -63,7 +63,7 @@
         </activity>
 
         <activity
-            android:name=".permissions.connectedapps.settings.SettingsActivity"
+            android:name=".permissions.shared.SettingsActivity"
             android:exported="true">
             <!-- Deeplink to Allowed Apps and App Access screen -->
             <intent-filter>
@@ -73,7 +73,7 @@
         </activity>
 
         <activity
-            android:name="com.android.healthconnect.controller.permissions.PermissionsActivity"
+            android:name=".permissions.request.PermissionsActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:permission="android.permission.GRANT_RUNTIME_PERMISSIONS">
@@ -84,7 +84,7 @@
         </activity>
 
         <activity
-            android:name="com.android.healthconnect.controller.route.RouteRequestActivity"
+            android:name=".route.RouteRequestActivity"
             android:excludeFromRecents="true"
             android:exported="true">
             <intent-filter android:priority="1">
@@ -94,7 +94,7 @@
         </activity>
 
         <activity
-            android:name="com.android.healthconnect.controller.onboarding.OnboardingActivity"
+            android:name=".onboarding.OnboardingActivity"
             android:exported="true"
             android:theme="@style/Theme.HealthConnect" />
 

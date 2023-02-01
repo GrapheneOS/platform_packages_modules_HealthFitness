@@ -26,7 +26,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants
+import com.android.healthconnect.controller.permissions.shared.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Recent access fragment showing a timeline of apps that have recently accessed Health Connect. */

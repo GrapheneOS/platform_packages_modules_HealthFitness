@@ -75,7 +75,7 @@
     <fragment
         android:id="@+id/connectedAppFragment"
         android:label="@string/app_access_title"
-        android:name="com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment">
+        android:name="com.android.healthconnect.controller.permissions.app.ConnectedAppFragment">
         <argument
             android:name="android.intent.extra.PACKAGE_NAME"
             app:argType="string" />
@@ -91,7 +91,7 @@
 
     <fragment
         android:id="@+id/helpAndFeedbackFragment"
-        android:name="com.android.healthconnect.controller.permissions.connectedapps.HelpAndFeedbackFragment"
+        android:name="com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment"
         android:label="@string/help_and_feedback">
         <action
             android:id="@+id/action_cant_see_all_apps_to_play_store"
