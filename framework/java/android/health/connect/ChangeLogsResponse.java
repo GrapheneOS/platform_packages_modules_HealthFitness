@@ -22,7 +22,7 @@ import android.health.connect.datatypes.Record;
 import java.util.List;
 
 /** Response class for {@link HealthConnectManager#getChangeLogs} */
-public class ChangeLogsResponse {
+public final class ChangeLogsResponse {
     private final List<Record> mUpsertedRecords;
     private final List<String> mDeletedIds;
     private final String mNextChangesToken;

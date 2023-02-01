@@ -19,12 +19,13 @@ package android.health.connect;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
+import android.annotation.IntRange;
 import android.annotation.NonNull;
 
 import java.util.Objects;
 
 /** Request class for {@link HealthConnectManager#getChangeLogs} */
-public class ChangeLogsRequest {
+public final class ChangeLogsRequest {
     private final String mToken;
     private final int mPageSize;
 
@@ -48,6 +49,7 @@ public class ChangeLogsRequest {
      * Returns the maximum number of records requested using {@link
      * HealthConnectManager#getChangeLogs} operation
      */
+    @IntRange(from = 1, to = 5000)
     public int getPageSize() {
         return mPageSize;
     }
@@ -71,7 +73,7 @@ public class ChangeLogsRequest {
          * @throws IllegalArgumentException if requested pageSize > 5000
          */
         @NonNull
-        public Builder setPageSize(int pageSize) {
+        public Builder setPageSize(@IntRange(from = 1, to = 5000) int pageSize) {
             if (pageSize > MAXIMUM_PAGE_SIZE) {
                 throw new IllegalArgumentException(
                         "Maximum page size " + MAXIMUM_PAGE_SIZE + " requested " + pageSize);

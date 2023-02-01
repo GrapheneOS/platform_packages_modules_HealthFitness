@@ -50,18 +50,18 @@ package android.health.connect {
     method @NonNull public String getToken();
   }
 
-  public class ChangeLogsRequest {
-    method public int getPageSize();
+  public final class ChangeLogsRequest {
+    method @IntRange(from=1, to=5000) public int getPageSize();
     method @NonNull public String getToken();
   }
 
   public static final class ChangeLogsRequest.Builder {
     ctor public ChangeLogsRequest.Builder(@NonNull String);
     method @NonNull public android.health.connect.ChangeLogsRequest build();
-    method @NonNull public android.health.connect.ChangeLogsRequest.Builder setPageSize(int);
+    method @NonNull public android.health.connect.ChangeLogsRequest.Builder setPageSize(@IntRange(from=1, to=5000) int);
   }
 
-  public class ChangeLogsResponse {
+  public final class ChangeLogsResponse {
     method @NonNull public java.util.List<java.lang.String> getDeletedRecordIds();
     method @NonNull public String getNextChangesToken();
     method @NonNull public java.util.List<android.health.connect.datatypes.Record> getUpsertedRecords();
