@@ -90,10 +90,8 @@ public final class PriorityMigrationPayload extends MigrationPayload implements 
     }
 
     /**
-     * Returns data category associated with this payload. See {@link HealthDataCategory.Type}
-     * HealthDataCategory.Type for all possible values.
-     *
-     * @see HealthDataCategory.Type
+     * Returns data category associated with this payload. See {@link HealthDataCategory} for all
+     * possible values.
      */
     @HealthDataCategory.Type
     public int getDataCategory() {

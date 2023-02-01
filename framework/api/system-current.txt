@@ -243,15 +243,16 @@ package android.health.connect.migration {
   public final class MigrationEntity implements android.os.Parcelable {
     ctor public MigrationEntity(@NonNull String, @NonNull android.health.connect.migration.MigrationPayload);
     method public int describeContents();
+    method @NonNull public String getEntityId();
+    method @NonNull public android.health.connect.migration.MigrationPayload getPayload();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.migration.MigrationEntity> CREATOR;
   }
 
   public final class MigrationException extends java.lang.RuntimeException implements android.os.Parcelable {
-    ctor public MigrationException(int, @Nullable String, @Nullable String);
+    ctor public MigrationException(@Nullable String, int, @Nullable String);
     method public int describeContents();
     method public int getErrorCode();
-    method @Nullable public String getErrorMessage();
     method @Nullable public String getFailedEntityId();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.migration.MigrationException> CREATOR;

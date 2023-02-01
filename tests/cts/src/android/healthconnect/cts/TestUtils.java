@@ -749,7 +749,7 @@ public class TestUtils {
 
                     @Override
                     public void onError(MigrationException exception) {
-                        Log.e(TAG, exception.getErrorMessage());
+                        Log.e(TAG, exception.getMessage());
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
@@ -772,7 +772,7 @@ public class TestUtils {
 
                     @Override
                     public void onError(MigrationException exception) {
-                        Log.e(TAG, exception.getErrorMessage());
+                        Log.e(TAG, exception.getMessage());
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();

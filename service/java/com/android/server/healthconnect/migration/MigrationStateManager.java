@@ -78,8 +78,8 @@ public final class MigrationStateManager {
         if (getMigrationState() != MIGRATION_STATE_IN_PROGRESS
                 && getMigrationState() != MIGRATION_STATE_ALLOWED) {
             throw new MigrationException(
-                    MigrationException.ERROR_INTERNAL,
                     "Cannot finish migration. Migration not started.",
+                    MigrationException.ERROR_INTERNAL,
                     null);
         }
     }
@@ -89,8 +89,8 @@ public final class MigrationStateManager {
         if (getMigrationState() == MIGRATION_STATE_IN_PROGRESS
                 && getMigrationState() == MIGRATION_STATE_ALLOWED) {
             throw new MigrationException(
-                    MigrationException.ERROR_INTERNAL,
                     "Cannot set the sdk extension version. Migration already in progress.",
+                    MigrationException.ERROR_INTERNAL,
                     null);
         }
     }
@@ -115,7 +115,7 @@ public final class MigrationStateManager {
     private void throwIfMigrationIsComplete() {
         if (getMigrationState() == MIGRATION_STATE_COMPLETE) {
             throw new MigrationException(
-                    MigrationException.ERROR_INTERNAL, "Migration already marked complete.", null);
+                    "Migration already marked complete.", MigrationException.ERROR_INTERNAL, null);
         }
     }
 }
