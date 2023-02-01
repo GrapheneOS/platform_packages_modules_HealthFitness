@@ -127,7 +127,9 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     List<ReadTableRequest> getExtraDataReadRequests(
-            ReadRecordsRequestParcel request, String packageName) {
+            ReadRecordsRequestParcel request,
+            String packageName,
+            Map<String, Boolean> extraReadPermToState) {
         // TODO(b/262734718): Allow ui apk to read any route.
         // Always enforce selfRead for the route.
         WhereClauses whereClause = getReadTableWhereClause(request, packageName, true);

@@ -25,7 +25,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
-import android.os.UserManager;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Log;
@@ -33,7 +32,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /** Utility class with PackageInfo-related methods for {@link FirstGrantTimeManager} */
@@ -195,13 +193,5 @@ class PackageInfoUtils {
             mUsersPackageManager.put(user, packageManager);
         }
         return packageManager;
-    }
-
-    @NonNull
-    private List<UserHandle> getAllUserHandles() {
-        return Objects.requireNonNull(
-                        mContext.getSystemService(UserManager.class),
-                        "UserManager service cannot be null")
-                .getUserHandles(/* excludeDying= */ true);
     }
 }

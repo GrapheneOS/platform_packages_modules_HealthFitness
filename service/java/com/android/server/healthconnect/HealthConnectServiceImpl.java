@@ -19,8 +19,8 @@ package com.android.server.healthconnect;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
-import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
@@ -42,12 +42,12 @@ import android.database.sqlite.SQLiteException;
 import android.health.connect.AccessLog;
 import android.health.connect.Constants;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
+import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectManager.DataDownloadState;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
-import android.health.connect.HealthConnectDataState;
 import android.health.connect.aidl.AccessLogsResponseParcel;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
@@ -60,7 +60,6 @@ import android.health.connect.aidl.ChangeLogsResponseParcel;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.GetPriorityResponseParcel;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
-import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
@@ -69,6 +68,7 @@ import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
+import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -108,6 +108,7 @@ import android.util.Slog;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.migration.DataMigrationManager;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.AutoDeleteService;
@@ -196,6 +197,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private boolean mActivelyStagingRemoteData = false;
     private final MigrationStateManager mMigrationStateManager;
 
+    private final DataPermissionEnforcer mDataPermissionEnforcer;
+
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
             HealthConnectPermissionHelper permissionHelper,
@@ -207,6 +210,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext = context;
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
         mMigrationStateManager = MigrationStateManager.getInstance();
+        mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
     }
 
     @Override
@@ -264,7 +268,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IInsertRecordsResponseCallback callback) {
         List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
         int uid = Binder.getCallingUid();
-        enforceRecordWritePermissionForRecords(recordInternals, uid);
+        mDataPermissionEnforcer.enforceRecordsWritePermissions(recordInternals, uid);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -317,7 +321,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int pid = Binder.getCallingPid();
         boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         if (!holdsDataManagementPermission) {
-            enforceRecordReadPermission(recordTypesToTest, uid);
+            mDataPermissionEnforcer.enforceRecordIdsReadPermissions(recordTypesToTest, uid);
         }
 
         HealthConnectThreadScheduler.schedule(
@@ -362,8 +366,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         AtomicBoolean enforceSelfRead = new AtomicBoolean();
         if (!holdsDataManagementPermission) {
-            enforceSelfRead.set(enforceRecordReadPermission(uid, request.getRecordType()));
+            enforceSelfRead.set(
+                    mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
+                            request.getRecordType(), uid));
         }
+
+        final Map<String, Boolean> extraReadPermsToGrantState =
+                Collections.unmodifiableMap(
+                        mDataPermissionEnforcer.collectExtraReadPermissionToStateMapping(
+                                request.getRecordType(), uid));
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -373,7 +384,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             Pair<List<RecordInternal<?>>, Long> readRecordsResponse =
                                     mTransactionManager.readRecordsAndGetNextToken(
                                             new ReadTransactionRequest(
-                                                    packageName, request, enforceSelfRead.get()));
+                                                    packageName,
+                                                    request,
+                                                    enforceSelfRead.get(),
+                                                    extraReadPermsToGrantState));
                             long pageToken =
                                     request.getRecordIdFiltersParcel() == null
                                             ? readRecordsResponse.second
@@ -440,7 +454,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IEmptyResponseCallback callback) {
         int uid = Binder.getCallingUid();
         List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
-        enforceRecordWritePermissionForRecords(recordInternals, uid);
+        mDataPermissionEnforcer.enforceRecordsWritePermissions(recordInternals, uid);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -516,7 +530,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int uid = Binder.getCallingUid();
         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                 ChangeLogsRequestHelper.getRequest(packageName, token.getToken());
-        enforceRecordReadPermission(changeLogsTokenRequest.getRecordTypes(), uid);
+        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                changeLogsTokenRequest.getRecordTypes(), uid);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -582,7 +597,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         .keySet());
 
         if (!holdsDataManagementPermission) {
-            enforceRecordWritePermission(recordTypeIdsToDelete, uid);
+            mDataPermissionEnforcer.enforceRecordIdsWritePermissions(recordTypeIdsToDelete, uid);
         }
 
         HealthConnectThreadScheduler.schedule(
@@ -1123,7 +1138,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getHealthConnectDataState(
             @NonNull UserHandle userHandle, @NonNull IGetHealthConnectDataStateCallback callback) {
-        enforceAnyOfPermissions(
+        mDataPermissionEnforcer.enforceAnyOfPermissions(
                 MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
 
         HealthConnectThreadScheduler.scheduleInternalTask(
@@ -1341,97 +1356,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         return recordTypeInfoResponses;
     }
 
-    private void enforceAnyOfPermissions(@NonNull String... permissions) {
-        for (var permission : permissions) {
-            if (mContext.checkCallingPermission(permission) == PERMISSION_GRANTED) {
-                return;
-            }
-        }
-        throw new SecurityException(
-                "Caller requires one of the following permissions: "
-                        + String.join(", ", permissions));
-    }
-
-    private void enforceRecordWritePermissionForRecords(
-            List<RecordInternal<?>> recordInternals, int uid) {
-        Set<Integer> recordTypeIdsToEnforce = new ArraySet<>();
-        for (RecordInternal<?> recordInternal : recordInternals) {
-            recordTypeIdsToEnforce.add(recordInternal.getRecordType());
-        }
-
-        enforceRecordWritePermissionInternal(recordTypeIdsToEnforce.stream().toList(), uid);
-    }
-
     private boolean hasDataManagementPermission(int uid, int pid) {
         return mContext.checkPermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid)
                 == PERMISSION_GRANTED;
-    }
-
-    private void enforceRecordWritePermission(List<Integer> recordTypeIds, int uid) {
-        enforceRecordWritePermissionInternal(recordTypeIds, uid);
-    }
-
-    private void enforceRecordReadPermission(List<Integer> recordTypeIds, int uid) {
-        for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    HealthPermissions.getHealthReadPermission(
-                            RecordTypePermissionCategoryMapper
-                                    .getHealthPermissionCategoryForRecordType(recordTypeId));
-            if (mPermissionManager.checkPermissionForStartDataDelivery(
-                            permissionName, new AttributionSource.Builder(uid).build(), null)
-                    != PERMISSION_GRANTED) {
-                throw new SecurityException(
-                        "Caller doesn't have "
-                                + permissionName
-                                + " to read record of type "
-                                + RecordMapper.getInstance()
-                                        .getRecordIdToExternalRecordClassMap()
-                                        .get(recordTypeId));
-            }
-        }
-    }
-
-    /**
-     * Returns a pair of boolean values. where the first value specifies enforceSelfRead, i.e., the
-     * app is allowed to read self data, and the second boolean value is true if the caller has
-     * MANAGE_HEALTH_DATA_PERMISSION, which signifies that the caller is UI.
-     */
-    private boolean enforceRecordReadPermission(int uid, int recordTypeId) {
-        boolean enforceSelfRead = false;
-        try {
-            enforceRecordReadPermission(Collections.singletonList(recordTypeId), uid);
-        } catch (SecurityException readSecurityException) {
-            try {
-                enforceRecordWritePermission(Collections.singletonList(recordTypeId), uid);
-                // Apps are always allowed to read self data if they have insert
-                // permission.
-                enforceSelfRead = true;
-            } catch (SecurityException writeSecurityException) {
-                throw readSecurityException;
-            }
-        }
-        return enforceSelfRead;
-    }
-
-    private void enforceRecordWritePermissionInternal(List<Integer> recordTypeIds, int uid) {
-        for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    HealthPermissions.getHealthWritePermission(
-                            RecordTypePermissionCategoryMapper
-                                    .getHealthPermissionCategoryForRecordType(recordTypeId));
-
-            if (mPermissionManager.checkPermissionForStartDataDelivery(
-                            permissionName, new AttributionSource.Builder(uid).build(), null)
-                    != PERMISSION_GRANTED) {
-                throw new SecurityException(
-                        "Caller doesn't have "
-                                + permissionName
-                                + " to write to record type "
-                                + RecordMapper.getInstance()
-                                        .getRecordIdToExternalRecordClassMap()
-                                        .get(recordTypeId));
-            }
-        }
     }
 
     private void finishDataDeliveryRead(int recordTypeId, int uid) {

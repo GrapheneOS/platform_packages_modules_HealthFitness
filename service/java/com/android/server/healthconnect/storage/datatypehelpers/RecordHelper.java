@@ -57,6 +57,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -162,14 +163,18 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * @return
      */
     public ReadTableRequest getReadTableRequest(
-            ReadRecordsRequestParcel request, String packageName, boolean enforceSelfRead) {
+            ReadRecordsRequestParcel request,
+            String packageName,
+            boolean enforceSelfRead,
+            Map<String, Boolean> extraPermsState) {
         return new ReadTableRequest(getMainTableName())
                 .setJoinClause(getJoinForReadRequest())
                 .setWhereClause(getReadTableWhereClause(request, packageName, enforceSelfRead))
                 .setOrderBy(getOrderByClause(request))
                 .setLimit(getLimitSize(request))
                 .setRecordHelper(this)
-                .setExtraReadRequests(getExtraDataReadRequests(request, packageName));
+                .setExtraReadRequests(
+                        getExtraDataReadRequests(request, packageName, extraPermsState));
     }
 
     /**
@@ -190,7 +195,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * packageName} to populate extra data. Called in database read requests.
      */
     List<ReadTableRequest> getExtraDataReadRequests(
-            ReadRecordsRequestParcel request, String packageName) {
+            ReadRecordsRequestParcel request,
+            String packageName,
+            Map<String, Boolean> extraPermsState) {
         return Collections.emptyList();
     }
 
@@ -443,6 +450,16 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         columnInfo.addAll(getSpecificColumnInfo());
 
         return columnInfo;
+    }
+
+    /** Returns extra permissions required to write given record. */
+    public List<String> getExtraWritePermissionsToCheck(RecordInternal<?> recordInternal) {
+        return Collections.emptyList();
+    }
+
+    /** Returns permissions required to read extra record data. */
+    public List<String> getExtraReadPermissions() {
+        return Collections.emptyList();
     }
 
     static class AggregateParams {
