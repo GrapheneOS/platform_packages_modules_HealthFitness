@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,6 +51,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class BodyWaterMassRecordTest {
     private static final String TAG = "BodyWaterMassRecordTest";
+    private static final Instant TIME = Instant.ofEpochMilli((long) 1e9);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -275,6 +277,49 @@ public class BodyWaterMassRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteBodyWaterMassRecord());
         TestUtils.verifyDeleteRecords(BodyWaterMassRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, BodyWaterMassRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        BodyWaterMassRecord.Builder builder =
+                new BodyWaterMassRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1));
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
+    @Test
+    public void testBodyWaterMass_buildSession_buildCorrectObject() {
+        BodyWaterMassRecord record =
+                new BodyWaterMassRecord.Builder(
+                                TestUtils.generateMetadata(), TIME, Mass.fromKilograms(40))
+                        .build();
+        assertThat(record.getTime()).isEqualTo(TIME);
+    }
+
+    @Test
+    public void testBodyWaterMass_buildEqualSessions_equalsReturnsTrue() {
+        Metadata metadata = TestUtils.generateMetadata();
+        BodyWaterMassRecord record =
+                new BodyWaterMassRecord.Builder(metadata, TIME, Mass.fromKilograms(40)).build();
+        BodyWaterMassRecord record2 =
+                new BodyWaterMassRecord.Builder(metadata, TIME, Mass.fromKilograms(40)).build();
+        assertThat(record).isEqualTo(record2);
+    }
+
+    @Test
+    public void testBodyWaterMass_buildSessionWithAllFields_buildCorrectObject() {
+        BodyWaterMassRecord record =
+                new BodyWaterMassRecord.Builder(
+                                TestUtils.generateMetadata(), TIME, Mass.fromKilograms(40))
+                        .setZoneOffset(ZoneOffset.MAX)
+                        .build();
+        assertThat(record.getZoneOffset()).isEqualTo(ZoneOffset.MAX);
+        assertThat(record.getBodyWaterMass()).isEqualTo(Mass.fromKilograms(40));
     }
 
     private void readBodyWaterMassRecordUsingClientId(List<Record> insertedRecord)
