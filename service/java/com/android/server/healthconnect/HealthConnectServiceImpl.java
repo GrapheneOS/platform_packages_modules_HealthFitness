@@ -20,6 +20,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IDLE;
@@ -105,6 +107,7 @@ import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.migration.DataMigrationManager;
+import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.AutoDeleteService;
@@ -191,6 +194,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     // Tells whether we are currently ACTIVELY staging remote data.
     private boolean mActivelyStagingRemoteData = false;
+    private final MigrationStateManager mMigrationStateManager;
 
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
@@ -202,6 +206,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mFirstGrantTimeManager = firstGrantTimeManager;
         mContext = context;
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
+        mMigrationStateManager = MigrationStateManager.getInstance();
     }
 
     @Override
@@ -836,15 +841,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingOrSelfPermission(
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
                 "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        mMigrationStateManager.validateStartMigration();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        // TODO(b/265000849): Start the migration
+                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IN_PROGRESS);
                         callback.onSuccess();
                     } catch (Exception e) {
-                        Slog.e(TAG, "Exception: ", e);
-                        // TODO(b/263897830): Verify migration state and send errors properly
+                        Slog.e(
+                                TAG,
+                                "Exception: ",
+                                e); // TODO(b/263897830): Verify migration state and send errors
+                        // properly
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
@@ -857,11 +866,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingOrSelfPermission(
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
                 "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-
+        mMigrationStateManager.validateFinishMigration();
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        // TODO(b/264401271): Finish the migration
+                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -879,6 +888,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
                 "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
 
+        // TODO(b/266553246): Validate write migration data after state cleanup is implemented
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
@@ -894,6 +904,35 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (Exception e) {
                         // TODO(b/263897830): Verify migration state and send errors properly
                         Slog.e(TAG, "Exception: ", e);
+                        tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
+                    }
+                });
+    }
+
+    @Override
+    public boolean isApiBlockedDueToDataSync() {
+        return mMigrationStateManager.isMigrationInProgress();
+    }
+
+    public void insertMinDataMigrationSdkExtensionVersion(
+            int requiredSdkExtension, IMigrationCallback callback) {
+
+        mContext.enforceCallingOrSelfPermission(
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
+                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
+        mMigrationStateManager.validateSetMinSdkVersion();
+
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        mMigrationStateManager.setMinDataMigrationSdkExtensionVersion(
+                                requiredSdkExtension);
+
+                        callback.onSuccess();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Exception: ", e);
+                        // TODO(b/263897830): Send errors properly
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });

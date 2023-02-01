@@ -1569,19 +1569,19 @@ public class HealthConnectManager {
     }
 
     /**
-     * Marks the start of the migration.
+     * Marks the start of the migration and block API calls.
      *
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      * @hide
      */
     @RequiresPermission(Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA)
+    @SystemApi
     public void startMigration(
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Void, MigrationException> callback) {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
-
         try {
             mService.startMigration(wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
@@ -1597,12 +1597,12 @@ public class HealthConnectManager {
      * @hide
      */
     @RequiresPermission(Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA)
+    @SystemApi
     public void finishMigration(
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Void, MigrationException> callback) {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
-
         try {
             mService.finishMigration(wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
@@ -1631,6 +1631,43 @@ public class HealthConnectManager {
 
         try {
             mService.writeMigrationData(entities, wrapMigrationCallback(executor, callback));
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns true if {@link HealthConnectManager} APIs are blocked due to a data migration or data
+     * restore in process.
+     */
+    public boolean isApiBlockedDueToDataSync() {
+        try {
+            return mService.isApiBlockedDueToDataSync();
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Sets the minimum version on which the module will inform the migrator package of its
+     * migration readiness.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA)
+    public void insertMinDataMigrationSdkExtensionVersion(
+            int requiredSdkExtension,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, MigrationException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.insertMinDataMigrationSdkExtensionVersion(
+                    requiredSdkExtension, wrapMigrationCallback(executor, callback));
+
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

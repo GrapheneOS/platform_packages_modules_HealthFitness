@@ -198,6 +198,21 @@ public class DataMigrationTest {
         }
     }
 
+    @Test
+    public void testMigrationStatesFlow() {
+        int version = 33;
+        runWithShellPermissionIdentity(
+                () -> {
+                    TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                    assertThat(TestUtils.isApiBlocked()).isEqualTo(false);
+                    TestUtils.startMigration();
+                    assertThat(TestUtils.isApiBlocked()).isEqualTo(true);
+                    TestUtils.finishMigration();
+                    assertThat(TestUtils.isApiBlocked()).isEqualTo(false);
+                },
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    }
+
     private void migrate(MigrationEntity... entities) {
         final MigrationException[] error = new MigrationException[1];
 

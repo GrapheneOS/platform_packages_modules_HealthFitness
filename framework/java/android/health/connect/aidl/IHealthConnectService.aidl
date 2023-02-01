@@ -203,11 +203,24 @@ interface IHealthConnectService {
     /**
      * Writes given entities to the module database.
      *
-     * @param entities List of {@link MigrationDataEntity} to migrate.
+     * @param entities List of {@link MigrationEntity} to migrate.
      * @param callback Callback to receive a result or an error encountered while performing this
      * operation.
      */
     void writeMigrationData(in List<MigrationEntity> entities, in IMigrationCallback callback);
+
+    /**
+     * Returns true if Healthconnect api is blocked due to migration or restore in progress.
+     */
+    boolean isApiBlockedDueToDataSync();
+
+    /**
+     * @param callback Callback to receive a result or an error encountered while performing this
+     * operation.
+     */
+    void insertMinDataMigrationSdkExtensionVersion(
+        int requiredSdkExtension,
+        in IMigrationCallback callback);
 
     /**
      * Stages all HealthConnect remote data and returns any errors in a callback. Errors encountered
