@@ -22,7 +22,6 @@ import android.content.Context;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -35,51 +34,94 @@ import java.util.concurrent.TimeUnit;
 public final class HealthConnectThreadScheduler {
     private static final int NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND = 1;
     private static final long KEEP_ALIVE_TIME_INTERNAL_BACKGROUND = 60L;
-    // Executor to run HC background tasks
-    private static final Executor INTERNAL_BACKGROUND_EXECUTOR =
-            new ThreadPoolExecutor(
-                    NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
-                    NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
-                    KEEP_ALIVE_TIME_INTERNAL_BACKGROUND,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<>());
-
     private static final int NUM_EXECUTOR_THREADS_BACKGROUND = 1;
     private static final long KEEP_ALIVE_TIME_BACKGROUND = 60L;
+    private static final int NUM_EXECUTOR_THREADS_FOREGROUND = 1;
+    private static final long KEEP_ALIVE_TIME_SHARED = 60L;
+    private static final int NUM_EXECUTOR_THREADS_CONTROLLER = 1;
+    private static final long KEEP_ALIVE_TIME_CONTROLLER = 60L;
+
+    // Scheduler to run the tasks in a RR fashion based on client package names.
+    private static final HealthConnectRoundRobinScheduler
+            HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER =
+                    new HealthConnectRoundRobinScheduler();
+
     // Executor to run HC background tasks
-    static final Executor BACKGROUND_EXECUTOR =
+    static ThreadPoolExecutor BACKGROUND_EXECUTOR =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_BACKGROUND,
                     NUM_EXECUTOR_THREADS_BACKGROUND,
                     KEEP_ALIVE_TIME_BACKGROUND,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
-
-    private static final int NUM_EXECUTOR_THREADS_FOREGROUND = 1;
-    private static final long KEEP_ALIVE_TIME_SHARED = 60L;
+    // Executor to run HC background tasks
+    private static ThreadPoolExecutor INTERNAL_BACKGROUND_EXECUTOR =
+            new ThreadPoolExecutor(
+                    NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
+                    NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
+                    KEEP_ALIVE_TIME_INTERNAL_BACKGROUND,
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<>());
     // Executor to run HC tasks for clients
-    private static final Executor FOREGROUND_EXECUTOR =
+    private static ThreadPoolExecutor FOREGROUND_EXECUTOR =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_FOREGROUND,
                     NUM_EXECUTOR_THREADS_FOREGROUND,
                     KEEP_ALIVE_TIME_SHARED,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
-
-    private static final int NUM_EXECUTOR_THREADS_CONTROLLER = 1;
-    private static final long KEEP_ALIVE_TIME_CONTROLLER = 60L;
     // Executor to run HC controller tasks
-    private static final Executor CONTROLLER_EXECUTOR =
+    private static ThreadPoolExecutor CONTROLLER_EXECUTOR =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_CONTROLLER,
                     NUM_EXECUTOR_THREADS_CONTROLLER,
                     KEEP_ALIVE_TIME_CONTROLLER,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
-    // Scheduler to run the tasks in a RR fashion based on client package names.
-    private static final HealthConnectRoundRobinScheduler
-            HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER =
-                    new HealthConnectRoundRobinScheduler();
+
+    public static void resetThreadPools() {
+        INTERNAL_BACKGROUND_EXECUTOR =
+                new ThreadPoolExecutor(
+                        NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
+                        NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
+                        KEEP_ALIVE_TIME_INTERNAL_BACKGROUND,
+                        TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<>());
+
+        BACKGROUND_EXECUTOR =
+                new ThreadPoolExecutor(
+                        NUM_EXECUTOR_THREADS_BACKGROUND,
+                        NUM_EXECUTOR_THREADS_BACKGROUND,
+                        KEEP_ALIVE_TIME_BACKGROUND,
+                        TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<>());
+
+        FOREGROUND_EXECUTOR =
+                new ThreadPoolExecutor(
+                        NUM_EXECUTOR_THREADS_FOREGROUND,
+                        NUM_EXECUTOR_THREADS_FOREGROUND,
+                        KEEP_ALIVE_TIME_SHARED,
+                        TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<>());
+
+        CONTROLLER_EXECUTOR =
+                new ThreadPoolExecutor(
+                        NUM_EXECUTOR_THREADS_CONTROLLER,
+                        NUM_EXECUTOR_THREADS_CONTROLLER,
+                        KEEP_ALIVE_TIME_CONTROLLER,
+                        TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<>());
+        HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.resume();
+    }
+
+    static void shutdownThreadPools() {
+        HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.killTasksAndPauseScheduler();
+
+        INTERNAL_BACKGROUND_EXECUTOR.shutdownNow();
+        BACKGROUND_EXECUTOR.shutdownNow();
+        FOREGROUND_EXECUTOR.shutdownNow();
+        CONTROLLER_EXECUTOR.shutdownNow();
+    }
 
     /** Schedules the task on the executor dedicated for performing internal tasks */
     static void scheduleInternalTask(Runnable task) {

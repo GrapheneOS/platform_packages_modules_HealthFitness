@@ -177,6 +177,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     static final int INTERNAL_RESTORE_STATE_STAGING_DONE = 3;
     static final int INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS = 4;
     static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 5;
+
     private static final String TAG = "HealthConnectService";
     // Permission for test api for deleting staged data
     private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
@@ -706,8 +707,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        AutoDeleteService.setRecordRetentionPeriodInDays(
-                                days, user.getIdentifier());
+                        AutoDeleteService.setRecordRetentionPeriodInDays(days);
                         callback.onResult();
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
@@ -725,7 +725,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public int getRecordRetentionPeriodInDays(@NonNull UserHandle user) {
         try {
             mContext.enforceCallingPermission(MANAGE_HEALTH_DATA_PERMISSION, null);
-            return AutoDeleteService.getRecordRetentionPeriodInDays(user.getIdentifier());
+            return AutoDeleteService.getRecordRetentionPeriodInDays();
         } catch (Exception e) {
             if (e instanceof SecurityException) {
                 throw e;
