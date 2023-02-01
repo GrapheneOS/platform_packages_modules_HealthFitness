@@ -132,7 +132,7 @@ public class AggregateTableRequest {
     public String getCommandToFetchAggregateMetadata() {
         final StringBuilder builder = new StringBuilder("SELECT DISTINCT ");
         builder.append(APP_INFO_ID_COLUMN_NAME).append(", ");
-        return appendAggregateCommand(builder);
+        return appendAggregateCommand(builder, true);
     }
 
     /** Returns SQL statement to perform aggregation operation */
@@ -157,7 +157,7 @@ public class AggregateTableRequest {
             }
         }
 
-        return appendAggregateCommand(builder);
+        return appendAggregateCommand(builder, false);
     }
 
     public AggregateTableRequest setPackageFilter(
@@ -240,9 +240,9 @@ public class AggregateTableRequest {
         }
     }
 
-    private String appendAggregateCommand(StringBuilder builder) {
+    private String appendAggregateCommand(StringBuilder builder, boolean isMetadata) {
         boolean useGroupBy = false;
-        if (mGroupByColumnName != null) {
+        if (mGroupByColumnName != null && !isMetadata) {
             useGroupBy = true;
             builder.append(" CASE ");
             int groupByIndex = 0;
