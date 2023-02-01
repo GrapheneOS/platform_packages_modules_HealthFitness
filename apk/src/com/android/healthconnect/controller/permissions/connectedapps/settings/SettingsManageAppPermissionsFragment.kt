@@ -31,6 +31,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionStr
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
+import com.android.healthconnect.controller.utils.dismissLoadingDialog
+import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -88,6 +90,17 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         viewModel.loadForPackage(packageName)
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
+        }
+
+        viewModel.revokeAllPermissionsState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is AppPermissionViewModel.RevokeAllState.Loading -> {
+                    showLoadingDialog()
+                }
+                else -> {
+                    dismissLoadingDialog()
+                }
+            }
         }
         setupAllowAllPreference()
         setupHeader()

@@ -957,4 +957,8 @@
   <string name="request_route_header_title" description="Title for screen to give permissions to an app to access a route for an exercise session. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access this exercise route in Health&#160;Connect?</string>
   <string name="request_route_disclaimer_notice" description="A note on a dialog asking to grant access to a specific exercise route, stressing the fact that the route contains past locations of the user. [CHAR_LIMIT=NONE]">This app will be able to read your past location in the route</string>
   <!--  endregion-->
+
+  <!-- region Loading -->
+  <string name="loading" description="Label shown when loading data. [CHAR_LIMIT=40]">Loading&#8230;</string>
+  <!--  endregion -->
 </resources>

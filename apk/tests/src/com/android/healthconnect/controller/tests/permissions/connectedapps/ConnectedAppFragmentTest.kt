@@ -31,6 +31,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedApps.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.AppPermissionViewModel.RevokeAllState.NotStarted
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppFragment
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -45,6 +46,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.safeEq
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.tests.utils.whenever
 import com.android.settingslib.widget.MainSwitchPreference
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -76,12 +78,13 @@ class ConnectedAppFragmentTest {
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
         hiltRule.inject()
 
-        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
-        `when`(viewModel.atLeastOnePermissionGranted).then { MutableLiveData(true) }
+        whenever(viewModel.revokeAllPermissionsState).then { MutableLiveData(NotStarted) }
+        whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
+        whenever(viewModel.atLeastOnePermissionGranted).then { MutableLiveData(true) }
         val accessDate = Instant.parse("2022-10-20T18:40:13.00Z")
-        `when`(viewModel.loadAccessDate(Mockito.anyString())).thenReturn(accessDate)
+        whenever(viewModel.loadAccessDate(Mockito.anyString())).thenReturn(accessDate)
 
-        `when`(viewModel.appInfo).then {
+        whenever(viewModel.appInfo).then {
             MutableLiveData(
                 AppMetadata(
                     TEST_APP_PACKAGE_NAME,
@@ -92,7 +95,9 @@ class ConnectedAppFragmentTest {
 
     @Test
     fun test_noPermissions() {
-        `when`(viewModel.appPermissions).then { MutableLiveData(listOf<HealthPermissionStatus>()) }
+        whenever(viewModel.appPermissions).then {
+            MutableLiveData(listOf<HealthPermissionStatus>())
+        }
 
         val scenario =
             launchFragment<ConnectedAppFragment>(
@@ -117,7 +122,7 @@ class ConnectedAppFragmentTest {
     @Test
     fun test_readPermission() {
         val permission = HealthPermission(DISTANCE, READ)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(
                 listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }
@@ -146,7 +151,7 @@ class ConnectedAppFragmentTest {
     @Test
     fun test_writePermission() {
         val permission = HealthPermission(EXERCISE, WRITE)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(
                 listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }
@@ -180,7 +185,7 @@ class ConnectedAppFragmentTest {
         val readPermission =
             HealthPermissionStatus(
                 healthPermission = HealthPermission(DISTANCE, READ), isGranted = false)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
 
@@ -214,10 +219,10 @@ class ConnectedAppFragmentTest {
         val readPermission =
             HealthPermissionStatus(
                 healthPermission = HealthPermission(DISTANCE, READ), isGranted = true)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
-        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
+        whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
 
         val scenario =
             launchFragment<ConnectedAppFragment>(
@@ -244,10 +249,10 @@ class ConnectedAppFragmentTest {
         val readPermission =
             HealthPermissionStatus(
                 healthPermission = HealthPermission(DISTANCE, READ), isGranted = false)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
-        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
+        whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
 
         val scenario =
             launchFragment<ConnectedAppFragment>(
@@ -275,10 +280,10 @@ class ConnectedAppFragmentTest {
         val readPermission =
             HealthPermissionStatus(
                 healthPermission = HealthPermission(DISTANCE, READ), isGranted = true)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
-        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
+        whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
         launchFragment<ConnectedAppFragment>(
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
         onView(withText("Allow all")).perform(click())
@@ -294,10 +299,10 @@ class ConnectedAppFragmentTest {
         val readPermission =
             HealthPermissionStatus(
                 healthPermission = HealthPermission(DISTANCE, READ), isGranted = true)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
-        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
+        whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
         launchFragment<ConnectedAppFragment>(
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
         onView(withText("Allow all")).perform(click())
@@ -316,10 +321,10 @@ class ConnectedAppFragmentTest {
         val readPermission =
             HealthPermissionStatus(
                 healthPermission = HealthPermission(DISTANCE, READ), isGranted = true)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
-        `when`(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
+        whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
         launchFragment<ConnectedAppFragment>(
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
         onView(withText("Allow all")).perform(click())
@@ -333,7 +338,7 @@ class ConnectedAppFragmentTest {
     @Test
     fun test_footerIsDisplayed() {
         val permission = HealthPermission(DISTANCE, READ)
-        `when`(viewModel.appPermissions).then {
+        whenever(viewModel.appPermissions).then {
             MutableLiveData(
                 listOf(HealthPermissionStatus(healthPermission = permission, isGranted = true)))
         }

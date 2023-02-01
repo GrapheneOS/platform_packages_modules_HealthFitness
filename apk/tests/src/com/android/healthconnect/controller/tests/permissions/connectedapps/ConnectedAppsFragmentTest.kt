@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
@@ -33,11 +33,15 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsFragment
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.Loading
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.NotStarted
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.Updated
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -60,12 +64,13 @@ class ConnectedAppsFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        whenever(viewModel.disconnectAllState).then { MutableLiveData(NotStarted) }
     }
 
     @Test
     fun test_allowedApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
-        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
@@ -76,7 +81,7 @@ class ConnectedAppsFragmentTest {
     @Test
     fun test_deniedApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
-        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
@@ -85,9 +90,31 @@ class ConnectedAppsFragmentTest {
     }
 
     @Test
+    fun showsLoading() {
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.disconnectAllState).then { MutableLiveData(Loading) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText(R.string.loading)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dismissLoading() {
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.disconnectAllState).then { MutableLiveData(Updated) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText(R.string.loading)).check(doesNotExist())
+    }
+
+    @Test
     fun test_inactiveApp_showsInactiveApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
-        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
@@ -98,7 +125,7 @@ class ConnectedAppsFragmentTest {
     @Test
     fun test_appPermissionsWithNoConnectedApps_isDisplayedCorrectly() {
         val connectApp = listOf<ConnectedAppMetadata>()
-        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
@@ -126,7 +153,7 @@ class ConnectedAppsFragmentTest {
             listOf(
                 ConnectedAppMetadata(TEST_APP, status = DENIED),
                 ConnectedAppMetadata(TEST_APP_2, status = ALLOWED))
-        Mockito.`when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
@@ -135,8 +162,8 @@ class ConnectedAppsFragmentTest {
         onView(withText("No apps allowed")).check(doesNotExist())
         onView(withText("No apps denied")).check(doesNotExist())
 
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Inactive apps")).check(doesNotExist())
     }
 }

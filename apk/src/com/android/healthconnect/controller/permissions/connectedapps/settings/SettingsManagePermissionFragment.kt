@@ -31,6 +31,8 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.shared.Constants.EXTRA_APP_NAME
+import com.android.healthconnect.controller.utils.dismissLoadingDialog
+import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -66,6 +68,16 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
             val connectedAppsGroup = connectedApps.groupBy { it.status }
             updateAllowedApps(connectedAppsGroup[ALLOWED].orEmpty())
             updateDeniedApps(connectedAppsGroup[DENIED].orEmpty())
+        }
+        viewModel.disconnectAllState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ConnectedAppsViewModel.DisconnectAllState.Loading -> {
+                    showLoadingDialog()
+                }
+                else -> {
+                    dismissLoadingDialog()
+                }
+            }
         }
     }
 

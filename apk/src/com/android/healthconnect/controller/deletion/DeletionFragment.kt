@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.START_DEL
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_INACTIVE_APP_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.TIME_RANGE_SELECTION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.TRY_AGAIN_EVENT
+import com.android.healthconnect.controller.shared.dialog.ProgressDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -153,7 +154,8 @@ class DeletionFragment : Hilt_DeletionFragment() {
     }
 
     private fun showProgressDialogFragment() {
-        ProgressDialogFragment().show(childFragmentManager, ProgressDialogFragment.TAG)
+        ProgressDialogFragment(titleRes = R.string.delete_progress_indicator)
+            .show(childFragmentManager, ProgressDialogFragment.TAG)
     }
 
     private fun showSuccessDialogFragment() {

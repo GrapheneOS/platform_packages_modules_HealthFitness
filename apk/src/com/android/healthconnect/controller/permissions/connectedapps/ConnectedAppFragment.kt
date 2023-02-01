@@ -43,7 +43,9 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.MainSwitchPreference
@@ -128,6 +130,17 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
         deletionViewModel.appPermissionReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
             if (isReloadNeeded) appPermissionViewModel.loadForPackage(packageName)
+        }
+
+        appPermissionViewModel.revokeAllPermissionsState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is AppPermissionViewModel.RevokeAllState.Loading -> {
+                    showLoadingDialog()
+                }
+                else -> {
+                    dismissLoadingDialog()
+                }
+            }
         }
 
         setupAllowAllPreference()

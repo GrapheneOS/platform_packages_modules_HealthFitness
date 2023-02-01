@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.NotStarted
 import com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsManagePermissionFragment
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -37,6 +38,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -45,7 +47,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 
 @HiltAndroidTest
 class SettingsManagePermissionFragmentTest {
@@ -59,11 +60,12 @@ class SettingsManagePermissionFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        whenever(viewModel.disconnectAllState).then { MutableLiveData(NotStarted) }
     }
 
     @Test
     fun test_displaysSections() {
-        `when`(viewModel.connectedApps).then { MutableLiveData(listOf<AppMetadata>()) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(listOf<AppMetadata>()) }
 
         launchFragment<SettingsManagePermissionFragment>(Bundle())
 
@@ -76,7 +78,7 @@ class SettingsManagePermissionFragmentTest {
     @Test
     fun test_allowedApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
-        `when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SettingsManagePermissionFragment>(Bundle())
 
@@ -87,7 +89,7 @@ class SettingsManagePermissionFragmentTest {
     @Test
     fun test_deniedApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
-        `when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SettingsManagePermissionFragment>(Bundle())
 
@@ -98,7 +100,7 @@ class SettingsManagePermissionFragmentTest {
     @Test
     fun test_accessedHealthData_showsRecentAccessSummary() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED, NOW))
-        `when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SettingsManagePermissionFragment>(Bundle())
 
@@ -108,7 +110,7 @@ class SettingsManagePermissionFragmentTest {
     @Test
     fun test_inactiveApp_doesNotShowInactiveApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
-        `when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SettingsManagePermissionFragment>(Bundle())
 
@@ -122,7 +124,7 @@ class SettingsManagePermissionFragmentTest {
             listOf(
                 ConnectedAppMetadata(TEST_APP, status = DENIED),
                 ConnectedAppMetadata(TEST_APP_2, status = ALLOWED))
-        `when`(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SettingsManagePermissionFragment>(Bundle())
 

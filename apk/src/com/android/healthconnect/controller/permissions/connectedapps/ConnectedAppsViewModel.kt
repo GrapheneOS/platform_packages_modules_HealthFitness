@@ -21,8 +21,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchHealthPermissionApps
+import com.android.healthconnect.controller.service.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -31,12 +33,18 @@ class ConnectedAppsViewModel
 constructor(
     private val loadHealthPermissionApps: LoadHealthPermissionApps,
     private val searchHealthPermissionApps: SearchHealthPermissionApps,
-    private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase
+    private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
+    @IoDispatcher val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _connectedApps = MutableLiveData<List<ConnectedAppMetadata>>()
     val connectedApps: LiveData<List<ConnectedAppMetadata>>
         get() = _connectedApps
+
+    private val _disconnectAllState =
+        MutableLiveData<DisconnectAllState>(DisconnectAllState.NotStarted)
+    val disconnectAllState: LiveData<DisconnectAllState>
+        get() = _disconnectAllState
 
     init {
         loadConnectedApps()
@@ -54,11 +62,19 @@ constructor(
     }
 
     fun disconnectAllApps(apps: List<ConnectedAppMetadata>) {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
+            _disconnectAllState.postValue(DisconnectAllState.Loading)
             apps.forEach { app ->
                 revokeAllHealthPermissionsUseCase.invoke(app.appMetadata.packageName)
             }
             loadConnectedApps()
+            _disconnectAllState.postValue(DisconnectAllState.Updated)
         }
+    }
+
+    sealed class DisconnectAllState {
+        object NotStarted : DisconnectAllState()
+        object Loading : DisconnectAllState()
+        object Updated : DisconnectAllState()
     }
 }
