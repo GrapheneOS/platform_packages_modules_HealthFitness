@@ -39,6 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,6 +50,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class IntermenstrualBleedingRecordTest {
     private static final String TAG = "IntermenstrualBleedingRecordTest";
+    private static final Instant TIME = Instant.ofEpochMilli((long) 1e9);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -301,6 +303,46 @@ public class IntermenstrualBleedingRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteIntermenstrualBleedingRecord());
         TestUtils.verifyDeleteRecords(IntermenstrualBleedingRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, IntermenstrualBleedingRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        IntermenstrualBleedingRecord.Builder builder =
+                new IntermenstrualBleedingRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now());
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
+    @Test
+    public void testIntermenstrualBleeding_buildSession_buildCorrectObject() {
+        IntermenstrualBleedingRecord record =
+                new IntermenstrualBleedingRecord.Builder(TestUtils.generateMetadata(), TIME)
+                        .build();
+        assertThat(record.getTime()).isEqualTo(TIME);
+    }
+
+    @Test
+    public void testIntermenstrualBleeding_buildEqualSessions_equalsReturnsTrue() {
+        Metadata metadata = TestUtils.generateMetadata();
+        IntermenstrualBleedingRecord record =
+                new IntermenstrualBleedingRecord.Builder(metadata, TIME).build();
+        IntermenstrualBleedingRecord record2 =
+                new IntermenstrualBleedingRecord.Builder(metadata, TIME).build();
+        assertThat(record).isEqualTo(record2);
+    }
+
+    @Test
+    public void testIntermenstrualBleeding_buildSessionWithAllFields_buildCorrectObject() {
+        IntermenstrualBleedingRecord record =
+                new IntermenstrualBleedingRecord.Builder(TestUtils.generateMetadata(), TIME)
+                        .setZoneOffset(ZoneOffset.MAX)
+                        .build();
+        assertThat(record.getZoneOffset()).isEqualTo(ZoneOffset.MAX);
     }
 
     private void readIntermenstrualBleedingRecordUsingClientId(List<Record> insertedRecord)

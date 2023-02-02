@@ -50,6 +50,8 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class MenstruationPeriodRecordTest {
     private static final String TAG = "MenstruationPeriodRecordTest";
+    private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e9);
+    private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e10);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -285,6 +287,60 @@ public class MenstruationPeriodRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteMenstruationPeriodRecord());
         TestUtils.verifyDeleteRecords(MenstruationPeriodRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, MenstruationPeriodRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        MenstruationPeriodRecord.Builder builder =
+                new MenstruationPeriodRecord.Builder(
+                                TestUtils.generateMetadata(), START_TIME, END_TIME)
+                        .setEndZoneOffset(ZoneOffset.MAX)
+                        .setStartZoneOffset(ZoneOffset.MIN);
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+    }
+
+    @Test
+    public void testMenstruationPeriod_buildSession_buildCorrectObject() {
+        MenstruationPeriodRecord record =
+                new MenstruationPeriodRecord.Builder(
+                                TestUtils.generateMetadata(), START_TIME, END_TIME)
+                        .build();
+        assertThat(record.getStartTime()).isEqualTo(START_TIME);
+        assertThat(record.getEndTime()).isEqualTo(END_TIME);
+    }
+
+    @Test
+    public void testMenstruationPeriod_buildEqualSessions_equalsReturnsTrue() {
+        Metadata metadata = TestUtils.generateMetadata();
+        MenstruationPeriodRecord record =
+                new MenstruationPeriodRecord.Builder(metadata, START_TIME, END_TIME).build();
+        MenstruationPeriodRecord record2 =
+                new MenstruationPeriodRecord.Builder(metadata, START_TIME, END_TIME).build();
+        assertThat(record).isEqualTo(record2);
+    }
+
+    @Test
+    public void testMenstruationPeriod_buildSessionWithAllFields_buildCorrectObject() {
+        MenstruationPeriodRecord record =
+                new MenstruationPeriodRecord.Builder(
+                                TestUtils.generateMetadata(), START_TIME, END_TIME)
+                        .setEndZoneOffset(ZoneOffset.MAX)
+                        .setStartZoneOffset(ZoneOffset.MIN)
+                        .build();
+        assertThat(record.getEndZoneOffset()).isEqualTo(ZoneOffset.MAX);
+        assertThat(record.getStartZoneOffset()).isEqualTo(ZoneOffset.MIN);
     }
 
     private void readMenstruationPeriodRecordUsingClientId(List<Record> insertedRecord)

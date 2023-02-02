@@ -39,6 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,6 +50,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class HeartRateVariabilityRmssdRecordTest {
     private static final String TAG = "HeartRateVariabilityRmssdRecordTest";
+    private static final Instant TIME = Instant.ofEpochMilli((long) 1e9);
 
     @After
     public void tearDown() throws InterruptedException {
@@ -303,6 +305,47 @@ public class HeartRateVariabilityRmssdRecordTest {
         String id = TestUtils.insertRecordAndGetId(getCompleteHeartRateVariabilityRmssdRecord());
         TestUtils.verifyDeleteRecords(HeartRateVariabilityRmssdRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, HeartRateVariabilityRmssdRecord.class);
+    }
+
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset zoneOffset = ZoneOffset.UTC;
+        HeartRateVariabilityRmssdRecord.Builder builder =
+                new HeartRateVariabilityRmssdRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), 0.3);
+
+        assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
+        assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
+    @Test
+    public void testHeartRateVariabilityRmssd_buildSession_buildCorrectObject() {
+        HeartRateVariabilityRmssdRecord record =
+                new HeartRateVariabilityRmssdRecord.Builder(TestUtils.generateMetadata(), TIME, 0.3)
+                        .build();
+        assertThat(record.getTime()).isEqualTo(TIME);
+    }
+
+    @Test
+    public void testHeartRateVariabilityRmssd_buildEqualSessions_equalsReturnsTrue() {
+        Metadata metadata = TestUtils.generateMetadata();
+        HeartRateVariabilityRmssdRecord record =
+                new HeartRateVariabilityRmssdRecord.Builder(metadata, TIME, 0.3).build();
+        HeartRateVariabilityRmssdRecord record2 =
+                new HeartRateVariabilityRmssdRecord.Builder(metadata, TIME, 0.3).build();
+        assertThat(record).isEqualTo(record2);
+    }
+
+    @Test
+    public void testHeartRateVariabilityRmssd_buildSessionWithAllFields_buildCorrectObject() {
+        HeartRateVariabilityRmssdRecord record =
+                new HeartRateVariabilityRmssdRecord.Builder(TestUtils.generateMetadata(), TIME, 0.3)
+                        .setZoneOffset(ZoneOffset.MAX)
+                        .build();
+        assertThat(record.getZoneOffset()).isEqualTo(ZoneOffset.MAX);
+        assertThat(record.getHeartRateVariabilityMillis()).isEqualTo(0.3);
     }
 
     private void readHeartRateVariabilityRmssdRecordUsingClientId(List<Record> insertedRecord)
