@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,8 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *
  */
-package com.android.healthconnect.controller.tests.permissions
+package com.android.healthconnect.controller.tests.permissions.request
 
 import android.health.connect.HealthPermissions.READ_DISTANCE
 import android.health.connect.HealthPermissions.READ_HEART_RATE
@@ -31,10 +33,10 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.*
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.PermissionsFragment
-import com.android.healthconnect.controller.permissions.RequestPermissionViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.permissions.request.PermissionsFragment
+import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
 import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -45,6 +47,7 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,6 +55,7 @@ import org.mockito.Matchers.eq
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 
+@ExperimentalCoroutinesApi
 @HiltAndroidTest
 class PermissionsFragmentTest {
 
@@ -74,26 +78,13 @@ class PermissionsFragmentTest {
         `when`(viewModel.grantedPermissions).then { MutableLiveData(emptySet<HealthPermission>()) }
     }
 
-    // TODO(b/264511693) find a way to wait for liveData before checking the UI.
-    //    @Test
-    //    fun test_doesNotDisplayEmptyCategories() {
-    //        `when`(viewModel.permissionsList).then {
-    //            MutableLiveData(emptyList<HealthPermission>())
-    //        }
-    //
-    //        launchFragment<PermissionsFragment>(bundleOf())
-    //
-    //        onView(withText(R.string.read_permission_category)).check(doesNotExist())
-    //        onView(withText(R.string.write_permission_category)).check(doesNotExist())
-    //    }
-
     @Test
     fun test_displaysCategories() {
         `when`(viewModel.permissionsList).then {
             val permissions =
                 listOf(
                     fromPermissionString(READ_STEPS),
-                    fromPermissionString(READ_HEART_RATE),
+                    fromPermissionString(WRITE_HEART_RATE),
                 )
             MutableLiveData(permissions)
         }

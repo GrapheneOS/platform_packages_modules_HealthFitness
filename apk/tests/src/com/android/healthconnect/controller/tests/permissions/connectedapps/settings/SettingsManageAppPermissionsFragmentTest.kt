@@ -19,7 +19,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.android.healthconnect.controller.permissions.connectedapps.settings.SettingsManageAppPermissionsFragment
+import com.android.healthconnect.controller.permissions.app.SettingsManageAppPermissionsFragment
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.HiltAndroidRule
