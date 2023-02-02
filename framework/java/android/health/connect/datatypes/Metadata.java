@@ -142,9 +142,7 @@ public final class Metadata {
                     && getDataOrigin().equals(other.getDataOrigin())
                     && getId().equals(other.getId())
                     && Objects.equals(getClientRecordId(), other.getClientRecordId())
-                    && getClientRecordVersion() == other.getClientRecordVersion()
-                    && getLastModifiedTime().toEpochMilli()
-                            == other.getLastModifiedTime().toEpochMilli();
+                    && getClientRecordVersion() == other.getClientRecordVersion();
         }
         return false;
     }

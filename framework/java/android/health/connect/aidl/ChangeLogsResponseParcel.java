@@ -23,6 +23,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** @hide */
@@ -40,25 +41,32 @@ public class ChangeLogsResponseParcel implements Parcelable {
                 }
             };
     private final RecordsParcel mUpsertedRecords;
-    private final List<String> mDeletedRecords;
+    private final List<ChangeLogsResponse.DeletedLog> mDeletedLogs;
     private final String mNextChangesToken;
     private final boolean mHasMorePages;
 
     protected ChangeLogsResponseParcel(Parcel in) {
         mUpsertedRecords =
                 in.readParcelable(RecordsParcel.class.getClassLoader(), RecordsParcel.class);
-        mDeletedRecords = in.createStringArrayList();
+        int size = in.readInt();
+        List<ChangeLogsResponse.DeletedLog> deletedLogs = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            String id = in.readString();
+            long time = in.readLong();
+            deletedLogs.add(new ChangeLogsResponse.DeletedLog(id, time));
+        }
+        mDeletedLogs = deletedLogs;
         mNextChangesToken = in.readString();
         mHasMorePages = in.readBoolean();
     }
 
     public ChangeLogsResponseParcel(
             RecordsParcel upsertedRecords,
-            List<String> deletedRecords,
+            List<ChangeLogsResponse.DeletedLog> deletedLogs,
             String nextChangesToken,
             boolean hasMorePages) {
         mUpsertedRecords = upsertedRecords;
-        mDeletedRecords = deletedRecords;
+        mDeletedLogs = deletedLogs;
         mNextChangesToken = nextChangesToken;
         mHasMorePages = hasMorePages;
     }
@@ -71,7 +79,7 @@ public class ChangeLogsResponseParcel implements Parcelable {
         return new ChangeLogsResponse(
                 InternalExternalRecordConverter.getInstance()
                         .getExternalRecords(mUpsertedRecords.getRecords()),
-                mDeletedRecords,
+                mDeletedLogs,
                 mNextChangesToken,
                 mHasMorePages);
     }
@@ -84,7 +92,11 @@ public class ChangeLogsResponseParcel implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeParcelable(mUpsertedRecords, 0);
-        dest.writeStringList(mDeletedRecords);
+        dest.writeInt(mDeletedLogs.size());
+        for (ChangeLogsResponse.DeletedLog deletedLog : mDeletedLogs) {
+            dest.writeString(deletedLog.getDeletedRecordId());
+            dest.writeLong(deletedLog.getDeletedTime().toEpochMilli());
+        }
         dest.writeString(mNextChangesToken);
         dest.writeBoolean(mHasMorePages);
     }

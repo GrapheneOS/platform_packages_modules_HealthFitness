@@ -35,6 +35,7 @@ import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,8 +64,9 @@ public class UpsertTransactionRequest {
             Context context,
             boolean isInsertRequest) {
         mPackageName = packageName;
+        long currentTime = Instant.now().toEpochMilli();
         ChangeLogsHelper.ChangeLogs changeLogs =
-                new ChangeLogsHelper.ChangeLogs(UPSERT, mPackageName);
+                new ChangeLogsHelper.ChangeLogs(UPSERT, mPackageName, currentTime);
 
         for (RecordInternal<?> recordInternal : recordInternals) {
             StorageUtils.addPackageNameTo(recordInternal, mPackageName);
@@ -85,6 +87,7 @@ public class UpsertTransactionRequest {
                 StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
             }
             changeLogs.addUUID(recordInternal.getRecordType(), recordInternal.getUuid());
+            recordInternal.setLastModifiedTime(currentTime);
             addRequest(recordInternal);
         }
 

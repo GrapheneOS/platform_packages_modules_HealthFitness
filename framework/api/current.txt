@@ -62,10 +62,15 @@ package android.health.connect {
   }
 
   public final class ChangeLogsResponse {
-    method @NonNull public java.util.List<java.lang.String> getDeletedRecordIds();
+    method @NonNull public java.util.List<android.health.connect.ChangeLogsResponse.DeletedLog> getDeletedLogs();
     method @NonNull public String getNextChangesToken();
     method @NonNull public java.util.List<android.health.connect.datatypes.Record> getUpsertedRecords();
     method public boolean hasMorePages();
+  }
+
+  public static final class ChangeLogsResponse.DeletedLog {
+    method @NonNull public String getDeletedRecordId();
+    method @NonNull public java.time.Instant getDeletedTime();
   }
 
   public class HealthConnectException extends java.lang.RuntimeException {

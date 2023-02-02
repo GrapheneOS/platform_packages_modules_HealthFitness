@@ -56,13 +56,13 @@ public class HealthConnectChangeLogsTests {
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
 
         List<Record> testRecord = TestUtils.getTestRecords();
         TestUtils.insertRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(testRecord.size());
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
     }
 
     @Test
@@ -77,13 +77,13 @@ public class HealthConnectChangeLogsTests {
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
 
         List<Record> testRecord = TestUtils.getTestRecords();
         TestUtils.insertRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
     }
 
     @Test
@@ -101,13 +101,13 @@ public class HealthConnectChangeLogsTests {
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
 
         List<Record> testRecord = TestUtils.getTestRecords();
         TestUtils.insertRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(testRecord.size());
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
     }
 
     @Test
@@ -126,18 +126,18 @@ public class HealthConnectChangeLogsTests {
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
 
         List<Record> testRecord = Collections.singletonList(TestUtils.getStepsRecord());
         TestUtils.insertRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(1);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
         testRecord = Collections.singletonList(TestUtils.getHeartRateRecord());
         TestUtils.insertRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(1);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
     }
 
     @Test
@@ -154,7 +154,12 @@ public class HealthConnectChangeLogsTests {
         TestUtils.deleteRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(testRecord.size());
+        assertThat(response.getDeletedLogs().size()).isEqualTo(testRecord.size());
+        List<ChangeLogsResponse.DeletedLog> deletedLogs = response.getDeletedLogs();
+        for (ChangeLogsResponse.DeletedLog log : deletedLogs) {
+            assertThat(log.getDeletedRecordId()).isNotNull();
+            assertThat(log.getDeletedTime()).isNotNull();
+        }
     }
 
     @Test
@@ -174,11 +179,11 @@ public class HealthConnectChangeLogsTests {
         TestUtils.insertRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(2);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
         TestUtils.deleteRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(3);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(3);
     }
 
     @Test
@@ -200,7 +205,7 @@ public class HealthConnectChangeLogsTests {
         TestUtils.deleteRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
     }
 
     @Test
@@ -225,7 +230,7 @@ public class HealthConnectChangeLogsTests {
         TestUtils.deleteRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(testRecord.size());
+        assertThat(response.getDeletedLogs().size()).isEqualTo(testRecord.size());
     }
 
     @Test
@@ -244,20 +249,20 @@ public class HealthConnectChangeLogsTests {
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
 
         List<Record> testRecord = Collections.singletonList(TestUtils.getStepsRecord());
         TestUtils.insertRecords(testRecord);
         TestUtils.deleteRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(1);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(1);
         testRecord = Collections.singletonList(TestUtils.getHeartRateRecord());
         TestUtils.insertRecords(testRecord);
         TestUtils.deleteRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedRecordIds().size()).isEqualTo(1);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(1);
     }
 
     @Test

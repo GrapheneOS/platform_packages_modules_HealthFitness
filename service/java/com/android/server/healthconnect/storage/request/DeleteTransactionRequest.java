@@ -34,6 +34,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,8 @@ public final class DeleteTransactionRequest {
     public DeleteTransactionRequest(String packageName, DeleteUsingFiltersRequestParcel request) {
         Objects.requireNonNull(packageName);
         mDeleteTableRequests = new ArrayList<>(request.getRecordTypeFilters().size());
-        mChangeLogs = new ChangeLogsHelper.ChangeLogs(DELETE, packageName);
+        mChangeLogs =
+                new ChangeLogsHelper.ChangeLogs(DELETE, packageName, Instant.now().toEpochMilli());
         mRequestingPackageNameId = AppInfoHelper.getInstance().getAppInfoId(packageName);
         if (request.getRecordIdFiltersParcel().getRecordIdFilters() != null
                 && !request.getRecordIdFiltersParcel().getRecordIdFilters().isEmpty()) {

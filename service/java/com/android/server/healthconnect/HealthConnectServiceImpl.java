@@ -590,7 +590,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onResult(
                                 new ChangeLogsResponseParcel(
                                         new RecordsParcel(recordInternals),
-                                        ChangeLogsHelper.getDeletedIds(
+                                        ChangeLogsHelper.getDeletedLogs(
                                                 changeLogsResponse.getChangeLogsMap()),
                                         changeLogsResponse.getNextPageToken(),
                                         changeLogsResponse.hasMorePages()));

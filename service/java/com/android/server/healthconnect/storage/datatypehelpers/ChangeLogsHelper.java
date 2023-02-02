@@ -27,12 +27,14 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorStringList;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.health.connect.ChangeLogsResponse.DeletedLog;
 import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
@@ -49,7 +51,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -81,14 +82,19 @@ public final class ChangeLogsHelper {
     }
 
     @NonNull
-    public static List<String> getDeletedIds(Map<Integer, ChangeLogs> operationToChangeLogs) {
+    public static List<DeletedLog> getDeletedLogs(Map<Integer, ChangeLogs> operationToChangeLogs) {
         ChangeLogs logs = operationToChangeLogs.get(DELETE);
 
-        if (logs != null) {
-            return logs.getUUIds();
+        if (!Objects.isNull(logs)) {
+            List<String> ids = logs.getUUIds();
+            long timeStamp = logs.getChangeLogTimeStamp();
+            List<DeletedLog> deletedLogs = new ArrayList<>(ids.size());
+            for (String id : ids) {
+                deletedLogs.add(new DeletedLog(id, timeStamp));
+            }
+            return deletedLogs;
         }
-
-        return Collections.emptyList();
+        return new ArrayList<>();
     }
 
     @NonNull
@@ -186,8 +192,9 @@ public final class ChangeLogsHelper {
         @OperationType.OperationTypes
         int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
         List<String> uuidList = getCursorStringList(cursor, UUIDS_COLUMN_NAME, DELIMITER);
-
-        changeLogs.putIfAbsent(operationType, new ChangeLogs(operationType));
+        changeLogs.putIfAbsent(
+                operationType,
+                new ChangeLogs(operationType, getCursorLong(cursor, TIME_COLUMN_NAME)));
         changeLogs.get(operationType).addUUIDs(recordType, uuidList);
         return uuidList.size();
     }
@@ -209,22 +216,36 @@ public final class ChangeLogsHelper {
         private final Map<Integer, List<String>> mRecordTypeToUUIDMap = new ArrayMap<>();
         @OperationType.OperationTypes private final int mOperationType;
         private final String mPackageName;
+        private final long mChangeLogTimeStamp;
         /**
-         * Create a change logs object that can be used to get change log request for {@code
-         * operationType} for {@code packageName}
+         * Creates a change logs object used to add a new change log for {@code operationType} for
+         * {@code packageName} logged at time {@code timeStamp }
+         *
+         * @param operationType Type of the operation for which change log is added whether insert
+         *     or delete.
+         * @param packageName Package name of the records for which change log is added.
+         * @param timeStamp Time when the change log is added.
          */
         public ChangeLogs(
-                @OperationType.OperationTypes int operationType, @NonNull String packageName) {
+                @OperationType.OperationTypes int operationType,
+                @NonNull String packageName,
+                long timeStamp) {
             mOperationType = operationType;
             mPackageName = packageName;
+            mChangeLogTimeStamp = timeStamp;
         }
 
         /**
-         * Create a change logs object that can be used to get change log request for {@code
-         * operationType} for {@code packageName}
+         * Creates a change logs object used to add a new change log for {@code operationType}
+         * logged at time {@code timeStamp }
+         *
+         * @param operationType Type of the operation for which change log is added whether insert
+         *     or delete.
+         * @param timeStamp Time when the change log is added.
          */
-        public ChangeLogs(@OperationType.OperationTypes int operationType) {
+        public ChangeLogs(@OperationType.OperationTypes int operationType, long timeStamp) {
             mOperationType = operationType;
+            mChangeLogTimeStamp = timeStamp;
             mPackageName = null;
         }
 
@@ -236,6 +257,10 @@ public final class ChangeLogsHelper {
             return mRecordTypeToUUIDMap.values().stream()
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
+        }
+
+        public long getChangeLogTimeStamp() {
+            return mChangeLogTimeStamp;
         }
 
         public void addUUID(@RecordTypeIdentifier.RecordType int recordType, @NonNull String uuid) {
@@ -262,6 +287,7 @@ public final class ChangeLogsHelper {
                         contentValues.put(RECORD_TYPE_COLUMN_NAME, recordType);
                         contentValues.put(APP_ID_COLUMN_NAME, packageNameId);
                         contentValues.put(OPERATION_TYPE_COLUMN_NAME, mOperationType);
+                        contentValues.put(TIME_COLUMN_NAME, mChangeLogTimeStamp);
                         contentValues.put(UUIDS_COLUMN_NAME, String.join(DELIMITER, uuids));
                         requests.add(new UpsertTableRequest(TABLE_NAME, contentValues));
                     });

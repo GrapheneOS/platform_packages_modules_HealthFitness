@@ -19,12 +19,14 @@ package android.health.connect;
 import android.annotation.NonNull;
 import android.health.connect.datatypes.Record;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 /** Response class for {@link HealthConnectManager#getChangeLogs} */
 public final class ChangeLogsResponse {
     private final List<Record> mUpsertedRecords;
-    private final List<String> mDeletedIds;
+    private final List<DeletedLog> mDeletedLogs;
     private final String mNextChangesToken;
     private final boolean mHasMorePages;
 
@@ -35,18 +37,18 @@ public final class ChangeLogsResponse {
      */
     public ChangeLogsResponse(
             @NonNull List<Record> upsertedRecords,
-            @NonNull List<String> deletedIds,
+            @NonNull List<DeletedLog> deletedLogs,
             @NonNull String nextChangesToken,
             boolean hasMorePages) {
         mUpsertedRecords = upsertedRecords;
-        mDeletedIds = deletedIds;
+        mDeletedLogs = deletedLogs;
         mNextChangesToken = nextChangesToken;
         mHasMorePages = hasMorePages;
     }
 
     /**
-     * @return records that have been updated or inserted post the time when the given token was
-     *     generated.
+     * Returns records that have been updated or inserted post the time when the given token was
+     * generated.
      */
     @NonNull
     public List<Record> getUpsertedRecords() {
@@ -54,26 +56,47 @@ public final class ChangeLogsResponse {
     }
 
     /**
-     * @return records that have been deleted post the time when the token was requested from {@link
-     *     HealthConnectManager#getChangeLogToken}
+     * Returns delete logs for records that have been deleted post the time when the token was
+     * requested from {@link HealthConnectManager#getChangeLogToken}
      */
     @NonNull
-    public List<String> getDeletedRecordIds() {
-        return mDeletedIds;
+    public List<DeletedLog> getDeletedLogs() {
+        return mDeletedLogs;
     }
 
-    /**
-     * @return token for future reads using {@link HealthConnectManager#getChangeLogs}
-     */
+    /** Returns token for future reads using {@link HealthConnectManager#getChangeLogs} */
     @NonNull
     public String getNextChangesToken() {
         return mNextChangesToken;
     }
 
-    /**
-     * @return whether there are more pages available for read
-     */
+    /** Returns whether there are more pages available for read */
     public boolean hasMorePages() {
         return mHasMorePages;
+    }
+
+    /** A class to represent a delete log in ChangeLogsResponse */
+    public static final class DeletedLog {
+        private final String mDeletedRecordId;
+        private final Instant mDeletedTime;
+
+        /** @hide */
+        public DeletedLog(@NonNull String deletedRecordId, long deletedTime) {
+            Objects.requireNonNull(deletedRecordId);
+            mDeletedRecordId = deletedRecordId;
+            mDeletedTime = Instant.ofEpochMilli(deletedTime);
+        }
+
+        /** Returns record id of the record deleted */
+        @NonNull
+        public String getDeletedRecordId() {
+            return mDeletedRecordId;
+        }
+
+        /** Returns timestamp when the record was deleted */
+        @NonNull
+        public Instant getDeletedTime() {
+            return mDeletedTime;
+        }
     }
 }
