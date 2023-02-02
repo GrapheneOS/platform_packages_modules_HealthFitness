@@ -51,6 +51,7 @@ import com.android.server.healthconnect.storage.request.UpsertTransactionRequest
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -521,6 +522,10 @@ public final class TransactionManager {
         }
 
         return rowId;
+    }
+
+    public File getDatabasePath() {
+        return mHealthConnectDatabase.getDatabasePath();
     }
 
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
