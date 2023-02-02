@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.dataaccess
 
+import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -148,7 +149,6 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
     }
 
     private fun updateDataAccess(appMetadataMap: Map<DataAccessAppState, List<AppMetadata>>) {
-        // TODO(b/245513815): Add empty page.
         mCanReadSection?.removeAll()
         mCanWriteSection?.removeAll()
         mInactiveSection?.removeAll()
@@ -158,13 +158,8 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                 mCanReadSection?.isVisible = false
             } else {
                 mCanReadSection?.isVisible = true
-                appMetadataMap[DataAccessAppState.Read]!!.forEach { _appMetadata ->
-                    mCanReadSection?.addPreference(
-                        AppPreference(requireContext()).also {
-                            it.title = _appMetadata.appName
-                            it.icon = _appMetadata.icon
-                            // TODO(b/245513815): Navigate to App access page.
-                        })
+                appMetadataMap[DataAccessAppState.Read]!!.forEach { appMetadata ->
+                    mCanReadSection?.addPreference(createAppPreference(appMetadata))
                 }
             }
         }
@@ -208,6 +203,20 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                             }
                         })
                 }
+            }
+        }
+    }
+
+    private fun createAppPreference(appMetadata: AppMetadata): AppPreference {
+        return AppPreference(requireContext()).also {
+            it.title = appMetadata.appName
+            it.icon = appMetadata.icon
+            it.setOnPreferenceClickListener {
+                findNavController()
+                    .navigate(
+                        R.id.action_healthDataAccessFragment_to_manageAppPermissions,
+                        bundleOf(EXTRA_PACKAGE_NAME to appMetadata.packageName))
+                true
             }
         }
     }

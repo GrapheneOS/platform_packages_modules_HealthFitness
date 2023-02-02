@@ -73,6 +73,9 @@
         <action
             android:id="@+id/action_healthDataAccess_to_dataEntries"
             app:destination="@id/dataEntriesFragment" />
+        <action
+            android:id="@+id/action_healthDataAccessFragment_to_manageAppPermissions"
+            app:destination="@id/manageAppPermissions" />
     </fragment>
 
     <fragment
@@ -88,4 +91,9 @@
             android:id="@+id/action_dataEntryDetailsFragment_to_unitFragment"
             app:destination="@id/unitFragment" />
     </fragment>
+
+    <activity
+        android:id="@+id/manageAppPermissions"
+        app:action="android.health.connect.action.MANAGE_HEALTH_PERMISSIONS">
+    </activity>
 </navigation>
