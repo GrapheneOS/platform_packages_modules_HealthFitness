@@ -23,7 +23,7 @@ import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.units.Power
 import com.android.healthconnect.controller.dataentries.units.PowerConverter
-import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import java.time.Instant
 
 val NOW: Instant = Instant.parse("2022-10-20T07:06:05.432Z")

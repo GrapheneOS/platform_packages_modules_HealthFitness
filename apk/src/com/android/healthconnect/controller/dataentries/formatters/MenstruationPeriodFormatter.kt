@@ -23,8 +23,8 @@ import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
-import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.DataType
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.utils.toLocalDate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant

@@ -20,9 +20,9 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.shared.AppInfoReader
-import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Singleton

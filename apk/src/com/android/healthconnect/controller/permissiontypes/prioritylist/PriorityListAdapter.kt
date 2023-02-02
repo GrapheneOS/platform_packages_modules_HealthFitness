@@ -26,7 +26,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppMetadata
 
 /** RecyclerView adapter that holds the list of the priority list. */
 class PriorityListAdapter(appMetadataList: List<AppMetadata>) :

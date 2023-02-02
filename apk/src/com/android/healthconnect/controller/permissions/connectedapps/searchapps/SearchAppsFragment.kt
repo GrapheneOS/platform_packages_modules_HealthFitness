@@ -31,11 +31,11 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.ALLOWED
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.DENIED
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
+import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
+import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
+import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
+import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.INACTIVE
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -113,9 +113,8 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         setupMenu()
         hideTitleFromCollapsingToolbarLayout()
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
-            preferenceScreen
-                .findPreference<Preference>("no_search_result_preference")
-                ?.isVisible = connectedApps.isEmpty()
+            preferenceScreen.findPreference<Preference>("no_search_result_preference")?.isVisible =
+                connectedApps.isEmpty()
 
             val connectedAppsGroup = connectedApps.groupBy { it.status }
             updateAllowedApps(connectedAppsGroup[ALLOWED].orEmpty())

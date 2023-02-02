@@ -20,8 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
+import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
