@@ -20,7 +20,7 @@ import android.widget.RadioGroup
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppMetadata
 
 /**
  * The ChipPreference displays a horizontal list of {@link FilterChip}s.

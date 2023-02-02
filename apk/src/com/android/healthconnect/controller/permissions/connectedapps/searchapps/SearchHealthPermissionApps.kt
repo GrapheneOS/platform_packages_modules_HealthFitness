@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps.searchapps
 
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
 import com.android.healthconnect.controller.service.MainDispatcher
+import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.utils.NormalizeUtf8
 import javax.inject.Inject
 import javax.inject.Singleton

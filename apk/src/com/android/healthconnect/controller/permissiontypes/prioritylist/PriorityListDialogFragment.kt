@@ -25,7 +25,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 

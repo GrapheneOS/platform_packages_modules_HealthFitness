@@ -16,15 +16,15 @@
 package com.android.healthconnect.controller.service
 
 import android.health.connect.HealthConnectManager
-import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.shared.QueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.recentaccess.LoadRecentAccessUseCase
-import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

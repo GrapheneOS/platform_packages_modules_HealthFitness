@@ -17,15 +17,15 @@
 package com.android.healthconnect.controller.dataaccess
 
 import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessAppState
-import com.android.healthconnect.controller.permissions.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.shared.AppMetadata
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,11 +35,11 @@ import kotlinx.coroutines.withContext
 class LoadDataAccessUseCase
 @Inject
 constructor(
-        private val loadContributorAppInfoUseCase: GetContributorAppInfoUseCase,
-        private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
-        private val healthPermissionReader: HealthPermissionReader,
-        private val appInfoReader: AppInfoReader,
-        @IoDispatcher private val dispatcher: CoroutineDispatcher
+    private val loadContributorAppInfoUseCase: GetContributorAppInfoUseCase,
+    private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
+    private val healthPermissionReader: HealthPermissionReader,
+    private val appInfoReader: AppInfoReader,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
     /** Returns a map of [DataAccessAppState] to apps. */
     suspend operator fun invoke(

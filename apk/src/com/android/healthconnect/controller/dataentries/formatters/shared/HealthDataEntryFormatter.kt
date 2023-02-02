@@ -94,7 +94,7 @@ import com.android.healthconnect.controller.dataentries.formatters.TotalCalories
 import com.android.healthconnect.controller.dataentries.formatters.Vo2MaxFormatter
 import com.android.healthconnect.controller.dataentries.formatters.WeightFormatter
 import com.android.healthconnect.controller.dataentries.formatters.WheelchairPushesFormatter
-import com.android.healthconnect.controller.shared.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import javax.inject.Inject
 import javax.inject.Singleton
 

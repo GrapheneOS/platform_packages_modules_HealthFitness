@@ -35,7 +35,7 @@ import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
-import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu

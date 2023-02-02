@@ -23,8 +23,8 @@ import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.WeightRecord
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
-import com.android.healthconnect.controller.shared.AppInfoReader
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.dataTypeToCategory
 import com.android.healthconnect.controller.tests.utils.FakeHealthPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.FakeRecentAccessUseCase

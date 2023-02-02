@@ -28,11 +28,11 @@ import com.android.healthconnect.controller.permissions.api.GrantHealthPermissio
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
-import com.android.healthconnect.controller.shared.AppInfoReader
-import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 /** View model for {@link PermissionsFragment} . */
 @HiltViewModel

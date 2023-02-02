@@ -16,7 +16,7 @@
 
 package com.android.healthconnect.controller.recentaccess
 
-import com.android.healthconnect.controller.shared.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import java.time.Instant
 
 /** Represents one app that recently accessed health data. */

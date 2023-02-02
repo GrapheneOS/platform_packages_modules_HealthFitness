@@ -26,11 +26,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.home.HomeFragment
 import com.android.healthconnect.controller.home.HomeFragmentViewModel
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppMetadata
-import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppStatus
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
+import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
+import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
