@@ -191,7 +191,7 @@ public class AggregateDataResponseParcel implements Parcelable {
                     .setStartTime(getPeriodStartLocalDateTime(mTimeRangeFilter));
             aggregateRecordsGroupedByPeriodResponses
                     .get(aggregateRecordsGroupedByPeriodResponses.size() - 1)
-                    .setStartTime(getPeriodEndLocalDateTime(mTimeRangeFilter));
+                    .setEndTime(getPeriodEndLocalDateTime(mTimeRangeFilter));
         }
 
         return aggregateRecordsGroupedByPeriodResponses;
