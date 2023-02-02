@@ -83,6 +83,7 @@ public class ExerciseLapInternal {
         if (lapsSize == 0) {
             return null;
         }
+
         ArrayList<ExerciseLapInternal> laps = new ArrayList<>(lapsSize);
         for (int i = 0; i < lapsSize; i++) {
             laps.add(ExerciseLapInternal.readFromParcel(parcel));

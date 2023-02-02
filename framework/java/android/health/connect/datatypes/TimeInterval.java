@@ -63,7 +63,8 @@ public final class TimeInterval {
         if (this == o) return true;
         if (!(o instanceof TimeInterval)) return false;
         TimeInterval that = (TimeInterval) o;
-        return getStartTime().equals(that.getStartTime()) && getEndTime().equals(that.getEndTime());
+        return getStartTime().toEpochMilli() == that.getStartTime().toEpochMilli()
+                && getEndTime().toEpochMilli() == that.getEndTime().toEpochMilli();
     }
 
     @Override

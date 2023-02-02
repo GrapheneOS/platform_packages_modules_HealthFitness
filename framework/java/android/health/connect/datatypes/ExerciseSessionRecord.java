@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -274,6 +275,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             Objects.requireNonNull(laps);
             mLaps.clear();
             mLaps.addAll(laps);
+            mLaps.sort(Comparator.comparing(ExerciseLap::getStartTime));
             return this;
         }
 
@@ -287,6 +289,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             Objects.requireNonNull(segments);
             mSegments.clear();
             mSegments.addAll(segments);
+            mSegments.sort(Comparator.comparing(ExerciseSegment::getStartTime));
             return this;
         }
 

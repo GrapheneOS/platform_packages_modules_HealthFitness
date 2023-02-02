@@ -130,6 +130,11 @@ public final class StorageUtils {
         recordInternal.setPackageName(packageName);
     }
 
+    /** Checks if the value of given column is null */
+    public static boolean isNullValue(Cursor cursor, String columnName) {
+        return cursor.isNull(cursor.getColumnIndex(columnName));
+    }
+
     public static String getCursorString(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));
     }

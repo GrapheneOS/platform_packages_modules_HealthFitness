@@ -16,8 +16,8 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.cts.TestUtils.END_TIME;
-import static android.healthconnect.cts.TestUtils.START_TIME;
+import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
+import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -64,8 +64,8 @@ public class ExerciseSessionRecordTest {
     @Test
     public void testExerciseSession_buildSession_buildCorrectObject() {
         ExerciseSessionRecord record = buildSessionMinimal();
-        assertThat(record.getStartTime()).isEqualTo(START_TIME);
-        assertThat(record.getEndTime()).isEqualTo(END_TIME);
+        assertThat(record.getStartTime()).isEqualTo(SESSION_START_TIME);
+        assertThat(record.getEndTime()).isEqualTo(SESSION_END_TIME);
         assertThat(record.hasRoute()).isFalse();
         assertThat(record.getRoute()).isNull();
         assertThat(record.getNotes()).isNull();
@@ -80,15 +80,15 @@ public class ExerciseSessionRecordTest {
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
                                 metadata,
-                                START_TIME,
-                                END_TIME,
+                                SESSION_START_TIME,
+                                SESSION_END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                         .build();
         ExerciseSessionRecord record2 =
                 new ExerciseSessionRecord.Builder(
                                 metadata,
-                                START_TIME,
-                                END_TIME,
+                                SESSION_START_TIME,
+                                SESSION_END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                         .build();
         assertThat(record).isEqualTo(record2);
@@ -102,22 +102,22 @@ public class ExerciseSessionRecordTest {
         List<ExerciseSegment> segmentList =
                 List.of(
                         new ExerciseSegment.Builder(
-                                        START_TIME,
-                                        END_TIME,
+                                        SESSION_START_TIME,
+                                        SESSION_END_TIME,
                                         ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
                                 .setRepetitionsCount(10)
                                 .build());
 
         List<ExerciseLap> lapsList =
                 List.of(
-                        new ExerciseLap.Builder(START_TIME, END_TIME)
+                        new ExerciseLap.Builder(SESSION_START_TIME, SESSION_END_TIME)
                                 .setLength(Length.fromMeters(10))
                                 .build());
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
                                 TestUtils.generateMetadata(),
-                                START_TIME,
-                                END_TIME,
+                                SESSION_START_TIME,
+                                SESSION_END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setRoute(route)
                         .setEndZoneOffset(ZoneOffset.MAX)
@@ -152,8 +152,8 @@ public class ExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder builder =
                 new ExerciseSessionRecord.Builder(
                                 TestUtils.generateMetadata(),
-                                START_TIME,
-                                END_TIME,
+                                SESSION_START_TIME,
+                                SESSION_END_TIME,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setRoute(route)
                         .setEndZoneOffset(ZoneOffset.MAX)
@@ -209,6 +209,8 @@ public class ExerciseSessionRecordTest {
         assertThat(readRecord.hasRoute()).isEqualTo(insertedRecord.hasRoute());
         assertThat(readRecord.getMetadata()).isEqualTo(insertedRecord.getMetadata());
         assertThat(readRecord.getRoute()).isEqualTo(insertedRecord.getRoute());
+        assertThat(readRecord.getLaps()).isEqualTo(insertedRecord.getLaps());
+        assertThat(readRecord.getSegments()).isEqualTo(insertedRecord.getSegments());
     }
 
     @Test
@@ -246,12 +248,12 @@ public class ExerciseSessionRecordTest {
 
         TimeInstantRangeFilter filter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(START_TIME.minusMillis(10))
-                        .setEndTime(END_TIME.plusMillis(10))
+                        .setStartTime(SESSION_START_TIME.minusMillis(10))
+                        .setEndTime(SESSION_END_TIME.plusMillis(10))
                         .build();
 
         ExerciseSessionRecord outOfRangeRecord =
-                buildSession(END_TIME.plusMillis(100), END_TIME.plusMillis(200));
+                buildSession(SESSION_END_TIME.plusMillis(100), SESSION_END_TIME.plusMillis(200));
         TestUtils.insertRecords(List.of(outOfRangeRecord));
 
         List<ExerciseSessionRecord> readRecords =
@@ -316,8 +318,8 @@ public class ExerciseSessionRecordTest {
                                 .setId("ExerciseSession" + Math.random())
                                 .setClientRecordId("ExerciseSessionClient" + Math.random())
                                 .build(),
-                        START_TIME,
-                        END_TIME,
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                 .build();
     }
