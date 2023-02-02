@@ -149,6 +149,7 @@ public class BoneMassRecordTest {
         assertThat(newBoneMassRecords.size() - oldBoneMassRecords.size()).isEqualTo(1);
         BoneMassRecord newRecord = newBoneMassRecords.get(newBoneMassRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getMass()).isEqualTo(testRecord.getMass());
     }
 
     @Test

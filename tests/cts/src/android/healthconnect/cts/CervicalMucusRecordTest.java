@@ -160,6 +160,8 @@ public class CervicalMucusRecordTest {
         CervicalMucusRecord newRecord =
                 newCervicalMucusRecords.get(newCervicalMucusRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getSensation()).isEqualTo(testRecord.getSensation());
+        assertThat(newRecord.getAppearance()).isEqualTo(testRecord.getAppearance());
     }
 
     @Test

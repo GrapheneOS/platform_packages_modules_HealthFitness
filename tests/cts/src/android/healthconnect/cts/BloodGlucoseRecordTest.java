@@ -155,6 +155,10 @@ public class BloodGlucoseRecordTest {
         BloodGlucoseRecord newRecord =
                 newBloodGlucoseRecords.get(newBloodGlucoseRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getSpecimenSource()).isEqualTo(testRecord.getSpecimenSource());
+        assertThat(newRecord.getLevel()).isEqualTo(testRecord.getLevel());
+        assertThat(newRecord.getRelationToMeal()).isEqualTo(testRecord.getRelationToMeal());
+        assertThat(newRecord.getMealType()).isEqualTo(testRecord.getMealType());
     }
 
     @Test

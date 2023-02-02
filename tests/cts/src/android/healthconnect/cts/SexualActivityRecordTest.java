@@ -160,6 +160,7 @@ public class SexualActivityRecordTest {
         SexualActivityRecord newRecord =
                 newSexualActivityRecords.get(newSexualActivityRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getProtectionUsed()).isEqualTo(testRecord.getProtectionUsed());
     }
 
     @Test

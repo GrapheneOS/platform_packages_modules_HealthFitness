@@ -145,6 +145,9 @@ public class Vo2MaxRecordTest {
         assertThat(newVo2MaxRecords.size() - oldVo2MaxRecords.size()).isEqualTo(1);
         Vo2MaxRecord newRecord = newVo2MaxRecords.get(newVo2MaxRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getMeasurementMethod()).isEqualTo(testRecord.getMeasurementMethod());
+        assertThat(newRecord.getVo2MillilitersPerMinuteKilogram())
+                .isEqualTo(testRecord.getVo2MillilitersPerMinuteKilogram());
     }
 
     @Test
