@@ -47,7 +47,6 @@ sealed class DeletionType : Parcelable {
     data class DeletionTypeHealthPermissionTypeData(
         val healthPermissionType: HealthPermissionType
     ) : DeletionType() {
-        // TODO default value
         constructor(
             parcel: Parcel
         ) : this(
@@ -74,7 +73,6 @@ sealed class DeletionType : Parcelable {
     }
 
     data class DeletionTypeCategoryData(val category: @HealthDataCategoryInt Int) : DeletionType() {
-        // TODO default value
         constructor(parcel: Parcel) : this(parcel.readInt()) {}
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -124,7 +122,6 @@ sealed class DeletionType : Parcelable {
         val packageName: String,
         val appName: String
     ) : DeletionType() {
-        // TODO default value
         constructor(
             parcel: Parcel
         ) : this(

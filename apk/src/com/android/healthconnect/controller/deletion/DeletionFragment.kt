@@ -113,7 +113,6 @@ class DeletionFragment : Hilt_DeletionFragment() {
     private fun render(deletionParameters: DeletionParameters) {
         when (deletionParameters.deletionState) {
             DeletionState.STATE_NO_DELETION_IN_PROGRESS -> {
-                // clear dialogs?
                 hideProgressDialog()
             }
             DeletionState.STATE_PROGRESS_INDICATOR_STARTED -> {
