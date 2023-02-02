@@ -94,6 +94,8 @@ import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
+import android.health.connect.ratelimiter.RateLimiter;
+import android.health.connect.ratelimiter.RateLimiter.QuotaCategory;
 import android.health.connect.restore.StageRemoteDataException;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Binder;
@@ -299,6 +301,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
         int uid = Binder.getCallingUid();
         mDataPermissionEnforcer.enforceRecordsWritePermissions(recordInternals, uid);
+        boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+        RateLimiter.tryAcquireApiCallQuota(uid, QuotaCategory.QUOTA_CATEGORY_WRITE, isInForeground);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -360,12 +364,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int pid = Binder.getCallingPid();
         boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         if (!holdsDataManagementPermission) {
-            if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
+            boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+            if (!isInForeground) {
                 throwException(callback, packageName);
             }
             mDataPermissionEnforcer.enforceRecordIdsReadPermissions(recordTypesToTest, uid);
+            RateLimiter.tryAcquireApiCallQuota(
+                    uid, RateLimiter.QuotaCategory.QUOTA_CATEGORY_READ, isInForeground);
         }
-
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -408,9 +414,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         AtomicBoolean enforceSelfRead = new AtomicBoolean();
         if (!holdsDataManagementPermission) {
+            boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
             if (mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
                             request.getRecordType(), uid)
-                    || !mAppOpsManagerLocal.isUidInForeground(uid)) {
+                    || !isInForeground) {
                 // If requesting app has only write permission allowed but no read permission for
                 // the record type or if app is not in foreground then allow to read its own
                 // records.
@@ -418,6 +425,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             } else {
                 enforceSelfRead.set(false);
             }
+            RateLimiter.tryAcquireApiCallQuota(
+                    uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground);
         }
         final Map<String, Boolean> extraReadPermsToGrantState =
                 Collections.unmodifiableMap(
@@ -532,6 +541,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int uid = Binder.getCallingUid();
         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
         mDataPermissionEnforcer.enforceRecordsWritePermissions(recordInternals, uid);
+        boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+        RateLimiter.tryAcquireApiCallQuota(uid, QuotaCategory.QUOTA_CATEGORY_WRITE, isInForeground);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -609,9 +620,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 ChangeLogsRequestHelper.getRequest(packageName, token.getToken());
         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                 changeLogsTokenRequest.getRecordTypes(), uid);
-        if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
+        boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+        if (!isInForeground) {
             throwException(callback, packageName);
         }
+        RateLimiter.tryAcquireApiCallQuota(uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -684,6 +697,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         if (!holdsDataManagementPermission) {
             mDataPermissionEnforcer.enforceRecordIdsWritePermissions(recordTypeIdsToDelete, uid);
+            RateLimiter.tryAcquireApiCallQuota(
+                    uid,
+                    QuotaCategory.QUOTA_CATEGORY_WRITE,
+                    mAppOpsManagerLocal.isUidInForeground(uid));
         }
 
         HealthConnectThreadScheduler.schedule(

@@ -21,9 +21,11 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.internal.ParcelUtils;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.ParcelRecordConverter;
+import android.health.connect.ratelimiter.RateLimiter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SharedMemory;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +68,15 @@ public class RecordsParcel implements Parcelable {
 
         int size = in.readInt();
         mRecordInternals = new ArrayList<>(size);
+        long remainingParcelSize = in.dataSize();
+        RateLimiter.checkMaxChunkMemoryUsage(remainingParcelSize);
         for (int i = 0; i < size; i++) {
             int identifier = in.readInt();
             try {
                 mRecordInternals.add(ParcelRecordConverter.getInstance().getRecord(in, identifier));
+                // Calculating record size based on before and after values of parcel size.
+                RateLimiter.checkMaxRecordMemoryUsage(remainingParcelSize - in.dataSize());
+                remainingParcelSize = in.dataSize();
             } catch (InstantiationException
                      | IllegalAccessException
                      | NoSuchMethodException

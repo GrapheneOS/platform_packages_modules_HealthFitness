@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.ratelimiter.RateLimiter;
 import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -93,6 +94,7 @@ public class HealthConnectManagerService extends SystemService {
         HealthDataCategoryPriorityHelper.getInstance().clearCache();
         PreferenceHelper.getInstance().clearCache();
         mTransactionManager.onUserSwitching();
+        RateLimiter.clearCache();
     }
 
     @Override
