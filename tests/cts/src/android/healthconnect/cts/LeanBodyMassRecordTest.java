@@ -155,6 +155,7 @@ public class LeanBodyMassRecordTest {
         LeanBodyMassRecord newRecord =
                 newLeanBodyMassRecords.get(newLeanBodyMassRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getMass()).isEqualTo(testRecord.getMass());
     }
 
     @Test

@@ -146,6 +146,7 @@ public class BodyFatRecordTest {
         assertThat(newBodyFatRecords.size() - oldBodyFatRecords.size()).isEqualTo(1);
         BodyFatRecord newRecord = newBodyFatRecords.get(newBodyFatRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getPercentage()).isEqualTo(testRecord.getPercentage());
     }
 
     @Test

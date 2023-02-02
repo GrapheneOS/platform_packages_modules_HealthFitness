@@ -187,6 +187,7 @@ public class BasalMetabolicRateRecordTest {
         BasalMetabolicRateRecord newRecord =
                 newBasalMetabolicRateRecords.get(newBasalMetabolicRateRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getBasalMetabolicRate()).isEqualTo(testRecord.getBasalMetabolicRate());
     }
 
     @Test

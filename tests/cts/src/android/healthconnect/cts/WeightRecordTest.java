@@ -154,6 +154,7 @@ public class WeightRecordTest {
         assertThat(newWeightRecords.size() - oldWeightRecords.size()).isEqualTo(1);
         WeightRecord newRecord = newWeightRecords.get(newWeightRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getWeight()).isEqualTo(testRecord.getWeight());
     }
 
     @Test

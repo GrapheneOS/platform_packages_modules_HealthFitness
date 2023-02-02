@@ -164,6 +164,7 @@ public class RespiratoryRateRecordTest {
         RespiratoryRateRecord newRecord =
                 newRespiratoryRateRecords.get(newRespiratoryRateRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getRate()).isEqualTo(testRecord.getRate());
     }
 
     @Test

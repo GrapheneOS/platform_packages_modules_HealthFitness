@@ -154,6 +154,7 @@ public class HeightRecordTest {
         assertThat(newHeightRecords.size() - oldHeightRecords.size()).isEqualTo(1);
         HeightRecord newRecord = newHeightRecords.get(newHeightRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getHeight()).isEqualTo(testRecord.getHeight());
     }
 
     @Test

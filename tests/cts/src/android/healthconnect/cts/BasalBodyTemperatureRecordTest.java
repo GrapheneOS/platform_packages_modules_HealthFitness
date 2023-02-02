@@ -178,6 +178,9 @@ public class BasalBodyTemperatureRecordTest {
         BasalBodyTemperatureRecord newRecord =
                 newBasalBodyTemperatureRecords.get(newBasalBodyTemperatureRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getMeasurementLocation())
+                .isEqualTo(testRecord.getMeasurementLocation());
+        assertThat(newRecord.getTemperature()).isEqualTo(testRecord.getTemperature());
     }
 
     @Test

@@ -167,6 +167,7 @@ public class OxygenSaturationRecordTest {
         OxygenSaturationRecord newRecord =
                 newOxygenSaturationRecords.get(newOxygenSaturationRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getPercentage()).isEqualTo(testRecord.getPercentage());
     }
 
     @Test

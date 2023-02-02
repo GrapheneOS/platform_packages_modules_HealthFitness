@@ -170,6 +170,7 @@ public class RestingHeartRateRecordTest {
         RestingHeartRateRecord newRecord =
                 newRestingHeartRateRecords.get(newRestingHeartRateRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getBeatsPerMinute()).isEqualTo(testRecord.getBeatsPerMinute());
     }
 
     @Test

@@ -160,6 +160,7 @@ public class OvulationTestRecordTest {
         OvulationTestRecord newRecord =
                 newOvulationTestRecords.get(newOvulationTestRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getResult()).isEqualTo(testRecord.getResult());
     }
 
     @Test

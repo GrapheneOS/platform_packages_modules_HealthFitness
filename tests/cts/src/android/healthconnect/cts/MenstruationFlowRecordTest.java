@@ -166,6 +166,7 @@ public class MenstruationFlowRecordTest {
         MenstruationFlowRecord newRecord =
                 newMenstruationFlowRecords.get(newMenstruationFlowRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getFlow()).isEqualTo(testRecord.getFlow());
     }
 
     @Test

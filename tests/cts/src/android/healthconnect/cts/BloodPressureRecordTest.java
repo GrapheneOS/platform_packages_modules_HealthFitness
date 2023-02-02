@@ -161,6 +161,11 @@ public class BloodPressureRecordTest {
         BloodPressureRecord newRecord =
                 newBloodPressureRecords.get(newBloodPressureRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getMeasurementLocation())
+                .isEqualTo(testRecord.getMeasurementLocation());
+        assertThat(newRecord.getSystolic()).isEqualTo(testRecord.getSystolic());
+        assertThat(newRecord.getDiastolic()).isEqualTo(testRecord.getDiastolic());
+        assertThat(newRecord.getBodyPosition()).isEqualTo(testRecord.getBodyPosition());
     }
 
     @Test
