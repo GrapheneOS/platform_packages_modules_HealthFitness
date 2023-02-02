@@ -23,7 +23,6 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_P
 
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectDataState;
-import android.health.connect.migration.MigrationException;
 
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -69,29 +68,47 @@ public final class MigrationStateManager {
         return getMigrationState() == MIGRATION_STATE_IN_PROGRESS;
     }
 
-    public void validateStartMigration() {
+    /**
+     * Throws {@link IllegalMigrationStateException} if the migration can not be started in the
+     * current state.
+     */
+    public void validateStartMigration() throws IllegalMigrationStateException {
         throwIfMigrationIsComplete();
     }
 
-    public void validateFinishMigration() {
+    /**
+     * Throws {@link IllegalMigrationStateException} if the migration can not be finished in the
+     * current state.
+     */
+    public void validateFinishMigration() throws IllegalMigrationStateException {
         throwIfMigrationIsComplete();
         if (getMigrationState() != MIGRATION_STATE_IN_PROGRESS
                 && getMigrationState() != MIGRATION_STATE_ALLOWED) {
-            throw new MigrationException(
-                    "Cannot finish migration. Migration not started.",
-                    MigrationException.ERROR_INTERNAL,
-                    null);
+            throw new IllegalMigrationStateException("Migration is not started.");
         }
     }
 
-    public void validateSetMinSdkVersion() {
+    /**
+     * Throws {@link IllegalMigrationStateException} if the migration can not be performed in the
+     * current state.
+     */
+    public void validateWriteMigrationData() throws IllegalMigrationStateException {
+        throwIfMigrationIsComplete();
+        if (getMigrationState() != MIGRATION_STATE_IN_PROGRESS) {
+            throw new IllegalMigrationStateException("Migration is not started.");
+        }
+    }
+
+    /**
+     * Throws {@link IllegalMigrationStateException} if the sdk extension version can not be set in
+     * the current state.
+     */
+    public void validateSetMinSdkVersion() throws IllegalMigrationStateException {
         throwIfMigrationIsComplete();
         if (getMigrationState() == MIGRATION_STATE_IN_PROGRESS
                 && getMigrationState() == MIGRATION_STATE_ALLOWED) {
-            throw new MigrationException(
-                    "Cannot set the sdk extension version. Migration already in progress.",
-                    MigrationException.ERROR_INTERNAL,
-                    null);
+            throw new IllegalMigrationStateException(
+                    "Cannot set the sdk extension version. Migration already in progress.");
         }
     }
 
@@ -112,10 +129,16 @@ public final class MigrationStateManager {
                 .insertPreference(MIGRATION_STATE_PREFERENCE_KEY, String.valueOf(migrationState));
     }
 
-    private void throwIfMigrationIsComplete() {
+    private void throwIfMigrationIsComplete() throws IllegalMigrationStateException {
         if (getMigrationState() == MIGRATION_STATE_COMPLETE) {
-            throw new MigrationException(
-                    "Migration already marked complete.", MigrationException.ERROR_INTERNAL, null);
+            throw new IllegalMigrationStateException("Migration already marked complete.");
+        }
+    }
+
+    /** Thrown when an illegal migration state is detected. */
+    public static final class IllegalMigrationStateException extends Exception {
+        public IllegalMigrationStateException(String message) {
+            super(message);
         }
     }
 }

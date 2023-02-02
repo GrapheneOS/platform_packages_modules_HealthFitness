@@ -87,10 +87,22 @@ public class DataMigrationTest {
     private HealthConnectManager mManager;
 
     private static <T, E extends RuntimeException> T blockingCall(
-            Consumer<OutcomeReceiver<T, E>> action) throws E {
+            Consumer<OutcomeReceiver<T, E>> action) {
         final BlockingOutcomeReceiver<T, E> outcomeReceiver = new BlockingOutcomeReceiver<>();
         action.accept(outcomeReceiver);
         return outcomeReceiver.await();
+    }
+
+    private static <T, E extends RuntimeException> T blockingCallWithPermissions(
+            Consumer<OutcomeReceiver<T, E>> action, String... permissions) {
+        try {
+            return runWithShellPermissionIdentity(() -> blockingCall(action), permissions);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
     }
 
     private static Metadata getMetadata() {
@@ -103,12 +115,17 @@ public class DataMigrationTest {
     public void setUp() {
         mTargetContext = InstrumentationRegistry.getTargetContext();
         mManager = mTargetContext.getSystemService(HealthConnectManager.class);
-        deleteAllRecords();
+        clearData();
     }
 
     @After
     public void tearDown() {
+        clearData();
+    }
+
+    private void clearData() {
         deleteAllRecords();
+        deleteAllStagedRemoteData();
     }
 
     @Test
@@ -214,25 +231,14 @@ public class DataMigrationTest {
     }
 
     private void migrate(MigrationEntity... entities) {
-        final MigrationException[] error = new MigrationException[1];
-
-        // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException
-        runWithShellPermissionIdentity(
-                () -> {
-                    try {
-                        DataMigrationTest.<Void, MigrationException>blockingCall(
-                                outcomeReceiver ->
-                                        mManager.writeMigrationData(
-                                                List.of(entities), Runnable::run, outcomeReceiver));
-                    } catch (MigrationException e) {
-                        error[0] = e;
-                    }
-                },
+        DataMigrationTest.<Void, MigrationException>blockingCallWithPermissions(
+                callback -> mManager.startMigration(mOutcomeExecutor, callback),
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
 
-        if (error[0] != null) {
-            throw error[0];
-        }
+        DataMigrationTest.<Void, MigrationException>blockingCallWithPermissions(
+                callback ->
+                        mManager.writeMigrationData(List.of(entities), mOutcomeExecutor, callback),
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
     private MigrationEntity getRecordEntity(String entityId, Record record) {
@@ -242,13 +248,14 @@ public class DataMigrationTest {
     }
 
     private <T extends Record> List<T> getRecords(Class<T> clazz) {
-        return runWithShellPermissionIdentity(
-                () ->
-                        DataMigrationTest
-                                .<ReadRecordsResponse<T>, HealthConnectException>blockingCall(
-                                        callback -> getRecordsAsync(clazz, callback))
-                                .getRecords(),
-                HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
+        final Consumer<OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException>> action =
+                callback -> getRecordsAsync(clazz, callback);
+
+        final ReadRecordsResponse<T> response =
+                blockingCallWithPermissions(
+                        action, HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
+
+        return response.getRecords();
     }
 
     private <T extends Record> void getRecordsAsync(
@@ -280,6 +287,14 @@ public class DataMigrationTest {
                         .build(),
                 mOutcomeExecutor,
                 callback);
+    }
+
+    private void deleteAllStagedRemoteData() {
+        runWithShellPermissionIdentity(
+                () ->
+                        // TODO(b/241542162): Avoid reflection once TestApi can be called from CTS
+                        mManager.getClass().getMethod("deleteAllStagedRemoteData").invoke(mManager),
+                "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
     }
 
     private void revokeAppPermissions(String... permissions) {

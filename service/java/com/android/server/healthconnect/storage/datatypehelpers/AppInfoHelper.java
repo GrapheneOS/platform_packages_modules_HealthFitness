@@ -48,6 +48,7 @@ import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
@@ -97,6 +98,12 @@ public final class AppInfoHelper {
         }
 
         return sAppInfoHelper;
+    }
+
+    /** Deletes all entries from the database and clears the cache. */
+    public synchronized void clearData(TransactionManager transactionManager) {
+        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
+        clearCache();
     }
 
     public synchronized void clearCache() {
