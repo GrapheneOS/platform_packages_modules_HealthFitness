@@ -58,12 +58,16 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
             boolean ascending) {
         super(recordType);
         Objects.requireNonNull(dataOrigins);
-
         mTimeRangeFilter = timeRangeFilter;
         mDataOrigins = dataOrigins;
         mPageSize = pageSize;
-        mPageToken = pageToken;
-        mAscending = ascending;
+        if (pageToken != DEFAULT_LONG) {
+            mAscending = (pageToken % 2) == 0 ? true : false;
+            mPageToken = (pageToken % 2) == 0 ? pageToken / 2 : (pageToken - 1) / 2;
+        } else {
+            mPageToken = pageToken;
+            mAscending = ascending;
+        }
     }
 
     /** Returns time range b/w which the read operation is to be performed */
@@ -173,9 +177,9 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         }
 
         /**
-         * Sets page token to read the next page of the result
+         * Sets page token to read the requested page of the result
          *
-         * @param pageToken to read the next page of the result. -1 if none available
+         * @param pageToken to read the requested page of the result. -1 if none available
          */
         @NonNull
         public Builder<T> setPageToken(long pageToken) {
@@ -184,7 +188,8 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         }
 
         /**
-         * Sets ordering of results to be returned based on start time.
+         * Sets ordering of results to be returned based on start time. Order will be ignored when
+         * page token is present.
          *
          * @param ascending specifies sorting order of results, if set records are sorted on start
          *     time in ascending fashion, descending otherwise. Default value is true.

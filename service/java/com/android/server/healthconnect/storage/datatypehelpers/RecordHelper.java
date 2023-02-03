@@ -238,6 +238,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
         int count = 0;
+        long prevStartTime = DEFAULT_LONG;
+        long currentStartTime = DEFAULT_LONG;
+        int tempCount = 0;
+        List<RecordInternal<?>> tempList = new ArrayList<>();
         while (cursor.moveToNext()) {
             try {
                 T record =
@@ -258,16 +262,69 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
                 AppInfoHelper.getInstance().populateRecordWithValue(appInfoId, record);
                 populateRecordValue(cursor, record);
-                recordInternalList.add(record);
-                count++;
-                if (count == requestSize) {
-                    break;
+
+                prevStartTime = currentStartTime;
+                currentStartTime = getCursorLong(cursor, getStartTimeColumnName());
+                if (prevStartTime == DEFAULT_LONG || prevStartTime == currentStartTime) {
+                    // Fetch and add records with same startTime to tempList
+                    tempList.add(record);
+                    tempCount++;
+                } else {
+                    if (count == 0) {
+                        // items in tempList having startTime same as the first record from cursor
+                        // is added to final list.
+                        // This makes sure that we return at least 1 record if the count of
+                        // records with startTime same as second record exceeds requestSize.
+                        recordInternalList.addAll(tempList);
+                        count = tempCount;
+                        tempList.clear();
+                        tempCount = 0;
+                        if (count >= requestSize) {
+                            // startTime of current record should be fetched for pageToken
+                            cursor.moveToPrevious();
+                            break;
+                        }
+                        tempList.add(record);
+                        tempCount = 1;
+                    } else if (tempCount + count <= requestSize) {
+                        // Makes sure after adding records in tempList with same starTime
+                        // the count does not exceed requestSize
+                        recordInternalList.addAll(tempList);
+                        count += tempCount;
+                        tempList.clear();
+                        tempCount = 0;
+                        if (count >= requestSize) {
+                            // After adding records if count is equal to requestSize then startTime
+                            // of current fetched record should be the next page token.
+                            cursor.moveToPrevious();
+                            break;
+                        }
+                        tempList.add(record);
+                        tempCount = 1;
+                    } else {
+                        // If adding records in tempList makes count > requestSize, then ignore temp
+                        // list and startTime of records in temp list should be the next page token.
+                        tempList.clear();
+                        int lastposition = cursor.getPosition();
+                        cursor.moveToPosition(lastposition - 2);
+                        break;
+                    }
                 }
             } catch (InstantiationException
                     | IllegalAccessException
                     | NoSuchMethodException
                     | InvocationTargetException exception) {
                 throw new IllegalArgumentException(exception);
+            }
+        }
+        if (!tempList.isEmpty()) {
+            if (tempCount + count <= requestSize) {
+                // If reached end of cursor while fetching records then add it to final list
+                recordInternalList.addAll(tempList);
+            } else {
+                // If reached end of cursor while fetching and adding it will exceed requestSize
+                // then ignore them,startTime of the last record will be pageToken for next read.
+                cursor.moveToPosition(cursor.getCount() - 2);
             }
         }
         Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
@@ -387,8 +444,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                     new WhereClauses().addWhereInLongsClause(APP_INFO_ID_COLUMN_NAME, appIds);
 
             if (request.getPageToken() != DEFAULT_LONG) {
-                clauses.addWhereGreaterThanClause(
-                        RecordHelper.PRIMARY_COLUMN_NAME, String.valueOf(request.getPageToken()));
+                if (request.isAscending()) {
+                    clauses.addWhereGreaterThanOrEqualClause(
+                            getStartTimeColumnName(), request.getPageToken());
+                } else {
+                    clauses.addWhereLessThanOrEqualClause(
+                            getStartTimeColumnName(), request.getPageToken());
+                }
             }
 
             return clauses.addWhereBetweenTimeClause(
@@ -422,9 +484,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private OrderByClause getOrderByClause(ReadRecordsRequestParcel request) {
         OrderByClause orderByClause = new OrderByClause();
         if (request.getRecordIdFiltersParcel() != null) {
-            orderByClause
-                    .addOrderByClause(getStartTimeColumnName(), request.isAscending())
-                    .addOrderByClause(PRIMARY_COLUMN_NAME, true);
+            orderByClause.addOrderByClause(getStartTimeColumnName(), request.isAscending());
         }
         return orderByClause;
     }

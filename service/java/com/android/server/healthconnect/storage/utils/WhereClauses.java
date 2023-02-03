@@ -79,6 +79,18 @@ public final class WhereClauses {
         return this;
     }
 
+    public WhereClauses addWhereGreaterThanOrEqualClause(String columnName, long value) {
+        mClauses.add(columnName + " >= " + value);
+
+        return this;
+    }
+
+    public WhereClauses addWhereLessThanOrEqualClause(String columnName, long value) {
+        mClauses.add(columnName + " <= " + value);
+
+        return this;
+    }
+
     public WhereClauses addWhereInIntsClause(String columnName, List<Integer> values) {
         if (values == null || values.isEmpty()) return this;
 

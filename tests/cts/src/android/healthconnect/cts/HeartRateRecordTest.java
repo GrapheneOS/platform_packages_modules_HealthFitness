@@ -180,7 +180,9 @@ public class HeartRateRecordTest {
     @Test
     public void testReadHeartRateRecordUsingFilters_withPageSize() throws InterruptedException {
         List<Record> recordList =
-                Arrays.asList(TestUtils.getHeartRateRecord(), TestUtils.getHeartRateRecord());
+                Arrays.asList(
+                        TestUtils.getHeartRateRecord(72, Instant.now().minus(1, ChronoUnit.DAYS)),
+                        TestUtils.getHeartRateRecord(72, Instant.now().minus(2, ChronoUnit.DAYS)));
         TestUtils.insertRecords(recordList);
         Pair<List<HeartRateRecord>, Long> newHeartRecords =
                 TestUtils.readRecordsWithPagination(
@@ -194,9 +196,10 @@ public class HeartRateRecordTest {
     public void testReadHeartRateRecordUsingFilters_withPageToken() throws InterruptedException {
         List<Record> recordList =
                 Arrays.asList(
-                        TestUtils.getHeartRateRecord(),
-                        TestUtils.getHeartRateRecord(),
-                        TestUtils.getHeartRateRecord());
+                        TestUtils.getHeartRateRecord(72, Instant.now().minusMillis(1000)),
+                        TestUtils.getHeartRateRecord(72, Instant.now().minusMillis(2000)),
+                        TestUtils.getHeartRateRecord(72, Instant.now().minusMillis(3000)),
+                        TestUtils.getHeartRateRecord(72, Instant.now().minusMillis(4000)));
         TestUtils.insertRecords(recordList);
         Pair<List<HeartRateRecord>, Long> oldHeartRecords =
                 TestUtils.readRecordsWithPagination(
@@ -204,13 +207,14 @@ public class HeartRateRecordTest {
                                 .setPageSize(1)
                                 .setAscending(true)
                                 .build());
+        assertThat(oldHeartRecords.first.size()).isEqualTo(1);
         Pair<List<HeartRateRecord>, Long> newHeartRecords =
                 TestUtils.readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
-                                .setPageSize(1)
+                                .setPageSize(2)
                                 .setPageToken(oldHeartRecords.second)
                                 .build());
-        assertThat(newHeartRecords.first.size()).isEqualTo(1);
+        assertThat(newHeartRecords.first.size()).isEqualTo(2);
         assertThat(newHeartRecords.second).isNotEqualTo(oldHeartRecords.second);
     }
 

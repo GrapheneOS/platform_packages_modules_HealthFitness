@@ -447,6 +447,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     request.getRecordIdFiltersParcel() == null
                                             ? readRecordsResponse.second
                                             : DEFAULT_LONG;
+                            if (pageToken != DEFAULT_LONG) {
+                                // pagetoken is used here to store sorting order of the result.
+                                // An even pagetoken indicate ascending and Odd page token indicate
+                                // descending sort order. This detail from page token will be used
+                                // in next read request to have same sort order.
+                                pageToken =
+                                        request.isAscending() ? pageToken * 2 : pageToken * 2 + 1;
+                            }
 
                             if (Constants.DEBUG) {
                                 Slog.d(TAG, "pageToken: " + pageToken);
