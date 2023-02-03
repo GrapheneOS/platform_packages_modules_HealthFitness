@@ -90,7 +90,10 @@ public final class AppInfoMigrationPayload extends MigrationPayload implements P
         return mAppName;
     }
 
-    /** Returns icon bitmap encoded as a byte array. */
+    /**
+     * Returns icon bitmap encoded as a byte array. The icon is decoded using {@link
+     * android.graphics.BitmapFactory#decodeByteArray(byte[], int, int)}.
+     */
     @Nullable
     public byte[] getAppIcon() {
         return mAppIcon;

@@ -1599,7 +1599,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @Nullable String failedEntityId) {
         try {
             callback.onError(
-                    new MigrationException(errorCode, exception.toString(), failedEntityId));
+                    new MigrationException(exception.toString(), errorCode, failedEntityId));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }

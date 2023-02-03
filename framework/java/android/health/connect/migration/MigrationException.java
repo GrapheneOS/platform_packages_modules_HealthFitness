@@ -61,21 +61,20 @@ public final class MigrationException extends RuntimeException implements Parcel
     public static final int ERROR_MIGRATION_UNAVAILABLE = 3;
 
     @ErrorCode private final int mErrorCode;
-    private final String mErrorMessage;
     private final String mFailedEntityId;
 
     public MigrationException(
-            @ErrorCode int errorCode,
-            @Nullable String errorMessage,
-            @Nullable String failedEntityId) {
+            @Nullable String message, @ErrorCode int errorCode, @Nullable String failedEntityId) {
+        super(message);
+
         mErrorCode = errorCode;
-        mErrorMessage = errorMessage;
         mFailedEntityId = failedEntityId;
     }
 
     private MigrationException(@NonNull Parcel in) {
+        super(in.readString());
+
         mErrorCode = in.readInt();
-        mErrorMessage = in.readString();
         mFailedEntityId = in.readString();
     }
 
@@ -83,12 +82,6 @@ public final class MigrationException extends RuntimeException implements Parcel
     @ErrorCode
     public int getErrorCode() {
         return mErrorCode;
-    }
-
-    /** Returns an optional error message for this error. */
-    @Nullable
-    public String getErrorMessage() {
-        return mErrorMessage;
     }
 
     /**
@@ -107,8 +100,8 @@ public final class MigrationException extends RuntimeException implements Parcel
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(getMessage());
         dest.writeInt(mErrorCode);
-        dest.writeString(mErrorMessage);
         dest.writeString(mFailedEntityId);
     }
 

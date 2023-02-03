@@ -66,8 +66,6 @@ public final class MigrationEntity implements Parcelable {
     /**
      * Returns a stable identifier of the entity, unique within the entire migration. Duplicated
      * entities are ignored.
-     *
-     * @hide
      */
     @NonNull
     public String getEntityId() {
@@ -76,8 +74,6 @@ public final class MigrationEntity implements Parcelable {
 
     /**
      * Returns a payload of the entity to migrate.
-     *
-     * @hide
      */
     @NonNull
     public MigrationPayload getPayload() {
