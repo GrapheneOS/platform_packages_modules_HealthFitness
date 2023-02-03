@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -37,9 +36,11 @@ class MainActivity : Hilt_MainActivity() {
         val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
         val previouslyOpened =
             sharedPreference.getBoolean(getString(R.string.previously_opened), false)
-        if (!previouslyOpened && savedInstanceState == null) {
+        if (!previouslyOpened) {
             val intent = Intent(this, OnboardingActivity::class.java)
-            startActivityForResult(intent, 0)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -55,11 +56,5 @@ class MainActivity : Hilt_MainActivity() {
             finish()
         }
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_CANCELED) {
-            finish()
-        }
     }
 }
