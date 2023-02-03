@@ -25,7 +25,6 @@ import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.server.SystemService;
-import com.android.server.healthconnect.migration.MigrationBroadcast;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -124,18 +123,19 @@ public class HealthConnectManagerService extends SystemService {
         return !mUserManager.isManagedProfile(user.getUserHandle().getIdentifier());
     }
 
-    @Override
-    public void onUserUnlocked(@NonNull TargetUser user) {
-        // TODO(b/267255123) Run on a background thread and send broadcast
-        // up to 10 times with a 60s delay
-        Objects.requireNonNull(user);
-        try {
-            MigrationBroadcast migrationBroadcast = new MigrationBroadcast(mContext);
-            migrationBroadcast.sendInvocationBroadcast();
-        } catch (Exception e) {
-            Slog.e(TAG, "Sending migration broadcast failed", e);
-        }
-    }
+    // TODO(b/267255123) Implement broadcast sending on background thread,
+    // potentially inside onUserUnlocking()
+    //    @Override
+    //    public void onUserUnlocked(@NonNull TargetUser user) {
+    //        // TODO(b/267255123) Send broadcast up to 10 times with a 60s delay
+    //        Objects.requireNonNull(user);
+    //        try {
+    //            MigrationBroadcast migrationBroadcast = new MigrationBroadcast(mContext);
+    //            migrationBroadcast.sendInvocationBroadcast();
+    //        } catch (Exception e) {
+    //            Slog.e(TAG, "Sending migration broadcast failed", e);
+    //        }
+    //    }
 
     @Override
     public void onUserStopping(@NonNull TargetUser user) {
