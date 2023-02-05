@@ -47,7 +47,7 @@ public final class HealthConnectThreadScheduler {
                     new HealthConnectRoundRobinScheduler();
 
     // Executor to run HC background tasks
-    static ThreadPoolExecutor BACKGROUND_EXECUTOR =
+    private static ThreadPoolExecutor sBackgroundThreadExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_BACKGROUND,
                     NUM_EXECUTOR_THREADS_BACKGROUND,
@@ -55,7 +55,7 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC background tasks
-    private static ThreadPoolExecutor INTERNAL_BACKGROUND_EXECUTOR =
+    private static ThreadPoolExecutor sInternalBackgroundExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
                     NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
@@ -63,7 +63,7 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC tasks for clients
-    private static ThreadPoolExecutor FOREGROUND_EXECUTOR =
+    private static ThreadPoolExecutor sForegroundExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_FOREGROUND,
                     NUM_EXECUTOR_THREADS_FOREGROUND,
@@ -71,7 +71,7 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC controller tasks
-    private static ThreadPoolExecutor CONTROLLER_EXECUTOR =
+    private static ThreadPoolExecutor sControllerExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_CONTROLLER,
                     NUM_EXECUTOR_THREADS_CONTROLLER,
@@ -80,7 +80,7 @@ public final class HealthConnectThreadScheduler {
                     new LinkedBlockingQueue<>());
 
     public static void resetThreadPools() {
-        INTERNAL_BACKGROUND_EXECUTOR =
+        sInternalBackgroundExecutor =
                 new ThreadPoolExecutor(
                         NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
                         NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
@@ -88,7 +88,7 @@ public final class HealthConnectThreadScheduler {
                         TimeUnit.SECONDS,
                         new LinkedBlockingQueue<>());
 
-        BACKGROUND_EXECUTOR =
+        sBackgroundThreadExecutor =
                 new ThreadPoolExecutor(
                         NUM_EXECUTOR_THREADS_BACKGROUND,
                         NUM_EXECUTOR_THREADS_BACKGROUND,
@@ -96,7 +96,7 @@ public final class HealthConnectThreadScheduler {
                         TimeUnit.SECONDS,
                         new LinkedBlockingQueue<>());
 
-        FOREGROUND_EXECUTOR =
+        sForegroundExecutor =
                 new ThreadPoolExecutor(
                         NUM_EXECUTOR_THREADS_FOREGROUND,
                         NUM_EXECUTOR_THREADS_FOREGROUND,
@@ -104,7 +104,7 @@ public final class HealthConnectThreadScheduler {
                         TimeUnit.SECONDS,
                         new LinkedBlockingQueue<>());
 
-        CONTROLLER_EXECUTOR =
+        sControllerExecutor =
                 new ThreadPoolExecutor(
                         NUM_EXECUTOR_THREADS_CONTROLLER,
                         NUM_EXECUTOR_THREADS_CONTROLLER,
@@ -117,31 +117,31 @@ public final class HealthConnectThreadScheduler {
     static void shutdownThreadPools() {
         HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.killTasksAndPauseScheduler();
 
-        INTERNAL_BACKGROUND_EXECUTOR.shutdownNow();
-        BACKGROUND_EXECUTOR.shutdownNow();
-        FOREGROUND_EXECUTOR.shutdownNow();
-        CONTROLLER_EXECUTOR.shutdownNow();
+        sInternalBackgroundExecutor.shutdownNow();
+        sBackgroundThreadExecutor.shutdownNow();
+        sForegroundExecutor.shutdownNow();
+        sControllerExecutor.shutdownNow();
     }
 
     /** Schedules the task on the executor dedicated for performing internal tasks */
     static void scheduleInternalTask(Runnable task) {
-        INTERNAL_BACKGROUND_EXECUTOR.execute(task);
+        sInternalBackgroundExecutor.execute(task);
     }
 
     /** Schedules the task on the executor dedicated for performing controller tasks */
     static void scheduleControllerTask(Runnable task) {
-        CONTROLLER_EXECUTOR.execute(task);
+        sControllerExecutor.execute(task);
     }
 
     /** Schedules the task on the best possible executor based on the parameters */
     static void schedule(Context context, @NonNull Runnable task, int uid, boolean isController) {
         if (isController) {
-            CONTROLLER_EXECUTOR.execute(task);
+            sControllerExecutor.execute(task);
             return;
         }
 
         if (isUidInForeground(context, uid)) {
-            FOREGROUND_EXECUTOR.execute(
+            sForegroundExecutor.execute(
                     () -> {
                         try {
                             if (!isUidInForeground(context, uid)) {
@@ -151,7 +151,7 @@ public final class HealthConnectThreadScheduler {
                                 // longer in foreground we don't want it to consume foreground
                                 // resource anymore.
                                 HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.addTask(uid, task);
-                                BACKGROUND_EXECUTOR.execute(
+                                sBackgroundThreadExecutor.execute(
                                         () ->
                                                 HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER
                                                         .getNextTask()
@@ -168,7 +168,7 @@ public final class HealthConnectThreadScheduler {
                     });
         } else {
             HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.addTask(uid, task);
-            BACKGROUND_EXECUTOR.execute(
+            sBackgroundThreadExecutor.execute(
                     () -> HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.getNextTask().run());
         }
     }
