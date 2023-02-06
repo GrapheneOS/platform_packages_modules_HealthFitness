@@ -27,7 +27,7 @@ import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.server.SystemService;
-import com.android.server.healthconnect.migration.MigrationBroadcast;
+import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -54,6 +54,7 @@ public class HealthConnectManagerService extends SystemService {
     private final TransactionManager mTransactionManager;
     private final UserManager mUserManager;
     private UserHandle mCurrentForegroundUser;
+    private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -78,9 +79,15 @@ public class HealthConnectManagerService extends SystemService {
                 TransactionManager.getInstance(
                         new HealthConnectUserContext(mContext, mCurrentForegroundUser));
         HealthConnectDeviceConfigManager.initializeInstance(context);
+        mMigrationBroadcastScheduler =
+                new MigrationBroadcastScheduler(mCurrentForegroundUser.getIdentifier());
         mHealthConnectService =
                 new HealthConnectServiceImpl(
-                        mTransactionManager, permissionHelper, firstGrantTimeManager, mContext);
+                        mTransactionManager,
+                        permissionHelper,
+                        firstGrantTimeManager,
+                        mMigrationBroadcastScheduler,
+                        mContext);
     }
 
     @Override
@@ -146,6 +153,7 @@ public class HealthConnectManagerService extends SystemService {
         Slog.d(TAG, "switchToSetupForUser: " + user);
         mTransactionManager.onUserUnlocked(
                 new HealthConnectUserContext(mContext, mCurrentForegroundUser));
+        mMigrationBroadcastScheduler.setUserId(mCurrentForegroundUser.getIdentifier());
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
@@ -160,13 +168,9 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        // TODO(b/267255123): Send broadcast up to 10 times with a 60s delay
-                        // (configurable)
-                        MigrationBroadcast migrationBroadcast =
-                                new MigrationBroadcast(mContext, mCurrentForegroundUser);
-                        migrationBroadcast.sendInvocationBroadcast();
+                        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
                     } catch (Exception e) {
-                        Slog.e(TAG, "Sending migration broadcast failed", e);
+                        Slog.e(TAG, "Migration broadcast schedule failed", e);
                     }
                 });
     }
