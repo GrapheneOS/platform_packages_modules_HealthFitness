@@ -16,13 +16,22 @@
 
 package android.healthconnect.internal.datatypes;
 
+import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.internal.datatypes.ExerciseLapInternal;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
+import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 
+import java.time.Instant;
+import java.time.Period;
+import java.util.Collections;
 import java.util.List;
 
 public class TestUtils {
+
+    public static long START_TIME = Instant.now().minus(Period.ofDays(1)).toEpochMilli();
+    public static long END_TIME = Instant.now().toEpochMilli();
 
     public static ExerciseRouteInternal.LocationInternal buildInternalLocationAllFields() {
         return new ExerciseRouteInternal.LocationInternal()
@@ -52,8 +61,10 @@ public class TestUtils {
                         .setExerciseType(
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setRoute(buildExerciseRouteInternal())
-                        .setStartTime((long) 1e9)
-                        .setEndTime((long) 1e10)
+                        .setExerciseLaps(Collections.singletonList(buildExerciseLap()))
+                        .setExerciseSegments(Collections.singletonList(buildExerciseSegment()))
+                        .setStartTime(START_TIME)
+                        .setEndTime(END_TIME)
                         .setEndZoneOffset(1)
                         .setStartZoneOffset(1)
                         .setAppInfoId(1)
@@ -63,6 +74,18 @@ public class TestUtils {
                         .setUuid("id")
                         .setPackageName("android.healthconnect.unittests")
                         .setModel("Pixel4a");
+    }
+
+    public static ExerciseLapInternal buildExerciseLap() {
+        return new ExerciseLapInternal().setStarTime(START_TIME).setEndTime(END_TIME).setLength(10);
+    }
+
+    public static ExerciseSegmentInternal buildExerciseSegment() {
+        return new ExerciseSegmentInternal()
+                .setStarTime(START_TIME)
+                .setEndTime(END_TIME)
+                .setSegmentType(ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                .setRepetitionsCount(10);
     }
 
     public static ExerciseSessionRecordInternal buildExerciseSessionInternalNoExtraFields() {
