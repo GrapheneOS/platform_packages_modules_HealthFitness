@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"Veri yok"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Uygulama izinleri"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Uygulamalarınızı ve izinlerinizi yönetin"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>/<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> uygulamanın erişimi var"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> uygulamanın erişimi var"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> uygulamanın erişimi var"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Yok"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"Giriş ayrıntıları"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"En son erişim"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Yakın zamanda hiçbir uygulama Health Connect\'e erişmedi"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Son erişimin tamamını gör"</string>
@@ -80,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Egzersiz rotası"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"egzersiz rotası"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Egzersiz rotasını yaz"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Egzersiz rotasını okuma"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Mesafe"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"mesafe"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Mesafeyi oku"</string>
@@ -224,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"dinlenme nabzı"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Dinlenme nabzını oku"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Dinlenme nabzını yaz"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect\'ten okuyabilir"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Health Connect\'e yazabilir"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” uygulamasına okuma izni ver"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"\"<xliff:g id="APP_NAME">%1$s</xliff:g>\" uygulamasına yazma izni ver"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"İptal"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"İzin ver"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"Tümüne izin ver"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"İzin verme"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Bu uygulamanın okumasını veya Health Connect\'e yazmasını istediğiniz verileri seçin"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Veri okuma izni verirseniz bu uygulama yeni verileri ve son 30 gün içindeki verileri okuyabilir"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının Health Connect\'e erişmesine izin verilsin mi?"</string>
@@ -247,7 +254,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Erişim izni verilmeyenler"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Ayarlar ve yardım"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Tüm uygulamalar için erişimi kaldır"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Tüm uygulamaları göremiyor musunuz?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"Okumasına izin verilir"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Yazmasına izin verilir"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Hiçbir uygulamaya izin verilmedi"</string>
@@ -266,8 +272,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Gizlilik politikasına göz atın"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Son 24 saat içinde erişildi"</string>
     <string name="app_access_title" msgid="3790585897490185758">"Uygulama erişimi"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Şu anda yüklü olan uyumlu uygulamanız yok"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"Uygulama izinleri kaldırıldı"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect, <xliff:g id="APP_DATA">%s</xliff:g> için izinleri kaldırdı"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect, <xliff:g id="APP_DATA_0">%1$s</xliff:g> ve <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> için izinleri kaldırdı"</string>
@@ -365,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"Olumsuz"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"Yüksek"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"Geçersiz"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 ms.}other{# ms.}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 milisaniye}other{# milisaniye}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 tekrar}other{# tekrar}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 tekrar}other{# tekrar}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"Egzersiz segmentleri"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"Tur"</string>
+    <string name="back_extension" msgid="326104514905344192">"Ters mekik"</string>
+    <string name="badminton" msgid="2562532899799962005">"Badminton"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Halter omuz presi"</string>
+    <string name="baseball" msgid="8308566726381464543">"Beyzbol"</string>
+    <string name="basketball" msgid="8952312917860615262">"Basketbol"</string>
+    <string name="bench_press" msgid="5781962507448903312">"Göğüs pres"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"Ağırlık sehpasında mekik"</string>
+    <string name="biking" msgid="4436876005109385438">"Bisiklet"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"Egzersiz bisikleti sürme"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"Boot camp"</string>
+    <string name="boxing" msgid="8018825707590126764">"Boks"</string>
+    <string name="burpee" msgid="77304431317253801">"Burpee hareketi"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"Vücut ağırlığı ile güç antrenmanı"</string>
+    <string name="cricket" msgid="7003031758224774290">"Kriket"</string>
+    <string name="crunch" msgid="6261544415692173664">"Yarım mekik"</string>
+    <string name="dancing" msgid="3316423624850569070">"Dans"</string>
+    <string name="deadlift" msgid="8557909109378777398">"Deadlift"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Sol kol dambıl kaldırma"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Sağ kol dambıl kaldırma"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Dambılı öne kaldırma"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Dambılı yana kaldırma"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Sol kol dambıl arka kas çalışması"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Sağ kol dambıl arka kas çalışması"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"İki kol dambıl arka kas çalışması"</string>
+    <string name="elliptical" msgid="1139910728613357994">"Eliptik"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"Egzersiz dersi"</string>
+    <string name="fencing" msgid="3959720630233223214">"Eskrim"</string>
+    <string name="football_american" msgid="7298781679747969920">"Amerikan futbolu"</string>
+    <string name="football_australian" msgid="7870317627446699678">"Avustralya futbolu"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"Öne doğru twist hareketi"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"Frizbi"</string>
+    <string name="golf" msgid="4510958024908277043">"Golf"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"Rehberli solunum"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"Jimnastik"</string>
+    <string name="handball" msgid="6228534119454993609">"Hentbol"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Yüksek yoğunluklu aralıklı egzersiz"</string>
+    <string name="hiking" msgid="6287881189679031692">"Doğa yürüyüşü"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"Buz hokeyi"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"Buz pateni"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"Jumping jack"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"İp atlama"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"Lat pulldown"</string>
+    <string name="lunge" msgid="6863772146202006880">"Lunge hareketi"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"Dövüş sanatları"</string>
+    <string name="meditation" msgid="4849671344539060840">"Meditasyon"</string>
+    <string name="paddling" msgid="4330237681577599226">"Kano"</string>
+    <string name="paragliding" msgid="7806835513093567376">"Yamaç paraşütü"</string>
+    <string name="pilates" msgid="4370654527595128790">"Pilates"</string>
+    <string name="plank" msgid="4231877980175820684">"Plank"</string>
+    <string name="racquetball" msgid="182093198971401585">"Raketbol"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"Kaya tırmanışı"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"Paten hokeyi"</string>
+    <string name="rowing" msgid="7445636351111465609">"Kürek çekme"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"Kürek çekme makinesi"</string>
+    <string name="rugby" msgid="1646920222855841135">"Ragbi"</string>
+    <string name="running" msgid="6378365874547681747">"Koşu"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"Koşu bandında koşma"</string>
+    <string name="sailing" msgid="5305484742008364839">"Yelken"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"Aletli dalış"</string>
+    <string name="skating" msgid="7202960228551709866">"Paten"</string>
+    <string name="skiing" msgid="6959504815950834221">"Kayak"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"Snowboard"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"Kar yürüyüşü"</string>
+    <string name="soccer" msgid="7373749155786409639">"Futbol"</string>
+    <string name="softball" msgid="931823677533458803">"Softball"</string>
+    <string name="squash" msgid="3671853878596020550">"Squash"</string>
+    <string name="squat" msgid="2624881515323904278">"Çömelme"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"Merdiven tırmanma"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"Merdiven tırmanma makinesi"</string>
+    <string name="strength_training" msgid="4720460550476191439">"Kuvvet antrenmanı"</string>
+    <string name="stretching" msgid="934444878305334284">"Esneme"</string>
+    <string name="surfing" msgid="9101307462491417943">"Sörf"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"Denizde yüzme"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"Havuzda yüzme"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"Masa tenisi"</string>
+    <string name="tennis" msgid="385785070472019118">"Tenis"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"Üst gövde twist hareketi"</string>
+    <string name="volleyball" msgid="7995390960159762289">"Voleybol"</string>
+    <string name="walking" msgid="3758898602213892784">"Yürüyüş"</string>
+    <string name="water_polo" msgid="2335613325858558397">"Su polosu"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"Ağırlık kaldırma"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"Tekerlekli sandalye"</string>
+    <string name="workout" msgid="8816526215639000463">"Antrenman"</string>
+    <string name="yoga" msgid="8350954009879701169">"Yoga"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"Avustralya futbolu"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> uykuda"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"uyanık"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"uyuma"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"yatak dışında"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"REM uykusu uyuma"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"hafif uyku"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"derin uyku"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"bilinmiyor"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> dk."</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> sa. <xliff:g id="MIN">%2$s</xliff:g> dk."</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> sa."</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 saat}other{# saat}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 dakika}other{# dakika}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·dk.)}other{# mL/(kg·dk.)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{Dakikada vücut ağırlığı kilogramı başına 1 mililitre oksijen}other{Dakikada vücut ağırlığı kilogramı başına # mililitre oksijen}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Metabolik ölçüm aleti"</string>
@@ -519,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Santigrat"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Fahrenhayt"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Tüm uygulamaları göremiyor musunuz?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"Yardım ve geri bildirim"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Yüklü bir uygulamayı göremiyorsanız bu uygulama henüz Health Connect ile uyumlu olmayabilir"</string>
     <string name="things_to_try" msgid="5007292603680871491">"Deneyebileceğiniz bazı yöntemler"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"Güncellemeleri denetle"</string>
@@ -559,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Uygulama ara"</string>
     <string name="no_results" msgid="4935646951230345730">"Sonuç Yok"</string>
     <string name="help" msgid="6096599033945360524">"Yardım"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, Health Connect\'te bu egzersiz rotasına erişmesine izin verilsin mi?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Bu uygulama, rotadaki geçmiş konumunuzu okuyabilecek"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

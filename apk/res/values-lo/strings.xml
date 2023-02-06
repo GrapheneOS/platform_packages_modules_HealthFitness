@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"ບໍ່ມີຂໍ້ມູນ"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"ການອະນຸຍາດແອັບ"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"ຈັດການແອັບ ແລະ ການອະນຸຍາດຂອງທ່ານ"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ຈາກທັງໝົດ <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ແອັບມີສິດເຂົ້າເຖິງ"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ແອັບມີສິດເຂົ້າເຖິງ"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ແອັບມີສິດເຂົ້າເຖິງ"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"ບໍ່ມີ"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"ລາຍລະອຽດລາຍການ"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"ການເຂົ້າເຖິງຫຼ້າສຸດ"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"ບໍ່ມີແອັບໃດເຂົ້າເຖິງ Health Connect ເມື່ອບໍ່ດົນມານີ້"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"ເບິ່ງການເຂົ້າເຖິງຫຼ້າສຸດທັງໝົດ"</string>
@@ -80,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"ເສັ້ນທາງອອກກຳລັງກາຍ"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"ເສັ້ນທາງອອກກຳລັງກາຍ"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"ຂຽນເສັ້ນທາງອອກກຳລັງກາຍ"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"ອ່ານເສັ້ນທາງອອກກຳລັງກາຍ"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"ໄລຍະທາງ"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"ໄລຍະທາງ"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"ອ່ານຂໍ້ມູນໄລຍະທາງ"</string>
@@ -224,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"ອັດຕາການເຕັ້ນຫົວໃຈໃນເວລາພັກຜ່ອນ"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"ອ່ານຂໍ້ມູນອັດຕາການເຕັ້ນຫົວໃຈເວລາພັກຜ່ອນ"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"ຂຽນຂໍ້ມູນອັດຕາການເຕັ້ນຫົວໃຈໃນເວລາພັກຜ່ອນ"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"ສາມາດອ່ານຂໍ້ມູນຈາກ Health Connect ໄດ້"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"ສາມາດຂຽນຫາ Health Connect ໄດ້"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"ອະນຸຍາດໃຫ້ “<xliff:g id="APP_NAME">%1$s</xliff:g>” ອ່ານ"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"ອະນຸຍາດໃຫ້ “<xliff:g id="APP_NAME">%1$s</xliff:g>” ຂຽນ"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"ຍົກເລີກ"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"ອະນຸຍາດ"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"ອະນຸຍາດທັງໝົດ"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"ບໍ່ອະນຸຍາດ"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"ເລືອກຂໍ້ມູນທີ່ທ່ານຕ້ອງການໃຫ້ແອັບນີ້ອ່ານ ຫຼື ຂຽນລົງໃສ່ Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"ຫາກທ່ານໃຫ້ສິດເຂົ້າເຖິງການອ່ານ, ແອັບນີ້ຈະສາມາດອ່ານຂໍ້ມູນໃໝ່ ແລະ ຂໍ້ມູນຈາກ 30 ມື້ທີ່ຜ່ານມາໄດ້"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"ອະນຸຍາດໃຫ້ <xliff:g id="APP_NAME">%1$s</xliff:g> ເຂົ້າເຖິງ Health Connect ບໍ?"</string>
@@ -247,7 +254,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"ບໍ່ໄດ້ຮັບອະນຸຍາດສິດເຂົ້າເຖິງ"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"ການຕັ້ງຄ່າ ແລະ ຄວາມຊ່ວຍເຫຼືອ"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"ລຶບສິດເຂົ້າເຖິງສຳລັບແອັບທັງໝົດອອກ"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"ບໍ່ເຫັນແອັບທັງໝົດຂອງທ່ານບໍ?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"ໄດ້ອະນຸຍາດໃຫ້ອ່ານ"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"ໄດ້ອະນຸຍາດໃຫ້ຂຽນ"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"ບໍ່ມີແອັບໃດໄດ້ຮັບອະນຸຍາດ"</string>
@@ -266,8 +272,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ອ່ານນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"ເຂົ້າເຖິງໃນ 24 ຊົ່ວໂມງທີ່ຜ່ານມາ"</string>
     <string name="app_access_title" msgid="3790585897490185758">"ສິດເຂົ້າເຖິງແອັບ"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"ຕອນນີ້ທ່ານບໍ່ມີແອັບໃດທີ່ເຂົ້າກັນໄດ້ຕິດຕັ້ງໄວ້ເລີຍ"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"ລຶບການອະນຸຍາດແອັບອອກແລ້ວ"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect ລຶບການອະນຸຍາດສຳລັບ <xliff:g id="APP_DATA">%s</xliff:g> ອອກແລ້ວ"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect ລຶບການອະນຸຍາດສຳລັບ <xliff:g id="APP_DATA_0">%1$s</xliff:g> ແລະ <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> ອອກແລ້ວ"</string>
@@ -365,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"ຜົນລົບ"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"ສູງ"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"ສະຫຼຸບບໍ່ໄດ້"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 ມິລິວິນາທີ}other{# ມິລິວິນາທີ}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 ມິລິວິນາທີ}other{# ມິລິວິນາທີ}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{ຊ້ຳ 1 ຮອບ}other{ຊ້ຳ # ຮອບ}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{ຊ້ຳ 1 ຮອບ}other{ຊ້ຳ # ຮອບ}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"ກຸ່ມການອອກກຳລັງກາຍ"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"ຮອບ"</string>
+    <string name="back_extension" msgid="326104514905344192">"ທ່າຍືດຫຼັງ"</string>
+    <string name="badminton" msgid="2562532899799962005">"ດອກປີກໄກ່"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"ກົດໄຫຼ່ຍົກນ້ຳໜັກ"</string>
+    <string name="baseball" msgid="8308566726381464543">"ເບສບອນ"</string>
+    <string name="basketball" msgid="8952312917860615262">"ບານບ້ວງ"</string>
+    <string name="bench_press" msgid="5781962507448903312">"ການອອກກຳລັງກາຍກ້າມສ່ວນເອິກ"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"ຕັ່ງນັ່ງຊິດອັບ"</string>
+    <string name="biking" msgid="4436876005109385438">"ການຖີບລົດ"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"ເຄື່ອງຖີບລົດ"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"ຄ້າຍເຝິກ"</string>
+    <string name="boxing" msgid="8018825707590126764">"ຕີມວຍ"</string>
+    <string name="burpee" msgid="77304431317253801">"ເບີປີ"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"ເພາະກາຍ"</string>
+    <string name="cricket" msgid="7003031758224774290">"ຄຣິກເກັດ"</string>
+    <string name="crunch" msgid="6261544415692173664">"ຄຣັນຊ໌"</string>
+    <string name="dancing" msgid="3316423624850569070">"ການເຕັ້ນ"</string>
+    <string name="deadlift" msgid="8557909109378777398">"ເດດລິບ"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"ດັດແຂນດຳເບວແຂນຊ້າຍ"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"ດັດແຂນດຳເບວແຂນຂວາ"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"ດຳເບວຍົກໜ້າ"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"ດຳເບວຍົກຂ້າງ"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"ຍືດແຂນດຳເບວຂ້າງຊ້າຍ"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"ຍືດແຂນດຳເບວຂ້າງຂວາ"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"ຍືດແຂນດຳເບວສອງຂ້າງ"</string>
+    <string name="elliptical" msgid="1139910728613357994">"ອອກກຳລັງກາຍວົງລີ"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"ຄລາສອອກກຳລັງກາຍ"</string>
+    <string name="fencing" msgid="3959720630233223214">"ຟັນດາບ"</string>
+    <string name="football_american" msgid="7298781679747969920">"ອາເມຣິກັນຟຸດບອນ"</string>
+    <string name="football_australian" msgid="7870317627446699678">"ເຕະບານອອສເຕຣລຽນ"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"ບິດໄປໜ້າ"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"ຟຣິສບີ"</string>
+    <string name="golf" msgid="4510958024908277043">"ກັອບ"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"ການຫາຍໃຈແບບມີການແນະນຳ"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"ຢິມນາສຕິກ"</string>
+    <string name="handball" msgid="6228534119454993609">"ກິລາແຮນບອນ"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"ການຝຶກອົບຮົມເປັນໄລຍະເລັ່ງລັດສູງ"</string>
+    <string name="hiking" msgid="6287881189679031692">"ການຍ່າງໄກ"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"ຮັອກກີນ້ຳກ້ອນ"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"ສະເກັດນ້ຳກ້ອນ"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"ຈຳປິງແຈັກ"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"ໂດດເຊືອກ"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"ການອອກກຳລັງກາຍກ້າມຊີ້ນຫຼັງສ່ວນເທິງ"</string>
+    <string name="lunge" msgid="6863772146202006880">"ຫຍໍ້ເຂົ່າ"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"ສິນລະປະການຕໍ່ສູ້"</string>
+    <string name="meditation" msgid="4849671344539060840">"ນັ່ງສະມາທິ"</string>
+    <string name="paddling" msgid="4330237681577599226">"ການພາຍເຮືອ"</string>
+    <string name="paragliding" msgid="7806835513093567376">"ການໂດດຈ້ອງ"</string>
+    <string name="pilates" msgid="4370654527595128790">"ພິລາທີສ"</string>
+    <string name="plank" msgid="4231877980175820684">"ແພລງ"</string>
+    <string name="racquetball" msgid="182093198971401585">"ແຣັກເຄັດບອນ"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"ການປີນຜາ"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"ໂຣເລີຮັອກກີ"</string>
+    <string name="rowing" msgid="7445636351111465609">"ພາຍເຮືອ"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"ເຄື່ອງພາຍເຮືອ"</string>
+    <string name="rugby" msgid="1646920222855841135">"ຣັກບີ"</string>
+    <string name="running" msgid="6378365874547681747">"ແລ່ນ"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"ເຄື່ອງແລ່ນ"</string>
+    <string name="sailing" msgid="5305484742008364839">"ເດີນເຮືອ"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"ການດຳນ້ຳ"</string>
+    <string name="skating" msgid="7202960228551709866">"ການຂີ່ສະເກັດ"</string>
+    <string name="skiing" msgid="6959504815950834221">"ຫຼິ້ນສະກີ"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"ຂີ່ສະໂນບອດ"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"ຍ່າງຫິມະ"</string>
+    <string name="soccer" msgid="7373749155786409639">"ບານເຕະ"</string>
+    <string name="softball" msgid="931823677533458803">"ຊອບບອນ"</string>
+    <string name="squash" msgid="3671853878596020550">"ສະຄວດ"</string>
+    <string name="squat" msgid="2624881515323904278">"ສະຄວດ"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"ການປີນຂັ້ນໄດ"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"ເຄື່ອງປີນຂັ້ນໄດ"</string>
+    <string name="strength_training" msgid="4720460550476191439">"ການອອກກຳລັງກາຍເຝິກກ້າມ"</string>
+    <string name="stretching" msgid="934444878305334284">"ການຍືດ"</string>
+    <string name="surfing" msgid="9101307462491417943">"ໂຕ້ຄື້ນ"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"ການລອຍນ້ຳໃນແມ່ນ້ຳ ຫຼື ທະເລ"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"ການລອຍນ້ຳໃນສະ"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"ປິ່ງປ່ອງ"</string>
+    <string name="tennis" msgid="385785070472019118">"ເທນນິສ"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"ບິດເທິງ"</string>
+    <string name="volleyball" msgid="7995390960159762289">"ບານສົ່ງ"</string>
+    <string name="walking" msgid="3758898602213892784">"ການຍ່າງ"</string>
+    <string name="water_polo" msgid="2335613325858558397">"ໂປໂລນ້ຳ"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"ຍົກນ້ຳໜັກ"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"ລໍ້ຍູ້"</string>
+    <string name="workout" msgid="8816526215639000463">"ການອອກກຳລັງກາຍ"</string>
+    <string name="yoga" msgid="8350954009879701169">"ໂຍຄະ"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"ເຕະບານອອສເຕຣລຽນ"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"ນອນ <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="NAME">%2$s</xliff:g> <xliff:g id="DURATION">%1$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"ຕື່ນ"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"ນອນ"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"ລຸກອອກຕຽງ"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"ນອນຫຼັບຝັນ"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"ນອນຫຼັບຕື້ນ"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"ນອນຫຼັບເລິກ"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"ບໍ່ຮູ້"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g>ນທ"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g>ຊມ <xliff:g id="MIN">%2$s</xliff:g>ນທ"</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g>ຊມ"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 ຊົ່ວໂມງ}other{# ຊົ່ວໂມງ}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 ນາທີ}other{# ນາທີ}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(ກກ·ນທ)}other{# mL/(ກກ·ນທ)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 ມິນລິລິດຂອງອອກຊິເຈນຕໍ່ກິໂລກຣາມຂອງມວນຮ່າງກາຍຕໍ່ນາທີ}other{# ມິນລິລິດຂອງອອກຊິເຈນຕໍ່ກິໂລກຣາມຂອງມວນຮ່າງກາຍຕໍ່ນາທີ}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"ກະຕ່າເມຕາໂບລິກ"</string>
@@ -519,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"ເຊວຊຽສ"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"ຟາເຣນຮາຍ"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"ເຄລວິນ"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"ບໍ່ເຫັນແອັບທັງໝົດຂອງທ່ານບໍ?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"ຊ່ວຍເຫຼືອ ແລະ ຄຳຕິຊົມ"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"ຫາກທ່ານບໍ່ເຫັນແອັບທີ່ຕິດຕັ້ງແລ້ວ, ສະແດງວ່າແອັບນັ້ນອາດຈະເຂົ້າກັນບໍ່ໄດ້ກັບ Health Connect ເທື່ອ"</string>
     <string name="things_to_try" msgid="5007292603680871491">"ສິ່ງທີ່ຄວນລອງເຮັດ"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"ກວດສອບການອັບເດດ"</string>
@@ -559,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"ຊອກຫາແອັບ"</string>
     <string name="no_results" msgid="4935646951230345730">"ບໍ່ມີຜົນການຊອກຫາ"</string>
     <string name="help" msgid="6096599033945360524">"ຊ່ວຍເຫຼືອ"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"ອະນຸຍາດໃຫ້ <xliff:g id="APP_NAME">%1$s</xliff:g> ເຂົ້າເຖິງເສັ້ນທາງການອອກກຳລັງກາຍນີ້ໃນ Health Connect ບໍ?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"ແອັບນີ້ຈະສາມາດອ່ານສະຖານທີ່ຜ່ານມາຂອງທ່ານໃນເສັ້ນທາງໄດ້"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

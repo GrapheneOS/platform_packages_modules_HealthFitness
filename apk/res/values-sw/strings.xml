@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"Hakuna data"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Ruhusa za programu"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Dhibiti programu na ruhusa zako"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"Programu <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> kati ya <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> zinaweza kufikia"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"Programu <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> zinaweza kufikia"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"Programu <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> inaweza kufikia"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Hamna"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"Maelezo ya kipengee"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Ufikiaji wa hivi karibuni"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Hakuna programu zilizofikia Health Connect hivi karibuni"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Angalia ruhusa zote za ufikiaji za karibuni"</string>
@@ -80,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Njia ya mazoezi"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"njia ya mazoezi"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Andika njia ya mazoezi"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Soma njia ya mazoezi"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Umbali"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"umbali"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Isome data ya umbali"</string>
@@ -224,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"mapigo ya moyo ya kawaida"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Isome data ya mapigo ya moyo ya kawaida"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Iandike data ya mapigo ya moyo ya kawaida"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Inaweza kusoma data ya Health Connect"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Inaweza kuandikia Health Connect"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” isome"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” ili uandike"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"Ghairi"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"Ruhusu"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"Ruhusu zote"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Usiruhusu"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Chagua data unayotaka programu hii isome au iandike kwenye Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Iwapo utaipatia ruhusa ya kusoma, programu hii itaweza kusoma data mpya na data ya siku 30 zilizopita"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"Ungependa kuruhusu programu ya <xliff:g id="APP_NAME">%1$s</xliff:g> kufikia Health Connect?"</string>
@@ -247,7 +254,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Programu ambazo hazijaruhusiwa"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Mipangilio na usaidizi"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Ondoa ufikiaji kwa programu zote"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Je, huoni programu zako zote?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"Programu ina ruhusa ya kusoma"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Programu ina ruhusa ya kuandika"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Hakuna programu zilizoruhusiwa"</string>
@@ -266,8 +272,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Soma sera ya faragha"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Ilifikiwa katika saa 24 zilizopita"</string>
     <string name="app_access_title" msgid="3790585897490185758">"Ufikiaji wa programu"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Kwa sasa hujasakinisha programu zozote oanifu"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"Imeondoa ruhusa za programu"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect imeondoa ruhusa za <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect imeondoa ruhusa za <xliff:g id="APP_DATA_0">%1$s</xliff:g> na <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -365,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"Yai halijapevuka"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"Juu"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"Tokeo lenye shaka"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{Milisekunde 1}other{Milisekunde #}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{Milisekunde 1}other{Milisekunde #}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{Urudiaji 1}other{Marudio #}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{Urudiaji 1}other{Marudio #}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"Aina ya Mazoezi"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"Mizunguko"</string>
+    <string name="back_extension" msgid="326104514905344192">"Kunyoosha mgongo"</string>
+    <string name="badminton" msgid="2562532899799962005">"Mpira wa vinyoya"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Mazoezi ya mabega kwa kuinua uzani"</string>
+    <string name="baseball" msgid="8308566726381464543">"Besiboli"</string>
+    <string name="basketball" msgid="8952312917860615262">"Mpira wa kikapu"</string>
+    <string name="bench_press" msgid="5781962507448903312">"Kuinua uzani ukilala chali"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"Kujiinua ukilala kwenye benchi"</string>
+    <string name="biking" msgid="4436876005109385438">"Kuendesha baiskeli"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"Kuendesha baiskeli isiyo sogea"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"Warsha ya mazoezi"</string>
+    <string name="boxing" msgid="8018825707590126764">"Ndondi"</string>
+    <string name="burpee" msgid="77304431317253801">"Mazoezi ya Burpee"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"Mazoezi ya calisthenics"</string>
+    <string name="cricket" msgid="7003031758224774290">"Kriketi"</string>
+    <string name="crunch" msgid="6261544415692173664">"Mazoezi ya kuimarisha misuli ya fumbatio"</string>
+    <string name="dancing" msgid="3316423624850569070">"Kucheza Densi"</string>
+    <string name="deadlift" msgid="8557909109378777398">"Kunyanyua uzani sakafuni"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Kuviringisha chuma chenye uzito kwa mkono wa kushoto"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Kuviringisha chuma chenye uzito kwa mkono wa kulia"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Mazoezi ya kuinua chuma chenye uzito kwa mbele"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Mazoezi ya kuinua chuma chenye uzito kwa upande"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Kuinua chuma ili kujenga misuli ya mkono wa kushoto"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Kuinua chuma ili kujenga misuli ya mkono wa kulia"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Kuinua chuma ili kujenga misuli ya mikono miwili"</string>
+    <string name="elliptical" msgid="1139910728613357994">"Kifaa cha mazoezi kama kupanda ngazi"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"Darasa la mazoezi"</string>
+    <string name="fencing" msgid="3959720630233223214">"Mchezo wa vitara"</string>
+    <string name="football_american" msgid="7298781679747969920">"Soka ya Marekani"</string>
+    <string name="football_australian" msgid="7870317627446699678">"Soka ya Australia"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"Mchezo wa kujinyonga kwa mbele"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"Kutupa diski ya plastiki hewani"</string>
+    <string name="golf" msgid="4510958024908277043">"Gofu"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"Mazoezi ya kupumua"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"Sarakasi"</string>
+    <string name="handball" msgid="6228534119454993609">"Mpira wa Mikono"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Mazoezi mazito kwa muda mahususi"</string>
+    <string name="hiking" msgid="6287881189679031692">"Matembezi marefu"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"Mpira wa magongo kwenye theluji"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"Kuteleza kwenye theluji"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"Mazoezi ya kuruka"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"Kuruka kamba"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"Mazoezi ya kuvuta chini uzani"</string>
+    <string name="lunge" msgid="6863772146202006880">"Kupiga goti na kuinuka tena"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"Sanaa ya vita"</string>
+    <string name="meditation" msgid="4849671344539060840">"Kutafakari"</string>
+    <string name="paddling" msgid="4330237681577599226">"Kupiga kasia"</string>
+    <string name="paragliding" msgid="7806835513093567376">"Kuruka kwa Miavuli"</string>
+    <string name="pilates" msgid="4370654527595128790">"Kufanya mazoezi ya Pilates"</string>
+    <string name="plank" msgid="4231877980175820684">"Kuinua mwili kwa kiwiko"</string>
+    <string name="racquetball" msgid="182093198971401585">"Kucheza raketiboli"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"Upandaji miamba ya mawe kutumia kamba"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"Hoki telezi"</string>
+    <string name="rowing" msgid="7445636351111465609">"Kupiga Makasia"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"Kupiga makasia yasiyohamishika"</string>
+    <string name="rugby" msgid="1646920222855841135">"Raga"</string>
+    <string name="running" msgid="6378365874547681747">"Kukimbia"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"Kukimbia kwenye mashine isiyosogea"</string>
+    <string name="sailing" msgid="5305484742008364839">"Uendeshaji Vyombo vya Baharini"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"Kupiga mbizi kwa vifaa vya kuvutia hewa"</string>
+    <string name="skating" msgid="7202960228551709866">"Kuteleza"</string>
+    <string name="skiing" msgid="6959504815950834221">"Kuteleza Kwenye Skii"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"Kuteleza Kwenye Theluji kwa Ubao"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"Usafiri kwa viatu vya kutembea thelujini"</string>
+    <string name="soccer" msgid="7373749155786409639">"Soka"</string>
+    <string name="softball" msgid="931823677533458803">"Besiboli maalum"</string>
+    <string name="squash" msgid="3671853878596020550">"Skwashi"</string>
+    <string name="squat" msgid="2624881515323904278">"Mazoezi ya kuchuchumaa"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"Kupanda ngazi"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"Kifaa cha kupanda ngazi"</string>
+    <string name="strength_training" msgid="4720460550476191439">"Mazoezi ya kuongeza nguvu"</string>
+    <string name="stretching" msgid="934444878305334284">"Kujinyoosha"</string>
+    <string name="surfing" msgid="9101307462491417943">"Kuteleza katika Mawimbi"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"Uogeleaji kwenye dimbwi wazi"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"Uogeleaji kwenye bwawa"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"Tenisi ya mezani"</string>
+    <string name="tennis" msgid="385785070472019118">"Tenisi"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"Mchezo wa kujinyonga kwa juu"</string>
+    <string name="volleyball" msgid="7995390960159762289">"Voliboli"</string>
+    <string name="walking" msgid="3758898602213892784">"Kutembea"</string>
+    <string name="water_polo" msgid="2335613325858558397">"Polo ya majini"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"Kuinua uzani"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"Kuendesha kiti cha magurudumu"</string>
+    <string name="workout" msgid="8816526215639000463">"Mazoezi ya mwili"</string>
+    <string name="yoga" msgid="8350954009879701169">"Yoga"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"Soka ya Australia"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> ya kulala"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"kuamka"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"kulala"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"nje ya kitanda"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"kupepesa macho usingizini (REM)"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"usingizi wa kawaida"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"usingizi mzito"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"haijulikani"</string>
+    <string name="minute_duration" msgid="491738815989490481">"Dak <xliff:g id="MINUTE">%1$s</xliff:g>"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"Saa <xliff:g id="HOUR">%1$s</xliff:g> dak <xliff:g id="MIN">%2$s</xliff:g>"</string>
+    <string name="hour_duration" msgid="336334091239099072">"Saa <xliff:g id="HOUR">%1$s</xliff:g>"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{Saa 1}other{Saa #}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{Dakika 1}other{Dakika #}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{Milimita 1 kwa (kg·dak)}other{Milimita # kwa (kg·dak)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{Mililita 1 ya oksijeni kwa kilogramu moja ya uzito wa kitu kwa dakika moja}other{Mililita # za oksijeni kwa kilogramu moja ya uzito wa kitu kwa dakika moja}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Kikapu cha metaboliki"</string>
@@ -519,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Selisiasi"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Farenhaiti"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Je, huoni programu zako zote?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"Usaidizi na maoni"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Endapo hutaona programu iliyosakinishwa, huenda programu hiyo haioani na Health Connect kwa sasa"</string>
     <string name="things_to_try" msgid="5007292603680871491">"Mambo unayoweza kujaribu"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"Angalia masasisho"</string>
@@ -559,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Tafuta programu"</string>
     <string name="no_results" msgid="4935646951230345730">"Hakuna Matokeo"</string>
     <string name="help" msgid="6096599033945360524">"Usaidizi"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"Ungependa kuruhusu <xliff:g id="APP_NAME">%1$s</xliff:g> ifikie njia hii ya mazoezi kwenye programu ya Health Connect?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Programu hii itaweza kusoma mahali ulipokuwepo hapo awali kwenye njia"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

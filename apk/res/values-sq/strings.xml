@@ -19,27 +19,27 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Lejet dhe të dhënat"</string>
-    <!-- no translation found for home_subtitle (7432717346054530246) -->
-    <skip />
+    <string name="home_subtitle" msgid="7432717346054530246">"Menaxho të dhënat e shëndetit dhe të fitnesit në telefonin tënd dhe kontrollo se cilat aplikacione mund të kenë qasje në to"</string>
     <string name="data_title" msgid="6928287139074878977">"Të dhënat dhe qasja"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Të gjitha kategoritë"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Shiko të gjitha kategoritë"</string>
     <string name="no_data" msgid="1120552294863595549">"Nuk ka të dhëna"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Lejet e aplikacioneve"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Menaxho aplikacionet dhe lejet"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> nga <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplikacione kanë qasje"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacione kanë qasje"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacion ka qasje"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Asnjë"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"Detajet e hyrjes"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Qasja së fundi"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Asnjë aplikacion nuk ka pasur qasje së fundi te Health Connect"</string>
-    <!-- no translation found for show_recent_access_entries_button_title (5940089088828697715) -->
-    <skip />
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Shiko të gjitha qasjet e fundit"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Shiko se cilat aplikacione kanë pasur qasje te të dhënat e tua gjatë 24 orëve të fundit"</string>
     <string name="today_header" msgid="3128127066599449902">"Sot"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"Dje"</string>
-    <!-- no translation found for read_data_access_label (6637502477626337989) -->
-    <skip />
-    <!-- no translation found for write_data_access_label (2129321999800895193) -->
-    <skip />
-    <!-- no translation found for data_type_separator (7425650044625487749) -->
-    <skip />
+    <string name="read_data_access_label" msgid="6637502477626337989">"Të lexojë: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Të shkruajë: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Aktiviteti"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"aktiviteti"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Matjet e trupit"</string>
@@ -85,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Itinerari i stërvitjes"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"itinerari i stërvitjes"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Të shkruajë itinerarin e stërvitjes"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Lexo itinerarin e stërvitjes"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Distanca"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"distanca"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Të lexojë të dhënat për distancën"</string>
@@ -161,14 +162,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"mukoza cervikale"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Të lexojë të dhënat për mukozën cervikale"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Të shkruajë të dhënat për mukozën cervikale"</string>
-    <!-- no translation found for intermenstrual_bleeding_uppercase_label (5282365477971928961) -->
-    <skip />
-    <!-- no translation found for intermenstrual_bleeding_lowercase_label (6778401872061584730) -->
-    <skip />
-    <!-- no translation found for intermenstrual_bleeding_read_content_description (4436771830985838699) -->
-    <skip />
-    <!-- no translation found for intermenstrual_bleeding_write_content_description (6338876695125491946) -->
-    <skip />
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Gjakderdhjet mes menstruacioneve"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"gjakderdhjet mes menstruacioneve"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Të lexojë gjakderdhjet mes menstruacioneve"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Të shkruajë gjakderdhjet mes menstruacioneve"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruacionet"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruacionet"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Të lexojë të dhënat për menstruacionet"</string>
@@ -233,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"rrahjet e zemrës në gjendje qetësie"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Të lexojë të dhënat për rrahjet e zemrës në gjendje qetësie"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Të shkruajë të dhënat për rrahjet e zemrës në gjendje qetësie"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Mund të lexojë nga Health Connect"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Mund të shkruajë te Health Connect"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"Lejo \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" të lexojë"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"Lejo \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" të shkruajë"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"Anulo"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"Lejo"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"Lejoji të gjitha"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Mos lejo"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Zgjidh të dhënat që dëshiron që ky aplikacion të lexojë ose të shkruajë te Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Nëse i jep qasje për të lexuar, ky aplikacion mund të lexojë të dhëna të reja dhe të dhëna nga 30 ditët e fundit"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"Të lejohet <xliff:g id="APP_NAME">%1$s</xliff:g> që të ketë qasje në Health Connect?"</string>
@@ -256,14 +254,12 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Qasja nuk lejohet"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Cilësimet dhe ndihma"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Hiq qasjen për të gjitha aplikacionet"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Nuk mund t\'i shikosh të gjitha apl.?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"I lejohet të lexojë"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"I lejohet të shkruajë"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Nuk lejohet asnjë aplikacion"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Asnjë aplikacion nuk është refuzuar"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Të hiqet qasja për të gjitha aplikacionet?"</string>
-    <!-- no translation found for permissions_disconnect_all_dialog_message (188398111066699829) -->
-    <skip />
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Asnjë nga aplikacionet e tua nuk do të mund të ketë qasje ose të shtojë të dhëna të reja te Health Connect. Kjo nuk fshin asnjë të dhënë ekzistuese.\n\nKjo nuk ndikon te lejet e tjera që ky aplikacion mund të ketë, si p.sh. te vendndodhja, kamera ose mikrofoni."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Hiqi të gjitha"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Menaxho aplikacionin"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Fshi të dhënat e aplikacionit"</string>
@@ -275,28 +271,17 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Për të menaxhuar lejet e tjera të Android tek të cilat mund të ketë qasje ky aplikacion, shko te \"Cilësimet\" dhe më pas trokit tek \"Aplikacionet\""</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Lexo politikën e privatësisë"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Qasja gjatë 24 orëve të fundit"</string>
-    <!-- no translation found for app_access_title (3790585897490185758) -->
-    <skip />
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_title (8792819254447116237) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_one_app (768339383233748811) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_two_apps (4668329081257129504) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_three_apps (1864809568089917658) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_many_apps (9068677028598069251) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_button (2185333719667993637) -->
-    <skip />
-    <!-- no translation found for denied_apps_dialog_title (4153321577696518871) -->
-    <skip />
-    <!-- no translation found for denied_apps_dialog_message (8093442625336147649) -->
-    <skip />
-    <!-- no translation found for denied_apps_dialog_got_it_button (5655570219176756282) -->
-    <skip />
+    <string name="app_access_title" msgid="3790585897490185758">"Qasja e aplikacionit"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Aktualisht nuk ke asnjë aplikacion të përputhshëm të instaluar"</string>
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Lejet e hequra të aplikacioneve"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect ka hequr lejet për <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect ka hequr lejet për <xliff:g id="APP_DATA_0">%1$s</xliff:g> dhe <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Health Connect ka hequr lejet për <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> dhe <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Health Connect ka hequr lejet për <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> dhe aplikacione të tjera"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Shiko detajet"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Pse i heq Health Connect lejet e aplikacioneve"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Nëse një aplikacion pezullohet ose hiqet nga Google Play, Health Connect i heq automatikisht lejet e tij.\n\nKjo do të thotë që aplikacioni nuk mund të ketë më qasje te të dhënat e ruajtura në Health Connect. Nëse ky aplikacion ka të dhëna që janë shkruar më herët, ai shfaqet në listën e aplikacioneve joaktive."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"E kuptova"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Fillo me Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Health Connect ruan të dhënat e tua të shëndetit dhe të fitnesit, duke të ofruar një mënyrë të thjeshtë për të sinkronizuar aplikacione të ndryshme në telefonin tënd"</string>
     <string name="share_data" msgid="3461840023402996573">"Ndaj të dhënat me aplikacionet e tua"</string>
@@ -385,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"Negativ"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"I lartë"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"Jobindës"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 ms}other{# ms}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 milisekondë}other{# milisekonda}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 përsëritje}other{# përsëritje}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 përsëritje}other{# përsëritje}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"Segmentet e ushtrimit"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"Xhirot"</string>
+    <string name="back_extension" msgid="326104514905344192">"Tërheqje për kurrizin"</string>
+    <string name="badminton" msgid="2562532899799962005">"Badminton"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Ngritje shtange mbi supe"</string>
+    <string name="baseball" msgid="8308566726381464543">"Bejsboll"</string>
+    <string name="basketball" msgid="8952312917860615262">"Basketboll"</string>
+    <string name="bench_press" msgid="5781962507448903312">"Ngritje shtange në stol"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"Ulje-ngritje me peshën e trupit nga stoli"</string>
+    <string name="biking" msgid="4436876005109385438">"Biçikletë"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"Biçikletë në vend"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"Kamp stërvitor"</string>
+    <string name="boxing" msgid="8018825707590126764">"Boks"</string>
+    <string name="burpee" msgid="77304431317253801">"Pompa të shoqëruara me kërcim"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"Kalistenikë"</string>
+    <string name="cricket" msgid="7003031758224774290">"Kriket"</string>
+    <string name="crunch" msgid="6261544415692173664">"Ushtrime për muskujt abdominalë"</string>
+    <string name="dancing" msgid="3316423624850569070">"Kërcim"</string>
+    <string name="deadlift" msgid="8557909109378777398">"Ngritje shtange nga toka"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Ngritje peshe drejt gjoksit me krahun e majtë"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Ngritje peshe drejt gjoksit me krahun e djathtë"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Ngritje peshe përpara vetes me një dorë"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Ngritje peshe anësore me dy duar për muskuj shpine"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Hapje tricepsi me peshë me krahun e majtë"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Hapje tricepsi me peshë me krahun e djathtë"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Hapje tricepsi me pesha me të dy krahët"</string>
+    <string name="elliptical" msgid="1139910728613357994">"Kërcim në biçikletë eliptike"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"Kurs për ushtrime"</string>
+    <string name="fencing" msgid="3959720630233223214">"Skermë"</string>
+    <string name="football_american" msgid="7298781679747969920">"Futboll amerikan"</string>
+    <string name="football_australian" msgid="7870317627446699678">"Futboll australian"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"Përdredhje e trupit të përkulur përpara"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"Frisbi"</string>
+    <string name="golf" msgid="4510958024908277043">"Golf"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"Frymëmarrje e orientuar"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"Gjimnastikë"</string>
+    <string name="handball" msgid="6228534119454993609">"Hendboll"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Stërvitje me intervale me intensitet të lartë"</string>
+    <string name="hiking" msgid="6287881189679031692">"Ngjitje në mal"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"Hokej në akull"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"Patinazh në akull"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"Kërcim me hapje-mbyllje krahësh dhe këmbësh"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"Kërcim me litar"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"Tërheqje e hekurit me pesha për muskujt e shpinës"</string>
+    <string name="lunge" msgid="6863772146202006880">"Ushtrim në gjunjë me një këmbë prapa"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"Arte luftarake"</string>
+    <string name="meditation" msgid="4849671344539060840">"Meditim"</string>
+    <string name="paddling" msgid="4330237681577599226">"Vozitje"</string>
+    <string name="paragliding" msgid="7806835513093567376">"Paraglajding"</string>
+    <string name="pilates" msgid="4370654527595128790">"Pilate"</string>
+    <string name="plank" msgid="4231877980175820684">"Qëndrim shtrirë mbi bërryla"</string>
+    <string name="racquetball" msgid="182093198971401585">"Raketboll"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"Ngjitje shkëmbinjsh"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"Hokej me patina"</string>
+    <string name="rowing" msgid="7445636351111465609">"Kanotazh"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"Makineri kanotazhi"</string>
+    <string name="rugby" msgid="1646920222855841135">"Ragbi"</string>
+    <string name="running" msgid="6378365874547681747">"Vrap"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"Vrap në pistë vrapimi"</string>
+    <string name="sailing" msgid="5305484742008364839">"Lundrim"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"Zhytje"</string>
+    <string name="skating" msgid="7202960228551709866">"Patinazh"</string>
+    <string name="skiing" msgid="6959504815950834221">"Ski"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"Rrëshqitje në borë"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"Ecje në dëborë"</string>
+    <string name="soccer" msgid="7373749155786409639">"Futboll"</string>
+    <string name="softball" msgid="931823677533458803">"Softboll"</string>
+    <string name="squash" msgid="3671853878596020550">"Skuash"</string>
+    <string name="squat" msgid="2624881515323904278">"Ulje-ngritje"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"Ngjitje shkallësh"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"Makineri ngjitje shkallësh"</string>
+    <string name="strength_training" msgid="4720460550476191439">"Ushtrime force"</string>
+    <string name="stretching" msgid="934444878305334284">"Shtriqje"</string>
+    <string name="surfing" msgid="9101307462491417943">"Sërf"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"Not në mjedise të hapura"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"Not në pishinë"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"Pingpong"</string>
+    <string name="tennis" msgid="385785070472019118">"Tenis"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"Përdredhje e pjesës së sipërme të trupit"</string>
+    <string name="volleyball" msgid="7995390960159762289">"Volejboll"</string>
+    <string name="walking" msgid="3758898602213892784">"Ecje"</string>
+    <string name="water_polo" msgid="2335613325858558397">"Vaterpolo"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"Peshëngritje"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"Karrige me rrota"</string>
+    <string name="workout" msgid="8816526215639000463">"Stërvitje"</string>
+    <string name="yoga" msgid="8350954009879701169">"Joga"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"Futboll australian"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> në gjumë"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"zgjuar"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"në gjumë"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"ngritur nga krevati"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"gjumë REM"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"gjumë i lehtë"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"gjumë i thellë"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"i panjohur"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> min."</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> orë e <xliff:g id="MIN">%2$s</xliff:g> min."</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> orë"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> e <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 orë}other{# orë}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 minutë}other{# minuta}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·min)}other{# mL/(kg·min)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 mililitër oksigjen për kilogram mase trupore për minutë}other{# mililitra oksigjen për kilogram mase trupore për minutë}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Tabela metabolike"</string>
@@ -539,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celsius"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Farenhait"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Nuk mund t\'i shikosh të gjitha aplikacionet?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"Ndihmë dhe komente"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Nëse nuk mund ta shikosh një aplikacion të instaluar, ai mund të mos jetë ende i përputhshëm me Health Connect"</string>
     <string name="things_to_try" msgid="5007292603680871491">"Gjërat që mund të provosh"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"Kontrollo për përditësime"</string>
@@ -579,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Kërko për aplikacione"</string>
     <string name="no_results" msgid="4935646951230345730">"Asnjë rezultat"</string>
     <string name="help" msgid="6096599033945360524">"Ndihma"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"Të lejohet që <xliff:g id="APP_NAME">%1$s</xliff:g> të ketë qasje te ky itinerar stërvitjeje në Health Connect?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Ky aplikacion do të mund të lexojë vendndodhjen tënde të mëparshme në itinerar"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"Hech narsa topilmadi"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Ilovalar uchun ruxsatlar"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Ilovalar va ruxsatlarni boshqarish"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>/<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ta ilovaga ruxsat berilgan"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ta ilovaga ruxsat berilgan"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ta ilovaga ruxsat berilgan"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Hech biri"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"Qayd tafsilotlari"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Oxirgi kirish"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Yaqin orada hech qanday ilova Health Connect ilovasiga ulanmagan"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Barcha oxirgi ruxsatlarni koʻrish"</string>
@@ -80,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Mashq yoʻnalishi"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"mashq yoʻnalishi"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Mashq yoʻnalishini yozing"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Mashq yoʻnalishini oʻqish"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Masofa"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"masofa"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Masofani oʻqish"</string>
@@ -224,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"dam olishdagi yurak urishi"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Dam olishdagi yurak urishini oʻqish"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Dam olishdagi yurak urishini yozish"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect xizmatidan oʻqishi mumkin"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Health Connect xizmatiga yozishi mumkin"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ilovasiga oʻqish uchun ruxsat bering"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ilovasiga yozish uchun ruxsat bering"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"Bekor qilish"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"Ruxsat"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"Hammasiga ruxsat berish"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Rad etish"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Ilova qanday axborotlarni oʻqishi yoki Health Connectga yozishi mumkinligini tanlang."</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Agar siz oʻqishga ruxsat bersangiz, bu ilova yangi maʼlumotlar va oxirgi 30 kunlik maʼlumotlarni oʻqiy oladi"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectga ulanishiga ruxsat berilsinmi?"</string>
@@ -247,7 +254,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Ruxsat berilmagan"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Sozlamalar va yordam"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Barcha ilovalar uchun taqiqlash"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Barcha ilovalar chiqmadimi?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"Oʻqishga ruxsat berilgan"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Yozishga ruxsat berilgan"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Hech qanday ilovaga ruxsat berilmagan"</string>
@@ -266,8 +272,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Maxfiylik siyosatini oʻqish"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Oxirgi 24 soat ichida kirilgan"</string>
     <string name="app_access_title" msgid="3790585897490185758">"Ilovaga ruxsat"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Mos ilovalar oʻrnatilmagan"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"Ilovadan olingan ruxsatlar"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect <xliff:g id="APP_DATA">%s</xliff:g> ruxsatlarini olib tashladi"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect <xliff:g id="APP_DATA_0">%1$s</xliff:g> va <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> ruxsatlarini olib tashladi"</string>
@@ -365,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"Salbiy"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"Yuqori"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"Noaniq"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 ms}other{# ms}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 millisoniya}other{# millisoniya}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 marta}other{# marta}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 marta}other{# marta}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"Mashq segmentlari"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"Aylanishlar"</string>
+    <string name="back_extension" msgid="326104514905344192">"Giperekstenziya"</string>
+    <string name="badminton" msgid="2562532899799962005">"Badminton"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Shtanga bilan yelka bosish"</string>
+    <string name="baseball" msgid="8308566726381464543">"Beysbol"</string>
+    <string name="basketball" msgid="8952312917860615262">"Basketbol"</string>
+    <string name="bench_press" msgid="5781962507448903312">"Bench press"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"Bench sit-ap"</string>
+    <string name="biking" msgid="4436876005109385438">"Velosiped"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"Velotrenajor"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"Oromgoh"</string>
+    <string name="boxing" msgid="8018825707590126764">"Boks"</string>
+    <string name="burpee" msgid="77304431317253801">"Burpi"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"Gimnastika"</string>
+    <string name="cricket" msgid="7003031758224774290">"Kriket"</string>
+    <string name="crunch" msgid="6261544415692173664">"Kranch"</string>
+    <string name="dancing" msgid="3316423624850569070">"Raqs"</string>
+    <string name="deadlift" msgid="8557909109378777398">"Tosh koʻtarish"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Gantel bilan chap qoʻlga ishlash"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Gantel bilan oʻng qoʻlga ishlash"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Gantelni oldinga koʻtarish"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Gantelni yonga koʻtarish"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Gantel bilan chap qoʻl trisepsini kengaytirish"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Gantel bilan oʻng qoʻl trisepsini kengaytirish"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Gantel bilan ikkala qoʻl trisepsini kengaytirish"</string>
+    <string name="elliptical" msgid="1139910728613357994">"Elliptik mashq"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"Oʻquv mashqi"</string>
+    <string name="fencing" msgid="3959720630233223214">"Qilichbozlik"</string>
+    <string name="football_american" msgid="7298781679747969920">"Amerikacha futbol"</string>
+    <string name="football_australian" msgid="7870317627446699678">"Avstraliyacha futbol"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"Oldinga tvist"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"Frizbi"</string>
+    <string name="golf" msgid="4510958024908277043">"Golf"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"Interaktiv nafas olish"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"Gimnastika"</string>
+    <string name="handball" msgid="6228534119454993609">"Gandbol"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Qisqa vaqt oralatib shug‘ullanish"</string>
+    <string name="hiking" msgid="6287881189679031692">"Piyoda sayr"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"Xokkey"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"Konkida yugurish"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"Jek usulda sakrash"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"Sakramachoq"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"Yuqori blokni tortish"</string>
+    <string name="lunge" msgid="6863772146202006880">"Oyoq tashlash"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"Jang sanʼati"</string>
+    <string name="meditation" msgid="4849671344539060840">"Meditatsiya"</string>
+    <string name="paddling" msgid="4330237681577599226">"Paddling"</string>
+    <string name="paragliding" msgid="7806835513093567376">"Paraplanerizm"</string>
+    <string name="pilates" msgid="4370654527595128790">"Pilates"</string>
+    <string name="plank" msgid="4231877980175820684">"Planka"</string>
+    <string name="racquetball" msgid="182093198971401585">"Raketbol"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"Choʻqqiga chiqish"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"Rolikda xokkey"</string>
+    <string name="rowing" msgid="7445636351111465609">"Eshkak eshish"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"Eshkak eshish mashinasi"</string>
+    <string name="rugby" msgid="1646920222855841135">"Regbi"</string>
+    <string name="running" msgid="6378365874547681747">"Yugurish"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"Yugurish yoʻlakchasida yugurish"</string>
+    <string name="sailing" msgid="5305484742008364839">"Yelkanli sport"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"Suv ostida suzish"</string>
+    <string name="skating" msgid="7202960228551709866">"Konkida uchish"</string>
+    <string name="skiing" msgid="6959504815950834221">"Muzda uchish"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"Snoubord"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"Qorda yurish"</string>
+    <string name="soccer" msgid="7373749155786409639">"Futbol"</string>
+    <string name="softball" msgid="931823677533458803">"Softbol"</string>
+    <string name="squash" msgid="3671853878596020550">"Skvosh"</string>
+    <string name="squat" msgid="2624881515323904278">"Oʻtirib-turish"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"Zinaga chiqish"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"Stepper"</string>
+    <string name="strength_training" msgid="4720460550476191439">"Kuchni oshirish uchun mashq"</string>
+    <string name="stretching" msgid="934444878305334284">"Stretching"</string>
+    <string name="surfing" msgid="9101307462491417943">"Serfing"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"Ochiq suvda suzish"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"Suv havzasida suzish"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"Stol tennisi"</string>
+    <string name="tennis" msgid="385785070472019118">"Tennis"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"Yuqori tvist"</string>
+    <string name="volleyball" msgid="7995390960159762289">"Voleybol"</string>
+    <string name="walking" msgid="3758898602213892784">"Piyoda yurish"</string>
+    <string name="water_polo" msgid="2335613325858558397">"Suv polosi"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"Ogʻir atletika"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"Nogironlar aravachasida yurish"</string>
+    <string name="workout" msgid="8816526215639000463">"Mashq"</string>
+    <string name="yoga" msgid="8350954009879701169">"Yoga"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"Avstraliyacha futbol"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> uyquda"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g>, <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"uygʻoq"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"uyquda"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"yotoqdan turish"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"tezkor uyqu"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"yengil uyqu"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"chuqur uyqu"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"noaniq"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> d"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> st <xliff:g id="MIN">%2$s</xliff:g> d"</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> st"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 soat}other{# soat}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 daqiqa}other{# daqiqa}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·daq)}other{# mL/(kg·daq)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{Tana kilogramm massasi daqiqasiga 1 millilitr kislorod}other{Tana kilogramm massasi daqiqasiga # millilitr kislorod}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Kalorimetriya"</string>
@@ -519,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Selsiy"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Farengeyt"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Barcha ilovalar chiqmadimi?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"Yordam va fikr-mulohaza"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Agar oʻrnatilgan ilova koʻrinmasa, u hali Health Connect xizmatiga moslanmagan boʻlishi mumkin"</string>
     <string name="things_to_try" msgid="5007292603680871491">"Sinab koʻrish"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"Yangilanish mavjudligini tekshiring"</string>
@@ -559,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Ilovalarni qidirish"</string>
     <string name="no_results" msgid="4935646951230345730">"Hech narsa topilmadi"</string>
     <string name="help" msgid="6096599033945360524">"Yordam"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"<xliff:g id="APP_NAME">%1$s</xliff:g> ilovasiga Health Connect bu mashq uchun qayd qilgan marshrutni koʻrish ruxsati berilsinmi?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Bu ilova qayd qilingan marshrut axborotini oʻqishi mumkin"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

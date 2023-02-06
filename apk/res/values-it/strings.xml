@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"Nessun dato"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Autorizzazioni app"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Gestisci app e autorizzazioni"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"App con accesso: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> su <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"Hanno accesso <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"Ha accesso <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Nessuna"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"Dettagli voce"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Accesso recente"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Nessuna app ha usato di recente Connessione Salute"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Visualizza tutti gli accessi recenti"</string>
@@ -80,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Percorso per l\'esercizio fisico"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"percorso per l\'esercizio fisico"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Scrittura del percorso per l\'esercizio fisico"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Lettura del percorso per l\'esercizio fisico"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Distanza"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"distanza"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Lettura della distanza"</string>
@@ -224,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"battito cardiaco a riposo"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Lettura del battito cardiaco a riposo"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Scrittura del battito cardiaco a riposo"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Può leggere da Connessione Salute"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Può scrivere su Connessione Salute"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"Consenti lettura all\'app \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"Consenti scrittura all\'app \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"Annulla"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"Concedi"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"Concedi tutte"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Non consentire"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Se concedi l\'accesso in lettura, questa app potrà leggere i nuovi dati e quelli degli ultimi 30 giorni"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"Vuoi consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a Connessione Salute?"</string>
@@ -247,7 +254,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Accesso non consentito"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Impostazioni e guida"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Rimuovi l\'accesso per tutte le app"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Non vedi tutte le tue app?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"Autorizzata a leggere"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Autorizzata a scrivere"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Nessuna app autorizzata"</string>
@@ -266,8 +272,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Leggi le norme sulla privacy"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Ultimo accesso: nelle ultime 24 ore"</string>
     <string name="app_access_title" msgid="3790585897490185758">"Accesso dell\'app"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Al momento non hai app compatibili installate"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"Autorizzazioni app rimosse"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Connessione Salute ha rimosso le autorizzazioni per <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Connessione Salute ha rimosso le autorizzazioni per <xliff:g id="APP_DATA_0">%1$s</xliff:g> e <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -365,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"Negativo"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"Alta"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"Inconcludente"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 ms}other{# ms}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 millisecondo}other{# millisecondi}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 rip}other{# rip}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 ripetizione}other{# ripetizioni}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"Segmenti esercizio fisico"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"Giri"</string>
+    <string name="back_extension" msgid="326104514905344192">"Allungamento della schiena"</string>
+    <string name="badminton" msgid="2562532899799962005">"Badminton"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Shoulder press con bilanciere"</string>
+    <string name="baseball" msgid="8308566726381464543">"Baseball"</string>
+    <string name="basketball" msgid="8952312917860615262">"Basket"</string>
+    <string name="bench_press" msgid="5781962507448903312">"Panca"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"Addominali con panca"</string>
+    <string name="biking" msgid="4436876005109385438">"Ciclismo"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"Cyclette"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"Boot camp"</string>
+    <string name="boxing" msgid="8018825707590126764">"Pugilato"</string>
+    <string name="burpee" msgid="77304431317253801">"Burpee"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"Ginnastica calistenica"</string>
+    <string name="cricket" msgid="7003031758224774290">"Cricket"</string>
+    <string name="crunch" msgid="6261544415692173664">"Addominali"</string>
+    <string name="dancing" msgid="3316423624850569070">"Ballo"</string>
+    <string name="deadlift" msgid="8557909109378777398">"Stacco da terra"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Flessione del braccio sinistro con manubrio"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Flessione del braccio destro con manubrio"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Alzata frontale con manubrio"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Alzata laterale con manubrio"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Estensione tricipite braccio sinistro con manubrio"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Estensione tricipite braccio destro con manubrio"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Estensione tricipiti due braccia con manubrio"</string>
+    <string name="elliptical" msgid="1139910728613357994">"Ellittica"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"Corso di attività fisica"</string>
+    <string name="fencing" msgid="3959720630233223214">"Scherma"</string>
+    <string name="football_american" msgid="7298781679747969920">"Football americano"</string>
+    <string name="football_australian" msgid="7870317627446699678">"Football australiano"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"Torsione in avanti"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"Frisbee"</string>
+    <string name="golf" msgid="4510958024908277043">"Golf"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"Respirazione guidata"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"Ginnastica"</string>
+    <string name="handball" msgid="6228534119454993609">"Pallamano"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"High Intensity Interval Training"</string>
+    <string name="hiking" msgid="6287881189679031692">"Escursionismo"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"Hockey su ghiaccio"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"Pattinaggio su ghiaccio"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"Jumping jack"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"Salto alla corda"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"Lat pulldown"</string>
+    <string name="lunge" msgid="6863772146202006880">"Affondo"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"Arti marziali"</string>
+    <string name="meditation" msgid="4849671344539060840">"Meditazione"</string>
+    <string name="paddling" msgid="4330237681577599226">"Canoa"</string>
+    <string name="paragliding" msgid="7806835513093567376">"Parapendio"</string>
+    <string name="pilates" msgid="4370654527595128790">"Pilates"</string>
+    <string name="plank" msgid="4231877980175820684">"Plank"</string>
+    <string name="racquetball" msgid="182093198971401585">"Racquetball"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"Arrampicata su roccia"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"Hockey su pista"</string>
+    <string name="rowing" msgid="7445636351111465609">"Canottaggio"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"Vogatore"</string>
+    <string name="rugby" msgid="1646920222855841135">"Rugby"</string>
+    <string name="running" msgid="6378365874547681747">"Corsa"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"Corsa sul tapis roulant"</string>
+    <string name="sailing" msgid="5305484742008364839">"Vela"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"Immersione"</string>
+    <string name="skating" msgid="7202960228551709866">"Pattinaggio"</string>
+    <string name="skiing" msgid="6959504815950834221">"Sci"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"Snowboard"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"Escursioni con ciaspole"</string>
+    <string name="soccer" msgid="7373749155786409639">"Calcio"</string>
+    <string name="softball" msgid="931823677533458803">"Softball"</string>
+    <string name="squash" msgid="3671853878596020550">"Squash"</string>
+    <string name="squat" msgid="2624881515323904278">"Squat"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"Salire le scale"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"Simulatore di scale"</string>
+    <string name="strength_training" msgid="4720460550476191439">"Allenamento di forza"</string>
+    <string name="stretching" msgid="934444878305334284">"Stretching"</string>
+    <string name="surfing" msgid="9101307462491417943">"Surf"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"Nuoto in acque libere"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"Nuoto in piscina"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"Ping pong"</string>
+    <string name="tennis" msgid="385785070472019118">"Tennis"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"Torsione del busto"</string>
+    <string name="volleyball" msgid="7995390960159762289">"Pallavolo"</string>
+    <string name="walking" msgid="3758898602213892784">"Passeggiate"</string>
+    <string name="water_polo" msgid="2335613325858558397">"Pallanuoto"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"Sollevamento pesi"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"In sedia a rotelle"</string>
+    <string name="workout" msgid="8816526215639000463">"Attività fisica"</string>
+    <string name="yoga" msgid="8350954009879701169">"Yoga"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"Football australiano"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> di sonno"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"di veglia"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"di sonno"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"in piedi"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"di sonno REM"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"di sonno leggero"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"di sonno profondo"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"sconosciuta"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> h e <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> e <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 ora}other{# ore}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 minuto}other{# minuti}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·min)}other{# mL/(kg·min)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 millilitro di ossigeno per chilogrammo di massa corporea al minuto}other{# millilitri di ossigeno per chilogrammo di massa corporea al minuto}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Cicloergometro"</string>
@@ -519,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celsius"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Non vedi tutte le tue app?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"Guida e feedback"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Se non riesci a vedere un\'app installata, potrebbe non essere ancora compatibile con Connessione Salute"</string>
     <string name="things_to_try" msgid="5007292603680871491">"Da provare"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"Verifica disponibilità di aggiornamenti"</string>
@@ -559,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Cerca app"</string>
     <string name="no_results" msgid="4935646951230345730">"Nessun risultato"</string>
     <string name="help" msgid="6096599033945360524">"Guida"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"Vuoi consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a questo percorso per l\'esercizio fisico in Connessione Salute?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Questa app potrà leggere la tua posizione precedente nel percorso"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>
