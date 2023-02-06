@@ -19,15 +19,15 @@ package com.android.server.healthconnect;
 import android.annotation.NonNull;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.os.Environment;
 import android.os.UserHandle;
+
+import com.android.server.healthconnect.utils.FilesUtil;
 
 import java.io.File;
 import java.util.Objects;
 
 /** @hide */
 public class HealthConnectUserContext extends ContextWrapper {
-    public static final String HEALTH_CONNECT_FOLDER_NAME = "healthconnect";
     private final UserHandle mUserHandle;
 
     public HealthConnectUserContext(@NonNull Context context, @NonNull UserHandle userHandle) {
@@ -45,12 +45,9 @@ public class HealthConnectUserContext extends ContextWrapper {
 
     @Override
     public File getDatabasePath(String name) {
-        File systemCeDir = new File(Environment.getDataDirectory(), "system_ce");
-        File systemCeUserDir = new File(systemCeDir, String.valueOf(mUserHandle.getIdentifier()));
-        File systemCeUserHcDir = new File(systemCeUserDir, HEALTH_CONNECT_FOLDER_NAME);
-        if (!systemCeUserHcDir.exists()) {
-            systemCeUserHcDir.mkdirs();
-        }
+        File systemCeUserHcDir =
+                FilesUtil.getDataSystemCeHCDirectoryForUser(mUserHandle.getIdentifier());
+        systemCeUserHcDir.mkdirs();
 
         return new File(systemCeUserHcDir, name);
     }

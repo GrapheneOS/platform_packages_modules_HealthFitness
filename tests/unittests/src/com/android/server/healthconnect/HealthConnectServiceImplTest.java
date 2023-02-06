@@ -18,7 +18,7 @@ package com.android.server.healthconnect;
 
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 
-import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_DOWNLOAD_STATE_KEY;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
 
 import static com.google.common.truth.Truth.assertThat;
 
