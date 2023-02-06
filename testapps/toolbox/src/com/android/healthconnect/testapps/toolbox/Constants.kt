@@ -16,15 +16,42 @@
 package com.android.healthconnect.testapps.toolbox
 
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
+import android.health.connect.datatypes.BasalBodyTemperatureRecord
 import android.health.connect.datatypes.BasalMetabolicRateRecord
+import android.health.connect.datatypes.BloodGlucoseRecord
+import android.health.connect.datatypes.BloodPressureRecord
+import android.health.connect.datatypes.BodyFatRecord
+import android.health.connect.datatypes.BodyTemperatureRecord
+import android.health.connect.datatypes.BodyWaterMassRecord
+import android.health.connect.datatypes.BoneMassRecord
+import android.health.connect.datatypes.CervicalMucusRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.ElevationGainedRecord
+import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.HeartRateRecord
+import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord
+import android.health.connect.datatypes.HeightRecord
+import android.health.connect.datatypes.HydrationRecord
+import android.health.connect.datatypes.IntermenstrualBleedingRecord
+import android.health.connect.datatypes.LeanBodyMassRecord
+import android.health.connect.datatypes.MenstruationFlowRecord
+import android.health.connect.datatypes.MenstruationPeriodRecord
+import android.health.connect.datatypes.NutritionRecord
+import android.health.connect.datatypes.OvulationTestRecord
+import android.health.connect.datatypes.OxygenSaturationRecord
 import android.health.connect.datatypes.PowerRecord
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.RespiratoryRateRecord
+import android.health.connect.datatypes.RestingHeartRateRecord
+import android.health.connect.datatypes.SexualActivityRecord
 import android.health.connect.datatypes.SpeedRecord
+import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.TotalCaloriesBurnedRecord
+import android.health.connect.datatypes.Vo2MaxRecord
+import android.health.connect.datatypes.WeightRecord
+import android.health.connect.datatypes.WheelchairPushesRecord
 import android.text.InputType
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -35,6 +62,7 @@ object Constants {
 
     const val INPUT_TYPE_DOUBLE = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
     const val INPUT_TYPE_LONG = InputType.TYPE_CLASS_NUMBER
+    const val INPUT_TYPE_INT = InputType.TYPE_CLASS_NUMBER
     const val INPUT_TYPE_TEXT = InputType.TYPE_CLASS_TEXT
 
     val ALL_PERMISSIONS =
@@ -154,11 +182,12 @@ object Constants {
                 HealthPermissionType.POWER,
                 HealthPermissionType.SPEED,
                 HealthPermissionType.STEPS,
+                HealthPermissionType.STEPS_CADENCE,
                 HealthPermissionType.TOTAL_CALORIES_BURNED,
                 HealthPermissionType.VO2_MAX,
                 HealthPermissionType.CYCLING_PEDALING_CADENCE,
                 HealthPermissionType.WHEELCHAIR_PUSHES,
-            )
+                HealthPermissionType.EXERCISE_SESSION)
 
         val BODY_MEASUREMENTS_PERMISSION_GROUPS =
             listOf(
@@ -173,10 +202,10 @@ object Constants {
         val CYCLE_TRACKING_PERMISSION_GROUPS =
             listOf(
                 HealthPermissionType.CERVICAL_MUCUS,
-                // TODO: Uncomment when clarity on its progress
-                // HealthPermissionType.INTERMENSTRUAL_BLEEDING,
-                HealthPermissionType.MENSTRUATION,
+                HealthPermissionType.MENSTRUATION_FLOW,
+                HealthPermissionType.MENSTRUATION_PERIOD,
                 HealthPermissionType.OVULATION_TEST,
+                HealthPermissionType.INTERMENSTRUAL_BLEEDING,
                 HealthPermissionType.SEXUAL_ACTIVITY)
 
         val NUTRITION_PERMISSION_GROUPS =
@@ -206,49 +235,55 @@ object Constants {
             ActiveCaloriesBurnedRecord::class, R.string.active_calories_burned_label),
         DISTANCE(DistanceRecord::class, R.string.distance_label),
         ELEVATION_GAINED(ElevationGainedRecord::class, R.string.elevation_gained_label),
-        FLOORS_CLIMBED(null, R.string.floors_climbed_label),
+        FLOORS_CLIMBED(FloorsClimbedRecord::class, R.string.floors_climbed_label),
         STEPS(StepsRecord::class, R.string.steps_label),
-        TOTAL_CALORIES_BURNED(null, R.string.total_calories_burned_label),
-        VO2_MAX(null, R.string.vo2_max_label),
-        WHEELCHAIR_PUSHES(null, R.string.wheelchair_pushes_label),
+        STEPS_CADENCE(StepsCadenceRecord::class, R.string.steps_cadence_label),
+        TOTAL_CALORIES_BURNED(
+            TotalCaloriesBurnedRecord::class, R.string.total_calories_burned_label),
+        VO2_MAX(Vo2MaxRecord::class, R.string.vo2_max_label),
+        WHEELCHAIR_PUSHES(WheelchairPushesRecord::class, R.string.wheelchair_pushes_label),
         POWER(PowerRecord::class, R.string.power_label),
         SPEED(SpeedRecord::class, R.string.speed_label),
         CYCLING_PEDALING_CADENCE(
             CyclingPedalingCadenceRecord::class, R.string.cycling_pedaling_cadence),
+        EXERCISE_SESSION(null, R.string.exercise_session),
 
         // BODY_MEASUREMENTS
         BASAL_METABOLIC_RATE(BasalMetabolicRateRecord::class, R.string.basal_metabolic_rate_label),
-        BODY_FAT(null, R.string.body_fat_label),
-        BODY_WATER_MASS(null, R.string.body_water_mass_label),
-        BONE_MASS(null, R.string.bone_mass_label),
-        HEIGHT(null, R.string.height_label),
-        LEAN_BODY_MASS(null, R.string.lean_body_mass_label),
-        WEIGHT(null, R.string.weight_label),
+        BODY_FAT(BodyFatRecord::class, R.string.body_fat_label),
+        BODY_WATER_MASS(BodyWaterMassRecord::class, R.string.body_water_mass_label),
+        BONE_MASS(BoneMassRecord::class, R.string.bone_mass_label),
+        HEIGHT(HeightRecord::class, R.string.height_label),
+        LEAN_BODY_MASS(LeanBodyMassRecord::class, R.string.lean_body_mass_label),
+        WEIGHT(WeightRecord::class, R.string.weight_label),
 
         // CYCLE_TRACKING
-        CERVICAL_MUCUS(null, R.string.cervical_mucus_label),
-        MENSTRUATION(null, R.string.menstruation_label),
-        OVULATION_TEST(null, R.string.ovulation_test_label),
-        SEXUAL_ACTIVITY(null, R.string.sexual_activity_label),
-        // TODO: Uncomment when clarity on its progress
-        // INTERMENSTRUAL_BLEEDING(null,R.string.basal_body_temperature_label),
+        CERVICAL_MUCUS(CervicalMucusRecord::class, R.string.cervical_mucus_label),
+        MENSTRUATION_FLOW(MenstruationFlowRecord::class, R.string.menstruation_flow),
+        MENSTRUATION_PERIOD(MenstruationPeriodRecord::class, R.string.menstruation_period),
+        OVULATION_TEST(OvulationTestRecord::class, R.string.ovulation_test_label),
+        SEXUAL_ACTIVITY(SexualActivityRecord::class, R.string.sexual_activity_label),
+        INTERMENSTRUAL_BLEEDING(
+            IntermenstrualBleedingRecord::class, R.string.inter_menstrual_bleeding),
 
         // NUTRITION
-        HYDRATION(null, R.string.hydration_label),
-        NUTRITION(null, R.string.nutrition_label),
+        HYDRATION(HydrationRecord::class, R.string.hydration_label),
+        NUTRITION(NutritionRecord::class, R.string.nutrition_label),
 
         // SLEEP
         SLEEP(null, R.string.sleep_label),
 
         // VITALS
-        BASAL_BODY_TEMPERATURE(null, R.string.basal_body_temperature_label),
-        BLOOD_GLUCOSE(null, R.string.blood_glucose_label),
-        BLOOD_PRESSURE(null, R.string.blood_pressure_label),
-        BODY_TEMPERATURE(null, R.string.body_temperature_label),
+        BASAL_BODY_TEMPERATURE(
+            BasalBodyTemperatureRecord::class, R.string.basal_body_temperature_label),
+        BLOOD_GLUCOSE(BloodGlucoseRecord::class, R.string.blood_glucose_label),
+        BLOOD_PRESSURE(BloodPressureRecord::class, R.string.blood_pressure_label),
+        BODY_TEMPERATURE(BodyTemperatureRecord::class, R.string.body_temperature_label),
         HEART_RATE(HeartRateRecord::class, R.string.heart_rate_label),
-        HEART_RATE_VARIABILITY(null, R.string.heart_rate_variability_label),
-        OXYGEN_SATURATION(null, R.string.oxygen_saturation_label),
-        RESPIRATORY_RATE(null, R.string.respiratory_rate_label),
-        RESTING_HEART_RATE(null, R.string.resting_heart_rate_label),
+        HEART_RATE_VARIABILITY(
+            HeartRateVariabilityRmssdRecord::class, R.string.heart_rate_variability_label),
+        OXYGEN_SATURATION(OxygenSaturationRecord::class, R.string.oxygen_saturation_label),
+        RESPIRATORY_RATE(RespiratoryRateRecord::class, R.string.respiratory_rate_label),
+        RESTING_HEART_RATE(RestingHeartRateRecord::class, R.string.resting_heart_rate_label),
     }
 }

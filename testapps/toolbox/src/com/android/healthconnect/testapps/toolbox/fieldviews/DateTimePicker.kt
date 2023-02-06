@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -31,11 +33,12 @@ import java.time.ZoneId
 import java.util.Calendar
 
 @SuppressLint("ViewConstructor")
-class DateTimePicker(context: Context, fieldName: String) : InputFieldView(context) {
+class DateTimePicker(context: Context, fieldName: String, setPreviousDay: Boolean = false) :
+    InputFieldView(context) {
 
     private val mCalendar: Calendar = Calendar.getInstance()
     private var mSelectedYear: Int = mCalendar.get(Calendar.YEAR)
-    private var mSelectedMonth: Int = mCalendar.get(Calendar.MONTH) + 1
+    private var mSelectedMonth: Int = mCalendar.get(Calendar.MONTH) + (if (setPreviousDay) 0 else 1)
     private var mSelectedDay: Int = mCalendar.get(Calendar.DAY_OF_MONTH)
     private var mSelectedHour = 0
     private var mSelectedMinute = 0

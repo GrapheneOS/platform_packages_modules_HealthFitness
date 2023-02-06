@@ -16,12 +16,30 @@
 package com.android.healthconnect.testapps.toolbox.ui
 
 import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.BasalBodyTemperatureRecord
+import android.health.connect.datatypes.BloodGlucoseRecord
+import android.health.connect.datatypes.BloodPressureRecord
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation
+import android.health.connect.datatypes.BodyTemperatureRecord
+import android.health.connect.datatypes.CervicalMucusRecord
+import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
+import android.health.connect.datatypes.MealType
+import android.health.connect.datatypes.MenstruationFlowRecord
+import android.health.connect.datatypes.OvulationTestRecord
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SexualActivityRecord
+import android.health.connect.datatypes.Vo2MaxRecord
+import android.health.connect.datatypes.units.BloodGlucose
 import android.health.connect.datatypes.units.Energy
 import android.health.connect.datatypes.units.Length
+import android.health.connect.datatypes.units.Mass
+import android.health.connect.datatypes.units.Percentage
 import android.health.connect.datatypes.units.Power
+import android.health.connect.datatypes.units.Pressure
+import android.health.connect.datatypes.units.Temperature
+import android.health.connect.datatypes.units.Volume
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,13 +55,17 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_DOUBLE
+import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_INT
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_LONG
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_TEXT
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.fieldviews.DateTimePicker
 import com.android.healthconnect.testapps.toolbox.fieldviews.EditableTextView
+import com.android.healthconnect.testapps.toolbox.fieldviews.EnumDropDown
 import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldView
 import com.android.healthconnect.testapps.toolbox.fieldviews.ListInputField
+import com.android.healthconnect.testapps.toolbox.utils.EnumFieldsWithValues
+import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 import com.android.healthconnect.testapps.toolbox.utils.InsertOrUpdateRecords.Companion.createRecordObject
 import com.android.healthconnect.testapps.toolbox.viewmodels.InsertOrUpdateRecordsViewModel
 import java.lang.reflect.Field
@@ -136,19 +158,22 @@ class InsertRecordFragment : Fragment() {
             }
         }
         setupRecordFields()
+        setupEnumFields()
+        handleSpecialCases()
+        setupListFields()
         setupInsertDataButton(view)
         setupUpdateDataButton(view)
     }
 
-    private fun setupTimeField(title: String, key: String) {
-        val timeField = DateTimePicker(this.requireContext(), title)
+    private fun setupTimeField(title: String, key: String, setPreviousDay: Boolean = false) {
+        val timeField = DateTimePicker(this.requireContext(), title, setPreviousDay)
         mLinearLayout.addView(timeField)
 
         mFieldNameToFieldInput[key] = timeField
     }
 
     private fun setupStartAndEndTimeFields() {
-        setupTimeField("Start Time", "startTime")
+        setupTimeField("Start Time", "startTime", true)
         setupTimeField("End Time", "endTime")
     }
 
@@ -160,6 +185,17 @@ class InsertRecordFragment : Fragment() {
                     field =
                         EditableTextView(this.requireContext(), mRecordsField.name, INPUT_TYPE_LONG)
                 }
+                Int::class.java -> {
+                    // Most of int fields are enums and are handled separately
+                    continue
+                }
+                Double::class.java,
+                Pressure::class.java,
+                BloodGlucose::class.java,
+                Temperature::class.java,
+                Volume::class.java,
+                Percentage::class.java,
+                Mass::class.java,
                 Length::class.java,
                 Energy::class.java,
                 Power::class.java, -> {
@@ -167,6 +203,88 @@ class InsertRecordFragment : Fragment() {
                         EditableTextView(
                             this.requireContext(), mRecordsField.name, INPUT_TYPE_DOUBLE)
                 }
+                CharSequence::class.java -> {
+                    field =
+                        EditableTextView(this.requireContext(), mRecordsField.name, INPUT_TYPE_TEXT)
+                }
+                List::class.java -> {
+                    // Handled later so that list fields are always added towards the end
+                    continue
+                }
+                else -> {
+                    break
+                }
+            }
+            mLinearLayout.addView(field)
+            mFieldNameToFieldInput[mRecordsField.name] = field
+        }
+    }
+
+    private fun setupEnumFields() {
+        val enumFieldNameToClass: HashMap<String, KClass<*>> = HashMap()
+        var field: InputFieldView
+        when (mRecordClass) {
+            MenstruationFlowRecord::class -> {
+                enumFieldNameToClass["mFlow"] =
+                    MenstruationFlowRecord.MenstruationFlowType::class as KClass<*>
+            }
+            OvulationTestRecord::class -> {
+                enumFieldNameToClass["mResult"] =
+                    OvulationTestRecord.OvulationTestResult::class as KClass<*>
+            }
+            SexualActivityRecord::class -> {
+                enumFieldNameToClass["mProtectionUsed"] =
+                    SexualActivityRecord.SexualActivityProtectionUsed::class as KClass<*>
+            }
+            CervicalMucusRecord::class -> {
+                enumFieldNameToClass["mSensation"] =
+                    CervicalMucusRecord.CervicalMucusSensation::class as KClass<*>
+                enumFieldNameToClass["mAppearance"] =
+                    CervicalMucusRecord.CervicalMucusAppearance::class as KClass<*>
+            }
+            Vo2MaxRecord::class -> {
+                enumFieldNameToClass["mMeasurementMethod"] =
+                    Vo2MaxRecord.Vo2MaxMeasurementMethod::class as KClass<*>
+            }
+            BasalBodyTemperatureRecord::class -> {
+                enumFieldNameToClass["mBodyTemperatureMeasurementLocation"] =
+                    BodyTemperatureMeasurementLocation::class as KClass<*>
+            }
+            BloodGlucoseRecord::class -> {
+                enumFieldNameToClass["mSpecimenSource"] =
+                    BloodGlucoseRecord.SpecimenSource::class as KClass<*>
+                enumFieldNameToClass["mRelationToMeal"] =
+                    BloodGlucoseRecord.RelationToMealType::class as KClass<*>
+                enumFieldNameToClass["mMealType"] = MealType::class as KClass<*>
+            }
+            BloodPressureRecord::class -> {
+                enumFieldNameToClass["mMeasurementLocation"] =
+                    BodyTemperatureMeasurementLocation::class as KClass<*>
+                enumFieldNameToClass["mBodyPosition"] =
+                    BloodPressureRecord.BodyPosition::class as KClass<*>
+            }
+            BodyTemperatureRecord::class -> {
+                enumFieldNameToClass["mMeasurementLocation"] =
+                    BodyTemperatureMeasurementLocation::class as KClass<*>
+            }
+        }
+        if (enumFieldNameToClass.size > 0) {
+            for (entry in enumFieldNameToClass.entries) {
+                val fieldName = entry.key
+                val enumClass = entry.value
+                val enumFieldsWithValues: EnumFieldsWithValues =
+                    GeneralUtils.getStaticFieldNamesAndValues(enumClass)
+                field = EnumDropDown(this.requireContext(), fieldName, enumFieldsWithValues)
+                mLinearLayout.addView(field)
+                mFieldNameToFieldInput[fieldName] = field
+            }
+        }
+    }
+
+    private fun setupListFields() {
+        var field: InputFieldView
+        for (mRecordsField in mRecordFields) {
+            when (mRecordsField.type) {
                 List::class.java -> {
                     field =
                         ListInputField(
@@ -175,11 +293,21 @@ class InsertRecordFragment : Fragment() {
                             mRecordsField.genericType as ParameterizedType)
                 }
                 else -> {
-                    break
+                    continue
                 }
             }
             mLinearLayout.addView(field)
             mFieldNameToFieldInput[mRecordsField.name] = field
+        }
+    }
+
+    private fun handleSpecialCases() {
+        val field: InputFieldView
+        if (mRecordClass == FloorsClimbedRecord::class) {
+            val fieldName = "mFloors"
+            field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
+            mLinearLayout.addView(field)
+            mFieldNameToFieldInput[fieldName] = field
         }
     }
 
@@ -209,6 +337,9 @@ class InsertRecordFragment : Fragment() {
         builder.setView(mUpdateRecordUuid)
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
             try {
+                if (mUpdateRecordUuid.getFieldValue().toString().isEmpty()) {
+                    throw IllegalArgumentException("Please enter UUID")
+                }
                 val record =
                     createRecordObject(
                         mRecordClass,
