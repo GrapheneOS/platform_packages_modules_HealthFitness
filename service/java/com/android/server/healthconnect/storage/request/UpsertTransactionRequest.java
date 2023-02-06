@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage.request;
 import static android.health.connect.Constants.UPSERT;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.content.Context;
 import android.health.connect.Constants;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -55,21 +56,37 @@ public class UpsertTransactionRequest {
     private static final String TAG = "HealthConnectUTR";
     @NonNull private final List<UpsertTableRequest> mInsertRequests = new ArrayList<>();
     @NonNull private final List<String> mUUIDsInOrder = new ArrayList<>();
-    @NonNull private final String mPackageName;
     @RecordTypeIdentifier.RecordType Set<Integer> mRecordTypes = new ArraySet<>();
 
     public UpsertTransactionRequest(
-            @NonNull String packageName,
+            @Nullable String packageName,
             @NonNull List<RecordInternal<?>> recordInternals,
             Context context,
             boolean isInsertRequest) {
-        mPackageName = packageName;
+        this(
+                packageName,
+                recordInternals,
+                context,
+                isInsertRequest,
+                false /* skipPackageNameAndLogs */);
+    }
+
+    public UpsertTransactionRequest(
+            @Nullable String packageName,
+            @NonNull List<RecordInternal<?>> recordInternals,
+            Context context,
+            boolean isInsertRequest,
+            boolean skipPackageNameAndLogs) {
         long currentTime = Instant.now().toEpochMilli();
-        ChangeLogsHelper.ChangeLogs changeLogs =
-                new ChangeLogsHelper.ChangeLogs(UPSERT, mPackageName, currentTime);
+        ChangeLogsHelper.ChangeLogs changeLogs = null;
+        if (!skipPackageNameAndLogs) {
+            changeLogs = new ChangeLogsHelper.ChangeLogs(UPSERT, packageName, currentTime);
+        }
 
         for (RecordInternal<?> recordInternal : recordInternals) {
-            StorageUtils.addPackageNameTo(recordInternal, mPackageName);
+            if (!skipPackageNameAndLogs) {
+                StorageUtils.addPackageNameTo(recordInternal, packageName);
+            }
             AppInfoHelper.getInstance()
                     .populateAppInfoId(recordInternal, context, /* requireAllFields= */ true);
             DeviceInfoHelper.getInstance().populateDeviceInfoId(recordInternal);
@@ -86,17 +103,19 @@ public class UpsertTransactionRequest {
                 // uuid passed as input.
                 StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
             }
-            changeLogs.addUUID(
-                    recordInternal.getRecordType(),
-                    recordInternal.getAppInfoId(),
-                    recordInternal.getUuid());
+            if (!skipPackageNameAndLogs) {
+                changeLogs.addUUID(
+                        recordInternal.getRecordType(),
+                        recordInternal.getAppInfoId(),
+                        recordInternal.getUuid());
+            }
             recordInternal.setLastModifiedTime(currentTime);
             addRequest(recordInternal);
         }
 
         // Add commands to update the change log table with all the upserts
-        mInsertRequests.addAll(changeLogs.getUpsertTableRequests());
-        if (!mRecordTypes.isEmpty()) {
+        if (!skipPackageNameAndLogs && !mRecordTypes.isEmpty()) {
+            mInsertRequests.addAll(changeLogs.getUpsertTableRequests());
             AccessLogsHelper.getInstance()
                     .addAccessLog(packageName, new ArrayList<>(mRecordTypes), UPSERT);
         }
@@ -104,7 +123,7 @@ public class UpsertTransactionRequest {
             Slog.d(
                     TAG,
                     "Upserting transaction for "
-                            + mPackageName
+                            + packageName
                             + " with size "
                             + recordInternals.size());
         }
@@ -113,11 +132,6 @@ public class UpsertTransactionRequest {
     @NonNull
     public List<UpsertTableRequest> getUpsertRequests() {
         return mInsertRequests;
-    }
-
-    @NonNull
-    public String getPackageName() {
-        return mPackageName;
     }
 
     @NonNull
