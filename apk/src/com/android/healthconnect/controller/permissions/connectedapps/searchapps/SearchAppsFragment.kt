@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps.searchapps
 
+import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -32,6 +33,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
+import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
@@ -170,7 +172,9 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         findNavController()
             .navigate(
                 R.id.action_searchApps_to_connectedApp,
-                bundleOf("packageName" to app.appMetadata.packageName))
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
+                    EXTRA_APP_NAME to app.appMetadata.appName))
     }
 
     private fun getAppPreference(
