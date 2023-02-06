@@ -75,6 +75,8 @@ public class MigrationBroadcast {
         if (numPackages == 0) {
             Slog.i(TAG, "There are no migration aware apps");
         } else if (numPackages == 1) {
+            // TODO(b/267255123): Put a check to verify the filtered package is installed
+            //  on current user
             Intent intent =
                     new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
                             .setPackage(filteredPackages.get(0));
