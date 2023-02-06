@@ -266,7 +266,7 @@ public class AggregateTableRequest {
 
         builder.append(" FROM ").append(mTableName);
         if (mSqlJoin != null) {
-            builder.append(mSqlJoin.getJoinClause());
+            builder.append(mSqlJoin.getJoinCommand());
         }
 
         WhereClauses whereClauses = new WhereClauses();

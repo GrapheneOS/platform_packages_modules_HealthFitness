@@ -26,7 +26,7 @@ import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.SqlInnerJoin;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,8 +67,8 @@ abstract class SeriesRecordHelper<
 
     /** Returns the INNER JOIN clause for querying from the table for series datatype */
     @Override
-    final SqlInnerJoin getJoinForReadRequest() {
-        return new SqlInnerJoin(
+    final SqlJoin getJoinForReadRequest() {
+        return new SqlJoin(
                 getMainTableName(),
                 getSeriesDataTableName(),
                 PRIMARY_COLUMN_NAME,
