@@ -47,10 +47,12 @@
   <string name="power_label" description="Label used to show the user's power data [CHAR_LIMIT=50]">Power</string>
   <string name="speed_label" description="Label used to show the user's speed data [CHAR_LIMIT=50]">Speed</string>
   <string name="steps_label" description="Label used to show the user's steps data [CHAR_LIMIT=50]">Steps</string>
+  <string name="steps_cadence_label" description="Label used to show the user's step cadence data [CHAR_LIMIT=50]">Steps Cadence</string>
   <string name="total_calories_burned_label" description="Label used to show the user's total calories burned data [CHAR_LIMIT=50]">Total calories burned</string>
   <string name="vo2_max_label" description="Label used to show the user's V02 max data [CHAR_LIMIT=50]">VO2 max</string>
   <string name="wheelchair_pushes_label" description="Label used to show the user's wheelchair pushes data [CHAR_LIMIT=50]">Wheelchair pushes</string>
   <string name="cycling_pedaling_cadence" description="Label used to show the user's cycling pedaling cadence data [CHAR_LIMIT=50]">Cycling Pedaling Cadence</string>
+  <string name="exercise_session" description="Label used to show the exercise session [CHAR_LIMIT=50]">Exercise Sessions</string>
   <!--endregion-->
 
   <!-- region Body measurements data types -->
@@ -65,10 +67,12 @@
 
   <!-- region Cycle tracking data types -->
   <string name="cervical_mucus_label" description="Label used to show the user's cervical mucus data [CHAR_LIMIT=50]">Cervical mucus</string>
-  <string name="menstruation_label" description="Label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation</string>
+  <string name="menstruation_flow" description="Label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation Flow</string>
+  <string name="menstruation_period" description="Label used to show the user's menstruation period data [CHAR_LIMIT=50]">Menstruation Period</string>
   <string name="ovulation_test_label" description="Label used to show the user's ovulation test data [CHAR_LIMIT=50]">Ovulation test</string>
   <string name="sexual_activity_label" description="Label used to show the user's sexual activity data [CHAR_LIMIT=50]">Sexual activity</string>
   <string name="spotting_label" description="Label used to show the user's spotting data [CHAR_LIMIT=50]">Spotting</string>
+  <string name="inter_menstrual_bleeding" description="Label used to show the user's inter menstrual bleeding data [CHAR_LIMIT=50]">Inter Menstrual Bleeding</string>
   <!--endregion-->
 
   <!-- region Nutrition data types -->

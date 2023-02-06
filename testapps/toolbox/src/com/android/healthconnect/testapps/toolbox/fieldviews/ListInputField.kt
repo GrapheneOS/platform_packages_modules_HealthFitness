@@ -20,7 +20,9 @@ import android.content.Context
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
 import android.health.connect.datatypes.HeartRateRecord.HeartRateSample
 import android.health.connect.datatypes.PowerRecord.PowerRecordSample
+import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SpeedRecord.SpeedRecordSample
+import android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample
 import android.health.connect.datatypes.units.Power
 import android.health.connect.datatypes.units.Velocity
 import android.widget.LinearLayout
@@ -28,25 +30,31 @@ import android.widget.TextView
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_DOUBLE
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_LONG
 import com.android.healthconnect.testapps.toolbox.R
+import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getStaticFieldNamesAndValues
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.time.Instant
 
 @SuppressLint("ViewConstructor")
 class ListInputField(context: Context, fieldName: String, inputFieldType: ParameterizedType) :
     InputFieldView(context) {
 
+    data class Row(val context: Context) {
+        val startTime = DateTimePicker(context, "Start Time", true)
+        val endTime = DateTimePicker(context, "End Time")
+        lateinit var dataPointField: InputFieldView
+    }
+
     private var mLinearLayout: LinearLayout
     private var mDataTypeClass: Type
-    private var mInstantToDataPoint: HashMap<InputFieldView, InputFieldView>
+    private var mRowsData: ArrayList<Row>
 
     init {
         inflate(context, R.layout.fragment_list_input_view, this)
         findViewById<TextView>(R.id.field_name).text = fieldName
         mLinearLayout = findViewById(R.id.list_input_linear_layout)
         mDataTypeClass = inputFieldType.actualTypeArguments[0]
-        mInstantToDataPoint = HashMap()
+        mRowsData = ArrayList()
         setupView()
         setupAddRowButtonListener()
     }
@@ -65,8 +73,9 @@ class ListInputField(context: Context, fieldName: String, inputFieldType: Parame
         val rowLayout = LinearLayout(context)
         rowLayout.orientation = VERTICAL
 
-        val instantField = DateTimePicker(context, "Time")
-        rowLayout.addView(instantField)
+        val row = Row(context)
+
+        rowLayout.addView(row.startTime)
         val dataPointField: InputFieldView =
             when (mDataTypeClass) {
                 SpeedRecordSample::class.java -> {
@@ -81,44 +90,63 @@ class ListInputField(context: Context, fieldName: String, inputFieldType: Parame
                 CyclingPedalingCadenceRecordSample::class.java -> {
                     EditableTextView(context, "Revolutions Per Minute", INPUT_TYPE_DOUBLE)
                 }
+                SleepSessionRecord.Stage::class.java -> {
+                    rowLayout.addView(row.endTime)
+                    EnumDropDown(
+                        context,
+                        "Sleep Stage",
+                        getStaticFieldNamesAndValues(SleepSessionRecord.StageType::class))
+                }
+                StepsCadenceRecordSample::class.java -> {
+                    EditableTextView(context, "Steps Cadence", INPUT_TYPE_DOUBLE)
+                }
                 else -> {
                     return
                 }
             }
+        row.dataPointField = dataPointField
         rowLayout.addView(dataPointField)
-        mInstantToDataPoint[instantField] = dataPointField
+        mRowsData.add(row)
         mLinearLayout.addView(rowLayout, 0)
     }
 
-    override fun getFieldValue(): Any {
+    override fun getFieldValue(): List<Any> {
         val samples: ArrayList<Any> = ArrayList()
-        for (instant in mInstantToDataPoint.keys) {
-            val dataPoint = mInstantToDataPoint[instant]
-            if (dataPoint != null) {
-                val dataPointString = dataPoint.getFieldValue().toString()
-                when (mDataTypeClass) {
-                    SpeedRecordSample::class.java -> {
-                        samples.add(
-                            SpeedRecordSample(
-                                Velocity.fromMetersPerSecond(dataPointString.toDouble()),
-                                instant.getFieldValue() as Instant))
-                    }
-                    HeartRateSample::class.java -> {
-                        samples.add(
-                            HeartRateSample(
-                                dataPointString.toLong(), instant.getFieldValue() as Instant))
-                    }
-                    PowerRecordSample::class.java -> {
-                        samples.add(
-                            PowerRecordSample(
-                                Power.fromWatts(dataPointString.toDouble()),
-                                instant.getFieldValue() as Instant))
-                    }
-                    CyclingPedalingCadenceRecordSample::class.java -> {
-                        samples.add(
-                            CyclingPedalingCadenceRecordSample(
-                                dataPointString.toDouble(), instant.getFieldValue() as Instant))
-                    }
+        for (row in mRowsData) {
+            val dataPoint = row.dataPointField
+            val instant = row.startTime
+            val dataPointString = dataPoint.getFieldValue().toString()
+            when (mDataTypeClass) {
+                SpeedRecordSample::class.java -> {
+                    samples.add(
+                        SpeedRecordSample(
+                            Velocity.fromMetersPerSecond(dataPointString.toDouble()),
+                            instant.getFieldValue()))
+                }
+                HeartRateSample::class.java -> {
+                    samples.add(HeartRateSample(dataPointString.toLong(), instant.getFieldValue()))
+                }
+                PowerRecordSample::class.java -> {
+                    samples.add(
+                        PowerRecordSample(
+                            Power.fromWatts(dataPointString.toDouble()), instant.getFieldValue()))
+                }
+                CyclingPedalingCadenceRecordSample::class.java -> {
+                    samples.add(
+                        CyclingPedalingCadenceRecordSample(
+                            dataPointString.toDouble(), instant.getFieldValue()))
+                }
+                StepsCadenceRecordSample::class.java -> {
+                    samples.add(
+                        StepsCadenceRecordSample(
+                            dataPointString.toDouble(), instant.getFieldValue()))
+                }
+                SleepSessionRecord.Stage::class.java -> {
+                    samples.add(
+                        SleepSessionRecord.Stage(
+                            instant.getFieldValue(),
+                            row.endTime.getFieldValue(),
+                            dataPointString.toInt()))
                 }
             }
         }

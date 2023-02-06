@@ -50,15 +50,6 @@
       android:text="@string/insert_update_data" />
 
   <Button
-      android:id="@+id/insert_session_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:layout_gravity="center_horizontal"
-      android:minWidth="250dp"
-      android:text="@string/insert_session" />
-
-  <Button
       android:id="@+id/seed_random_data_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
