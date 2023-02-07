@@ -18,18 +18,21 @@ package com.android.server.healthconnect.storage.utils;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.SELECT_ALL;
 
+import android.annotation.NonNull;
 import android.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
- * Interface of the join SQL class.
+ * Represents SQL join. Default join type is INNER join.
  *
  * @hide
  */
-public class SqlJoin {
-
+public final class SqlJoin {
     public static final String SQL_JOIN_INNER = "INNER";
     public static final String SQL_JOIN_LEFT = "LEFT";
 
@@ -46,6 +49,8 @@ public class SqlJoin {
     private final String mTableNameToJoinOn;
     private final String mSelfColumnNameToMatch;
     private final String mJoiningColumnNameToMatch;
+
+    private List<SqlJoin> mAttachedJoins;
     private String mJoinType = SQL_JOIN_INNER;
 
     public SqlJoin(
@@ -63,7 +68,8 @@ public class SqlJoin {
      * Sets join type to the current joint, default value is inner join. Returns class with join
      * type set.
      */
-    public SqlJoin setJoinType(@JoinType String joinType) {
+    public SqlJoin setJoinType(@NonNull @JoinType String joinType) {
+        Objects.requireNonNull(joinType);
         mJoinType = joinType;
         return this;
     }
@@ -90,6 +96,22 @@ public class SqlJoin {
         return getJoinCommand(/* withSelfTableNamePrefix= */ true);
     }
 
+    /** Attaches another join to this join. Returns this class with another join attached. */
+    public SqlJoin attachJoin(@NonNull SqlJoin join) {
+        Objects.requireNonNull(join);
+        if (!Objects.equals(mSelfTableName, join.mSelfTableName)) {
+            throw new IllegalArgumentException(
+                    "Sequenced joins must have the same self table name");
+        }
+
+        if (mAttachedJoins == null) {
+            mAttachedJoins = new ArrayList<>();
+        }
+
+        mAttachedJoins.add(join);
+        return this;
+    }
+
     private String getJoinCommand(boolean withSelfTableNamePrefix) {
         String selfColumnPrefix = withSelfTableNamePrefix ? mSelfTableName + "." : "";
         return " "
@@ -102,6 +124,20 @@ public class SqlJoin {
                 + " = "
                 + mTableNameToJoinOn
                 + "."
-                + mJoiningColumnNameToMatch;
+                + mJoiningColumnNameToMatch
+                + buildAttachedJoinsCommand(withSelfTableNamePrefix);
+    }
+
+    private String buildAttachedJoinsCommand(boolean withSelfTableNamePrefix) {
+        if (mAttachedJoins == null) {
+            return "";
+        }
+
+        StringBuilder command = new StringBuilder();
+        for (SqlJoin join : mAttachedJoins) {
+            command.append(" ").append(join.getJoinCommand(withSelfTableNamePrefix));
+        }
+
+        return command.toString();
     }
 }

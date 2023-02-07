@@ -46,13 +46,17 @@ import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseSegment;
+import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.migration.MigrationException;
 import android.os.OutcomeReceiver;
@@ -81,8 +85,8 @@ import java.util.stream.Collectors;
 public class TestUtils {
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     private static final String TAG = "HCTestUtils";
-    static final Instant START_TIME = Instant.now().minus(10, ChronoUnit.DAYS);
-    static final Instant END_TIME =
+    public static final Instant SESSION_START_TIME = Instant.now().minus(10, ChronoUnit.DAYS);
+    public static final Instant SESSION_END_TIME =
             Instant.now().minus(10, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS);
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
@@ -206,7 +210,6 @@ public class TestUtils {
 
         return response.get();
     }
-
     public static Device buildDevice() {
         return new Device.Builder()
                 .setManufacturer("google")
@@ -844,10 +847,34 @@ public class TestUtils {
             ExerciseRoute route, String title, String notes) {
         return new ExerciseSessionRecord.Builder(
                         generateMetadata(),
-                        START_TIME,
-                        END_TIME,
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                 .setRoute(route)
+                .setLaps(
+                        List.of(
+                                new ExerciseLap.Builder(
+                                                SESSION_START_TIME,
+                                                SESSION_START_TIME.plusSeconds(20))
+                                        .setLength(Length.fromMeters(10))
+                                        .build(),
+                                new ExerciseLap.Builder(
+                                                SESSION_END_TIME.minusSeconds(20), SESSION_END_TIME)
+                                        .build()))
+                .setSegments(
+                        List.of(
+                                new ExerciseSegment.Builder(
+                                                SESSION_START_TIME.plusSeconds(1),
+                                                SESSION_START_TIME.plusSeconds(10),
+                                                ExerciseSegmentType
+                                                        .EXERCISE_SEGMENT_TYPE_BENCH_PRESS)
+                                        .build(),
+                                new ExerciseSegment.Builder(
+                                                SESSION_START_TIME.plusSeconds(21),
+                                                SESSION_START_TIME.plusSeconds(124),
+                                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
+                                        .setRepetitionsCount(15)
+                                        .build()))
                 .setEndZoneOffset(ZoneOffset.MAX)
                 .setStartZoneOffset(ZoneOffset.MIN)
                 .setNotes(notes)

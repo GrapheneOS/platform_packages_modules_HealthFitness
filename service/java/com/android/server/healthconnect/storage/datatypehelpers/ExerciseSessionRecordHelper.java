@@ -33,8 +33,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.ExerciseLapInternal;
+import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.util.ArraySet;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
@@ -43,6 +46,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -78,11 +82,32 @@ public final class ExerciseSessionRecordHelper
     @Override
     void populateSpecificRecordValue(
             @NonNull Cursor cursor, @NonNull ExerciseSessionRecordInternal exerciseSessionRecord) {
+        String uuid = getCursorString(cursor, UUID_COLUMN_NAME);
         exerciseSessionRecord.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
         exerciseSessionRecord.setExerciseType(getCursorInt(cursor, EXERCISE_TYPE_COLUMN_NAME));
         exerciseSessionRecord.setTitle(getCursorString(cursor, TITLE_COLUMN_NAME));
         exerciseSessionRecord.setHasRoute(
                 getIntegerAndConvertToBoolean(cursor, HAS_ROUTE_COLUMN_NAME));
+
+        // The table might contain duplicates because of 2 left joins, use sets to remove them.
+        ArraySet<ExerciseLapInternal> lapsSet = new ArraySet<>();
+        ArraySet<ExerciseSegmentInternal> segmentsSet = new ArraySet<>();
+        do {
+            // Populate lap and segments from each row.
+            ExerciseLapRecordHelper.populateLapIfRecorded(cursor, lapsSet);
+            ExerciseSegmentRecordHelper.populateSegmentIfRecorded(cursor, segmentsSet);
+        } while (cursor.moveToNext() && uuid.equals(getCursorString(cursor, UUID_COLUMN_NAME)));
+        // In case we hit another record, move the cursor back to read next record in outer
+        // RecordHelper#getInternalRecords loop.
+        cursor.moveToPrevious();
+
+        if (!lapsSet.isEmpty()) {
+            exerciseSessionRecord.setExerciseLaps(lapsSet.stream().toList());
+        }
+
+        if (!segmentsSet.isEmpty()) {
+            exerciseSessionRecord.setExerciseSegments(segmentsSet.stream().toList());
+        }
     }
 
     @Override
@@ -99,18 +124,33 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     List<CreateTableRequest> getChildTableCreateRequests() {
-        return Collections.singletonList(
-                ExerciseRouteRecordHelper.getCreateRouteTableRequest(getMainTableName()));
+        return List.of(
+                ExerciseRouteRecordHelper.getCreateRouteTableRequest(getMainTableName()),
+                ExerciseLapRecordHelper.getCreateLapsTableRequest(getMainTableName()),
+                ExerciseSegmentRecordHelper.getCreateSegmentsTableRequest(getMainTableName()));
     }
 
     @Override
     List<UpsertTableRequest> getChildTableUpsertRequests(
             @NonNull ExerciseSessionRecordInternal record) {
-        if (record.getRoute() == null) {
-            return Collections.emptyList();
+        List<UpsertTableRequest> childUpsertRequests = new ArrayList<>();
+
+        if (record.getRoute() != null) {
+            childUpsertRequests.addAll(
+                    ExerciseRouteRecordHelper.getRouteUpsertRequests(record.getRoute()));
         }
 
-        return ExerciseRouteRecordHelper.getRouteUpsertRequests(record.getRoute());
+        if (record.getLaps() != null) {
+            childUpsertRequests.addAll(
+                    ExerciseLapRecordHelper.getLapsUpsertRequests(record.getLaps()));
+        }
+
+        if (record.getSegments() != null) {
+            childUpsertRequests.addAll(
+                    ExerciseSegmentRecordHelper.getSegmentsUpsertRequests(record.getSegments()));
+        }
+
+        return childUpsertRequests;
     }
 
     @Override
@@ -125,8 +165,8 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     SqlJoin getJoinForReadRequest() {
-        // TODO(b/262735189): support laps and segments
-        return null;
+        return ExerciseLapRecordHelper.getJoinReadRequest(getMainTableName())
+                .attachJoin(ExerciseSegmentRecordHelper.getJoinReadRequest(getMainTableName()));
     }
 
     @Override

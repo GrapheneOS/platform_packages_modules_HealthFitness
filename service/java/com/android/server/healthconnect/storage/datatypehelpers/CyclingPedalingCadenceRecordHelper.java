@@ -82,6 +82,8 @@ public class CyclingPedalingCadenceRecordHelper
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
+        // In case we hit another record, move the cursor back to read next record in outer
+        // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
         record.setSamples(cyclingPedalingCadenceRecordSampleSet);
     }

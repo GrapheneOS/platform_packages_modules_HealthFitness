@@ -120,7 +120,9 @@ public final class ExerciseSessionRecordInternal
     }
 
     /** returns this object with exercise laps set */
-    public ExerciseSessionRecordInternal setExerciseLaps(List<ExerciseLapInternal> exerciseLaps) {
+    public ExerciseSessionRecordInternal setExerciseLaps(
+            @NonNull List<ExerciseLapInternal> exerciseLaps) {
+        Objects.requireNonNull(exerciseLaps);
         mExerciseLaps = new ArrayList<>(exerciseLaps);
         return this;
     }
@@ -132,7 +134,8 @@ public final class ExerciseSessionRecordInternal
 
     /** returns this object with exercise segments set */
     public ExerciseSessionRecordInternal setExerciseSegments(
-            List<ExerciseSegmentInternal> exerciseSegments) {
+            @NonNull List<ExerciseSegmentInternal> exerciseSegments) {
+        Objects.requireNonNull(exerciseSegments);
         mExerciseSegments = new ArrayList<>(exerciseSegments);
         return this;
     }

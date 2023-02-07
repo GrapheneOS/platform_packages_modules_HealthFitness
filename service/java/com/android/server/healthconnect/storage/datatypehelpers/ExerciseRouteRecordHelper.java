@@ -58,18 +58,6 @@ class ExerciseRouteRecordHelper {
                 .setAltitude(getCursorDouble(cursor, ROUTE_LOCATION_ALTITUDE_COLUMN_NAME));
     }
 
-    static List<Pair<String, String>> getRouteTableColumnInfo() {
-        List<Pair<String, String>> columnInfo = new ArrayList<>();
-        columnInfo.add(new Pair<>(PARENT_KEY_COLUMN_NAME, INTEGER_NOT_NULL));
-        columnInfo.add(new Pair<>(ROUTE_LOCATION_TIME_IN_MILLIS_COLUMN_NAME, INTEGER_NOT_NULL));
-        columnInfo.add(new Pair<>(ROUTE_LOCATION_LONGITUDE_COLUMN_NAME, REAL_NOT_NULL));
-        columnInfo.add(new Pair<>(ROUTE_LOCATION_LATITUDE_COLUMN_NAME, REAL_NOT_NULL));
-        columnInfo.add(new Pair<>(ROUTE_LOCATION_HORIZONTAL_ACCURACY_COLUMN_NAME, REAL_NOT_NULL));
-        columnInfo.add(new Pair<>(ROUTE_LOCATION_VERTICAL_ACCURACY_COLUMN_NAME, REAL_NOT_NULL));
-        columnInfo.add(new Pair<>(ROUTE_LOCATION_ALTITUDE_COLUMN_NAME, REAL_NOT_NULL));
-        return columnInfo;
-    }
-
     static CreateTableRequest getCreateRouteTableRequest(String parentTableName) {
         return new CreateTableRequest(
                         EXERCISE_ROUTE_RECORD_TABLE_NAME,
@@ -93,6 +81,18 @@ class ExerciseRouteRecordHelper {
                                             .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME));
                         }));
         return requests;
+    }
+
+    private static List<Pair<String, String>> getRouteTableColumnInfo() {
+        List<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(PARENT_KEY_COLUMN_NAME, INTEGER_NOT_NULL));
+        columnInfo.add(new Pair<>(ROUTE_LOCATION_TIME_IN_MILLIS_COLUMN_NAME, INTEGER_NOT_NULL));
+        columnInfo.add(new Pair<>(ROUTE_LOCATION_LONGITUDE_COLUMN_NAME, REAL_NOT_NULL));
+        columnInfo.add(new Pair<>(ROUTE_LOCATION_LATITUDE_COLUMN_NAME, REAL_NOT_NULL));
+        columnInfo.add(new Pair<>(ROUTE_LOCATION_HORIZONTAL_ACCURACY_COLUMN_NAME, REAL_NOT_NULL));
+        columnInfo.add(new Pair<>(ROUTE_LOCATION_VERTICAL_ACCURACY_COLUMN_NAME, REAL_NOT_NULL));
+        columnInfo.add(new Pair<>(ROUTE_LOCATION_ALTITUDE_COLUMN_NAME, REAL_NOT_NULL));
+        return columnInfo;
     }
 
     private static void populateRouteLocationTo(

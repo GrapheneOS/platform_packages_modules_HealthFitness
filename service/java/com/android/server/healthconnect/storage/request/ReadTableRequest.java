@@ -122,7 +122,6 @@ public class ReadTableRequest {
         if (mJoinClause != null) {
             readQuery = mJoinClause.getJoinWithQueryCommand(readQuery);
         }
-        builder.append(mLimitClause);
 
         if (Constants.DEBUG) {
             Slog.d(TAG, "read query: " + readQuery);
