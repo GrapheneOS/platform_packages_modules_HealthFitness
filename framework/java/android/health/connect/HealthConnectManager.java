@@ -114,7 +114,8 @@ import java.util.concurrent.Executor;
  * </ul>
  *
  * <p>The basic unit of data in HealthConnect is represented as a {@link Record} object, which is
- * the base class for all the other data types such as {@link android.health.connect.datatypes.StepsRecord}.
+ * the base class for all the other data types such as {@link
+ * android.health.connect.datatypes.StepsRecord}.
  */
 @SystemService(Context.HEALTHCONNECT_SERVICE)
 public class HealthConnectManager {
@@ -165,8 +166,8 @@ public class HealthConnectManager {
     /**
      * An exercise route requested via {@link #ACTION_REQUEST_EXERCISE_ROUTE}.
      *
-     * <p>This is returned when for a successful request to access a route associated with an
-     * exercise session.
+     * <p>This is returned for a successful request to access a route associated with an exercise
+     * session.
      */
     public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
 
