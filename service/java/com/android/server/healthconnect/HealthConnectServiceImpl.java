@@ -52,10 +52,6 @@ import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.aidl.ApplicationInfoResponseParcel;
-import android.health.connect.aidl.ChangeLogTokenRequestParcel;
-import android.health.connect.aidl.ChangeLogTokenResponseParcel;
-import android.health.connect.aidl.ChangeLogsRequestParcel;
-import android.health.connect.aidl.ChangeLogsResponseParcel;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.GetPriorityResponseParcel;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
@@ -81,6 +77,10 @@ import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.aidl.RecordTypeInfoResponseParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpdatePriorityRequestParcel;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
@@ -565,7 +565,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getChangeLogToken(
             @NonNull String packageName,
-            @NonNull ChangeLogTokenRequestParcel request,
+            @NonNull ChangeLogTokenRequest request,
             @NonNull IGetChangeLogTokenCallback callback) {
         int uid = Binder.getCallingUid();
         HealthConnectThreadScheduler.schedule(
@@ -573,7 +573,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         callback.onResult(
-                                new ChangeLogTokenResponseParcel(
+                                new ChangeLogTokenResponse(
                                         ChangeLogsRequestHelper.getInstance()
                                                 .getToken(packageName, request)));
                     } catch (SQLiteException sqLiteException) {
@@ -595,7 +595,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getChangeLogs(
             @NonNull String packageName,
-            @NonNull ChangeLogsRequestParcel token,
+            @NonNull ChangeLogsRequest token,
             IChangeLogsResponseCallback callback) {
         int uid = Binder.getCallingUid();
         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
@@ -629,7 +629,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                         changeLogsResponse.getChangeLogsMap()),
                                                 startDateAccess));
                         callback.onResult(
-                                new ChangeLogsResponseParcel(
+                                new ChangeLogsResponse(
                                         new RecordsParcel(recordInternals),
                                         ChangeLogsHelper.getDeletedLogs(
                                                 changeLogsResponse.getChangeLogsMap()),

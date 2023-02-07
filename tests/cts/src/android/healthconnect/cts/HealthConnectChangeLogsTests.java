@@ -19,10 +19,10 @@ package android.healthconnect.cts;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.health.connect.ChangeLogTokenRequest;
-import android.health.connect.ChangeLogTokenResponse;
-import android.health.connect.ChangeLogsRequest;
-import android.health.connect.ChangeLogsResponse;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
@@ -44,8 +44,10 @@ import java.util.List;
 public class HealthConnectChangeLogsTests {
     @Test
     public void testGetChangeLogToken() throws InterruptedException {
-        assertThat(TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build()))
-                .isNotNull();
+        ChangeLogTokenRequest changeLogTokenRequest = new ChangeLogTokenRequest.Builder().build();
+        assertThat(TestUtils.getChangeLogToken(changeLogTokenRequest)).isNotNull();
+        assertThat(changeLogTokenRequest.getRecordTypes()).isNotNull();
+        assertThat(changeLogTokenRequest.getDataOriginFilters()).isNotNull();
     }
 
     @Test
@@ -54,6 +56,8 @@ public class HealthConnectChangeLogsTests {
                 TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build());
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        assertThat(changeLogsRequest.getToken()).isNotNull();
+        assertThat(changeLogsRequest.getPageSize()).isNotNull();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedLogs().size()).isEqualTo(0);

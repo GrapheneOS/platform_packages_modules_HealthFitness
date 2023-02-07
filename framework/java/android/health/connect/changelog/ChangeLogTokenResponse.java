@@ -14,50 +14,53 @@
  * limitations under the License.
  */
 
-package android.health.connect.aidl;
+package android.health.connect.changelog;
 
 import android.annotation.NonNull;
-import android.health.connect.ChangeLogTokenResponse;
+import android.health.connect.HealthConnectManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Objects;
 
 /**
- * Parcel class for {@link ChangeLogTokenResponse}
+ * Response class for {@link HealthConnectManager#getChangeLogToken}}
  *
- * @hide
+ * @see HealthConnectManager#getChangeLogToken
  */
-public class ChangeLogTokenResponseParcel implements Parcelable {
-    public static final Creator<ChangeLogTokenResponseParcel> CREATOR =
-            new Creator<>() {
-                @Override
-                public ChangeLogTokenResponseParcel createFromParcel(Parcel in) {
-                    return new ChangeLogTokenResponseParcel(in);
-                }
-
-                @Override
-                public ChangeLogTokenResponseParcel[] newArray(int size) {
-                    return new ChangeLogTokenResponseParcel[size];
-                }
-            };
+public final class ChangeLogTokenResponse implements Parcelable {
     private final String mToken;
 
-    protected ChangeLogTokenResponseParcel(Parcel in) {
-        mToken = in.readString();
-    }
-
-    public ChangeLogTokenResponseParcel(@NonNull String token) {
+    /**
+     * Response for {@link HealthConnectManager#getChangeLogToken}
+     *
+     * @hide
+     */
+    public ChangeLogTokenResponse(@NonNull String token) {
         Objects.requireNonNull(token);
 
         mToken = token;
     }
 
-    /** Returns ChangeLogTokenResponse from ChangeLogTokenResponseParcel. */
-    public ChangeLogTokenResponse getChangeLogTokenResponse() {
-        return new ChangeLogTokenResponse(mToken);
+    private ChangeLogTokenResponse(Parcel in) {
+        mToken = in.readString();
     }
 
+    @NonNull
+    public static final Parcelable.Creator<ChangeLogTokenResponse> CREATOR =
+            new Parcelable.Creator<>() {
+                @Override
+                public ChangeLogTokenResponse createFromParcel(Parcel in) {
+                    return new ChangeLogTokenResponse(in);
+                }
+
+                @Override
+                public ChangeLogTokenResponse[] newArray(int size) {
+                    return new ChangeLogTokenResponse[size];
+                }
+            };
+
+    /** Returns the token for the change logs request */
     @NonNull
     public String getToken() {
         return mToken;

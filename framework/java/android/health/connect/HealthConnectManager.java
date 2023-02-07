@@ -42,10 +42,6 @@ import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.aidl.AggregateDataResponseParcel;
 import android.health.connect.aidl.ApplicationInfoResponseParcel;
-import android.health.connect.aidl.ChangeLogTokenRequestParcel;
-import android.health.connect.aidl.ChangeLogTokenResponseParcel;
-import android.health.connect.aidl.ChangeLogsRequestParcel;
-import android.health.connect.aidl.ChangeLogsResponseParcel;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.GetPriorityResponseParcel;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
@@ -70,6 +66,10 @@ import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.aidl.RecordTypeInfoResponseParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpdatePriorityRequestParcel;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
@@ -87,7 +87,6 @@ import android.util.Log;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -880,24 +879,12 @@ public class HealthConnectManager {
         try {
             mService.getChangeLogs(
                     mContext.getPackageName(),
-                    new ChangeLogsRequestParcel(changeLogsRequest),
+                    changeLogsRequest,
                     new IChangeLogsResponseCallback.Stub() {
                         @Override
-                        public void onResult(ChangeLogsResponseParcel parcel) {
+                        public void onResult(ChangeLogsResponse parcel) {
                             Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () -> {
-                                        try {
-                                            callback.onResult(parcel.getChangeLogsResponse());
-                                        } catch (InvocationTargetException
-                                                | InstantiationException
-                                                | IllegalAccessException
-                                                | NoSuchMethodException e) {
-                                            callback.onError(
-                                                    new HealthConnectException(
-                                                            HealthConnectException.ERROR_INTERNAL));
-                                        }
-                                    });
+                            executor.execute(() -> callback.onResult(parcel));
                         }
 
                         @Override
@@ -933,13 +920,12 @@ public class HealthConnectManager {
         try {
             mService.getChangeLogToken(
                     mContext.getPackageName(),
-                    new ChangeLogTokenRequestParcel(request),
+                    request,
                     new IGetChangeLogTokenCallback.Stub() {
                         @Override
-                        public void onResult(ChangeLogTokenResponseParcel parcel) {
+                        public void onResult(ChangeLogTokenResponse parcel) {
                             Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () -> callback.onResult(parcel.getChangeLogTokenResponse()));
+                            executor.execute(() -> callback.onResult(parcel));
                         }
 
                         @Override

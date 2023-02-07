@@ -31,7 +31,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.health.connect.aidl.ChangeLogTokenRequestParcel;
+import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -130,8 +130,7 @@ public final class ChangeLogsRequestHelper {
     }
 
     @NonNull
-    public String getToken(
-            @NonNull String packageName, @NonNull ChangeLogTokenRequestParcel request) {
+    public String getToken(@NonNull String packageName, @NonNull ChangeLogTokenRequest request) {
         ContentValues contentValues = new ContentValues();
 
         /**
@@ -143,7 +142,8 @@ public final class ChangeLogsRequestHelper {
                 PACKAGES_TO_FILTERS_COLUMN_NAME,
                 String.join(DELIMITER, request.getPackageNamesToFilter()));
         contentValues.put(
-                RECORD_TYPES_COLUMN_NAME, StorageUtils.flattenIntArray(request.getRecordTypes()));
+                RECORD_TYPES_COLUMN_NAME,
+                StorageUtils.flattenIntArray(request.getRecordTypesArray()));
         contentValues.put(PACKAGE_NAME_COLUMN_NAME, packageName);
         contentValues.put(
                 ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME,
