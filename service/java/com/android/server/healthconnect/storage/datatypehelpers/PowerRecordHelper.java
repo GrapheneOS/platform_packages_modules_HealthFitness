@@ -35,7 +35,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.PowerRecordInternal;
 import android.util.Pair;
 
-import com.android.server.healthconnect.storage.utils.SqlInnerJoin;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,7 +88,7 @@ public class PowerRecordHelper
                                 Collections.singletonList(POWER_COLUMN_NAME),
                                 START_TIME_COLUMN_NAME)
                         .setJoin(
-                                new SqlInnerJoin(
+                                new SqlJoin(
                                         SERIES_TABLE_NAME,
                                         TABLE_NAME,
                                         PARENT_KEY_COLUMN_NAME,

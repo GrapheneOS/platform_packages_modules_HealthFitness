@@ -120,7 +120,7 @@ public class ReadTableRequest {
 
         String readQuery = builder.toString();
         if (mJoinClause != null) {
-            readQuery = mJoinClause.getQueryJoinClause(readQuery);
+            readQuery = mJoinClause.getJoinWithQueryCommand(readQuery);
         }
         builder.append(mLimitClause);
 
