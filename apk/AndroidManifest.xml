@@ -17,7 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.healthconnect.controller">
 
-    <protected-broadcast android:name="android.healthconnect.action.HEALTH_CONNECT_MIGRATION_READY" />
+    <protected-broadcast android:name="android.health.connect.action.HEALTH_CONNECT_MIGRATION_READY" />
 
     <uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" />
     <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA" />
