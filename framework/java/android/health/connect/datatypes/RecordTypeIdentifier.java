@@ -387,7 +387,8 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_BODY_WATER_MASS,
         RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD,
         RECORD_TYPE_MENSTRUATION_PERIOD,
-        RECORD_TYPE_INTERMENSTRUAL_BLEEDING
+        RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
+        RECORD_TYPE_SLEEP_SESSION
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}

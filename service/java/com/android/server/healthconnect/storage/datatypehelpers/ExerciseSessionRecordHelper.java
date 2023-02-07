@@ -20,6 +20,7 @@ import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.ExerciseRouteRecordHelper.EXERCISE_ROUTE_RECORD_TABLE_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_FALSE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_TRUE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
@@ -65,7 +66,6 @@ public final class ExerciseSessionRecordHelper
 
     private static final String EXERCISE_SESSION_RECORD_TABLE_NAME =
             "exercise_session_record_table";
-    private static final String PARENT_KEY_COLUMN_NAME = "parent_key";
 
     // Exercise Session columns names
     private static final String NOTES_COLUMN_NAME = "notes";

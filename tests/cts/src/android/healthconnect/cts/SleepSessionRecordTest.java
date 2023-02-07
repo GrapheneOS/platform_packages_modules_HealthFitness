@@ -16,17 +16,27 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
+import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.fail;
 
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 
+import org.junit.After;
 import org.junit.Test;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class SleepSessionRecordTest {
@@ -36,6 +46,16 @@ public class SleepSessionRecordTest {
     private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e10 + 1000);
     private static final CharSequence NOTES = "felt sleepy";
     private static final CharSequence TITLE = "Afternoon nap";
+
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                SleepSessionRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSleepStage_startTimeLaterThanEnd_throwsException() {
@@ -174,5 +194,99 @@ public class SleepSessionRecordTest {
                 .isEqualTo(defaultZoneOffset);
         assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
                 .isEqualTo(defaultZoneOffset);
+    }
+
+    @Test
+    public void testReadById_insertAndReadByIdOne_recordsAreEqual() throws InterruptedException {
+        List<Record> records = List.of(TestUtils.buildSleepSession());
+        TestUtils.insertRecords(records);
+
+        ReadRecordsRequestUsingIds.Builder<SleepSessionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(SleepSessionRecord.class);
+        request.addId(records.get(0).getMetadata().getId());
+
+        SleepSessionRecord readRecord = TestUtils.readRecords(request.build()).get(0);
+        SleepSessionRecord insertedRecord = (SleepSessionRecord) records.get(0);
+        assertThat(readRecord.getMetadata()).isEqualTo(insertedRecord.getMetadata());
+        assertThat(CharSequence.compare(readRecord.getTitle(), insertedRecord.getTitle()))
+                .isEqualTo(0);
+        assertThat(CharSequence.compare(readRecord.getNotes(), insertedRecord.getNotes()))
+                .isEqualTo(0);
+        assertThat(readRecord.getStages()).isEqualTo(insertedRecord.getStages());
+        assertThat(readRecord).isEqualTo(insertedRecord);
+    }
+
+    @Test
+    public void testReadById_insertAndReadById_recordsAreEqual() throws InterruptedException {
+        List<Record> records = List.of(TestUtils.buildSleepSession(), buildSleepSessionMinimal());
+        TestUtils.insertRecords(records);
+
+        ReadRecordsRequestUsingIds.Builder<SleepSessionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(SleepSessionRecord.class);
+        request.addId(records.get(0).getMetadata().getId());
+        request.addId(records.get(1).getMetadata().getId());
+
+        assertRecordsAreEqual(records, TestUtils.readRecords(request.build()));
+    }
+
+    @Test
+    public void testReadByClientId_insertAndReadByClientId_recordsAreEqual()
+            throws InterruptedException {
+        List<Record> records = List.of(TestUtils.buildSleepSession(), buildSleepSessionMinimal());
+        TestUtils.insertRecords(records);
+
+        ReadRecordsRequestUsingIds.Builder<SleepSessionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(SleepSessionRecord.class);
+        request.addClientRecordId(records.get(0).getMetadata().getClientRecordId());
+        request.addClientRecordId(records.get(1).getMetadata().getClientRecordId());
+
+        assertRecordsAreEqual(records, TestUtils.readRecords(request.build()));
+    }
+
+    @Test
+    public void testReadByClientId_insertAndReadByDefaultFilter_filteredAll()
+            throws InterruptedException {
+        List<Record> records = List.of(TestUtils.buildSleepSession(), buildSleepSessionMinimal());
+        TestUtils.insertRecords(records);
+
+        List<SleepSessionRecord> readRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(SleepSessionRecord.class)
+                                .build());
+        assertRecordsAreEqual(records, readRecords);
+    }
+
+    @Test
+    public void testDeleteRecords_insertAndDeleteById_recordsNotFoundAnymore()
+            throws InterruptedException {
+        List<Record> records = List.of(TestUtils.buildSleepSession(), buildSleepSessionMinimal());
+        List<Record> insertedRecords = TestUtils.insertRecords(records);
+
+        TestUtils.assertRecordFound(records.get(0).getMetadata().getId(), SleepSessionRecord.class);
+        TestUtils.assertRecordFound(records.get(1).getMetadata().getId(), SleepSessionRecord.class);
+
+        TestUtils.deleteRecords(insertedRecords);
+
+        TestUtils.assertRecordNotFound(
+                records.get(0).getMetadata().getId(), SleepSessionRecord.class);
+        TestUtils.assertRecordNotFound(
+                records.get(1).getMetadata().getId(), SleepSessionRecord.class);
+    }
+
+    public static SleepSessionRecord buildSleepSessionMinimal() {
+        return new SleepSessionRecord.Builder(
+                        TestUtils.generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
+                .build();
+    }
+
+    private void assertRecordsAreEqual(List<Record> records, List<SleepSessionRecord> result) {
+        ArrayList<SleepSessionRecord> recordsExercises = new ArrayList<>();
+        for (Record record : records) {
+            recordsExercises.add((SleepSessionRecord) record);
+        }
+        recordsExercises.sort(Comparator.comparing(item -> item.getMetadata().getId()));
+        result.sort(Comparator.comparing(item -> item.getMetadata().getId()));
+
+        assertThat(result).isEqualTo(recordsExercises);
     }
 }

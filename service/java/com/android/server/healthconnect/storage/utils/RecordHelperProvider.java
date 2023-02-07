@@ -53,6 +53,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RespiratoryRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RestingHeartRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.SexualActivityRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.SleepSessionRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.SpeedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsCadenceRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper;
@@ -161,6 +162,8 @@ public final class RecordHelperProvider {
         recordIDToHelperMap.put(
                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
                 new ExerciseSessionRecordHelper());
+        recordIDToHelperMap.put(
+                RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION, new SleepSessionRecordHelper());
 
         mRecordIDToHelperMap = Collections.unmodifiableMap(recordIDToHelperMap);
     }

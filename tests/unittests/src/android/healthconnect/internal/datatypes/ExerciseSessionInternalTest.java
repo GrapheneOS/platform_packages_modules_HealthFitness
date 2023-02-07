@@ -22,7 +22,6 @@ import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSessionRecord;
-import android.health.connect.datatypes.RecordUtils;
 import android.health.connect.internal.datatypes.ExerciseLapInternal;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
@@ -64,7 +63,6 @@ public class ExerciseSessionInternalTest {
         ExerciseSessionRecordInternal restoredSession = writeAndRestoreFromParcel(session);
 
         assertFieldsAreEqual(session, restoredSession);
-        assertThat(session).isEqualTo(restoredSession);
     }
 
     @Test
@@ -76,16 +74,23 @@ public class ExerciseSessionInternalTest {
     private ExerciseSessionRecordInternal writeAndRestoreFromParcel(
             ExerciseSessionRecordInternal session) {
         Parcel parcel = Parcel.obtain();
-        session.populateIntervalRecordTo(parcel);
+        session.writeToParcel(parcel);
         parcel.setDataPosition(0);
         ExerciseSessionRecordInternal restoredSession = new ExerciseSessionRecordInternal();
-        restoredSession.populateIntervalRecordFrom(parcel);
+        restoredSession.populateUsing(parcel);
         parcel.recycle();
         return restoredSession;
     }
 
     private void assertFieldsAreEqual(
             ExerciseSessionRecord external, ExerciseSessionRecordInternal internal) {
+        assertThat(internal.getStartTimeInMillis())
+                .isEqualTo(external.getStartTime().toEpochMilli());
+        assertThat(internal.getEndTimeInMillis()).isEqualTo(external.getEndTime().toEpochMilli());
+        assertThat(internal.getStartZoneOffsetInSeconds())
+                .isEqualTo(external.getStartZoneOffset().getTotalSeconds());
+        assertThat(internal.getEndZoneOffsetInSeconds())
+                .isEqualTo(external.getEndZoneOffset().getTotalSeconds());
         if (internal.getRoute() == null) {
             assertThat(external.getRoute()).isNull();
         } else {
@@ -94,8 +99,10 @@ public class ExerciseSessionInternalTest {
                     .isEqualTo(convertedRoute.getRouteLocations());
             assertThat(external.getRoute()).isEqualTo(convertedRoute);
         }
-        assertCharSequencesEqualToStringWithNull(internal.getTitle(), external.getTitle());
-        assertCharSequencesEqualToStringWithNull(internal.getNotes(), external.getNotes());
+        TestUtils.assertCharSequencesEqualToStringWithNull(
+                internal.getTitle(), external.getTitle());
+        TestUtils.assertCharSequencesEqualToStringWithNull(
+                internal.getNotes(), external.getNotes());
         assertLapsAreEqual(internal.getLaps(), external.getLaps());
         assertSegmentsAreEqual(internal.getSegments(), external.getSegments());
     }
@@ -141,26 +148,19 @@ public class ExerciseSessionInternalTest {
         }
     }
 
-    private void assertCharSequencesEqualToStringWithNull(String str, CharSequence sequence) {
-        if (str == null) {
-            assertThat(sequence).isNull();
-        } else {
-            assertThat(sequence).isNotNull();
-            assertThat(sequence.toString()).isEqualTo(str);
-        }
-    }
-
     private void assertFieldsAreEqual(
             ExerciseSessionRecordInternal internal, ExerciseSessionRecordInternal internal2) {
+        assertThat(internal.getStartTimeInMillis()).isEqualTo(internal2.getStartTimeInMillis());
+        assertThat(internal.getEndTimeInMillis()).isEqualTo(internal2.getEndTimeInMillis());
+        assertThat(internal.getStartZoneOffsetInSeconds())
+                .isEqualTo(internal2.getStartZoneOffsetInSeconds());
+        assertThat(internal.getEndZoneOffsetInSeconds())
+                .isEqualTo(internal2.getEndZoneOffsetInSeconds());
         assertThat(internal.getRoute()).isEqualTo(internal2.getRoute());
         assertThat(internal.getExerciseType()).isEqualTo(internal2.getExerciseType());
-        assertThat(
-                        RecordUtils.isEqualNullableCharSequences(
-                                internal.getTitle(), internal2.getTitle()))
-                .isTrue();
-        assertThat(
-                        RecordUtils.isEqualNullableCharSequences(
-                                internal.getTitle(), internal2.getNotes()))
-                .isTrue();
+        TestUtils.assertCharSequencesEqualToStringWithNull(
+                internal.getNotes(), internal2.getNotes());
+        TestUtils.assertCharSequencesEqualToStringWithNull(
+                internal.getTitle(), internal2.getTitle());
     }
 }

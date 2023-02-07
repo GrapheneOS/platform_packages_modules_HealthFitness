@@ -244,30 +244,4 @@ public final class ExerciseSessionRecordInternal
             mExerciseRoute.addLocation(location);
         }
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ExerciseSessionRecordInternal)) return false;
-        ExerciseSessionRecordInternal that = (ExerciseSessionRecordInternal) o;
-        return getExerciseType() == that.getExerciseType()
-                && hasRoute() == that.hasRoute()
-                && Objects.equals(getNotes(), that.getNotes())
-                && Objects.equals(getTitle(), that.getTitle())
-                && Objects.equals(getRoute(), that.getRoute())
-                && Objects.equals(getLaps(), that.getLaps())
-                && Objects.equals(getSegments(), that.getSegments());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                getNotes(),
-                getExerciseType(),
-                getTitle(),
-                mExerciseRoute,
-                mHasRoute,
-                getLaps(),
-                getSegments());
-    }
 }

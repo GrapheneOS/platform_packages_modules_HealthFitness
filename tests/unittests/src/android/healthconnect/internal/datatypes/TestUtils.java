@@ -16,12 +16,17 @@
 
 package android.healthconnect.internal.datatypes;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.internal.datatypes.ExerciseLapInternal;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
+import android.health.connect.internal.datatypes.SleepStageInternal;
 
 import java.time.Instant;
 import java.time.Period;
@@ -61,6 +66,8 @@ public class TestUtils {
                         .setExerciseType(
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setRoute(buildExerciseRouteInternal())
+                        .setTitle("Morning walk")
+                        .setNotes("Sunny weather")
                         .setExerciseLaps(Collections.singletonList(buildExerciseLap()))
                         .setExerciseSegments(Collections.singletonList(buildExerciseSegment()))
                         .setStartTime(START_TIME)
@@ -76,8 +83,34 @@ public class TestUtils {
                         .setModel("Pixel4a");
     }
 
+    public static SleepSessionRecordInternal buildSleepSessionInternal() {
+        return (SleepSessionRecordInternal)
+                new SleepSessionRecordInternal()
+                        .setSleepStages(Collections.singletonList(buildSleepStage()))
+                        .setTitle("Morning walk")
+                        .setNotes("Sunny weather")
+                        .setStartTime(START_TIME)
+                        .setEndTime(END_TIME)
+                        .setEndZoneOffset(1)
+                        .setStartZoneOffset(1)
+                        .setAppInfoId(1)
+                        .setClientRecordId("client_id")
+                        .setManufacturer("manufacturer")
+                        .setClientRecordVersion(12)
+                        .setUuid("id")
+                        .setPackageName("android.healthconnect.unittests")
+                        .setModel("Pixel4a");
+    }
+
     public static ExerciseLapInternal buildExerciseLap() {
         return new ExerciseLapInternal().setStarTime(START_TIME).setEndTime(END_TIME).setLength(10);
+    }
+
+    public static SleepStageInternal buildSleepStage() {
+        return new SleepStageInternal()
+                .setStartTime(START_TIME)
+                .setEndTime(END_TIME)
+                .setStageType(SleepSessionRecord.StageType.STAGE_TYPE_AWAKE_OUT_OF_BED);
     }
 
     public static ExerciseSegmentInternal buildExerciseSegment() {
@@ -97,5 +130,23 @@ public class TestUtils {
                         .setEndTime((long) 1e10)
                         .setUuid("id")
                         .setPackageName("android.healthconnect.unittests");
+    }
+
+    public static SleepSessionRecordInternal buildSleepSessionInternalNoExtraFields() {
+        return (SleepSessionRecordInternal)
+                new SleepSessionRecordInternal()
+                        .setStartTime((long) 1e9)
+                        .setEndTime((long) 1e10)
+                        .setUuid("id")
+                        .setPackageName("android.healthconnect.unittests");
+    }
+
+    public static void assertCharSequencesEqualToStringWithNull(String str, CharSequence sequence) {
+        if (str == null) {
+            assertThat(sequence).isNull();
+        } else {
+            assertThat(sequence).isNotNull();
+            assertThat(sequence.toString()).isEqualTo(str);
+        }
     }
 }

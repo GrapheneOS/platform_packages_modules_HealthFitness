@@ -55,6 +55,7 @@ import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
@@ -735,6 +736,28 @@ public class TestUtils {
 
     public static ExerciseSessionRecord buildExerciseSession() {
         return buildExerciseSession(buildExerciseRoute(), "Morning training", "rain");
+    }
+
+    public static SleepSessionRecord buildSleepSession() {
+        return new SleepSessionRecord.Builder(
+                        generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
+                .setNotes("warm")
+                .setTitle("Afternoon nap")
+                .setStages(
+                        List.of(
+                                new SleepSessionRecord.Stage(
+                                        SESSION_START_TIME,
+                                        SESSION_START_TIME.plusSeconds(300),
+                                        SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_LIGHT),
+                                new SleepSessionRecord.Stage(
+                                        SESSION_START_TIME.plusSeconds(300),
+                                        SESSION_START_TIME.plusSeconds(600),
+                                        SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_REM),
+                                new SleepSessionRecord.Stage(
+                                        SESSION_START_TIME.plusSeconds(900),
+                                        SESSION_START_TIME.plusSeconds(1200),
+                                        SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP)))
+                .build();
     }
 
     public static boolean isApiBlocked() {

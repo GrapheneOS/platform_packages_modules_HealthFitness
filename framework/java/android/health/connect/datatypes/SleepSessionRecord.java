@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.RecordUtils.isEqualNullableCharSequences;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -63,8 +65,7 @@ public final class SleepSessionRecord extends IntervalRecord {
             @Nullable CharSequence title) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(stages);
-        validateStages(stages, startTime, endTime);
-        mStages = stages;
+        mStages = sortAndValidateStages(stages, startTime, endTime);
         mNotes = notes;
         mTitle = title;
     }
@@ -93,8 +94,8 @@ public final class SleepSessionRecord extends IntervalRecord {
         if (!(o instanceof SleepSessionRecord)) return false;
         if (!super.equals(o)) return false;
         SleepSessionRecord that = (SleepSessionRecord) o;
-        return CharSequence.compare(getNotes(), that.getNotes()) == 0
-                && CharSequence.compare(getTitle(), that.getTitle()) == 0
+        return isEqualNullableCharSequences(getNotes(), that.getNotes())
+                && isEqualNullableCharSequences(getTitle(), that.getTitle())
                 && Objects.equals(getStages(), that.getStages());
     }
 
@@ -160,8 +161,8 @@ public final class SleepSessionRecord extends IntervalRecord {
             if (!(o instanceof Stage)) return false;
             Stage that = (Stage) o;
             return getType() == that.getType()
-                    && Objects.equals(getStartTime(), that.getStartTime())
-                    && Objects.equals(getEndTime(), that.getEndTime());
+                    && getStartTime().toEpochMilli() == that.getStartTime().toEpochMilli()
+                    && getEndTime().toEpochMilli() == that.getEndTime().toEpochMilli();
         }
 
         @Override
@@ -326,7 +327,7 @@ public final class SleepSessionRecord extends IntervalRecord {
         }
     }
 
-    private void validateStages(
+    private List<Stage> sortAndValidateStages(
             @NonNull List<Stage> stages,
             @NonNull Instant sessionStartTime,
             @NonNull Instant sessionEndTime) {
@@ -348,5 +349,6 @@ public final class SleepSessionRecord extends IntervalRecord {
                 }
             }
         }
+        return sortedStages;
     }
 }

@@ -72,7 +72,7 @@ public class GrantTimePersistenceUnitTest {
             new UserGrantTimeState(new ArrayMap<>(), new ArrayMap<>(), 3);
 
     private MockitoSession mStaticMockSession;
-    private UserHandle mUser = UserHandle.of(UserHandle.myUserId());
+    private final UserHandle mUser = UserHandle.of(UserHandle.myUserId());
     private File mMockDataDirectory;
 
     @Before

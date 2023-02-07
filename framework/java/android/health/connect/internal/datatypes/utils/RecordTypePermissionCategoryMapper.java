@@ -46,6 +46,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SEXUAL_ACTIVITY;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
@@ -137,6 +138,7 @@ public final class RecordTypePermissionCategoryMapper {
                                 RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
                                 HealthPermissionCategory.INTERMENSTRUAL_BLEEDING);
                         put(RECORD_TYPE_EXERCISE_SESSION, HealthPermissionCategory.EXERCISE);
+                        put(RECORD_TYPE_SLEEP_SESSION, HealthPermissionCategory.SLEEP);
                     }
                 };
     }
