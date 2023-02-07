@@ -23,7 +23,7 @@ android_test {
         "general-tests",
     ],
     libs: [
-        "framework-healthconnect.impl",
+        "framework-healthfitness.impl",
     ],
 
     static_libs: [

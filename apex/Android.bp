@@ -17,20 +17,20 @@ package {
 }
 
 apex_key {
-    name: "com.android.healthconnect.key",
-    public_key: "com.android.healthconnect.avbpubkey",
-    private_key: "com.android.healthconnect.pem",
+    name: "com.android.healthfitness.key",
+    public_key: "com.android.healthfitness.avbpubkey",
+    private_key: "com.android.healthfitness.pem",
 }
 
 android_app_certificate {
-    name: "com.android.healthconnect.certificate",
-    certificate: "com.android.healthconnect",
+    name: "com.android.healthfitness.certificate",
+    certificate: "com.android.healthfitness",
 }
 
 apex {
-    name: "com.android.healthconnect",
+    name: "com.android.healthfitness",
     manifest: "manifest.json",
-    file_contexts: ":com.android.healthconnect-file_contexts",
+    file_contexts: ":com.android.healthfitness-file_contexts",
     apps: [
         "HealthConnectController",
     ],
@@ -38,28 +38,28 @@ apex {
         "current_sdkinfo",
         "privapp_allowlist_com.android.healthconnect.controller.xml",
     ],
-    key: "com.android.healthconnect.key",
+    key: "com.android.healthfitness.key",
     min_sdk_version: "UpsideDownCake",
-    certificate: ":com.android.healthconnect.certificate",
+    certificate: ":com.android.healthfitness.certificate",
     updatable: true,
-    bootclasspath_fragments: ["com.android.healthconnect-bootclasspath-fragment"],
-    systemserverclasspath_fragments: ["com.android.healthconnect-systemserverclasspath-fragment"],
+    bootclasspath_fragments: ["com.android.healthfitness-bootclasspath-fragment"],
+    systemserverclasspath_fragments: ["com.android.healthfitness-systemserverclasspath-fragment"],
 }
 
 sdk {
-    name: "healthconnect-module-sdk",
+    name: "healthfitness-module-sdk",
     apexes: [
         // Adds exportable dependencies of the APEX to the sdk,
         // e.g. *classpath_fragments.
-        "com.android.healthconnect",
+        "com.android.healthfitness",
     ],
 }
 
-// Encapsulate the contributions made by com.android.healthconnect to the bootclasspath.
+// Encapsulate the contributions made by com.android.healthfitness to the bootclasspath.
 bootclasspath_fragment {
-    name: "com.android.healthconnect-bootclasspath-fragment",
-    contents: ["framework-healthconnect"],
-    apex_available: ["com.android.healthconnect"],
+    name: "com.android.healthfitness-bootclasspath-fragment",
+    contents: ["framework-healthfitness"],
+    apex_available: ["com.android.healthfitness"],
     hidden_api: {
         split_packages: ["*"],
     },
@@ -76,7 +76,7 @@ bootclasspath_fragment {
 }
 
 systemserverclasspath_fragment {
-    name: "com.android.healthconnect-systemserverclasspath-fragment",
-    contents: ["service-healthconnect"],
-    apex_available: ["com.android.healthconnect"],
+    name: "com.android.healthfitness-systemserverclasspath-fragment",
+    contents: ["service-healthfitness"],
+    apex_available: ["com.android.healthfitness"],
 }

@@ -39,12 +39,12 @@ android_test {
         "kotlin-annotations",
         "android.test.base",
         "android.test.mock.stubs",
-        "framework-healthconnect.impl"
+        "framework-healthfitness.impl"
     ],
     kotlincflags: ["-Xjvm-default=all"],
     test_suites: [
       "general-tests",
     ],
     resource_dirs: ["res"],
-    test_mainline_modules: ["com.google.android.healthconnect.apex"]
+    test_mainline_modules: ["com.google.android.healthfitness.apex"]
 }

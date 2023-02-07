@@ -29,7 +29,7 @@ android_library {
     srcs: [":healthConnectToolbox-sources"],
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
-    libs: ["kotlin-annotations", "framework-healthconnect"],
+    libs: ["kotlin-annotations", "framework-healthfitness"],
     static_libs: [
         "kotlin-stdlib",
         "kotlinx-coroutines-android",
@@ -40,7 +40,7 @@ android_library {
         "androidx.annotation_annotation"
     ],
     kotlincflags: ["-Xjvm-default=all"],
-    apex_available: ["com.android.healthconnect"],
+    apex_available: ["com.android.healthfitness"],
 }
 
 android_app {
@@ -53,5 +53,5 @@ android_app {
     static_libs: [
         "HealthConnectToolboxLibrary"
     ],
-    apex_available: ["com.android.healthconnect"],
+    apex_available: ["com.android.healthfitness"],
 }

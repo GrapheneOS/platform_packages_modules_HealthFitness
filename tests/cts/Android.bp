@@ -22,7 +22,7 @@ android_test {
     libs: [
         "android.test.runner",
         "android.test.base",
-        "framework-healthconnect",
+        "framework-healthfitness",
         "framework-configinfrastructure",
     ],
     srcs: [
@@ -56,7 +56,7 @@ android_test {
     libs: [
         "android.test.runner",
         "android.test.base",
-        "framework-healthconnect",
+        "framework-healthfitness",
     ],
     srcs: [
         "src/android/healthconnect/cts/nopermission/*.java",

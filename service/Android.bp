@@ -17,7 +17,7 @@ package {
 }
 
 filegroup {
-    name: "service-healthconnect-sources",
+    name: "service-healthfitness-sources",
     srcs: [
       "java/**/*.java"
     ],
@@ -25,17 +25,17 @@ filegroup {
 }
 
 java_sdk_library {
-    name: "service-healthconnect",
-    srcs: [":service-healthconnect-sources"],
+    name: "service-healthfitness",
+    srcs: [":service-healthfitness-sources"],
     sdk_version: "system_server_current",
     min_sdk_version: "UpsideDownCake",
     defaults: [
         "framework-system-server-module-defaults",
         "framework-system-server-module-optimize-defaults",
     ],
-    apex_available: ["com.android.healthconnect"],
+    apex_available: ["com.android.healthfitness"],
     libs: [
-        "framework-healthconnect.impl",
+        "framework-healthfitness.impl",
         "androidx.annotation_annotation",
         "framework-configinfrastructure",
     ],
