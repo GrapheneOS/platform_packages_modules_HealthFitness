@@ -871,19 +871,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingOrSelfPermission(
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
                 "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-        mMigrationStateManager.validateStartMigration();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mMigrationStateManager.validateStartMigration();
                         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IN_PROGRESS);
                         callback.onSuccess();
                     } catch (Exception e) {
-                        Slog.e(
-                                TAG,
-                                "Exception: ",
-                                e); // TODO(b/263897830): Verify migration state and send errors
-                        // properly
+                        Slog.e(TAG, "Exception: ", e);
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
@@ -896,10 +892,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingOrSelfPermission(
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
                 "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-        mMigrationStateManager.validateFinishMigration();
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mMigrationStateManager.validateFinishMigration();
                         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
                     } catch (Exception e) {
@@ -922,6 +918,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mMigrationStateManager.validateWriteMigrationData();
                         getDataMigrationManager(getCallingUserHandle()).apply(entities);
                         callback.onSuccess();
                     } catch (DataMigrationManager.EntityWriteException e) {
@@ -932,7 +929,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 MigrationException.ERROR_MIGRATE_ENTITY,
                                 e.getEntityId());
                     } catch (Exception e) {
-                        // TODO(b/263897830): Verify migration state and send errors properly
                         Slog.e(TAG, "Exception: ", e);
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
@@ -951,18 +947,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
                 "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
 
-        mMigrationStateManager.validateSetMinSdkVersion();
-
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mMigrationStateManager.validateSetMinSdkVersion();
+
                         mMigrationStateManager.setMinDataMigrationSdkExtensionVersion(
                                 requiredSdkExtension);
 
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
-                        // TODO(b/263897830): Send errors properly
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
@@ -1121,6 +1116,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         setDataRestoreState(
                 INTERNAL_RESTORE_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
         setDataRestoreError(RESTORE_ERROR_NONE, userHandle.getIdentifier());
+        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IDLE);
+        AppInfoHelper.getInstance().clearData(mTransactionManager);
     }
 
     /**
