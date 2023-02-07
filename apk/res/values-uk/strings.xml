@@ -19,27 +19,27 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
     <string name="permissions_and_data_header" msgid="8934418632257193297">"Дозволи й дані"</string>
-    <!-- no translation found for home_subtitle (7432717346054530246) -->
-    <skip />
+    <string name="home_subtitle" msgid="7432717346054530246">"Керуйте даними про здоров’я та фізичну активність на телефоні, а також визначайте додатки, які матимуть доступ до даних"</string>
     <string name="data_title" msgid="6928287139074878977">"Дані та доступ"</string>
     <string name="all_categories_title" msgid="3963693021187107088">"Усі категорії"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Переглянути всі категорії"</string>
     <string name="no_data" msgid="1120552294863595549">"Немає даних"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Дозволи для додатків"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Керуйте своїми додатками та дозволами"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"Додатки, що мають доступ: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> з <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"Додатки, що мають доступ: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> додаток має доступ"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Немає"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"Деталі запису"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Нещодавній доступ"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Немає додатків, які нещодавно використовували Health Connect"</string>
-    <!-- no translation found for show_recent_access_entries_button_title (5940089088828697715) -->
-    <skip />
+    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Переглянути всі нещодавні випадки доступу"</string>
     <string name="recent_access_screen_description" msgid="8895660122430178701">"Дізнайтеся, які додатки отримували доступ до ваших даних за останні 24 години"</string>
     <string name="today_header" msgid="3128127066599449902">"Сьогодні"</string>
     <string name="yesterday_header" msgid="6148252913497135984">"Учора"</string>
-    <!-- no translation found for read_data_access_label (6637502477626337989) -->
-    <skip />
-    <!-- no translation found for write_data_access_label (2129321999800895193) -->
-    <skip />
-    <!-- no translation found for data_type_separator (7425650044625487749) -->
-    <skip />
+    <string name="read_data_access_label" msgid="6637502477626337989">"Зчитано: %s"</string>
+    <string name="write_data_access_label" msgid="2129321999800895193">"Записано: %s"</string>
+    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
     <string name="activity_category_uppercase" msgid="426623789703642935">"Активність"</string>
     <string name="activity_category_lowercase" msgid="3890597606215143531">"активність"</string>
     <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Параметри тіла"</string>
@@ -85,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Маршрут тренування"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"маршрут тренування"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Записувати маршрут тренування"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Зчитувати маршрут тренування"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Відстань"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"відстань"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Зчитувати відстань"</string>
@@ -161,14 +162,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"цервікальний слиз"</string>
     <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Зчитувати дані про цервікальний слиз"</string>
     <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Записувати дані про цервікальний слиз"</string>
-    <!-- no translation found for intermenstrual_bleeding_uppercase_label (5282365477971928961) -->
-    <skip />
-    <!-- no translation found for intermenstrual_bleeding_lowercase_label (6778401872061584730) -->
-    <skip />
-    <!-- no translation found for intermenstrual_bleeding_read_content_description (4436771830985838699) -->
-    <skip />
-    <!-- no translation found for intermenstrual_bleeding_write_content_description (6338876695125491946) -->
-    <skip />
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Кровотечі між менструаціями"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"кровотечі між менструаціями"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Зчитувати дані про кровотечі між менструаціями"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Записувати дані про кровотечі між менструаціями"</string>
     <string name="menstruation_uppercase_label" msgid="785931033429661883">"Менструація"</string>
     <string name="menstruation_lowercase_label" msgid="4745294173229974084">"менструація"</string>
     <string name="menstruation_read_content_description" msgid="7208944260757605367">"Зчитувати дані про менструацію"</string>
@@ -233,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"пульс у стані спокою"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Зчитувати дані про пульс у стані спокою"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Записувати дані про пульс у стані спокою"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Може читати дані з Health Connect"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Може записувати дані в Health Connect"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> зчитувати дані"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> записувати дані"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"Скасувати"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"Дозволити"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"Дозволити все"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Не дозволяти"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Виберіть дані, які цей додаток зможе читати або записувати в Health Connect."</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Якщо ви надасте доступ для читання, додаток зможе читати нові дані, а також дані за останні 30 днів"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"Надати додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до Health Connect?"</string>
@@ -256,14 +254,12 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Без дозволу на доступ"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Налаштування та довідка"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Скасувати доступ для всіх додатків"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"Не бачите всі свої додатки?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"Дозволено доступ із правом читання"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Дозволено доступ із правом запису"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Немає додатків із дозволом"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Немає додатків без дозволу"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Вилучити доступ для всіх додатків?"</string>
-    <!-- no translation found for permissions_disconnect_all_dialog_message (188398111066699829) -->
-    <skip />
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Жоден із ваших додатків не матиме доступу до Health Connect і не зможе зберігати в ньому нові дані. Наявні дані видалено не буде.\n\nЦе не вплине на інші дозволи, надані цьому додатку, наприклад на доступ до геоданих, камери чи мікрофона."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Вилучити всі"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Керування додатком"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Видалити дані додатка"</string>
@@ -275,28 +271,17 @@
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Щоб керувати іншими дозволами Android для цього додатка, виберіть \"Налаштування &gt; Додатки\""</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Переглянути політику конфіденційності"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Доступ отримано протягом останніх 24 годин"</string>
-    <!-- no translation found for app_access_title (3790585897490185758) -->
-    <skip />
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_title (8792819254447116237) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_one_app (768339383233748811) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_two_apps (4668329081257129504) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_three_apps (1864809568089917658) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_message_many_apps (9068677028598069251) -->
-    <skip />
-    <!-- no translation found for denied_apps_banner_button (2185333719667993637) -->
-    <skip />
-    <!-- no translation found for denied_apps_dialog_title (4153321577696518871) -->
-    <skip />
-    <!-- no translation found for denied_apps_dialog_message (8093442625336147649) -->
-    <skip />
-    <!-- no translation found for denied_apps_dialog_got_it_button (5655570219176756282) -->
-    <skip />
+    <string name="app_access_title" msgid="3790585897490185758">"Доступ додатка"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Наразі у вас не встановлено сумісних додатків"</string>
+    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Вилучені дозволи для додатків"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Сервіс Health Connect вилучив дозволи для додатка <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Сервіс Health Connect вилучив дозволи для додатків <xliff:g id="APP_DATA_0">%1$s</xliff:g> і <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Сервіс Health Connect вилучив дозволи для додатків <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> і <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Сервіс Health Connect вилучив дозволи для додатків <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> та інших"</string>
+    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Докладніше"</string>
+    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Чому сервіс Health Connect вилучає дозволи для додатків"</string>
+    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Якщо певний додаток заблоковано або вилучено з Google Play, сервіс Health Connect автоматично видаляє його дозволи.\n\nЦе означає, що такий додаток більше не має доступу до даних, які зберігаються в Health Connect. Якщо він раніше записував дані, то з’явиться в списку неактивних додатків."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"OK"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Початок роботи з Health Connect"</string>
     <string name="onboarding_description" msgid="4152058007461960500">"Сервіс Health Connect зберігає ваші дані про здоров’я та фізичну активність, а також дає змогу легко синхронізувати їх із різними додатками на вашому телефоні"</string>
     <string name="share_data" msgid="3461840023402996573">"Діліться даними з додатками"</string>
@@ -385,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"Негативний"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"Високий результат"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"Непереконливий результат"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 мс}one{# мс}few{# мс}many{# мс}other{# мс}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 мілісекунда}one{# мілісекунда}few{# мілісекунди}many{# мілісекунд}other{# мілісекунди}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 повтор}one{# повтор}few{# повтори}many{# повторів}other{# повтору}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 повтор}one{# повтор}few{# повтори}many{# повторів}other{# повтору}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"Сегменти тренування"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"Кола"</string>
+    <string name="back_extension" msgid="326104514905344192">"Розтягування спини"</string>
+    <string name="badminton" msgid="2562532899799962005">"Бадмінтон"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Жим штанги від плечей"</string>
+    <string name="baseball" msgid="8308566726381464543">"Бейсбол"</string>
+    <string name="basketball" msgid="8952312917860615262">"Баскетбол"</string>
+    <string name="bench_press" msgid="5781962507448903312">"Жим лежачи"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"Качання пресу на лавці"</string>
+    <string name="biking" msgid="4436876005109385438">"Велоспорт"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"Заняття на велотренажері"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"Тренувальний табір"</string>
+    <string name="boxing" msgid="8018825707590126764">"Бокс"</string>
+    <string name="burpee" msgid="77304431317253801">"Бурпі"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"Ритмічна гімнастика"</string>
+    <string name="cricket" msgid="7003031758224774290">"Крикет"</string>
+    <string name="crunch" msgid="6261544415692173664">"Скручування"</string>
+    <string name="dancing" msgid="3316423624850569070">"Танці"</string>
+    <string name="deadlift" msgid="8557909109378777398">"Станова тяга"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Згинання лівої руки з гантеллю"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Згинання правої руки з гантеллю"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Підйом гантелей перед собою"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Розведення гантелей у сторони"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Розгинання трицепса з гантеллю в лівій руці"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Розгинання трицепса з гантеллю в правій руці"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Розгинання трицепса з гантелями у двох руках"</string>
+    <string name="elliptical" msgid="1139910728613357994">"Еліптичний тренажер"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"Тренування з вправами"</string>
+    <string name="fencing" msgid="3959720630233223214">"Фехтування"</string>
+    <string name="football_american" msgid="7298781679747969920">"Американський футбол"</string>
+    <string name="football_australian" msgid="7870317627446699678">"Австралійський футбол"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"Скручування вперед"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"Фризбі"</string>
+    <string name="golf" msgid="4510958024908277043">"Гольф"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"Ритмічне дихання"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"Гімнастика"</string>
+    <string name="handball" msgid="6228534119454993609">"Гандбол"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Інтенсивне інтервальне тренування"</string>
+    <string name="hiking" msgid="6287881189679031692">"Туризм"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"Хокей"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"Катання на ковзанах на льоду"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"Стрибки з розведенням рук і ніг"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"Скакалка"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"Тяга згори із заведенням рук позаду себе"</string>
+    <string name="lunge" msgid="6863772146202006880">"Випади"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"Бойові мистецтва"</string>
+    <string name="meditation" msgid="4849671344539060840">"Медитація"</string>
+    <string name="paddling" msgid="4330237681577599226">"Байдарки"</string>
+    <string name="paragliding" msgid="7806835513093567376">"Парапланеризм"</string>
+    <string name="pilates" msgid="4370654527595128790">"Пілатес"</string>
+    <string name="plank" msgid="4231877980175820684">"Планка"</string>
+    <string name="racquetball" msgid="182093198971401585">"Ракетбол"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"Скелелазіння"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"Хокей на роликових ковзанах"</string>
+    <string name="rowing" msgid="7445636351111465609">"Веслування"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"Заняття на тренажері з веслування"</string>
+    <string name="rugby" msgid="1646920222855841135">"Регбі"</string>
+    <string name="running" msgid="6378365874547681747">"Біг"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"Біг на біговій доріжці"</string>
+    <string name="sailing" msgid="5305484742008364839">"Вітрильний спорт"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"Пірнання з аквалангом"</string>
+    <string name="skating" msgid="7202960228551709866">"Катання на ковзанах"</string>
+    <string name="skiing" msgid="6959504815950834221">"Лижний спорт"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"Сноубординг"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"Ходьба на снігоступах"</string>
+    <string name="soccer" msgid="7373749155786409639">"Футбол"</string>
+    <string name="softball" msgid="931823677533458803">"Софтбол"</string>
+    <string name="squash" msgid="3671853878596020550">"Сквош"</string>
+    <string name="squat" msgid="2624881515323904278">"Присідання"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"Підйом сходами"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"Сходовий тренажер"</string>
+    <string name="strength_training" msgid="4720460550476191439">"Силові вправи"</string>
+    <string name="stretching" msgid="934444878305334284">"Розтягування"</string>
+    <string name="surfing" msgid="9101307462491417943">"Серфінг"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"Плавання у відкритих водоймах"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"Плавання в басейні"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"Настільний теніс"</string>
+    <string name="tennis" msgid="385785070472019118">"Теніс"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"Скручування на верхню частину пресу"</string>
+    <string name="volleyball" msgid="7995390960159762289">"Волейбол"</string>
+    <string name="walking" msgid="3758898602213892784">"Ходьба"</string>
+    <string name="water_polo" msgid="2335613325858558397">"Водне поло"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"Важка атлетика"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"Їзда на інвалідному візку"</string>
+    <string name="workout" msgid="8816526215639000463">"Тренування"</string>
+    <string name="yoga" msgid="8350954009879701169">"Йога"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"Австралійський футбол"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> сну"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"активності"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"сну"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"перебування не в ліжку"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"сну у швидкій фазі"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"неглибокого сну"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"глибокого сну"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"невідомого стану"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> хв"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> год <xliff:g id="MIN">%2$s</xliff:g> хв"</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> год"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 година}one{# година}few{# години}many{# годин}other{# години}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 хвилина}one{# хвилина}few{# хвилини}many{# хвилин}other{# хвилини}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 мл/(кг·хв)}one{# мл/(кг·хв)}few{# мл/(кг·хв)}many{# мл/(кг·хв)}other{# мл/(кг·хв)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 мілілітр кисню на кілограм маси тіла за хвилину}one{# мілілітр кисню на кілограм маси тіла за хвилину}few{# мілілітри кисню на кілограм маси тіла за хвилину}many{# мілілітрів кисню на кілограм маси тіла за хвилину}other{# мілілітра кисню на кілограм маси тіла за хвилину}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Метаболічний кошик"</string>
@@ -539,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Градуси Цельсія"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Градуси Фаренгейта"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Градуси Кельвіна"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"Не бачите всі свої додатки?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"Довідка й відгуки"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Якщо ви не бачите встановлений додаток, можливо, він поки що не сумісний із Health Connect"</string>
     <string name="things_to_try" msgid="5007292603680871491">"Варто спробувати"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"Перевірити наявність оновлень"</string>
@@ -579,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Пошук додатків"</string>
     <string name="no_results" msgid="4935646951230345730">"Результатів немає"</string>
     <string name="help" msgid="6096599033945360524">"Довідка"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до маршруту тренування в Health Connect?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Цей додаток зможе зчитувати дані про ваше попереднє місцезнаходження на маршруті"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

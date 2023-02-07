@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"No hi ha dades"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"Permisos d\'aplicacions"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Gestiona les aplicacions i els permisos"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplicacions tenen accés"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicacions tenen accés"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicació té accés"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Cap"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"Detalls de l\'entrada"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"Accés recent"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"Cap aplicació ha accedit a Salut connectada recentment"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Consulta tots els accessos recents"</string>
@@ -80,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Ruta d\'exercici"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"ruta d\'exercici"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Escriu la ruta d\'exercici"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Llegeix la ruta d\'exercici"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"Distància"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"distància"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"Llegir la distància"</string>
@@ -224,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"freqüència cardíaca en repòs"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Llegir la freqüència cardíaca en repòs"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Escriure la freqüència cardíaca en repòs"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Pot llegir des de Salut connectada"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Pot escriure a Salut connectada"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"Permet que <xliff:g id="APP_NAME">%1$s</xliff:g> llegeixi"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"Permet que <xliff:g id="APP_NAME">%1$s</xliff:g> escrigui"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"Cancel·la"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"Permet"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"Permet-ho tot"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"No permetis"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Tria les dades que vols que aquesta aplicació pugui llegir o escriure a Salut connectada"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Si li dones accés de lectura, aquesta aplicació pot llegir les dades noves i les dels 30 darrers dies"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"Vols permetre que <xliff:g id="APP_NAME">%1$s</xliff:g> accedeixi a Salut connectada?"</string>
@@ -247,7 +254,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Accés no permès"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Configuració i ajuda"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Suprimeix l\'accés a totes les apps"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"No pots veure totes les teves apps?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"Amb permís de lectura"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"Amb permís d\'escriptura"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"Cap aplicació amb permís"</string>
@@ -266,8 +272,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Llegeix la política de privadesa"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"S\'hi ha accedit durant les 24 darreres hores"</string>
     <string name="app_access_title" msgid="3790585897490185758">"Accés de l\'aplicació"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Actualment no tens cap aplicació compatible instal·lada"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"Aplicacions amb permisos suprimits"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g> i <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -365,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"Negativa"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"Alta"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"No concloent"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 ms}other{# ms}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 mil·lisegon}other{# mil·lisegons}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 rep}other{# rep}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 repetició}other{# repeticions}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"Sessions d\'exercici"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"Llargs"</string>
+    <string name="back_extension" msgid="326104514905344192">"Hiperextensió"</string>
+    <string name="badminton" msgid="2562532899799962005">"Bàdminton"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Pressió rere clatell amb halters"</string>
+    <string name="baseball" msgid="8308566726381464543">"Beisbol"</string>
+    <string name="basketball" msgid="8952312917860615262">"Bàsquet"</string>
+    <string name="bench_press" msgid="5781962507448903312">"Pressió sobre banc"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"Rull de tronc sobre banc"</string>
+    <string name="biking" msgid="4436876005109385438">"Bicicleta"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"Bicicleta estàtica"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"Camp d\'entrenament"</string>
+    <string name="boxing" msgid="8018825707590126764">"Boxa"</string>
+    <string name="burpee" msgid="77304431317253801">"Burpee"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"Cal·listènia"</string>
+    <string name="cricket" msgid="7003031758224774290">"Criquet"</string>
+    <string name="crunch" msgid="6261544415692173664">"Abdominal"</string>
+    <string name="dancing" msgid="3316423624850569070">"Dansa"</string>
+    <string name="deadlift" msgid="8557909109378777398">"Pes mort"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Rull de bíceps amb manuella (braç esquerre)"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Rull de bíceps amb manuella (braç dret)"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Elevació frontal d\'espatlla amb manuella"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Elevació lateral d\'espatlla amb manuella"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Extensió de tríceps amb manuella (braç esquerre)"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Extensió de tríceps amb manuella (braç dret)"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Extensió de tríceps amb manuella (tots dos braços)"</string>
+    <string name="elliptical" msgid="1139910728613357994">"Bicicleta el·líptica"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"Classe d\'exercici"</string>
+    <string name="fencing" msgid="3959720630233223214">"Esgrima"</string>
+    <string name="football_american" msgid="7298781679747969920">"Futbol americà"</string>
+    <string name="football_australian" msgid="7870317627446699678">"Futbol australià"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"Gir cap endavant"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"Disc volador"</string>
+    <string name="golf" msgid="4510958024908277043">"Golf"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"Respiració guiada"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"Gimnàstica"</string>
+    <string name="handball" msgid="6228534119454993609">"Handbol"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Entrenament per intervals intensiu"</string>
+    <string name="hiking" msgid="6287881189679031692">"Excursionisme"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"Hoquei sobre gel"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"Patinatge sobre gel"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"Salt amb obertura de braços i cames"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"Salt a la corda"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"Tracció de politja alta"</string>
+    <string name="lunge" msgid="6863772146202006880">"Fons"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"Arts marcials"</string>
+    <string name="meditation" msgid="4849671344539060840">"Meditació"</string>
+    <string name="paddling" msgid="4330237681577599226">"Paleig"</string>
+    <string name="paragliding" msgid="7806835513093567376">"Parapent"</string>
+    <string name="pilates" msgid="4370654527595128790">"Pilates"</string>
+    <string name="plank" msgid="4231877980175820684">"Planxa"</string>
+    <string name="racquetball" msgid="182093198971401585">"Raquetbol"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"Escalada en roca"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"Hoquei sobre patins"</string>
+    <string name="rowing" msgid="7445636351111465609">"Rem"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"Rem articulat"</string>
+    <string name="rugby" msgid="1646920222855841135">"Rugbi"</string>
+    <string name="running" msgid="6378365874547681747">"Córrer"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"Córrer sobre cinta"</string>
+    <string name="sailing" msgid="5305484742008364839">"Navegació a vela"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"Submarinisme"</string>
+    <string name="skating" msgid="7202960228551709866">"Patinatge"</string>
+    <string name="skiing" msgid="6959504815950834221">"Esquí"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"Surf de neu"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"Raquetes de neu"</string>
+    <string name="soccer" msgid="7373749155786409639">"Futbol"</string>
+    <string name="softball" msgid="931823677533458803">"Softbol"</string>
+    <string name="squash" msgid="3671853878596020550">"Esquaix"</string>
+    <string name="squat" msgid="2624881515323904278">"Esquat"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"Pujar escales"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"Màquina de pujar escales"</string>
+    <string name="strength_training" msgid="4720460550476191439">"Entrenament de força"</string>
+    <string name="stretching" msgid="934444878305334284">"Estiraments"</string>
+    <string name="surfing" msgid="9101307462491417943">"Surf"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"Natació en aigües obertes"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"Natació en piscina"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"Tennis de taula"</string>
+    <string name="tennis" msgid="385785070472019118">"Tennis"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"Gir de la part superior"</string>
+    <string name="volleyball" msgid="7995390960159762289">"Voleibol"</string>
+    <string name="walking" msgid="3758898602213892784">"Caminar"</string>
+    <string name="water_polo" msgid="2335613325858558397">"Waterpolo"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"Halterofília"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"Cadira de rodes"</string>
+    <string name="workout" msgid="8816526215639000463">"Entrenament"</string>
+    <string name="yoga" msgid="8350954009879701169">"Ioga"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"Futbol australià"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> dormint"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"despert"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"dormint"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"fora del llit"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"de son REM"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"de son lleuger"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"de son profund"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"desconegut"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 hora}other{# hores}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 minut}other{# minuts}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·min)}other{# mL/(kg·min)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 mil·lilitre d\'oxigen per quilogram de massa corporal per minut}other{# mil·lilitres d\'oxigen per quilogram de massa corporal per minut}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Carro metabòlic"</string>
@@ -519,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celsius"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"No pots veure totes les teves aplicacions?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"Ajuda i suggeriments"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Si no trobes una aplicació instal·lada, és possible que encara no sigui compatible amb Salut connectada"</string>
     <string name="things_to_try" msgid="5007292603680871491">"Coses que pots provar"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"Cerca actualitzacions"</string>
@@ -559,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Cerca aplicacions"</string>
     <string name="no_results" msgid="4935646951230345730">"Cap resultat"</string>
     <string name="help" msgid="6096599033945360524">"Ajuda"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"Vols permetre que <xliff:g id="APP_NAME">%1$s</xliff:g> accedeixi a aquesta ruta d\'exercici a Salut connectada?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Aquesta aplicació podrà llegir la teva ubicació passada a la ruta"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"कोई डेटा उपलब्ध नहीं है"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"ऐप्लिकेशन अनुमतियां"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"डिवाइस पर मौजूद ऐप्लिकेशन और उन्हें दी गई अनुमतियां मैनेज करें"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ऐप्लिकेशन में से <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> के पास ऐक्सेस है"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ऐप्लिकेशन के पास ऐक्सेस है"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ऐप्लिकेशन के पास ऐक्सेस है"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"कोई नहीं"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"एंट्री के बारे में जानकारी"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"हाल ही में, डेटा ऐक्सेस करने वाले ऐप्लिकेशन"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"हाल ही में, किसी भी ऐप्लिकेशन ने Health Connect का इस्तेमाल नहीं किया"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"हाल में डेटा ऐक्सेस करने वाले सभी ऐप्लिकेशन देखें"</string>
@@ -80,6 +85,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"कसरत का रूट"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"कसरत का रूट"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"कसरत का रूट बनाएं"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"कसरत का रूट पढ़ें"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"दूरी का डेटा"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"दूरी का डेटा"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"तय की गई दूरी का डेटा पढ़ने की अनुमति दें"</string>
@@ -224,11 +230,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"आराम करते समय धड़कन की दर का डेटा"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"आराम करते समय धड़कन की दर का डेटा पढ़ने की अनुमति दें"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"आराम करते समय धड़कन की दर का डेटा सेव करने की अनुमति दें"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect का डेटा पढ़ने की अनुमति है"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Health Connect का डेटा सेव करने की अनुमति है"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” को डेटा पढ़ने की अनुमति दें"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” को डेटा में बदलाव करने की अनुमति दें"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"रद्द करें"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"अनुमति दें"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"सभी को अनुमति दें"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"अनुमति न दें"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"चुनें कि इस ऐप्लिकेशन को, Health Connect में मौजूद कौनसा डेटा पढ़ने या सेव करने की अनुमति देनी है"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"अगर आपने इस ऐप्लिकेशन को पढ़ने का ऐक्सेस दिया है, तो यह नया और पिछले 30 दिनों का डेटा पढ़ सकता है"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"क्या आपको <xliff:g id="APP_NAME">%1$s</xliff:g> को Health Connect का डेटा ऐक्सेस करने की अनुमति देनी है?"</string>
@@ -247,7 +254,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"ऐक्सेस की अनुमति नहीं है"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"सेटिंग और सहायता"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"सभी ऐप्लिकेशन के लिए ऐक्सेस हटाएं"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"क्या सभी ऐप्लिकेशन नहीं दिख रहे हैं?"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"यह जानकारी पढ़ने की अनुमति है"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"यह जानकारी सेव करने की अनुमति है"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"किसी भी ऐप्लिकेशन को अनुमति नहीं है"</string>
@@ -266,8 +272,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ऐप्लिकेशन की निजता नीति पढ़ें"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"पिछले 24 घंटे में ऐक्सेस किया गया"</string>
     <string name="app_access_title" msgid="3790585897490185758">"ऐप्लिकेशन को दिया गया ऐक्सेस"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"आपके डिवाइस में फ़िलहाल कोई ऐसा ऐप्लिकेशन इंस्टॉल नहीं है जो Health Connect के साथ काम करता हो"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"ऐप्लिकेशन को मिली अनुमतियां हटा दी गई हैं"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect ने <xliff:g id="APP_DATA">%s</xliff:g> को मिली अनुमतियां हटा दी हैं"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect ने <xliff:g id="APP_DATA_0">%1$s</xliff:g> और <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> को मिली अनुमतियां हटा दी हैं"</string>
@@ -365,6 +370,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"नेगेटिव"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"ज़्यादा"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"कोई ठोस नतीजा नहीं निकला"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 मि॰से॰}one{# मि॰से॰}other{# मि॰से॰}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 मिलीसेकंड}one{# मिलीसेकंड}other{# मिलीसेकंड}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 सेट}one{# सेट}other{# सेट}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 सेट}one{# सेट}other{# सेट}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"कसरत के सेगमेंट"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"लैप"</string>
+    <string name="back_extension" msgid="326104514905344192">"बैक एक्सटेंशन"</string>
+    <string name="badminton" msgid="2562532899799962005">"बैडमिंटन"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"बारबेल शोल्डर प्रेस"</string>
+    <string name="baseball" msgid="8308566726381464543">"बेसबॉल"</string>
+    <string name="basketball" msgid="8952312917860615262">"बास्केटबॉल"</string>
+    <string name="bench_press" msgid="5781962507448903312">"बेंच प्रेस"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"बेंच सिट अप"</string>
+    <string name="biking" msgid="4436876005109385438">"बाइकिंग"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"बाइकिंग स्टेशनरी"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"बूट कैंप"</string>
+    <string name="boxing" msgid="8018825707590126764">"मुक्केबाज़ी"</string>
+    <string name="burpee" msgid="77304431317253801">"बर्पी"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"कैलिस्थेनिक्स"</string>
+    <string name="cricket" msgid="7003031758224774290">"क्रिकेट"</string>
+    <string name="crunch" msgid="6261544415692173664">"क्रंच"</string>
+    <string name="dancing" msgid="3316423624850569070">"डांसिंग"</string>
+    <string name="deadlift" msgid="8557909109378777398">"डेडलिफ़्ट"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"लेफ़्ट आर्म डंबल कर्ल"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"राइट आर्म डंबल कर्ल"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"डंबल फ़्रंट रेज़ (डंबल को सामने से उठाना)"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"डंबल लेटरल रेज़ (डंबल को दोनों साइड से उठाना)"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"लेफ़्ट आर्म डंबल ट्राइसेप्स एक्सटेंशन"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"राइट आर्म डंबल ट्राइसेप्स एक्सटेंशन"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"टू आर्म डंबल ट्राइसेप्स एक्सटेंशन"</string>
+    <string name="elliptical" msgid="1139910728613357994">"एलिप्टिकल डांस"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"कसरत की क्लास"</string>
+    <string name="fencing" msgid="3959720630233223214">"तलवारबाज़ी"</string>
+    <string name="football_american" msgid="7298781679747969920">"अमेरिकन फ़ुटबॉल"</string>
+    <string name="football_australian" msgid="7870317627446699678">"ऑस्ट्रेलियन फ़ुटबॉल"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"फ़ॉरवर्ड ट्विस्ट"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"फ़्रिज़्बी"</string>
+    <string name="golf" msgid="4510958024908277043">"गॉल्फ़"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"प्राणायाम"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"जिमनास्टिक"</string>
+    <string name="handball" msgid="6228534119454993609">"हैंडबॉल"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"कम-ज़्यादा रफ़्तार में लगातार कसरत करना"</string>
+    <string name="hiking" msgid="6287881189679031692">"हाइकिंग"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"आइस हॉकी"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"आइस स्केटिंग"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"जंपिंग जैक"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"रस्सी कूदना"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"लैट पुलडाउन"</string>
+    <string name="lunge" msgid="6863772146202006880">"लंज"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"मार्शल आर्ट"</string>
+    <string name="meditation" msgid="4849671344539060840">"ध्यान लगाना (मेडिटेशन)"</string>
+    <string name="paddling" msgid="4330237681577599226">"पैडलिंग"</string>
+    <string name="paragliding" msgid="7806835513093567376">"पैराग्लाइडिंग"</string>
+    <string name="pilates" msgid="4370654527595128790">"पिलाटीज़"</string>
+    <string name="plank" msgid="4231877980175820684">"प्लैंक"</string>
+    <string name="racquetball" msgid="182093198971401585">"रैकेटबॉल"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"रॉक क्लाइंबिंग (पहाड़ पर चढ़ना)"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"रोलर हॉकी"</string>
+    <string name="rowing" msgid="7445636351111465609">"रोइंग"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"रोइंग मशीन"</string>
+    <string name="rugby" msgid="1646920222855841135">"रग्बी"</string>
+    <string name="running" msgid="6378365874547681747">"दौड़ना"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"ट्रेडमिल पर दौड़ना"</string>
+    <string name="sailing" msgid="5305484742008364839">"सेलिंग (नाव चलाना)"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"स्कूबा डाइविंग"</string>
+    <string name="skating" msgid="7202960228551709866">"स्केटिंग"</string>
+    <string name="skiing" msgid="6959504815950834221">"स्कीइंग"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"स्नोबोर्डिंग"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"स्नोशूइंग"</string>
+    <string name="soccer" msgid="7373749155786409639">"सॉकर"</string>
+    <string name="softball" msgid="931823677533458803">"सॉफ़्टबॉल"</string>
+    <string name="squash" msgid="3671853878596020550">"स्क्वॉश"</string>
+    <string name="squat" msgid="2624881515323904278">"स्क्वाट"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"स्टेयर क्लाइंबिंग (सीढ़ी चढ़ना)"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"मशीन पर स्टेयर क्लाइंबिंग"</string>
+    <string name="strength_training" msgid="4720460550476191439">"शरीर को मज़बूत बनाने वाली कसरत"</string>
+    <string name="stretching" msgid="934444878305334284">"स्ट्रेचिंग"</string>
+    <string name="surfing" msgid="9101307462491417943">"सर्फ़िंग (सर्फ़ करना)"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"ओपन वॉटर स्विमिंग"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"पूल स्विमिंग"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"टेबल टेनिस"</string>
+    <string name="tennis" msgid="385785070472019118">"टेनिस"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"अपर ट्विस्ट"</string>
+    <string name="volleyball" msgid="7995390960159762289">"वॉलीबॉल"</string>
+    <string name="walking" msgid="3758898602213892784">"पैदल चलना"</string>
+    <string name="water_polo" msgid="2335613325858558397">"वॉटर पोलो"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"वेटलिफ़्टिंग (वज़न उठाना)"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"व्हीलचेयर"</string>
+    <string name="workout" msgid="8816526215639000463">"कसरत"</string>
+    <string name="yoga" msgid="8350954009879701169">"योग"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"ऑस्ट्रेलियन फ़ुटबॉल"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> की नींद"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"जागना"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"सोना"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"बिस्तर में न होना"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"नींद के दौरान आरईएम (रैपिड आई मूवमेंट)"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"हल्की नींद"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"गहरी नींद"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"कोई जानकारी नहीं"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> मिनट"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> घंटे <xliff:g id="MIN">%2$s</xliff:g> मिनट"</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> घंटा"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 घंटा}one{# घंटा}other{# घंटे}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 मिनट}one{# मिनट}other{# मिनट}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 मि॰ली॰/(कि॰ग्रा॰ प्रति मिनट)}one{# मि॰ली॰/(कि॰ग्रा॰ प्रति मिनट)}other{# मि॰ली॰/(कि॰ग्रा॰ प्रति मिनट)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{शरीर के एक किलोग्राम वज़न के लिए, एक मिनट में 1 मिलीलीटर ऑक्सीजन}one{शरीर के एक किलोग्राम वज़न के लिए, एक मिनट में # मिलीलीटर ऑक्सीजन}other{शरीर के एक किलोग्राम वज़न के लिए, एक मिनट में # मिलीलीटर ऑक्सीजन}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"मेटाबॉलिक कार्ट"</string>
@@ -519,7 +630,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"सेल्सियस"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"फ़ैरनहाइट"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"केल्विन"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"क्या आपको सभी ऐप्लिकेशन नहीं दिख रहे हैं?"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"सहायता पाएं और सुझाव/राय दें या शिकायत करें"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"अगर आपको इंस्टॉल किया गया कोई ऐप्लिकेशन नहीं दिख रहा है, तो हो सकता है कि वह अब तक Health Connect के साथ काम न करता हो"</string>
     <string name="things_to_try" msgid="5007292603680871491">"इन तरीकों को आज़माएं"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"अपडेट देखें"</string>
@@ -559,4 +670,8 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"ऐप्लिकेशन खोजें"</string>
     <string name="no_results" msgid="4935646951230345730">"कोई नतीजा नहीं मिला"</string>
     <string name="help" msgid="6096599033945360524">"सहायता पाएं"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"क्या <xliff:g id="APP_NAME">%1$s</xliff:g> को Health Connect के इस रूट में कसरत के लिए ऐक्सेस देना है?"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"यह ऐप्लिकेशन इस रूट में आपकी पिछली जगह की जानकारी देख सकता है"</string>
+    <!-- no translation found for loading (5416387523241743987) -->
+    <skip />
 </resources>

@@ -26,6 +26,11 @@
     <string name="no_data" msgid="1120552294863595549">"ဒေတာမရှိပါ"</string>
     <string name="connected_apps_title" msgid="5235697695812028208">"အက်ပ်ခွင့်ပြုချက်များ"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"သင့်အက်ပ်နှင့် ခွင့်ပြုချက်များကို စီမံရန်"</string>
+    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"အက်ပ် <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ခုအနက် <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ခုတွင် သုံးခွင့်ရှိသည်"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"အက်ပ် <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ခုတွင် သုံးခွင့်ရှိသည်"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"အက်ပ် <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ခုတွင် သုံးခွင့်ရှိသည်"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"မရှိ"</string>
+    <string name="entry_details_title" msgid="3958841079093678765">"ထည့်သွင်းမှု အသေးစိတ်"</string>
     <string name="recent_access_header" msgid="4949473550741167743">"မကြာသေးမီက သုံးခွင့်"</string>
     <string name="no_recent_access" msgid="3009259344780866440">"မည်သည်အက်ပ်မျှ Health Connect ကို မကြာသေးမီကသုံးမထားပါ"</string>
     <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"မကြာသေးမီက သုံးခွင့်အားလုံး ကြည့်ရန်"</string>
@@ -84,6 +89,7 @@
     <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"လေ့ကျင့်ခန်း လမ်းကြောင်း"</string>
     <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"လေ့ကျင့်ခန်း လမ်းကြောင်း"</string>
     <string name="exercise_route_write_content_description" msgid="7016655366757116506">"လေ့ကျင့်ခန်းလမ်းကြောင်း ရေးရန်"</string>
+    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"လေ့ကျင့်ခန်း ပုံမှန်အစီအစဉ် ဖတ်ရန်"</string>
     <string name="distance_uppercase_label" msgid="1633540262436199877">"အကွာအဝေး"</string>
     <string name="distance_lowercase_label" msgid="1195850163151685303">"အကွာအဝေး"</string>
     <string name="distance_read_content_description" msgid="118912330039126690">"အကွာအဝေးကို ဖတ်ရန်"</string>
@@ -228,11 +234,12 @@
     <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"နားနေချိန် နှလုံးခုန်နှုန်း"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"နားနေချိန် နှလုံးခုန်နှုန်းကို ဖတ်ရန်"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"နားနေချိန် နှလုံးခုန်နှုန်းကို ရေးရန်"</string>
-    <string name="read_permission_category" msgid="2175522028919441420">"Health Connect မှတစ်ဆင့် ဖတ်နိုင်သည်"</string>
-    <string name="write_permission_category" msgid="327087996054037374">"Health Connect တွင် ရေးနိုင်သည်"</string>
+    <string name="read_permission_category" msgid="9043802108788434232">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ကို ဖတ်ခွင့်ပြုခြင်း"</string>
+    <string name="write_permission_category" msgid="6467076880418458053">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ကို ရေးခွင့်ပြုခြင်း"</string>
     <string name="request_permissions_cancel" msgid="7082122080520578200">"မလုပ်တော့"</string>
     <string name="request_permissions_allow" msgid="2431904725832574525">"ခွင့်ပြုရန်"</string>
     <string name="request_permissions_allow_all" msgid="2244683574167733806">"အားလုံး ခွင့်ပြုရန်"</string>
+    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"ခွင့်မပြုပါ"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Health Connect တွင် ဤအက်ပ်ကို ဖတ်စေ (သို့) ရေးထည့်စေလိုသော ဒေတာ ရွေးပါ"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"ဖတ်ခွင့်ပေးထားပါက ဤအက်ပ်သည် ဒေတာအသစ်နှင့် ပြီးခဲ့သော ရက် ၃၀ မှ ဒေတာများကို ဖတ်နိုင်သည်"</string>
     <string name="request_permissions_header_title" msgid="547885377986067898">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို Health Connect သုံးခွင့်ပေးမလား။"</string>
@@ -251,7 +258,6 @@
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"သုံးခွင့်မပေးထားသည်များ"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"ဆက်တင်များနှင့် အကူအညီ"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"အက်ပ်အားလုံးအတွက် သုံးခွင့် ဖယ်ရှားရန်"</string>
-    <string name="cant_see_all_your_apps_button" msgid="8212282545090701851">"အက်ပ်အားလုံးကို မမြင်ရဘူးလား။"</string>
     <string name="manage_permissions_read_header" msgid="7625997211374656400">"ဖတ်ခွင့်ပေးထားသည်များ"</string>
     <string name="manage_permissions_write_header" msgid="1730061424579902303">"ရေးခွင့်ပေးထားသည်များ"</string>
     <string name="no_apps_allowed" msgid="1006840024939920418">"ခွင့်ပြုထားသည့် အက်ပ်မရှိပါ"</string>
@@ -270,8 +276,7 @@
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒကို ဖတ်ရန်"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"ပြီးခဲ့သော ၂၄ နာရီအတွင်း သုံးထားသည်"</string>
     <string name="app_access_title" msgid="3790585897490185758">"အက်ပ်သုံးခွင့်"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (632395777233852573) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"တွဲသုံးနိုင်သော အက်ပ်များကို လောလောဆယ် ထည့်သွင်းမထားပါ"</string>
     <string name="denied_apps_banner_title" msgid="8792819254447116237">"ဖယ်ရှားထားသည့် အက်ပ်ခွင့်ပြုချက်များ"</string>
     <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect က <xliff:g id="APP_DATA">%s</xliff:g> အတွက် ခွင့်ပြုချက်များကို ဖယ်ရှားလိုက်သည်"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect က <xliff:g id="APP_DATA_0">%1$s</xliff:g> နှင့် <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> အတွက် ခွင့်ပြုချက်များကို ဖယ်ရှားလိုက်သည်"</string>
@@ -369,6 +374,112 @@
     <string name="ovulation_negative" msgid="132669521951412311">"မရှိပါ"</string>
     <string name="ovulation_high" msgid="2591492801425787141">"များ"</string>
     <string name="ovulation_inconclusive" msgid="1005696731815082564">"မရေရာ"</string>
+    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{၁ ms}other{# ms}}"</string>
+    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{၁ မီလီစက္ကန့်}other{# မီလီစက္ကန့်}}"</string>
+    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{၁ ကျော့}other{# ကျော့}}"</string>
+    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{၁ ကျော့}other{# ကျော့}}"</string>
+    <string name="exercise_segments_header" msgid="5764001270423151097">"လေ့ကျင့်ခန်း ကဏ္ဍများ"</string>
+    <string name="exercise_laps_header" msgid="3528739404869273165">"အပတ်ရေများ"</string>
+    <string name="back_extension" msgid="326104514905344192">"နောက်ကျောကြွက်သား ဆန့်ခြင်း"</string>
+    <string name="badminton" msgid="2562532899799962005">"ကြက်တောင်"</string>
+    <string name="barbell_shoulder_press" msgid="4790926710785260252">"ဘားရှည် ပခုံးပေါ်တင်မခြင်း"</string>
+    <string name="baseball" msgid="8308566726381464543">"ဘေ့စ်ဘော"</string>
+    <string name="basketball" msgid="8952312917860615262">"ဘတ်စကက်ဘော"</string>
+    <string name="bench_press" msgid="5781962507448903312">"အလေးတွန်းခြင်း"</string>
+    <string name="bench_sit_up" msgid="6629466233057360533">"အိပ်ထမတင်လုပ်ခြင်း"</string>
+    <string name="biking" msgid="4436876005109385438">"စက်ဘီးစီးခြင်း"</string>
+    <string name="biking_stationary" msgid="1564133322415860603">"စက်ဖြင့်စက်ဘီးစီးခြင်း"</string>
+    <string name="boot_camp" msgid="4864496070666289077">"စခန်းသွင်း လေ့ကျင့်ရေးအစီအစဉ်"</string>
+    <string name="boxing" msgid="8018825707590126764">"လက်ဝှေ့"</string>
+    <string name="burpee" msgid="77304431317253801">"ဘားပီး"</string>
+    <string name="calisthenics" msgid="4930331817019806695">"ကာလစ်တီးနစ်"</string>
+    <string name="cricket" msgid="7003031758224774290">"ခရစ်ကက်"</string>
+    <string name="crunch" msgid="6261544415692173664">"ဗိုက်ကြွက်သား လေ့ကျင့်ခန်း"</string>
+    <string name="dancing" msgid="3316423624850569070">"ကခြင်း"</string>
+    <string name="deadlift" msgid="8557909109378777398">"ခါးကိုင်း၍ အလေးဆွဲခြင်း"</string>
+    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"ဘယ်လက်မောင်းကွေး၍ အလေးမခြင်း"</string>
+    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"ညာလက်မောင်းကွေး၍ အလေးမခြင်း"</string>
+    <string name="dumbbell_front_raise" msgid="8920061770246990181">"ရှေ့ဘက်မြှောက် အလေးမခြင်း"</string>
+    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"ဘေးတိုက်မြှောက် အလေးမခြင်း"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"ဘယ်လက်မောင်းရင်း နောက်ကြွက်သားစိုင် ဆန့်ထုတ်ခြင်း"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"ညာလက်မောင်းရင်း နောက်ကြွက်သားစိုင် ဆန့်ထုတ်ခြင်း"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"လက်မောင်းရင်းနှစ်ဖက် နောက်ကြွက်သား ဆန့်ထုတ်ခြင်း"</string>
+    <string name="elliptical" msgid="1139910728613357994">"မတ်ရပ်စက်ဘီးနင်းခြင်း"</string>
+    <string name="exercise_class" msgid="3152950268488724949">"လေ့ကျင့်ခန်းသင်တန်း"</string>
+    <string name="fencing" msgid="3959720630233223214">"ဓားရေးယှဉ်ပြိုင်ခြင်း"</string>
+    <string name="football_american" msgid="7298781679747969920">"အမေရိကန် ဘောလုံး"</string>
+    <string name="football_australian" msgid="7870317627446699678">"ဩစတြေးလျ ဘောလုံး"</string>
+    <string name="forward_twist" msgid="8460027946504405340">"ရှေ့သို့ကိုင်း၍ လှည့်ခြင်း"</string>
+    <string name="frisbee_disc" msgid="5075847804492876983">"လေဝဲအဝိုင်းပြား ပစ်ကစားခြင်း"</string>
+    <string name="golf" msgid="4510958024908277043">"ဂေါက်ရိုက်ခြင်း"</string>
+    <string name="guided_breathing" msgid="372842925145421189">"လမ်းညွှန်ချက်ဖြင့် အသက်ရှူခြင်း"</string>
+    <string name="gymnastics" msgid="2805063199546018852">"ကျွမ်းဘား"</string>
+    <string name="handball" msgid="6228534119454993609">"လက်ပစ်ဘော"</string>
+    <string name="high_intensity_interval_training" msgid="9055322569169754042">"ပြင်းထန် လှည့်ပြောင်းလေ့ကျင့်ခန်း"</string>
+    <string name="hiking" msgid="6287881189679031692">"ခြေလျင်ခရီးထွက်ခြင်း"</string>
+    <string name="ice_hockey" msgid="4630546791512436505">"ရေခဲပြင် ဟော်ကီ"</string>
+    <string name="ice_skating" msgid="8542769978117565715">"ရေခဲပြင် စကိတ်စီးခြင်း"</string>
+    <string name="jumping_jack" msgid="2504446639312960395">"လက်မြှောက်ခုန်ခြင်း"</string>
+    <string name="jump_rope" msgid="8936923325000005704">"ကြိုးခုန်ခြင်း"</string>
+    <string name="lat_pull_down" msgid="364838811857721841">"ဘေးဆွဲချလေ့ကျင့်ခန်း"</string>
+    <string name="lunge" msgid="6863772146202006880">"ဒူးညွှတ်လေ့ကျင့်ခန်း"</string>
+    <string name="martial_arts" msgid="3845461867192236399">"ကိုယ်ခံပညာ"</string>
+    <string name="meditation" msgid="4849671344539060840">"တရားထိုင်ခြင်း"</string>
+    <string name="paddling" msgid="4330237681577599226">"လှေလှော်ခြင်း"</string>
+    <string name="paragliding" msgid="7806835513093567376">"လေထီးစီးခြင်း"</string>
+    <string name="pilates" msgid="4370654527595128790">"ပီလားတီးစ် လေ့ကျင့်ခန်း"</string>
+    <string name="plank" msgid="4231877980175820684">"မှောက်ထောက်လေ့ကျင့်ခန်း"</string>
+    <string name="racquetball" msgid="182093198971401585">"ရက်ကက်ဘောလုံး ကစားခြင်း"</string>
+    <string name="rock_climbing" msgid="3358436459734554807">"ကျောက်တောင်တက်ခြင်း"</string>
+    <string name="roller_hockey" msgid="6242808606213923201">"စကိတ်စီးဟော်ကီ"</string>
+    <string name="rowing" msgid="7445636351111465609">"လှေလှော်ခြင်း"</string>
+    <string name="rowing_machine" msgid="7220042462648107203">"လှေလှော်စက်"</string>
+    <string name="rugby" msgid="1646920222855841135">"ရတ္ဂ်ဘီ"</string>
+    <string name="running" msgid="6378365874547681747">"ပြေးခြင်း"</string>
+    <string name="running_treadmill" msgid="511612213911896573">"စက်ခါးပတ်ပေါ် ပြေးခြင်း"</string>
+    <string name="sailing" msgid="5305484742008364839">"ရွက်လွှင့်ခြင်း"</string>
+    <string name="scuba_diving" msgid="7362376101235225643">"အသက်ရှူကိရိယာဖြင့် ရေငုပ်ခြင်း"</string>
+    <string name="skating" msgid="7202960228551709866">"စကိတ်စီးခြင်း"</string>
+    <string name="skiing" msgid="6959504815950834221">"စကီးစီးခြင်း"</string>
+    <string name="snowboarding" msgid="7851044110983514020">"စနိုးဘုတ်စီးခြင်း"</string>
+    <string name="snowshoeing" msgid="89862694372427163">"စနိုးဖိနပ်စီးခြင်း"</string>
+    <string name="soccer" msgid="7373749155786409639">"ဘောလုံး"</string>
+    <string name="softball" msgid="931823677533458803">"ဆော့ဖ်ဘော"</string>
+    <string name="squash" msgid="3671853878596020550">"စကွပ်ရှ်တင်းနစ်"</string>
+    <string name="squat" msgid="2624881515323904278">"တစ်ဝက်ထိုင်ခြင်း"</string>
+    <string name="stair_climbing" msgid="5997490575691347448">"လှေကားထစ် တက်ခြင်း"</string>
+    <string name="stair_climbing_machine" msgid="337627408968910801">"လှေကားထစ် တက်စက်"</string>
+    <string name="strength_training" msgid="4720460550476191439">"ကြံ့ခိုင်မှု လေ့ကျင့်ခန်း"</string>
+    <string name="stretching" msgid="934444878305334284">"အကြောလျှော့ခြင်း"</string>
+    <string name="surfing" msgid="9101307462491417943">"လှိုင်းစီးခြင်း"</string>
+    <string name="swimming_open_water" msgid="2739793146160676225">"ရေကူးကန်ပြင်ပတွင် ကူးခြင်း"</string>
+    <string name="swimming_pool" msgid="4102482265686792256">"ရေကူးကန်တွင် ကူးခြင်း"</string>
+    <string name="table_tennis" msgid="2709280256456460422">"စားပွဲတင် တင်းနစ်"</string>
+    <string name="tennis" msgid="385785070472019118">"တင်းနစ်"</string>
+    <string name="upper_twist" msgid="4301453254991464653">"ခန္ဓာကိုယ်အပေါ်ပိုင်း လှည့်ခြင်း"</string>
+    <string name="volleyball" msgid="7995390960159762289">"ဘော်လီဘော"</string>
+    <string name="walking" msgid="3758898602213892784">"လမ်းလျှောက်ခြင်း"</string>
+    <string name="water_polo" msgid="2335613325858558397">"ဝါတာပိုလို"</string>
+    <string name="weightlifting" msgid="3048550335371204458">"အလေးမခြင်း"</string>
+    <string name="wheelchair" msgid="8943449324228813941">"ဘီးတပ်ကုလားထိုင်"</string>
+    <string name="workout" msgid="8816526215639000463">"လေ့ကျင့်ခန်း"</string>
+    <string name="yoga" msgid="8350954009879701169">"ယောဂ"</string>
+    <string name="activity_type_australian_football" msgid="6720684447096561188">"ဩစတြေးလျ ဘောလုံး"</string>
+    <string name="sleep_session_default" msgid="766743178056575120">"အိပ်ချိန် <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
+    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="5395946290328510164">"နိုးနေသည်"</string>
+    <string name="sleep_stage_sleeping" msgid="500845652611651071">"အိပ်နေသည်"</string>
+    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"အိပ်ရာတွင်မရှိပါ"</string>
+    <string name="sleep_stage_rem" msgid="3689511086544520391">"REM အိပ်ချိန်"</string>
+    <string name="sleep_stage_light" msgid="5625043123367019925">"မှေးနေချိန်"</string>
+    <string name="sleep_stage_deep" msgid="190758395367810380">"နှစ်နှစ်ခြိုက်ခြိုက်အိပ်ချိန်"</string>
+    <string name="sleep_stage_unknown" msgid="8435322199201626433">"မသိပါ"</string>
+    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g>m"</string>
+    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
+    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g>h"</string>
+    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{၁ နာရီ}other{# နာရီ}}"</string>
+    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{၁ မိနစ်}other{# မိနစ်}}"</string>
     <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{၁ mL/(kg·min)}other{# mL/(kg·min)}}"</string>
     <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{တစ်မိနစ်တွင် ကိုယ်အလေးချိန် တစ်ကီလိုဂရမ်လျှင် အောက်စီဂျင် ၁ မီလီလီတာ}other{တစ်မိနစ်တွင် ကိုယ်အလေးချိန် တစ်ကီလိုဂရမ်လျှင် အောက်စီဂျင် # မီလီလီတာ}}"</string>
     <string name="vo2_metabolic_cart" msgid="3831307270979534301">"ဇီဝတွင်းဖြစ်ပျက်မှုတိုင်းစက်"</string>
@@ -523,7 +634,7 @@
     <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"စင်တီဂရိတ်"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"ဖာရင်ဟိုက်"</string>
     <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"ကယ်ဗင်"</string>
-    <string name="cant_see_all_your_apps_title" msgid="6953092899620844922">"အက်ပ်အားလုံးကို မမြင်ရဘူးလား။"</string>
+    <string name="help_and_feedback" msgid="172484246164803271">"အကူအညီနှင့် အကြံပြုချက်"</string>
     <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"ထည့်သွင်းထားသောအက်ပ်ကို မတွေ့လျှင် ၎င်းသည် Health Connect နှင့် တွဲသုံး၍ မရနိုင်သေးပါ"</string>
     <string name="things_to_try" msgid="5007292603680871491">"စမ်းကြည့်စရာများ"</string>
     <string name="check_for_updates" msgid="8437406613751262779">"အပ်ဒိတ် ရှာရန်"</string>
@@ -563,4 +674,7 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"အက်ပ်များရှာပါ"</string>
     <string name="no_results" msgid="4935646951230345730">"ရလဒ်များ မရှိပါ"</string>
     <string name="help" msgid="6096599033945360524">"အကူအညီ"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"<xliff:g id="APP_NAME">%1$s</xliff:g> အား Health Connect တွင် ဤလေ့ကျင့်ခန်း ပုံမှန်အစီအစဉ်ကို ဝင်ကြည့်ခွင့်ပြုမလား။"</string>
+    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"ဤအက်ပ်သည် ပုံမှန်အစီအစဉ်တွင် ယခင်က သင်သွားထားသော တည်နေရာကို ဖတ်နိုင်ပါမည်"</string>
+    <string name="loading" msgid="5416387523241743987">"ဖွင့်နေသည်…"</string>
 </resources>
