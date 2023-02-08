@@ -23,6 +23,7 @@ android_test {
         "android.test.runner",
         "android.test.base",
         "framework-healthconnect",
+        "framework-configinfrastructure",
     ],
     srcs: [
         ":healthconnect-cts-testapp-srcs",

@@ -40,6 +40,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.ArraySet;
 import android.util.Pair;
 
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -87,7 +88,8 @@ public final class ExerciseSessionRecordHelper
         exerciseSessionRecord.setExerciseType(getCursorInt(cursor, EXERCISE_TYPE_COLUMN_NAME));
         exerciseSessionRecord.setTitle(getCursorString(cursor, TITLE_COLUMN_NAME));
         exerciseSessionRecord.setHasRoute(
-                getIntegerAndConvertToBoolean(cursor, HAS_ROUTE_COLUMN_NAME));
+                isExerciseRouteFeatureEnabled()
+                        && getIntegerAndConvertToBoolean(cursor, HAS_ROUTE_COLUMN_NAME));
 
         // The table might contain duplicates because of 2 left joins, use sets to remove them.
         ArraySet<ExerciseLapInternal> lapsSet = new ArraySet<>();
@@ -175,6 +177,10 @@ public final class ExerciseSessionRecordHelper
             String packageName,
             long startDateAccess,
             Map<String, Boolean> extraPermsState) {
+        if (!isExerciseRouteFeatureEnabled()) {
+            return Collections.emptyList();
+        }
+
         boolean canReadAnyRoute = extraPermsState.get(READ_EXERCISE_ROUTE);
         WhereClauses whereClause =
                 getReadTableWhereClause(
@@ -190,6 +196,9 @@ public final class ExerciseSessionRecordHelper
     public List<String> getExtraWritePermissionsToCheck(RecordInternal<?> recordInternal) {
         ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
         if (session.getRoute() != null) {
+            if (!isExerciseRouteFeatureEnabled()) {
+                throw new UnsupportedOperationException("Writing exercise route is not supported.");
+            }
             return Collections.singletonList(WRITE_EXERCISE_ROUTE);
         }
         return Collections.emptyList();
@@ -203,6 +212,10 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids, long startDateAccess) {
+        if (!isExerciseRouteFeatureEnabled()) {
+            return Collections.emptyList();
+        }
+
         WhereClauses whereClause = new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, uuids);
         whereClause.addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
         return List.of(getRouteReadRequest(whereClause));
@@ -225,6 +238,11 @@ public final class ExerciseSessionRecordHelper
                             mapping.get(getCursorInt(cursorExtraData, PARENT_KEY_COLUMN_NAME)));
             record.addRouteLocation(ExerciseRouteRecordHelper.populateLocation(cursorExtraData));
         }
+    }
+
+    private boolean isExerciseRouteFeatureEnabled() {
+        return HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isExerciseRouteFeatureEnabled();
     }
 
     private ReadTableRequest getRouteReadRequest(WhereClauses clauseToFilterSessionIds) {

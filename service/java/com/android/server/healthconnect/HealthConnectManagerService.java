@@ -76,6 +76,7 @@ public class HealthConnectManagerService extends SystemService {
         mTransactionManager =
                 TransactionManager.getInstance(
                         new HealthConnectUserContext(mContext, mCurrentUser));
+        HealthConnectDeviceConfigManager.initializeInstance(context);
         mHealthConnectService =
                 new HealthConnectServiceImpl(
                         mTransactionManager, permissionHelper, firstGrantTimeManager, mContext);
