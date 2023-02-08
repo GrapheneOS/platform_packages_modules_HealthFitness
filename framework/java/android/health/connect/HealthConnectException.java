@@ -56,6 +56,8 @@ public class HealthConnectException extends RuntimeException {
      * <p>This error may be considered similar to {@link android.os.RemoteException}.
      */
     public static final int ERROR_REMOTE = 6;
+    /** The caller exhausted the allotted rate limit. */
+    public static final int ERROR_RATE_LIMIT_EXCEEDED = 7;
 
     @ErrorCode private final int mErrorCode;
 
@@ -97,7 +99,8 @@ public class HealthConnectException extends RuntimeException {
                 ERROR_INVALID_ARGUMENT,
                 ERROR_IO,
                 ERROR_SECURITY,
-                ERROR_REMOTE
+                ERROR_REMOTE,
+                ERROR_RATE_LIMIT_EXCEEDED
             })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ErrorCode {}
