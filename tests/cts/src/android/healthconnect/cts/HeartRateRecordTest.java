@@ -202,6 +202,7 @@ public class HeartRateRecordTest {
                 TestUtils.readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
                                 .setPageSize(1)
+                                .setAscending(true)
                                 .build());
         Pair<List<HeartRateRecord>, Long> newHeartRecords =
                 TestUtils.readRecordsWithPagination(
@@ -241,12 +242,14 @@ public class HeartRateRecordTest {
     public void testReadHeartRateRecordUsingFilters_dataFilter_incorrect()
             throws InterruptedException {
         TestUtils.insertRecords(Collections.singletonList(getCompleteHeartRateRecord()));
-        List<HeartRateRecord> newHeartRateRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
-                                .addDataOrigins(
-                                        new DataOrigin.Builder().setPackageName("abc").build())
-                                .build());
+        ReadRecordsRequestUsingFilters<HeartRateRecord> readRequest =
+                new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                        .addDataOrigins(new DataOrigin.Builder().setPackageName("abc").build())
+                        .setAscending(false)
+                        .build();
+        assertThat(readRequest.getRecordType()).isNotNull();
+        assertThat(readRequest.getRecordType()).isEqualTo(HeartRateRecord.class);
+        List<HeartRateRecord> newHeartRateRecords = TestUtils.readRecords(readRequest);
         assertThat(newHeartRateRecords.size()).isEqualTo(0);
     }
 

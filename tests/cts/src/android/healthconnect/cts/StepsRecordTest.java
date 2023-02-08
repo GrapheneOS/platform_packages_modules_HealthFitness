@@ -111,12 +111,16 @@ public class StepsRecordTest {
     public void testReadStepsRecordUsingFilters_default() throws InterruptedException {
         List<StepsRecord> oldStepsRecords =
                 TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setAscending(true)
+                                .build());
         StepsRecord testRecord = getCompleteStepsRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<StepsRecord> newStepsRecords =
                 TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setAscending(true)
+                                .build());
         assertThat(newStepsRecords.size()).isEqualTo(oldStepsRecords.size() + 1);
         assertThat(newStepsRecords.get(newStepsRecords.size() - 1).equals(testRecord)).isTrue();
     }
@@ -173,6 +177,7 @@ public class StepsRecordTest {
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .addDataOrigins(
                                         new DataOrigin.Builder().setPackageName("abc").build())
+                                .setAscending(false)
                                 .build());
         assertThat(newStepsRecords.size()).isEqualTo(0);
     }
@@ -322,7 +327,10 @@ public class StepsRecordTest {
         for (Record record : insertedRecord) {
             request.addClientRecordId(record.getMetadata().getClientRecordId());
         }
-        List<StepsRecord> result = TestUtils.readRecords(request.build());
+        ReadRecordsRequestUsingIds<StepsRecord> readRequest = request.build();
+        assertThat(readRequest.getRecordType()).isNotNull();
+        assertThat(readRequest.getRecordType()).isEqualTo(StepsRecord.class);
+        List<StepsRecord> result = TestUtils.readRecords(readRequest);
         result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
         insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
 
