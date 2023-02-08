@@ -19,12 +19,16 @@ import android.content.Context
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.InsertRecordsResponse
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
+import android.health.connect.TimeRangeFilter
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.Record
 import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
+import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -93,6 +97,26 @@ class GeneralUtils {
                 fieldNameToValue[field.name] = field.get(obj)!!
             }
             return EnumFieldsWithValues(fieldNameToValue)
+        }
+
+        suspend fun readRecords(
+            recordType: Class<out Record>,
+            timeFilterRange: TimeRangeFilter,
+            numberOfRecordsPerBatch: Long,
+            manager: HealthConnectManager,
+        ): List<Record> {
+            val filter =
+                ReadRecordsRequestUsingFilters.Builder(recordType)
+                    .setTimeRangeFilter(timeFilterRange)
+                    .setPageSize(numberOfRecordsPerBatch.toInt())
+                    .build()
+            val records =
+                suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
+                        manager.readRecords(filter, Runnable::run, continuation.asOutcomeReceiver())
+                    }
+                    .records
+            Log.d("READ_RECORDS", "Read ${records.size} records")
+            return records
         }
     }
 }

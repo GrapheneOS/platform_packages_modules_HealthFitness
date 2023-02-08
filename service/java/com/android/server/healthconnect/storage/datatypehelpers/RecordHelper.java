@@ -39,6 +39,7 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
+import android.os.Trace;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
@@ -74,6 +75,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
+    private static final String TAG_RECORD_HELPER = "HealthConnectRecordHelper";
+    private static final int TRACE_TAG_RECORD_HELPER = TAG_RECORD_HELPER.hashCode();
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
     RecordHelper() {
@@ -153,8 +156,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     @NonNull
     @SuppressWarnings("unchecked")
     public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
-        return new UpsertTableRequest(getMainTableName(), getContentValues((T) recordInternal))
-                .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
+        Trace.traceBegin(
+                TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetUpsertTableRequest"));
+        UpsertTableRequest upsertTableRequest =
+                new UpsertTableRequest(getMainTableName(), getContentValues((T) recordInternal))
+                        .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
+        Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
+        return upsertTableRequest;
     }
 
     /**
@@ -227,6 +235,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /** Returns List of Internal records from the cursor */
     @SuppressWarnings("unchecked")
     public List<RecordInternal<?>> getInternalRecords(Cursor cursor, int requestSize) {
+        Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
         int count = 0;
         while (cursor.moveToNext()) {
@@ -261,6 +270,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 throw new IllegalArgumentException(exception);
             }
         }
+        Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
         return recordInternalList;
     }
 

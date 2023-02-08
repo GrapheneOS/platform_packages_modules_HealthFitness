@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *    http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,6 +16,7 @@
 package com.android.healthconnect.testapps.toolbox.ui
 
 import android.content.pm.PackageManager
+import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,11 +27,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.testapps.toolbox.Constants.ALL_PERMISSIONS
+import com.android.healthconnect.testapps.toolbox.PerformanceTesting
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.seed.SeedData
+import com.android.healthconnect.testapps.toolbox.viewmodels.PerformanceTestingViewModel
 
 /** Home fragment for Health Connect Toolbox. */
 class HomeFragment : Fragment() {
@@ -43,6 +49,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var mRequestPermissionLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var mNavigationController: NavController
+    private val manager by lazy {
+        requireContext().getSystemService(HealthConnectManager::class.java)
+    }
+    private val performanceTestingViewModel: PerformanceTestingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +90,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val performanceTesting = PerformanceTesting(performanceTestingViewModel)
+        childFragmentManager
+            .beginTransaction()
+            .add(performanceTesting, "PERFORMANCE_TESTING_FRAGMENT")
+            .commit()
         view.findViewById<Button>(R.id.request_permissions_button).setOnClickListener {
             requestPermissions()
         }
@@ -87,8 +102,18 @@ class HomeFragment : Fragment() {
             goToCategoryListPage()
         }
         view.findViewById<Button>(R.id.seed_random_data_button).setOnClickListener {
-           SeedData(requireContext()).seedData()
+            SeedData(requireContext(), manager).seedData()
         }
+        view.findViewById<Button>(R.id.seed_performance_read_data_button).setOnClickListener {
+            performanceTestingViewModel.beginReadingData()
+        }
+        view.findViewById<Button>(R.id.seed_performance_insert_data_button).setOnClickListener {
+            performanceTestingViewModel.beginInsertingData(false)
+        }
+
+        // view
+        //     .findViewById<Button>(R.id.seed_performance_insert_data_button_in_parallel)
+        //     .setOnClickListener { performanceTestingViewModel.beginInsertingData(true) }
         mNavigationController = findNavController()
     }
 

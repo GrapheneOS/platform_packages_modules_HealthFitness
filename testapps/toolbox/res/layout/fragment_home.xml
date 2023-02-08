@@ -58,5 +58,33 @@
       android:minWidth="250dp"
       android:text="@string/seed_random_data" />
 
+  <Button
+      android:id="@+id/seed_performance_insert_data_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_gravity="center_horizontal"
+      android:minWidth="250dp"
+      android:text="@string/seed_performance_insert_data" />
+
+<!--  <Button-->
+<!--      android:id="@+id/seed_performance_insert_data_button_in_parallel"-->
+<!--      android:layout_width="wrap_content"-->
+<!--      android:layout_height="wrap_content"-->
+<!--      android:layout_marginTop="8dp"-->
+<!--      android:layout_gravity="center_horizontal"-->
+<!--      android:minWidth="250dp"-->
+<!--      android:text="@string/seed_performance_insert_data_in_parallel" />-->
+
+  <Button
+      android:id="@+id/seed_performance_read_data_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_gravity="center_horizontal"
+      android:minWidth="250dp"
+      android:text="@string/seed_performance_read_data" />
+
+
 
 </LinearLayout>

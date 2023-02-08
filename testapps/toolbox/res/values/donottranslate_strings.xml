@@ -20,6 +20,7 @@
   <string name="insert_data">Insert Data</string>
   <string name="update_data">Update Data</string>
   <string name="add_sample_entry">Add Sample Entry</string>
+  <string name="please_wait">Please Wait</string>
 
   <!-- Home Screen -->
   <string name="request_permissions">Request Permissions</string>
@@ -29,6 +30,9 @@
   <string name="all_permissions_already_granted_toast">Permissions already granted, please manage them via HC App</string>
   <string name="all_permissions_success">All permissions were successfully granted</string>
   <string name="number_of_permissions_not_granted">%1$d permissions were not granted</string>
+  <string name="seed_performance_insert_data">Seed Performance Data</string>
+  <string name="seed_performance_insert_data_in_parallel">Seed Performance Data (In Parallel)</string>
+  <string name="seed_performance_read_data">Read Performance Data</string>
 
   <!-- Data Categories -->
   <string name="activity_category" description="Title for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
@@ -95,6 +99,14 @@
   <string name="respiratory_rate_label" description="Label used to show the user's respiratory rate data [CHAR_LIMIT=50]">Respiratory rate</string>
   <string name="resting_heart_rate_label" description="Label used to show the user's resting heart rate data [CHAR_LIMIT=50]">Resting heart rate</string>
   <!--endregion-->
+  <!--endregion-->
+
+  <!-- region Performance Testing Dialog -->
+  <string name="span_insert_over_time">Span insert over time</string>
+  <string name="number_of_batches">Number of batches</string>
+  <string name="number_of_records_per_batch">Number of records per batch</string>
+  <string name="time_span">Time Span (in minutes)</string>
+  <string name="performance_testing_explanation">Heart Rate Records will be inserted/read in batches. Please enable checkbox to insert data over a given time span.</string>
   <!--endregion-->
 
 </resources>
