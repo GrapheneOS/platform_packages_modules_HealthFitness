@@ -123,6 +123,7 @@ public final class AggregationTypeIdMapper {
                         FLOORS_CLIMBED_TOTAL,
                         RestingHeartRateRecord.BPM_MAX,
                         RestingHeartRateRecord.BPM_MIN,
+                        RestingHeartRateRecord.BPM_AVG,
                         WHEEL_CHAIR_PUSHES_COUNT_TOTAL,
                         HEART_MEASUREMENTS_COUNT));
         addPowerIdsToAggregateResultMap(

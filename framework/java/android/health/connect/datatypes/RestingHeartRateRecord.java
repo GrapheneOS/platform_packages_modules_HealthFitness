@@ -58,6 +58,18 @@ public final class RestingHeartRateRecord extends InstantRecord {
                     RECORD_TYPE_RESTING_HEART_RATE,
                     Long.class);
 
+     /**
+      * Metric identifier to get average resting heart rate in beats per minute using aggregate
+      * APIs in {@link HealthConnectManager}
+      */
+    @android.annotation.NonNull
+    public static final AggregationType<Long> BPM_AVG =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_AVG,
+                    AggregationType.AVG,
+                    RECORD_TYPE_RESTING_HEART_RATE,
+                    Long.class);
+
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
      * @param time Start time of this activity

@@ -1125,6 +1125,7 @@ package android.health.connect.datatypes {
 
   public final class RestingHeartRateRecord extends android.health.connect.datatypes.InstantRecord {
     method public long getBeatsPerMinute();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_AVG;
     field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_MAX;
     field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> BPM_MIN;
   }

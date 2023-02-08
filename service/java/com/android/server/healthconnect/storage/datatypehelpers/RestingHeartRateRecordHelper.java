@@ -15,6 +15,7 @@
  */
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_AVG;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_MAX;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_MIN;
 
@@ -53,6 +54,7 @@ public final class RestingHeartRateRecordHelper
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case RESTING_HEART_RATE_RECORD_BPM_MAX:
             case RESTING_HEART_RATE_RECORD_BPM_MIN:
+            case RESTING_HEART_RATE_RECORD_BPM_AVG:
                 aggregateValue =
                         results.getLong(results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME));
                 break;
@@ -74,6 +76,7 @@ public final class RestingHeartRateRecordHelper
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case RESTING_HEART_RATE_RECORD_BPM_MAX:
             case RESTING_HEART_RATE_RECORD_BPM_MIN:
+            case RESTING_HEART_RATE_RECORD_BPM_AVG:
                 columnNames = Collections.singletonList(BEATS_PER_MINUTE_COLUMN_NAME);
                 break;
             default:
