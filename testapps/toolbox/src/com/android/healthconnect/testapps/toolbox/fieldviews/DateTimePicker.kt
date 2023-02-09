@@ -38,8 +38,8 @@ class DateTimePicker(context: Context, fieldName: String, setPreviousDay: Boolea
 
     private val mCalendar: Calendar = Calendar.getInstance()
     private var mSelectedYear: Int = mCalendar.get(Calendar.YEAR)
-    private var mSelectedMonth: Int = mCalendar.get(Calendar.MONTH) + (if (setPreviousDay) 0 else 1)
-    private var mSelectedDay: Int = mCalendar.get(Calendar.DAY_OF_MONTH)
+    private var mSelectedMonth: Int = mCalendar.get(Calendar.MONTH) + 1
+    private var mSelectedDay: Int = mCalendar.get(Calendar.DATE) + (if (setPreviousDay) -1 else 0)
     private var mSelectedHour = 0
     private var mSelectedMinute = 0
 
@@ -112,5 +112,9 @@ class DateTimePicker(context: Context, fieldName: String, setPreviousDay: Boolea
         val localDate: LocalDate = LocalDate.of(mSelectedYear, mSelectedMonth, mSelectedDay)
         val localTime: LocalTime = LocalTime.of(mSelectedHour, mSelectedMinute)
         return LocalDateTime.of(localDate, localTime).atZone(ZoneId.of(systemZoneId)).toInstant()
+    }
+
+    override fun isEmpty(): Boolean {
+        return false
     }
 }

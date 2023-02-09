@@ -30,6 +30,9 @@ import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.ElevationGainedRecord
+import android.health.connect.datatypes.ExerciseLap
+import android.health.connect.datatypes.ExerciseSegment
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.HeartRateRecord.HeartRateSample
@@ -69,6 +72,8 @@ import android.health.connect.datatypes.units.Power
 import android.health.connect.datatypes.units.Pressure
 import android.health.connect.datatypes.units.Temperature
 import android.health.connect.datatypes.units.Volume
+import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData
+import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Companion.generateExerciseRouteFromLocations
 import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldView
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import java.time.Instant
@@ -470,13 +475,13 @@ class InsertOrUpdateRecords {
                                 getStartTime(mFieldNameToFieldInput),
                                 getEndTime(mFieldNameToFieldInput))
                             .apply {
-                                if (mFieldNameToFieldInput["mNotes"] == null) {
+                                if (!mFieldNameToFieldInput["mNotes"]!!.isEmpty()) {
                                     setNotes(getStringValue(mFieldNameToFieldInput, "mNotes"))
                                 }
-                                if (mFieldNameToFieldInput["mTitle"] == null) {
+                                if (!mFieldNameToFieldInput["mTitle"]!!.isEmpty()) {
                                     setTitle(getStringValue(mFieldNameToFieldInput, "mTitle"))
                                 }
-                                if (mFieldNameToFieldInput["mStages"] == null) {
+                                if (!mFieldNameToFieldInput["mStages"]!!.isEmpty()) {
                                     setStages(
                                         mFieldNameToFieldInput["mStages"]?.getFieldValue()
                                             as List<SleepSessionRecord.Stage>)
@@ -502,6 +507,47 @@ class InsertOrUpdateRecords {
                                 getEndTime(mFieldNameToFieldInput))
                             .build()
                 }
+                ExerciseSessionRecord::class -> {
+                    val startTime = mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant
+
+                    record =
+                        ExerciseSessionRecord.Builder(
+                                metaData,
+                                startTime,
+                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                mFieldNameToFieldInput["mExerciseType"]
+                                    ?.getFieldValue()
+                                    .toString()
+                                    .toInt())
+                            .apply {
+                                if (!mFieldNameToFieldInput["mNotes"]!!.isEmpty()) {
+                                    setNotes(getStringValue(mFieldNameToFieldInput, "mNotes"))
+                                }
+                                if (!mFieldNameToFieldInput["mTitle"]!!.isEmpty()) {
+                                    setTitle(getStringValue(mFieldNameToFieldInput, "mTitle"))
+                                }
+                                if (!mFieldNameToFieldInput["mExerciseRoute"]!!.isEmpty()) {
+                                    val exerciseRoutes =
+                                        mFieldNameToFieldInput["mExerciseRoute"]?.getFieldValue()
+                                            as
+                                            List<ExerciseRoutesTestData.ExerciseRouteLocationData>
+                                    setRoute(
+                                        generateExerciseRouteFromLocations(
+                                            exerciseRoutes, startTime.toEpochMilli()))
+                                }
+                                if (!mFieldNameToFieldInput["mSegments"]!!.isEmpty()) {
+                                    setSegments(
+                                        mFieldNameToFieldInput["mSegments"]?.getFieldValue()
+                                            as List<ExerciseSegment>)
+                                }
+                                if (!mFieldNameToFieldInput["mLaps"]!!.isEmpty()) {
+                                    setLaps(
+                                        mFieldNameToFieldInput["mLaps"]?.getFieldValue()
+                                            as List<ExerciseLap>)
+                                }
+                            }
+                            .build()
+                }
                 NutritionRecord::class -> {
                     record =
                         NutritionRecord.Builder(
@@ -509,58 +555,58 @@ class InsertOrUpdateRecords {
                                 getStartTime(mFieldNameToFieldInput),
                                 getEndTime(mFieldNameToFieldInput))
                             .apply {
-                                if (mFieldNameToFieldInput["mBiotin"] == null) {
+                                if (!mFieldNameToFieldInput["mBiotin"]!!.isEmpty()) {
                                     setBiotin(getMass(mFieldNameToFieldInput, "mBiotin"))
                                 }
-                                if (mFieldNameToFieldInput["mCaffeine"] == null) {
+                                if (!mFieldNameToFieldInput["mCaffeine"]!!.isEmpty()) {
                                     setCaffeine(getMass(mFieldNameToFieldInput, "mCaffeine"))
                                 }
-                                if (mFieldNameToFieldInput["mCalcium"] == null) {
+                                if (!mFieldNameToFieldInput["mCalcium"]!!.isEmpty()) {
                                     setCalcium(getMass(mFieldNameToFieldInput, "mCalcium"))
                                 }
-                                if (mFieldNameToFieldInput["mChloride"] == null) {
+                                if (!mFieldNameToFieldInput["mChloride"]!!.isEmpty()) {
                                     setChloride(getMass(mFieldNameToFieldInput, "mChloride"))
                                 }
-                                if (mFieldNameToFieldInput["mCholesterol"] == null) {
+                                if (!mFieldNameToFieldInput["mCholesterol"]!!.isEmpty()) {
                                     setCholesterol(getMass(mFieldNameToFieldInput, "mCholesterol"))
                                 }
-                                if (mFieldNameToFieldInput["mChromium"] == null) {
+                                if (!mFieldNameToFieldInput["mChromium"]!!.isEmpty()) {
                                     setChromium(getMass(mFieldNameToFieldInput, "mChromium"))
                                 }
-                                if (mFieldNameToFieldInput["mDietaryFiber"] == null) {
+                                if (!mFieldNameToFieldInput["mDietaryFiber"]!!.isEmpty()) {
                                     setDietaryFiber(
                                         getMass(mFieldNameToFieldInput, "mDietaryFiber"))
                                 }
-                                if (mFieldNameToFieldInput["mCopper"] == null) {
+                                if (!mFieldNameToFieldInput["mCopper"]!!.isEmpty()) {
                                     setCopper(getMass(mFieldNameToFieldInput, "mCopper"))
                                 }
-                                if (mFieldNameToFieldInput["mEnergy"] == null) {
+                                if (!mFieldNameToFieldInput["mEnergy"]!!.isEmpty()) {
                                     setEnergy(
                                         Energy.fromJoules(
                                             getDoubleValue(mFieldNameToFieldInput, "mEnergy")))
                                 }
-                                if (mFieldNameToFieldInput["mFolate"] == null) {
+                                if (!mFieldNameToFieldInput["mFolate"]!!.isEmpty()) {
                                     setFolate(getMass(mFieldNameToFieldInput, "mFolate"))
                                 }
-                                if (mFieldNameToFieldInput["mEnergyFromFat"] == null) {
+                                if (!mFieldNameToFieldInput["mEnergyFromFat"]!!.isEmpty()) {
                                     setEnergyFromFat(
                                         Energy.fromJoules(
                                             getDoubleValue(
                                                 mFieldNameToFieldInput, "mEnergyFromFat")))
                                 }
-                                if (mFieldNameToFieldInput["mFolicAcid"] == null) {
+                                if (!mFieldNameToFieldInput["mFolicAcid"]!!.isEmpty()) {
                                     setFolicAcid(getMass(mFieldNameToFieldInput, "mFolicAcid"))
                                 }
-                                if (mFieldNameToFieldInput["mIodine"] == null) {
+                                if (!mFieldNameToFieldInput["mIodine"]!!.isEmpty()) {
                                     setIodine(getMass(mFieldNameToFieldInput, "mIodine"))
                                 }
-                                if (mFieldNameToFieldInput["mIron"] == null) {
+                                if (!mFieldNameToFieldInput["mIron"]!!.isEmpty()) {
                                     setIron(getMass(mFieldNameToFieldInput, "mIron"))
                                 }
-                                if (mFieldNameToFieldInput["mMagnesium"] == null) {
+                                if (!mFieldNameToFieldInput["mMagnesium"]!!.isEmpty()) {
                                     setMagnesium(getMass(mFieldNameToFieldInput, "mMagnesium"))
                                 }
-                                if (mFieldNameToFieldInput["mManganese"] == null) {
+                                if (!mFieldNameToFieldInput["mManganese"]!!.isEmpty()) {
                                     setManganese(getMass(mFieldNameToFieldInput, "mManganese"))
                                 }
                             }

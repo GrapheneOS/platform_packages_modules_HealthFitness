@@ -18,11 +18,15 @@ package com.android.healthconnect.testapps.toolbox.fieldviews
 import android.annotation.SuppressLint
 import android.content.Context
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
+import android.health.connect.datatypes.ExerciseLap
+import android.health.connect.datatypes.ExerciseSegment
+import android.health.connect.datatypes.ExerciseSegmentType
 import android.health.connect.datatypes.HeartRateRecord.HeartRateSample
 import android.health.connect.datatypes.PowerRecord.PowerRecordSample
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SpeedRecord.SpeedRecordSample
 import android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample
+import android.health.connect.datatypes.units.Length
 import android.health.connect.datatypes.units.Power
 import android.health.connect.datatypes.units.Velocity
 import android.widget.LinearLayout
@@ -55,7 +59,6 @@ class ListInputField(context: Context, fieldName: String, inputFieldType: Parame
         mLinearLayout = findViewById(R.id.list_input_linear_layout)
         mDataTypeClass = inputFieldType.actualTypeArguments[0]
         mRowsData = ArrayList()
-        setupView()
         setupAddRowButtonListener()
     }
 
@@ -63,10 +66,6 @@ class ListInputField(context: Context, fieldName: String, inputFieldType: Parame
         val buttonView = findViewById<FloatingActionButton>(R.id.add_row)
 
         buttonView.setOnClickListener { addRow() }
-    }
-
-    private fun setupView() {
-        addRow()
     }
 
     private fun addRow() {
@@ -99,6 +98,17 @@ class ListInputField(context: Context, fieldName: String, inputFieldType: Parame
                 }
                 StepsCadenceRecordSample::class.java -> {
                     EditableTextView(context, "Steps Cadence", INPUT_TYPE_DOUBLE)
+                }
+                ExerciseSegment::class.java -> {
+                    rowLayout.addView(row.endTime)
+                    EnumDropDown(
+                        context,
+                        "Segment Type",
+                        getStaticFieldNamesAndValues(ExerciseSegmentType::class))
+                }
+                ExerciseLap::class.java -> {
+                    rowLayout.addView(row.endTime)
+                    EditableTextView(context, "Length", INPUT_TYPE_DOUBLE)
                 }
                 else -> {
                     return
@@ -148,8 +158,30 @@ class ListInputField(context: Context, fieldName: String, inputFieldType: Parame
                             row.endTime.getFieldValue(),
                             dataPointString.toInt()))
                 }
+                ExerciseSegment::class.java -> {
+                    samples.add(
+                        ExerciseSegment.Builder(
+                                instant.getFieldValue(),
+                                row.endTime.getFieldValue(),
+                                dataPointString.toInt())
+                            .build())
+                }
+                ExerciseLap::class.java -> {
+                    samples.add(
+                        ExerciseLap.Builder(instant.getFieldValue(), row.endTime.getFieldValue())
+                            .apply {
+                                if (dataPointString.isNotEmpty()) {
+                                    setLength(Length.fromMeters(dataPointString.toDouble()))
+                                }
+                            }
+                            .build())
+                }
             }
         }
         return samples
+    }
+
+    override fun isEmpty(): Boolean {
+        return getFieldValue().isEmpty()
     }
 }

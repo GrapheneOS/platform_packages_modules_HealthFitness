@@ -28,6 +28,7 @@ import android.health.connect.datatypes.CervicalMucusRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.ElevationGainedRecord
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord
@@ -45,6 +46,7 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.RespiratoryRateRecord
 import android.health.connect.datatypes.RestingHeartRateRecord
 import android.health.connect.datatypes.SexualActivityRecord
+import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SpeedRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
@@ -246,7 +248,7 @@ object Constants {
         SPEED(SpeedRecord::class, R.string.speed_label),
         CYCLING_PEDALING_CADENCE(
             CyclingPedalingCadenceRecord::class, R.string.cycling_pedaling_cadence),
-        EXERCISE_SESSION(null, R.string.exercise_session),
+        EXERCISE_SESSION(ExerciseSessionRecord::class, R.string.exercise_session),
 
         // BODY_MEASUREMENTS
         BASAL_METABOLIC_RATE(BasalMetabolicRateRecord::class, R.string.basal_metabolic_rate_label),
@@ -271,7 +273,7 @@ object Constants {
         NUTRITION(NutritionRecord::class, R.string.nutrition_label),
 
         // SLEEP
-        SLEEP(null, R.string.sleep_label),
+        SLEEP(SleepSessionRecord::class, R.string.sleep_label),
 
         // VITALS
         BASAL_BODY_TEMPERATURE(

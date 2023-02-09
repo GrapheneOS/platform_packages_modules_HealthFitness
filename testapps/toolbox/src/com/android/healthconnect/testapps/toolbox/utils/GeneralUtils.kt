@@ -90,13 +90,13 @@ class GeneralUtils {
         fun <T : Any> getStaticFieldNamesAndValues(
             obj: KClass<T>,
         ): EnumFieldsWithValues {
-            val fieldNameToValue: HashMap<String, Any> = HashMap()
+            val fieldNameToValue: MutableMap<String, Any> = emptyMap<String, Any>().toMutableMap()
             val fields: List<Field> =
                 obj.java.declaredFields.filter { field -> Modifier.isStatic(field.modifiers) }
             for (field in fields) {
                 fieldNameToValue[field.name] = field.get(obj)!!
             }
-            return EnumFieldsWithValues(fieldNameToValue)
+            return EnumFieldsWithValues(fieldNameToValue.toMap())
         }
 
         suspend fun readRecords(
