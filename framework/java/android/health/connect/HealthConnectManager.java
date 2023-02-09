@@ -499,7 +499,6 @@ public class HealthConnectManager {
      * @param records list of records to be inserted.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      * @throws RuntimeException for internal errors
      */
     public void insertRecords(
@@ -549,7 +548,6 @@ public class HealthConnectManager {
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      * @see AggregateRecordsResponse#get
-     *     <p>TODO(b/251194265): User permission checks once available.
      */
     @NonNull
     @SuppressWarnings("unchecked")
@@ -611,7 +609,6 @@ public class HealthConnectManager {
      * @param duration Duration on which to group by results
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
      * @see HealthConnectManager#aggregateGroupByPeriod
      */
     @SuppressWarnings("unchecked")
@@ -680,7 +677,6 @@ public class HealthConnectManager {
      * @param callback Callback to receive result of performing this operation.
      * @see AggregateRecordsGroupedByPeriodResponse#get
      * @see HealthConnectManager#aggregateGroupByDuration
-     *     <p>TODO(b/251194265): User permission checks once available.
      */
     @SuppressWarnings("unchecked")
     public <T> void aggregateGroupByPeriod(
@@ -963,8 +959,6 @@ public class HealthConnectManager {
      * @param dataCategory {@link HealthDataCategory} for which to get the priority order
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
-     *     <p>TODO(b/249583483): Add checks for HEALTH_DATA_MANAGEMENT
      * @hide
      */
     @SystemApi
@@ -1003,8 +997,6 @@ public class HealthConnectManager {
      * @param request new priority order update request
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
-     *     <p>TODO(b/251194265): User permission checks once available.
-     *     <p>TODO(b/249583483): Add checks for HEALTH_DATA_MANAGEMENT
      * @hide
      */
     @SystemApi
