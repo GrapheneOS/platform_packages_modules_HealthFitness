@@ -320,7 +320,7 @@ public class RestingHeartRateRecordTest {
     public void testBpmAggregation_timeRange_all() throws Exception {
         List<Record> records =
                 Arrays.asList(
-                        getBaseRestingHeartRateRecord(1),
+                        getBaseRestingHeartRateRecord(3),
                         getBaseRestingHeartRateRecord(5),
                         getBaseRestingHeartRateRecord(10));
         AggregateRecordsResponse<Long> response =
@@ -332,6 +332,7 @@ public class RestingHeartRateRecordTest {
                                                 .build())
                                 .addAggregationType(RestingHeartRateRecord.BPM_MAX)
                                 .addAggregationType(RestingHeartRateRecord.BPM_MIN)
+                                .addAggregationType(RestingHeartRateRecord.BPM_AVG)
                                 .build(),
                         records);
         assertThat(response.get(RestingHeartRateRecord.BPM_MAX)).isNotNull();
@@ -339,8 +340,12 @@ public class RestingHeartRateRecordTest {
         assertThat(response.getZoneOffset(RestingHeartRateRecord.BPM_MAX))
                 .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
         assertThat(response.get(RestingHeartRateRecord.BPM_MIN)).isNotNull();
-        assertThat(response.get(RestingHeartRateRecord.BPM_MIN)).isEqualTo(1);
+        assertThat(response.get(RestingHeartRateRecord.BPM_MIN)).isEqualTo(3);
         assertThat(response.getZoneOffset(RestingHeartRateRecord.BPM_MIN))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        assertThat(response.get(RestingHeartRateRecord.BPM_AVG)).isNotNull();
+        assertThat(response.get(RestingHeartRateRecord.BPM_AVG)).isEqualTo(6);
+        assertThat(response.getZoneOffset(RestingHeartRateRecord.BPM_AVG))
                 .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
         Set<DataOrigin> dataOrigins = response.getDataOrigins(RestingHeartRateRecord.BPM_MIN);
         for (DataOrigin itr : dataOrigins) {

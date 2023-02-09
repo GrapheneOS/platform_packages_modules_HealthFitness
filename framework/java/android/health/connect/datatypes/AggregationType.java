@@ -170,6 +170,7 @@ public final class AggregationType<T> {
         int WEIGHT_RECORD_WEIGHT_MIN = 62;
         int WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL = 63;
         int HEART_RATE_RECORD_MEASUREMENTS_COUNT = 64;
+        int RESTING_HEART_RATE_RECORD_BPM_AVG = 65;
 
         /** @hide */
         @IntDef({
@@ -237,7 +238,8 @@ public final class AggregationType<T> {
             WEIGHT_RECORD_WEIGHT_MAX,
             WEIGHT_RECORD_WEIGHT_MIN,
             WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL,
-            HEART_RATE_RECORD_MEASUREMENTS_COUNT
+            HEART_RATE_RECORD_MEASUREMENTS_COUNT,
+            RESTING_HEART_RATE_RECORD_BPM_AVG
         })
         @Retention(RetentionPolicy.SOURCE)
         @interface Id {}
