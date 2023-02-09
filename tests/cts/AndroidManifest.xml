@@ -40,7 +40,10 @@
                    android:value="com.android.cts.runner.CtsTestRunListener"/>
     </instrumentation>
 
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <queries>
+        <package android:name="android.healthconnect.cts.app"/>
+    </queries>
+
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.READ_BASAL_BODY_TEMPERATURE"/>
     <uses-permission android:name="android.permission.health.READ_BASAL_METABOLIC_RATE"/>
