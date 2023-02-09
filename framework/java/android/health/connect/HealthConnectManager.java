@@ -1335,8 +1335,6 @@ public class HealthConnectManager {
      * @param pfdsByFileName The map of file names and their {@link ParcelFileDescriptor}s.
      * @param executor The {@link Executor} on which to invoke the callback.
      * @param callback The callback which will receive the outcome of this call.
-     * @throws NullPointerException if null is passed for any of the required {@link NonNull}
-     *     parameters.
      * @hide
      */
     @SystemApi
@@ -1440,8 +1438,6 @@ public class HealthConnectManager {
      * @param executor The {@link Executor} on which to invoke the callback.
      * @param callback The callback which will receive the current {@link HealthConnectDataState} or
      *     the {@link HealthConnectException}.
-     * @throws NullPointerException if null is passed for any of the required {@link NonNull}
-     *     parameters.
      * @hide
      */
     @SystemApi
