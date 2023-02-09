@@ -1155,6 +1155,21 @@ public class HealthConnectManager {
      * API to read records based on {@link ReadRecordsRequestUsingFilters} or {@link
      * ReadRecordsRequestUsingIds}
      *
+     * <p>Number of records returned by this API will depend based on below factors:
+     *
+     * <p>When an app with read permission allowed calls the API from background then it will be
+     * able to read only its own inserted records and will not get records inserted by other apps.
+     * This may be less than the total records present for the record type.
+     *
+     * <p>When an app with read permission allowed calls the API from foreground then it will be
+     * able to read all records for the record type.
+     *
+     * <p>App with only write permission but no read permission allowed will be able to read only
+     * its own inserted records both when in foreground or background.
+     *
+     * <p>An app without both read and write permissions will not be able to read any record and the
+     * API will throw Security Exception.
+     *
      * @param request Read request based on {@link ReadRecordsRequestUsingFilters} or {@link
      *     ReadRecordsRequestUsingIds}
      * @param executor Executor on which to invoke the callback.
