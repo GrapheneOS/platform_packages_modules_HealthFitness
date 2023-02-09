@@ -77,6 +77,60 @@ import kotlin.reflect.KClass
 class InsertOrUpdateRecords {
 
     companion object {
+
+        private fun getStringValue(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+            fieldName: String,
+        ): String {
+            return mFieldNameToFieldInput[fieldName]?.getFieldValue().toString()
+        }
+
+        private fun getIntegerValue(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+            fieldName: String,
+        ): Int {
+            return getStringValue(mFieldNameToFieldInput, fieldName).toInt()
+        }
+
+        private fun getLongValue(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+            fieldName: String,
+        ): Long {
+            return getStringValue(mFieldNameToFieldInput, fieldName).toLong()
+        }
+
+        private fun getDoubleValue(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+            fieldName: String,
+        ): Double {
+            return getStringValue(mFieldNameToFieldInput, fieldName).toDouble()
+        }
+
+        private fun getStartTime(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+        ): Instant {
+            return mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant
+        }
+
+        private fun getEndTime(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+        ): Instant {
+            return mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant
+        }
+
+        private fun getTime(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+        ): Instant {
+            return mFieldNameToFieldInput["time"]?.getFieldValue() as Instant
+        }
+
+        private fun getMass(
+            mFieldNameToFieldInput: HashMap<String, InputFieldView>,
+            fieldName: String,
+        ): Mass {
+            return Mass.fromKilograms(getDoubleValue(mFieldNameToFieldInput, fieldName))
+        }
+
         fun createRecordObject(
             recordClass: KClass<out Record>,
             mFieldNameToFieldInput: HashMap<String, InputFieldView>,
@@ -108,71 +162,56 @@ class InsertOrUpdateRecords {
                     record =
                         StepsRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mCount"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toLong())
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
+                                getLongValue(mFieldNameToFieldInput, "mCount"))
                             .build()
                 }
                 DistanceRecord::class -> {
                     record =
                         DistanceRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 Length.fromMeters(
-                                    mFieldNameToFieldInput["mDistance"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mDistance")))
                             .build()
                 }
                 ActiveCaloriesBurnedRecord::class -> {
                     record =
                         ActiveCaloriesBurnedRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 Energy.fromJoules(
-                                    mFieldNameToFieldInput["mEnergy"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mEnergy")))
                             .build()
                 }
                 ElevationGainedRecord::class -> {
                     record =
                         ElevationGainedRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 Length.fromMeters(
-                                    mFieldNameToFieldInput["mElevation"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mElevation")))
                             .build()
                 }
                 BasalMetabolicRateRecord::class -> {
                     record =
                         BasalMetabolicRateRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
+                                getTime(mFieldNameToFieldInput),
                                 Power.fromWatts(
-                                    mFieldNameToFieldInput["mBasalMetabolicRate"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mBasalMetabolicRate")))
                             .build()
                 }
                 SpeedRecord::class -> {
                     record =
                         SpeedRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 mFieldNameToFieldInput["mSpeedRecordSamples"]?.getFieldValue()
                                     as List<SpeedRecordSample>)
                             .build()
@@ -181,8 +220,8 @@ class InsertOrUpdateRecords {
                     record =
                         HeartRateRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 mFieldNameToFieldInput["mHeartRateSamples"]?.getFieldValue()
                                     as List<HeartRateSample>)
                             .build()
@@ -191,8 +230,8 @@ class InsertOrUpdateRecords {
                     record =
                         PowerRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 mFieldNameToFieldInput["mPowerRecordSamples"]?.getFieldValue()
                                     as List<PowerRecordSample>)
                             .build()
@@ -201,8 +240,8 @@ class InsertOrUpdateRecords {
                     record =
                         CyclingPedalingCadenceRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 mFieldNameToFieldInput["mCyclingPedalingCadenceRecordSamples"]
                                     ?.getFieldValue() as List<CyclingPedalingCadenceRecordSample>)
                             .build()
@@ -211,336 +250,246 @@ class InsertOrUpdateRecords {
                     record =
                         FloorsClimbedRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mFloors"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt())
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mFloors"))
                             .build()
                 }
                 TotalCaloriesBurnedRecord::class -> {
                     record =
                         TotalCaloriesBurnedRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 Energy.fromJoules(
-                                    mFieldNameToFieldInput["mEnergy"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mEnergy")))
                             .build()
                 }
                 WheelchairPushesRecord::class -> {
                     record =
                         WheelchairPushesRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mCount"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toLong())
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
+                                getLongValue(mFieldNameToFieldInput, "mCount"))
                             .build()
                 }
                 Vo2MaxRecord::class -> {
                     record =
                         Vo2MaxRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mMeasurementMethod"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt(),
-                                mFieldNameToFieldInput["mVo2MillilitersPerMinuteKilogram"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toDouble())
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mMeasurementMethod"),
+                                getDoubleValue(
+                                    mFieldNameToFieldInput, "mVo2MillilitersPerMinuteKilogram"))
                             .build()
                 }
                 BodyFatRecord::class -> {
                     record =
                         BodyFatRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
+                                getTime(mFieldNameToFieldInput),
                                 Percentage.fromValue(
-                                    mFieldNameToFieldInput["mPercentage"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mPercentage")))
                             .build()
                 }
                 BodyWaterMassRecord::class -> {
                     record =
                         BodyWaterMassRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mBodyWaterMass"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                getTime(mFieldNameToFieldInput),
+                                getMass(mFieldNameToFieldInput, "mBodyWaterMass"))
                             .build()
                 }
                 BoneMassRecord::class -> {
                     record =
                         BoneMassRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mMass"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                getTime(mFieldNameToFieldInput),
+                                getMass(mFieldNameToFieldInput, "mMass"))
                             .build()
                 }
                 HeightRecord::class -> {
                     record =
                         HeightRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
+                                getTime(mFieldNameToFieldInput),
                                 Length.fromMeters(
-                                    mFieldNameToFieldInput["mHeight"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mHeight")))
                             .build()
                 }
                 LeanBodyMassRecord::class -> {
                     record =
                         LeanBodyMassRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mMass"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                getTime(mFieldNameToFieldInput),
+                                getMass(mFieldNameToFieldInput, "mMass"))
                             .build()
                 }
                 WeightRecord::class -> {
                     record =
                         WeightRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mWeight"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                getTime(mFieldNameToFieldInput),
+                                getMass(mFieldNameToFieldInput, "mWeight"))
                             .build()
                 }
                 CervicalMucusRecord::class -> {
                     record =
                         CervicalMucusRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mSensation"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt(),
-                                mFieldNameToFieldInput["mAppearance"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt())
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mSensation"),
+                                getIntegerValue(mFieldNameToFieldInput, "mAppearance"))
                             .build()
                 }
                 MenstruationFlowRecord::class -> {
                     record =
                         MenstruationFlowRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mFlow"]?.getFieldValue().toString().toInt())
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mFlow"))
                             .build()
                 }
                 OvulationTestRecord::class -> {
                     record =
                         OvulationTestRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mResult"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt())
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mResult"))
                             .build()
                 }
                 SexualActivityRecord::class -> {
                     record =
                         SexualActivityRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mProtectionUsed"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt())
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mProtectionUsed"))
                             .build()
                 }
                 HydrationRecord::class -> {
                     record =
                         HydrationRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 Volume.fromMilliliters(
-                                    mFieldNameToFieldInput["mVolume"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mVolume")))
                             .build()
                 }
                 IntermenstrualBleedingRecord::class -> {
                     record =
                         IntermenstrualBleedingRecord.Builder(
-                                metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant)
+                                metaData, getTime(mFieldNameToFieldInput))
                             .build()
                 }
                 BasalBodyTemperatureRecord::class -> {
                     record =
                         BasalBodyTemperatureRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mBodyTemperatureMeasurementLocation"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt(),
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(
+                                    mFieldNameToFieldInput, "mBodyTemperatureMeasurementLocation"),
                                 Temperature.fromCelsius(
-                                    mFieldNameToFieldInput["mTemperature"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mTemperature")))
                             .build()
                 }
                 BloodGlucoseRecord::class -> {
                     record =
                         BloodGlucoseRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mSpecimenSource"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt(),
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mSpecimenSource"),
                                 BloodGlucose.fromMillimolesPerLiter(
-                                    mFieldNameToFieldInput["mLevel"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()),
-                                mFieldNameToFieldInput["mRelationToMeal"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt(),
-                                mFieldNameToFieldInput["mMealType"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt())
+                                    getDoubleValue(mFieldNameToFieldInput, "mLevel")),
+                                getIntegerValue(mFieldNameToFieldInput, "mRelationToMeal"),
+                                getIntegerValue(mFieldNameToFieldInput, "mMealType"))
                             .build()
                 }
                 BloodPressureRecord::class -> {
                     record =
                         BloodPressureRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mMeasurementLocation"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt(),
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mMeasurementLocation"),
                                 Pressure.fromMillimetersOfMercury(
-                                    mFieldNameToFieldInput["mSystolic"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()),
+                                    getDoubleValue(mFieldNameToFieldInput, "mSystolic")),
                                 Pressure.fromMillimetersOfMercury(
-                                    mFieldNameToFieldInput["mDiastolic"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()),
-                                mFieldNameToFieldInput["mBodyPosition"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt())
+                                    getDoubleValue(mFieldNameToFieldInput, "mDiastolic")),
+                                getIntegerValue(mFieldNameToFieldInput, "mBodyPosition"))
                             .build()
                 }
                 BodyTemperatureRecord::class -> {
                     record =
                         BodyTemperatureRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mMeasurementLocation"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toInt(),
+                                getTime(mFieldNameToFieldInput),
+                                getIntegerValue(mFieldNameToFieldInput, "mMeasurementLocation"),
                                 Temperature.fromCelsius(
-                                    mFieldNameToFieldInput["mTemperature"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mTemperature")))
                             .build()
                 }
                 HeartRateVariabilityRmssdRecord::class -> {
                     record =
                         HeartRateVariabilityRmssdRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mHeartRateVariabilityMillis"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toDouble())
+                                getTime(mFieldNameToFieldInput),
+                                getDoubleValue(
+                                    mFieldNameToFieldInput, "mHeartRateVariabilityMillis"))
                             .build()
                 }
                 OxygenSaturationRecord::class -> {
                     record =
                         OxygenSaturationRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
+                                getTime(mFieldNameToFieldInput),
                                 Percentage.fromValue(
-                                    mFieldNameToFieldInput["mPercentage"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                    getDoubleValue(mFieldNameToFieldInput, "mPercentage")))
                             .build()
                 }
                 RespiratoryRateRecord::class -> {
                     record =
                         RespiratoryRateRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mRate"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toDouble())
+                                getTime(mFieldNameToFieldInput),
+                                getDoubleValue(mFieldNameToFieldInput, "mRate"))
                             .build()
                 }
                 RestingHeartRateRecord::class -> {
                     record =
                         RestingHeartRateRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["time"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["mBeatsPerMinute"]
-                                    ?.getFieldValue()
-                                    .toString()
-                                    .toLong())
+                                getTime(mFieldNameToFieldInput),
+                                getLongValue(mFieldNameToFieldInput, "mBeatsPerMinute"))
                             .build()
                 }
                 SleepSessionRecord::class -> {
                     record =
                         SleepSessionRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant)
-                            .setNotes(mFieldNameToFieldInput["mNotes"]?.getFieldValue().toString())
-                            .setTitle(mFieldNameToFieldInput["mTitle"]?.getFieldValue().toString())
-                            .setStages(
-                                mFieldNameToFieldInput["mStages"]?.getFieldValue()
-                                    as List<SleepSessionRecord.Stage>)
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput))
+                            .apply {
+                                if (mFieldNameToFieldInput["mNotes"] == null) {
+                                    setNotes(getStringValue(mFieldNameToFieldInput, "mNotes"))
+                                }
+                                if (mFieldNameToFieldInput["mTitle"] == null) {
+                                    setTitle(getStringValue(mFieldNameToFieldInput, "mTitle"))
+                                }
+                                if (mFieldNameToFieldInput["mStages"] == null) {
+                                    setStages(
+                                        mFieldNameToFieldInput["mStages"]?.getFieldValue()
+                                            as List<SleepSessionRecord.Stage>)
+                                }
+                            }
                             .build()
                 }
                 StepsCadenceRecord::class -> {
                     record =
                         StepsCadenceRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant,
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput),
                                 mFieldNameToFieldInput["mStepsCadenceRecordSamples"]
                                     ?.getFieldValue() as List<StepsCadenceRecordSample>)
                             .build()
@@ -549,112 +498,72 @@ class InsertOrUpdateRecords {
                     record =
                         MenstruationPeriodRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant)
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput))
                             .build()
                 }
                 NutritionRecord::class -> {
                     record =
                         NutritionRecord.Builder(
                                 metaData,
-                                mFieldNameToFieldInput["startTime"]?.getFieldValue() as Instant,
-                                mFieldNameToFieldInput["endTime"]?.getFieldValue() as Instant)
-                            .setBiotin(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mBiotin"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setCaffeine(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mCaffeine"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setCalcium(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mCalcium"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setChloride(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mChloride"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setCholesterol(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mCholesterol"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setChromium(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mChromium"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setCopper(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mCopper"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setDietaryFiber(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mDietaryFiber"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setEnergy(
-                                Energy.fromJoules(
-                                    mFieldNameToFieldInput["mEnergy"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setEnergyFromFat(
-                                Energy.fromJoules(
-                                    mFieldNameToFieldInput["mEnergyFromFat"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setFolate(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mFolate"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setFolicAcid(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mFolicAcid"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setIodine(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mIodine"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setIron(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mIron"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setMagnesium(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mMagnesium"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
-                            .setManganese(
-                                Mass.fromKilograms(
-                                    mFieldNameToFieldInput["mManganese"]
-                                        ?.getFieldValue()
-                                        .toString()
-                                        .toDouble()))
+                                getStartTime(mFieldNameToFieldInput),
+                                getEndTime(mFieldNameToFieldInput))
+                            .apply {
+                                if (mFieldNameToFieldInput["mBiotin"] == null) {
+                                    setBiotin(getMass(mFieldNameToFieldInput, "mBiotin"))
+                                }
+                                if (mFieldNameToFieldInput["mCaffeine"] == null) {
+                                    setCaffeine(getMass(mFieldNameToFieldInput, "mCaffeine"))
+                                }
+                                if (mFieldNameToFieldInput["mCalcium"] == null) {
+                                    setCalcium(getMass(mFieldNameToFieldInput, "mCalcium"))
+                                }
+                                if (mFieldNameToFieldInput["mChloride"] == null) {
+                                    setChloride(getMass(mFieldNameToFieldInput, "mChloride"))
+                                }
+                                if (mFieldNameToFieldInput["mCholesterol"] == null) {
+                                    setCholesterol(getMass(mFieldNameToFieldInput, "mCholesterol"))
+                                }
+                                if (mFieldNameToFieldInput["mChromium"] == null) {
+                                    setChromium(getMass(mFieldNameToFieldInput, "mChromium"))
+                                }
+                                if (mFieldNameToFieldInput["mDietaryFiber"] == null) {
+                                    setDietaryFiber(
+                                        getMass(mFieldNameToFieldInput, "mDietaryFiber"))
+                                }
+                                if (mFieldNameToFieldInput["mCopper"] == null) {
+                                    setCopper(getMass(mFieldNameToFieldInput, "mCopper"))
+                                }
+                                if (mFieldNameToFieldInput["mEnergy"] == null) {
+                                    setEnergy(
+                                        Energy.fromJoules(
+                                            getDoubleValue(mFieldNameToFieldInput, "mEnergy")))
+                                }
+                                if (mFieldNameToFieldInput["mFolate"] == null) {
+                                    setFolate(getMass(mFieldNameToFieldInput, "mFolate"))
+                                }
+                                if (mFieldNameToFieldInput["mEnergyFromFat"] == null) {
+                                    setEnergyFromFat(
+                                        Energy.fromJoules(
+                                            getDoubleValue(
+                                                mFieldNameToFieldInput, "mEnergyFromFat")))
+                                }
+                                if (mFieldNameToFieldInput["mFolicAcid"] == null) {
+                                    setFolicAcid(getMass(mFieldNameToFieldInput, "mFolicAcid"))
+                                }
+                                if (mFieldNameToFieldInput["mIodine"] == null) {
+                                    setIodine(getMass(mFieldNameToFieldInput, "mIodine"))
+                                }
+                                if (mFieldNameToFieldInput["mIron"] == null) {
+                                    setIron(getMass(mFieldNameToFieldInput, "mIron"))
+                                }
+                                if (mFieldNameToFieldInput["mMagnesium"] == null) {
+                                    setMagnesium(getMass(mFieldNameToFieldInput, "mMagnesium"))
+                                }
+                                if (mFieldNameToFieldInput["mManganese"] == null) {
+                                    setManganese(getMass(mFieldNameToFieldInput, "mManganese"))
+                                }
+                            }
                             .build()
                 }
                 else -> {
