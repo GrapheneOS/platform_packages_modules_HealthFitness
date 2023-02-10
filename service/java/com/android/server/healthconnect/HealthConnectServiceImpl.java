@@ -292,7 +292,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull String packageName,
             @NonNull RecordsParcel recordsParcel,
             @NonNull IInsertRecordsResponseCallback callback) {
-        List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
+        final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
         int uid = Binder.getCallingUid();
         mDataPermissionEnforcer.enforceRecordsWritePermissions(recordInternals, uid);
         HealthConnectThreadScheduler.schedule(
@@ -518,7 +518,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull RecordsParcel recordsParcel,
             @NonNull IEmptyResponseCallback callback) {
         int uid = Binder.getCallingUid();
-        List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
+        final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
         mDataPermissionEnforcer.enforceRecordsWritePermissions(recordInternals, uid);
         HealthConnectThreadScheduler.schedule(
                 mContext,
