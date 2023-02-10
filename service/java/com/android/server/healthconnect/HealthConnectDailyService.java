@@ -27,8 +27,10 @@ import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.PersistableBundle;
+import android.os.UserHandle;
 import android.util.Slog;
 
+import com.android.server.healthconnect.logging.DailyLoggingService;
 import com.android.server.healthconnect.storage.AutoDeleteService;
 
 import java.util.Objects;
@@ -94,6 +96,8 @@ public class HealthConnectDailyService extends JobService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     AutoDeleteService.startAutoDelete();
+                    DailyLoggingService.logDailyMetrics(
+                            getApplicationContext(), UserHandle.getUserHandleForUid(userId));
                     jobFinished(params, false);
                 });
 

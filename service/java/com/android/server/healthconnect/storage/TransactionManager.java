@@ -24,7 +24,9 @@ import static com.android.server.healthconnect.storage.datatypehelpers.RecordHel
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
+import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.health.connect.Constants;
@@ -328,6 +330,28 @@ public final class TransactionManager {
             throw new InternalError("SQLite DB not found");
         }
         return sqLiteDatabase;
+    }
+
+    /**
+     * Get number of entries in the given table.
+     *
+     * @param tableName Name of table
+     * @return Number of entries in the given table
+     */
+    public long getNumberOfEntriesInTheTable(@NonNull String tableName) {
+        Objects.requireNonNull(tableName);
+        return DatabaseUtils.queryNumEntries(getReadableDb(), tableName);
+    }
+
+    /**
+     * Size of Health Connect database in bytes.
+     *
+     * @param context Context
+     * @return Size of the database
+     */
+    public long getDatabaseSize(@NonNull Context context) {
+        Objects.requireNonNull(context);
+        return context.getDatabasePath(getReadableDb().getPath()).length();
     }
 
     public void delete(DeleteTableRequest request) {
