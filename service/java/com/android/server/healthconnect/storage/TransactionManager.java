@@ -294,10 +294,11 @@ public final class TransactionManager {
      * it leads to abort of the transaction.
      *
      * @param request an insert request.
+     * @return rowId of the inserted or updated record.
      */
-    public void insertOrReplace(@NonNull UpsertTableRequest request) {
+    public long insertOrReplace(@NonNull UpsertTableRequest request) {
         final SQLiteDatabase db = getWritableDb();
-        insertOrReplaceRecord(db, request);
+        return insertOrReplaceRecord(db, request);
     }
 
     /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
@@ -539,7 +540,7 @@ public final class TransactionManager {
     }
 
     /** Assumes that caller will be closing {@code db} */
-    private void insertOrReplaceRecord(
+    private long insertOrReplaceRecord(
             @NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
         long rowId =
                 db.insertWithOnConflict(
@@ -549,6 +550,8 @@ public final class TransactionManager {
                         SQLiteDatabase.CONFLICT_REPLACE);
         request.getChildTableRequests()
                 .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+
+        return rowId;
     }
 
     private void insertOrReplace(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {

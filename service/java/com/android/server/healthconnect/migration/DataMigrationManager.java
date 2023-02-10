@@ -26,6 +26,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.PackageInfoFlags;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.migration.AppInfoMigrationPayload;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationPayload;
 import android.health.connect.migration.PermissionMigrationPayload;
@@ -85,6 +86,7 @@ public final class DataMigrationManager {
     public void apply(@NonNull Collection<MigrationEntity> entities) throws EntityWriteException {
         migrateRecords(entities);
         migratePermissions(entities);
+        migrateAppInfo(entities);
     }
 
     private void migrateRecords(@NonNull Collection<MigrationEntity> entities)
@@ -143,7 +145,6 @@ public final class DataMigrationManager {
                 .getUpsertTableRequest(record);
     }
 
-    @NonNull
     private void migratePermissions(@NonNull Collection<MigrationEntity> entities)
             throws EntityWriteException {
         for (MigrationEntity entity : entities) {
@@ -170,6 +171,25 @@ public final class DataMigrationManager {
             mFirstGrantTimeManager.setFirstGrantTime(
                     packageName, payload.getFirstGrantTime(), mUserContext.getUser());
         }
+    }
+
+    private void migrateAppInfo(@NonNull Collection<MigrationEntity> entities)
+            throws EntityWriteException {
+        for (MigrationEntity entity : entities) {
+            final MigrationPayload payload = entity.getPayload();
+            if (payload instanceof AppInfoMigrationPayload) {
+                try {
+                    migrateAppInfo((AppInfoMigrationPayload) payload);
+                } catch (RuntimeException e) {
+                    throw new EntityWriteException(entity.getEntityId(), e);
+                }
+            }
+        }
+    }
+
+    private void migrateAppInfo(@NonNull AppInfoMigrationPayload payload) {
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                mUserContext, payload.getPackageName(), payload.getAppName(), payload.getAppIcon());
     }
 
     @Nullable
