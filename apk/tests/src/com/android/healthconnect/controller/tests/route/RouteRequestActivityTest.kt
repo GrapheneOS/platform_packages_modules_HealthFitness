@@ -23,6 +23,7 @@ import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
 import android.health.connect.datatypes.ExerciseRoute
 import android.widget.Button
+import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -32,20 +33,45 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.route.ExerciseRouteViewModel
 import com.android.healthconnect.controller.route.RouteRequestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 
 @HiltAndroidTest
 class RouteRequestActivityTest {
 
+    val START = Instant.ofEpochMilli(1234567891011)
+    val TEST_ROUTE =
+        ExerciseRoute(
+            listOf(
+                ExerciseRoute.Location.Builder(START.plusSeconds(12), 52.26019, 21.02268).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(40), 52.26000, 21.02360).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(48), 52.25973, 21.02356).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(60), 52.25966, 21.02313).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(78), 52.25993, 21.02309).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(79), 52.25972, 21.02271).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(90), 52.25948, 21.02276).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(93), 52.25945, 21.02335).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(94), 52.25960, 21.02338).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(100), 52.25961, 21.02382).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(102), 52.25954, 21.02370).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(105), 52.25945, 21.02362).build(),
+                ExerciseRoute.Location.Builder(START.plusSeconds(109), 52.25954, 21.02354).build(),
+            ))
+
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue
+    val viewModel: ExerciseRouteViewModel = Mockito.mock(ExerciseRouteViewModel::class.java)
 
     private lateinit var context: Context
 
@@ -63,6 +89,45 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
+        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+
+        val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
+
+        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
+        val returnedIntent = scenario.getResult().getResultData()
+        assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isFalse()
+    }
+
+    @Test
+    fun intentLaunchesPermissionsActivity_nullSessionId() {
+        val startActivityIntent =
+            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                .putExtra(EXTRA_SESSION_ID, null as String?)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+
+        val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
+
+        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
+        val returnedIntent = scenario.getResult().getResultData()
+        assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isFalse()
+    }
+
+
+    @Test
+    fun intentLaunchesPermissionsActivity_noRoute() {
+        val startActivityIntent =
+            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                .putExtra(EXTRA_SESSION_ID, "sessionID")
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        `when`(viewModel.exerciseRoute).then { MutableLiveData(ExerciseRoute(listOf())) }
+
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
@@ -78,6 +143,8 @@ class RouteRequestActivityTest {
                 .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
 
         launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -103,6 +170,8 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
+        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
@@ -116,13 +185,14 @@ class RouteRequestActivityTest {
 
     @Test
     fun intentLaunchesPermissionsActivity_allow() {
-        val start = Instant.ofEpochMilli(1234567891011)
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 .putExtra(EXTRA_SESSION_ID, "sessionID")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
 
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -134,35 +204,6 @@ class RouteRequestActivityTest {
         val returnedIntent = scenario.getResult().getResultData()
         assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isTrue()
         assertThat(returnedIntent.getParcelableExtra<ExerciseRoute>(EXTRA_EXERCISE_ROUTE))
-            .isEqualTo(
-                ExerciseRoute(
-                    listOf(
-                        ExerciseRoute.Location.Builder(start.plusSeconds(12), 52.26019, 21.02268)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(40), 52.26000, 21.02360)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(48), 52.25973, 21.02356)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(60), 52.25966, 21.02313)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(78), 52.25993, 21.02309)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(79), 52.25972, 21.02271)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(90), 52.25948, 21.02276)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(93), 52.25945, 21.02335)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(94), 52.25960, 21.02338)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(100), 52.25961, 21.02382)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(102), 52.25954, 21.02370)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(105), 52.25945, 21.02362)
-                            .build(),
-                        ExerciseRoute.Location.Builder(start.plusSeconds(109), 52.25954, 21.02354)
-                            .build(),
-                    )))
+            .isEqualTo(TEST_ROUTE)
     }
 }
