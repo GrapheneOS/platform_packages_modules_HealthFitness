@@ -28,7 +28,26 @@ import java.util.Objects;
  *
  * @hide
  */
-public final class TimeInterval {
+public final class TimeInterval implements Comparable<TimeInterval> {
+
+    @Override
+    public int compareTo(TimeInterval interval) {
+        if (getStartTime().compareTo(interval.getStartTime()) != 0) {
+            return getStartTime().compareTo(interval.getStartTime());
+        }
+        return getEndTime().compareTo(interval.getEndTime());
+    }
+
+    /**
+     * Interface of the class which holds TimeInterval
+     *
+     * @hide
+     */
+    public interface TimeIntervalHolder {
+        /** Returns time interval. */
+        TimeInterval getInterval();
+    }
+
     private final Instant mStartTime;
     private final Instant mEndTime;
 

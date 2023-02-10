@@ -16,6 +16,8 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTimeIntervalHolders;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 
@@ -23,7 +25,6 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,6 +61,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
      *     values: {@link ExerciseSessionType.ExerciseSessionTypes }
      * @param title Title of this activity
      */
+    @SuppressWarnings("unchecked")
     private ExerciseSessionRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,
@@ -82,8 +84,14 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         }
         mRoute = route;
         mHasRoute = hasRoute;
-        mSegments = Collections.unmodifiableList(segments);
-        mLaps = Collections.unmodifiableList(laps);
+        mSegments =
+                Collections.unmodifiableList(
+                        (List<ExerciseSegment>)
+                                sortAndValidateTimeIntervalHolders(startTime, endTime, segments));
+        mLaps =
+                Collections.unmodifiableList(
+                        (List<ExerciseLap>)
+                                sortAndValidateTimeIntervalHolders(startTime, endTime, laps));
     }
 
     /** Returns exerciseType of this session. */
@@ -275,7 +283,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             Objects.requireNonNull(laps);
             mLaps.clear();
             mLaps.addAll(laps);
-            mLaps.sort(Comparator.comparing(ExerciseLap::getStartTime));
             return this;
         }
 
@@ -289,7 +296,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             Objects.requireNonNull(segments);
             mSegments.clear();
             mSegments.addAll(segments);
-            mSegments.sort(Comparator.comparing(ExerciseSegment::getStartTime));
             return this;
         }
 

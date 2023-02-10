@@ -28,7 +28,7 @@ import java.util.Objects;
  * <p>Each record contains start and end time of the exercise, exercise type and optional number of
  * repetitions.
  */
-public final class ExerciseSegment {
+public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
     private final TimeInterval mInterval;
 
     @ExerciseSegmentType.ExerciseSegmentTypes private final int mSegmentType;
@@ -80,6 +80,12 @@ public final class ExerciseSegment {
     @NonNull
     public Instant getEndTime() {
         return mInterval.getEndTime();
+    }
+
+    /** @hide */
+    @Override
+    public TimeInterval getInterval() {
+        return mInterval;
     }
 
     @Override

@@ -16,14 +16,20 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
+import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.ExerciseSessionType;
 
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.List;
 
 public class ExerciseSegmentTest {
     private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e1);
@@ -68,6 +74,62 @@ public class ExerciseSegmentTest {
         new ExerciseSegment.Builder(
                         START_TIME, END_TIME, ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
                 .setRepetitionsCount(-1)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSegment_lapStartTimeIllegal_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        SESSION_START_TIME,
+                        SESSION_START_TIME.plusSeconds(200),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                .setSegments(
+                        List.of(
+                                new ExerciseSegment.Builder(
+                                                SESSION_START_TIME.minusSeconds(2),
+                                                SESSION_START_TIME.plusSeconds(100),
+                                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
+                                        .build()))
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSegment_lapEndTimeIllegal_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        SESSION_START_TIME,
+                        SESSION_START_TIME.plusSeconds(200),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                .setSegments(
+                        List.of(
+                                new ExerciseSegment.Builder(
+                                                SESSION_START_TIME,
+                                                SESSION_START_TIME.plusSeconds(1200),
+                                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
+                                        .build()))
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSegment_segmentsOverlap_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING)
+                .setSegments(
+                        List.of(
+                                new ExerciseSegment.Builder(
+                                                SESSION_START_TIME,
+                                                SESSION_START_TIME.plusSeconds(100),
+                                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
+                                        .build(),
+                                new ExerciseSegment.Builder(
+                                                SESSION_START_TIME.plusSeconds(50),
+                                                SESSION_START_TIME.plusSeconds(200),
+                                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_CRUNCH)
+                                        .build()))
                 .build();
     }
 }

@@ -16,14 +16,20 @@
 
 package android.healthconnect.cts;
 
+import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
+import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.ExerciseLap;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.units.Length;
 
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.List;
 
 public class ExerciseLapTest {
     private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e1);
@@ -59,5 +65,57 @@ public class ExerciseLapTest {
     @Test(expected = IllegalArgumentException.class)
     public void testExerciseLap_lengthIsHuge_throwsException() {
         new ExerciseLap.Builder(START_TIME, END_TIME).setLength(Length.fromMeters(1e10)).build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testLaps_lapStartTimeIllegal_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        SESSION_START_TIME,
+                        SESSION_START_TIME.plusSeconds(200),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS)
+                .setLaps(
+                        List.of(
+                                new ExerciseLap.Builder(
+                                                SESSION_START_TIME.minusSeconds(1),
+                                                SESSION_START_TIME.plusSeconds(100))
+                                        .build()))
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testLaps_lapEndTimeIllegal_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        SESSION_START_TIME,
+                        SESSION_START_TIME.plusSeconds(200),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS)
+                .setLaps(
+                        List.of(
+                                new ExerciseLap.Builder(
+                                                SESSION_START_TIME,
+                                                SESSION_START_TIME.plusSeconds(1200))
+                                        .build()))
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testLaps_lapsOverlaps_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS)
+                .setLaps(
+                        List.of(
+                                new ExerciseLap.Builder(
+                                                SESSION_START_TIME,
+                                                SESSION_START_TIME.plusSeconds(200))
+                                        .build(),
+                                new ExerciseLap.Builder(
+                                                SESSION_START_TIME.plusSeconds(100),
+                                                SESSION_START_TIME.plusSeconds(400))
+                                        .build()))
+                .build();
     }
 }

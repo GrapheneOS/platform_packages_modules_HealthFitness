@@ -31,7 +31,7 @@ import java.util.Objects;
  * with {@link ExerciseSegment} start and end times, e.g. {@link ExerciseSessionRecord} of type
  * running without any segments can be divided as laps of different lengths.
  */
-public final class ExerciseLap {
+public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     private static final int MAX_LAP_LENGTH_METRES = 10000000;
 
     private final TimeInterval mInterval;
@@ -67,6 +67,12 @@ public final class ExerciseLap {
     @NonNull
     public Instant getEndTime() {
         return mInterval.getEndTime();
+    }
+
+    /** @hide */
+    @Override
+    public TimeInterval getInterval() {
+        return mInterval;
     }
 
     @Override

@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.RecordUtils.isEqualNullableCharSequences;
+import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTimeIntervalHolders;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
@@ -26,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,6 +55,7 @@ public final class SleepSessionRecord extends IntervalRecord {
      * @param notes Additional notes for the session. Optional field.
      * @param title Title of the session. Optional field.
      */
+    @SuppressWarnings("unchecked")
     private SleepSessionRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,
@@ -65,7 +67,10 @@ public final class SleepSessionRecord extends IntervalRecord {
             @Nullable CharSequence title) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(stages);
-        mStages = sortAndValidateStages(stages, startTime, endTime);
+        mStages =
+                Collections.unmodifiableList(
+                        (List<Stage>)
+                                sortAndValidateTimeIntervalHolders(startTime, endTime, stages));
         mNotes = notes;
         mTitle = title;
     }
@@ -111,9 +116,8 @@ public final class SleepSessionRecord extends IntervalRecord {
      * <p>The start time of the record represents the start and end time of the sleep stage and
      * always need to be included.
      */
-    public static class Stage {
-        @NonNull private final Instant mStartTime;
-        @NonNull private final Instant mEndTime;
+    public static class Stage implements TimeInterval.TimeIntervalHolder {
+        @NonNull private final TimeInterval mInterval;
         @StageType.StageTypes private final int mStageType;
 
         /**
@@ -127,32 +131,32 @@ public final class SleepSessionRecord extends IntervalRecord {
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
                 @StageType.StageTypes int stageType) {
-            Objects.requireNonNull(startTime);
-            Objects.requireNonNull(endTime);
-            if (!endTime.isAfter(startTime)) {
-                throw new IllegalArgumentException("End time must be after start time.");
-            }
-            this.mStartTime = startTime;
-            this.mEndTime = endTime;
+            this.mInterval = new TimeInterval(startTime, endTime);
             this.mStageType = stageType;
         }
 
         /** Returns start time of this stage. */
         @NonNull
         public Instant getStartTime() {
-            return mStartTime;
+            return mInterval.getStartTime();
         }
 
         /** Returns end time of this stage. */
         @NonNull
         public Instant getEndTime() {
-            return mEndTime;
+            return mInterval.getEndTime();
         }
 
         /** Returns stage type. */
         @StageType.StageTypes
         public int getType() {
             return mStageType;
+        }
+
+        /** @hide */
+        @Override
+        public TimeInterval getInterval() {
+            return mInterval;
         }
 
         @Override
@@ -325,30 +329,5 @@ public final class SleepSessionRecord extends IntervalRecord {
                     mNotes,
                     mTitle);
         }
-    }
-
-    private List<Stage> sortAndValidateStages(
-            @NonNull List<Stage> stages,
-            @NonNull Instant sessionStartTime,
-            @NonNull Instant sessionEndTime) {
-        // Sort stages by start times.
-        List<Stage> sortedStages = new ArrayList<>(stages);
-        sortedStages.sort(Comparator.comparing(Stage::getStartTime));
-        for (int i = 0; i < sortedStages.size(); i++) {
-            Instant stageStartTime = sortedStages.get(i).getStartTime();
-            Instant stageEndTime = sortedStages.get(i).getEndTime();
-            if (stageStartTime.isBefore(sessionStartTime) || stageEndTime.isAfter(sessionEndTime)) {
-                throw new IllegalArgumentException(
-                        "Sleep stage time interval must be between within sleep session interval");
-            }
-
-            if (i != 0) {
-                Instant previousEndTime = sortedStages.get(i - 1).getEndTime();
-                if (previousEndTime.isAfter(stageStartTime)) {
-                    throw new IllegalArgumentException("Sleep stages must not overlap");
-                }
-            }
-        }
-        return sortedStages;
     }
 }

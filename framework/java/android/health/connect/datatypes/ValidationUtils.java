@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -93,5 +94,41 @@ public final class ValidationUtils {
     public static double valuePerSecond(long value, Instant startTime, Instant endTime) {
         long seconds = Duration.between(startTime, endTime).toSeconds();
         return (double) value / (seconds != 0 ? seconds : 1);
+    }
+
+    /**
+     * Sorts time interval holders by time intervals. Validates that time intervals do not overlap
+     * and within parent start and end times.
+     */
+    public static List<? extends TimeInterval.TimeIntervalHolder>
+            sortAndValidateTimeIntervalHolders(
+                    Instant parentStartTime,
+                    Instant parentEndTime,
+                    List<? extends TimeInterval.TimeIntervalHolder> intervalHolders) {
+        if (intervalHolders.isEmpty()) {
+            return intervalHolders;
+        }
+
+        String intervalsName = intervalHolders.get(0).getClass().getSimpleName();
+        intervalHolders.sort(Comparator.comparing(TimeInterval.TimeIntervalHolder::getInterval));
+        TimeInterval currentInterval, previousInterval;
+        for (int i = 0; i < intervalHolders.size(); i++) {
+            currentInterval = intervalHolders.get(i).getInterval();
+            if (currentInterval.getStartTime().isBefore(parentStartTime)
+                    || currentInterval.getEndTime().isAfter(parentEndTime)) {
+                throw new IllegalArgumentException(
+                        intervalsName
+                                + ": time intervals must be within parent session time interval.");
+            }
+
+            if (i != 0) {
+                previousInterval = intervalHolders.get(i - 1).getInterval();
+                if (previousInterval.getEndTime().isAfter(currentInterval.getStartTime())) {
+                    throw new IllegalArgumentException(
+                            intervalsName + ": time intervals must not overlap.");
+                }
+            }
+        }
+        return intervalHolders;
     }
 }
