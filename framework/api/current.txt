@@ -39,6 +39,7 @@ package android.health.connect {
     field public static final int ERROR_INTERNAL = 2; // 0x2
     field public static final int ERROR_INVALID_ARGUMENT = 3; // 0x3
     field public static final int ERROR_IO = 4; // 0x4
+    field public static final int ERROR_RATE_LIMIT_EXCEEDED = 7; // 0x7
     field public static final int ERROR_REMOTE = 6; // 0x6
     field public static final int ERROR_SECURITY = 5; // 0x5
     field public static final int ERROR_UNKNOWN = 1; // 0x1
