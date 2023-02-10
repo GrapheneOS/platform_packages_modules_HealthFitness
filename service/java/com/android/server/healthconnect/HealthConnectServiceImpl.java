@@ -356,14 +356,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int pid = Binder.getCallingPid();
         boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         if (!holdsDataManagementPermission) {
-            mDataPermissionEnforcer.enforceRecordIdsReadPermissions(recordTypesToTest, uid);
             if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
-                tryAndThrowException(
-                        callback,
-                        new SecurityException(
-                                packageName + " must be in foreground to call aggregate method"),
-                        HealthConnectException.ERROR_SECURITY);
+                throwException(callback, packageName);
             }
+            mDataPermissionEnforcer.enforceRecordIdsReadPermissions(recordTypesToTest, uid);
         }
 
         HealthConnectThreadScheduler.schedule(
@@ -408,18 +404,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         AtomicBoolean enforceSelfRead = new AtomicBoolean();
         if (!holdsDataManagementPermission) {
-            enforceSelfRead.set(
-                    mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
-                            request.getRecordType(), uid));
-            if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
-                tryAndThrowException(
-                        callback,
-                        new SecurityException(
-                                packageName + " must be in foreground to read the change logs"),
-                        HealthConnectException.ERROR_SECURITY);
+            if (mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
+                            request.getRecordType(), uid)
+                    || !mAppOpsManagerLocal.isUidInForeground(uid)) {
+                // If requesting app has only write permission allowed but no read permission for
+                // the record type or if app is not in foreground then allow to read its own
+                // records.
+                enforceSelfRead.set(true);
+            } else {
+                enforceSelfRead.set(false);
             }
         }
-
         final Map<String, Boolean> extraReadPermsToGrantState =
                 Collections.unmodifiableMap(
                         mDataPermissionEnforcer.collectExtraReadPermissionToStateMapping(
@@ -600,15 +595,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int uid = Binder.getCallingUid();
         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                 ChangeLogsRequestHelper.getRequest(packageName, token.getToken());
+        if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
+            throwException(callback, packageName);
+        }
         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                 changeLogsTokenRequest.getRecordTypes(), uid);
-        if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
-            tryAndThrowException(
-                    callback,
-                    new SecurityException(
-                            packageName + " must be in foreground to read the change logs"),
-                    HealthConnectException.ERROR_SECURITY);
-        }
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -1486,6 +1477,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (Exception exception) {
             // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
         }
+    }
+
+    private void throwException(IAggregateRecordsResponseCallback callback, String packageName) {
+        tryAndThrowException(
+                callback,
+                new SecurityException(
+                        packageName + " must be in foreground to call aggregate method"),
+                HealthConnectException.ERROR_SECURITY);
+    }
+
+    private void throwException(IChangeLogsResponseCallback callback, String packageName) {
+        tryAndThrowException(
+                callback,
+                new SecurityException(
+                        packageName + " must be in foreground to read the change logs"),
+                HealthConnectException.ERROR_SECURITY);
     }
 
     // TODO(b/264794517) Refactor pure util methods out into a separate class
