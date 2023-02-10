@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package android.health.connect;
+package android.health.connect.changelog;
 
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
 import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.health.connect.HealthConnectManager;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Objects;
 
 /** Request class for {@link HealthConnectManager#getChangeLogs} */
-public final class ChangeLogsRequest {
+public final class ChangeLogsRequest implements Parcelable {
     private final String mToken;
     private final int mPageSize;
 
@@ -38,6 +41,25 @@ public final class ChangeLogsRequest {
         mToken = token;
         mPageSize = pageSize;
     }
+
+    private ChangeLogsRequest(Parcel in) {
+        mToken = in.readString();
+        mPageSize = in.readInt();
+    }
+
+    @NonNull
+    public static final Creator<ChangeLogsRequest> CREATOR =
+            new Creator<ChangeLogsRequest>() {
+                @Override
+                public ChangeLogsRequest createFromParcel(Parcel in) {
+                    return new ChangeLogsRequest(in);
+                }
+
+                @Override
+                public ChangeLogsRequest[] newArray(int size) {
+                    return new ChangeLogsRequest[size];
+                }
+            };
 
     /** Returns the token for the change logs request */
     @NonNull
@@ -52,6 +74,17 @@ public final class ChangeLogsRequest {
     @IntRange(from = 1, to = 5000)
     public int getPageSize() {
         return mPageSize;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(mToken);
+        dest.writeInt(mPageSize);
     }
 
     /** Builder class for {@link ChangeLogsRequest} */
@@ -82,9 +115,7 @@ public final class ChangeLogsRequest {
             return this;
         }
 
-        /**
-         * @return Object of {@link ChangeLogsRequest}
-         */
+        /** Returns Object of {@link ChangeLogsRequest} */
         @NonNull
         public ChangeLogsRequest build() {
             return new ChangeLogsRequest(mToken, mPageSize);

@@ -3,8 +3,8 @@ package android.health.connect.aidl;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
-import android.health.connect.aidl.ChangeLogTokenRequestParcel;
-import android.health.connect.aidl.ChangeLogsRequestParcel;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
@@ -100,7 +100,7 @@ interface IHealthConnectService {
      */
     void getChangeLogToken(
         String packageName,
-        in ChangeLogTokenRequestParcel request,
+        in ChangeLogTokenRequest request,
         in IGetChangeLogTokenCallback callback);
 
     /**
@@ -109,7 +109,7 @@ interface IHealthConnectService {
      */
     void getChangeLogs(
         String packageName,
-        in ChangeLogsRequestParcel token,
+        in ChangeLogsRequest token,
         in IChangeLogsResponseCallback callback);
 
     /**

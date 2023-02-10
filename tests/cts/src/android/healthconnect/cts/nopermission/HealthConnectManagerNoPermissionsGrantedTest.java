@@ -22,11 +22,11 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_MIN;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.AggregateRecordsRequest;
-import android.health.connect.ChangeLogTokenRequest;
-import android.health.connect.ChangeLogTokenResponse;
-import android.health.connect.ChangeLogsRequest;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.TestUtils;

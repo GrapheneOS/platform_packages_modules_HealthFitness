@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package android.health.connect;
+package android.health.connect.changelog;
 
 import android.annotation.NonNull;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.datatypes.Record;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.InternalExternalRecordConverter;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /** Response class for {@link HealthConnectManager#getChangeLogs} */
-public final class ChangeLogsResponse {
+public final class ChangeLogsResponse implements Parcelable {
     private final List<Record> mUpsertedRecords;
     private final List<DeletedLog> mDeletedLogs;
     private final String mNextChangesToken;
@@ -36,15 +43,55 @@ public final class ChangeLogsResponse {
      * @hide
      */
     public ChangeLogsResponse(
-            @NonNull List<Record> upsertedRecords,
+            @NonNull RecordsParcel upsertedRecords,
             @NonNull List<DeletedLog> deletedLogs,
             @NonNull String nextChangesToken,
             boolean hasMorePages) {
-        mUpsertedRecords = upsertedRecords;
+        Objects.requireNonNull(upsertedRecords);
+        Objects.requireNonNull(deletedLogs);
+        Objects.requireNonNull(nextChangesToken);
+
+        mUpsertedRecords =
+                InternalExternalRecordConverter.getInstance()
+                        .getExternalRecords(upsertedRecords.getRecords());
         mDeletedLogs = deletedLogs;
         mNextChangesToken = nextChangesToken;
         mHasMorePages = hasMorePages;
     }
+
+    private ChangeLogsResponse(Parcel in) {
+        mUpsertedRecords =
+                InternalExternalRecordConverter.getInstance()
+                        .getExternalRecords(
+                                in.readParcelable(
+                                                RecordsParcel.class.getClassLoader(),
+                                                RecordsParcel.class)
+                                        .getRecords());
+        int size = in.readInt();
+        List<DeletedLog> deletedLogs = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            String id = in.readString();
+            long time = in.readLong();
+            deletedLogs.add(new DeletedLog(id, time));
+        }
+        mDeletedLogs = deletedLogs;
+        mNextChangesToken = in.readString();
+        mHasMorePages = in.readBoolean();
+    }
+
+    @NonNull
+    public static final Creator<ChangeLogsResponse> CREATOR =
+            new Creator<ChangeLogsResponse>() {
+                @Override
+                public ChangeLogsResponse createFromParcel(Parcel in) {
+                    return new ChangeLogsResponse(in);
+                }
+
+                @Override
+                public ChangeLogsResponse[] newArray(int size) {
+                    return new ChangeLogsResponse[size];
+                }
+            };
 
     /**
      * Returns records that have been updated or inserted post the time when the given token was
@@ -73,6 +120,28 @@ public final class ChangeLogsResponse {
     /** Returns whether there are more pages available for read */
     public boolean hasMorePages() {
         return mHasMorePages;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        List<RecordInternal<?>> recordInternal = new ArrayList<>();
+        for (Record record : mUpsertedRecords) {
+            recordInternal.add(
+                    InternalExternalRecordConverter.getInstance().getInternalRecord(record));
+        }
+        dest.writeParcelable(new RecordsParcel(recordInternal), 0);
+        dest.writeInt(mDeletedLogs.size());
+        for (DeletedLog deletedLog : mDeletedLogs) {
+            dest.writeString(deletedLog.getDeletedRecordId());
+            dest.writeLong(deletedLog.getDeletedTime().toEpochMilli());
+        }
+        dest.writeString(mNextChangesToken);
+        dest.writeBoolean(mHasMorePages);
     }
 
     /** A class to represent a delete log in ChangeLogsResponse */

@@ -28,10 +28,6 @@ import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
-import android.health.connect.ChangeLogTokenRequest;
-import android.health.connect.ChangeLogTokenResponse;
-import android.health.connect.ChangeLogsRequest;
-import android.health.connect.ChangeLogsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
@@ -43,6 +39,10 @@ import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.accesslog.AccessLog;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
@@ -210,6 +210,7 @@ public class TestUtils {
 
         return response.get();
     }
+
     public static Device buildDevice() {
         return new Device.Builder()
                 .setManufacturer("google")
