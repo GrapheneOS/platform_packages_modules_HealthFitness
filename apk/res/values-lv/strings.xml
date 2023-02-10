@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Palīdzība"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Vai atļaut lietotnei <xliff:g id="APP_NAME">%1$s</xliff:g> piekļūt šī treniņa maršrutam platformā Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Šī lietotne varēs lasīt jūsu iepriekšējās atrašanās vietas datus maršrutā."</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Notiek ielāde…"</string>
 </resources>

@@ -243,7 +243,7 @@
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"pravilima privatnosti"</string>
     <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Ukloniti sva odobrenja?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Ukloni sve"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti pisati podatke iz Health Connecta.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što su lokacija, kamera ili mikrofon."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti zapisivati podatke iz Health Connecta.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što su lokacija, kamera ili mikrofon."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Izbriši i podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> iz Health Connecta"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Sljedeći dan"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Prethodni dan"</string>

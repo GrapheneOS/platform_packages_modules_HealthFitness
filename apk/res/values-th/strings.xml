@@ -259,7 +259,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"ไม่ได้อนุญาตแอปใดเลย"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"ไม่ได้ปฏิเสธแอปใดเลย"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"นำสิทธิ์เข้าถึงออกจากทุกแอปใช่ไหม"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"ไม่มีแอปที่เข้าถึงหรือเพิ่มข้อมูลใหม่ใน Health Connect ได้ การดำเนินการนี้จะไม่ลบข้อมูลที่มีอยู่\n\nอีกทั้งไม่มีผลกับสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงตำแหน่ง กล้อง หรือไมโครโฟน"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"จะไม่มีแอปที่เข้าถึงหรือเพิ่มข้อมูลใหม่ลงใน Health Connect ได้ การดำเนินการนี้จะไม่ลบข้อมูลที่มีอยู่\n\nอีกทั้งไม่มีผลกับสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงตำแหน่ง กล้อง หรือไมโครโฟน"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"นำออกทั้งหมด"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"จัดการแอป"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"ลบข้อมูลแอป"</string>

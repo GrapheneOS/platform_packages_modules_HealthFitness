@@ -259,7 +259,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Ingen apper har denne tillatelsen"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Ingen apper er avvist"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Vil du fjerne tilgangen for alle appene?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Ingen av appene kan bruke eller legge til nye data i Health Connect. Dette sletter ikke eksisterende data.\n\nDette påvirker ikke andre tillatelser denne appen eventuelt har, for eksempel posisjon, kamera eller mikrofon."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Ingen apper kan bruke eller legge til nye data i Health Connect. Dette sletter ikke eksisterende data.\n\nDette påvirker ikke andre tillatelser denne appen eventuelt har, for eksempel posisjon, kamera eller mikrofon."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Fjern alle"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Administrer appen"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Slett appdataene"</string>
@@ -302,21 +302,21 @@
     <string name="time_range_one_month" msgid="4830107755328124319">"Slett de siste 30 dagene"</string>
     <string name="time_range_all" msgid="4114445623609239143">"Slett alle dataene"</string>
     <string name="confirming_question_all" msgid="838765230743574439">"Vil du permanent slette alle dataene fra alle datoer?"</string>
-    <string name="confirming_question_one_day" msgid="3979341197752186440">"Vil du permanent slette alle dataene fra de siste 24 timene?"</string>
-    <string name="confirming_question_one_week" msgid="5753661183304780596">"Vil du permanent slette alle dataene fra de siste 7 dagene?"</string>
-    <string name="confirming_question_one_month" msgid="6010023183561862892">"Vil du permanent slette alle dataene fra de siste 30 dagene?"</string>
+    <string name="confirming_question_one_day" msgid="3979341197752186440">"Vil du slette alle dataene fra de siste 24 timene for alltid?"</string>
+    <string name="confirming_question_one_week" msgid="5753661183304780596">"Vil du slette alle dataene fra de siste 7 dagene for alltid?"</string>
+    <string name="confirming_question_one_month" msgid="6010023183561862892">"Vil du slette alle dataene fra de siste 30 dagene for alltid?"</string>
     <string name="confirming_question_data_type_all" msgid="982234075886055865">"Vil du permanent slette <xliff:g id="DATA_TYPE">%s</xliff:g>-dataene fra alle datoer?"</string>
-    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Vil du permanent slette <xliff:g id="DATA_TYPE">%s</xliff:g>-dataene fra de siste 24 timene?"</string>
-    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Vil du permanent slette <xliff:g id="DATA_TYPE">%s</xliff:g>-dataene fra de siste 7 dagene?"</string>
-    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Vil du permanent slette <xliff:g id="DATA_TYPE">%s</xliff:g>-dataene fra de siste 30 dagene?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Vil du slette <xliff:g id="DATA_TYPE">%s</xliff:g>-dataene fra de siste 24 timene for alltid?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Vil du slette <xliff:g id="DATA_TYPE">%s</xliff:g>-dataene fra de siste 7 dagene for alltid?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Vil du slette <xliff:g id="DATA_TYPE">%s</xliff:g>-dataene fra de siste 30 dagene for alltid?"</string>
     <string name="confirming_question_category_all" msgid="600051636967007505">"Vil du permanent slette <xliff:g id="CATEGORY">%s</xliff:g>-dataene fra alle datoer?"</string>
-    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Vil du permanent slette <xliff:g id="CATEGORY">%s</xliff:g>-dataene fra de siste 24 timene?"</string>
-    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Vil du permanent slette <xliff:g id="CATEGORY">%s</xliff:g>-dataene fra de siste 7 dagene?"</string>
-    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Vil du permanent slette <xliff:g id="CATEGORY">%s</xliff:g>-dataene fra de siste 30 dagene?"</string>
+    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Vil du slette <xliff:g id="CATEGORY">%s</xliff:g>-dataene fra de siste 24 timene for alltid?"</string>
+    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Vil du slette <xliff:g id="CATEGORY">%s</xliff:g>-dataene fra de siste 7 dagene for alltid?"</string>
+    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Vil du slette <xliff:g id="CATEGORY">%s</xliff:g>-dataene fra de siste 30 dagene for alltid?"</string>
     <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Vil du permanent slette <xliff:g id="APP_DATA">%s</xliff:g>-dataene fra alle datoer?"</string>
-    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Vil du permanent slette <xliff:g id="APP_DATA">%s</xliff:g>-dataene fra de siste 24 timene?"</string>
-    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Vil du permanent slette <xliff:g id="APP_DATA">%s</xliff:g>-dataene fra de siste 7 dagene?"</string>
-    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Vil du permanent slette <xliff:g id="APP_DATA">%s</xliff:g>-dataene fra de siste 30 dagene?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Vil du slette <xliff:g id="APP_DATA">%s</xliff:g>-dataene fra de siste 24 timene for alltid?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Vil du slette <xliff:g id="APP_DATA">%s</xliff:g>-dataene fra de siste 7 dagene for alltid?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Vil du slette <xliff:g id="APP_DATA">%s</xliff:g>-dataene fra de siste 30 dagene for alltid?"</string>
     <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Fjern også alle <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g>-tillatelser fra Health Connect"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Vil du permanent slette alle dataene om <xliff:g id="DATA_TYPE">%1$s</xliff:g> som er lagt til av <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="2387097225045539359">"Vil du slette denne oppføringen permanent?"</string>
@@ -620,7 +620,7 @@
     <string name="temperature_unit_title" msgid="8849488991722636347">"Temperatur"</string>
     <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometer"</string>
     <string name="distance_unit_miles_label" msgid="7055538640044313099">"Engelske mil"</string>
-    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"centimeter"</string>
+    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Centimeter"</string>
     <string name="height_unit_feet_label" msgid="5868165630072173182">"Fot og tommer"</string>
     <string name="weight_unit_pound_label" msgid="5140603717613619894">"Pund"</string>
     <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kilogram"</string>
@@ -650,7 +650,7 @@
     <string name="auto_delete_rationale" msgid="5560024057140990346">"Når du endrer disse innstillingene, sletter Health Connect eksisterende data for å gjenspeile de nye innstillingene."</string>
     <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Vil du slette data automatisk etter # måned?}other{Vil du slette data automatisk etter # måneder?}}"</string>
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect sletter nye data automatisk etter # måned. Denne innstillingen sletter også eksisterende data som er eldre enn # måned.}other{Health Connect sletter nye data automatisk etter # måneder. Denne innstillingen sletter også eksisterende data som er eldre enn # måneder.}}"</string>
-    <string name="set_auto_delete_button" msgid="302211603856152720">"Angi automatisk sletting"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Bruk automatisk sletting"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Eksisterende data blir slettet"</string>
     <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect sletter alle data som er eldre enn # måneder. Det kan ta en dag før disse endringene vises i de tilkoblede appene dine.}other{Health Connect sletter alle data som er eldre enn # måneder. Det kan ta en dag før disse endringene vises i de tilkoblede appene dine.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Data som blir slettet"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Hjelp"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Vil du gi <xliff:g id="APP_NAME">%1$s</xliff:g> tilgang til denne treningsruten i Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Denne appen får muligheten til å lese den tidligere posisjonen din i ruten"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Laster inn …"</string>
 </resources>

@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Yardım"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, Health Connect\'te bu egzersiz rotasına erişmesine izin verilsin mi?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Bu uygulama, rotadaki geçmiş konumunuzu okuyabilecek"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Yükleniyor…"</string>
 </resources>

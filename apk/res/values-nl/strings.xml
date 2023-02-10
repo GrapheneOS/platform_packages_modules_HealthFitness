@@ -647,7 +647,7 @@
     <string name="auto_delete_section" msgid="9211252344455317906">"Gegevens automatisch verwijderen"</string>
     <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Na # maand}other{Na # maanden}}"</string>
     <string name="range_never" msgid="7960509623911908545">"Nooit"</string>
-    <string name="auto_delete_rationale" msgid="5560024057140990346">"Als je deze instellingen wijzigt, verwijdert Health Connect de bestaande gegevens op basis van je nieuwe voorkeuren."</string>
+    <string name="auto_delete_rationale" msgid="5560024057140990346">"Als je deze instellingen wijzigt, verwijdert Health Connect de bestaande gegevens op basis van je nieuwe voorkeuren"</string>
     <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Gegevens automatisch verwijderen na # maand?}other{Gegevens automatisch verwijderen na # maanden?}}"</string>
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect verwijdert nieuwe gegevens automatisch na # maand. Als je dit instelt, worden bestaande gegevens ouder dan # maand ook verwijderd.}other{Health Connect verwijdert nieuwe gegevens automatisch na # maanden. Als je dit instelt, worden bestaande gegevens ouder dan # maanden ook verwijderd.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Automatisch verwijderen instellen"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Hulp"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot deze trainingsroute in Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Deze app kan je eerdere locatie op de route lezen"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Laden…"</string>
 </resources>

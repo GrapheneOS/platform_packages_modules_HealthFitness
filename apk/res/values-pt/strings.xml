@@ -243,7 +243,7 @@
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"política de privacidade"</string>
     <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Remover todas as permissões?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Remover tudo"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"O app <xliff:g id="APP_NAME">%1$s</xliff:g> não vai mais poder ler nem gravar dados da plataforma Conexão Saúde.\n\nIsso não afeta outras permissões que esse app possa ter, como de localização, câmera ou microfone."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"O app <xliff:g id="APP_NAME">%1$s</xliff:g> não vai poder ler nem gravar dados da plataforma Conexão Saúde.\n\nIsso não afeta outras permissões do app, como de localização, câmera ou microfone."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Também excluir dados do app <xliff:g id="APP_NAME">%1$s</xliff:g> da plataforma Conexão Saúde"</string>
     <string name="navigation_next_day" msgid="4940406450355240883">"Dia seguinte"</string>
     <string name="navigation_previous_day" msgid="6152692518411256639">"Dia anterior"</string>
@@ -259,7 +259,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Nenhum app permitido"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Nenhum app negado"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Remover o acesso para todos os apps?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Nenhum dos seus apps poderá acessar ou adicionar dados à plataforma Conexão Saúde. Os dados já existentes não vão ser excluídos.\n\nIsso não afeta outras permissões que o app possa ter, como de localização, câmera ou microfone."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Nenhum dos seus apps poderá acessar ou adicionar dados à plataforma Conexão Saúde. Os dados existentes não vão ser excluídos.\n\nIsso não afeta outras permissões do app, como de localização, câmera ou microfone."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Remover tudo"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Gerenciar o app"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Excluir dados do app"</string>
@@ -650,8 +650,8 @@
     <string name="auto_delete_rationale" msgid="5560024057140990346">"Quando você muda essas configurações, o app Conexão Saúde exclui os dados para refletir suas novas preferências"</string>
     <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Excluir os dados automaticamente depois de # mês?}one{Excluir os dados automaticamente depois de # mês?}other{Excluir os dados automaticamente depois de # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{O app Conexão Saúde vai excluir dados novos automaticamente depois de # mês. Definir essa opção também vai excluir os dados atuais com mais de # mês.}one{O app Conexão Saúde vai excluir dados novos automaticamente depois de # mês. Definir essa opção também vai excluir os dados atuais com mais de # mês.}other{O app Conexão Saúde vai excluir dados novos automaticamente depois de # meses. Definir essa opção também vai excluir os dados atuais com mais de # meses.}}"</string>
-    <string name="set_auto_delete_button" msgid="302211603856152720">"Ativar a exclusão automática"</string>
-    <string name="deletion_started_title" msgid="2182642613917857247">"Todos os dados vão ser excluídos"</string>
+    <string name="set_auto_delete_button" msgid="302211603856152720">"Ativar exclusão automática"</string>
+    <string name="deletion_started_title" msgid="2182642613917857247">"Alguns dados vão ser excluídos"</string>
     <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{O app Conexão Saúde vai excluir automaticamente todos os dados com mais de # mês. Pode levar um dia até que essas mudanças apareçam nos apps conectados.}one{O app Conexão Saúde vai excluir automaticamente todos os dados com mais de # mês. Pode levar um dia até que essas mudanças apareçam nos apps conectados.}other{O app Conexão Saúde vai excluir automaticamente todos os dados com mais de # meses. Pode levar um dia até que essas mudanças apareçam nos apps conectados.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Os dados das seguintes categorias vão ser excluídos"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Concluído"</string>

@@ -286,7 +286,7 @@
     <string name="onboarding_description" msgid="4152058007461960500">"Connexion santé stocke vos données de santé et d\'activité physique, et vous offre un moyen simple de synchroniser les différentes applications de votre téléphone"</string>
     <string name="share_data" msgid="3461840023402996573">"Partager des données avec vos applications"</string>
     <string name="share_data_description" msgid="3419415806525775710">"Choisissez les données que chaque application peut lire ou écrire dans Connexion santé"</string>
-    <string name="manage_your_settings" msgid="3636705762746537108">"Gérez vos paramètres et votre confidentialité"</string>
+    <string name="manage_your_settings" msgid="3636705762746537108">"Gérer vos paramètres et votre confidentialité"</string>
     <string name="manage_your_settings_description" msgid="3467283105611653797">"Modifiez les autorisations des applications et gérez vos données en tout temps"</string>
     <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Retour"</string>
     <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Faites vos premiers pas"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Aide"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à cet itinéraire d\'exercice dans Connexion Santé?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Cette application pourra lire votre position précédente sur l\'itinéraire"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Chargement en cours…"</string>
 </resources>

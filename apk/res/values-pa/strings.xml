@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"ਮਦਦ"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"ਕੀ Health Connect ਵਿੱਚ <xliff:g id="APP_NAME">%1$s</xliff:g> ਨੂੰ ਕਸਰਤ ਕਰਨ ਦੇ ਇਸ ਤਰੀਕੇ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਦੇਣੀ ਹੈ?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"ਇਹ ਐਪ ਰਸਤੇ ਵਿੱਚ ਤੁਹਾਡੇ ਪਿਛਲੇ ਟਿਕਾਣੇ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ ਨੂੰ ਪੜ੍ਹ ਸਕੇਗੀ"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…"</string>
 </resources>

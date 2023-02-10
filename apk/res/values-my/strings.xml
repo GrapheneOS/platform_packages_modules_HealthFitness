@@ -653,7 +653,7 @@
     <string name="range_never" msgid="7960509623911908545">"မည်သည့်အခါမှ"</string>
     <string name="auto_delete_rationale" msgid="5560024057140990346">"ဤဆက်တင်များပြောင်းပါက Health Connect သည် သင်၏သတ်မှတ်ချက်အသစ်များအရ လက်ရှိဒေတာကို ဖျက်သည်"</string>
     <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}other{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}}"</string>
-    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect သည် # လ နောက်ပိုင်းတွင် ဒေတာအသစ်ကို အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}other{Health Connect သည် # လ နောက်ပိုင်းတွင် ဒေတာအသစ်ကို အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect သည် ဒေတာအသစ်ကို # လ အကြာတွင် အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}other{Health Connect သည် ဒေတာအသစ်ကို # လ အကြာတွင် အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"အလိုအလျောက်ဖျက်ခြင်း သတ်မှတ်ရန်"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"လက်ရှိဒေတာကို ဖျက်မည်"</string>
     <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect သည် # လအထက် ဒေတာအားလုံးကို ဖျက်မည်။ ချိတ်ဆက်ထားသောအက်ပ်များတွင် ဤအပြောင်းအလဲများ ပြသရန် တစ်ရက်ကြာနိုင်သည်။}other{Health Connect သည် # လအထက် ဒေတာအားလုံးကို ဖျက်မည်။ ချိတ်ဆက်ထားသောအက်ပ်များတွင် ဤအပြောင်းအလဲများ ပြသရန် တစ်ရက်ကြာနိုင်သည်။}}"</string>

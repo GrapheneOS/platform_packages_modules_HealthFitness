@@ -267,7 +267,7 @@
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Näillä sovelluksilla ei ole enää pääsyoikeuksia, mutta niillä on edelleen Health Connectiin tallennettua dataa"</string>
     <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> näkee <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> jälkeen lisätyn datan"</string>
     <string name="other_android_permissions" msgid="3408425226133353014">"Jos haluat muuttaa muita Android-lupia, jotka sovellukselle on myönnetty, valitse Asetukset &gt; Sovellukset"</string>
-    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Sovellukselle (<xliff:g id="APP_NAME">%1$s</xliff:g>) jakamasi data on sen tietosuojakäytännön suojaama"</string>
+    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Sovellukselle (<xliff:g id="APP_NAME">%1$s</xliff:g>) jakamaasi dataa käsitellään sovelluksen tietosuojakäytännön mukaisesti"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Jos haluat muuttaa muita Android-lupia, jotka sovellukselle on myönnetty, valitse Asetukset ja sitten Sovellukset"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Lue tietosuojakäytäntö"</string>
     <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Käytetty 24 viime tunnin aikana"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Ohje"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Saako <xliff:g id="APP_NAME">%1$s</xliff:g> pääsyn tähän treenireittiin Health Connectissa?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Tämä sovellus voi nähdä aiemman sijaintisi reitillä"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Ladataan…"</string>
 </resources>

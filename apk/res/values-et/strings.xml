@@ -24,7 +24,7 @@
     <string name="all_categories_title" msgid="3963693021187107088">"Kõik kategooriad"</string>
     <string name="see_all_categories" msgid="5620285287530764592">"Kuva kõik kategooriad"</string>
     <string name="no_data" msgid="1120552294863595549">"Andmed puuduvad"</string>
-    <string name="connected_apps_title" msgid="5235697695812028208">"Rakenduse load"</string>
+    <string name="connected_apps_title" msgid="5235697695812028208">"Rakenduste load"</string>
     <string name="connected_apps_subtitle" msgid="3605531955208324416">"Rakenduste ja lubade haldamine"</string>
     <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> rakendusel <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>-st on juurdepääs"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> rakendusel on juurdepääs"</string>
@@ -291,7 +291,7 @@
     <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Mine tagasi"</string>
     <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Alustage"</string>
     <string name="delete_button_content_description" msgid="7102925022391975365">"Kustuta andmed"</string>
-    <string name="time_range_title" msgid="3275113129489801443">"Valige kuupäev, mis kustutada"</string>
+    <string name="time_range_title" msgid="3275113129489801443">"Valige kustutatavad andmed"</string>
     <string name="time_range_next_button" msgid="6231771008239100525">"Järgmine"</string>
     <string name="time_range_message_all" msgid="7602288625100089210">"Jäädavalt kustutatakse kõik andmed, mis lisati valitud ajavahemikus rakendusse Health Connect."</string>
     <string name="time_range_message_data_type" msgid="5725562126119560293">"Jäädavalt kustutatakse kõik <xliff:g id="DATA_TYPE">%s</xliff:g>-tüüpi andmed, mis lisati valitud ajavahemikus rakendusse Health Connect."</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Abi"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Kas lubada rakendusel <xliff:g id="APP_NAME">%1$s</xliff:g> sellele treeningu marsruudile Health Connectis juurde pääseda?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"See rakendus saab lugeda teie varasemat asukohta marsruudil"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Laadimine …"</string>
 </resources>

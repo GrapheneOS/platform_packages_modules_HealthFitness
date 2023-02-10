@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"帮助"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"允许 <xliff:g id="APP_NAME">%1$s</xliff:g> 访问 Health Connect 中的此锻炼路线？"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"此应用将能够读取路线中过去的位置"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"正在加载…"</string>
 </resources>

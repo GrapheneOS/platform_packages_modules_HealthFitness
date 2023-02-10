@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Usizo"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Vumela i-<xliff:g id="APP_NAME">%1$s</xliff:g> ukufinyelela lo mzila wokujima ku-Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Le-app izokwazi ukufunda indawo yakho edlule emzileni"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Iyalayisha…"</string>
 </resources>
