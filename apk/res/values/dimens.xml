@@ -49,5 +49,7 @@
 
     <dimen name="list_item_min_height">64dp</dimen>
     <dimen name="recent_access_item_min_height">56dp</dimen>
+    <dimen name="recent_access_fab_bottom_padding">90dp</dimen>
+
 
 </resources>

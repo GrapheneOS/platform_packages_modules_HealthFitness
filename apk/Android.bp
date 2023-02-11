@@ -80,6 +80,7 @@ android_library {
         "androidx.navigation_navigation-ui-ktx",
         "androidx.annotation_annotation",
         "androidx.lifecycle_lifecycle-extensions",
+        "androidx.core_core-ktx",
         "SettingsLibCollapsingToolbarBaseActivity",
         "SettingsLibFooterPreference",
         "SettingsLibHelpUtils",

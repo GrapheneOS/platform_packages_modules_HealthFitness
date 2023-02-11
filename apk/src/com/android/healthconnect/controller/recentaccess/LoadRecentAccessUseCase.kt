@@ -16,8 +16,8 @@
 
 package com.android.healthconnect.controller.recentaccess
 
-import android.health.connect.accesslog.AccessLog
 import android.health.connect.HealthConnectManager
+import android.health.connect.accesslog.AccessLog
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
@@ -59,6 +59,7 @@ constructor(
 
             val instant24Hours =
                 Instant.ofEpochMilli(timeSource.currentTimeMillis()).minus(Duration.ofDays(1))
+
             // only need the last 24 hours of access logs
             accessLogs
                 .filter { accessLog -> accessLog.accessTime.isAfter(instant24Hours) }

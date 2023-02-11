@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_recentAccessFragment_to_connectedAppFragment"
             app:destination="@id/connectedAppFragment" />
+        <action
+            android:id="@+id/action_recentAccessFragment_to_connectedAppsFragment"
+            app:destination="@+id/connectedAppsFragment" />
     </fragment>
 
     <fragment
@@ -40,7 +43,7 @@
         <action
             android:id="@+id/action_homeFragment_to_recentAccessFragment"
             app:destination="@id/recentAccessFragment" />
-       <action
+        <action
             android:id="@+id/action_homeFragment_to_connectedAppsFragment"
             app:destination="@id/connectedAppsFragment" />
     </fragment>
