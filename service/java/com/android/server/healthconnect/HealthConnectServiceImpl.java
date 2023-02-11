@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect;
 
+import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
@@ -38,6 +39,9 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.AttributionSource;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
 import android.health.connect.Constants;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
@@ -934,14 +938,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
     // intent.
     @Override
-    public void startMigration(IMigrationCallback callback) {
-        mContext.enforceCallingOrSelfPermission(
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
-                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    public void startMigration(@NonNull String packageName, IMigrationCallback callback) {
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mContext.enforcePermission(
+                                MIGRATE_HEALTH_CONNECT_DATA,
+                                pid,
+                                uid,
+                                "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
+                        enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateStartMigration();
                         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IN_PROGRESS);
                         callback.onSuccess();
@@ -955,13 +964,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
     // intent.
     @Override
-    public void finishMigration(IMigrationCallback callback) {
-        mContext.enforceCallingOrSelfPermission(
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
-                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    public void finishMigration(@NonNull String packageName, IMigrationCallback callback) {
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
+
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mContext.enforcePermission(
+                                MIGRATE_HEALTH_CONNECT_DATA,
+                                pid,
+                                uid,
+                                "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
+                        enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateFinishMigration();
                         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
@@ -976,15 +991,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
     // intent.
     @Override
-    public void writeMigrationData(List<MigrationEntity> entities, IMigrationCallback callback) {
-        mContext.enforceCallingOrSelfPermission(
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
-                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    public void writeMigrationData(
+            @NonNull String packageName,
+            List<MigrationEntity> entities,
+            IMigrationCallback callback) {
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
 
         // TODO(b/266553246): Validate write migration data after state cleanup is implemented
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mContext.enforcePermission(
+                                MIGRATE_HEALTH_CONNECT_DATA,
+                                pid,
+                                uid,
+                                "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
+                        enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateWriteMigrationData();
                         getDataMigrationManager(getCallingUserHandle()).apply(entities);
                         callback.onSuccess();
@@ -1008,17 +1031,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     public void insertMinDataMigrationSdkExtensionVersion(
-            int requiredSdkExtension, IMigrationCallback callback) {
-
-        mContext.enforceCallingOrSelfPermission(
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA,
-                "Caller does not have " + Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+            @NonNull String packageName, int requiredSdkExtension, IMigrationCallback callback) {
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        mContext.enforcePermission(
+                                MIGRATE_HEALTH_CONNECT_DATA,
+                                pid,
+                                uid,
+                                "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
+                        enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateSetMinSdkVersion();
-
                         mMigrationStateManager.setMinDataMigrationSdkExtensionVersion(
                                 requiredSdkExtension);
 
@@ -1413,6 +1439,41 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 DeviceInfoHelper.getInstance(),
                 AppInfoHelper.getInstance(),
                 RecordHelperProvider.getInstance());
+    }
+
+    private void enforceCallingPackageBelongsToUid(String packageName, int callingUid) {
+        int packageUid;
+        try {
+            packageUid =
+                    mContext.getPackageManager()
+                            .getPackageUid(
+                                    packageName, /* flags */ PackageManager.PackageInfoFlags.of(0));
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new IllegalStateException(packageName + " not found");
+        }
+        if (packageUid != callingUid) {
+            throw new SecurityException(packageName + " does not belong to uid " + callingUid);
+        }
+    }
+
+    private void enforceShowMigrationInfoIntent(String packageName, int callingUid) {
+        enforceCallingPackageBelongsToUid(packageName, callingUid);
+
+        Intent intentToCheck =
+                new Intent(HealthConnectManager.ACTION_SHOW_MIGRATION_INFO).setPackage(packageName);
+
+        ResolveInfo resolveResult =
+                mContext.getPackageManager()
+                        .resolveActivity(
+                                intentToCheck,
+                                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL));
+
+        if (Objects.isNull(resolveResult)) {
+            throw new IllegalArgumentException(
+                    packageName
+                            + " does not handle intent "
+                            + HealthConnectManager.ACTION_SHOW_MIGRATION_INFO);
+        }
     }
 
     private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {

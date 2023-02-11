@@ -187,27 +187,33 @@ interface IHealthConnectService {
     /**
      * Marks the start of the migration.
      *
+     * @param packageName calling package name
      * @param callback Callback to receive a result or an error encountered while performing this
      * operation.
      */
-    void startMigration(in IMigrationCallback callback);
+    void startMigration(String packageName, in IMigrationCallback callback);
 
     /**
      * Marks the end of the migration.
      *
+     * @param packageName calling package name
      * @param callback Callback to receive a result or an error encountered while performing this
      * operation.
      */
-    void finishMigration(in IMigrationCallback callback);
+    void finishMigration(String packageName, in IMigrationCallback callback);
 
     /**
      * Writes given entities to the module database.
      *
+     * @param packageName calling package name
      * @param entities List of {@link MigrationEntity} to migrate.
      * @param callback Callback to receive a result or an error encountered while performing this
      * operation.
      */
-    void writeMigrationData(in List<MigrationEntity> entities, in IMigrationCallback callback);
+    void writeMigrationData(
+        String packageName,
+        in List<MigrationEntity> entities,
+        in IMigrationCallback callback);
 
     /**
      * Returns true if Healthconnect api is blocked due to migration or restore in progress.
@@ -215,10 +221,12 @@ interface IHealthConnectService {
     boolean isApiBlockedDueToDataSync();
 
     /**
+     * @param packageName calling package name
      * @param callback Callback to receive a result or an error encountered while performing this
      * operation.
      */
     void insertMinDataMigrationSdkExtensionVersion(
+        String packageName,
         int requiredSdkExtension,
         in IMigrationCallback callback);
 
