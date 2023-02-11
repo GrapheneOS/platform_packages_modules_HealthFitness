@@ -266,7 +266,7 @@
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"Aplikacionet joaktive"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Këto aplikacione nuk kanë më qasje, por kanë ende të dhëna të ruajtura në Health Connect"</string>
     <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> mund të ketë qasje te të dhënat e shtuara pas datës <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="3408425226133353014">"Për të menaxhuar lejet e tjera tek të cilat ky aplikacion mund të ketë qasje, shko te \"Cilësimet &gt; Aplikacionet\""</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"Për të menaxhuar lejet e tjera tek të cilat ky aplikacion mund të ketë qasje, shko te Cilësimet &gt; Aplikacionet"</string>
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"Të dhënat që ndan me <xliff:g id="APP_NAME">%1$s</xliff:g> mbulohen nga politika e privatësisë së tij"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Për të menaxhuar lejet e tjera të Android tek të cilat mund të ketë qasje ky aplikacion, shko te \"Cilësimet\" dhe më pas trokit tek \"Aplikacionet\""</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Lexo politikën e privatësisë"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Ndihma"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Të lejohet që <xliff:g id="APP_NAME">%1$s</xliff:g> të ketë qasje te ky itinerar stërvitjeje në Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Ky aplikacion do të mund të lexojë vendndodhjen tënde të mëparshme në itinerar"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Po ngarkohet…"</string>
 </resources>

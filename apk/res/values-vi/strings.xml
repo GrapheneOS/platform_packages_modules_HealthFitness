@@ -259,7 +259,7 @@
     <string name="no_apps_allowed" msgid="1006840024939920418">"Chưa cho phép ứng dụng nào"</string>
     <string name="no_apps_denied" msgid="5248752441339902085">"Chưa từ chối ứng dụng nào"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Xoá quyền truy cập của mọi ứng dụng?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Không ứng dụng nào của bạn có thể truy cập hoặc thêm dữ liệu mới vào Health Connect. Điều này không xoá bất kỳ dữ liệu nào hiện có.\n\nĐiều này không ảnh hưởng đến các quyền khác mà ứng dụng có thể có, chẳng hạn như quyền đối với thông tin vị trí, máy ảnh hoặc micrô."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Không ứng dụng nào của bạn có thể truy cập hoặc thêm dữ liệu mới vào Health Connect. Thao tác này không xoá dữ liệu hiện có.\n\nThao tác này không ảnh hưởng đến các quyền khác mà ứng dụng có thể có, chẳng hạn như quyền đối với thông tin vị trí, máy ảnh hoặc micrô."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Xoá tất cả"</string>
     <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Quản lý ứng dụng"</string>
     <string name="delete_app_data" msgid="2694002637558981031">"Xoá dữ liệu ứng dụng"</string>
@@ -329,7 +329,7 @@
     <string name="delete_dialog_success_message" msgid="1412434616763639749">"Health Connect không còn lưu trữ dữ liệu này nữa."</string>
     <string name="delete_progress_indicator" msgid="6446736923548413592">"Đang xoá dữ liệu"</string>
     <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Không xoá được dữ liệu"</string>
-    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Đã xảy ra vấn đề và Health Connect không xoá được dữ liệu của bạn"</string>
+    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Đã xảy ra sự cố nên Health Connect không xoá được dữ liệu của bạn"</string>
     <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Thử lại"</string>
     <string name="delete_data_notification_title" msgid="5445676878692242897">"Đang xoá dữ liệu trong Health Connect"</string>
     <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Đang xoá dữ liệu trong Health Connect"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Trợ giúp"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Cho phép <xliff:g id="APP_NAME">%1$s</xliff:g> truy cập tuyến bài tập này trong Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Ứng dụng này sẽ có thể đọc vị trí trước đây của bạn trong định tuyến"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Đang tải…"</string>
 </resources>

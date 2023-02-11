@@ -328,7 +328,7 @@
     <string name="delete_dialog_success_title" msgid="8645983649329184701">"Dataene er slettet"</string>
     <string name="delete_dialog_success_message" msgid="1412434616763639749">"Disse data gemmes ikke længere i Health Connect."</string>
     <string name="delete_progress_indicator" msgid="6446736923548413592">"Dine data slettes"</string>
-    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Dataene kunne ikke slettes."</string>
+    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Dataene kunne ikke slettes"</string>
     <string name="delete_dialog_failure_message" msgid="722958589350385071">"Noget gik galt, og Health Connect kunne ikke slette dine data"</string>
     <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Prøv igen"</string>
     <string name="delete_data_notification_title" msgid="5445676878692242897">"Sletter Health Connect-data"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Hjælp"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til denne træningsrute i Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Denne app vil kunne læse din seneste lokation på ruten"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Indlæser…"</string>
 </resources>

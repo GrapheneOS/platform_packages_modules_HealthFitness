@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"እገዛ"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"<xliff:g id="APP_NAME">%1$s</xliff:g> በጤና አገናኝ ውስጥ ይህን የልምምድ መስመር እንዲደርስ ይፈቀድለት?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"ይህ መተግበሪያ በመስመሩ ውስጥ የእርስዎን የበፊት አካባቢ ማንበብ ይችላል"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"በመጫን ላይ…"</string>
 </resources>

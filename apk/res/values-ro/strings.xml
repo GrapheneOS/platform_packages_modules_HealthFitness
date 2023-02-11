@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Ajutor"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Permiți ca <xliff:g id="APP_NAME">%1$s</xliff:g> să acceseze acest traseu pentru exerciții în Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Aplicația va putea să citească locația ta anterioară de pe traseu"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Se încarcă…"</string>
 </resources>

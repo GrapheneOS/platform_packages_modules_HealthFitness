@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Guida"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Vuoi consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a questo percorso per l\'esercizio fisico in Connessione Salute?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Questa app potrà leggere la tua posizione precedente nel percorso"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Caricamento in corso…"</string>
 </resources>

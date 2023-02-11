@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"도움말"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"<xliff:g id="APP_NAME">%1$s</xliff:g>에서 헬스 커넥트에 있는 이 운동 경로에 액세스할 수 있도록 허용하시겠습니까?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"이 앱이 경로에 포함된 나의 과거 위치를 읽을 수 있게 됩니다."</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"로드 중…"</string>
 </resources>

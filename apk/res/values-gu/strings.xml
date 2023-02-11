@@ -648,7 +648,7 @@
     <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{# મહિના પછી}one{# મહિના પછી}other{# મહિના પછી}}"</string>
     <string name="range_never" msgid="7960509623911908545">"ક્યારેય નહીં"</string>
     <string name="auto_delete_rationale" msgid="5560024057140990346">"જ્યારે તમે આ સેટિંગમાં ફેરફાર કરો, ત્યારે Health Connect તમારી નવી પસંદગીઓને દર્શાવવા માટે વર્તમાન ડેટાને ડિલીટ કરે છે"</string>
-    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{# મહિના પછી ઑટોમૅટિક રીતે ડિલીટ કરીએ?}one{# મહિના પછી ઑટોમૅટિક રીતે ડિલીટ કરીએ?}other{# મહિના પછી ઑટોમૅટિક રીતે ડિલીટ કરીએ?}}"</string>
+    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{# મહિના પછી ઑટોમૅટિક રીતે ડેટા ડિલીટ કરીએ?}one{# મહિના પછી ઑટોમૅટિક રીતે ડેટા ડિલીટ કરીએ?}other{# મહિના પછી ઑટોમૅટિક રીતે ડેટા ડિલીટ કરીએ?}}"</string>
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect # મહિના પછી નવો ડેટા ઑટોમૅટિક રીતે ડિલીટ કરશે. આને સેટ કરવાથી # મહિનાથી વધુ જૂનો વર્તમાન ડેટા પણ ડિલીટ કરવામાં આવશે.}one{Health Connect # મહિના પછી નવો ડેટા ઑટોમૅટિક રીતે ડિલીટ કરશે. આને સેટ કરવાથી # મહિનાથી વધુ જૂનો વર્તમાન ડેટા પણ ડિલીટ કરવામાં આવશે.}other{Health Connect # મહિના પછી નવો ડેટા ઑટોમૅટિક રીતે ડિલીટ કરશે. આને સેટ કરવાથી # મહિનાથી વધુ જૂનો વર્તમાન ડેટા પણ ડિલીટ કરવામાં આવશે.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"ઑટોમૅટિક રીતે ડિલીટ કરવાનું સેટ કરો"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"વર્તમાન ડેટા ડિલીટ કરવામાં આવશે"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"સહાય"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"શું <xliff:g id="APP_NAME">%1$s</xliff:g>ને Health Connectમાં વ્યાયામનો આ રસ્તો ઍક્સેસ કરવાની મંજૂરી આપીએ?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"આ ઍપ રસ્તામાં તમારા ભૂતકાળના લોકેશન વાંચી શકશે"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"લોડ કરી રહ્યાં છીએ…"</string>
 </resources>

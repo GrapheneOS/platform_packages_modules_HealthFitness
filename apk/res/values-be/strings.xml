@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Даведка"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Дазволіць праграме \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ да гэтага маршруту трэніроўкі ў праграме \"Здароўе і спорт\"?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Гэта праграма зможа счытваць даныя пра ваша ранейшае месцазнаходжанне на маршруце"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Ідзе загрузка…"</string>
 </resources>

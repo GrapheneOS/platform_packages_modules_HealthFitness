@@ -238,7 +238,7 @@
     <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Ez eman baimenik"</string>
     <string name="request_permissions_header_desc" msgid="5753544536663743243">"Aukeratu aplikazio honek Health Connect-en irakurri edo idatz ditzakeen datuak"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Datuak irakurtzeko baimena ematen badiozu, datu berriak eta azken 30 egunetako datuak irakurri ahal izango ditu aplikazioak"</string>
-    <string name="request_permissions_header_title" msgid="547885377986067898">"Health Connect atzitzeko baimena eman nahi diozu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari?"</string>
+    <string name="request_permissions_header_title" msgid="547885377986067898">"Health Connect erabiltzeko baimena eman nahi diozu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari?"</string>
     <string name="request_permissions_rationale" msgid="3547870645483857817">"<xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak zuri buruzko datuak nola kudeatzen dituen jakiteko, ikusi garatzailearen <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"pribatutasun-gidalerroak"</string>
     <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Baimen guztiak kendu nahi dituzu?"</string>
@@ -250,7 +250,7 @@
     <string name="default_error" msgid="7047939092442348839">"Arazoren bat izan da. Saiatu berriro."</string>
     <string name="health_permission_header_description" msgid="1352043269233254085">"Baimen hau duten aplikazioek zure osasunari buruzko datuak irakurri eta idatz ditzakete."</string>
     <string name="connected_apps_text" msgid="3656264326437387180">"Kontrolatu zein aplikaziok atzi ditzaketen Health Connect-eko datuak. Sakatu aplikazio bat zein datu irakurri edo idatz ditzakeen berrikusteko."</string>
-    <string name="connected_apps_section_title" msgid="3180510930742701840">"Atzitzeko baimena dutenak"</string>
+    <string name="connected_apps_section_title" msgid="3180510930742701840">"Erabiltzeko baimena dutenak"</string>
     <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Atzitzeko baimenik ez dutenak"</string>
     <string name="settings_and_help_header" msgid="56459390338790190">"Ezarpenak eta laguntza"</string>
     <string name="disconnect_all_apps" msgid="8400128470487727928">"Kendu sarbidea aplikazio guztiei"</string>
@@ -670,7 +670,7 @@
     <string name="search_connected_apps" msgid="6129467632620352061">"Bilatu aplikazioak"</string>
     <string name="no_results" msgid="4935646951230345730">"Ez dago emaitzarik"</string>
     <string name="help" msgid="6096599033945360524">"Laguntza"</string>
-    <string name="request_route_header_title" msgid="1350262014182621609">"Health Connect-en ariketari dagokion ibilbidea atzitzeko baimena eman nahi diozu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari?"</string>
+    <string name="request_route_header_title" msgid="1350262014182621609">"Health Connect-en ariketari dagokion ibilbidea erabiltzeko baimena eman nahi diozu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Ibilbidean izan dituzun iraganeko kokapenak irakurtzeko gai izango da aplikazioa"</string>
     <string name="loading" msgid="5416387523241743987">"Kargatzen…"</string>
 </resources>

@@ -265,7 +265,7 @@
     <string name="delete_app_data" msgid="2694002637558981031">"Hapus data aplikasi"</string>
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"Aplikasi yang tidak aktif"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"Aplikasi ini tidak lagi memiliki akses, tetapi masih memiliki data yang tersimpan di Health Connect"</string>
-    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat mengakses data yang ditambahkan setelah <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> dapat mengakses data yang ditambahkan setelah <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="3408425226133353014">"Untuk mengelola izin Android lainnya yang dapat diakses oleh aplikasi ini, buka Setelan &gt; Aplikasi"</string>
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"Data yang Anda bagikan ke <xliff:g id="APP_NAME">%1$s</xliff:g> dilindungi oleh kebijakan privasinya"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Untuk mengelola izin Android lainnya yang dapat diakses oleh aplikasi ini, buka Setelan, lalu ketuk Aplikasi"</string>
@@ -283,7 +283,7 @@
     <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Jika aplikasi ditangguhkan atau dihapus dari Google Play, Health Connect akan otomatis menghapus izinnya.\n\nArtinya, aplikasi tidak dapat lagi mengakses data yang disimpan di Health Connect. Jika sebelumnya aplikasi telah menulis data, aplikasi akan ditampilkan di daftar aplikasi tidak aktif."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"Oke"</string>
     <string name="onboarding_title" msgid="1175348642301557799">"Mulai Menggunakan Health Connect"</string>
-    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect menyimpan data kesehatan dan kebugaran Anda, yang memberi Anda cara sederhana untuk menyinkronkan berbagai aplikasi di ponsel"</string>
+    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect menyimpan data kesehatan dan kebugaran Anda supaya Anda dapat menyinkronkan berbagai aplikasi di ponsel dengan mudah"</string>
     <string name="share_data" msgid="3461840023402996573">"Berbagi data dengan aplikasi lainnya"</string>
     <string name="share_data_description" msgid="3419415806525775710">"Pilih data yang dapat dibaca atau ditulis ke Health Connect oleh setiap aplikasi"</string>
     <string name="manage_your_settings" msgid="3636705762746537108">"Kelola setelan dan privasi"</string>
@@ -646,13 +646,13 @@
     <string name="auto_delete_learn_more" msgid="3247070192871987847">"Pelajari lebih lanjut"</string>
     <string name="auto_delete_section" msgid="9211252344455317906">"Hapus otomatis data"</string>
     <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Setelah # bulan}other{Setelah # bulan}}"</string>
-    <string name="range_never" msgid="7960509623911908545">"Tidak pernah"</string>
+    <string name="range_never" msgid="7960509623911908545">"Jangan pernah"</string>
     <string name="auto_delete_rationale" msgid="5560024057140990346">"Jika Anda mengubah setelan ini, Health Connect akan menghapus data yang ada untuk menerapkan preferensi baru"</string>
     <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Hapus otomatis data setelah # bulan?}other{Hapus otomatis data setelah # bulan?}}"</string>
     <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect akan menghapus otomatis data baru setelah # bulan. Menyetel ini juga akan menghapus data lama yang berumur lebih dari # bulan.}other{Health Connect akan menghapus otomatis data baru setelah # bulan. Menyetel ini juga akan menghapus data lama yang berumur lebih dari # bulan.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Setel hapus otomatis"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Data yang ada akan dihapus"</string>
-    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect akan menghapus semua data yang berumur lebih dari # bulan. Mungkin perlu waktu satu hari agar perubahan ini diterapkan ke aplikasi terhubung.}other{Health Connect akan menghapus semua data yang berumur lebih dari # bulan. Mungkin perlu waktu satu hari agar perubahan ini diterapkan ke aplikasi terhubung.}}"</string>
+    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect akan menghapus semua data yang berumur lebih dari # bulan. Penerapan perubahan ini ke aplikasi yang terhubung mungkin perlu waktu sampai satu hari.}other{Health Connect akan menghapus semua data yang berumur lebih dari # bulan. Penerapan perubahan ini ke aplikasi yang terhubung mungkin perlu waktu sampai satu hari.}}"</string>
     <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Data yang akan dihapus dari kategori ini"</string>
     <string name="deletion_started_done_button" msgid="3502852477322616722">"Selesai"</string>
     <string name="priority_dialog_title" msgid="7095478075034320176">"Setel prioritas aplikasi"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Bantuan"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses rute olahraga ini di Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Aplikasi ini akan dapat membaca semua lokasi sebelumnya di rute"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Memuat …"</string>
 </resources>

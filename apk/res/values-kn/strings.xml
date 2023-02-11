@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"ಸಹಾಯ"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Health Connect ನಲ್ಲಿನ ಈ ವ್ಯಾಯಾಮದ ಮಾರ್ಗವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು <xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ಅನುಮತಿಸಬೇಕೆ?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"ಮಾರ್ಗದಲ್ಲಿರುವ ನಿಮ್ಮ ಹಿಂದಿನ ಸ್ಥಳವನ್ನು ರೀಡ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"ಲೋಡ್ ಆಗುತ್ತಿದೆ…"</string>
 </resources>

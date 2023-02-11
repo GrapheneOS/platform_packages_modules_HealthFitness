@@ -672,5 +672,5 @@
     <string name="help" msgid="6096599033945360524">"說明"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取 Health Connect 中的這條運動路線嗎？"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"此應用程式可以讀取您過去在此路線上的位置"</string>
-    <string name="loading" msgid="5416387523241743987">"載入中…"</string>
+    <string name="loading" msgid="5416387523241743987">"正在載入…"</string>
 </resources>

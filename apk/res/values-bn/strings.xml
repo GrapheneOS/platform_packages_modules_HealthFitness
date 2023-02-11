@@ -266,7 +266,7 @@
     <string name="inactive_apps_section_title" msgid="2773413377510525846">"বন্ধ থাকা অ্যাপ"</string>
     <string name="inactive_apps_section_message" msgid="5865391169046974428">"এইসব অ্যাপের আর অ্যাক্সেস না থাকলেও, এখনও এদের ডেটা Health Connect-এ সেভ করা আছে"</string>
     <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g>, <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>-এর পরে যোগ করা যেকোনও ডেটা অ্যাক্সেস করতে পারবে"</string>
-    <string name="other_android_permissions" msgid="3408425226133353014">"এই অ্যাপের অ্যাক্সেস থাকা অন্যান্য Android অনুমতি ম্যানেজ করতে, সেটিংস ও তারপরে \'অ্যাপ\' বিকল্পে যান"</string>
+    <string name="other_android_permissions" msgid="3408425226133353014">"এই অ্যাপ অ্যাক্সেস করতে পারে এমন সব Android অনুমতি ম্যানেজ করতে \'সেটিংস &gt; অ্যাপ\' বিকল্পে যান"</string>
     <string name="manage_permissions_rationale" msgid="3159759998704130034">"<xliff:g id="APP_NAME">%1$s</xliff:g>-এর সাথে আপনার শেয়ার করা ডেটা তার গোপনীয়তা নীতি অনুযায়ী প্রযোজ্য"</string>
     <string name="other_android_permissions_content_description" msgid="4980418846778370352">"এই অ্যাপের অ্যাক্সেস থাকা অন্যান্য Android অনুমতি ম্যানেজ করতে, প্রথমে সেটিংসে যান, তারপরে \'অ্যাপ\' বিকল্পে ট্যাপ করুন"</string>
     <string name="manage_permissions_learn_more" msgid="8137141655140907242">"গোপনীয়তা নীতি পড়ুন"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"সহায়তা"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Health Connect-এ এই ব্যায়াম সম্পর্কিত রুটিন অ্যাক্সেস করার ক্ষেত্রে <xliff:g id="APP_NAME">%1$s</xliff:g>-কে অনুমতি দেবেন?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"রুটে আপনার আগের লোকেশন এই অ্যাপ দেখতে পারবে"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"লোড হচ্ছে…"</string>
 </resources>

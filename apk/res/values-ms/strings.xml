@@ -649,7 +649,7 @@
     <string name="range_never" msgid="7960509623911908545">"Tidak sekali-kali"</string>
     <string name="auto_delete_rationale" msgid="5560024057140990346">"Apabila anda mengubah tetapan ini, Health Connect memadamkan data sedia ada untuk memaparkan pilihan baharu anda"</string>
     <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Autopadam data selepas # bulan?}other{Autopadam data selepas # bulan?}}"</string>
-    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect akan autopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}other{Health Connect akan autopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}}"</string>
+    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect akan mengautopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}other{Health Connect akan mengautopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}}"</string>
     <string name="set_auto_delete_button" msgid="302211603856152720">"Tetapkan autopadam"</string>
     <string name="deletion_started_title" msgid="2182642613917857247">"Data sedia ada akan dipadamkan"</string>
     <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect akan memadamkan semua data yang melebihi # bulan. Perubahan ini mungkin mengambil masa sehari untuk dipaparkan dalam apl anda yang disambungkan.}other{Health Connect akan memadamkan semua data yang melebihi # bulan. Perubahan ini mungkin mengambil masa sehari untuk dipaparkan dalam apl anda yang disambungkan.}}"</string>
@@ -672,6 +672,5 @@
     <string name="help" msgid="6096599033945360524">"Bantuan"</string>
     <string name="request_route_header_title" msgid="1350262014182621609">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses laluan senaman ini di Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Apl ini akan dapat membaca lokasi masa lalu anda dalam laluan"</string>
-    <!-- no translation found for loading (5416387523241743987) -->
-    <skip />
+    <string name="loading" msgid="5416387523241743987">"Memuatkan…"</string>
 </resources>
