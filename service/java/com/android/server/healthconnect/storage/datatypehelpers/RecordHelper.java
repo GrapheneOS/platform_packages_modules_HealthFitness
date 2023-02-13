@@ -100,9 +100,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return mRecordIdentifier;
     }
 
-    // Called on DB update. Inheriting classes should implement this if they need to add new
-    // columns.
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
+    /**
+     * Called on DB update. Inheriting classes should implement this if they need to add new columns
+     * or tables.
+     */
+    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         // empty by default
     }
 

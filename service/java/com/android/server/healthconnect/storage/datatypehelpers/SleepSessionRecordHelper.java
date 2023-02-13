@@ -16,12 +16,14 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
 import android.util.Pair;
@@ -48,10 +50,19 @@ public final class SleepSessionRecordHelper
     private static final String NOTES_COLUMN_NAME = "notes";
     private static final String TITLE_COLUMN_NAME = "title";
 
+    private static final int NO_SLEEP_TABLE_DB_VERSION = 1;
+
     /** Returns the table name to be created corresponding to this helper */
     @Override
     String getMainTableName() {
         return SLEEP_SESSION_RECORD_TABLE_NAME;
+    }
+
+    @Override
+    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion <= NO_SLEEP_TABLE_DB_VERSION) {
+            createTable(db, getCreateTableRequest());
+        }
     }
 
     @Override
