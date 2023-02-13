@@ -126,11 +126,11 @@ public final class AggregationTypeIdMapper {
                         RestingHeartRateRecord.BPM_AVG,
                         WHEEL_CHAIR_PUSHES_COUNT_TOTAL,
                         HEART_MEASUREMENTS_COUNT));
-        addPowerIdsToAggregateResultMap(
-                Arrays.asList(BASAL_CALORIES_TOTAL, POWER_MIN, POWER_MAX, POWER_AVG));
+        addPowerIdsToAggregateResultMap(Arrays.asList(POWER_MIN, POWER_MAX, POWER_AVG));
         addEnergyIdsToAggregateResultMap(
                 Arrays.asList(
                         ACTIVE_CALORIES_TOTAL,
+                        BASAL_CALORIES_TOTAL,
                         ENERGY_TOTAL,
                         ENERGY_FROM_FAT_TOTAL,
                         TotalCaloriesBurnedRecord.ENERGY_TOTAL));

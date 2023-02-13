@@ -33,6 +33,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Power;
 import android.platform.test.annotations.AppModeFull;
 
@@ -299,9 +300,9 @@ public class BasalMetabolicRateRecordTest {
     public void testAggregation_BasalCaloriesBurntTotal() throws Exception {
         List<Record> records =
                 Arrays.asList(getBasalMetabolicRateRecord(25.5), getBasalMetabolicRateRecord(71.5));
-        AggregateRecordsResponse<Power> oldResponse =
+        AggregateRecordsResponse<Energy> oldResponse =
                 TestUtils.getAggregateResponse(
-                        new AggregateRecordsRequest.Builder<Power>(
+                        new AggregateRecordsRequest.Builder<Energy>(
                                         new TimeInstantRangeFilter.Builder()
                                                 .setStartTime(Instant.ofEpochMilli(0))
                                                 .setEndTime(Instant.now().plus(3, ChronoUnit.DAYS))
@@ -310,9 +311,9 @@ public class BasalMetabolicRateRecordTest {
                                 .build(),
                         records);
         List<Record> recordNew = Arrays.asList(getBasalMetabolicRateRecord(45.5));
-        AggregateRecordsResponse<Power> newResponse =
+        AggregateRecordsResponse<Energy> newResponse =
                 TestUtils.getAggregateResponse(
-                        new AggregateRecordsRequest.Builder<Power>(
+                        new AggregateRecordsRequest.Builder<Energy>(
                                         new TimeInstantRangeFilter.Builder()
                                                 .setStartTime(Instant.ofEpochMilli(0))
                                                 .setEndTime(Instant.now().plus(3, ChronoUnit.DAYS))
@@ -321,9 +322,9 @@ public class BasalMetabolicRateRecordTest {
                                 .build(),
                         recordNew);
         assertThat(newResponse.get(BASAL_CALORIES_TOTAL)).isNotNull();
-        Power newPower = newResponse.get(BASAL_CALORIES_TOTAL);
-        Power oldPower = oldResponse.get(BASAL_CALORIES_TOTAL);
-        assertThat(newPower.getInWatts() - oldPower.getInWatts()).isEqualTo(45.5);
+        Energy newEnergy = newResponse.get(BASAL_CALORIES_TOTAL);
+        Energy oldEnergy = oldResponse.get(BASAL_CALORIES_TOTAL);
+        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(45.5);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(BASAL_CALORIES_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
