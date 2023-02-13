@@ -67,11 +67,11 @@ class LoadExerciseRouteUseCaseTest {
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
 
-        val result = useCase.invoke("test_id") as UseCaseResults.Success<ExerciseRoute>
+        val result = useCase.invoke("test_id") as UseCaseResults.Success<ExerciseSessionRecord>
 
         verify(manager, times(1)).readRecords(listCaptor.capture(), any(), any())
         assertThat(listCaptor.value.getRecordIdFilters()[0].id).isEqualTo("test_id")
-        assertThat(result.data).isEqualTo(ExerciseRoute(listOf()))
+        assertThat(result.data).isEqualTo(null)
     }
 
     @Test
@@ -90,42 +90,43 @@ class LoadExerciseRouteUseCaseTest {
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
 
-        val result = useCase.invoke("test_id") as UseCaseResults.Success<ExerciseRoute>
+        val result = useCase.invoke("test_id") as UseCaseResults.Success<ExerciseSessionRecord>
 
         verify(manager, times(1)).readRecords(listCaptor.capture(), any(), any())
         assertThat(listCaptor.value.getRecordIdFilters()[0].id).isEqualTo("test_id")
-        assertThat(result.data).isEqualTo(ExerciseRoute(listOf()))
+        assertThat(result.data).isEqualTo(null)
     }
 
     @Test
     fun invoke_returnsRoute() = runTest {
         val start = Instant.ofEpochMilli(1234567891011)
         val end = start.plusMillis(123456)
-        val expectedRoute =
-            ExerciseRoute(
-                listOf(
-                    ExerciseRoute.Location.Builder(start.plusSeconds(12), 52.26019, 21.02268)
-                        .build(),
-                    ExerciseRoute.Location.Builder(start.plusSeconds(40), 52.26000, 21.02360)
-                        .build()))
-        doAnswer(
-                prepareAnswer(
-                    listOf(
-                        ExerciseSessionRecord.Builder(
-                                Metadata.Builder().build(),
-                                start,
-                                end,
-                                ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
-                            .setRoute(expectedRoute)
-                            .build())))
+        val expectedSession =
+            ExerciseSessionRecord.Builder(
+                    Metadata.Builder().build(),
+                    start,
+                    end,
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                .setRoute(
+                    ExerciseRoute(
+                        listOf(
+                            ExerciseRoute.Location.Builder(
+                                    start.plusSeconds(12), 52.26019, 21.02268)
+                                .build(),
+                            ExerciseRoute.Location.Builder(
+                                    start.plusSeconds(40), 52.26000, 21.02360)
+                                .build())))
+                .build()
+
+        doAnswer(prepareAnswer(listOf(expectedSession)))
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
 
-        val result = useCase.invoke("test_id") as UseCaseResults.Success<ExerciseRoute>
+        val result = useCase.invoke("test_id") as UseCaseResults.Success<ExerciseSessionRecord>
 
         verify(manager, times(1)).readRecords(listCaptor.capture(), any(), any())
         assertThat(listCaptor.value.getRecordIdFilters()[0].id).isEqualTo("test_id")
-        assertThat(result.data).isEqualTo(expectedRoute)
+        assertThat(result.data).isEqualTo(expectedSession)
     }
 
     private fun prepareAnswer(

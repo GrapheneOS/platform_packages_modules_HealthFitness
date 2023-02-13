@@ -22,6 +22,9 @@ import android.content.Intent
 import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
 import android.health.connect.datatypes.ExerciseRoute
+import android.health.connect.datatypes.ExerciseSessionRecord
+import android.health.connect.datatypes.ExerciseSessionType
+import android.health.connect.datatypes.Metadata
 import android.widget.Button
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
@@ -35,12 +38,16 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel
 import com.android.healthconnect.controller.route.RouteRequestActivity
+import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -51,23 +58,44 @@ import org.mockito.Mockito.`when`
 class RouteRequestActivityTest {
 
     val START = Instant.ofEpochMilli(1234567891011)
-    val TEST_ROUTE =
-        ExerciseRoute(
-            listOf(
-                ExerciseRoute.Location.Builder(START.plusSeconds(12), 52.26019, 21.02268).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(40), 52.26000, 21.02360).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(48), 52.25973, 21.02356).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(60), 52.25966, 21.02313).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(78), 52.25993, 21.02309).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(79), 52.25972, 21.02271).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(90), 52.25948, 21.02276).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(93), 52.25945, 21.02335).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(94), 52.25960, 21.02338).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(100), 52.25961, 21.02382).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(102), 52.25954, 21.02370).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(105), 52.25945, 21.02362).build(),
-                ExerciseRoute.Location.Builder(START.plusSeconds(109), 52.25954, 21.02354).build(),
-            ))
+    val TEST_SESSION =
+        ExerciseSessionRecord.Builder(
+                Metadata.Builder().build(),
+                START,
+                START.plusMillis(123456),
+                ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+            .setTitle("Session title")
+            .setRoute(
+                ExerciseRoute(
+                    listOf(
+                        ExerciseRoute.Location.Builder(START.plusSeconds(12), 52.26019, 21.02268)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(40), 52.26000, 21.02360)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(48), 52.25973, 21.02356)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(60), 52.25966, 21.02313)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(78), 52.25993, 21.02309)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(79), 52.25972, 21.02271)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(90), 52.25948, 21.02276)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(93), 52.25945, 21.02335)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(94), 52.25960, 21.02338)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(100), 52.25961, 21.02382)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(102), 52.25954, 21.02370)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(105), 52.25945, 21.02362)
+                            .build(),
+                        ExerciseRoute.Location.Builder(START.plusSeconds(109), 52.25954, 21.02354)
+                            .build(),
+                    )))
+            .build()
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @BindValue
@@ -79,6 +107,8 @@ class RouteRequestActivityTest {
     fun setup() {
         hiltRule.inject()
         context = getInstrumentation().context
+        context.setLocale(Locale.US)
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
     }
 
     @Test
@@ -89,7 +119,7 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+        `when`(viewModel.exerciseSession).then { MutableLiveData(TEST_SESSION) }
 
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -107,7 +137,7 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+        `when`(viewModel.exerciseSession).then { MutableLiveData(TEST_SESSION) }
 
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -115,7 +145,6 @@ class RouteRequestActivityTest {
         val returnedIntent = scenario.getResult().getResultData()
         assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isFalse()
     }
-
 
     @Test
     fun intentLaunchesPermissionsActivity_noRoute() {
@@ -126,7 +155,17 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseRoute).then { MutableLiveData(ExerciseRoute(listOf())) }
+        `when`(viewModel.exerciseSession).then {
+            MutableLiveData(
+                ExerciseSessionRecord.Builder(
+                        Metadata.Builder().build(),
+                        START,
+                        START.plusMillis(123456),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                    .setTitle("Session title")
+                    .setRoute(ExerciseRoute(listOf()))
+                    .build())
+        }
 
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -144,7 +183,7 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+        `when`(viewModel.exerciseSession).then { MutableLiveData(TEST_SESSION) }
 
         launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -157,7 +196,7 @@ class RouteRequestActivityTest {
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(withText("Session title")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Date - App")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("February 13, 2009 • app")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withId(R.id.map_view)).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 
@@ -170,7 +209,7 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+        `when`(viewModel.exerciseSession).then { MutableLiveData(TEST_SESSION) }
 
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -192,7 +231,7 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseRoute).then { MutableLiveData(TEST_ROUTE) }
+        `when`(viewModel.exerciseSession).then { MutableLiveData(TEST_SESSION) }
 
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
@@ -204,6 +243,6 @@ class RouteRequestActivityTest {
         val returnedIntent = scenario.getResult().getResultData()
         assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isTrue()
         assertThat(returnedIntent.getParcelableExtra<ExerciseRoute>(EXTRA_EXERCISE_ROUTE))
-            .isEqualTo(TEST_ROUTE)
+            .isEqualTo(TEST_SESSION.route)
     }
 }

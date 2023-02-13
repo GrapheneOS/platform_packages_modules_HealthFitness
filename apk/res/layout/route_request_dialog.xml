@@ -87,15 +87,15 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/session_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Session title"
                 android:textAppearance="?attr/textAppearanceItem"/>
 
             <TextView
+                android:id="@+id/date_app"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date - App"/>
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 
