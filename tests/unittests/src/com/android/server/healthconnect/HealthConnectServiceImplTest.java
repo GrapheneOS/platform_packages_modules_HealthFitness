@@ -17,7 +17,6 @@
 package com.android.server.healthconnect;
 
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
-import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
 
 import static com.android.server.healthconnect.HealthConnectServiceImpl.DATA_DOWNLOAD_STATE_KEY;
 
@@ -44,6 +43,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.server.LocalManagerRegistry;
+import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -72,6 +73,7 @@ public class HealthConnectServiceImplTest {
     @Mock private Context mContext;
     @Mock private Context mServiceContext;
     @Mock private PreferenceHelper mPreferenceHelper;
+    @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
 
     private HealthConnectServiceImpl mHealthConnectService;
     private MockitoSession mStaticMockSession;
@@ -84,6 +86,7 @@ public class HealthConnectServiceImplTest {
                 ExtendedMockito.mockitoSession()
                         .mockStatic(Environment.class)
                         .mockStatic(PreferenceHelper.class)
+                        .mockStatic(LocalManagerRegistry.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
@@ -91,6 +94,8 @@ public class HealthConnectServiceImplTest {
         mMockDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
         when(Environment.getDataDirectory()).thenReturn(mMockDataDirectory);
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
+        when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
+                .thenReturn(mAppOpsManagerLocal);
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -102,9 +107,7 @@ public class HealthConnectServiceImplTest {
 
     @After
     public void tearDown() {
-        mHealthConnectService.updateDataDownloadState(DATA_DOWNLOAD_STATE_UNKNOWN, mUserHandle);
         deleteDir(mMockDataDirectory);
-        mHealthConnectService.deleteAllStagedRemoteData(mUserHandle);
         clearInvocations(mPreferenceHelper);
         mStaticMockSession.finishMocking();
     }

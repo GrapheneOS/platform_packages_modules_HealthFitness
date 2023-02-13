@@ -36,6 +36,7 @@ android_test {
         "androidx.test.runner",
         "mockito-target-extended-minus-junit4",
         "truth-prebuilt",
+        "services.core",
     ],
     jni_libs: [
         // Required for ExtendedMockito
