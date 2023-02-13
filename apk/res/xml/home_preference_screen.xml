@@ -19,7 +19,7 @@
         android:title="@string/home_subtitle" />
     <PreferenceCategory
         android:key="recent_access"
-        android:title="@string/recent_access_header"></PreferenceCategory>
+        android:title="@string/recent_access_header" />
     <PreferenceCategory
         android:key="permissions_and_data_category"
         android:title="@string/permissions_and_data_header">

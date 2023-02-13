@@ -30,19 +30,13 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessFragment
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
-import com.android.healthconnect.controller.tests.utils.TEST_APP
-import com.android.healthconnect.controller.tests.utils.TEST_APP_2
-import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
-import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.tests.utils.*
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
 import java.time.ZoneId
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -112,6 +106,8 @@ class RecentAccessFragmentTest {
         onView(withText("19:40")).check(matches(isDisplayed()))
         onView(withText("Read: Activity, Vitals")).check(matches(isDisplayed()))
         onView(withText("Write: Nutrition, Sleep")).check(matches(isDisplayed()))
+
+        onView(withText("Manage permissions")).check(matches(isDisplayed()))
     }
 
     @Test

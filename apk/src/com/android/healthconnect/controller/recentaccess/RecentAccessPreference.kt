@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter
 /** Custom preference for displaying Recent access apps, including dash lines for timeline views. */
 class RecentAccessPreference
 constructor(context: Context, val recentAccessApp: RecentAccessEntry, val showCategories: Boolean) :
-        Preference(context) {
+    Preference(context) {
 
     private lateinit var appIcon: ImageView
     private lateinit var appTitle: TextView
@@ -60,21 +60,21 @@ constructor(context: Context, val recentAccessApp: RecentAccessEntry, val showCa
         if (showCategories) {
             if (recentAccessApp.dataTypesWritten.isNotEmpty()) {
                 dataTypesWritten.text =
-                        context.getString(
-                                R.string.write_data_access_label,
-                                recentAccessApp.dataTypesWritten.sorted().joinToString(separator) {
-                                    context.getString(it)
-                                })
+                    context.getString(
+                        R.string.write_data_access_label,
+                        recentAccessApp.dataTypesWritten.sorted().joinToString(separator) {
+                            context.getString(it)
+                        })
                 dataTypesWritten.isVisible = true
             }
 
             if (recentAccessApp.dataTypesRead.isNotEmpty()) {
                 dataTypesRead.text =
-                        context.getString(
-                                R.string.read_data_access_label,
-                                recentAccessApp.dataTypesRead.sorted().joinToString(separator) {
-                                    context.getString(it)
-                                })
+                    context.getString(
+                        R.string.read_data_access_label,
+                        recentAccessApp.dataTypesRead.sorted().joinToString(separator) {
+                            context.getString(it)
+                        })
                 dataTypesRead.isVisible = true
             }
         }
