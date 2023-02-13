@@ -287,6 +287,7 @@ public class FloorsClimbedRecordTest {
         for (int i = 0; i < result.size(); i++) {
             FloorsClimbedRecord other = (FloorsClimbedRecord) insertedRecords.get(i);
             assertThat(result.get(i).equals(other)).isTrue();
+            assertThat(result.get(i).getFloors()).isEqualTo(other.getFloors());
         }
     }
 

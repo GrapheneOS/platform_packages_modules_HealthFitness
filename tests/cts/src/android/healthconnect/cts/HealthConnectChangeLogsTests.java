@@ -80,6 +80,8 @@ public class HealthConnectChangeLogsTests {
                                 .build());
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        assertThat(changeLogsRequest.getPageSize()).isNotNull();
+        assertThat(changeLogsRequest.getToken()).isNotNull();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedLogs().size()).isEqualTo(0);
@@ -104,6 +106,8 @@ public class HealthConnectChangeLogsTests {
                                 .build());
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        assertThat(changeLogsRequest.getPageSize()).isNotNull();
+        assertThat(changeLogsRequest.getToken()).isNotNull();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedLogs().size()).isEqualTo(0);
@@ -206,6 +210,8 @@ public class HealthConnectChangeLogsTests {
                                 .build());
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        assertThat(changeLogsRequest.getPageSize()).isNotNull();
+        assertThat(changeLogsRequest.getToken()).isNotNull();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
 
@@ -231,6 +237,8 @@ public class HealthConnectChangeLogsTests {
                                 .build());
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        assertThat(changeLogsRequest.getPageSize()).isNotNull();
+        assertThat(changeLogsRequest.getToken()).isNotNull();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
 
@@ -256,6 +264,8 @@ public class HealthConnectChangeLogsTests {
                                 .build());
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        assertThat(changeLogsRequest.getPageSize()).isNotNull();
+        assertThat(changeLogsRequest.getToken()).isNotNull();
         ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedLogs().size()).isEqualTo(0);

@@ -439,16 +439,19 @@ public class StepsRecordTest {
     @Test
     public void testAggregation_StepsCountTotal() throws Exception {
         List<Record> records = Arrays.asList(getStepsRecord(9), getStepsRecord(9));
+        AggregateRecordsRequest<Long> aggregateRecordsRequest =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.ofEpochMilli(0))
+                                        .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                        .build())
+                        .addAggregationType(STEPS_COUNT_TOTAL)
+                        .build();
+        assertThat(aggregateRecordsRequest.getAggregationTypes()).isNotNull();
+        assertThat(aggregateRecordsRequest.getTimeRangeFilter()).isNotNull();
+        assertThat(aggregateRecordsRequest.getDataOriginsFilters()).isNotNull();
         AggregateRecordsResponse<Long> oldResponse =
-                TestUtils.getAggregateResponse(
-                        new AggregateRecordsRequest.Builder<Long>(
-                                        new TimeInstantRangeFilter.Builder()
-                                                .setStartTime(Instant.ofEpochMilli(0))
-                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
-                                                .build())
-                                .addAggregationType(STEPS_COUNT_TOTAL)
-                                .build(),
-                        records);
+                TestUtils.getAggregateResponse(aggregateRecordsRequest, records);
         List<Record> recordNew = Arrays.asList(getStepsRecord(9), getStepsRecord(9));
         AggregateRecordsResponse<Long> newResponse =
                 TestUtils.getAggregateResponse(

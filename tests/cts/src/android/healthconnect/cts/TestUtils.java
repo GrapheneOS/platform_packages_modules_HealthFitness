@@ -452,6 +452,7 @@ public class TestUtils {
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(service).isNotNull();
+        assertThat(request.getRecordType()).isNotNull();
         AtomicReference<List<T>> response = new AtomicReference<>();
         AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
                 new AtomicReference<>();
