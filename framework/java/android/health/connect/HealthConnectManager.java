@@ -16,6 +16,7 @@
 
 package android.health.connect;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 
@@ -443,7 +444,7 @@ public class HealthConnectManager {
             long dateMilli =
                     mService.getHistoricalAccessStartDateInMilliseconds(
                             packageName, mContext.getUser());
-            if (dateMilli == Constants.DEFAULT_LONG) {
+            if (dateMilli == DEFAULT_LONG) {
                 return null;
             } else {
                 return Instant.ofEpochMilli(dateMilli);

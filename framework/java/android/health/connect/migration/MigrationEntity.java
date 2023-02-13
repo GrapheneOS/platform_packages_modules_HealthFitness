@@ -72,9 +72,7 @@ public final class MigrationEntity implements Parcelable {
         return mEntityId;
     }
 
-    /**
-     * Returns a payload of the entity to migrate.
-     */
+    /** Returns a payload of the entity to migrate. */
     @NonNull
     public MigrationPayload getPayload() {
         return mPayload;

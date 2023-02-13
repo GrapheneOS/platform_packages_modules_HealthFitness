@@ -185,7 +185,7 @@ public class StepsRecordTest {
     @Test
     public void testReadStepsRecordUsingFilters_withPageSize() throws InterruptedException {
         List<Record> recordList =
-                Arrays.asList(TestUtils.getStepsRecord(), TestUtils.getStepsRecord());
+                Arrays.asList(getStepsRecord_minusDays(1), getStepsRecord_minusDays(2));
         TestUtils.insertRecords(recordList);
         Pair<List<StepsRecord>, Long> newStepsRecords =
                 TestUtils.readRecordsWithPagination(
@@ -193,6 +193,81 @@ public class StepsRecordTest {
                                 .setPageSize(1)
                                 .build());
         assertThat(newStepsRecords.first.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_withPageToken() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getStepsRecord_minusDays(1),
+                        getStepsRecord_minusDays(2),
+                        getStepsRecord_minusDays(3),
+                        getStepsRecord_minusDays(4));
+        TestUtils.insertRecords(recordList);
+        Pair<List<StepsRecord>, Long> oldStepsRecord =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .setAscending(true)
+                                .build());
+        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        Pair<List<StepsRecord>, Long> newStepsRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .setPageToken(oldStepsRecord.second)
+                                .build());
+        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_withPageTokenReverse() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getStepsRecord_minusDays(1),
+                        getStepsRecord_minusDays(2),
+                        getStepsRecord_minusDays(3),
+                        getStepsRecord_minusDays(4));
+        TestUtils.insertRecords(recordList);
+        Pair<List<StepsRecord>, Long> oldStepsRecord =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .setAscending(false)
+                                .build());
+        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        Pair<List<StepsRecord>, Long> newStepsRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .setPageToken(oldStepsRecord.second)
+                                .build());
+        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+        assertThat(newStepsRecords.second).isNotEqualTo(oldStepsRecord.second);
+        assertThat(newStepsRecords.second).isLessThan(oldStepsRecord.second);
+    }
+
+    @Test
+    public void testStepsRecordUsingFilters_nextPageTokenEnd() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(TestUtils.getStepsRecord(), TestUtils.getStepsRecord());
+        TestUtils.insertRecords(recordList);
+        Pair<List<StepsRecord>, Long> oldStepsRecord =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+        Pair<List<StepsRecord>, Long> newStepsRecord;
+        while (oldStepsRecord.second != -1) {
+            newStepsRecord =
+                    TestUtils.readRecordsWithPagination(
+                            new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                    .setPageToken(oldStepsRecord.second)
+                                    .build());
+            if (newStepsRecord.second != -1) {
+                assertThat(newStepsRecord.second).isGreaterThan(oldStepsRecord.second);
+            }
+            oldStepsRecord = newStepsRecord;
+        }
+        assertThat(oldStepsRecord.second).isEqualTo(-1);
     }
 
     @Test

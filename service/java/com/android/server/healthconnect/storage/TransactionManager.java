@@ -254,10 +254,11 @@ public final class TransactionManager {
             Objects.requireNonNull(helper);
 
             recordInternalList = helper.getInternalRecords(cursor, readTableRequest.getPageSize());
+            String startTimeColumnName = helper.getStartTimeColumnName();
 
             populateInternalRecordsWithExtraData(db, recordInternalList, readTableRequest);
             if (cursor.moveToNext()) {
-                token = getCursorLong(cursor, PRIMARY_COLUMN_NAME);
+                token = getCursorLong(cursor, startTimeColumnName);
             }
         }
         return Pair.create(recordInternalList, token);
