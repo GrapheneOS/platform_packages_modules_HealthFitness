@@ -64,6 +64,8 @@ import android.content.Context;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.AggregationType;
@@ -87,6 +89,8 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -152,6 +156,162 @@ public class NutritionRecordTest {
     }
 
     @Test
+    public void testReadNutritionRecord_usingIds() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(getCompleteNutritionRecord(), getCompleteNutritionRecord());
+        readNutritionRecordUsingIds(recordList);
+    }
+
+    @Test
+    public void testReadNutritionRecord_invalidIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<NutritionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(NutritionRecord.class)
+                        .addId("abc")
+                        .build();
+        List<NutritionRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadNutritionRecord_usingClientRecordIds() throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(getCompleteNutritionRecord(), getCompleteNutritionRecord());
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        readNutritionRecordUsingClientId(insertedRecords);
+    }
+
+    @Test
+    public void testReadNutritionRecord_invalidClientRecordIds() throws InterruptedException {
+        ReadRecordsRequestUsingIds<NutritionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(NutritionRecord.class)
+                        .addClientRecordId("abc")
+                        .build();
+        List<NutritionRecord> result = TestUtils.readRecords(request);
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadNutritionRecordUsingFilters_default() throws InterruptedException {
+        List<NutritionRecord> oldNutritionRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(NutritionRecord.class)
+                                .build());
+        NutritionRecord testRecord = getCompleteNutritionRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<NutritionRecord> newNutritionRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(NutritionRecord.class)
+                                .build());
+        assertThat(newNutritionRecords.size()).isEqualTo(oldNutritionRecords.size() + 1);
+        assertThat(newNutritionRecords.get(newNutritionRecords.size() - 1).equals(testRecord))
+                .isTrue();
+    }
+
+    @Test
+    public void testReadNutritionRecordUsingFilters_timeFilter() throws InterruptedException {
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
+        NutritionRecord testRecord = getCompleteNutritionRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<NutritionRecord> newNutritionRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(NutritionRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .build());
+        assertThat(newNutritionRecords.size()).isEqualTo(1);
+        assertThat(newNutritionRecords.get(newNutritionRecords.size() - 1).equals(testRecord))
+                .isTrue();
+    }
+
+    @Test
+    public void testReadNutritionRecordUsingFilters_dataFilter_correct()
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<NutritionRecord> oldNutritionRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(NutritionRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        NutritionRecord testRecord = getCompleteNutritionRecord();
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<NutritionRecord> newNutritionRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(NutritionRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build());
+        assertThat(newNutritionRecords.size() - oldNutritionRecords.size()).isEqualTo(1);
+        NutritionRecord newRecord = newNutritionRecords.get(newNutritionRecords.size() - 1);
+        assertThat(newNutritionRecords.get(newNutritionRecords.size() - 1).equals(testRecord))
+                .isTrue();
+        assertThat(newRecord.getUnsaturatedFat()).isEqualTo(testRecord.getUnsaturatedFat());
+        assertThat(newRecord.getPotassium()).isEqualTo(testRecord.getPotassium());
+        assertThat(newRecord.getThiamin()).isEqualTo(testRecord.getThiamin());
+        assertThat(newRecord.getMealType()).isEqualTo(testRecord.getMealType());
+        assertThat(newRecord.getTransFat()).isEqualTo(testRecord.getTransFat());
+        assertThat(newRecord.getManganese()).isEqualTo(testRecord.getManganese());
+        assertThat(newRecord.getEnergyFromFat()).isEqualTo(testRecord.getEnergyFromFat());
+        assertThat(newRecord.getCaffeine()).isEqualTo(testRecord.getCaffeine());
+        assertThat(newRecord.getDietaryFiber()).isEqualTo(testRecord.getDietaryFiber());
+        assertThat(newRecord.getSelenium()).isEqualTo(testRecord.getSelenium());
+        assertThat(newRecord.getVitaminB6()).isEqualTo(testRecord.getVitaminB6());
+        assertThat(newRecord.getProtein()).isEqualTo(testRecord.getProtein());
+        assertThat(newRecord.getChloride()).isEqualTo(testRecord.getChloride());
+        assertThat(newRecord.getCholesterol()).isEqualTo(testRecord.getCholesterol());
+        assertThat(newRecord.getCopper()).isEqualTo(testRecord.getCopper());
+        assertThat(newRecord.getIodine()).isEqualTo(testRecord.getIodine());
+        assertThat(newRecord.getVitaminB12()).isEqualTo(testRecord.getVitaminB12());
+        assertThat(newRecord.getZinc()).isEqualTo(testRecord.getZinc());
+        assertThat(newRecord.getRiboflavin()).isEqualTo(testRecord.getRiboflavin());
+        assertThat(newRecord.getEnergy()).isEqualTo(testRecord.getEnergy());
+        assertThat(newRecord.getMolybdenum()).isEqualTo(testRecord.getMolybdenum());
+        assertThat(newRecord.getPhosphorus()).isEqualTo(testRecord.getPhosphorus());
+        assertThat(newRecord.getChromium()).isEqualTo(testRecord.getChromium());
+        assertThat(newRecord.getTotalFat()).isEqualTo(testRecord.getTotalFat());
+        assertThat(newRecord.getCalcium()).isEqualTo(testRecord.getCalcium());
+        assertThat(newRecord.getVitaminC()).isEqualTo(testRecord.getVitaminC());
+        assertThat(newRecord.getVitaminE()).isEqualTo(testRecord.getVitaminE());
+        assertThat(newRecord.getBiotin()).isEqualTo(testRecord.getBiotin());
+        assertThat(newRecord.getVitaminD()).isEqualTo(testRecord.getVitaminD());
+        assertThat(newRecord.getNiacin()).isEqualTo(testRecord.getNiacin());
+        assertThat(newRecord.getMagnesium()).isEqualTo(testRecord.getMagnesium());
+        assertThat(newRecord.getTotalCarbohydrate()).isEqualTo(testRecord.getTotalCarbohydrate());
+        assertThat(newRecord.getVitaminK()).isEqualTo(testRecord.getVitaminK());
+        assertThat(newRecord.getPolyunsaturatedFat()).isEqualTo(testRecord.getPolyunsaturatedFat());
+        assertThat(newRecord.getSaturatedFat()).isEqualTo(testRecord.getSaturatedFat());
+        assertThat(newRecord.getSodium()).isEqualTo(testRecord.getSodium());
+        assertThat(newRecord.getFolate()).isEqualTo(testRecord.getFolate());
+        assertThat(newRecord.getMonounsaturatedFat()).isEqualTo(testRecord.getMonounsaturatedFat());
+        assertThat(newRecord.getPantothenicAcid()).isEqualTo(testRecord.getPantothenicAcid());
+        assertThat(newRecord.getMealName()).isEqualTo(testRecord.getMealName());
+        assertThat(newRecord.getIron()).isEqualTo(testRecord.getIron());
+        assertThat(newRecord.getVitaminA()).isEqualTo(testRecord.getVitaminA());
+        assertThat(newRecord.getFolicAcid()).isEqualTo(testRecord.getFolicAcid());
+        assertThat(newRecord.getSugar()).isEqualTo(testRecord.getSugar());
+    }
+
+    @Test
+    public void testReadNutritionRecordUsingFilters_dataFilter_incorrect()
+            throws InterruptedException {
+        TestUtils.insertRecords(Collections.singletonList(getCompleteNutritionRecord()));
+        List<NutritionRecord> newNutritionRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(NutritionRecord.class)
+                                .addDataOrigins(
+                                        new DataOrigin.Builder().setPackageName("abc").build())
+                                .build());
+        assertThat(newNutritionRecords.size()).isEqualTo(0);
+    }
+
+    @Test
     public void testDeleteNutritionRecord_no_filters() throws InterruptedException {
         String id = TestUtils.insertRecordAndGetId(getCompleteNutritionRecord());
         TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
@@ -160,7 +320,7 @@ public class NutritionRecordTest {
 
     @Test
     public void testDeleteNutritionRecord_time_filters() throws InterruptedException {
-        TimeInstantRangeFilter timeRangeFilter =
+        TimeInstantRangeFilter timeInstantRangeFilter =
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(Instant.now())
                         .setEndTime(Instant.now().plusMillis(1000))
@@ -169,7 +329,7 @@ public class NutritionRecordTest {
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
                         .addRecordType(NutritionRecord.class)
-                        .setTimeRangeFilter(timeRangeFilter)
+                        .setTimeRangeFilter(timeInstantRangeFilter)
                         .build());
         TestUtils.assertRecordNotFound(id, NutritionRecord.class);
     }
@@ -230,13 +390,13 @@ public class NutritionRecordTest {
 
     @Test
     public void testDeleteNutritionRecord_time_range() throws InterruptedException {
-        TimeInstantRangeFilter timeRangeFilter =
+        TimeInstantRangeFilter timeInstantRangeFilter =
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(Instant.now())
                         .setEndTime(Instant.now().plusMillis(1000))
                         .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteNutritionRecord());
-        TestUtils.verifyDeleteRecords(NutritionRecord.class, timeRangeFilter);
+        TestUtils.verifyDeleteRecords(NutritionRecord.class, timeInstantRangeFilter);
         TestUtils.assertRecordNotFound(id, NutritionRecord.class);
     }
 
@@ -397,6 +557,28 @@ public class NutritionRecordTest {
         assertThat(newFatEnergy.getInJoules() - oldFatEnergy.getInJoules()).isEqualTo(0.1);
     }
 
+    @Test
+    public void testZoneOffsets() {
+        final ZoneOffset defaultZoneOffset =
+                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
+        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        NutritionRecord.Builder builder =
+                new NutritionRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000));
+
+        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
+                .isEqualTo(startZoneOffset);
+        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
+                .isEqualTo(endZoneOffset);
+        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
+                .isEqualTo(defaultZoneOffset);
+    }
+
     static NutritionRecord getBaseNutritionRecord() {
         return new NutritionRecord.Builder(
                         new Metadata.Builder().build(),
@@ -469,25 +651,38 @@ public class NutritionRecordTest {
                 .build();
     }
 
-    @Test
-    public void testZoneOffsets() {
-        final ZoneOffset defaultZoneOffset =
-                ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-        final ZoneOffset startZoneOffset = ZoneOffset.UTC;
-        final ZoneOffset endZoneOffset = ZoneOffset.MAX;
-        NutritionRecord.Builder builder =
-                new NutritionRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000));
+    private void readNutritionRecordUsingClientId(List<Record> insertedRecord)
+            throws InterruptedException {
+        ReadRecordsRequestUsingIds.Builder<NutritionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(NutritionRecord.class);
+        for (Record record : insertedRecord) {
+            request.addClientRecordId(record.getMetadata().getClientRecordId());
+        }
+        List<NutritionRecord> result = TestUtils.readRecords(request.build());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
 
-        assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
-                .isEqualTo(startZoneOffset);
-        assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())
-                .isEqualTo(endZoneOffset);
-        assertThat(builder.clearStartZoneOffset().build().getStartZoneOffset())
-                .isEqualTo(defaultZoneOffset);
-        assertThat(builder.clearEndZoneOffset().build().getEndZoneOffset())
-                .isEqualTo(defaultZoneOffset);
+        for (int i = 0; i < result.size(); i++) {
+            NutritionRecord other = (NutritionRecord) insertedRecord.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
+    }
+
+    private void readNutritionRecordUsingIds(List<Record> recordList) throws InterruptedException {
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        ReadRecordsRequestUsingIds.Builder<NutritionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(NutritionRecord.class);
+        for (Record record : insertedRecords) {
+            request.addId(record.getMetadata().getId());
+        }
+        List<NutritionRecord> result = TestUtils.readRecords(request.build());
+        assertThat(result).hasSize(insertedRecords.size());
+        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+        insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
+
+        for (int i = 0; i < result.size(); i++) {
+            NutritionRecord other = (NutritionRecord) insertedRecords.get(i);
+            assertThat(result.get(i).equals(other)).isTrue();
+        }
     }
 }

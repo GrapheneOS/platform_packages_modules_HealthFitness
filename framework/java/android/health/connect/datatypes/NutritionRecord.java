@@ -155,7 +155,6 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setPotassium(@Nullable Mass potassium) {
-            Objects.requireNonNull(potassium);
             ValidationUtils.requireInRangeIfExists(potassium, MASS_0_0, MASS_0_1, "potassium");
             mPotassium = potassium;
             return this;
@@ -168,7 +167,6 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setThiamin(@Nullable Mass thiamin) {
-            Objects.requireNonNull(thiamin);
             ValidationUtils.requireInRangeIfExists(thiamin, MASS_0_0, MASS_0_1, "thiamin");
             mThiamin = thiamin;
             return this;
