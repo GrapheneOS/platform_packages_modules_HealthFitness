@@ -36,6 +36,7 @@ import android.platform.test.annotations.AppModeFull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -53,6 +54,16 @@ import java.util.Set;
 @RunWith(AndroidJUnit4.class)
 public class RestingHeartRateRecordTest {
     private static final String TAG = "RestingHeartRateRecordTest";
+
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                RestingHeartRateRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
+    }
 
     @Test
     public void testInsertRestingHeartRateRecord() throws InterruptedException {
