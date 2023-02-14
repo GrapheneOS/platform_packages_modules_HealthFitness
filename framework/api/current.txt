@@ -314,7 +314,7 @@ package android.health.connect.datatypes {
 
   public final class BasalMetabolicRateRecord extends android.health.connect.datatypes.InstantRecord {
     method @NonNull public android.health.connect.datatypes.units.Power getBasalMetabolicRate();
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Power> BASAL_CALORIES_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Energy> BASAL_CALORIES_TOTAL;
   }
 
   public static final class BasalMetabolicRateRecord.Builder {

@@ -19,6 +19,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Power;
 
 import java.time.Instant;
@@ -137,10 +138,10 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
      * HealthConnectManager}
      */
     @NonNull
-    public static final AggregationType<Power> BASAL_CALORIES_TOTAL =
+    public static final AggregationType<Energy> BASAL_CALORIES_TOTAL =
             new AggregationType<>(
                     AggregationType.AggregationTypeIdentifier.BMR_RECORD_BASAL_CALORIES_TOTAL,
                     AggregationType.SUM,
                     RECORD_TYPE_BASAL_METABOLIC_RATE,
-                    Power.class);
+                    Energy.class);
 }
