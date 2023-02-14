@@ -17,11 +17,11 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorStringList;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLongList;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -34,11 +34,14 @@ import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -86,13 +89,18 @@ public final class ActivityDateHelper {
         // empty by default
     }
 
+    /** Deletes all entries from the database and clears the cache. */
+    public synchronized void clearData(TransactionManager transactionManager) {
+        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
+    }
+
     /** Insert a new activity dates for the given records */
     @NonNull
     public void insertRecordDate(@NonNull List<RecordInternal<?>> recordInternals) {
         Objects.requireNonNull(recordInternals);
 
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        HashMap<Integer, Set<String>> recordIdToDistinctDatesMap =
+        HashMap<Integer, Set<Long>> recordIdToDistinctDatesMap =
                 getRecordIdToDistinctDatesMap(recordInternals);
         List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
         recordIdToDistinctDatesMap.forEach(
@@ -110,7 +118,7 @@ public final class ActivityDateHelper {
         RecordMapper recordMapper = RecordMapper.getInstance();
         List<Integer> recordTypeIds =
                 recordTypes.stream().map(recordMapper::getRecordType).collect(Collectors.toList());
-        Set<String> distinctDates =
+        Set<Long> distinctDates =
                 readDates(
                                 new ReadTableRequest(TABLE_NAME)
                                         .setWhereClause(
@@ -122,18 +130,17 @@ public final class ActivityDateHelper {
                         .stream()
                         .flatMap(List::stream)
                         .collect(Collectors.toSet());
-
-        return distinctDates.stream().map(LocalDate::parse).collect(Collectors.toList());
+        return distinctDates.stream().map(LocalDate::ofEpochDay).collect(Collectors.toList());
     }
 
     /** Returns record id to dates map from a Cursor object */
     @NonNull
-    public HashMap<Integer, List<String>> getRecordIdToDatesMap(@NonNull Cursor cursor) {
-        HashMap<Integer, List<String>> localDates = new HashMap<>();
+    public HashMap<Integer, List<Long>> getRecordIdToDatesMap(@NonNull Cursor cursor) {
+        HashMap<Integer, List<Long>> localDates = new HashMap<>();
 
         while (cursor.moveToNext()) {
             int recordTypeId = getCursorInt(cursor, RECORD_TYPE_ID_COLUMN_NAME);
-            List<String> dates = getCursorStringList(cursor, DATE_COLUMN_NAME, DELIMITER);
+            List<Long> dates = getCursorLongList(cursor, DATE_COLUMN_NAME, DELIMITER);
             localDates.put(recordTypeId, dates);
         }
         return localDates;
@@ -144,14 +151,14 @@ public final class ActivityDateHelper {
         // TODO(260554339): Update the db columns to store dates as integers
         return Arrays.asList(
                 new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT),
-                new Pair<>(DATE_COLUMN_NAME, TEXT_NOT_NULL),
+                new Pair<>(DATE_COLUMN_NAME, INTEGER_NOT_NULL),
                 new Pair<>(RECORD_TYPE_ID_COLUMN_NAME, INTEGER_NOT_NULL_UNIQUE));
     }
 
     @NonNull
-    private ContentValues getContentValues(int recordTypeId, @NonNull Set<String> dates) {
+    private ContentValues getContentValues(int recordTypeId, @NonNull Set<Long> dates) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DATE_COLUMN_NAME, String.join(DELIMITER, dates));
+        contentValues.put(DATE_COLUMN_NAME, StorageUtils.flattenLongList(dates.stream().toList()));
         contentValues.put(RECORD_TYPE_ID_COLUMN_NAME, recordTypeId);
 
         return contentValues;
@@ -163,7 +170,7 @@ public final class ActivityDateHelper {
      * @param request a read request.
      * @return Cursor from table based on ids.
      */
-    private HashMap<Integer, List<String>> readDates(@NonNull ReadTableRequest request) {
+    private HashMap<Integer, List<Long>> readDates(@NonNull ReadTableRequest request) {
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         final SQLiteDatabase db = transactionManager.getReadableDb();
         try (Cursor cursor = transactionManager.read(db, request)) {
@@ -173,16 +180,18 @@ public final class ActivityDateHelper {
 
     /** Returns a map of updated recordId to date map with comparison to the database */
     @NonNull
-    private HashMap<Integer, Set<String>> getRecordIdToDistinctDatesMap(
+    private HashMap<Integer, Set<Long>> getRecordIdToDistinctDatesMap(
             @NonNull List<RecordInternal<?>> recordInternals) {
-        HashMap<Integer, List<String>> existingDates = readDates(new ReadTableRequest(TABLE_NAME));
-        HashMap<Integer, Set<String>> recordIdToDates = new HashMap<>();
+        HashMap<Integer, List<Long>> existingDates = readDates(new ReadTableRequest(TABLE_NAME));
+        HashMap<Integer, Set<Long>> recordIdToDates = new HashMap<>();
 
         for (RecordInternal<?> recordInternal : recordInternals) {
-            Set<String> dates =
+            Set<Long> dates =
                     recordIdToDates.getOrDefault(recordInternal.getRecordType(), new HashSet<>());
 
-            dates.add(recordInternal.getLocalDate().toString());
+            dates.add(
+                    ChronoUnit.DAYS.between(
+                            LocalDate.ofEpochDay(0), recordInternal.getLocalDate()));
 
             if (existingDates.containsKey(recordInternal.getRecordType())) {
                 dates.addAll(existingDates.remove(recordInternal.getRecordType()));

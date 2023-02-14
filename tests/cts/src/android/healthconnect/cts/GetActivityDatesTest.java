@@ -28,6 +28,7 @@ import android.health.connect.datatypes.units.Power;
 
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -44,16 +45,21 @@ import java.util.stream.Collectors;
 public class GetActivityDatesTest {
     private static final String TAG = "GetActivityDatesTest";
 
-    // TODO(b/257796081): Test the response size after database clean up is implemented
-    //    @Test
-    //    public void testEmptyActivityDates() throws InterruptedException {
-    //        List<Record> records = getTestRecords();
+    @Before
+    public void setUp() {
+        TestUtils.deleteAllStagedRemoteData();
+    }
 
-    //         List<LocalDate> activityDates = getActivityDates(
-    //                 records.stream().map(Record::getClass).collect(Collectors.toList()));
-    //
-    //        assertThat(activityDates).hasSize(0);
-    //    }
+    @Test
+    public void testEmptyActivityDates() throws InterruptedException {
+        List<Record> records = getTestRecords();
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+
+        assertThat(activityDates).hasSize(0);
+    }
 
     @Test
     public void testActivityDates() throws InterruptedException {

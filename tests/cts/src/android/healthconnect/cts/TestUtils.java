@@ -20,6 +20,8 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
@@ -835,6 +837,17 @@ public class TestUtils {
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+    }
+
+    public static void deleteAllStagedRemoteData() {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        runWithShellPermissionIdentity(
+                () ->
+                        // TODO(b/241542162): Avoid reflection once TestApi can be called from CTS
+                        service.getClass().getMethod("deleteAllStagedRemoteData").invoke(service),
+                "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
     }
 
     static final class RecordAndIdentifier {

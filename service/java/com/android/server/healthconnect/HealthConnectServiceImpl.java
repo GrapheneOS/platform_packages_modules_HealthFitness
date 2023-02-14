@@ -1210,6 +1210,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         setDataRestoreError(RESTORE_ERROR_NONE, userHandle.getIdentifier());
         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IDLE);
         AppInfoHelper.getInstance().clearData(mTransactionManager);
+        ActivityDateHelper.getInstance().clearData(mTransactionManager);
     }
 
     /**
