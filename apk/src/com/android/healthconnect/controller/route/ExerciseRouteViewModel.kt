@@ -21,8 +21,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Objects
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -30,21 +33,33 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ExerciseRouteViewModel
 @Inject
-constructor(private val loadExerciseRouteUseCase: LoadExerciseRouteUseCase) : ViewModel() {
+constructor(
+    private val loadExerciseRouteUseCase: LoadExerciseRouteUseCase,
+    private val appInfoReader: AppInfoReader
+) : ViewModel() {
 
     companion object {
         private const val TAG = "ExerciseRouteViewModel"
     }
 
-    private val _exerciseSession = MutableLiveData<ExerciseSessionRecord?>()
-    val exerciseSession: LiveData<ExerciseSessionRecord?>
+    private val _exerciseSession = MutableLiveData<SessionWithAttribution?>()
+    val exerciseSession: LiveData<SessionWithAttribution?>
         get() = _exerciseSession
 
     fun getExerciseWithRoute(sessionId: String) {
         viewModelScope.launch {
             when (val result = loadExerciseRouteUseCase.invoke(sessionId)) {
                 is UseCaseResults.Success -> {
-                    _exerciseSession.postValue(result.data)
+                    if (!Objects.equals(result.data, null)) {
+                        val record: ExerciseSessionRecord = result.data!!
+                        _exerciseSession.postValue(
+                            SessionWithAttribution(
+                                record,
+                                appInfoReader.getAppMetadata(
+                                    record.metadata.dataOrigin.packageName)))
+                    } else {
+                        _exerciseSession.postValue(null)
+                    }
                 }
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, result.exception.message!!)
@@ -53,4 +68,6 @@ constructor(private val loadExerciseRouteUseCase: LoadExerciseRouteUseCase) : Vi
             }
         }
     }
+
+    data class SessionWithAttribution(val session: ExerciseSessionRecord, val appInfo: AppMetadata)
 }

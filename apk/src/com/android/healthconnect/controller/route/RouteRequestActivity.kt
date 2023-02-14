@@ -18,9 +18,9 @@ package com.android.healthconnect.controller.route
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
-import android.health.connect.datatypes.ExerciseSessionRecord
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -30,9 +30,13 @@ import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.route.ExerciseRouteViewModel.SessionWithAttribution
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.map.MapView
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.runBlocking
 
 /** Request route activity for Health Connect. */
 @AndroidEntryPoint(FragmentActivity::class)
@@ -42,6 +46,8 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         private const val TAG = "RouteRequestActivity"
     }
 
+    @Inject lateinit var appInfoReader: AppInfoReader
+
     @VisibleForTesting lateinit var dialog: AlertDialog
 
     private val viewModel: ExerciseRouteViewModel by viewModels()
@@ -49,7 +55,10 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!intent.hasExtra(EXTRA_SESSION_ID) || intent.getStringExtra(EXTRA_SESSION_ID) == null) {
+        if (!intent.hasExtra(EXTRA_SESSION_ID) ||
+            intent.getStringExtra(EXTRA_SESSION_ID) == null ||
+            !intent.hasExtra(EXTRA_PACKAGE_NAME) ||
+            intent.getStringExtra(EXTRA_PACKAGE_NAME) == null) {
             Log.e(TAG, "Invalid Intent Extras, finishing.")
             setResult(Activity.RESULT_CANCELED, Intent())
             finish()
@@ -59,8 +68,10 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         viewModel.exerciseSession.observe(this) { session -> setupDialog(session) }
     }
 
-    private fun setupDialog(sessionRecord: ExerciseSessionRecord?) {
-        if (sessionRecord?.route == null || sessionRecord.route!!.routeLocations.isEmpty()) {
+    private fun setupDialog(data: SessionWithAttribution?) {
+        if ((data == null) ||
+            (data.session?.route == null) ||
+            data.session?.route!!.routeLocations.isEmpty()) {
             Log.e(TAG, "No route or empty route, finishing.")
             val result = Intent()
             result.putExtra(EXTRA_SESSION_ID, intent.getStringExtra(EXTRA_SESSION_ID))
@@ -69,19 +80,26 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             return
         }
 
-        val session = sessionRecord!!
+        val session = data.session!!
         val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
         // TODO(pakoch): Add a reference to the intent sender.
-        val title = applicationContext.getString(R.string.request_route_header_title, "Test app")
+
         val sessionDetails =
             applicationContext.getString(
                 R.string.date_owner_format,
-                LocalDateTimeFormatter(applicationContext).formatLongDate(session.startTime), "app")
+                LocalDateTimeFormatter(applicationContext).formatLongDate(session.startTime),
+                data.appInfo.appName)
         val view = layoutInflater.inflate(R.layout.route_request_dialog, null)
+        runBlocking {
+            val requester =
+                appInfoReader.getAppMetadata(intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
+            val title =
+                applicationContext.getString(R.string.request_route_header_title, requester.appName)
+            view.findViewById<TextView>(R.id.dialog_title).text = title
+        }
         view
             .findViewById<ImageView>(R.id.dialog_icon)
             .setImageDrawable(getDrawable(R.drawable.health_connect_icon))
-        view.findViewById<TextView>(R.id.dialog_title).text = title
         view.findViewById<MapView>(R.id.map_view).setRoute(session.route!!)
         view.findViewById<TextView>(R.id.session_title).text = session.title
         view.findViewById<TextView>(R.id.date_app).text = sessionDetails

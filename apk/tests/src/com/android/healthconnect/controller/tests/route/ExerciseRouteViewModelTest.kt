@@ -15,22 +15,32 @@
  */
 package com.android.healthconnect.controller.tests.route
 
+import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.health.connect.ReadRecordsRequestUsingIds
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType
-import android.health.connect.datatypes.Metadata
 import android.os.OutcomeReceiver
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel
 import com.android.healthconnect.controller.route.LoadExerciseRouteUseCase
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
+import com.android.healthconnect.controller.tests.utils.TEST_APP
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.getOrAwaitValue
+import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
+import java.util.Locale
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -51,15 +61,22 @@ class ExerciseRouteViewModelTest {
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @Inject lateinit var appInfoReader: AppInfoReader
+
     var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
 
-    lateinit var viewModel: ExerciseRouteViewModel
+    private lateinit var viewModel: ExerciseRouteViewModel
+    private lateinit var context: Context
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
+        context = InstrumentationRegistry.getInstrumentation().context
+        context.setLocale(Locale.US)
         hiltRule.inject()
-        viewModel = ExerciseRouteViewModel(LoadExerciseRouteUseCase(manager, Dispatchers.Main))
+        viewModel =
+            ExerciseRouteViewModel(
+                LoadExerciseRouteUseCase(manager, Dispatchers.Main), appInfoReader)
     }
 
     @Test
@@ -81,7 +98,7 @@ class ExerciseRouteViewModelTest {
                 prepareAnswer(
                     listOf(
                         ExerciseSessionRecord.Builder(
-                                Metadata.Builder().build(),
+                                getMetaData(),
                                 start,
                                 end,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
@@ -100,10 +117,7 @@ class ExerciseRouteViewModelTest {
         val end = start.plusMillis(123456)
         val expectedSession =
             ExerciseSessionRecord.Builder(
-                    Metadata.Builder().build(),
-                    start,
-                    end,
-                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                    getMetaData(), start, end, ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
                 .setRoute(
                     ExerciseRoute(
                         listOf(
@@ -120,7 +134,11 @@ class ExerciseRouteViewModelTest {
 
         viewModel.getExerciseWithRoute("testId")
 
-        assertThat(viewModel.exerciseSession.getOrAwaitValue()).isEqualTo(expectedSession)
+        val result = viewModel.exerciseSession.getOrAwaitValue()
+
+        assertThat(result?.session as ExerciseSessionRecord).isEqualTo(expectedSession)
+        assertThat(result?.appInfo?.appName).isEqualTo(TEST_APP_NAME)
+        assertThat(result?.appInfo?.packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
     }
 
     private fun prepareAnswer(
@@ -130,6 +148,15 @@ class ExerciseRouteViewModelTest {
             val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
             receiver.onResult(ReadRecordsResponse(sessions, -1))
             sessions
+        }
+        return answer
+    }
+
+    private fun returnAppInfo(): (InvocationOnMock) -> AppMetadata {
+        val answer = { args: InvocationOnMock ->
+            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
+            receiver.onResult(TEST_APP)
+            TEST_APP
         }
         return answer
     }
