@@ -603,11 +603,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int uid = Binder.getCallingUid();
         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                 ChangeLogsRequestHelper.getRequest(packageName, token.getToken());
+        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                changeLogsTokenRequest.getRecordTypes(), uid);
         if (!mAppOpsManagerLocal.isUidInForeground(uid)) {
             throwException(callback, packageName);
         }
-        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
-                changeLogsTokenRequest.getRecordTypes(), uid);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
