@@ -22,6 +22,9 @@ import android.health.connect.datatypes.BloodPressureRecord
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation
 import android.health.connect.datatypes.BodyTemperatureRecord
 import android.health.connect.datatypes.CervicalMucusRecord
+import android.health.connect.datatypes.ExerciseRoute
+import android.health.connect.datatypes.ExerciseSessionRecord
+import android.health.connect.datatypes.ExerciseSessionType
 import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
@@ -41,6 +44,7 @@ import android.health.connect.datatypes.units.Pressure
 import android.health.connect.datatypes.units.Temperature
 import android.health.connect.datatypes.units.Volume
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +63,7 @@ import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_INT
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_LONG
 import com.android.healthconnect.testapps.toolbox.Constants.INPUT_TYPE_TEXT
 import com.android.healthconnect.testapps.toolbox.R
+import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Companion.routeDataMap
 import com.android.healthconnect.testapps.toolbox.fieldviews.DateTimePicker
 import com.android.healthconnect.testapps.toolbox.fieldviews.EditableTextView
 import com.android.healthconnect.testapps.toolbox.fieldviews.EnumDropDown
@@ -185,8 +190,11 @@ class InsertRecordFragment : Fragment() {
                     field =
                         EditableTextView(this.requireContext(), mRecordsField.name, INPUT_TYPE_LONG)
                 }
-                Int::class.java -> {
-                    // Most of int fields are enums and are handled separately
+                ExerciseRoute::class.java, // Edge case
+                Int::class.java, // Most of int fields are enums and are handled separately
+                List::class
+                    .java, // Handled later so that list fields are always added towards the end
+                -> {
                     continue
                 }
                 Double::class.java,
@@ -207,12 +215,8 @@ class InsertRecordFragment : Fragment() {
                     field =
                         EditableTextView(this.requireContext(), mRecordsField.name, INPUT_TYPE_TEXT)
                 }
-                List::class.java -> {
-                    // Handled later so that list fields are always added towards the end
-                    continue
-                }
                 else -> {
-                    break
+                    continue
                 }
             }
             mLinearLayout.addView(field)
@@ -267,6 +271,9 @@ class InsertRecordFragment : Fragment() {
                 enumFieldNameToClass["mMeasurementLocation"] =
                     BodyTemperatureMeasurementLocation::class as KClass<*>
             }
+            ExerciseSessionRecord::class -> {
+                enumFieldNameToClass["mExerciseType"] = ExerciseSessionType::class as KClass<*>
+            }
         }
         if (enumFieldNameToClass.size > 0) {
             for (entry in enumFieldNameToClass.entries) {
@@ -302,10 +309,24 @@ class InsertRecordFragment : Fragment() {
     }
 
     private fun handleSpecialCases() {
-        val field: InputFieldView
-        if (mRecordClass == FloorsClimbedRecord::class) {
-            val fieldName = "mFloors"
-            field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
+        var field: InputFieldView? = null
+        var fieldName: String? = null
+
+        when (mRecordClass) {
+            FloorsClimbedRecord::class -> {
+                fieldName = "mFloors"
+                field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
+            }
+            ExerciseSessionRecord::class -> {
+                fieldName = "mExerciseRoute"
+                field =
+                    EnumDropDown(
+                        this.requireContext(),
+                        fieldName,
+                        EnumFieldsWithValues(routeDataMap as Map<String, Any>))
+            }
+        }
+        if (field != null && fieldName != null) {
             mLinearLayout.addView(field)
             mFieldNameToFieldInput[fieldName] = field
         }
@@ -321,6 +342,7 @@ class InsertRecordFragment : Fragment() {
                 mInsertOrUpdateViewModel.insertRecordsViaViewModel(
                     listOf(record), mHealthConnectManager)
             } catch (ex: Exception) {
+                Log.d("InsertOrUpdateRecordsViewModel", ex.localizedMessage!!)
                 Toast.makeText(
                         context,
                         "Unable to insert record: ${ex.localizedMessage}",

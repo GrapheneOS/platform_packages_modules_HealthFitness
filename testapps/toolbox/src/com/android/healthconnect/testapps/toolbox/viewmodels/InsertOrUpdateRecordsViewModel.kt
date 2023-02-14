@@ -44,6 +44,9 @@ class InsertOrUpdateRecordsViewModel : ViewModel() {
             } catch (exception: HealthConnectException) {
                 _insertedRecordsState.postValue(
                     InsertedRecordsState.Error(exception.localizedMessage!!))
+            } catch (exception: SecurityException) {
+                _insertedRecordsState.postValue(
+                    InsertedRecordsState.Error(exception.localizedMessage!!))
             }
         }
     }
@@ -54,6 +57,9 @@ class InsertOrUpdateRecordsViewModel : ViewModel() {
                 GeneralUtils.updateRecords(records, manager)
                 _updatedRecordsState.postValue(UpdatedRecordsState.Success)
             } catch (exception: HealthConnectException) {
+                _updatedRecordsState.postValue(
+                    UpdatedRecordsState.Error(exception.localizedMessage!!))
+            } catch (exception: SecurityException) {
                 _updatedRecordsState.postValue(
                     UpdatedRecordsState.Error(exception.localizedMessage!!))
             }
