@@ -16,63 +16,19 @@
 
 package com.android.server.healthconnect.storage;
 
-import static android.health.connect.Constants.DEFAULT_INT;
-
-import android.annotation.UserIdInt;
-import android.app.job.JobInfo;
-import android.app.job.JobParameters;
-import android.app.job.JobScheduler;
-import android.app.job.JobService;
-import android.content.ComponentName;
-import android.content.Context;
-import android.os.PersistableBundle;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A service that is run periodically to handle deletion of stale entries in HC DB.
  *
  * @hide
  */
-public class AutoDeleteService extends JobService {
-    private static final int MIN_JOB_ID = AutoDeleteService.class.hashCode();
+public class AutoDeleteService {
     private static final String AUTO_DELETE_DURATION_RECORDS_KEY =
             "auto_delete_duration_records_key";
-    private static final long JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(1);
     private static final String TAG = "HealthConnectAutoDelete";
-    private static final String EXTRA_USER_ID = "user_id";
-    @UserIdInt private static int mCurrentUserId;
-
-    /** Start periodically scheduling this service for this {@code userId} */
-    public static void schedule(Context context, @UserIdInt int userId) {
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        Objects.requireNonNull(jobScheduler);
-        ComponentName componentName = new ComponentName(context, AutoDeleteService.class);
-        final PersistableBundle extras = new PersistableBundle();
-        mCurrentUserId = userId;
-        extras.putInt(EXTRA_USER_ID, mCurrentUserId);
-        JobInfo.Builder builder =
-                new JobInfo.Builder(MIN_JOB_ID + mCurrentUserId, componentName)
-                        .setExtras(extras)
-                        .setRequiresDeviceIdle(true)
-                        .setRequiresCharging(true)
-                        .setPeriodic(JOB_RUN_INTERVAL, JOB_RUN_INTERVAL / 2);
-
-        int result = jobScheduler.schedule(builder.build());
-        if (result != JobScheduler.RESULT_SUCCESS) {
-            Slog.e(TAG, "Failed to schedule daily job");
-        }
-    }
-
-    /** Stop periodically scheduling this service for this {@code userId} */
-    public static void stop(Context context, int userId) {
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        Objects.requireNonNull(jobScheduler).cancel(MIN_JOB_ID + userId);
-    }
 
     /** Gets auto delete period for automatically deleting record entries */
     public static int getRecordRetentionPeriodInDays() {
@@ -89,17 +45,9 @@ public class AutoDeleteService extends JobService {
                 .insertPreference(AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(days));
     }
 
-    /** Called everytime when the operation corresponding to this service is to be performed */
-    @Override
-    public boolean onStartJob(JobParameters params) {
+    /** Starts the Auto Deletion process. */
+    public static void startAutoDelete() {
         try {
-            int userId = params.getExtras().getInt(EXTRA_USER_ID, /*defaultValue=*/ DEFAULT_INT);
-            if (userId == DEFAULT_INT || userId != mCurrentUserId) {
-                // This job is no longer valid, the service should have been stopped. Just ignore
-                // this request in case we still got the request.
-                return false;
-            }
-
             // Only do transactional operations here - as this job might get cancelled for
             // several reasons, such as: User switch, low battery etc.
             String recordAutoDeletePeriodString =
@@ -122,22 +70,9 @@ public class AutoDeleteService extends JobService {
                 Slog.e(TAG, "Auto delete for change logs failed", exception);
                 // Don't rethrow as that will crash system_server
             }
-
-            jobFinished(params, false);
-            return false;
         } catch (Exception e) {
             Slog.e(TAG, "Auto delete run failed", e);
             // Don't rethrow as that will crash system_server
-            return false;
         }
-    }
-
-    /**
-     * Called when job needs to be stopped. Don't do anything here and let the job be killed and
-     * since we do everything in a transaction, let the transaction fail.
-     */
-    @Override
-    public boolean onStopJob(JobParameters params) {
-        return false;
     }
 }

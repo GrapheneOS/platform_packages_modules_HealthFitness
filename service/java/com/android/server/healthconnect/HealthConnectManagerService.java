@@ -30,7 +30,6 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackagePermissionChangesMonitor;
-import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
@@ -101,20 +100,19 @@ public class HealthConnectManagerService extends SystemService {
     public void onUserUnlocking(@NonNull TargetUser user) {
         Objects.requireNonNull(user);
 
-        if (user.getUserHandle().equals(mCurrentUser)) {
-            // The current setup in place is for {@code user} only, so just ignore this request
-            return;
+        if (!user.getUserHandle().equals(mCurrentUser)) {
+            mCurrentUser = user.getUserHandle();
+            mTransactionManager.onUserUnlocking(
+                    new HealthConnectUserContext(mContext, mCurrentUser));
+            HealthConnectThreadScheduler.resetThreadPools();
         }
 
-        mCurrentUser = user.getUserHandle();
-        mTransactionManager.onUserUnlocking(new HealthConnectUserContext(mContext, mCurrentUser));
-        HealthConnectThreadScheduler.resetThreadPools();
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        AutoDeleteService.schedule(mContext, mCurrentUser.getIdentifier());
+                        HealthConnectDailyService.schedule(mContext, mCurrentUser.getIdentifier());
                     } catch (Exception e) {
-                        Slog.e(TAG, "Auto delete schedule failed", e);
+                        Slog.e(TAG, "Failed to scheduled Health Connect daily service.", e);
                     }
                 });
     }
@@ -142,9 +140,9 @@ public class HealthConnectManagerService extends SystemService {
     public void onUserStopping(@NonNull TargetUser user) {
         Objects.requireNonNull(user);
         try {
-            AutoDeleteService.stop(mContext, user.getUserHandle().getIdentifier());
+            HealthConnectDailyService.stop(mContext, user.getUserHandle().getIdentifier());
         } catch (Exception e) {
-            Slog.e(TAG, "Auto delete stop failed", e);
+            Slog.e(TAG, "Failed to stop Health Connect daily service.", e);
         }
     }
 }
