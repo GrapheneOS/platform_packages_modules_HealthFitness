@@ -43,7 +43,7 @@ java_library {
     min_sdk_version: "UpsideDownCake",
     libs: [
         "kotlin-annotations",
-        "framework-healthconnect.impl" // permissions ui needs access to healthconnect hidden apis.
+        "framework-healthfitness.impl" // permissions ui needs access to healthfitness hidden apis.
     ], 
     static_libs: [
         "kotlin-stdlib",
@@ -51,7 +51,7 @@ java_library {
         "guava",
     ],
     kotlincflags: ["-Xjvm-default=all"],
-    apex_available: ["com.android.healthconnect"],
+    apex_available: ["com.android.healthfitness"],
 }
 
 android_app_certificate {
@@ -66,7 +66,7 @@ android_library {
     min_sdk_version: "UpsideDownCake",
     libs: [
         "kotlin-annotations",
-        "framework-healthconnect"
+        "framework-healthfitness"
     ],
     static_libs: [
         "com.google.android.material_material",
@@ -92,7 +92,7 @@ android_library {
         "hilt_android"
     ],
     kotlincflags: ["-Xjvm-default=all"],
-    apex_available: ["com.android.healthconnect"],
+    apex_available: ["com.android.healthfitness"],
 }
 
 android_app {
@@ -117,7 +117,7 @@ android_app {
         "privapp_allowlist_com.android.healthconnect.controller.xml",
     ],
     libs: [
-        "framework-healthconnect"
+        "framework-healthfitness"
     ],
-    apex_available: ["com.android.healthconnect"],
+    apex_available: ["com.android.healthfitness"],
 }

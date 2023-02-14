@@ -16,35 +16,35 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-// To generate HealthConnectStatsLog for logging.
+// To generate HealthFitnessStatsLog for logging.
 genrule {
-    name: "statslog-healthconnect-java-gen",
+    name: "statslog-healthfitness-java-gen",
     tools: ["stats-log-api-gen"],
-    cmd: "$(location stats-log-api-gen) --java $(out) --module healthconnect" +
-         " --javaPackage android.healthconnect" +
-         " --javaClass HealthConnectStatsLog --minApiLevel 34",
-    out: ["android/healthconnect/HealthConnectStatsLog.java"],
+    cmd: "$(location stats-log-api-gen) --java $(out) --module healthfitness" +
+         " --javaPackage android.health" +
+         " --javaClass HealthFitnessStatsLog --minApiLevel 34",
+    out: ["android/health/HealthFitnessStatsLog.java"],
 }
 
-// To disable NewApi checks on the generated HealthConnectStatsLog.
+// To disable NewApi checks on the generated HealthFitnessStatsLog.
 java_library {
-    name: "healthconnect-statsd",
+    name: "healthfitness-statsd",
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
     srcs: [
-        ":statslog-healthconnect-java-gen",
+        ":statslog-healthfitness-java-gen",
     ],
     libs: [
         // To add StatsLog as a dependency of the generated file.
         "framework-statsd.stubs.module_lib",
     ],
     apex_available: [
-        "com.android.healthconnect",
+        "com.android.healthfitness",
     ],
 }
 
 filegroup {
-    name: "framework-healthconnect-sources",
+    name: "framework-healthfitness-sources",
     srcs: [
       "java/**/*.aidl",
       "java/**/*.java"
@@ -57,13 +57,13 @@ filegroup {
 }
 
 java_sdk_library {
-    name: "framework-healthconnect",
-    srcs: [":framework-healthconnect-sources"],
+    name: "framework-healthfitness",
+    srcs: [":framework-healthfitness-sources"],
     defaults: ["framework-module-defaults"],
     sdk_version: "module_current",
-    apex_available: ["com.android.healthconnect"],
+    apex_available: ["com.android.healthfitness"],
     impl_library_visibility: [
         "//packages/modules/HealthConnect:__subpackages__"
     ],
-    static_libs: ["healthconnect-statsd"]
+    static_libs: ["healthfitness-statsd"]
 }
