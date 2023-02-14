@@ -34,6 +34,7 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -160,9 +161,13 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedLogs().size()).isEqualTo(testRecord.size());
         List<ChangeLogsResponse.DeletedLog> deletedLogs = response.getDeletedLogs();
+        ChangeLogsResponse.DeletedLog deletedLog =
+                new ChangeLogsResponse.DeletedLog("abc", Instant.now().toEpochMilli());
+        assertThat(deletedLogs).doesNotContain(deletedLog);
         for (ChangeLogsResponse.DeletedLog log : deletedLogs) {
             assertThat(log.getDeletedRecordId()).isNotNull();
             assertThat(log.getDeletedTime()).isNotNull();
+            assertThat(log.getDeletedRecordId()).isNotEqualTo(deletedLog.getDeletedRecordId());
         }
     }
 

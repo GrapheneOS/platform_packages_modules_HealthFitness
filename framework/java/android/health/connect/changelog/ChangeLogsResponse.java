@@ -30,7 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Response class for {@link HealthConnectManager#getChangeLogs} */
+/**
+ * Response class for {@link HealthConnectManager#getChangeLogs} This is the response to clients
+ * fetching changes
+ */
 public final class ChangeLogsResponse implements Parcelable {
     private final List<Record> mUpsertedRecords;
     private final List<DeletedLog> mDeletedLogs;
@@ -96,6 +99,9 @@ public final class ChangeLogsResponse implements Parcelable {
     /**
      * Returns records that have been updated or inserted post the time when the given token was
      * generated.
+     *
+     * <p>Clients can use the last modified time of the record to check when the record was
+     * modified.
      */
     @NonNull
     public List<Record> getUpsertedRecords() {
@@ -105,6 +111,8 @@ public final class ChangeLogsResponse implements Parcelable {
     /**
      * Returns delete logs for records that have been deleted post the time when the token was
      * requested from {@link HealthConnectManager#getChangeLogToken}
+     *
+     * <p>This contains record id of deleted record and the timestamp when the record was deleted.
      */
     @NonNull
     public List<DeletedLog> getDeletedLogs() {
@@ -149,7 +157,6 @@ public final class ChangeLogsResponse implements Parcelable {
         private final String mDeletedRecordId;
         private final Instant mDeletedTime;
 
-        /** @hide */
         public DeletedLog(@NonNull String deletedRecordId, long deletedTime) {
             Objects.requireNonNull(deletedRecordId);
             mDeletedRecordId = deletedRecordId;
