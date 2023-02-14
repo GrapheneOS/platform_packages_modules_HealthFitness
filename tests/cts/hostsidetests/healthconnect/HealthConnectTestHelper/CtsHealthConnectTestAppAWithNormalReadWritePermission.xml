@@ -16,20 +16,24 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.cts.ctshealthconnecttestappwithnormalreadwritepermission.A"
+          package="android.healthconnect.cts.testapp.readWritePerms.A"
           android:versionCode="1"
-          android:versionName="1.0" >
+          android:versionName="1.0">
 
-    <uses-permission android:name="android.permission-group.HEALTH" />
-    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA" />
+    <uses-permission android:name="android.permission-group.HEALTH"/>
+    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA"/>
+    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_BASAL_METABOLIC_RATE"/>
 
 
     <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission">
-        <activity android:name="android.healthconnect.cts.healthConnectTestHelper" android:exported="true" >
+        <activity android:name="android.healthconnect.cts.HealthConnectTestHelper"
+                  android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
