@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.route
 
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.util.Log
-import android.health.connect.datatypes.ExerciseRoute
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,26 +32,25 @@ class ExerciseRouteViewModel
 @Inject
 constructor(private val loadExerciseRouteUseCase: LoadExerciseRouteUseCase) : ViewModel() {
 
-  companion object {
-    private const val TAG = "ExerciseRouteViewModel"
-  }
+    companion object {
+        private const val TAG = "ExerciseRouteViewModel"
+    }
 
-  private val _exerciseRoute = MutableLiveData<ExerciseRoute>()
-    val exerciseRoute: LiveData<ExerciseRoute>
-        get() = _exerciseRoute
+    private val _exerciseSession = MutableLiveData<ExerciseSessionRecord?>()
+    val exerciseSession: LiveData<ExerciseSessionRecord?>
+        get() = _exerciseSession
 
-    fun getExerciseRoute(sessionId: String) {
+    fun getExerciseWithRoute(sessionId: String) {
         viewModelScope.launch {
-          val routeResult = loadExerciseRouteUseCase.invoke(sessionId)
-          when (routeResult) {
-            is UseCaseResults.Success -> {
-              _exerciseRoute.postValue(routeResult.data)
+            when (val result = loadExerciseRouteUseCase.invoke(sessionId)) {
+                is UseCaseResults.Success -> {
+                    _exerciseSession.postValue(result.data)
+                }
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, result.exception.message!!)
+                    _exerciseSession.postValue(null)
+                }
             }
-            is UseCaseResults.Failed -> {
-              Log.e(TAG, routeResult.exception.message!!)
-              _exerciseRoute.postValue(ExerciseRoute(listOf()))
-            }
-          }
         }
     }
 }

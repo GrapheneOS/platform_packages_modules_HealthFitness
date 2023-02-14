@@ -20,7 +20,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
-import android.health.connect.datatypes.ExerciseRoute
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -31,6 +31,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.map.MapView
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Request route activity for Health Connect. */
@@ -54,12 +55,12 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             finish()
             return
         }
-        viewModel.getExerciseRoute(intent.getStringExtra(EXTRA_SESSION_ID)!!)
-        viewModel.exerciseRoute.observe(this) { route -> setupDialog(route) }
+        viewModel.getExerciseWithRoute(intent.getStringExtra(EXTRA_SESSION_ID)!!)
+        viewModel.exerciseSession.observe(this) { session -> setupDialog(session) }
     }
 
-    private fun setupDialog(route: ExerciseRoute) {
-        if (route == null || route.routeLocations.isEmpty()) {
+    private fun setupDialog(sessionRecord: ExerciseSessionRecord?) {
+        if (sessionRecord?.route == null || sessionRecord.route!!.routeLocations.isEmpty()) {
             Log.e(TAG, "No route or empty route, finishing.")
             val result = Intent()
             result.putExtra(EXTRA_SESSION_ID, intent.getStringExtra(EXTRA_SESSION_ID))
@@ -68,15 +69,22 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             return
         }
 
+        val session = sessionRecord!!
         val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
         // TODO(pakoch): Add a reference to the intent sender.
         val title = applicationContext.getString(R.string.request_route_header_title, "Test app")
+        val sessionDetails =
+            applicationContext.getString(
+                R.string.date_owner_format,
+                LocalDateTimeFormatter(applicationContext).formatLongDate(session.startTime), "app")
         val view = layoutInflater.inflate(R.layout.route_request_dialog, null)
         view
             .findViewById<ImageView>(R.id.dialog_icon)
             .setImageDrawable(getDrawable(R.drawable.health_connect_icon))
         view.findViewById<TextView>(R.id.dialog_title).text = title
-        view.findViewById<MapView>(R.id.map_view).setRoute(route)
+        view.findViewById<MapView>(R.id.map_view).setRoute(session.route!!)
+        view.findViewById<TextView>(R.id.session_title).text = session.title
+        view.findViewById<TextView>(R.id.date_app).text = sessionDetails
 
         view.findViewById<Button>(R.id.route_dont_allow_button).setOnClickListener {
             val result = Intent()
@@ -88,7 +96,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         view.findViewById<Button>(R.id.route_allow_button).setOnClickListener {
             val result = Intent()
             result.putExtra(EXTRA_SESSION_ID, intent.getStringExtra(EXTRA_SESSION_ID))
-            result.putExtra(EXTRA_EXERCISE_ROUTE, route)
+            result.putExtra(EXTRA_EXERCISE_ROUTE, session.route)
             setResult(Activity.RESULT_OK, result)
             finish()
         }

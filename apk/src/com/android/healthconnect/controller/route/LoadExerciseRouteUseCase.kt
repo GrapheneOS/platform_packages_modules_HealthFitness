@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.route
 import android.health.connect.HealthConnectManager
 import android.health.connect.ReadRecordsRequestUsingIds
 import android.health.connect.ReadRecordsResponse
-import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSessionRecord
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
@@ -35,9 +34,9 @@ class LoadExerciseRouteUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : BaseUseCase<String, ExerciseRoute>(dispatcher) {
+) : BaseUseCase<String, ExerciseSessionRecord?>(dispatcher) {
 
-    override suspend fun execute(sessionId: String): ExerciseRoute {
+    override suspend fun execute(sessionId: String): ExerciseSessionRecord? {
         val request =
             ReadRecordsRequestUsingIds.Builder(ExerciseSessionRecord::class.java)
                 .addId(sessionId)
@@ -50,8 +49,8 @@ constructor(
                 }
                 .records
         if (records.isEmpty() || !records[0].hasRoute()) {
-            return ExerciseRoute(listOf<ExerciseRoute.Location>())
+            return null
         }
-        return records[0].getRoute()!!
+        return records[0]
     }
 }

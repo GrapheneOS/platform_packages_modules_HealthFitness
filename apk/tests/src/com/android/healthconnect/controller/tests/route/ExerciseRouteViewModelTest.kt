@@ -68,9 +68,9 @@ class ExerciseRouteViewModelTest {
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
 
-        viewModel.getExerciseRoute("testId")
+        viewModel.getExerciseWithRoute("testId")
 
-        assertThat(viewModel.exerciseRoute.getOrAwaitValue()).isEqualTo(ExerciseRoute(listOf()))
+        assertThat(viewModel.exerciseSession.getOrAwaitValue()).isEqualTo(null)
     }
 
     @Test
@@ -89,38 +89,38 @@ class ExerciseRouteViewModelTest {
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
 
-        viewModel.getExerciseRoute("testId")
+        viewModel.getExerciseWithRoute("testId")
 
-        assertThat(viewModel.exerciseRoute.getOrAwaitValue()).isEqualTo(ExerciseRoute(listOf()))
+        assertThat(viewModel.exerciseSession.getOrAwaitValue()).isEqualTo(null)
     }
 
     @Test
     fun loadExerciseRoute_postsRoute() = runTest {
         val start = Instant.ofEpochMilli(1234567891011)
         val end = start.plusMillis(123456)
-        val expectedRoute =
-            ExerciseRoute(
-                listOf(
-                    ExerciseRoute.Location.Builder(start.plusSeconds(12), 52.26019, 21.02268)
-                        .build(),
-                    ExerciseRoute.Location.Builder(start.plusSeconds(40), 52.26000, 21.02360)
-                        .build()))
-        doAnswer(
-                prepareAnswer(
-                    listOf(
-                        ExerciseSessionRecord.Builder(
-                                Metadata.Builder().build(),
-                                start,
-                                end,
-                                ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
-                            .setRoute(expectedRoute)
-                            .build())))
+        val expectedSession =
+            ExerciseSessionRecord.Builder(
+                    Metadata.Builder().build(),
+                    start,
+                    end,
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                .setRoute(
+                    ExerciseRoute(
+                        listOf(
+                            ExerciseRoute.Location.Builder(
+                                    start.plusSeconds(12), 52.26019, 21.02268)
+                                .build(),
+                            ExerciseRoute.Location.Builder(
+                                    start.plusSeconds(40), 52.26000, 21.02360)
+                                .build())))
+                .build()
+        doAnswer(prepareAnswer(listOf(expectedSession)))
             .`when`(manager)
             .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
 
-        viewModel.getExerciseRoute("testId")
+        viewModel.getExerciseWithRoute("testId")
 
-        assertThat(viewModel.exerciseRoute.getOrAwaitValue()).isEqualTo(expectedRoute)
+        assertThat(viewModel.exerciseSession.getOrAwaitValue()).isEqualTo(expectedSession)
     }
 
     private fun prepareAnswer(
