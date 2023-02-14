@@ -1502,7 +1502,8 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.startMigration(wrapMigrationCallback(executor, callback));
+            mService.startMigration(
+                    mContext.getPackageName(), wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1523,7 +1524,8 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.finishMigration(wrapMigrationCallback(executor, callback));
+            mService.finishMigration(
+                    mContext.getPackageName(), wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1549,7 +1551,8 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
 
         try {
-            mService.writeMigrationData(entities, wrapMigrationCallback(executor, callback));
+            mService.writeMigrationData(
+                    mContext.getPackageName(), entities, wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1585,7 +1588,9 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.insertMinDataMigrationSdkExtensionVersion(
-                    requiredSdkExtension, wrapMigrationCallback(executor, callback));
+                    mContext.getPackageName(),
+                    requiredSdkExtension,
+                    wrapMigrationCallback(executor, callback));
 
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
