@@ -34,8 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Utility class with PackageInfo-related methods for {@link FirstGrantTimeManager} */
-class PackageInfoUtils {
+/**
+ * Utility class with PackageInfo-related methods for {@link FirstGrantTimeManager}
+ *
+ * @hide
+ */
+public class PackageInfoUtils {
     private static final String TAG = "HealthConnectPackageInfoUtils";
 
     /**
@@ -74,7 +78,7 @@ class PackageInfoUtils {
         List<PackageInfo> healthAppsInfos = new ArrayList<>();
 
         for (PackageInfo info : allInfos) {
-            if (anyRequestedHealthPermissionGranted(info)) {
+            if (anyRequestedHealthPermissionGranted(mContext, info)) {
                 healthAppsInfos.add(info);
             }
         }
@@ -84,7 +88,7 @@ class PackageInfoUtils {
     boolean hasGrantedHealthPermissions(@NonNull String[] packageNames, @NonNull UserHandle user) {
         for (String packageName : packageNames) {
             PackageInfo info = getPackageInfoWithPermissionsAsUser(packageName, user);
-            if (anyRequestedHealthPermissionGranted(info)) {
+            if (anyRequestedHealthPermissionGranted(mContext, info)) {
                 return true;
             }
         }
@@ -96,15 +100,23 @@ class PackageInfoUtils {
         return getPackageManagerAsUser(user).getPackagesForUid(packageUid);
     }
 
-    private boolean anyRequestedHealthPermissionGranted(@NonNull PackageInfo packageInfo) {
-        if (packageInfo == null || packageInfo.requestedPermissions == null) {
+    /**
+     * Checks if the given package had any read/write permissions to Health Connect.
+     *
+     * @param context Context
+     * @param packageInfo Package to check
+     * @return If the given package is connected to Health Connect.
+     */
+    public static boolean anyRequestedHealthPermissionGranted(
+            @NonNull Context context, @NonNull PackageInfo packageInfo) {
+        if (context == null || packageInfo == null || packageInfo.requestedPermissions == null) {
             Log.w(TAG, "Can't extract requested permissions from the package info.");
             return false;
         }
 
         for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
             String currPerm = packageInfo.requestedPermissions[i];
-            if (HealthConnectManager.isHealthPermission(mContext, currPerm)
+            if (HealthConnectManager.isHealthPermission(context, currPerm)
                     && ((packageInfo.requestedPermissionsFlags[i]
                                     & PackageInfo.REQUESTED_PERMISSION_GRANTED)
                             != 0)) {
