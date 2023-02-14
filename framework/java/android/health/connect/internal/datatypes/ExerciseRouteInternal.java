@@ -40,7 +40,7 @@ public class ExerciseRouteInternal {
 
     public ExerciseRouteInternal(@NonNull List<LocationInternal> routeExerciseRouteLocations) {
         Objects.requireNonNull(routeExerciseRouteLocations);
-        mRouteExerciseRouteLocations = routeExerciseRouteLocations;
+        mRouteExerciseRouteLocations = new ArrayList<>(routeExerciseRouteLocations);
     }
 
     @NonNull
