@@ -120,12 +120,12 @@ public final class AggregationTypeIdMapper {
                         BPM_MIN,
                         STEPS_COUNT_TOTAL,
                         BPM_AVG,
-                        FLOORS_CLIMBED_TOTAL,
                         RestingHeartRateRecord.BPM_MAX,
                         RestingHeartRateRecord.BPM_MIN,
                         RestingHeartRateRecord.BPM_AVG,
                         WHEEL_CHAIR_PUSHES_COUNT_TOTAL,
                         HEART_MEASUREMENTS_COUNT));
+        addDoubleIdsToAggregateResultMap(Arrays.asList(FLOORS_CLIMBED_TOTAL));
         addPowerIdsToAggregateResultMap(Arrays.asList(POWER_MIN, POWER_MAX, POWER_AVG));
         addEnergyIdsToAggregateResultMap(
                 Arrays.asList(
@@ -256,6 +256,16 @@ public final class AggregationTypeIdMapper {
             mIdToAggregateResult.put(
                     aggregationType.getAggregationTypeIdentifier(),
                     result -> getLongResult(result.readLong()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void addDoubleIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getDoubleResult(result.readDouble()));
             populateIdDataAggregationType(aggregationType);
         }
     }

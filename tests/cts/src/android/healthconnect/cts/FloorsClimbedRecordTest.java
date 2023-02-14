@@ -191,9 +191,9 @@ public class FloorsClimbedRecordTest {
     public void testAggregation_FloorsClimbedTotal() throws Exception {
         List<Record> records =
                 Arrays.asList(getBaseFloorsClimbedRecord(), getBaseFloorsClimbedRecord());
-        AggregateRecordsResponse<Long> oldResponse =
+        AggregateRecordsResponse<Double> oldResponse =
                 TestUtils.getAggregateResponse(
-                        new AggregateRecordsRequest.Builder<Long>(
+                        new AggregateRecordsRequest.Builder<Double>(
                                         new TimeInstantRangeFilter.Builder()
                                                 .setStartTime(Instant.ofEpochMilli(0))
                                                 .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
@@ -203,9 +203,9 @@ public class FloorsClimbedRecordTest {
                         records);
         List<Record> recordNew =
                 Arrays.asList(getBaseFloorsClimbedRecord(), getBaseFloorsClimbedRecord());
-        AggregateRecordsResponse<Long> newResponse =
+        AggregateRecordsResponse<Double> newResponse =
                 TestUtils.getAggregateResponse(
-                        new AggregateRecordsRequest.Builder<Long>(
+                        new AggregateRecordsRequest.Builder<Double>(
                                         new TimeInstantRangeFilter.Builder()
                                                 .setStartTime(Instant.ofEpochMilli(0))
                                                 .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
@@ -213,8 +213,8 @@ public class FloorsClimbedRecordTest {
                                 .addAggregationType(FLOORS_CLIMBED_TOTAL)
                                 .build(),
                         recordNew);
-        long newFloorsTotal = newResponse.get(FLOORS_CLIMBED_TOTAL);
-        long oldFloorsTotal = oldResponse.get(FLOORS_CLIMBED_TOTAL);
+        double newFloorsTotal = newResponse.get(FLOORS_CLIMBED_TOTAL);
+        double oldFloorsTotal = oldResponse.get(FLOORS_CLIMBED_TOTAL);
         assertThat(newFloorsTotal).isNotNull();
         assertThat(oldFloorsTotal).isNotNull();
         assertThat(newFloorsTotal - oldFloorsTotal).isEqualTo(20);

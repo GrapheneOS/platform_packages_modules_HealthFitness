@@ -55,20 +55,20 @@ class FloorsFormatterTest {
 
     @Test
     fun formatValue() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(4), preferences)).isEqualTo("4 floors")
+        assertThat(formatter.formatValue(getRecord(4.0), preferences)).isEqualTo("4 floors")
     }
 
     @Test
     fun formatValue_one() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(1), preferences)).isEqualTo("1 floor")
+        assertThat(formatter.formatValue(getRecord(1.0), preferences)).isEqualTo("1 floor")
     }
 
     @Test
     fun formatA11yValue() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(1234), preferences)).isEqualTo("1,234 floors")
+        assertThat(formatter.formatValue(getRecord(1234.0), preferences)).isEqualTo("1,234 floors")
     }
 
-    private fun getRecord(floors: Int): FloorsClimbedRecord {
+    private fun getRecord(floors: Double): FloorsClimbedRecord {
         return FloorsClimbedRecord.Builder(getMetaData(), NOW, NOW.plusSeconds(2), floors).build()
     }
 }
