@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.health.connect.HealthConnectManager;
+import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.Slog;
@@ -49,7 +50,6 @@ public class HealthConnectManagerService extends SystemService {
     private final PackagePermissionChangesMonitor mPackageMonitor;
     private final HealthConnectServiceImpl mHealthConnectService;
     private final TransactionManager mTransactionManager;
-    private final UserManager mUserManager;
     private UserHandle mCurrentUser;
 
     public HealthConnectManagerService(Context context) {
@@ -70,7 +70,6 @@ public class HealthConnectManagerService extends SystemService {
                 new PackagePermissionChangesMonitor(permissionIntentTracker, firstGrantTimeManager);
         mCurrentUser = context.getUser();
         mContext = context;
-        mUserManager = mContext.getSystemService(UserManager.class);
         mTransactionManager =
                 TransactionManager.getInstance(
                         new HealthConnectUserContext(mContext, mCurrentUser));
@@ -119,7 +118,9 @@ public class HealthConnectManagerService extends SystemService {
 
     @Override
     public boolean isUserSupported(@NonNull TargetUser user) {
-        return !mUserManager.isManagedProfile(user.getUserHandle().getIdentifier());
+        UserManager userManager =
+            getUserContext(mContext, user.getUserHandle()).getSystemService(UserManager.class);
+        return !(userManager.isManagedProfile() || userManager.isCloneProfile());
     }
 
     // TODO(b/267255123) Implement broadcast sending on background thread,
@@ -143,6 +144,15 @@ public class HealthConnectManagerService extends SystemService {
             HealthConnectDailyService.stop(mContext, user.getUserHandle().getIdentifier());
         } catch (Exception e) {
             Slog.e(TAG, "Failed to stop Health Connect daily service.", e);
+        }
+    }
+
+    @NonNull
+    private static Context getUserContext(@NonNull Context context, @NonNull UserHandle user) {
+        if (Process.myUserHandle().equals(user)) {
+            return context;
+        } else {
+            return context.createContextAsUser(user, 0);
         }
     }
 }
