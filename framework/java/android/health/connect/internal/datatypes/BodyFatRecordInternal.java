@@ -56,11 +56,6 @@ public final class BodyFatRecordInternal extends InstantRecordInternal<BodyFatRe
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BodyFatRecord bodyFatRecord) {
-        mPercentage = bodyFatRecord.getPercentage().getValue();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mPercentage);
     }

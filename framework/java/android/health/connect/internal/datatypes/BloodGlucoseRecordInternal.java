@@ -104,14 +104,6 @@ public final class BloodGlucoseRecordInternal extends InstantRecordInternal<Bloo
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BloodGlucoseRecord bloodGlucoseRecord) {
-        mSpecimenSource = bloodGlucoseRecord.getSpecimenSource();
-        mLevel = bloodGlucoseRecord.getLevel().getInMillimolesPerLiter();
-        mRelationToMeal = bloodGlucoseRecord.getRelationToMeal();
-        mMealType = bloodGlucoseRecord.getMealType();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mSpecimenSource);
         parcel.writeDouble(mLevel);

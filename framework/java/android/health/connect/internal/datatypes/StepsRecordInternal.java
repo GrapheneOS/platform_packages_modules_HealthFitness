@@ -57,11 +57,6 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull StepsRecord stepsRecord) {
-        mCount = stepsRecord.getCount();
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeLong(mCount);
     }

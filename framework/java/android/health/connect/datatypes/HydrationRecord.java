@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Volume;
+import android.health.connect.internal.datatypes.HydrationRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -166,5 +167,28 @@ public final class HydrationRecord extends IntervalRecord {
             return new HydrationRecord(
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mVolume);
         }
+    }
+
+    /** @hide */
+    @Override
+    public HydrationRecordInternal toRecordInternal() {
+        HydrationRecordInternal recordInternal =
+                (HydrationRecordInternal)
+                        new HydrationRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setVolume(mVolume.getInMilliliters());
+        return recordInternal;
     }
 }

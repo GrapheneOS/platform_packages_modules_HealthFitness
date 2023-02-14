@@ -22,6 +22,7 @@ import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Mass;
+import android.health.connect.internal.datatypes.NutritionRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -34,6 +35,7 @@ public final class NutritionRecord extends IntervalRecord {
     private static final Mass MASS_0_0 = Mass.fromKilograms(0.0);
     private static final Mass MASS_0_1 = Mass.fromKilograms(0.1);
     private static final Mass MASS_1 = Mass.fromKilograms(1.0);
+
     /** Builder class for {@link NutritionRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
@@ -1843,5 +1845,160 @@ public final class NutritionRecord extends IntervalRecord {
                 getVitaminA(),
                 getFolicAcid(),
                 getSugar());
+    }
+
+    /** @hide */
+    @Override
+    public NutritionRecordInternal toRecordInternal() {
+        NutritionRecordInternal recordInternal =
+                (NutritionRecordInternal)
+                        new NutritionRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+
+        if (!Objects.isNull(getUnsaturatedFat())) {
+            recordInternal.setUnsaturatedFat(getUnsaturatedFat().getInKilograms());
+        }
+        if (!Objects.isNull(getPotassium())) {
+            recordInternal.setPotassium(getPotassium().getInKilograms());
+        }
+        if (!Objects.isNull(getThiamin())) {
+            recordInternal.setThiamin(getThiamin().getInKilograms());
+        }
+        recordInternal.setMealType(getMealType());
+        if (!Objects.isNull(getTransFat())) {
+            recordInternal.setTransFat(getTransFat().getInKilograms());
+        }
+        if (!Objects.isNull(getManganese())) {
+            recordInternal.setManganese(getManganese().getInKilograms());
+        }
+        if (!Objects.isNull(getEnergyFromFat())) {
+            recordInternal.setEnergyFromFat(getEnergyFromFat().getInJoules());
+        }
+        if (!Objects.isNull(getCaffeine())) {
+            recordInternal.setCaffeine(getCaffeine().getInKilograms());
+        }
+        if (!Objects.isNull(getDietaryFiber())) {
+            recordInternal.setDietaryFiber(getDietaryFiber().getInKilograms());
+        }
+        if (!Objects.isNull(getSelenium())) {
+            recordInternal.setSelenium(getSelenium().getInKilograms());
+        }
+        if (!Objects.isNull(getVitaminB6())) {
+            recordInternal.setVitaminB6(getVitaminB6().getInKilograms());
+        }
+        if (!Objects.isNull(getProtein())) {
+            recordInternal.setProtein(getProtein().getInKilograms());
+        }
+        if (!Objects.isNull(getChloride())) {
+            recordInternal.setChloride(getChloride().getInKilograms());
+        }
+        if (!Objects.isNull(getCholesterol())) {
+            recordInternal.setCholesterol(getCholesterol().getInKilograms());
+        }
+        if (!Objects.isNull(getCopper())) {
+            recordInternal.setCopper(getCopper().getInKilograms());
+        }
+        if (!Objects.isNull(getIodine())) {
+            recordInternal.setIodine(getIodine().getInKilograms());
+        }
+        if (!Objects.isNull(getVitaminB12())) {
+            recordInternal.setVitaminB12(getVitaminB12().getInKilograms());
+        }
+        if (!Objects.isNull(getZinc())) {
+            recordInternal.setZinc(getZinc().getInKilograms());
+        }
+        if (!Objects.isNull(getRiboflavin())) {
+            recordInternal.setRiboflavin(getRiboflavin().getInKilograms());
+        }
+        if (!Objects.isNull(getEnergy())) {
+            recordInternal.setEnergy(getEnergy().getInJoules());
+        }
+        if (!Objects.isNull(getMolybdenum())) {
+            recordInternal.setMolybdenum(getMolybdenum().getInKilograms());
+        }
+        if (!Objects.isNull(getPhosphorus())) {
+            recordInternal.setPhosphorus(getPhosphorus().getInKilograms());
+        }
+        if (!Objects.isNull(getChromium())) {
+            recordInternal.setChromium(getChromium().getInKilograms());
+        }
+        if (!Objects.isNull(getTotalFat())) {
+            recordInternal.setTotalFat(getTotalFat().getInKilograms());
+        }
+        if (!Objects.isNull(getCalcium())) {
+            recordInternal.setCalcium(getCalcium().getInKilograms());
+        }
+        if (!Objects.isNull(getVitaminC())) {
+            recordInternal.setVitaminC(getVitaminC().getInKilograms());
+        }
+        if (!Objects.isNull(getVitaminE())) {
+            recordInternal.setVitaminE(getVitaminE().getInKilograms());
+        }
+        if (!Objects.isNull(getBiotin())) {
+            recordInternal.setBiotin(getBiotin().getInKilograms());
+        }
+        if (!Objects.isNull(getVitaminD())) {
+            recordInternal.setVitaminD(getVitaminD().getInKilograms());
+        }
+        if (!Objects.isNull(getNiacin())) {
+            recordInternal.setNiacin(getNiacin().getInKilograms());
+        }
+        if (!Objects.isNull(getMagnesium())) {
+            recordInternal.setMagnesium(getMagnesium().getInKilograms());
+        }
+        if (!Objects.isNull(getTotalCarbohydrate())) {
+            recordInternal.setTotalCarbohydrate(getTotalCarbohydrate().getInKilograms());
+        }
+        if (!Objects.isNull(getVitaminK())) {
+            recordInternal.setVitaminK(getVitaminK().getInKilograms());
+        }
+        if (!Objects.isNull(getPolyunsaturatedFat())) {
+            recordInternal.setPolyunsaturatedFat(getPolyunsaturatedFat().getInKilograms());
+        }
+        if (!Objects.isNull(getSaturatedFat())) {
+            recordInternal.setSaturatedFat(getSaturatedFat().getInKilograms());
+        }
+        if (!Objects.isNull(getSodium())) {
+            recordInternal.setSodium(getSodium().getInKilograms());
+        }
+        if (!Objects.isNull(getFolate())) {
+            recordInternal.setFolate(getFolate().getInKilograms());
+        }
+        if (!Objects.isNull(getMonounsaturatedFat())) {
+            recordInternal.setMonounsaturatedFat(getMonounsaturatedFat().getInKilograms());
+        }
+        if (!Objects.isNull(getPantothenicAcid())) {
+            recordInternal.setPantothenicAcid(getPantothenicAcid().getInKilograms());
+        }
+        if (!Objects.isNull(getMealName())) {
+            recordInternal.setMealName(getMealName());
+        }
+        if (!Objects.isNull(getIron())) {
+            recordInternal.setIron(getIron().getInKilograms());
+        }
+        if (!Objects.isNull(getVitaminA())) {
+            recordInternal.setVitaminA(getVitaminA().getInKilograms());
+        }
+        if (!Objects.isNull(getFolicAcid())) {
+            recordInternal.setFolicAcid(getFolicAcid().getInKilograms());
+        }
+        if (!Objects.isNull(getSugar())) {
+            recordInternal.setSugar(getSugar().getInKilograms());
+        }
+
+        return recordInternal;
     }
 }

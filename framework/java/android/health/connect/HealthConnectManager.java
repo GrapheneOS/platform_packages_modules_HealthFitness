@@ -101,6 +101,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 /**
  * This class provides APIs to interact with the centralized HealthConnect storage maintained by the
@@ -475,7 +476,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             List<RecordInternal<?>> recordInternals =
-                    mInternalExternalRecordConverter.getInternalRecords(records);
+                    records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
             mService.insertRecords(
                     mContext.getAttributionSource(),
                     new RecordsParcel(recordInternals),
@@ -1205,7 +1206,7 @@ public class HealthConnectManager {
             }
 
             List<RecordInternal<?>> recordInternals =
-                    mInternalExternalRecordConverter.getInternalRecords(records);
+                    records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
 
             // Verify if the input record has clientRecordId or UUID.
             for (RecordInternal<?> recordInternal : recordInternals) {

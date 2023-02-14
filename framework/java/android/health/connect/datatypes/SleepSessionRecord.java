@@ -21,6 +21,8 @@ import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTi
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
+import android.health.connect.internal.datatypes.SleepStageInternal;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Captures user sleep session. Each session requires start and end time and a list of {@link
@@ -172,6 +175,14 @@ public final class SleepSessionRecord extends IntervalRecord {
         @Override
         public int hashCode() {
             return Objects.hash(getStartTime(), getEndTime(), mStageType);
+        }
+
+        /** @hide */
+        public SleepStageInternal toInternalStage() {
+            return new SleepStageInternal()
+                    .setStartTime(getStartTime().toEpochMilli())
+                    .setEndTime(getEndTime().toEpochMilli())
+                    .setStageType(getType());
         }
     }
 
@@ -329,5 +340,37 @@ public final class SleepSessionRecord extends IntervalRecord {
                     mNotes,
                     mTitle);
         }
+    }
+
+    /** @hide */
+    @Override
+    public SleepSessionRecordInternal toRecordInternal() {
+        SleepSessionRecordInternal recordInternal =
+                (SleepSessionRecordInternal)
+                        new SleepSessionRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setSleepStages(
+                getStages().stream().map(Stage::toInternalStage).collect(Collectors.toList()));
+
+        if (getNotes() != null) {
+            recordInternal.setNotes(getNotes().toString());
+        }
+
+        if (getTitle() != null) {
+            recordInternal.setTitle(getTitle().toString());
+        }
+        return recordInternal;
     }
 }

@@ -30,8 +30,7 @@ public class ExerciseRouteInternalTest {
         ExerciseRouteInternal.LocationInternal location =
                 TestUtils.buildInternalLocationAllFields();
         ExerciseRouteInternal.LocationInternal convertedLocation =
-                ExerciseRouteInternal.LocationInternal.fromExternalExerciseRouteLocation(
-                        location.toExternalExerciseRouteLocation());
+                location.toExternalExerciseRouteLocation().toExerciseRouteLocationInternal();
         assertThat(convertedLocation).isEqualTo(location);
     }
 
@@ -39,16 +38,14 @@ public class ExerciseRouteInternalTest {
     public void testLocationNoOptionalFields_convertToExternalAndBack_isIdentical() {
         ExerciseRouteInternal.LocationInternal location = TestUtils.buildInternalLocation();
         ExerciseRouteInternal.LocationInternal convertedLocation =
-                ExerciseRouteInternal.LocationInternal.fromExternalExerciseRouteLocation(
-                        location.toExternalExerciseRouteLocation());
+                location.toExternalExerciseRouteLocation().toExerciseRouteLocationInternal();
         assertThat(convertedLocation).isEqualTo(location);
     }
 
     @Test
     public void testRouteConvertToExternal_convertToExternalAndBack_isIdentical() {
         ExerciseRouteInternal mRoute = TestUtils.buildExerciseRouteInternal();
-        ExerciseRouteInternal convertedRoute =
-                ExerciseRouteInternal.fromExternalRoute(mRoute.toExternalRoute());
+        ExerciseRouteInternal convertedRoute = mRoute.toExternalRoute().toRouteInternal();
         assertThat(convertedRoute).isEqualTo(mRoute);
     }
 

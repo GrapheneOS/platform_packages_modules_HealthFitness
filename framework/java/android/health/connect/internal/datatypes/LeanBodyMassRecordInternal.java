@@ -56,11 +56,6 @@ public final class LeanBodyMassRecordInternal extends InstantRecordInternal<Lean
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull LeanBodyMassRecord leanBodyMassRecord) {
-        mMass = leanBodyMassRecord.getMass().getInKilograms();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mMass);
     }

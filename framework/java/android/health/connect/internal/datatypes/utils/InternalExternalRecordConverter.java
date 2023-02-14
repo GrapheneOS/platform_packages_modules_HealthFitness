@@ -56,29 +56,6 @@ public final class InternalExternalRecordConverter {
         return sInternalExternalRecordConverter;
     }
 
-    /** Returns a record for {@param record} */
-    @NonNull
-    public List<RecordInternal<?>> getInternalRecords(@NonNull List<? extends Record> records) {
-        List<RecordInternal<?>> internalRecordListInternal = new ArrayList<>(records.size());
-
-        for (Record record : records) {
-            internalRecordListInternal.add(getInternalRecord(record));
-        }
-
-        return internalRecordListInternal;
-    }
-
-    /** Converts {@link Record} to {@link RecordInternal}. */
-    @NonNull
-    public RecordInternal<?> getInternalRecord(@NonNull Record record) {
-        Objects.requireNonNull(record);
-
-        final RecordInternal<?> recordInternal = newInternalRecord(record.getRecordType());
-        recordInternal.populateUsing(record);
-
-        return recordInternal;
-    }
-
     /** Returns a new instance of {@link RecordInternal} for the provided {@code type }. */
     @NonNull
     public RecordInternal<?> newInternalRecord(@RecordTypeIdentifier.RecordType int type) {

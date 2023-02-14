@@ -75,12 +75,6 @@ public final class BasalBodyTemperatureRecordInternal
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BasalBodyTemperatureRecord basalBodyTemperatureRecord) {
-        mMeasurementLocation = basalBodyTemperatureRecord.getMeasurementLocation();
-        mTemperature = basalBodyTemperatureRecord.getTemperature().getInCelsius();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mMeasurementLocation);
         parcel.writeDouble(mTemperature);

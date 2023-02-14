@@ -60,14 +60,6 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
     }
 
     @Override
-    void populateRecordFrom(@NonNull T instantRecord) {
-        mTime = instantRecord.getTime().toEpochMilli();
-        mZoneOffset = instantRecord.getZoneOffset().getTotalSeconds();
-
-        populateInstantRecordFrom(instantRecord);
-    }
-
-    @Override
     void populateRecordTo(@NonNull Parcel parcel) {
         parcel.writeLong(mTime);
         parcel.writeInt(mZoneOffset);
@@ -108,12 +100,6 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
      * bundle}. Reads should be in the same order as write
      */
     abstract void populateInstantRecordFrom(@NonNull Parcel parcel);
-
-    /**
-     * Child class must implement this method and populates itself with the data present in {@code
-     * instantRecord}
-     */
-    abstract void populateInstantRecordFrom(@NonNull T instantRecord);
 
     /**
      * Populate {@code bundle} with the data required to un-bundle self. This is used during IPC

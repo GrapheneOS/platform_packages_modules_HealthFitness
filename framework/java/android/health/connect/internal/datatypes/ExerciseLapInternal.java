@@ -39,18 +39,6 @@ public class ExerciseLapInternal {
     private long mEndTime;
     private double mLength;
 
-    /** Read record from parcel. */
-    public static ExerciseLapInternal fromExternalLap(ExerciseLap lap) {
-        ExerciseLapInternal internalLap =
-                new ExerciseLapInternal()
-                        .setStarTime(lap.getStartTime().toEpochMilli())
-                        .setEndTime(lap.getEndTime().toEpochMilli());
-        if (lap.getLength() != null) {
-            internalLap.setLength(lap.getLength().getInMeters());
-        }
-        return internalLap;
-    }
-
     /** Reads lap from parcel. */
     @VisibleForTesting
     public static ExerciseLapInternal readFromParcel(Parcel parcel) {
