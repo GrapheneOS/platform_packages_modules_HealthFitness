@@ -237,11 +237,19 @@ public class TestUtils {
     }
 
     public static ExerciseRoute.Location buildLocationTimePoint() {
-        return new ExerciseRoute.Location.Builder(Instant.ofEpochMilli((long) 1e10), 10, 5).build();
+        return new ExerciseRoute.Location.Builder(
+                        Instant.ofEpochMilli((long) (1e10 + Math.random() * 50)),
+                        Math.random() * 50,
+                        Math.random() * 50)
+                .build();
     }
 
     public static ExerciseRoute buildExerciseRoute() {
-        return new ExerciseRoute(List.of(buildLocationTimePoint()));
+        return new ExerciseRoute(
+                List.of(
+                        buildLocationTimePoint(),
+                        buildLocationTimePoint(),
+                        buildLocationTimePoint()));
     }
 
     public static StepsRecord getStepsRecord() {

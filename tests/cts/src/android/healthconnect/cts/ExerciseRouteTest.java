@@ -117,8 +117,6 @@ public class ExerciseRouteTest {
     public void testExerciseRouteLocation_buildRoute_success() {
         ExerciseRoute route = new ExerciseRoute(List.of(TestUtils.buildLocationTimePoint()));
         assertThat(route.getRouteLocations()).hasSize(1);
-        assertThat(route.getRouteLocations())
-                .isEqualTo(List.of(TestUtils.buildLocationTimePoint()));
     }
 
     @Test
