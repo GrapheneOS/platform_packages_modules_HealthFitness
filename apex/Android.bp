@@ -32,6 +32,7 @@ apex {
     manifest: "manifest.json",
     file_contexts: ":com.android.healthfitness-file_contexts",
     apps: [
+        "HealthConnectBackupRestore",
         "HealthConnectController",
     ],
     prebuilts: [
