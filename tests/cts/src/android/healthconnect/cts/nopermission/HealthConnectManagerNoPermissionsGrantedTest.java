@@ -97,7 +97,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                         testRecord.getClass(),
                         new TimeInstantRangeFilter.Builder()
                                 .setStartTime(Instant.now())
-                                .setEndTime(Instant.now())
+                                .setEndTime(Instant.now().plusMillis(1000))
                                 .build());
                 Assert.fail();
             } catch (SecurityException securityException) {

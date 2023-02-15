@@ -43,10 +43,14 @@ public abstract class IntervalRecord extends Record {
         super(metadata);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(startZoneOffset);
-        Objects.requireNonNull(startTime);
+        Objects.requireNonNull(endTime);
         Objects.requireNonNull(endZoneOffset);
-        if (!endTime.isAfter(startTime)) {
-            throw new IllegalArgumentException("end time needs to be after start time.");
+        if (endTime.toEpochMilli() <= startTime.toEpochMilli()) {
+            throw new IllegalArgumentException(
+                    "end time in millis needs to be after start time in millis. startTime instant: "
+                            + startTime
+                            + " endTime instant: "
+                            + endTime);
         }
         mStartTime = startTime;
         mStartZoneOffset = startZoneOffset;
