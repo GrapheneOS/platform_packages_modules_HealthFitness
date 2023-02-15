@@ -229,9 +229,11 @@ public class DataMigrationTest {
     public void migratePermissions_invalidPermission_throwsMigrationException() {
         revokeAppPermissions(READ_HEIGHT, WRITE_HEIGHT);
 
+        final String entityId = "permissions1";
+
         final MigrationEntity entity =
                 new MigrationEntity(
-                        "permissions1",
+                        entityId,
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
                                 .addPermission("invalid.permission")
                                 .build());
@@ -240,6 +242,7 @@ public class DataMigrationTest {
             fail("Expected to fail with MigrationException but didn't");
         } catch (MigrationException e) {
             assertEquals(MigrationException.ERROR_MIGRATE_ENTITY, e.getErrorCode());
+            assertEquals(entityId, e.getFailedEntityId());
         }
     }
 
