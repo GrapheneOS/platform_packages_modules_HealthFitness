@@ -69,11 +69,11 @@ public final class ChangeLogsHelper {
     private static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
     private static final String TIME_COLUMN_NAME = "time";
     private static final int NUM_COLS = 5;
-    private static ChangeLogsHelper sChangeLogsHelper;
+    private static volatile ChangeLogsHelper sChangeLogsHelper;
 
     private ChangeLogsHelper() {}
 
-    public static ChangeLogsHelper getInstance() {
+    public static synchronized ChangeLogsHelper getInstance() {
         if (sChangeLogsHelper == null) {
             sChangeLogsHelper = new ChangeLogsHelper();
         }

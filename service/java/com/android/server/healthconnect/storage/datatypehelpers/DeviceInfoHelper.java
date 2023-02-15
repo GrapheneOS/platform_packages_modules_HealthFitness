@@ -56,13 +56,13 @@ public class DeviceInfoHelper {
     private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
     private static final String MODEL_COLUMN_NAME = "model";
     private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
-    private static DeviceInfoHelper sDeviceInfoHelper;
+    private static volatile DeviceInfoHelper sDeviceInfoHelper;
     /** Map to store deviceInfoId -> DeviceInfo mapping for populating record for read */
     private ConcurrentHashMap<Long, DeviceInfo> mIdDeviceInfoMap;
     /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
     private ConcurrentHashMap<DeviceInfo, Long> mDeviceInfoMap;
 
-    public static DeviceInfoHelper getInstance() {
+    public static synchronized DeviceInfoHelper getInstance() {
         if (sDeviceInfoHelper == null) {
             sDeviceInfoHelper = new DeviceInfoHelper();
         }

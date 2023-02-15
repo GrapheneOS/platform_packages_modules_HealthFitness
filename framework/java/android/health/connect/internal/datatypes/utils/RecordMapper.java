@@ -103,7 +103,7 @@ import java.util.Map;
 /** @hide */
 public final class RecordMapper {
     private static final int NUM_ENTRIES = 35;
-    private static RecordMapper sRecordMapper;
+    private static volatile RecordMapper sRecordMapper;
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
     private final Map<Integer, Class<? extends Record>> mRecordIdToExternalRecordClassMap;
@@ -307,7 +307,7 @@ public final class RecordMapper {
     }
 
     @NonNull
-    public static RecordMapper getInstance() {
+    public static synchronized RecordMapper getInstance() {
         if (sRecordMapper == null) {
             sRecordMapper = new RecordMapper();
         }

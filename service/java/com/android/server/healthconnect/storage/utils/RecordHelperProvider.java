@@ -71,7 +71,7 @@ import java.util.Map;
  * @hide
  */
 public final class RecordHelperProvider {
-    private static RecordHelperProvider sRecordHelperProvider;
+    private static volatile RecordHelperProvider sRecordHelperProvider;
 
     private final Map<Integer, RecordHelper<?>> mRecordIDToHelperMap;
 
@@ -169,7 +169,7 @@ public final class RecordHelperProvider {
     }
 
     @NonNull
-    public static RecordHelperProvider getInstance() {
+    public static synchronized RecordHelperProvider getInstance() {
         if (sRecordHelperProvider == null) {
             sRecordHelperProvider = new RecordHelperProvider();
         }

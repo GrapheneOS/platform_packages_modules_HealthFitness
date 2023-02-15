@@ -61,7 +61,7 @@ public class HealthDataCategoryPriorityHelper {
     private static final String TAG = "HealthConnectPrioHelper";
     private static final String DEFAULT_APP_RESOURCE_NAME =
             "android:string/config_defaultHealthConnectApp";
-    private static HealthDataCategoryPriorityHelper sHealthDataCategoryPriorityHelper;
+    private static volatile HealthDataCategoryPriorityHelper sHealthDataCategoryPriorityHelper;
 
     /**
      * map of {@link HealthDataCategory} to list of app ids from {@link AppInfoHelper}, in the order
@@ -72,7 +72,7 @@ public class HealthDataCategoryPriorityHelper {
     private HealthDataCategoryPriorityHelper() {}
 
     @NonNull
-    public static HealthDataCategoryPriorityHelper getInstance() {
+    public static synchronized HealthDataCategoryPriorityHelper getInstance() {
         if (sHealthDataCategoryPriorityHelper == null) {
             sHealthDataCategoryPriorityHelper = new HealthDataCategoryPriorityHelper();
         }

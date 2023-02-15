@@ -46,12 +46,12 @@ public final class PreferenceHelper {
     private static final String TABLE_NAME = "preference_table";
     private static final String KEY_COLUMN_NAME = "key";
     private static final String VALUE_COLUMN_NAME = "value";
-    private static PreferenceHelper sPreferenceHelper;
+    private static volatile PreferenceHelper sPreferenceHelper;
     private ConcurrentHashMap<String, String> mPreferences;
 
     private PreferenceHelper() {}
 
-    public static PreferenceHelper getInstance() {
+    public static synchronized PreferenceHelper getInstance() {
         if (sPreferenceHelper == null) {
             sPreferenceHelper = new PreferenceHelper();
         }

@@ -34,7 +34,7 @@ import java.util.Objects;
  * @hide
  */
 public final class MigrationStateManager {
-    private static MigrationStateManager sMigrationStateManager;
+    private static volatile MigrationStateManager sMigrationStateManager;
     private static final String MIGRATION_STATE_PREFERENCE_KEY = "migration_state";
     private static final String MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY =
             "min_data_migration_sdk_extension_version";
@@ -43,7 +43,7 @@ public final class MigrationStateManager {
      * @return an initialized instance of this helper.
      */
     @NonNull
-    public static MigrationStateManager getInstance() {
+    public static synchronized MigrationStateManager getInstance() {
         if (sMigrationStateManager == null) {
             sMigrationStateManager = new MigrationStateManager();
         }

@@ -77,7 +77,7 @@ public final class AppInfoHelper {
     private static final String PACKAGE_COLUMN_NAME = "package_name";
     private static final String APP_ICON_COLUMN_NAME = "app_icon";
     private static final int COMPRESS_FACTOR = 100;
-    private static AppInfoHelper sAppInfoHelper;
+    private static volatile AppInfoHelper sAppInfoHelper;
     /**
      * Map to store appInfoId -> packageName mapping for populating record for read
      *
@@ -94,7 +94,7 @@ public final class AppInfoHelper {
 
     private AppInfoHelper() {}
 
-    public static AppInfoHelper getInstance() {
+    public static synchronized AppInfoHelper getInstance() {
         if (sAppInfoHelper == null) {
             sAppInfoHelper = new AppInfoHelper();
         }

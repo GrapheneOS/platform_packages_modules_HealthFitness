@@ -104,7 +104,7 @@ import java.util.Map;
  */
 public final class AggregationTypeIdMapper {
     private static final int MAP_SIZE = 65;
-    private static AggregationTypeIdMapper sAggregationTypeIdMapper;
+    private static volatile AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
     private final Map<AggregationType<?>, Integer> mDataAggregationTypeIdMap;
@@ -189,7 +189,7 @@ public final class AggregationTypeIdMapper {
     }
 
     @NonNull
-    public static AggregationTypeIdMapper getInstance() {
+    public static synchronized AggregationTypeIdMapper getInstance() {
         if (sAggregationTypeIdMapper == null) {
             sAggregationTypeIdMapper = new AggregationTypeIdMapper();
         }

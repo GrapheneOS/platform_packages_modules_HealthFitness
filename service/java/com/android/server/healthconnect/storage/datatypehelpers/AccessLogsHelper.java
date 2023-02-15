@@ -56,11 +56,11 @@ public final class AccessLogsHelper {
     private static final String ACCESS_TIME_COLUMN_NAME = "access_time";
     private static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
     private static final int NUM_COLS = 5;
-    private static AccessLogsHelper sAccessLogsHelper;
+    private static volatile AccessLogsHelper sAccessLogsHelper;
 
     private AccessLogsHelper() {}
 
-    public static AccessLogsHelper getInstance() {
+    public static synchronized AccessLogsHelper getInstance() {
         if (sAccessLogsHelper == null) {
             sAccessLogsHelper = new AccessLogsHelper();
         }

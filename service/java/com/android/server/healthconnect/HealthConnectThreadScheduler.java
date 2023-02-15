@@ -47,7 +47,7 @@ public final class HealthConnectThreadScheduler {
                     new HealthConnectRoundRobinScheduler();
 
     // Executor to run HC background tasks
-    private static ThreadPoolExecutor sBackgroundThreadExecutor =
+    private static volatile ThreadPoolExecutor sBackgroundThreadExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_BACKGROUND,
                     NUM_EXECUTOR_THREADS_BACKGROUND,
@@ -55,7 +55,7 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC background tasks
-    private static ThreadPoolExecutor sInternalBackgroundExecutor =
+    private static volatile ThreadPoolExecutor sInternalBackgroundExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
                     NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
@@ -63,7 +63,7 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC tasks for clients
-    private static ThreadPoolExecutor sForegroundExecutor =
+    private static volatile ThreadPoolExecutor sForegroundExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_FOREGROUND,
                     NUM_EXECUTOR_THREADS_FOREGROUND,
@@ -71,7 +71,7 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC controller tasks
-    private static ThreadPoolExecutor sControllerExecutor =
+    private static volatile ThreadPoolExecutor sControllerExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_CONTROLLER,
                     NUM_EXECUTOR_THREADS_CONTROLLER,

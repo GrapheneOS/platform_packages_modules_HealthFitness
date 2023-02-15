@@ -96,6 +96,7 @@ public class HealthConnectManagerService extends SystemService {
         PreferenceHelper.getInstance().clearCache();
         mTransactionManager.onUserSwitching();
         RateLimiter.clearCache();
+        HealthConnectThreadScheduler.resetThreadPools();
     }
 
     @Override
@@ -106,7 +107,6 @@ public class HealthConnectManagerService extends SystemService {
             mCurrentUser = user.getUserHandle();
             mTransactionManager.onUserUnlocking(
                     new HealthConnectUserContext(mContext, mCurrentUser));
-            HealthConnectThreadScheduler.resetThreadPools();
         }
 
         HealthConnectThreadScheduler.scheduleInternalTask(

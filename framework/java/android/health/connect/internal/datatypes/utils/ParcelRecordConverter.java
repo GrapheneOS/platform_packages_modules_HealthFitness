@@ -31,7 +31,7 @@ import java.util.Objects;
  * @hide
  */
 public final class ParcelRecordConverter {
-    private static ParcelRecordConverter sParcelRecordConverter = null;
+    private static volatile ParcelRecordConverter sParcelRecordConverter = null;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>> mDataTypeClassMap;
 
@@ -41,7 +41,7 @@ public final class ParcelRecordConverter {
     }
 
     @NonNull
-    public static ParcelRecordConverter getInstance() {
+    public static synchronized ParcelRecordConverter getInstance() {
         if (sParcelRecordConverter == null) {
             sParcelRecordConverter = new ParcelRecordConverter();
         }

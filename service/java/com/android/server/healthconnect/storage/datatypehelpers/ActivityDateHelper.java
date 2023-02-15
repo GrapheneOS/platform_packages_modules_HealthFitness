@@ -59,12 +59,12 @@ public final class ActivityDateHelper {
     private static final String DATE_COLUMN_NAME = "date";
     private static final String RECORD_TYPE_ID_COLUMN_NAME = "record_type_id";
 
-    private static ActivityDateHelper sActivityDateHelper;
+    private static volatile ActivityDateHelper sActivityDateHelper;
 
     private ActivityDateHelper() {}
 
     /** Returns an instance of this class */
-    public static ActivityDateHelper getInstance() {
+    public static synchronized ActivityDateHelper getInstance() {
         if (sActivityDateHelper == null) {
             sActivityDateHelper = new ActivityDateHelper();
         }

@@ -33,7 +33,7 @@ import java.util.Objects;
  * @hide
  */
 public final class InternalExternalRecordConverter {
-    private static InternalExternalRecordConverter sInternalExternalRecordConverter;
+    private static volatile InternalExternalRecordConverter sInternalExternalRecordConverter;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
@@ -48,7 +48,7 @@ public final class InternalExternalRecordConverter {
     }
 
     @NonNull
-    public static InternalExternalRecordConverter getInstance() {
+    public static synchronized InternalExternalRecordConverter getInstance() {
         if (sInternalExternalRecordConverter == null) {
             sInternalExternalRecordConverter = new InternalExternalRecordConverter();
         }
