@@ -21,27 +21,73 @@ package com.android.healthconnect.controller.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.ExerciseLap
 import android.health.connect.datatypes.ExerciseSegment
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BACK_EXTENSION
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BALL_SLAM
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BARBELL_SHOULDER_PRESS
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BENCH_PRESS
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BENCH_SIT_UP
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BIKING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BIKING_STATIONARY
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_CRUNCH
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DEADLIFT
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DOUBLE_ARM_TRICEPS_EXTENSION
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_LEFT_ARM
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_RIGHT_ARM
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_FRONT_RAISE
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_LATERAL_RAISE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_ROW
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_LEFT_ARM
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_RIGHT_ARM
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_TWO_ARM
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ELLIPTICAL
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_FORWARD_TWIST
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_FRONT_RAISE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_HIP_THRUST
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_HULA_HOOP
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_JUMPING_JACK
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_JUMP_ROPE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_KETTLEBELL_SWING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_LATERAL_RAISE
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_LAT_PULL_DOWN
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_LEG_CURL
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_LEG_EXTENSION
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_LEG_PRESS
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_LEG_RAISE
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_LUNGE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_MOUNTAIN_CLIMBER
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PAUSE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PILATES
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PLANK
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PULL_UP
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PUNCH
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_REST
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ROWING_MACHINE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_RUNNING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_RUNNING_TREADMILL
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SHOULDER_PRESS
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SINGLE_ARM_TRICEPS_EXTENSION
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SIT_UP
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SQUAT
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING_MACHINE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_STRETCHING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_BACKSTROKE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_BREASTSTROKE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_BUTTERFLY
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_FREESTYLE
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_MIXED
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_OPEN_WATER
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_OTHER
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_POOL
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_UPPER_TWIST
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_WALKING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_WHEELCHAIR
+import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_YOGA
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_BASEBALL
@@ -70,6 +116,7 @@ import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYP
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_MARTIAL_ARTS
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_PADDLING
+import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_PARAGLIDING
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_PILATES
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RACQUETBALL
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_ROCK_CLIMBING
@@ -106,13 +153,14 @@ import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYP
 import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationLong
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationShort
+import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.LengthFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
-import com.android.healthconnect.controller.dataentries.formatters.shared.SessionFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -123,26 +171,36 @@ import javax.inject.Inject
 class ExerciseSessionFormatter
 @Inject
 constructor(@ApplicationContext private val context: Context) :
-    SessionFormatter<ExerciseSessionRecord>(context),
-    SessionDetailsFormatter<ExerciseSessionRecord> {
+    BaseFormatter<ExerciseSessionRecord>(context), SessionDetailsFormatter<ExerciseSessionRecord> {
 
     private val timeFormatter = LocalDateTimeFormatter(context)
 
-    override suspend fun formatValue(
+    override suspend fun formatRecord(
         record: ExerciseSessionRecord,
+        header: String,
+        headerA11y: String,
         unitPreferences: UnitPreferences
-    ): String {
+    ): FormattedEntry {
+        return ExerciseSessionEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record),
+            notes = getNotes(record),
+            route = record.route)
+    }
+
+    fun formatValue(record: ExerciseSessionRecord, unitPreferences: UnitPreferences): String {
         return formatSession(record) { duration -> formatDurationShort(context, duration) }
     }
 
-    override suspend fun formatA11yValue(
-        record: ExerciseSessionRecord,
-        unitPreferences: UnitPreferences
-    ): String {
+    fun formatA11yValue(record: ExerciseSessionRecord, unitPreferences: UnitPreferences): String {
         return formatSession(record) { duration -> formatDurationLong(context, duration) }
     }
 
-    override fun getNotes(record: ExerciseSessionRecord): String? {
+    fun getNotes(record: ExerciseSessionRecord): String? {
         return record.notes?.toString()
     }
 
@@ -241,6 +299,61 @@ constructor(@ApplicationContext private val context: Context) :
             EXERCISE_SEGMENT_TYPE_LUNGE -> context.getString(R.string.lunge)
             EXERCISE_SEGMENT_TYPE_PLANK -> context.getString(R.string.plank)
             EXERCISE_SEGMENT_TYPE_SQUAT -> context.getString(R.string.squat)
+            EXERCISE_SEGMENT_TYPE_BIKING -> context.getString(R.string.biking)
+            EXERCISE_SEGMENT_TYPE_BIKING_STATIONARY -> context.getString(R.string.biking_stationary)
+            EXERCISE_SEGMENT_TYPE_PILATES -> context.getString(R.string.pilates)
+            EXERCISE_SEGMENT_TYPE_ELLIPTICAL -> context.getString(R.string.elliptical)
+            EXERCISE_SEGMENT_TYPE_ROWING_MACHINE -> context.getString(R.string.rowing_machine)
+            EXERCISE_SEGMENT_TYPE_RUNNING -> context.getString(R.string.running)
+            EXERCISE_SEGMENT_TYPE_RUNNING_TREADMILL -> context.getString(R.string.running_treadmill)
+            EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING -> context.getString(R.string.stair_climbing)
+            EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING_MACHINE ->
+                context.getString(R.string.stair_climbing_machine)
+            EXERCISE_SEGMENT_TYPE_STRETCHING -> context.getString(R.string.stretching)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_OPEN_WATER ->
+                context.getString(R.string.swimming_open_water)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_BACKSTROKE ->
+                context.getString(R.string.swimming_backstroke)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_BREASTSTROKE ->
+                context.getString(R.string.swimming_breaststroke)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_BUTTERFLY ->
+                context.getString(R.string.swimming_butterfly)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_FREESTYLE ->
+                context.getString(R.string.swimming_freestyle)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_MIXED -> context.getString(R.string.swimming_mixed)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_POOL -> context.getString(R.string.swimming_pool)
+            EXERCISE_SEGMENT_TYPE_SWIMMING_OTHER -> context.getString(R.string.swimming_other)
+            EXERCISE_SEGMENT_TYPE_WALKING -> context.getString(R.string.walking)
+            EXERCISE_SEGMENT_TYPE_WHEELCHAIR -> context.getString(R.string.wheelchair)
+            EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING -> context.getString(R.string.weightlifting)
+            EXERCISE_SEGMENT_TYPE_YOGA -> context.getString(R.string.yoga)
+            EXERCISE_SEGMENT_TYPE_ARM_CURL -> context.getString(R.string.arm_curl)
+            EXERCISE_SEGMENT_TYPE_BALL_SLAM -> context.getString(R.string.ball_slam)
+            EXERCISE_SEGMENT_TYPE_DOUBLE_ARM_TRICEPS_EXTENSION ->
+                context.getString(R.string.double_arm_triceps_extension)
+            EXERCISE_SEGMENT_TYPE_DUMBBELL_ROW -> context.getString(R.string.dumbbell_row)
+            EXERCISE_SEGMENT_TYPE_FRONT_RAISE -> context.getString(R.string.front_raise)
+            EXERCISE_SEGMENT_TYPE_HIP_THRUST -> context.getString(R.string.hip_thrust)
+            EXERCISE_SEGMENT_TYPE_HULA_HOOP -> context.getString(R.string.hula_hoop)
+            EXERCISE_SEGMENT_TYPE_KETTLEBELL_SWING -> context.getString(R.string.kettlebell_swing)
+            EXERCISE_SEGMENT_TYPE_LATERAL_RAISE -> context.getString(R.string.lateral_raise)
+            EXERCISE_SEGMENT_TYPE_LEG_CURL -> context.getString(R.string.leg_curl)
+            EXERCISE_SEGMENT_TYPE_LEG_EXTENSION -> context.getString(R.string.leg_extension)
+            EXERCISE_SEGMENT_TYPE_LEG_PRESS -> context.getString(R.string.leg_press)
+            EXERCISE_SEGMENT_TYPE_LEG_RAISE -> context.getString(R.string.leg_raise)
+            EXERCISE_SEGMENT_TYPE_MOUNTAIN_CLIMBER -> context.getString(R.string.mountain_climber)
+            EXERCISE_SEGMENT_TYPE_PULL_UP -> context.getString(R.string.pull_up)
+            EXERCISE_SEGMENT_TYPE_PUNCH -> context.getString(R.string.punch)
+            EXERCISE_SEGMENT_TYPE_SHOULDER_PRESS -> context.getString(R.string.shoulder_press)
+            EXERCISE_SEGMENT_TYPE_SINGLE_ARM_TRICEPS_EXTENSION ->
+                context.getString(R.string.single_arm_triceps_extension)
+            EXERCISE_SEGMENT_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING ->
+                context.getString(R.string.high_intensity_interval_training)
+            EXERCISE_SEGMENT_TYPE_REST -> context.getString(R.string.rest)
+            EXERCISE_SEGMENT_TYPE_PAUSE -> context.getString(R.string.pause)
+            EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT -> context.getString(R.string.workout)
+            EXERCISE_SEGMENT_TYPE_SIT_UP -> context.getString(R.string.sit_up)
+            EXERCISE_SEGMENT_TYPE_UPPER_TWIST -> context.getString(R.string.upper_twist)
             else -> throw IllegalArgumentException("Unknown exercise segment type $segmentType")
         }
     }
@@ -311,6 +424,7 @@ constructor(@ApplicationContext private val context: Context) :
             EXERCISE_SESSION_TYPE_WEIGHTLIFTING -> context.getString(R.string.weightlifting)
             EXERCISE_SESSION_TYPE_WHEELCHAIR -> context.getString(R.string.wheelchair)
             EXERCISE_SESSION_TYPE_YOGA -> context.getString(R.string.yoga)
+            EXERCISE_SESSION_TYPE_PARAGLIDING -> context.getString(R.string.paragliding)
             else -> throw IllegalArgumentException("Unknown exercise session type $type")
         }
     }

@@ -28,6 +28,7 @@ import android.health.connect.datatypes.CervicalMucusRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.ElevationGainedRecord
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord
@@ -121,9 +122,7 @@ object HealthPermissionToDatatypeMapper {
             BLOOD_PRESSURE to listOf(BloodPressureRecord::class.java),
             VO2_MAX to listOf(Vo2MaxRecord::class.java),
             EXERCISE to
-                listOf( // ExerciseSessionRecord::class.java, // TODO (b/266963766) enable when
-                    // ExerciseSession supported
-                    CyclingPedalingCadenceRecord::class.java),
+                listOf(ExerciseSessionRecord::class.java, CyclingPedalingCadenceRecord::class.java),
             CERVICAL_MUCUS to listOf(CervicalMucusRecord::class.java),
             SEXUAL_ACTIVITY to listOf(SexualActivityRecord::class.java),
             OVULATION_TEST to listOf(OvulationTestRecord::class.java),

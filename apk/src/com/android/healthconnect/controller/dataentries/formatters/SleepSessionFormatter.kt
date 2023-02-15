@@ -27,8 +27,8 @@ import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationLong
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationShort
+import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
-import com.android.healthconnect.controller.dataentries.formatters.shared.SessionFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -37,25 +37,35 @@ import javax.inject.Inject
 
 /** Formatter for printing SleepSessionRecord data. */
 class SleepSessionFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    SessionFormatter<SleepSessionRecord>(context), SessionDetailsFormatter<SleepSessionRecord> {
+    BaseFormatter<SleepSessionRecord>(context), SessionDetailsFormatter<SleepSessionRecord> {
 
     private val timeFormatter = LocalDateTimeFormatter(context)
 
-    override suspend fun formatValue(
+    override suspend fun formatRecord(
         record: SleepSessionRecord,
+        header: String,
+        headerA11y: String,
         unitPreferences: UnitPreferences
-    ): String {
+    ): FormattedEntry {
+        return FormattedEntry.SleepSessionEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
+            dataType = getDataType(record),
+            notes = getNotes(record))
+    }
+
+    private fun formatValue(record: SleepSessionRecord): String {
         return formatSleepSession(record) { duration -> formatDurationShort(context, duration) }
     }
 
-    override suspend fun formatA11yValue(
-        record: SleepSessionRecord,
-        unitPreferences: UnitPreferences
-    ): String {
+    private fun formatA11yValue(record: SleepSessionRecord): String {
         return formatSleepSession(record) { duration -> formatDurationLong(context, duration) }
     }
 
-    override fun getNotes(record: SleepSessionRecord): String? {
+    private fun getNotes(record: SleepSessionRecord): String? {
         return record.notes?.toString()
     }
 

@@ -18,14 +18,18 @@
 
 package com.android.healthconnect.controller.tests.dataentries.formatters.shared
 
+import android.health.connect.internal.datatypes.utils.RecordMapper
+import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
+
 class FormattersIntegrationTest {
-//    TODO(b/266963766) Enable test when Sleep session and Exercise session are supported
-//    @Test
-//    fun allRecordsHaveFormatters() {
-//        val recordClasses =
-//            RecordMapper.getInstance().recordIdToExternalRecordClassMap.values.sortedBy { it.name }
-//        val supportedUIRecords =
-//            HealthPermissionToDatatypeMapper.getAllDataTypes().values.flatten().sortedBy { it.name }
-//        assertThat(recordClasses).isEqualTo(supportedUIRecords)
-//    }
+    @Test
+    fun allRecordsHaveFormatters() {
+        val recordClasses =
+            RecordMapper.getInstance().recordIdToExternalRecordClassMap.values.sortedBy { it.name }
+        val supportedUIRecords =
+            HealthPermissionToDatatypeMapper.getAllDataTypes().values.flatten().sortedBy { it.name }
+        assertThat(recordClasses).isEqualTo(supportedUIRecords)
+    }
 }
