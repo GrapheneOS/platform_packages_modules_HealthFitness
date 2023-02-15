@@ -35,9 +35,10 @@ import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewM
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
+import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -74,36 +75,35 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     private lateinit var loadingView: View
     private lateinit var errorView: View
     private lateinit var adapter: RecyclerViewAdapter
-    private val aggregationViewBinder by lazy { AggregationViewBinder() }
-    private val entryViewBinder by lazy {
-        EntryItemViewBinder(
-            object : EntryItemViewBinder.OnDeleteEntryClicked {
-                override fun onDeleteEntryClicked(dataEntry: FormattedDataEntry, index: Int) {
-                    deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
-                }
-            })
+
+    private val onClickEntryListener by lazy {
+        object : OnClickEntryListener {
+            override fun onItemClicked(id: String, index: Int) {
+                findNavController()
+                    .navigate(
+                        R.id.action_dataEntriesFragment_to_dataEntryDetailsFragment,
+                        DataEntryDetailsFragment.createBundle(permissionType, id))
+            }
+        }
     }
-    private val sessionViewBinder by lazy {
-        SessionItemViewBinder(
-            onDeleteEntryClicked =
-                object : SessionItemViewBinder.OnDeleteEntryClicked {
-                    override fun onDeleteEntryClicked(
-                        dataEntry: FormattedSessionEntry,
-                        index: Int
-                    ) {
-                        deleteEntry(dataEntry.uuid, dataEntry.dataType, index)
-                    }
-                },
-            onItemClickedListener =
-                object : SessionItemViewBinder.OnItemClickedListener {
-                    override fun onItemClicked(dataEntry: FormattedSessionEntry) {
-                        findNavController()
-                            .navigate(
-                                R.id.action_dataEntriesFragment_to_dataEntryDetailsFragment,
-                                DataEntryDetailsFragment.createBundle(
-                                    permissionType = permissionType, entryId = dataEntry.uuid))
-                    }
-                })
+    private val onDeleteEntryListener by lazy {
+        object : OnDeleteEntryListener {
+            override fun onDeleteEntry(id: String, dataType: DataType, index: Int) {
+                deleteEntry(id, dataType, index)
+            }
+        }
+    }
+    private val aggregationViewBinder by lazy { AggregationViewBinder() }
+    private val entryViewBinder by lazy { EntryItemViewBinder(onDeleteEntryListener) }
+    private val sleepSessionViewBinder by lazy {
+        SleepSessionItemViewBinder(
+            onDeleteEntryListenerClicked = onDeleteEntryListener,
+            onItemClickedListener = onClickEntryListener)
+    }
+    private val exerciseSessionItemViewBinder by lazy {
+        ExerciseSessionItemViewBinder(
+            onDeleteEntryClicked = onDeleteEntryListener,
+            onItemClickedListener = onClickEntryListener)
     }
 
     override fun onCreateView(
@@ -144,7 +144,8 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         adapter =
             RecyclerViewAdapter.Builder()
                 .setViewBinder(FormattedDataEntry::class.java, entryViewBinder)
-                .setViewBinder(FormattedSessionEntry::class.java, sessionViewBinder)
+                .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
+                .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
                 .setViewBinder(FormattedAggregation::class.java, aggregationViewBinder)
                 .build()
         entriesRecyclerView =

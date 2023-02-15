@@ -31,6 +31,7 @@
  */
 package com.android.healthconnect.controller.tests.entrydetails
 
+import android.health.connect.datatypes.ExerciseRoute
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -39,14 +40,17 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.WithData
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SLEEP
 import com.android.healthconnect.controller.shared.DataType
+import com.android.healthconnect.controller.tests.utils.TestData.WARSAW_ROUTE
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -107,7 +111,7 @@ class DataEntryDetailsFragmentTest {
                 MutableLiveData(
                     WithData(
                         listOf(
-                            FormattedSessionEntry(
+                            SleepSessionEntry(
                                 uuid = "1",
                                 header = "7:06 AM • TEST_APP_NAME",
                                 headerA11y = "7:06 AM • TEST_APP_NAME",
@@ -140,6 +144,29 @@ class DataEntryDetailsFragmentTest {
         onView(withText("6 hour deep sleeping")).check(matches(isDisplayed()))
     }
 
+    @Test
+    fun dataEntriesDetailsInit_withRouteDetails_showsMapView() {
+        val list = buildList { add(getFormattedExerciseSession(showSession = true)) }
+        whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
+        launchFragment<DataEntryDetailsFragment>(
+            DataEntryDetailsFragment.createBundle(permissionType = EXERCISE, entryId = "1"))
+
+        Thread.sleep(10_000)
+        onView(withText("12 hour running")).check(matches(isDisplayed()))
+        onView(withId(R.id.map_view)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataEntriesDetailsInit_noRouteDetails_hidesMapView() {
+        val list = buildList { add(getFormattedExerciseSession(showSession = false)) }
+        whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
+        launchFragment<DataEntryDetailsFragment>(
+            DataEntryDetailsFragment.createBundle(permissionType = EXERCISE, entryId = "1"))
+
+        onView(withText("12 hour running")).check(matches(isDisplayed()))
+        onView(withId(R.id.map_view)).check(matches(not(isDisplayed())))
+    }
+
     private fun getSleepStages(): List<FormattedEntry> {
         return listOf(
             FormattedEntry.SessionHeader(header = "Stages"),
@@ -159,8 +186,8 @@ class DataEntryDetailsFragmentTest {
             ))
     }
 
-    private fun getFormattedSleepSession(): FormattedSessionEntry {
-        return FormattedSessionEntry(
+    private fun getFormattedSleepSession(): SleepSessionEntry {
+        return SleepSessionEntry(
             uuid = "1",
             header = "7:06 AM • TEST_APP_NAME",
             headerA11y = "7:06 AM • TEST_APP_NAME",
@@ -168,5 +195,22 @@ class DataEntryDetailsFragmentTest {
             titleA11y = "12 hour sleeping",
             dataType = DataType.SLEEP,
             notes = "notes")
+    }
+
+    private fun getFormattedExerciseSession(showSession: Boolean): ExerciseSessionEntry {
+        return ExerciseSessionEntry(
+            uuid = "1",
+            header = "7:06 AM • TEST_APP_NAME",
+            headerA11y = "7:06 AM • TEST_APP_NAME",
+            title = "12 hour running",
+            titleA11y = "12 hour running",
+            dataType = DataType.EXERCISE,
+            notes = "notes",
+            route =
+                if (showSession) {
+                    ExerciseRoute(WARSAW_ROUTE)
+                } else {
+                    null
+                })
     }
 }

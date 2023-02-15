@@ -75,7 +75,7 @@ constructor(
                     }
                 }
                 is UseCaseResults.Failed -> {
-                    Log.e(TAG, "Load error ", entriesResults.exception)
+                    Log.e(TAG, "Loading error ", entriesResults.exception)
                     _dataEntries.postValue(DataEntriesFragmentState.LoadingFailed)
                 }
             }

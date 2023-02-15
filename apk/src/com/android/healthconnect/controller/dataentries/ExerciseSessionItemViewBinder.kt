@@ -22,28 +22,32 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionEntry
-import com.android.healthconnect.controller.dataentries.SessionItemViewBinder.OnItemClickedListener
+import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.shared.RoundView
+import com.android.healthconnect.controller.shared.map.MapView
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 
-class SessionItemViewBinder(
+/** ViewBinder for ExerciseSessionEntry. */
+class ExerciseSessionItemViewBinder(
     private val showSecondAction: Boolean = true,
-    private val onItemClickedListener: OnItemClickedListener?,
-    private val onDeleteEntryClicked: OnDeleteEntryClicked?,
-) : ViewBinder<FormattedSessionEntry, View> {
+    private val onItemClickedListener: OnClickEntryListener?,
+    private val onDeleteEntryClicked: OnDeleteEntryListener?,
+) : ViewBinder<ExerciseSessionEntry, View> {
 
     override fun newView(parent: ViewGroup): View {
         return LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_data_session_entry, parent, false)
+            .inflate(R.layout.item_exercise_session_entry, parent, false)
     }
 
-    override fun bind(view: View, data: FormattedSessionEntry, index: Int) {
+    override fun bind(view: View, data: ExerciseSessionEntry, index: Int) {
         val container = view.findViewById<RelativeLayout>(R.id.item_data_entry_container)
         val divider = view.findViewById<LinearLayout>(R.id.item_data_entry_divider)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
         val notes = view.findViewById<TextView>(R.id.item_data_entry_notes)
         val deleteButton = view.findViewById<ImageButton>(R.id.item_data_entry_delete)
+        val mapView = view.findViewById<MapView>(R.id.map_view)
+        val mapContainer = view.findViewById<RoundView>(R.id.map_round_view)
 
         title.text = data.title
         title.contentDescription = data.titleA11y
@@ -53,16 +57,14 @@ class SessionItemViewBinder(
         notes.text = data.notes
         deleteButton.isVisible = showSecondAction
         divider.isVisible = showSecondAction
+        mapContainer.isVisible = (data.route != null)
+        if (data.route != null) {
+            mapView.setRoute(data.route)
+        }
 
-        deleteButton.setOnClickListener { onDeleteEntryClicked?.onDeleteEntryClicked(data, index) }
-        container.setOnClickListener { onItemClickedListener?.onItemClicked(data) }
-    }
-
-    interface OnDeleteEntryClicked {
-        fun onDeleteEntryClicked(dataEntry: FormattedSessionEntry, index: Int)
-    }
-
-    interface OnItemClickedListener {
-        fun onItemClicked(dataEntry: FormattedSessionEntry)
+        deleteButton.setOnClickListener {
+            onDeleteEntryClicked?.onDeleteEntry(data.uuid, data.dataType, index)
+        }
+        container.setOnClickListener { onItemClickedListener?.onItemClicked(data.uuid, index) }
     }
 }

@@ -608,6 +608,12 @@
     <string name="surfing" description="Activity type: surfing. [CHAR LIMIT=50]">Surfing</string>
     <string name="swimming_open_water" description="Activity type: swimming in open water. [CHAR LIMIT=50]">Open water swimming</string>
     <string name="swimming_pool" description="Activity type: swimming in a pool. [CHAR LIMIT=50]">Pool swimming</string>
+    <string name="swimming_freestyle" description="Swimming stroke type: freestyle. [CHAR LIMIT=50]">Freestyle</string>
+    <string name="swimming_backstroke" description="Swimming stroke type: backstroke. [CHAR LIMIT=50]">Backstroke</string>
+    <string name="swimming_breaststroke" description="Swimming stroke type: breaststroke. [CHAR LIMIT=50]">Breaststroke</string>
+    <string name="swimming_butterfly" description="Swimming stroke type: butterfly. [CHAR LIMIT=50]">Butterfly</string>
+    <string name="swimming_mixed" description="Swimming stroke type: mixed. [CHAR LIMIT=50]">Mixed</string>
+    <string name="swimming_other" description="Swimming stroke type: other. [CHAR LIMIT=50]">Other</string>
     <string name="table_tennis" description="Activity type: playing table tennis. [CHAR LIMIT=50]">Table tennis</string>
     <string name="tennis" description="Activity type: playing tennis. [CHAR LIMIT=50]">Tennis</string>
     <string name="upper_twist" description="Name of the upper twist gym exercise. [CHAR LIMIT=50]">Upper twist</string>
@@ -618,6 +624,27 @@
     <string name="wheelchair" description="Activity type: wheelchair. [CHAR LIMIT=50]">Wheelchair</string>
     <string name="workout" description="Activity type: generic workout. [CHAR LIMIT=50]">Workout</string>
     <string name="yoga" description="Activity type: yoga. [CHAR LIMIT=50]">Yoga</string>
+    <string name="arm_curl" description="Exercise type: arm curl. [CHAR LIMIT=50]">Arm curl</string>
+    <string name="ball_slam" description="Exercise type: ball slam. [CHAR LIMIT=50]">Ball slam</string>
+    <string name="double_arm_triceps_extension" description="Exercise type: double arm triceps extension. [CHAR LIMIT=50]">Double arm triceps extension</string>
+    <string name="dumbbell_row" description="Activity type: dumbbell row. [CHAR LIMIT=50]">Dumbbell row</string>
+    <string name="front_raise" description="Exercise type: front raise. [CHAR LIMIT=50]">Front raise</string>
+    <string name="hip_thrust" description="Exercise type: hip thrust. [CHAR LIMIT=50]">Hip thrust</string>
+    <string name="hula_hoop" description="Exercise type: hula hoop. [CHAR LIMIT=50]">Hula hoop</string>
+    <string name="kettlebell_swing" description="Exercise type: kettlebell swing. [CHAR LIMIT=50]">Kettlebell swing</string>
+    <string name="lateral_raise" description="Exercise type: lateral raise. [CHAR LIMIT=50]">Lateral raise</string>
+    <string name="leg_curl" description="Exercise type: leg curl. [CHAR LIMIT=50]">Leg curl</string>
+    <string name="leg_extension" description="Exercise type: leg extension. [CHAR LIMIT=50]">Leg extension</string>
+    <string name="leg_press" description="Exercise type: leg press. [CHAR LIMIT=50]">Leg press</string>
+    <string name="leg_raise" description="Exercise type: leg raise. [CHAR LIMIT=50]">Leg raise</string>
+    <string name="mountain_climber" description="Exercise type: mountain climber. [CHAR LIMIT=50]">Mountain climber</string>
+    <string name="pull_up" description="Exercise type: pull up. [CHAR LIMIT=50]">Pull up</string>
+    <string name="punch" description="Exercise type: punch. [CHAR LIMIT=50]">Punch</string>
+    <string name="shoulder_press" description="Exercise type: shoulder press. [CHAR LIMIT=50]">Shoulder press</string>
+    <string name="single_arm_triceps_extension" description="Exercise type: single arm triceps extension. [CHAR LIMIT=50]">Single arm triceps extension</string>
+    <string name="sit_up" description="Exercise type: sit up. [CHAR LIMIT=50]">Sit up</string>
+    <string name="rest" description="Auto-detected periods of rest during an activity session. There should be no user movement detected during rest and any movement detected should finish rest event. [CHAR LIMIT=50]">Rest</string>
+    <string name="pause" description="Explicit pause during an activity session, requested by the user. [CHAR LIMIT=50]">Pause</string>
     <string name="activity_type_australian_football" translation_description="Activity type: playing australian football. [CHAR LIMIT=40]">Australian football</string>
     <!--  endregion-->
 

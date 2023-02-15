@@ -17,11 +17,13 @@ package com.android.healthconnect.controller.tests.deletion.api
 
 import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthDataCategory
 import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.ElevationGainedRecord
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.PowerRecord
 import android.health.connect.datatypes.SpeedRecord
@@ -30,7 +32,6 @@ import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.Vo2MaxRecord
 import android.health.connect.datatypes.WheelchairPushesRecord
-import android.health.connect.HealthDataCategory
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.api.DeleteCategoryUseCase
 import com.google.common.truth.Truth.assertThat
@@ -102,13 +103,11 @@ class DeleteCategoryUseCaseTest {
                 FloorsClimbedRecord::class.java,
                 ElevationGainedRecord::class.java,
                 Vo2MaxRecord::class.java,
-                CyclingPedalingCadenceRecord::class.java)
-        // TODO (b/266963766) enable when ExerciseSessionRecord supported
-        // ExerciseSessionRecord::class.java)
+                CyclingPedalingCadenceRecord::class.java,
+                ExerciseSessionRecord::class.java)
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { _: InvocationOnMock -> null }
-        return answer
+        return { _: InvocationOnMock -> null }
     }
 }
