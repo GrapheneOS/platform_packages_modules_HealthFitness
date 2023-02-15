@@ -22,7 +22,9 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.ResolveInfoFlags
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthPermissions
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.utils.FeatureUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -30,12 +32,28 @@ import javax.inject.Inject
  * Class that read permissions declared by Health Connect clients as a string array in their XML
  * resources. see android.health.connect.HealthPermissions
  */
-class HealthPermissionReader @Inject constructor(@ApplicationContext private val context: Context) {
+class HealthPermissionReader
+@Inject
+constructor(
+    @ApplicationContext private val context: Context,
+    private val featureUtils: FeatureUtils
+) {
 
     companion object {
         private const val RESOLVE_INFO_FLAG: Long = PackageManager.MATCH_ALL.toLong()
         private const val PACKAGE_INFO_PERMISSIONS_FLAG: Long =
             PackageManager.GET_PERMISSIONS.toLong()
+        private val sessionTypePermissions =
+            listOf(
+                HealthPermissions.READ_EXERCISE,
+                HealthPermissions.WRITE_EXERCISE,
+                HealthPermissions.READ_SLEEP,
+                HealthPermissions.WRITE_SLEEP,
+            )
+        private val exerciseRoutePermissions =
+            listOf(
+                HealthPermissions.WRITE_EXERCISE_ROUTE,
+            )
     }
 
     suspend fun getAppsWithHealthPermissions(): List<String> {
@@ -76,11 +94,23 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
         return HealthPermission.fromPermissionString(permission)
     }
 
-    private fun getHealthPermissions(): List<String> =
-        context.packageManager.queryPermissionsByGroup("android.permission-group.HEALTH", 0).map {
-            permissionInfo ->
-            permissionInfo.name
+    private fun getHealthPermissions(): List<String> {
+        val permissions =
+            context.packageManager
+                .queryPermissionsByGroup("android.permission-group.HEALTH", 0)
+                .map { permissionInfo -> permissionInfo.name }
+        return permissions.filterNot { permission ->
+            shouldHideExerciseRoute(permission) || shouldHideSessionTypes(permission)
         }
+    }
+
+    private fun shouldHideExerciseRoute(permission: String): Boolean {
+        return permission in exerciseRoutePermissions && !featureUtils.isExerciseRouteEnabled()
+    }
+
+    private fun shouldHideSessionTypes(permission: String): Boolean {
+        return permission in sessionTypePermissions && !featureUtils.isSessionTypesEnabled()
+    }
 
     private fun getRationaleIntent(packageName: String? = null): Intent {
         val intent =

@@ -22,13 +22,21 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.permissions.app.SettingsManageAppPermissionsFragment
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.utils.FeatureUtils
+import com.android.healthconnect.controller.utils.FeaturesModule
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
+
 class SettingsManageAppPermissionsFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -46,5 +54,18 @@ class SettingsManageAppPermissionsFragmentTest {
         onView(withText("Allow all")).check(matches(isDisplayed()))
         onView(withText("Allowed to read")).check(matches(isDisplayed()))
         onView(withText("Allowed to write")).check(matches(isDisplayed()))
+    }
+}
+
+@Module
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [FeaturesModule::class]
+)
+object FakeFeaturesUtilsModule {
+    @Provides
+    fun providesFeaturesUtils() = object : FeatureUtils {
+        override fun isSessionTypesEnabled(): Boolean = true
+        override fun isExerciseRouteEnabled(): Boolean = true
     }
 }

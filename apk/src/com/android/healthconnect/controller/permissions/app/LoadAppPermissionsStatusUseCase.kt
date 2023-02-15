@@ -35,10 +35,10 @@ import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPerm
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 @Singleton
 class LoadAppPermissionsStatusUseCase
