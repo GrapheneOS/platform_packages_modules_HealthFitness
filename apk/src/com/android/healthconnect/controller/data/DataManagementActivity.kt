@@ -38,4 +38,12 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
         findNavController(R.id.nav_host_fragment)
             .addOnDestinationChangedListener(DestinationChangedListener(this))
     }
+
+    override fun onNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (!navController.popBackStack()) {
+            finish()
+        }
+        return true
+    }
 }
