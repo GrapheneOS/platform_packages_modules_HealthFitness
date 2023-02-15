@@ -17,6 +17,7 @@ package {
 }
 
 // To generate HealthFitnessStatsLog for logging.
+// DO NOT CHANGE
 genrule {
     name: "statslog-healthfitness-java-gen",
     tools: ["stats-log-api-gen"],
@@ -27,6 +28,7 @@ genrule {
 }
 
 // To disable NewApi checks on the generated HealthFitnessStatsLog.
+// DO NOT CHANGE
 java_library {
     name: "healthfitness-statsd",
     sdk_version: "module_current",
