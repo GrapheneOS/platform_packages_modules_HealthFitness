@@ -257,7 +257,7 @@ class InsertOrUpdateRecords {
                                 metaData,
                                 getStartTime(mFieldNameToFieldInput),
                                 getEndTime(mFieldNameToFieldInput),
-                                getIntegerValue(mFieldNameToFieldInput, "mFloors"))
+                                getDoubleValue(mFieldNameToFieldInput, "mFloors"))
                             .build()
                 }
                 TotalCaloriesBurnedRecord::class -> {

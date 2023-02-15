@@ -17,8 +17,8 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL;
 
-import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -49,7 +49,7 @@ public final class FloorsClimbedRecordHelper
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL:
                 return new AggregateResult<>(
-                                results.getLong(results.getColumnIndex(FLOORS_COLUMN_NAME)))
+                                results.getDouble(results.getColumnIndex(FLOORS_COLUMN_NAME)))
                         .setZoneOffset(getZoneOffset(results));
             default:
                 return null;
@@ -78,7 +78,7 @@ public final class FloorsClimbedRecordHelper
     @Override
     void populateSpecificRecordValue(
             @NonNull Cursor cursor, @NonNull FloorsClimbedRecordInternal floorsClimbedRecord) {
-        floorsClimbedRecord.setFloors(getCursorInt(cursor, FLOORS_COLUMN_NAME));
+        floorsClimbedRecord.setFloors(getCursorDouble(cursor, FLOORS_COLUMN_NAME));
     }
 
     @Override
@@ -91,6 +91,6 @@ public final class FloorsClimbedRecordHelper
     @Override
     @NonNull
     protected List<Pair<String, String>> getIntervalRecordColumnInfo() {
-        return Collections.singletonList(new Pair<>(FLOORS_COLUMN_NAME, INTEGER));
+        return Collections.singletonList(new Pair<>(FLOORS_COLUMN_NAME, REAL));
     }
 }

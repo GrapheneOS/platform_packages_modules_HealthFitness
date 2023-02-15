@@ -768,12 +768,12 @@ package android.health.connect.datatypes {
   }
 
   public final class FloorsClimbedRecord extends android.health.connect.datatypes.IntervalRecord {
-    method @IntRange(from=0, to=1000000) public int getFloors();
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> FLOORS_CLIMBED_TOTAL;
+    method @FloatRange(from=0.0f, to=1000000.0f) public double getFloors();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Double> FLOORS_CLIMBED_TOTAL;
   }
 
   public static final class FloorsClimbedRecord.Builder {
-    ctor public FloorsClimbedRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    ctor public FloorsClimbedRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, double);
     method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord build();
     method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord.Builder clearEndZoneOffset();
     method @NonNull public android.health.connect.datatypes.FloorsClimbedRecord.Builder clearStartZoneOffset();

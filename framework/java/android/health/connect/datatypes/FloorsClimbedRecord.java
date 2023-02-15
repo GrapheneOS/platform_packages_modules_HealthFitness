@@ -17,7 +17,7 @@ package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
 
-import android.annotation.IntRange;
+import android.annotation.FloatRange;
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
 
@@ -33,15 +33,15 @@ public final class FloorsClimbedRecord extends IntervalRecord {
      * HealthConnectManager}
      */
     @NonNull
-    public static final AggregationType<Long> FLOORS_CLIMBED_TOTAL =
+    public static final AggregationType<Double> FLOORS_CLIMBED_TOTAL =
             new AggregationType<>(
                     AggregationType.AggregationTypeIdentifier
                             .FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
                     AggregationType.SUM,
                     RECORD_TYPE_FLOORS_CLIMBED,
-                    Long.class);
+                    Double.class);
 
-    private final int mFloors;
+    private final double mFloors;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -57,17 +57,17 @@ public final class FloorsClimbedRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @IntRange(from = 0, to = 1000000) int floors) {
+            @FloatRange(from = 0f, to = 1000000f) double floors) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        ValidationUtils.requireInRange(floors, 0, 1000000, "floors");
+        ValidationUtils.requireInRange(floors, 0.0, 1000000.0, "floors");
         mFloors = floors;
     }
 
     /**
      * @return number of floors climbed.
      */
-    @IntRange(from = 0, to = 1000000)
-    public int getFloors() {
+    @FloatRange(from = 0f, to = 1000000f)
+    public double getFloors() {
         return mFloors;
     }
 
@@ -100,7 +100,7 @@ public final class FloorsClimbedRecord extends IntervalRecord {
         private final Instant mEndTime;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
-        private final int mFloors;
+        private final double mFloors;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -112,7 +112,7 @@ public final class FloorsClimbedRecord extends IntervalRecord {
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                int floors) {
+                double floors) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);

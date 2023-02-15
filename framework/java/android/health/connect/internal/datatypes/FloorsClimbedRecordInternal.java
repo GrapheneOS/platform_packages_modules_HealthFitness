@@ -27,15 +27,15 @@ import android.os.Parcel;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED)
 public final class FloorsClimbedRecordInternal extends IntervalRecordInternal<FloorsClimbedRecord> {
-    private int mFloors;
+    private double mFloors;
 
-    public int getFloors() {
+    public double getFloors() {
         return mFloors;
     }
 
     /** returns this object with the specified floors */
     @NonNull
-    public FloorsClimbedRecordInternal setFloors(int floors) {
+    public FloorsClimbedRecordInternal setFloors(double floors) {
         this.mFloors = floors;
         return this;
     }
@@ -52,7 +52,7 @@ public final class FloorsClimbedRecordInternal extends IntervalRecordInternal<Fl
 
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mFloors = parcel.readInt();
+        mFloors = parcel.readDouble();
     }
 
     @Override
@@ -62,6 +62,6 @@ public final class FloorsClimbedRecordInternal extends IntervalRecordInternal<Fl
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
-        parcel.writeInt(mFloors);
+        parcel.writeDouble(mFloors);
     }
 }
