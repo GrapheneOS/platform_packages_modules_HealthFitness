@@ -17,7 +17,7 @@ package {
 }
 
 android_test {
-    name: "HealthConnectWithManagePermissionsIntegrationTests",
+    name: "HealthFitnessWithManagePermissionsIntegrationTests",
     test_suites: [
         "device-tests",
         "general-tests",
@@ -33,7 +33,7 @@ android_test {
     ],
 
     srcs: [
-        ":healthconnect-permissions-testapp-srcs",
+        ":healthfitness-permissions-testapp-srcs",
         "src/**/*.java",
     ],
     sdk_version: "module_current",

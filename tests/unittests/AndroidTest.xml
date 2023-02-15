@@ -16,12 +16,12 @@
   ~ limitations under the License.
   -->
 
-<configuration description="Runs unit tests for HealthConnect APEX.">
-    <option name="test-tag" value="HealthConnectUnitTests"/>
+<configuration description="Runs unit tests for HealthFitness APEX.">
+    <option name="test-tag" value="HealthFitnessUnitTests"/>
 
     <!-- Install test -->
     <target_preparer class="com.android.tradefed.targetprep.suite.SuiteApkInstaller">
-        <option name="test-file-name" value="HealthConnectUnitTests.apk"/>
+        <option name="test-file-name" value="HealthFitnessUnitTests.apk"/>
         <option name="cleanup-apks" value="true"/>
     </target_preparer>
 
@@ -32,6 +32,6 @@
 
     <object type="module_controller"
             class="com.android.tradefed.testtype.suite.module.MainlineTestModuleController">
-        <option name="mainline-module-package-name" value="com.google.android.healthconnect"/>
+        <option name="mainline-module-package-name" value="com.google.android.healthfitness"/>
     </object>
 </configuration>

@@ -17,7 +17,7 @@ package {
 }
 
 filegroup {
-    name: "healthconnect-cts-testapp2-srcs",
+    name: "healthfitness-cts-testapp2-srcs",
     srcs: [
         "src/**/*.java",
     ],
@@ -27,7 +27,7 @@ filegroup {
 }
 
 android_test_helper_app {
-    name: "HealthConnectCtsTestApp2",
+    name: "HealthFitnessCtsTestApp2",
     defaults: ["cts_defaults"],
 
     libs: [
@@ -35,7 +35,7 @@ android_test_helper_app {
         "android.test.runner",
     ],
 
-    srcs: [":healthconnect-cts-testapp2-srcs"],
+    srcs: [":healthfitness-cts-testapp2-srcs"],
 
     test_suites: [
         "device-tests",

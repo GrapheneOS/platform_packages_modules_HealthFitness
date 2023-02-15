@@ -17,7 +17,7 @@ package {
 }
 
 android_test {
-    name: "HealthConnectUnitTests",
+    name: "HealthFitnessUnitTests",
     min_sdk_version: "UpsideDownCake",
     sdk_version: "module_current",
     manifest: "AndroidManifest.xml",
@@ -26,7 +26,7 @@ android_test {
         "src/**/*.java",
     ],
     test_suites: [
-        "mts-healthconnect",
+        "mts-healthfitness",
         "general-tests"
     ],
     defaults: ["mts-target-sdk-version-current"],

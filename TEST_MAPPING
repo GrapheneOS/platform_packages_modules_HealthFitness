@@ -1,7 +1,7 @@
 {
   "mainline-presubmit": [
     {
-      "name" : "HealthConnectControllerUITests[com.google.android.healthconnect.apex]",
+      "name" : "HealthConnectControllerUITests[com.google.android.healthfitness.apex]",
       "options": [
                 {
                     "exclude-filter": "com.android.healthconnect.controller.tests.dataentries.LoadDataEntriesUseCaseTest"
@@ -9,10 +9,10 @@
       ]
     },
     {
-      "name": "CtsHealthConnectDeviceTestCases[com.google.android.healthconnect.apex]"
+      "name": "CtsHealthFitnessDeviceTestCases[com.google.android.healthfitness.apex]"
     },
     {
-      "name": "CtsHealthConnectDeviceTestCasesNoPermission[com.google.android.healthconnect.apex]"
+      "name": "CtsHealthFitnessDeviceTestCasesNoPermission[com.google.android.healthfitness.apex]"
     }
   ],
   "presubmit": [
@@ -28,22 +28,22 @@
       "name" : "HealthConnectToolboxUITests"
     },
     {
-      "name": "CtsHealthConnectDeviceTestCases"
+      "name": "CtsHealthFitnessDeviceTestCases"
     },
     {
-      "name": "CtsHealthConnectDeviceTestCasesNoPermission"
+      "name": "CtsHealthFitnessDeviceTestCasesNoPermission"
     },
     {
       "name": "CtsHealthConnectControllerTestCases"
     },
     {
-      "name": "HealthConnectWithoutManagePermissionsIntegrationTests"
+      "name": "HealthFitnessWithoutManagePermissionsIntegrationTests"
     },
     {
-      "name": "HealthConnectWithManagePermissionsIntegrationTests"
+      "name": "HealthFitnessWithManagePermissionsIntegrationTests"
     },
     {
-      "name": "HealthConnectUnitTests"
+      "name": "HealthFitnessUnitTests"
     }
   ]
 }
