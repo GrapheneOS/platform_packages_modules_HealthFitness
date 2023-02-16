@@ -15,20 +15,30 @@
  */
 package com.android.healthconnect.controller.utils
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.settingslib.HelpUtils
 
 /** Utility class to launch help center articles. */
 object ExternalActivityLauncher {
+
+    private const val TAG = "ExternalActivityLauncher"
     fun openHCGetStartedLink(activity: FragmentActivity) {
-        activity.startActivityForResult(
-            HelpUtils.getHelpIntent(
-                activity,
-                activity.getString(R.string.hc_get_started_link),
-                /* backupContext= */ ""),
-            /*requestCode=*/ 0)
+        val helpUrlString = activity.getString(R.string.hc_get_started_link)
+        val fullUri = HelpUtils.uriWithAddedParameters(activity, Uri.parse(helpUrlString))
+        val intent =
+            Intent(Intent.ACTION_VIEW, fullUri).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+            }
+        try {
+            activity.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Log.w(TAG, "Unable to open help center URL.", e)
+        }
     }
 
     fun openSendFeedbackActivity(activity: FragmentActivity) {
