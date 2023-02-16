@@ -23,7 +23,9 @@ import java.time.Instant;
 
 /**
  * Specification of time range for read and delete requests. Internally represents a SQLLite
- * argument that specifies start and end time to put in as SQLLite parameters.
+ * argument that specifies start and end time to put in as SQLLite parameters. The filter must be
+ * bound at least at one of the ends, i.e., either the start or end time must be set, or else an
+ * IllegalArgumentException is thrown.
  */
 public final class TimeInstantRangeFilter implements TimeRangeFilter {
 
