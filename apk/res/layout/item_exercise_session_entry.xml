@@ -19,7 +19,7 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:gravity="center_vertical"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingHorizontal="?android:attr/listPreferredItemPaddingStart"
     android:clipToPadding="false">
 
     <RelativeLayout
@@ -66,23 +66,21 @@
             android:lineBreakWordStyle="phrase"
             android:visibility="gone"
             android:maxLines="10"/>
-
-        <com.android.healthconnect.controller.shared.RoundView
-            android:id="@+id/map_round_view"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="@dimen/spacing_small"
-            android:layout_marginEnd="@dimen/spacing_small"
-            android:layout_alignParentEnd="true"
-            android:visibility="gone">
-
-            <com.android.healthconnect.controller.shared.map.MapView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/map_view"/>
-        </com.android.healthconnect.controller.shared.RoundView>
-
     </RelativeLayout>
+
+    <com.android.healthconnect.controller.shared.RoundView
+        android:id="@+id/map_round_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:visibility="gone">
+
+        <com.android.healthconnect.controller.shared.map.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map_view"/>
+    </com.android.healthconnect.controller.shared.RoundView>
 
     <LinearLayout
         android:id="@+id/item_data_entry_divider"

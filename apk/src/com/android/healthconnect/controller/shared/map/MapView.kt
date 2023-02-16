@@ -59,7 +59,7 @@ constructor(
                 isAntiAlias = true
                 strokeCap = Paint.Cap.ROUND
                 strokeJoin = Paint.Join.ROUND
-                strokeWidth = 5f
+                strokeWidth = 4f
                 style = Paint.Style.STROKE
             }
 
@@ -69,7 +69,7 @@ constructor(
                 isAntiAlias = true
                 strokeCap = Paint.Cap.ROUND
                 strokeJoin = Paint.Join.ROUND
-                strokeWidth = 5f
+                strokeWidth = 4f
                 style = Paint.Style.FILL_AND_STROKE
             }
 
@@ -97,6 +97,7 @@ constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         drawRoute(canvas)
+        setBackgroundColor(context.getColor(R.color.settingslib_colorSurfaceVariant))
     }
 
     private fun drawRoute(canvas: Canvas?) {
@@ -133,9 +134,9 @@ constructor(
         }
         val start = translate(adjustedRoute[0])
         val end = translate(adjustedRoute[adjustedRoute.size - 1])
-        canvas.drawCircle(start.first, start.second, 10f, startPaint)
+        canvas.drawCircle(start.first, start.second, 4f, startPaint)
         if (!start.equals(end)) {
-            canvas.drawCircle(end.first, end.second, 10f, startPaint)
+            canvas.drawCircle(end.first, end.second, 4f, startPaint)
         }
     }
 
@@ -165,6 +166,6 @@ constructor(
     }
 
     companion object {
-        private const val PADDING = 0.1f
+        private const val PADDING = 0.2f
     }
 }
