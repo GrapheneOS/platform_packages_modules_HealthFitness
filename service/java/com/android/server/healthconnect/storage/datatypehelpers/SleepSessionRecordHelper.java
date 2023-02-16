@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION;
+
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
@@ -24,7 +27,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
 import android.util.Pair;
@@ -34,6 +37,7 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +47,7 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION)
+@HelperFor(recordIdentifier = RECORD_TYPE_SLEEP_SESSION)
 public final class SleepSessionRecordHelper
         extends IntervalRecordHelper<SleepSessionRecordInternal> {
     private static final String SLEEP_SESSION_RECORD_TABLE_NAME = "sleep_session_record_table";
@@ -68,6 +72,22 @@ public final class SleepSessionRecordHelper
         }
 
         // Add more upgrades here
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        if (aggregateRequest.getAggregationTypeIdentifier() == SLEEP_SESSION_DURATION_TOTAL) {
+            ArrayList<String> sessionColumns =
+                    new ArrayList<>(super.getPriorityAggregationColumnNames());
+            sessionColumns.add(SleepStageRecordHelper.getStartTimeColumnName());
+            sessionColumns.add(SleepStageRecordHelper.getEndTimeColumnName());
+            return new AggregateParams(
+                            SLEEP_SESSION_RECORD_TABLE_NAME, sessionColumns, START_TIME_COLUMN_NAME)
+                    .setJoin(
+                            SleepStageRecordHelper.getJoinForDurationAggregation(
+                                    getMainTableName()));
+        }
+        return null;
     }
 
     @Override
