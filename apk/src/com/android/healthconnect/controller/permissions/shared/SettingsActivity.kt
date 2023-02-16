@@ -35,16 +35,25 @@ package com.android.healthconnect.controller.permissions.shared
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
 class SettingsActivity : Hilt_SettingsActivity() {
+
+    companion object {
+        private const val TAG = "SettingsActivity"
+    }
+
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +66,18 @@ class SettingsActivity : Hilt_SettingsActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener(DestinationChangedListener(this))
         if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
+            enforceRationalIntent(intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
             navController.navigate(
                 R.id.action_deeplink_to_settingsManageAppPermissionsFragment,
                 bundleOf(EXTRA_PACKAGE_NAME to intent.getStringExtra(EXTRA_PACKAGE_NAME)))
+        }
+    }
+
+    private fun enforceRationalIntent(appPackageName: String) {
+        val rationalIntentDeclared = healthPermissionReader.isRationalIntentDeclared(appPackageName)
+        if (!rationalIntentDeclared) {
+            Log.e(TAG, "App should support rational intent!")
+            finish()
         }
     }
 

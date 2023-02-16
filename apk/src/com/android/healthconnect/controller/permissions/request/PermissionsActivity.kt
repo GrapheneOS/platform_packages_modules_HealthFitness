@@ -45,7 +45,10 @@ import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
+import com.android.healthconnect.controller.permissions.shared.SettingsActivity
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Permissions activity for Health Connect. */
 @AndroidEntryPoint(FragmentActivity::class)
@@ -56,6 +59,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
     }
 
     private val viewModel: RequestPermissionViewModel by viewModels()
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +67,12 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
         if (!intent.hasExtra(EXTRA_PACKAGE_NAME)) {
             Log.e(TAG, "Invalid Intent Extras, finishing")
+            finish()
+        }
+
+        val rationalIntentDeclared = healthPermissionReader.isRationalIntentDeclared(getPackageNameExtra())
+        if (!rationalIntentDeclared) {
+            Log.e(TAG, "App should support rational intent, finishing!")
             finish()
         }
 

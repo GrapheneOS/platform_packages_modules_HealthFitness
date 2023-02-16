@@ -63,6 +63,14 @@ class HealthPermissionReader @Inject constructor(@ApplicationContext private val
         }
     }
 
+    fun isRationalIntentDeclared(packageName: String) : Boolean {
+        val intent = getRationaleIntent(packageName)
+        val resolvedInfo =
+            context.packageManager.queryIntentActivities(
+                intent, ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
+        return resolvedInfo.any { info -> info.activityInfo.packageName == packageName }
+    }
+
     fun getApplicationRationaleIntent(packageName: String): Intent {
         val intent = getRationaleIntent(packageName)
         val resolvedInfo =
