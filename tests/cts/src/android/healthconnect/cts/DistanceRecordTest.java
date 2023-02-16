@@ -311,8 +311,8 @@ public class DistanceRecordTest {
     public void testAggregation_DistanceTotal() throws Exception {
         List<Record> records =
                 Arrays.asList(
-                        DistanceRecordTest.getBaseDistanceRecord(74.0),
-                        DistanceRecordTest.getBaseDistanceRecord(100.5));
+                        DistanceRecordTest.getBaseDistanceRecord(1, 74.0),
+                        DistanceRecordTest.getBaseDistanceRecord(2, 100.5));
         AggregateRecordsResponse<Length> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
@@ -323,7 +323,7 @@ public class DistanceRecordTest {
                                 .addAggregationType(DISTANCE_TOTAL)
                                 .build(),
                         records);
-        List<Record> recordNew = Arrays.asList(DistanceRecordTest.getBaseDistanceRecord(100.5));
+        List<Record> recordNew = Arrays.asList(DistanceRecordTest.getBaseDistanceRecord(3, 100.5));
         AggregateRecordsResponse<Length> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
@@ -386,6 +386,16 @@ public class DistanceRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
+                        Length.fromMeters(distance))
+                .build();
+    }
+
+    static DistanceRecord getBaseDistanceRecord(int days, double distance) {
+        Instant startInstant = Instant.now().minus(days, ChronoUnit.DAYS);
+        return new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        startInstant,
+                        startInstant.plusMillis(1000),
                         Length.fromMeters(distance))
                 .build();
     }

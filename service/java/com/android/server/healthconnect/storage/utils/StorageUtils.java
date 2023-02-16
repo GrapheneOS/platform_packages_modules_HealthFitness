@@ -16,6 +16,10 @@
 
 package com.android.server.healthconnect.storage.utils;
 
+import static android.health.connect.HealthDataCategory.ACTIVITY;
+import static android.health.connect.datatypes.AggregationType.SUM;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
@@ -27,11 +31,14 @@ import android.annotation.Nullable;
 import android.annotation.StringDef;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
+import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.lang.annotation.Retention;
 import java.nio.ByteBuffer;
@@ -285,5 +292,29 @@ public final class StorageUtils {
             }
             return builder.toString();
         }
+    }
+
+    /**
+     * Returns if priority of apps needs to be considered to compute the aggregate request for the
+     * record type. Priority to be considered only for sleep and Activity categories.
+     */
+    public static boolean supportsPriority(int recordType, int operationType) {
+        if (recordType != RECORD_TYPE_EXERCISE_SESSION) {
+            @HealthDataCategory.Type
+            Integer recordCategory =
+                    RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType);
+            if (recordCategory == ACTIVITY && operationType == SUM) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Returns list of contributing apps for the record type in the priority order */
+    @Nullable
+    public static List<String> getPriorityList(int recordType) {
+        return HealthDataCategoryPriorityHelper.getInstance()
+                .getPriorityOrder(
+                        RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType));
     }
 }

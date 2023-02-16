@@ -331,8 +331,8 @@ public class ElevationGainedRecordTest {
     public void testAggregation_ElevationTotal() throws Exception {
         List<Record> records =
                 Arrays.asList(
-                        ElevationGainedRecordTest.getElevationGainedRecord(74.0),
-                        ElevationGainedRecordTest.getElevationGainedRecord(100.5));
+                        ElevationGainedRecordTest.getElevationGainedRecord(1, 74.0),
+                        ElevationGainedRecordTest.getElevationGainedRecord(2, 100.5));
         AggregateRecordsResponse<Length> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
@@ -344,7 +344,7 @@ public class ElevationGainedRecordTest {
                                 .build(),
                         records);
         List<Record> recordNew =
-                Arrays.asList(ElevationGainedRecordTest.getElevationGainedRecord(100.5));
+                Arrays.asList(ElevationGainedRecordTest.getElevationGainedRecord(3, 100.5));
         AggregateRecordsResponse<Length> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Length>(
@@ -407,6 +407,16 @@ public class ElevationGainedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
+                        Length.fromMeters(elevation))
+                .build();
+    }
+
+    static ElevationGainedRecord getElevationGainedRecord(int days, double elevation) {
+        Instant startInstant = Instant.now().minus(days, ChronoUnit.DAYS);
+        return new ElevationGainedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        startInstant,
+                        startInstant.plusMillis(1000),
                         Length.fromMeters(elevation))
                 .build();
     }

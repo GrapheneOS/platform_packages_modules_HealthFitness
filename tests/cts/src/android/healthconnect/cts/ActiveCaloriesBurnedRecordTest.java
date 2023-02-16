@@ -300,8 +300,8 @@ public class ActiveCaloriesBurnedRecordTest {
     public void testAggregation_ActiveCaloriesBurntTotal() throws Exception {
         List<Record> records =
                 Arrays.asList(
-                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(74.0),
-                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(100.5));
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(74.0, 1),
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(100.5, 2));
         AggregateRecordsResponse<Energy> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Energy>(
@@ -314,7 +314,7 @@ public class ActiveCaloriesBurnedRecordTest {
                         records);
         List<Record> recordNew =
                 Arrays.asList(
-                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(45.5));
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(45.5, 3));
         AggregateRecordsResponse<Energy> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Energy>(
@@ -427,6 +427,15 @@ public class ActiveCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
+                        Energy.fromJoules(energy))
+                .build();
+    }
+
+    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(double energy, int days) {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now().minus(days, ChronoUnit.DAYS),
+                        Instant.now().minus(days, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS),
                         Energy.fromJoules(energy))
                 .build();
     }

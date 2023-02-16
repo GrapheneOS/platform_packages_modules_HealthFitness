@@ -63,19 +63,19 @@ public final class AggregateTransactionRequest {
 
         final AggregationTypeIdMapper aggregationTypeIdMapper =
                 AggregationTypeIdMapper.getInstance();
+        RecordHelperProvider recordHelperProvider = RecordHelperProvider.getInstance();
         for (int id : request.getAggregateIds()) {
             AggregationType<?> aggregationType = aggregationTypeIdMapper.getAggregationTypeFor(id);
             List<Integer> recordTypeIds = aggregationType.getApplicableRecordTypeIds();
             if (recordTypeIds.size() == 1) {
                 RecordHelper<?> recordHelper =
-                        RecordHelperProvider.getInstance().getRecordHelper(recordTypeIds.get(0));
+                        recordHelperProvider.getRecordHelper(recordTypeIds.get(0));
                 AggregateTableRequest aggregateTableRequest =
                         recordHelper.getAggregateTableRequest(
                                 aggregationType,
                                 request.getPackageFilters(),
                                 request.getStartTime(),
                                 request.getEndTime());
-
                 if (mDuration != null) {
                     aggregateTableRequest.setGroupBy(
                             recordHelper.getDurationGroupByColumnName(),
@@ -85,7 +85,6 @@ public final class AggregateTransactionRequest {
                     aggregateTableRequest.setGroupBy(
                             recordHelper.getPeriodGroupByColumnName(), mPeriod, mTimeRangeFilter);
                 }
-
                 mAggregateTableRequests.add(aggregateTableRequest);
             } else {
                 throw new UnsupportedOperationException();

@@ -20,6 +20,7 @@ import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.request.ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
@@ -28,6 +29,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.supportsPriority;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -56,6 +58,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +75,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public static final String UUID_COLUMN_NAME = "uuid";
     public static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     public static final String APP_INFO_ID_COLUMN_NAME = "app_info_id";
-    private static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
+    public static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
     private static final String TAG_RECORD_HELPER = "HealthConnectRecordHelper";
@@ -118,9 +121,22 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             long endTime) {
         AggregateParams params = getAggregateParams(aggregationType);
         Objects.requireNonNull(params);
+        if (supportsPriority(mRecordIdentifier, aggregationType.getAggregateOperationType())) {
+            List<String> columns =
+                    Arrays.asList(
+                            getStartTimeColumnName(),
+                            END_TIME_COLUMN_NAME,
+                            APP_INFO_ID_COLUMN_NAME,
+                            LAST_MODIFIED_TIME_COLUMN_NAME);
+            params.appendAdditionalColumns(columns);
+        }
 
         return new AggregateTableRequest(
-                        params.mTableName, params.mColumnNames, aggregationType, this)
+                        params.mTableName,
+                        params.mColumnNames,
+                        aggregationType,
+                        this,
+                        params.mAggregateDataType)
                 .setPackageFilter(
                         AppInfoHelper.getInstance().getAppInfoIds(packageFilter),
                         APP_INFO_ID_COLUMN_NAME)
@@ -130,10 +146,22 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /**
+     * Used to get the Aggregate result for aggregate types
+     *
      * @return {@link AggregateResult} for {@link AggregationType}
      */
     public AggregateResult getAggregateResult(Cursor cursor, AggregationType<?> aggregationType) {
-        // returns null by default
+        return null;
+    }
+
+    /**
+     * Used to get the Aggregate result for aggregate types where the priority of apps is to be
+     * considered for overlapping data for sleep and activity interval records
+     *
+     * @return {@link AggregateResult} for {@link AggregationType}
+     */
+    public AggregateResult getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType, double total) {
         return null;
     }
 
@@ -381,7 +409,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     /** Returns the information required to perform aggregate operation. */
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
-        // Null by default
         return null;
     }
 
@@ -545,18 +572,33 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     static class AggregateParams {
         private final String mTableName;
-        private final List<String> mColumnNames;
+        private List<String> mColumnNames;
         private final String mTimeColumnName;
         private SqlJoin mJoin;
+        private Class<?> mAggregateDataType;
 
         public AggregateParams(String tableName, List<String> columnNames, String timeColumnName) {
+            this(tableName, columnNames, timeColumnName, null);
+        }
+
+        AggregateParams(
+                String tableName,
+                List<String> columnNames,
+                String timeColumnName,
+                Class<?> aggregateDataType) {
             mTableName = tableName;
             mColumnNames = columnNames;
             mTimeColumnName = timeColumnName;
+            mAggregateDataType = aggregateDataType;
         }
 
         public AggregateParams setJoin(SqlJoin join) {
             mJoin = join;
+            return this;
+        }
+
+        public AggregateParams appendAdditionalColumns(List<String> additionColumns) {
+            mColumnNames.addAll(additionColumns);
             return this;
         }
     }

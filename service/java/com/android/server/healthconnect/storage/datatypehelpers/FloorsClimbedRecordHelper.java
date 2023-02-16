@@ -29,6 +29,9 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.FloorsClimbedRecordInternal;
 import android.util.Pair;
 
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,12 +48,12 @@ public final class FloorsClimbedRecordHelper
 
     @Override
     public AggregateResult<?> getAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, double aggregation) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL:
-                return new AggregateResult<>(
-                                results.getDouble(results.getColumnIndex(FLOORS_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                results.moveToFirst();
+                ZoneOffset zoneOffset = getZoneOffset(results);
+                return new AggregateResult<>(aggregation).setZoneOffset(zoneOffset);
             default:
                 return null;
         }
@@ -68,8 +71,9 @@ public final class FloorsClimbedRecordHelper
             case FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL:
                 return new AggregateParams(
                         FLOORS_CLIMBED_RECORD_TABLE_NAME,
-                        Collections.singletonList(FLOORS_COLUMN_NAME),
-                        START_TIME_COLUMN_NAME);
+                        new ArrayList(Arrays.asList(FLOORS_COLUMN_NAME)),
+                        START_TIME_COLUMN_NAME,
+                        Long.class);
             default:
                 return null;
         }
