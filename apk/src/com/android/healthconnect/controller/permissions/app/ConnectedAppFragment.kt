@@ -269,11 +269,13 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         }
 
         mConnectedAppFooter?.title = title
-        mConnectedAppFooter?.setLearnMoreText(getString(R.string.manage_permissions_learn_more))
-        mConnectedAppFooter?.setLearnMoreAction {
-            val startRationaleIntent =
-                healthPermissionReader.getApplicationRationaleIntent(packageName)
-            startActivity(startRationaleIntent)
+        if (healthPermissionReader.isRationalIntentDeclared(packageName)) {
+            mConnectedAppFooter?.setLearnMoreText(getString(R.string.manage_permissions_learn_more))
+            mConnectedAppFooter?.setLearnMoreAction {
+                val startRationaleIntent =
+                    healthPermissionReader.getApplicationRationaleIntent(packageName)
+                startActivity(startRationaleIntent)
+            }
         }
     }
 }
