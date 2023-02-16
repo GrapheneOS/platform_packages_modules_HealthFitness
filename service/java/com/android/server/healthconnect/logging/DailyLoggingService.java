@@ -39,6 +39,7 @@ public class DailyLoggingService {
         Objects.requireNonNull(userHandle);
 
         logDatabaseStats(context);
+        logUsageStats(context, userHandle);
     }
 
     private static void logDatabaseStats(@NonNull Context context) {
@@ -46,6 +47,14 @@ public class DailyLoggingService {
             DatabaseStatsLogger.log(context);
         } catch (Exception exception) {
             Slog.e(HEALTH_CONNECT_DAILY_LOGGING_SERVICE, "Failed to log database stats", exception);
+        }
+    }
+
+    private static void logUsageStats(@NonNull Context context, @NonNull UserHandle userHandle) {
+        try {
+            UsageStatsLogger.log(context, userHandle);
+        } catch (Exception exception) {
+            Slog.e(HEALTH_CONNECT_DAILY_LOGGING_SERVICE, "Failed to log usage stats", exception);
         }
     }
 }
