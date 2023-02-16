@@ -42,6 +42,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -272,6 +273,65 @@ public class StepsRecordTest {
             oldStepsRecord = newStepsRecord;
         }
         assertThat(oldStepsRecord.second).isEqualTo(-1);
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_withPageToken_NewOrder()
+            throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getStepsRecord_minusDays(1),
+                        getStepsRecord_minusDays(2),
+                        getStepsRecord_minusDays(3),
+                        getStepsRecord_minusDays(4));
+        TestUtils.insertRecords(recordList);
+        Pair<List<StepsRecord>, Long> oldStepsRecord =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .setAscending(false)
+                                .build());
+        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        try {
+            TestUtils.readRecordsWithPagination(
+                    new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                            .setPageSize(1)
+                            .setPageToken(oldStepsRecord.second)
+                            .setAscending(true)
+                            .build());
+            Assert.fail();
+        } catch (Exception exception) {
+            assertThat(true).isTrue();
+            assertThat(exception).isNotNull();
+        }
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_withPageToken_SameOrder()
+            throws InterruptedException {
+        List<Record> recordList =
+                Arrays.asList(
+                        getStepsRecord_minusDays(1),
+                        getStepsRecord_minusDays(2),
+                        getStepsRecord_minusDays(3),
+                        getStepsRecord_minusDays(4));
+        TestUtils.insertRecords(recordList);
+        Pair<List<StepsRecord>, Long> oldStepsRecord =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .setAscending(false)
+                                .build());
+        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        Pair<List<StepsRecord>, Long> newStepsRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setPageSize(1)
+                                .setPageToken(oldStepsRecord.second)
+                                .setAscending(false)
+                                .build());
+        assertThat(newStepsRecords).isNotNull();
+        assertThat(newStepsRecords.first.size()).isEqualTo(1);
     }
 
     @Test

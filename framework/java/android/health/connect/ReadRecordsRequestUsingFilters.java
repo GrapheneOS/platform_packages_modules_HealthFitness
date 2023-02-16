@@ -55,15 +55,22 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
             @NonNull Set<DataOrigin> dataOrigins,
             int pageSize,
             long pageToken,
-            boolean ascending) {
+            boolean ascending,
+            boolean isOrderingSet) {
         super(recordType);
         Objects.requireNonNull(dataOrigins);
         mTimeRangeFilter = timeRangeFilter;
         mDataOrigins = dataOrigins;
         mPageSize = pageSize;
         if (pageToken != DEFAULT_LONG) {
-            mAscending = (pageToken % 2) == 0 ? true : false;
-            mPageToken = (pageToken % 2) == 0 ? pageToken / 2 : (pageToken - 1) / 2;
+            long pageOrder = pageToken % 2;
+            mAscending = pageOrder == 0 ? true : false;
+            if (isOrderingSet && mAscending != ascending) {
+                throw new IllegalStateException(
+                        "Requested sort order does not match ordering of previous request."
+                                + "Cannot set both pageToken and a different sort order");
+            }
+            mPageToken = pageOrder == 0 ? pageToken / 2 : (pageToken - 1) / 2;
         } else {
             mPageToken = pageToken;
             mAscending = ascending;
@@ -118,6 +125,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         private int mPageSize = DEFAULT_PAGE_SIZE;
         private long mPageToken = DEFAULT_LONG;
         private boolean mAscending = true;
+        private boolean mIsOrderingSet = false;
 
         /**
          * @param recordType Class object of {@link Record} type that needs to be read
@@ -177,7 +185,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         }
 
         /**
-         * Sets page token to read the requested page of the result
+         * Sets page token to read the requested page of the result.
          *
          * @param pageToken to read the requested page of the result. -1 if none available
          */
@@ -188,8 +196,9 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         }
 
         /**
-         * Sets ordering of results to be returned based on start time. Order will be ignored when
-         * page token is present.
+         * Sets ordering of results to be returned based on start time. It is required that ordering
+         * is always set to the same value for subsequent requests. Illegalstate exception is thrown
+         * when a different ordering is set along with page token.
          *
          * @param ascending specifies sorting order of results, if set records are sorted on start
          *     time in ascending fashion, descending otherwise. Default value is true.
@@ -197,6 +206,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         @NonNull
         public Builder<T> setAscending(boolean ascending) {
             mAscending = ascending;
+            mIsOrderingSet = true;
             return this;
         }
 
@@ -204,7 +214,13 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         @NonNull
         public ReadRecordsRequestUsingFilters<T> build() {
             return new ReadRecordsRequestUsingFilters<>(
-                    mTimeRangeFilter, mRecordType, mDataOrigins, mPageSize, mPageToken, mAscending);
+                    mTimeRangeFilter,
+                    mRecordType,
+                    mDataOrigins,
+                    mPageSize,
+                    mPageToken,
+                    mAscending,
+                    mIsOrderingSet);
         }
     }
 }
