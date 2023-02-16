@@ -83,7 +83,7 @@ public class GetActivityDatesTest {
                         new StepsRecord.Builder(
                                         new Metadata.Builder().build(),
                                         Instant.now(),
-                                        Instant.now(),
+                                        Instant.now().plusMillis(1000),
                                         10)
                                 .build(),
                         new BasalMetabolicRateRecord.Builder(

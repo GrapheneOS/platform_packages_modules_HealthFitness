@@ -184,7 +184,9 @@ public class SleepSessionRecordTest {
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
         SleepSessionRecord.Builder builder =
                 new SleepSessionRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Instant.now());
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);

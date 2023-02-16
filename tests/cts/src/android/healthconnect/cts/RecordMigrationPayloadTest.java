@@ -47,7 +47,7 @@ public class RecordMigrationPayloadTest {
                                                     .build())
                                     .build(),
                             /* startTime= */ Instant.now(),
-                            /* endTime= */ Instant.now(),
+                            /* endTime= */ Instant.now().plusMillis(1000),
                             /* count= */ 10)
                     .build();
 
