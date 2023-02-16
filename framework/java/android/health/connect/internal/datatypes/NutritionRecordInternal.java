@@ -15,10 +15,16 @@
  */
 package android.health.connect.internal.datatypes;
 
+import static android.health.connect.Constants.DEFAULT_DOUBLE;
+import static android.health.connect.Constants.DEFAULT_INT;
+
 import android.annotation.NonNull;
 import android.health.connect.datatypes.Identifier;
+import android.health.connect.datatypes.MealType;
 import android.health.connect.datatypes.NutritionRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.datatypes.units.Energy;
+import android.health.connect.datatypes.units.Mass;
 import android.os.Parcel;
 
 /**
@@ -27,50 +33,50 @@ import android.os.Parcel;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_NUTRITION)
 public final class NutritionRecordInternal extends IntervalRecordInternal<NutritionRecord> {
-    private double mUnsaturatedFat;
-    private double mPotassium;
-    private double mThiamin;
-    private int mMealType;
-    private double mTransFat;
-    private double mManganese;
-    private double mEnergyFromFat;
-    private double mCaffeine;
-    private double mDietaryFiber;
-    private double mSelenium;
-    private double mVitaminB6;
-    private double mProtein;
-    private double mChloride;
-    private double mCholesterol;
-    private double mCopper;
-    private double mIodine;
-    private double mVitaminB12;
-    private double mZinc;
-    private double mRiboflavin;
-    private double mEnergy;
-    private double mMolybdenum;
-    private double mPhosphorus;
-    private double mChromium;
-    private double mTotalFat;
-    private double mCalcium;
-    private double mVitaminC;
-    private double mVitaminE;
-    private double mBiotin;
-    private double mVitaminD;
-    private double mNiacin;
-    private double mMagnesium;
-    private double mTotalCarbohydrate;
-    private double mVitaminK;
-    private double mPolyunsaturatedFat;
-    private double mSaturatedFat;
-    private double mSodium;
-    private double mFolate;
-    private double mMonounsaturatedFat;
-    private double mPantothenicAcid;
+    private double mUnsaturatedFat = DEFAULT_DOUBLE;
+    private double mPotassium = DEFAULT_DOUBLE;
+    private double mThiamin = DEFAULT_DOUBLE;
+    private int mMealType = DEFAULT_INT;
+    private double mTransFat = DEFAULT_DOUBLE;
+    private double mManganese = DEFAULT_DOUBLE;
+    private double mEnergyFromFat = DEFAULT_DOUBLE;
+    private double mCaffeine = DEFAULT_DOUBLE;
+    private double mDietaryFiber = DEFAULT_DOUBLE;
+    private double mSelenium = DEFAULT_DOUBLE;
+    private double mVitaminB6 = DEFAULT_DOUBLE;
+    private double mProtein = DEFAULT_DOUBLE;
+    private double mChloride = DEFAULT_DOUBLE;
+    private double mCholesterol = DEFAULT_DOUBLE;
+    private double mCopper = DEFAULT_DOUBLE;
+    private double mIodine = DEFAULT_DOUBLE;
+    private double mVitaminB12 = DEFAULT_DOUBLE;
+    private double mZinc = DEFAULT_DOUBLE;
+    private double mRiboflavin = DEFAULT_DOUBLE;
+    private double mEnergy = DEFAULT_DOUBLE;
+    private double mMolybdenum = DEFAULT_DOUBLE;
+    private double mPhosphorus = DEFAULT_DOUBLE;
+    private double mChromium = DEFAULT_DOUBLE;
+    private double mTotalFat = DEFAULT_DOUBLE;
+    private double mCalcium = DEFAULT_DOUBLE;
+    private double mVitaminC = DEFAULT_DOUBLE;
+    private double mVitaminE = DEFAULT_DOUBLE;
+    private double mBiotin = DEFAULT_DOUBLE;
+    private double mVitaminD = DEFAULT_DOUBLE;
+    private double mNiacin = DEFAULT_DOUBLE;
+    private double mMagnesium = DEFAULT_DOUBLE;
+    private double mTotalCarbohydrate = DEFAULT_DOUBLE;
+    private double mVitaminK = DEFAULT_DOUBLE;
+    private double mPolyunsaturatedFat = DEFAULT_DOUBLE;
+    private double mSaturatedFat = DEFAULT_DOUBLE;
+    private double mSodium = DEFAULT_DOUBLE;
+    private double mFolate = DEFAULT_DOUBLE;
+    private double mMonounsaturatedFat = DEFAULT_DOUBLE;
+    private double mPantothenicAcid = DEFAULT_DOUBLE;
     private String mMealName;
-    private double mIron;
-    private double mVitaminA;
-    private double mFolicAcid;
-    private double mSugar;
+    private double mIron = DEFAULT_DOUBLE;
+    private double mVitaminA = DEFAULT_DOUBLE;
+    private double mFolicAcid = DEFAULT_DOUBLE;
+    private double mSugar = DEFAULT_DOUBLE;
 
     public double getUnsaturatedFat() {
         return mUnsaturatedFat;
@@ -105,6 +111,7 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
         return this;
     }
 
+    @MealType.MealTypes
     public int getMealType() {
         return mMealType;
     }
@@ -560,6 +567,50 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
     @Override
     public NutritionRecord toExternalRecord() {
         return new NutritionRecord.Builder(buildMetaData(), getStartTime(), getEndTime())
+                .setUnsaturatedFat(Mass.fromKilograms(getUnsaturatedFat()))
+                .setPotassium(Mass.fromKilograms(getPotassium()))
+                .setThiamin(Mass.fromKilograms(getThiamin()))
+                .setMealType(getMealType())
+                .setTransFat(Mass.fromKilograms(getTransFat()))
+                .setManganese(Mass.fromKilograms(getManganese()))
+                .setEnergyFromFat(Energy.fromJoules(getEnergyFromFat()))
+                .setCaffeine(Mass.fromKilograms(getCaffeine()))
+                .setDietaryFiber(Mass.fromKilograms(getDietaryFiber()))
+                .setSelenium(Mass.fromKilograms(getSelenium()))
+                .setVitaminB6(Mass.fromKilograms(getVitaminB6()))
+                .setProtein(Mass.fromKilograms(getProtein()))
+                .setChloride(Mass.fromKilograms(getChloride()))
+                .setCholesterol(Mass.fromKilograms(getCholesterol()))
+                .setCopper(Mass.fromKilograms(getCopper()))
+                .setIodine(Mass.fromKilograms(getIodine()))
+                .setVitaminB12(Mass.fromKilograms(getVitaminB12()))
+                .setZinc(Mass.fromKilograms(getZinc()))
+                .setRiboflavin(Mass.fromKilograms(getRiboflavin()))
+                .setEnergy(Energy.fromJoules(getEnergy()))
+                .setMolybdenum(Mass.fromKilograms(getMolybdenum()))
+                .setPhosphorus(Mass.fromKilograms(getPhosphorus()))
+                .setChromium(Mass.fromKilograms(getChromium()))
+                .setTotalFat(Mass.fromKilograms(getTotalFat()))
+                .setCalcium(Mass.fromKilograms(getCalcium()))
+                .setVitaminC(Mass.fromKilograms(getVitaminC()))
+                .setVitaminE(Mass.fromKilograms(getVitaminE()))
+                .setBiotin(Mass.fromKilograms(getBiotin()))
+                .setVitaminD(Mass.fromKilograms(getVitaminD()))
+                .setNiacin(Mass.fromKilograms(getNiacin()))
+                .setMagnesium(Mass.fromKilograms(getMagnesium()))
+                .setTotalCarbohydrate(Mass.fromKilograms(getTotalCarbohydrate()))
+                .setVitaminK(Mass.fromKilograms(getVitaminK()))
+                .setPolyunsaturatedFat(Mass.fromKilograms(getPolyunsaturatedFat()))
+                .setSaturatedFat(Mass.fromKilograms(getSaturatedFat()))
+                .setSodium(Mass.fromKilograms(getSodium()))
+                .setFolate(Mass.fromKilograms(getFolate()))
+                .setMonounsaturatedFat(Mass.fromKilograms(getMonounsaturatedFat()))
+                .setPantothenicAcid(Mass.fromKilograms(getPantothenicAcid()))
+                .setMealName(getMealName())
+                .setIron(Mass.fromKilograms(getIron()))
+                .setVitaminA(Mass.fromKilograms(getVitaminA()))
+                .setFolicAcid(Mass.fromKilograms(getFolicAcid()))
+                .setSugar(Mass.fromKilograms(getSugar()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .build();
