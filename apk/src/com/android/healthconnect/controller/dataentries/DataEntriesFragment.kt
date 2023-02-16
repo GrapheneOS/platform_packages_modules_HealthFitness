@@ -170,9 +170,13 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                     entriesViewModel.loadData(permissionType, selectedDate)
                 }
             })
-        entriesViewModel.loadData(permissionType, dateNavigationView.getDate())
         observeDeleteState()
         observeEntriesUpdates()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        entriesViewModel.loadData(permissionType, dateNavigationView.getDate())
     }
 
     private fun observeDeleteState() {
