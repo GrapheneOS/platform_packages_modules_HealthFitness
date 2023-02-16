@@ -42,10 +42,22 @@ import java.util.Collection;
  * @hide
  */
 public class HealthConnectDatabase extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "healthconnect.db";
 
     @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;
+
+    /** Runs create table request on database. */
+    public static void createTable(SQLiteDatabase db, CreateTableRequest createTableRequest) {
+        db.execSQL(createTableRequest.getCreateCommand());
+        createTableRequest
+                .getChildTableRequests()
+                .forEach(
+                        (childTableRequest) -> {
+                            createTable(db, childTableRequest);
+                        });
+        createTableRequest.getCreateIndexStatements().forEach(db::execSQL);
+    }
 
     public HealthConnectDatabase(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -72,7 +84,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         mRecordHelpers.forEach(
                 recordHelper -> {
-                    recordHelper.onUpgrade(newVersion, db);
+                    recordHelper.onUpgrade(db, oldVersion, newVersion);
                 });
         DeviceInfoHelper.getInstance().onUpgrade(newVersion, db);
         AppInfoHelper.getInstance().onUpgrade(newVersion, db);
@@ -92,16 +104,5 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
-    }
-
-    private void createTable(SQLiteDatabase db, CreateTableRequest createTableRequest) {
-        db.execSQL(createTableRequest.getCreateCommand());
-        createTableRequest
-                .getChildTableRequests()
-                .forEach(
-                        (childTableRequest) -> {
-                            createTable(db, childTableRequest);
-                        });
-        createTableRequest.getCreateIndexStatements().forEach(db::execSQL);
     }
 }
