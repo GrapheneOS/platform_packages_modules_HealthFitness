@@ -23,8 +23,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.health.connect.Constants;
 import android.health.connect.HealthConnectManager;
-import android.os.Process;
 import android.os.UserHandle;
 import android.util.Slog;
 
@@ -49,11 +49,19 @@ import java.util.stream.Collectors;
  */
 public class MigrationBroadcast {
 
-    private final Context mContext;
     private static final String TAG = "HealthConnectMigrationBroadcast";
+    private final Context mContext;
+    private final UserHandle mUser;
 
-    public MigrationBroadcast(@NonNull Context context) {
+    /**
+     * Constructs a {@link MigrationBroadcast} object.
+     *
+     * @param context the service context.
+     * @param user the user to send the broadcasts to.
+     */
+    public MigrationBroadcast(@NonNull Context context, UserHandle user) {
         mContext = context;
+        mUser = user;
     }
 
     /**
@@ -63,9 +71,9 @@ public class MigrationBroadcast {
      * handle {@link android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
      */
     public void sendInvocationBroadcast() throws Exception {
-        Slog.i(TAG, "Calling sendInvocationBroadcast()");
-
-        UserHandle user = Process.myUserHandle();
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Calling sendInvocationBroadcast()");
+        }
 
         List<String> permissionFilteredPackages = filterPermissions();
         List<String> filteredPackages = filterIntent(permissionFilteredPackages);
@@ -73,18 +81,27 @@ public class MigrationBroadcast {
         int numPackages = filteredPackages.size();
 
         if (numPackages == 0) {
-            Slog.i(TAG, "There are no migration aware apps");
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "There are no migration aware apps");
+            }
         } else if (numPackages == 1) {
-            // TODO(b/267255123): Put a check to verify the filtered package is installed
-            //  on current user
-            Intent intent =
-                    new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
-                            .setPackage(filteredPackages.get(0));
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "Checking if package is installed on user");
+            }
 
-            mContext.sendBroadcastAsUser(
-                    intent, user, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-
-            Slog.i(TAG, "Sent broadcast to migration aware application.");
+            if (isPackageInstalled(filteredPackages.get(0), mUser)) {
+                Intent intent =
+                        new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
+                                .setPackage(filteredPackages.get(0));
+                mContext.sendBroadcastAsUser(intent, mUser);
+                if (Constants.DEBUG) {
+                    Slog.d(TAG, "Sent broadcast to migration aware application.");
+                }
+            } else {
+                if (Constants.DEBUG) {
+                    Slog.d(TAG, "Migration aware app is not installed on the current user");
+                }
+            }
         } else {
             // TODO(b/267255123): Explicitly check for certificate and only send to that if
             // that filters it down to one package name
@@ -99,8 +116,9 @@ public class MigrationBroadcast {
      * @return List of filtered app package names which hold the specified permission
      */
     private List<String> filterPermissions() {
-
-        Slog.i(TAG, "Calling filterPermissions()");
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Calling filterPermissions()");
+        }
 
         String[] permissions = new String[] {Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA};
 
@@ -112,7 +130,9 @@ public class MigrationBroadcast {
         List<String> permissionFilteredPackages =
                 packageInfos.stream().map(info -> info.packageName).collect(Collectors.toList());
 
-        Slog.i(TAG, "permissionFilteredPackages : " + permissionFilteredPackages);
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "permissionFilteredPackages : " + permissionFilteredPackages);
+        }
         return permissionFilteredPackages;
     }
 
@@ -125,14 +145,17 @@ public class MigrationBroadcast {
      * @return List of filtered app package names which handle the specified intent action
      */
     private List<String> filterIntent(List<String> permissionFilteredPackages) {
-
-        Slog.i(TAG, "Calling filterIntents()");
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Calling filterIntents()");
+        }
 
         List<String> filteredPackages = new ArrayList<String>(permissionFilteredPackages.size());
 
         for (String packageName : permissionFilteredPackages) {
 
-            Slog.i(TAG, "Checking intent for package : " + packageName);
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "Checking intent for package : " + packageName);
+            }
 
             Intent intentToCheck =
                     new Intent(HealthConnectManager.ACTION_SHOW_MIGRATION_INFO)
@@ -148,8 +171,20 @@ public class MigrationBroadcast {
                 filteredPackages.add(packageName);
             }
         }
-
-        Slog.i(TAG, "filteredPackages : " + filteredPackages);
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "filteredPackages : " + filteredPackages);
+        }
         return filteredPackages;
+    }
+
+    private boolean isPackageInstalled(String packageName, UserHandle user) {
+        try {
+            PackageManager packageManager =
+                    mContext.createContextAsUser(user, 0).getPackageManager();
+            packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

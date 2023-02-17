@@ -123,7 +123,8 @@ public class HealthConnectManagerService extends SystemService {
                     try {
                         // TODO(b/267255123): Send broadcast up to 10 times with a 60s delay
                         // (configurable)
-                        MigrationBroadcast migrationBroadcast = new MigrationBroadcast(mContext);
+                        MigrationBroadcast migrationBroadcast =
+                                new MigrationBroadcast(mContext, mCurrentUser);
                         migrationBroadcast.sendInvocationBroadcast();
                     } catch (Exception e) {
                         Slog.e(TAG, "Sending migration broadcast failed", e);
