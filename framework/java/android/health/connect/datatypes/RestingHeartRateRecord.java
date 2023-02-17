@@ -181,7 +181,7 @@ public final class RestingHeartRateRecord extends InstantRecord {
                                 .setDeviceType(getMetadata().getDevice().getType());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
-        recordInternal.setBeatsPerMinute(mBeatsPerMinute);
+        recordInternal.setBeatsPerMinute((int) mBeatsPerMinute);
         return recordInternal;
     }
 }
