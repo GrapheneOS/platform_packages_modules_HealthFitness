@@ -118,9 +118,13 @@ public final class DeleteTransactionRequest {
         return mDeleteTableRequests;
     }
 
-    public void onUuidFetched(
-            @RecordTypeIdentifier.RecordType int recordType, @NonNull String uuid) {
-        mChangeLogs.addUUID(recordType, uuid);
+    /**
+     * Function to add an uuid corresponding to given pair of @recordType and @appId to
+     * recordTypeAndAppIdToUUIDMap of changeLogs
+     */
+    public void onRecordFetched(
+            @RecordTypeIdentifier.RecordType int recordType, long appId, String uuid) {
+        mChangeLogs.addUUID(recordType, appId, uuid);
     }
 
     @NonNull

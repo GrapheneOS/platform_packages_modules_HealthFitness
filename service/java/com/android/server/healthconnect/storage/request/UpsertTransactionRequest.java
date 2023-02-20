@@ -86,7 +86,10 @@ public class UpsertTransactionRequest {
                 // uuid passed as input.
                 StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
             }
-            changeLogs.addUUID(recordInternal.getRecordType(), recordInternal.getUuid());
+            changeLogs.addUUID(
+                    recordInternal.getRecordType(),
+                    recordInternal.getAppInfoId(),
+                    recordInternal.getUuid());
             recordInternal.setLastModifiedTime(currentTime);
             addRequest(recordInternal);
         }

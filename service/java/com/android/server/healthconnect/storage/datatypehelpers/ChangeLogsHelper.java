@@ -191,10 +191,11 @@ public final class ChangeLogsHelper {
         @OperationType.OperationTypes
         int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
         List<String> uuidList = getCursorStringList(cursor, UUIDS_COLUMN_NAME, DELIMITER);
+        long appId = getCursorLong(cursor, APP_ID_COLUMN_NAME);
         changeLogs.putIfAbsent(
                 operationType,
                 new ChangeLogs(operationType, getCursorLong(cursor, TIME_COLUMN_NAME)));
-        changeLogs.get(operationType).addUUIDs(recordType, uuidList);
+        changeLogs.get(operationType).addUUIDs(recordType, appId, uuidList);
         return uuidList.size();
     }
 
@@ -212,7 +213,39 @@ public final class ChangeLogsHelper {
     }
 
     public static final class ChangeLogs {
-        private final Map<Integer, List<String>> mRecordTypeToUUIDMap = new ArrayMap<>();
+        /** A helper class to create a pair of recordType and appId */
+        private static final class RecordTypeAndAppIdPair {
+            private final int mRecordType;
+            private final long mAppId;
+
+            private RecordTypeAndAppIdPair(int recordType, long appId) {
+                mRecordType = recordType;
+                mAppId = appId;
+            }
+
+            public int getRecordType() {
+                return mRecordType;
+            }
+
+            public long getAppId() {
+                return mAppId;
+            }
+
+            public boolean equals(Object obj) {
+                if (this == obj) return true;
+                if (obj == null || obj.getClass() != this.getClass()) return false;
+                RecordTypeAndAppIdPair recordTypeAndAppIdPair = (RecordTypeAndAppIdPair) obj;
+                return (recordTypeAndAppIdPair.mRecordType == this.mRecordType
+                        && recordTypeAndAppIdPair.mAppId == this.mAppId);
+            }
+
+            public int hashCode() {
+                return Objects.hash(this.mRecordType, this.mAppId);
+            }
+        }
+
+        private final Map<RecordTypeAndAppIdPair, List<String>> mRecordTypeAndAppIdToUUIDMap =
+                new ArrayMap<>();
         @OperationType.OperationTypes private final int mOperationType;
         private final String mPackageName;
         private final long mChangeLogTimeStamp;
@@ -249,11 +282,20 @@ public final class ChangeLogsHelper {
         }
 
         public Map<Integer, List<String>> getRecordTypeToUUIDMap() {
-            return mRecordTypeToUUIDMap;
+            Map<Integer, List<String>> recordTypeToUUIDMap = new ArrayMap<>();
+            mRecordTypeAndAppIdToUUIDMap.forEach(
+                    (recordTypeAndAppIdPair, uuids) -> {
+                        recordTypeToUUIDMap.putIfAbsent(
+                                recordTypeAndAppIdPair.getRecordType(), new ArrayList<>());
+                        recordTypeToUUIDMap
+                                .get(recordTypeAndAppIdPair.getRecordType())
+                                .addAll(uuids);
+                    });
+            return recordTypeToUUIDMap;
         }
 
         public List<String> getUUIds() {
-            return mRecordTypeToUUIDMap.values().stream()
+            return mRecordTypeAndAppIdToUUIDMap.values().stream()
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
         }
@@ -262,29 +304,34 @@ public final class ChangeLogsHelper {
             return mChangeLogTimeStamp;
         }
 
-        public void addUUID(@RecordTypeIdentifier.RecordType int recordType, @NonNull String uuid) {
+        /** Function to add an uuid corresponding to given pair of @recordType and @appId */
+        public void addUUID(
+                @RecordTypeIdentifier.RecordType int recordType,
+                @NonNull long appId,
+                @NonNull String uuid) {
             Objects.requireNonNull(uuid);
 
-            mRecordTypeToUUIDMap.putIfAbsent(recordType, new ArrayList<>());
-            mRecordTypeToUUIDMap.get(recordType).add(uuid);
+            RecordTypeAndAppIdPair recordTypeAndAppIdPair =
+                    new RecordTypeAndAppIdPair(recordType, appId);
+            mRecordTypeAndAppIdToUUIDMap.putIfAbsent(recordTypeAndAppIdPair, new ArrayList<>());
+            mRecordTypeAndAppIdToUUIDMap.get(recordTypeAndAppIdPair).add(uuid);
         }
 
         /**
          * @return List of {@link UpsertTableRequest} for change log table as per {@code
-         *     mRecordIdToUUIDMap}
+         *     mRecordTypeAndAppIdPairToUUIDMap}
          */
         public List<UpsertTableRequest> getUpsertTableRequests() {
             Objects.requireNonNull(mPackageName);
 
-            List<UpsertTableRequest> requests = new ArrayList<>(mRecordTypeToUUIDMap.size());
-            // TODO(b/261848494): Use correct packageNameId when deletes are from UI APK.
-            // Pass appId in addUUIDs and then we can create upsert requests there itself
-            long packageNameId = AppInfoHelper.getInstance().getAppInfoId(mPackageName);
-            mRecordTypeToUUIDMap.forEach(
-                    (recordType, uuids) -> {
+            List<UpsertTableRequest> requests =
+                    new ArrayList<>(mRecordTypeAndAppIdToUUIDMap.size());
+            mRecordTypeAndAppIdToUUIDMap.forEach(
+                    (recordTypeAndAppIdPair, uuids) -> {
                         ContentValues contentValues = new ContentValues();
-                        contentValues.put(RECORD_TYPE_COLUMN_NAME, recordType);
-                        contentValues.put(APP_ID_COLUMN_NAME, packageNameId);
+                        contentValues.put(
+                                RECORD_TYPE_COLUMN_NAME, recordTypeAndAppIdPair.getRecordType());
+                        contentValues.put(APP_ID_COLUMN_NAME, recordTypeAndAppIdPair.getAppId());
                         contentValues.put(OPERATION_TYPE_COLUMN_NAME, mOperationType);
                         contentValues.put(TIME_COLUMN_NAME, mChangeLogTimeStamp);
                         contentValues.put(UUIDS_COLUMN_NAME, String.join(DELIMITER, uuids));
@@ -294,9 +341,13 @@ public final class ChangeLogsHelper {
         }
 
         public ChangeLogs addUUIDs(
-                @RecordTypeIdentifier.RecordType int recordType, @NonNull List<String> uuids) {
-            mRecordTypeToUUIDMap.putIfAbsent(recordType, new ArrayList<>());
-            mRecordTypeToUUIDMap.get(recordType).addAll(uuids);
+                @RecordTypeIdentifier.RecordType int recordType,
+                @NonNull long appId,
+                @NonNull List<String> uuids) {
+            RecordTypeAndAppIdPair recordTypeAndAppIdPair =
+                    new RecordTypeAndAppIdPair(recordType, appId);
+            mRecordTypeAndAppIdToUUIDMap.putIfAbsent(recordTypeAndAppIdPair, new ArrayList<>());
+            mRecordTypeAndAppIdToUUIDMap.get(recordTypeAndAppIdPair).addAll(uuids);
             return this;
         }
     }
