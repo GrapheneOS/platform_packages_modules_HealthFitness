@@ -62,7 +62,10 @@ public final class SleepSessionRecordHelper
     public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion <= NO_SLEEP_TABLE_DB_VERSION) {
             createTable(db, getCreateTableRequest());
+            return; // No more queries running after this, the table is already on latest schema
         }
+
+        // Add more upgrades here
     }
 
     @Override

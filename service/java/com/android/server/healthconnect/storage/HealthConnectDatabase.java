@@ -28,6 +28,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
@@ -42,7 +43,7 @@ import java.util.Collection;
  * @hide
  */
 public class HealthConnectDatabase extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3; // Last bumped on 2023-02-20T16:14:19.978719Z
     private static final String DATABASE_NAME = "healthconnect.db";
 
     @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;
@@ -78,6 +79,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
         createTable(db, HealthDataCategoryPriorityHelper.getInstance().getCreateTableRequest());
         createTable(db, PreferenceHelper.getInstance().getCreateTableRequest());
         createTable(db, AccessLogsHelper.getInstance().getCreateTableRequest());
+        createTable(db, MigrationEntityHelper.getInstance().getCreateTableRequest());
     }
 
     @Override
@@ -92,6 +94,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
         ChangeLogsRequestHelper.getInstance().onUpgrade(newVersion, db);
         HealthDataCategoryPriorityHelper.getInstance().onUpgrade(newVersion, db);
         ActivityDateHelper.getInstance().onUpgrade(newVersion, db);
+        MigrationEntityHelper.getInstance().onUpgrade(db, oldVersion);
     }
 
     @Override
