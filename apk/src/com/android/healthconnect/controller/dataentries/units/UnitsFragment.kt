@@ -106,6 +106,7 @@ class UnitsFragment : Hilt_UnitsFragment() {
             setEntries(getEntries(key))
             setEntryValues(getEntriesValues(key))
             setSummary("%s")
+            setNegativeButtonText(R.string.units_cancel)
         }
         listPreference.setOnPreferenceChangeListener { _, newValue ->
             onNewValue(newValue.toString())

@@ -849,6 +849,7 @@
     <!--endregion-->
 
     <!-- region units -->
+    <string name="units_cancel" description="Label for button to cancel changing units. [CHAR_LIMIT=20]">Cancel</string>
     <string name="units_title" description="Title on a screen allowing users to go to display units (weight/height/temperature etc) in the app[CHAR_LIMIT=50]">Units</string>
     <string name="set_units_label" description="Label in the drop down menu, allowing users to go to display units (weight/height/temperature etc) in the app [CHAR_LIMIT=50]">Set data units</string>
 
