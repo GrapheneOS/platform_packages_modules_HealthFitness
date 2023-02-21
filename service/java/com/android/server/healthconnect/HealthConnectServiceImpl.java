@@ -1115,6 +1115,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
+        UserHandle callingUserHandle = getCallingUserHandle();
 
         // TODO(b/266553246): Validate write migration data after state cleanup is implemented
         HealthConnectThreadScheduler.scheduleInternalTask(
@@ -1127,7 +1128,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateWriteMigrationData();
-                        getDataMigrationManager(getCallingUserHandle()).apply(entities);
+                        getDataMigrationManager(callingUserHandle).apply(entities);
                         callback.onSuccess();
                     } catch (DataMigrationManager.EntityWriteException e) {
                         Slog.e(TAG, "Exception: ", e);
