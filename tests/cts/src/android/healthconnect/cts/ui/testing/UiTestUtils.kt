@@ -51,6 +51,8 @@ object UiTestUtils {
     private val TEST_DEVICE: Device =
         Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build()
 
+    private val PACKAGE_NAME = "android.healthconnect.cts.ui"
+
     private val TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.app"
 
     private val TEST_APP_2_PACKAGE_NAME = "android.healthconnect.cts.app2"
@@ -67,10 +69,13 @@ object UiTestUtils {
 
     fun skipOnboardingIfAppears() {
         try {
-            waitDisplayed(By.text("Get started"))
             clickOnText("Get started")
         } catch (e: Exception) {
-            // No-op if onboarding was not displayed.
+            try {
+                clickOnText("GET STARTED")
+            } catch (e: Exception) {
+                // No-op if onboarding was not displayed.
+            }
         }
     }
 
@@ -118,7 +123,7 @@ object UiTestUtils {
         clickOnContentDescription("Navigate up")
     }
 
-    /** Clicks on [UiObject2] with given [text]. */
+    /** Clicks on [UiObject2] with given [string] content description. */
     fun clickOnContentDescription(string: String) {
         waitDisplayed(By.desc(string)) { it.click() }
     }

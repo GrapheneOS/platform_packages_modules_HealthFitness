@@ -477,7 +477,7 @@ public class HealthConnectManager {
             List<RecordInternal<?>> recordInternals =
                     mInternalExternalRecordConverter.getInternalRecords(records);
             mService.insertRecords(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new RecordsParcel(recordInternals),
                     new IInsertRecordsResponseCallback.Stub() {
                         @Override
@@ -526,7 +526,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.aggregateRecords(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new AggregateDataRequestParcel(request),
                     new IAggregateRecordsResponseCallback.Stub() {
                         @Override
@@ -592,7 +592,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.aggregateRecords(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new AggregateDataRequestParcel(request, duration),
                     new IAggregateRecordsResponseCallback.Stub() {
                         @Override
@@ -659,7 +659,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.aggregateRecords(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new AggregateDataRequestParcel(request, period),
                     new IAggregateRecordsResponseCallback.Stub() {
                         @Override
@@ -717,7 +717,7 @@ public class HealthConnectManager {
 
         try {
             mService.deleteUsingFilters(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(request),
                     new IEmptyResponseCallback.Stub() {
                         @Override
@@ -759,7 +759,7 @@ public class HealthConnectManager {
 
         try {
             mService.deleteUsingFilters(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(
                             new RecordIdFiltersParcel(recordIds), mContext.getPackageName()),
                     new IEmptyResponseCallback.Stub() {
@@ -800,7 +800,7 @@ public class HealthConnectManager {
 
         try {
             mService.deleteUsingFilters(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(
                             new DeleteUsingFiltersRequest.Builder()
                                     .addDataOrigin(
@@ -844,7 +844,7 @@ public class HealthConnectManager {
 
         try {
             mService.getChangeLogs(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     changeLogsRequest,
                     new IChangeLogsResponseCallback.Stub() {
                         @Override
@@ -1159,7 +1159,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.readRecords(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     request.toReadRecordsRequestParcel(),
                     getReadCallback(executor, callback));
         } catch (RemoteException remoteException) {
@@ -1221,7 +1221,7 @@ public class HealthConnectManager {
             }
 
             mService.updateRecords(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     new RecordsParcel(recordInternals),
                     new IEmptyResponseCallback.Stub() {
                         @Override
@@ -1562,18 +1562,6 @@ public class HealthConnectManager {
         try {
             mService.writeMigrationData(
                     mContext.getPackageName(), entities, wrapMigrationCallback(executor, callback));
-        } catch (RemoteException e) {
-            throw e.rethrowFromSystemServer();
-        }
-    }
-
-    /**
-     * Returns true if {@link HealthConnectManager} APIs are blocked due to a data migration or data
-     * restore in process.
-     */
-    public boolean isApiBlockedDueToDataSync() {
-        try {
-            return mService.isApiBlockedDueToDataSync();
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

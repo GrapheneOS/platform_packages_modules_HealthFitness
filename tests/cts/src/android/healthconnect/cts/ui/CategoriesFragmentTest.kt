@@ -52,8 +52,6 @@ class CategoriesFragmentTest {
             clickOnText("Auto-delete")
             clickOnText("Never")
             navigateUp()
-            // TODO(b/268597064): Delete this after the bug is fixed.
-            clickOnText("Data and access")
 
             waitDisplayed(By.text("Never"))
 
@@ -63,8 +61,6 @@ class CategoriesFragmentTest {
             clickOnText("Done")
 
             navigateUp()
-            // TODO(b/268597064): Delete this after the bug is fixed.
-            clickOnText("Data and access")
 
             waitDisplayed(By.text("After 3 months"))
         }
@@ -86,8 +82,6 @@ class CategoriesFragmentTest {
             clickOnText("Done")
 
             navigateUp()
-            // TODO(b/268597064): Delete this after the bug is fixed.
-            clickOnText("Data and access")
             waitNotDisplayed(By.text("Activity"))
         }
     }

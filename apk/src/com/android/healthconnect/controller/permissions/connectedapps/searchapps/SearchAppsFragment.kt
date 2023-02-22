@@ -130,6 +130,11 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         showTitleFromCollapsingToolbarLayout()
     }
 
+    override fun onResume() {
+        super.onResume()
+        hideTitleFromCollapsingToolbarLayout()
+    }
+
     private fun updateInactiveApps(appsList: List<ConnectedAppMetadata>) {
         mInactiveAppsPreference?.removeAll()
         if (appsList.isEmpty()) {

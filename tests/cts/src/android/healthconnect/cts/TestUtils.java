@@ -31,6 +31,7 @@ import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
@@ -66,6 +67,7 @@ import android.os.OutcomeReceiver;
 import android.util.Log;
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -771,14 +773,6 @@ public class TestUtils {
                 .build();
     }
 
-    public static boolean isApiBlocked() {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-
-        return service.isApiBlockedDueToDataSync();
-    }
-
     public static void startMigration() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -857,6 +851,36 @@ public class TestUtils {
                         // TODO(b/241542162): Avoid reflection once TestApi can be called from CTS
                         service.getClass().getMethod("deleteAllStagedRemoteData").invoke(service),
                 "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
+    }
+
+    public static int getHealthConnectDataMigrationState() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
+                new AtomicReference<>();
+        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
+        service.getHealthConnectDataState(
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(HealthConnectDataState healthConnectDataState) {
+                        returnedHealthConnectDataState.set(healthConnectDataState);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(@NonNull HealthConnectException exception) {
+                        responseException.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (responseException.get() != null) {
+            throw responseException.get();
+        }
+        return returnedHealthConnectDataState.get().getDataMigrationState();
     }
 
     static final class RecordAndIdentifier {

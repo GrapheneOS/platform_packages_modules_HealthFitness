@@ -49,8 +49,6 @@ class DataEntriesFragmentTest {
             clickOnText("Kilometers")
             navigateUp()
 
-            // TODO(b/268597064): Delete these after the bug is fixed.
-            clickOnText("Data and access")
             clickOnText("Activity")
             clickOnText("Distance")
             clickOnText("See all entries")
@@ -63,8 +61,6 @@ class DataEntriesFragmentTest {
             clickOnText("Miles")
             navigateUp()
 
-            // TODO(b/268597064): Delete these after the bug is fixed.
-            clickOnText("Data and access")
             clickOnText("Activity")
             clickOnText("Distance")
             clickOnText("See all entries")

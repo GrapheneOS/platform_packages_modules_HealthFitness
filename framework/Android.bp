@@ -54,7 +54,7 @@ filegroup {
     path: "java",
     visibility: [
         "//frameworks/base",
-        "//packages/modules/HealthConnect:__subpackages__",
+        "//packages/modules/HealthFitness:__subpackages__",
     ],
 }
 
@@ -65,7 +65,7 @@ java_sdk_library {
     sdk_version: "module_current",
     apex_available: ["com.android.healthfitness"],
     impl_library_visibility: [
-        "//packages/modules/HealthConnect:__subpackages__"
+        "//packages/modules/HealthFitness:__subpackages__"
     ],
     static_libs: ["healthfitness-statsd"]
 }

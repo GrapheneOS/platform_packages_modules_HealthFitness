@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MIN;
 import static android.health.connect.datatypes.HeartRateRecord.HEART_MEASUREMENTS_COUNT;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
@@ -39,8 +40,14 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.platform.test.annotations.AppModeFull;
 import android.util.Pair;
+
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
+
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.time.Period;
@@ -52,9 +59,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -696,10 +700,7 @@ public class HeartRateRecordTest {
         assertThat(requestUsingIds.getRecordType()).isEqualTo(HeartRateRecord.class);
         assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
         List<HeartRateRecord> result = TestUtils.readRecords(requestUsingIds);
-        assertThat(result).hasSize(insertedRecords.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertThat(result.get(i).equals(insertedRecords.get(i))).isTrue();
-        }
+        assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
     private void insertHeartRateRecordsWithDelay(long delayInMillis, int times)
@@ -733,7 +734,7 @@ public class HeartRateRecordTest {
 
     private static HeartRateRecord getBaseHeartRateRecord() {
         HeartRateRecord.HeartRateSample heartRateRecord =
-            new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
+                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
@@ -760,7 +761,7 @@ public class HeartRateRecordTest {
         testMetadataBuilder.setClientRecordId("HRR" + Math.random());
 
         HeartRateRecord.HeartRateSample heartRateRecord =
-            new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
+                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
 
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);

@@ -52,19 +52,21 @@ public class DataPermissionEnforcer {
     }
 
     /** Enforces default write permissions for given recordTypeIds */
-    public void enforceRecordIdsWritePermissions(List<Integer> recordTypeIds, int uid) {
-        enforceRecordIdWritePermissionInternal(recordTypeIds, uid);
+    public void enforceRecordIdsWritePermissions(
+            List<Integer> recordTypeIds, AttributionSource attributionSource) {
+        enforceRecordIdWritePermissionInternal(recordTypeIds, attributionSource);
     }
 
     /** Enforces default read permissions for given recordTypeIds */
-    public void enforceRecordIdsReadPermissions(List<Integer> recordTypeIds, int uid) {
+    public void enforceRecordIdsReadPermissions(
+            List<Integer> recordTypeIds, AttributionSource attributionSource) {
         for (Integer recordTypeId : recordTypeIds) {
             String permissionName =
                     HealthPermissions.getHealthReadPermission(
                             RecordTypePermissionCategoryMapper
                                     .getHealthPermissionCategoryForRecordType(recordTypeId));
             enforceRecordPermission(
-                    permissionName, uid, recordTypeId, /* isReadPermission= */ true);
+                    permissionName, attributionSource, recordTypeId, /* isReadPermission= */ true);
         }
     }
 
@@ -72,13 +74,16 @@ public class DataPermissionEnforcer {
      * Enforces that caller has either read or write permissions for given recordTypeId. Returns
      * flag which indicates that caller is allowed to read only records written by itself.
      */
-    public boolean enforceReadAccessAndGetEnforceSelfRead(int recordTypeId, int uid) {
+    public boolean enforceReadAccessAndGetEnforceSelfRead(
+            int recordTypeId, AttributionSource attributionSource) {
         boolean enforceSelfRead = false;
         try {
-            enforceRecordIdsReadPermissions(Collections.singletonList(recordTypeId), uid);
+            enforceRecordIdsReadPermissions(
+                    Collections.singletonList(recordTypeId), attributionSource);
         } catch (SecurityException readSecurityException) {
             try {
-                enforceRecordIdsWritePermissions(Collections.singletonList(recordTypeId), uid);
+                enforceRecordIdsWritePermissions(
+                        Collections.singletonList(recordTypeId), attributionSource);
                 // Apps are always allowed to read self data if they have insert
                 // permission.
                 enforceSelfRead = true;
@@ -93,7 +98,8 @@ public class DataPermissionEnforcer {
      * Enforces that caller has all write permissions to write given records. Includes permissions
      * for writing optional extra data if it's present in given records.
      */
-    public void enforceRecordsWritePermissions(List<RecordInternal<?>> recordInternals, int uid) {
+    public void enforceRecordsWritePermissions(
+            List<RecordInternal<?>> recordInternals, AttributionSource attributionSource) {
         Map<Integer, Set<String>> recordTypeIdToExtraPerms = new ArrayMap<>();
 
         for (RecordInternal<?> recordInternal : recordInternals) {
@@ -111,13 +117,16 @@ public class DataPermissionEnforcer {
 
         // Check main write permissions for given recordIds
         enforceRecordIdWritePermissionInternal(
-                recordTypeIdToExtraPerms.keySet().stream().toList(), uid);
+                recordTypeIdToExtraPerms.keySet().stream().toList(), attributionSource);
 
         // Check extra write permissions for given records
         for (Integer recordTypeId : recordTypeIdToExtraPerms.keySet()) {
             for (String permissionName : recordTypeIdToExtraPerms.get(recordTypeId)) {
                 enforceRecordPermission(
-                        permissionName, uid, recordTypeId, /* isReadPermission= */ false);
+                        permissionName,
+                        attributionSource,
+                        recordTypeId,
+                        /* isReadPermission= */ false);
             }
         }
     }
@@ -139,7 +148,7 @@ public class DataPermissionEnforcer {
      * doesn't have corresponding permission.
      */
     public Map<String, Boolean> collectExtraReadPermissionToStateMapping(
-            int recordTypeId, int uid) {
+            int recordTypeId, AttributionSource attributionSource) {
         RecordHelper<?> recordHelper =
                 RecordHelperProvider.getInstance().getRecordHelper(recordTypeId);
         if (recordHelper.getExtraReadPermissions().isEmpty()) {
@@ -148,25 +157,29 @@ public class DataPermissionEnforcer {
 
         Map<String, Boolean> mapping = new ArrayMap<>();
         for (String permissionName : recordHelper.getExtraReadPermissions()) {
-            mapping.put(permissionName, isPermissionGranted(permissionName, uid));
+            mapping.put(permissionName, isPermissionGranted(permissionName, attributionSource));
         }
         return mapping;
     }
 
-    private void enforceRecordIdWritePermissionInternal(List<Integer> recordTypeIds, int uid) {
+    private void enforceRecordIdWritePermissionInternal(
+            List<Integer> recordTypeIds, AttributionSource attributionSource) {
         for (Integer recordTypeId : recordTypeIds) {
             String permissionName =
                     HealthPermissions.getHealthWritePermission(
                             RecordTypePermissionCategoryMapper
                                     .getHealthPermissionCategoryForRecordType(recordTypeId));
             enforceRecordPermission(
-                    permissionName, uid, recordTypeId, /* isReadPermission= */ false);
+                    permissionName, attributionSource, recordTypeId, /* isReadPermission= */ false);
         }
     }
 
     private void enforceRecordPermission(
-            String permissionName, int uid, int recordTypeId, boolean isReadPermission) {
-        if (!isPermissionGranted(permissionName, uid)) {
+            String permissionName,
+            AttributionSource attributionSource,
+            int recordTypeId,
+            boolean isReadPermission) {
+        if (!isPermissionGranted(permissionName, attributionSource)) {
             String prohibitedAction =
                     isReadPermission ? "to read to record type" : " to write to record type ";
             throw new SecurityException(
@@ -179,9 +192,10 @@ public class DataPermissionEnforcer {
         }
     }
 
-    private boolean isPermissionGranted(String permissionName, int uid) {
+    private boolean isPermissionGranted(
+            String permissionName, AttributionSource attributionSource) {
         return mPermissionManager.checkPermissionForStartDataDelivery(
-                        permissionName, new AttributionSource.Builder(uid).build(), null)
+                        permissionName, attributionSource, null)
                 == PERMISSION_GRANTED;
     }
 }

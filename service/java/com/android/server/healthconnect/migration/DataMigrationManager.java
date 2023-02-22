@@ -33,6 +33,7 @@ import android.health.connect.migration.PermissionMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
 import android.os.UserHandle;
 
+import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -42,9 +43,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Controls the data migration flow. Accepts and applies collections of {@link MigrationEntity}.
@@ -52,6 +51,8 @@ import java.util.List;
  * @hide
  */
 public final class DataMigrationManager {
+
+    private static final Object sLock = new Object();
 
     private final Context mUserContext;
     private final TransactionManager mTransactionManager;
@@ -84,53 +85,45 @@ public final class DataMigrationManager {
      * @param entities a collection of {@link MigrationEntity} to be applied.
      */
     public void apply(@NonNull Collection<MigrationEntity> entities) throws EntityWriteException {
-        migrateRecords(entities);
-        migratePermissions(entities);
-        migrateAppInfo(entities);
-    }
-
-    private void migrateRecords(@NonNull Collection<MigrationEntity> entities)
-            throws EntityWriteException {
-        final List<EntityInsertRequest> requests = parseRecords(entities);
-        if (requests.isEmpty()) {
-            return;
-        }
-
-        final SQLiteDatabase db = mTransactionManager.getWritableDb();
-        db.beginTransaction();
-        try {
-            for (EntityInsertRequest request : requests) {
-                try {
-                    mTransactionManager.insertRecord(db, request.request);
-                } catch (RuntimeException e) {
-                    throw new EntityWriteException(request.entityId, e);
+        synchronized (sLock) { // Ensure only one migration process at a time
+            final SQLiteDatabase db = mTransactionManager.getWritableDb();
+            db.beginTransaction();
+            try {
+                for (MigrationEntity entity : entities) {
+                    migrateEntity(db, entity);
                 }
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
             }
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
         }
     }
 
-    @NonNull
-    private List<EntityInsertRequest> parseRecords(@NonNull Collection<MigrationEntity> entities)
+    /** Migrates the provided {@link MigrationEntity}. Must be called inside a DB transaction. */
+    @GuardedBy("sLock")
+    private void migrateEntity(@NonNull SQLiteDatabase db, @NonNull MigrationEntity entity)
             throws EntityWriteException {
-        final List<EntityInsertRequest> list = new ArrayList<>();
-
-        for (MigrationEntity entity : entities) {
+        try {
             final MigrationPayload payload = entity.getPayload();
             if (payload instanceof RecordMigrationPayload) {
-                final UpsertTableRequest request;
-                try {
-                    request = parseRecord((RecordMigrationPayload) payload);
-                } catch (RuntimeException e) {
-                    throw new EntityWriteException(entity.getEntityId(), e);
-                }
-                list.add(new EntityInsertRequest(entity.getEntityId(), request));
+                migrateRecord(db, (RecordMigrationPayload) payload);
+            } else if (payload instanceof PermissionMigrationPayload) {
+                migratePermissions((PermissionMigrationPayload) payload);
+            } else if (payload instanceof AppInfoMigrationPayload) {
+                migrateAppInfo((AppInfoMigrationPayload) payload);
+            } else {
+                throw new IllegalArgumentException("Unsupported payload type: " + payload);
             }
+        } catch (RuntimeException e) {
+            throw new EntityWriteException(entity.getEntityId(), e);
         }
+    }
 
-        return list;
+    @GuardedBy("sLock")
+    private void migrateRecord(
+            @NonNull SQLiteDatabase db, @NonNull RecordMigrationPayload payload) {
+        mTransactionManager.insertRecord(db, parseRecord(payload));
     }
 
     @NonNull
@@ -145,20 +138,7 @@ public final class DataMigrationManager {
                 .getUpsertTableRequest(record);
     }
 
-    private void migratePermissions(@NonNull Collection<MigrationEntity> entities)
-            throws EntityWriteException {
-        for (MigrationEntity entity : entities) {
-            final MigrationPayload payload = entity.getPayload();
-            if (payload instanceof PermissionMigrationPayload) {
-                try {
-                    migratePermissions((PermissionMigrationPayload) payload);
-                } catch (RuntimeException e) {
-                    throw new EntityWriteException(entity.getEntityId(), e);
-                }
-            }
-        }
-    }
-
+    @GuardedBy("sLock")
     private void migratePermissions(@NonNull PermissionMigrationPayload payload) {
         final String packageName = payload.getHoldingPackageName();
         final UserHandle appUserHandle = getUserHandle(packageName);
@@ -173,20 +153,7 @@ public final class DataMigrationManager {
         }
     }
 
-    private void migrateAppInfo(@NonNull Collection<MigrationEntity> entities)
-            throws EntityWriteException {
-        for (MigrationEntity entity : entities) {
-            final MigrationPayload payload = entity.getPayload();
-            if (payload instanceof AppInfoMigrationPayload) {
-                try {
-                    migrateAppInfo((AppInfoMigrationPayload) payload);
-                } catch (RuntimeException e) {
-                    throw new EntityWriteException(entity.getEntityId(), e);
-                }
-            }
-        }
-    }
-
+    @GuardedBy("sLock")
     private void migrateAppInfo(@NonNull AppInfoMigrationPayload payload) {
         mAppInfoHelper.updateAppInfoIfNotInstalled(
                 mUserContext, payload.getPackageName(), payload.getAppName(), payload.getAppIcon());
@@ -228,16 +195,6 @@ public final class DataMigrationManager {
         @NonNull
         public String getEntityId() {
             return mEntityId;
-        }
-    }
-
-    private static final class EntityInsertRequest {
-        @NonNull public final String entityId;
-        @NonNull public final UpsertTableRequest request;
-
-        private EntityInsertRequest(@NonNull String entityId, @NonNull UpsertTableRequest request) {
-            this.entityId = entityId;
-            this.request = request;
         }
     }
 }

@@ -1,5 +1,6 @@
 package android.health.connect.aidl;
 
+import android.content.AttributionSource;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
@@ -47,48 +48,48 @@ interface IHealthConnectService {
     /**
      * Inserts {@code records} into the HealthConnect database.
      *
-     * @param packageName name of the package inserting the record.
+     * @param attributionSource attribution source for the data.
      * @param recordsParcel represents records to be inserted.
      * @param callback Callback to receive result of performing this operation.
      */
     void insertRecords(
-        String packageName,
+        in AttributionSource attributionSource,
         in RecordsParcel recordsParcel,
         in IInsertRecordsResponseCallback callback);
 
     /**
      * Returns aggregation results based on the {@code request} into the HealthConnect database.
      *
-     * @param packageName name of the package querying aggregate.
+     * @param attributionSource attribution source for the data.
      * @param request represents the request using which the aggregation is to be performed.
      * @param callback Callback to receive result of performing this operation.
      */
     void aggregateRecords(
-        String packageName,
+        in AttributionSource attributionSource,
         in AggregateDataRequestParcel request,
         in IAggregateRecordsResponseCallback callback);
 
     /**
      * Reads from the HealthConnect database.
      *
-     * @param packageName name of the package reading the record.
+     * @param attributionSource attribution source for the data.
      * @param request represents the request to be read.
      * @param callback Callback to receive result of performing this operation.
      */
     void readRecords(
-        in String packageName,
+        in AttributionSource attributionSource,
         in ReadRecordsRequestParcel request,
         in IReadRecordsResponseCallback callback);
 
     /**
      * Updates {@param records} in the HealthConnect database.
      *
-     * @param packageName name of the package updating the record.
+     * @param attributionSource attribution source for the data.
      * @param recordsParcel represents records to be updated.
      * @param callback Callback to receive result of performing this operation.
      */
     void updateRecords(
-            String packageName,
+            in AttributionSource attributionSource,
             in RecordsParcel recordsParcel,
             in IEmptyResponseCallback callback);
 
@@ -104,21 +105,21 @@ interface IHealthConnectService {
         in IGetChangeLogTokenCallback callback);
 
     /**
-     * @param packageName calling package name
+     * @param attributionSource attribution source for the data.
      * @param token request token from {@code getChangeLogToken}
      */
     void getChangeLogs(
-        String packageName,
+        in AttributionSource attributionSource,
         in ChangeLogsRequest token,
         in IChangeLogsResponseCallback callback);
 
     /**
-     * @param packageName Calling package's name
+     * @param attributionSource attribution source for the data.
      * @param request Delete request using the mentioned filters
      * @param callback Callback to receive result of performing this operation
      */
     void deleteUsingFilters(
-        String packageName,
+        in AttributionSource attributionSource,
         in DeleteUsingFiltersRequestParcel request,
         in IEmptyResponseCallback callback);
 
@@ -214,11 +215,6 @@ interface IHealthConnectService {
         String packageName,
         in List<MigrationEntity> entities,
         in IMigrationCallback callback);
-
-    /**
-     * Returns true if Healthconnect api is blocked due to migration or restore in progress.
-     */
-    boolean isApiBlockedDueToDataSync();
 
     /**
      * @param packageName calling package name

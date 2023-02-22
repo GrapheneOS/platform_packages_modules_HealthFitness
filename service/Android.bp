@@ -47,9 +47,9 @@ java_sdk_library {
         proguard_flags_files: ["proguard.flags"],
     },
     visibility: [
-            "//packages/modules/HealthConnect/tests:__subpackages__",
+            "//packages/modules/HealthFitness/tests:__subpackages__",
     ],
     impl_library_visibility: [
-        "//packages/modules/HealthConnect/tests/unittests",
+        "//packages/modules/HealthFitness/tests/unittests",
     ],
 }

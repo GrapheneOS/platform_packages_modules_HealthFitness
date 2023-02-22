@@ -312,9 +312,7 @@ public class SpeedRecordTest {
         assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
         List<SpeedRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertThat(result.get(i).equals(insertedRecords.get(i))).isTrue();
-        }
+        assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
     private static SpeedRecord getBaseSpeedRecord() {

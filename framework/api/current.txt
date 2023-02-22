@@ -36,6 +36,7 @@ package android.health.connect {
 
   public class HealthConnectException extends java.lang.RuntimeException {
     method public int getErrorCode();
+    field public static final int ERROR_DATA_SYNC_IN_PROGRESS = 8; // 0x8
     field public static final int ERROR_INTERNAL = 2; // 0x2
     field public static final int ERROR_INVALID_ARGUMENT = 3; // 0x3
     field public static final int ERROR_IO = 4; // 0x4
@@ -54,7 +55,6 @@ package android.health.connect {
     method public void getChangeLogToken(@NonNull android.health.connect.changelog.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.changelog.ChangeLogTokenResponse,android.health.connect.HealthConnectException>);
     method public void getChangeLogs(@NonNull android.health.connect.changelog.ChangeLogsRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.changelog.ChangeLogsResponse,android.health.connect.HealthConnectException>);
     method public void insertRecords(@NonNull java.util.List<android.health.connect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.InsertRecordsResponse,android.health.connect.HealthConnectException>);
-    method public boolean isApiBlockedDueToDataSync();
     method public <T extends android.health.connect.datatypes.Record> void readRecords(@NonNull android.health.connect.ReadRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ReadRecordsResponse<T>,android.health.connect.HealthConnectException>);
     method public void updateRecords(@NonNull java.util.List<android.health.connect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
     field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS = "android.health.connect.action.MANAGE_HEALTH_PERMISSIONS";

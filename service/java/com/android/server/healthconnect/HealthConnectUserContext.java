@@ -49,7 +49,7 @@ public class HealthConnectUserContext extends ContextWrapper {
         File systemCeUserDir = new File(systemCeDir, String.valueOf(mUserHandle.getIdentifier()));
         File systemCeUserHcDir = new File(systemCeUserDir, HEALTH_CONNECT_FOLDER_NAME);
         if (!systemCeUserHcDir.exists()) {
-            systemCeUserHcDir.mkdir();
+            systemCeUserHcDir.mkdirs();
         }
 
         return new File(systemCeUserHcDir, name);

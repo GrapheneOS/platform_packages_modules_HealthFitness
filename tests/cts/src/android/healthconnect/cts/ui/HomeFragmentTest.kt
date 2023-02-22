@@ -49,8 +49,6 @@ class HomeFragmentTest {
             waitDisplayed(By.text("Manage data"))
             waitDisplayed(By.text("Auto-delete"))
 
-            // Delete all data is disabled, nothing happens on click.
-            clickOnText("Delete all data")
             waitDisplayed(By.text("Delete all data"))
         }
     }

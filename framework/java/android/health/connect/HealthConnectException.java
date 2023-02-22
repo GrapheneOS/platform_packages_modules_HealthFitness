@@ -58,6 +58,12 @@ public class HealthConnectException extends RuntimeException {
     public static final int ERROR_REMOTE = 6;
     /** The caller exhausted the allotted rate limit. */
     public static final int ERROR_RATE_LIMIT_EXCEEDED = 7;
+    /**
+     * Data sync is in progress. Data read and writes are blocked.
+     *
+     * <p>Caller should try this api call again later.
+     */
+    public static final int ERROR_DATA_SYNC_IN_PROGRESS = 8;
 
     @ErrorCode private final int mErrorCode;
 

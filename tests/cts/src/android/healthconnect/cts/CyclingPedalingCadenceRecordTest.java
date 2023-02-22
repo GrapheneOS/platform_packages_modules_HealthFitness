@@ -43,7 +43,6 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -278,9 +277,9 @@ public class CyclingPedalingCadenceRecordTest {
                 List.of(
                         getBaseCyclingPedalingCadenceRecord(),
                         getCompleteCyclingPedalingCadenceRecord());
-        List<Record> insertedRecord = TestUtils.insertRecords(records);
+        List<Record> insertedRecords = TestUtils.insertRecords(records);
         List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
-        for (Record record : insertedRecord) {
+        for (Record record : insertedRecords) {
             recordIds.add(RecordIdFilter.fromId(record.getClass(), record.getMetadata().getId()));
         }
 
@@ -333,22 +332,15 @@ public class CyclingPedalingCadenceRecordTest {
         readCyclingPedalingCadenceRecordUsingIds(recordList);
     }
 
-    private void readCyclingPedalingCadenceRecordUsingClientId(List<Record> insertedRecord)
+    private void readCyclingPedalingCadenceRecordUsingClientId(List<Record> insertedRecords)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<CyclingPedalingCadenceRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(CyclingPedalingCadenceRecord.class);
-        for (Record record : insertedRecord) {
+        for (Record record : insertedRecords) {
             request.addClientRecordId(record.getMetadata().getClientRecordId());
         }
         List<CyclingPedalingCadenceRecord> result = TestUtils.readRecords(request.build());
-        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
-        insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
-
-        for (int i = 0; i < result.size(); i++) {
-            CyclingPedalingCadenceRecord other =
-                    (CyclingPedalingCadenceRecord) insertedRecord.get(i);
-            assertThat(result.get(i).equals(other)).isTrue();
-        }
+        assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
     private void readCyclingPedalingCadenceRecordUsingIds(List<Record> recordList)
@@ -364,9 +356,7 @@ public class CyclingPedalingCadenceRecordTest {
         assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
         List<CyclingPedalingCadenceRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertThat(result.get(i).equals(insertedRecords.get(i))).isTrue();
-        }
+        assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
     private static CyclingPedalingCadenceRecord getBaseCyclingPedalingCadenceRecord() {

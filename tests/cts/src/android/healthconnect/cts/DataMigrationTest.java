@@ -37,6 +37,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
@@ -87,13 +88,12 @@ import java.util.function.Consumer;
 @RunWith(AndroidJUnit4.class)
 public class DataMigrationTest {
 
-    private static final String PACKAGE_NAME = "android.healthconnect.cts";
     private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
     private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
 
-    @Rule public final Expect expect = Expect.create();
+    @Rule public final Expect mExpect = Expect.create();
 
     private final Executor mOutcomeExecutor = Executors.newSingleThreadExecutor();
     private final Instant mEndTime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -120,10 +120,16 @@ public class DataMigrationTest {
         }
     }
 
-    private static Metadata getMetadata() {
+    private static Metadata getMetadata(String clientRecordId, String packageName) {
         return new Metadata.Builder()
+                .setClientRecordId(clientRecordId)
+                .setDataOrigin(new DataOrigin.Builder().setPackageName(packageName).build())
                 .setDevice(new Device.Builder().setManufacturer("Device").setModel("Model").build())
                 .build();
+    }
+
+    private static Metadata getMetadata(String clientRecordId) {
+        return getMetadata(clientRecordId, APP_PACKAGE_NAME);
     }
 
     private static byte[] getBitmapBytes(Bitmap bitmap) {
@@ -158,65 +164,68 @@ public class DataMigrationTest {
 
     @Test
     public void migrateHeight_heightSaved() {
-        migrate(
-                getRecordEntity(
-                        "height1",
-                        new HeightRecord.Builder(getMetadata(), mEndTime, fromMeters(3D)).build()));
+        final String entityId = "height";
 
-        final HeightRecord record = getRecords(HeightRecord.class).get(0);
+        migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, fromMeters(3D)).build());
 
-        assertThat(record.getHeight().getInMeters()).isEqualTo(3D);
-        assertThat(record.getTime()).isEqualTo(mEndTime);
+        final HeightRecord record = getRecord(HeightRecord.class, entityId);
+        mExpect.that(record).isNotNull();
+        mExpect.that(record.getHeight().getInMeters()).isEqualTo(3D);
+        mExpect.that(record.getTime()).isEqualTo(mEndTime);
     }
 
     @Test
     public void migrateSteps_stepsSaved() {
-        migrate(
-                getRecordEntity(
-                        "steps1",
-                        new StepsRecord.Builder(getMetadata(), mStartTime, mEndTime, 10).build()));
+        final String entityId = "steps";
 
-        final StepsRecord record = getRecords(StepsRecord.class).get(0);
+        migrate(new StepsRecord.Builder(getMetadata(entityId), mStartTime, mEndTime, 10).build());
 
-        assertThat(record.getCount()).isEqualTo(10);
-        assertThat(record.getStartTime()).isEqualTo(mStartTime);
-        assertThat(record.getEndTime()).isEqualTo(mEndTime);
+        final StepsRecord record = getRecord(StepsRecord.class, entityId);
+        mExpect.that(record).isNotNull();
+        mExpect.that(record.getCount()).isEqualTo(10);
+        mExpect.that(record.getStartTime()).isEqualTo(mStartTime);
+        mExpect.that(record.getEndTime()).isEqualTo(mEndTime);
     }
 
     @Test
     public void migratePower_powerSaved() {
+        final String entityId = "power";
+
         migrate(
-                getRecordEntity(
-                        "power1",
-                        new PowerRecord.Builder(
-                                        getMetadata(),
-                                        mStartTime,
-                                        mEndTime,
-                                        List.of(
-                                                new PowerRecordSample(fromWatts(10D), mEndTime),
-                                                new PowerRecordSample(fromWatts(20D), mEndTime),
-                                                new PowerRecordSample(fromWatts(30D), mEndTime)))
-                                .build()));
+                new PowerRecord.Builder(
+                                getMetadata(entityId),
+                                mStartTime,
+                                mEndTime,
+                                List.of(
+                                        new PowerRecordSample(fromWatts(10D), mEndTime),
+                                        new PowerRecordSample(fromWatts(20D), mEndTime),
+                                        new PowerRecordSample(fromWatts(30D), mEndTime)))
+                        .build());
 
-        final PowerRecord record = getRecords(PowerRecord.class).get(0);
+        final PowerRecord record = getRecord(PowerRecord.class, entityId);
 
-        assertThat(record.getSamples())
+        mExpect.that(record).isNotNull();
+
+        mExpect.that(record.getSamples())
                 .containsExactly(
                         new PowerRecordSample(fromWatts(10D), mEndTime),
                         new PowerRecordSample(fromWatts(20D), mEndTime),
                         new PowerRecordSample(fromWatts(30D), mEndTime))
                 .inOrder();
-        assertThat(record.getStartTime()).isEqualTo(mStartTime);
-        assertThat(record.getEndTime()).isEqualTo(mEndTime);
+
+        mExpect.that(record.getStartTime()).isEqualTo(mStartTime);
+        mExpect.that(record.getEndTime()).isEqualTo(mEndTime);
     }
 
     @Test
     public void migratePermissions_permissionsGranted() {
         revokeAppPermissions(READ_HEIGHT, WRITE_HEIGHT);
 
+        final String entityId = "permissions";
+
         migrate(
                 new MigrationEntity(
-                        "permissions1",
+                        entityId,
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
                                 .addPermission(READ_HEIGHT)
                                 .addPermission(WRITE_HEIGHT)
@@ -229,7 +238,7 @@ public class DataMigrationTest {
     public void migratePermissions_invalidPermission_throwsMigrationException() {
         revokeAppPermissions(READ_HEIGHT, WRITE_HEIGHT);
 
-        final String entityId = "permissions1";
+        final String entityId = "permissions";
 
         final MigrationEntity entity =
                 new MigrationEntity(
@@ -252,48 +261,54 @@ public class DataMigrationTest {
         runWithShellPermissionIdentity(
                 () -> {
                     TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
-                    assertThat(TestUtils.isApiBlocked()).isEqualTo(false);
                     TestUtils.startMigration();
-                    assertThat(TestUtils.isApiBlocked()).isEqualTo(true);
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
                     TestUtils.finishMigration();
-                    assertThat(TestUtils.isApiBlocked()).isEqualTo(false);
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
                 },
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
     @Test
     public void migrateAppInfo_notInstalledAppAndRecordsMigrated_appInfoSaved() {
+        final String recordEntityId = "steps";
+        final String appInfoEntityId = "appInfo";
         final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         final byte[] iconBytes = getBitmapBytes(icon);
 
         migrate(
-                getRecordEntity(
-                        PACKAGE_NAME_NOT_INSTALLED,
-                        "steps1",
-                        new StepsRecord.Builder(getMetadata(), mStartTime, mEndTime, 10).build()));
+                new StepsRecord.Builder(
+                                getMetadata(recordEntityId, PACKAGE_NAME_NOT_INSTALLED),
+                                mStartTime,
+                                mEndTime,
+                                10)
+                        .build());
 
         migrate(
                 new MigrationEntity(
-                        "appInfo1",
+                        appInfoEntityId,
                         new AppInfoMigrationPayload.Builder(PACKAGE_NAME_NOT_INSTALLED, APP_NAME)
                                 .setAppIcon(iconBytes)
                                 .build()));
 
         final AppInfo appInfo = getContributorApplicationInfo(PACKAGE_NAME_NOT_INSTALLED);
 
-        expect.that(appInfo).isNotNull();
-        expect.that(appInfo.getName()).isEqualTo(APP_NAME);
-        expect.that(getBitmapBytes(appInfo.getIcon())).isEqualTo(iconBytes);
+        mExpect.that(appInfo).isNotNull();
+        mExpect.that(appInfo.getName()).isEqualTo(APP_NAME);
+        mExpect.that(getBitmapBytes(appInfo.getIcon())).isEqualTo(iconBytes);
     }
 
     @Test
     public void migrateAppInfo_notInstalledAppAndRecordsNotMigrated_appInfoNotSaved() {
+        final String entityId = "appInfo";
         final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         final byte[] iconBytes = getBitmapBytes(icon);
 
         migrate(
                 new MigrationEntity(
-                        "appInfo1",
+                        entityId,
                         new AppInfoMigrationPayload.Builder(
                                         PACKAGE_NAME_NOT_INSTALLED, APP_NAME_NEW)
                                 .setAppIcon(iconBytes)
@@ -306,27 +321,31 @@ public class DataMigrationTest {
 
     @Test
     public void migrateAppInfo_installedAppAndRecordsMigrated_appInfoNotSaved() {
+        final String recordEntityId = "steps";
+        final String appInfoEntityId = "appInfo";
         final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         final byte[] iconBytes = getBitmapBytes(icon);
 
         migrate(
-                getRecordEntity(
-                        APP_PACKAGE_NAME,
-                        "steps1",
-                        new StepsRecord.Builder(getMetadata(), mStartTime, mEndTime, 10).build()));
+                new StepsRecord.Builder(
+                                getMetadata(recordEntityId, APP_PACKAGE_NAME),
+                                mStartTime,
+                                mEndTime,
+                                10)
+                        .build());
 
         migrate(
                 new MigrationEntity(
-                        "appInfo1",
+                        appInfoEntityId,
                         new AppInfoMigrationPayload.Builder(APP_PACKAGE_NAME, APP_NAME_NEW)
                                 .setAppIcon(iconBytes)
                                 .build()));
 
         final AppInfo appInfo = getContributorApplicationInfo(APP_PACKAGE_NAME);
 
-        expect.that(appInfo).isNotNull();
-        expect.that(appInfo.getName()).isNotEqualTo(APP_NAME_NEW);
-        expect.that(getBitmapBytes(appInfo.getIcon())).isNotEqualTo(iconBytes);
+        mExpect.that(appInfo).isNotNull();
+        mExpect.that(appInfo.getName()).isNotEqualTo(APP_NAME_NEW);
+        mExpect.that(getBitmapBytes(appInfo.getIcon())).isNotEqualTo(iconBytes);
     }
 
     private void migrate(MigrationEntity... entities) {
@@ -340,14 +359,18 @@ public class DataMigrationTest {
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
-    private MigrationEntity getRecordEntity(String entityId, Record record) {
-        return getRecordEntity(PACKAGE_NAME, entityId, record);
+    private void migrate(Record record) {
+        migrate(getRecordEntity(record));
     }
 
-    private MigrationEntity getRecordEntity(String packageName, String entityId, Record record) {
+    private MigrationEntity getRecordEntity(Record record) {
         return new MigrationEntity(
-                entityId,
-                new RecordMigrationPayload.Builder(packageName, "Example App", record).build());
+                record.getMetadata().getClientRecordId(),
+                new RecordMigrationPayload.Builder(
+                                record.getMetadata().getDataOrigin().getPackageName(),
+                                "Example App",
+                                record)
+                        .build());
     }
 
     private <T extends Record> List<T> getRecords(Class<T> clazz) {
@@ -359,6 +382,13 @@ public class DataMigrationTest {
                         action, HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
 
         return response.getRecords();
+    }
+
+    private <T extends Record> T getRecord(Class<T> clazz, String clientRecordId) {
+        return getRecords(clazz).stream()
+                .filter(r -> clientRecordId.equals(r.getMetadata().getClientRecordId()))
+                .findFirst()
+                .orElse(null);
     }
 
     private <T extends Record> void getRecordsAsync(
@@ -386,7 +416,7 @@ public class DataMigrationTest {
         mManager.deleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
                         .addDataOrigin(
-                                new DataOrigin.Builder().setPackageName(PACKAGE_NAME).build())
+                                new DataOrigin.Builder().setPackageName(APP_PACKAGE_NAME).build())
                         .build(),
                 mOutcomeExecutor,
                 callback);

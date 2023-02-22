@@ -354,9 +354,7 @@ public class PowerRecordTest {
         assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
         List<PowerRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(insertedRecords.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertThat(result.get(i).equals(insertedRecords.get(i))).isTrue();
-        }
+        assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
     private static PowerRecord getBasePowerRecord() {
