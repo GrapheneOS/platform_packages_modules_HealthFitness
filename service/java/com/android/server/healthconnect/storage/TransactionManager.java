@@ -195,6 +195,9 @@ public final class TransactionManager {
     @NonNull
     public void populateWithAggregation(AggregateTableRequest aggregateTableRequest) {
         final SQLiteDatabase db = getReadableDb();
+        if (!aggregateTableRequest.getRecordHelper().isRecordOperationsEnabled()) {
+            return;
+        }
         try (Cursor cursor = db.rawQuery(aggregateTableRequest.getAggregationCommand(), null);
                 Cursor metaDataCursor =
                         db.rawQuery(
@@ -216,17 +219,19 @@ public final class TransactionManager {
         request.getReadRequests()
                 .forEach(
                         (readTableRequest -> {
-                            try (Cursor cursor = read(db, readTableRequest)) {
-                                Objects.requireNonNull(readTableRequest.getRecordHelper());
-                                List<RecordInternal<?>> internalRecords =
-                                        readTableRequest
-                                                .getRecordHelper()
-                                                .getInternalRecords(cursor, DEFAULT_PAGE_SIZE);
+                            if (readTableRequest.getRecordHelper().isRecordOperationsEnabled()) {
+                                try (Cursor cursor = read(db, readTableRequest)) {
+                                    Objects.requireNonNull(readTableRequest.getRecordHelper());
+                                    List<RecordInternal<?>> internalRecords =
+                                            readTableRequest
+                                                    .getRecordHelper()
+                                                    .getInternalRecords(cursor, DEFAULT_PAGE_SIZE);
 
-                                populateInternalRecordsWithExtraData(
-                                        db, internalRecords, readTableRequest);
+                                    populateInternalRecordsWithExtraData(
+                                            db, internalRecords, readTableRequest);
 
-                                recordInternals.addAll(internalRecords);
+                                    recordInternals.addAll(internalRecords);
+                                }
                             }
                         }));
         return recordInternals;
@@ -251,10 +256,15 @@ public final class TransactionManager {
         long token = DEFAULT_LONG;
         ReadTableRequest readTableRequest = request.getReadRequests().get(0);
         final SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-        try (Cursor cursor = read(db, readTableRequest)) {
-            RecordHelper<?> helper = readTableRequest.getRecordHelper();
-            Objects.requireNonNull(helper);
 
+        RecordHelper<?> helper = readTableRequest.getRecordHelper();
+        Objects.requireNonNull(helper);
+        if (!helper.isRecordOperationsEnabled()) {
+            recordInternalList = new ArrayList<>(0);
+            return Pair.create(recordInternalList, token);
+        }
+
+        try (Cursor cursor = read(db, readTableRequest)) {
             recordInternalList = helper.getInternalRecords(cursor, readTableRequest.getPageSize());
             String startTimeColumnName = helper.getStartTimeColumnName();
 

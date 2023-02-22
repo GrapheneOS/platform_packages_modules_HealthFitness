@@ -267,6 +267,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public List<RecordInternal<?>> getInternalRecords(Cursor cursor, int requestSize) {
         Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+
         int count = 0;
         long prevStartTime = DEFAULT_LONG;
         long currentStartTime = DEFAULT_LONG;
@@ -359,6 +360,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
         Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
         return recordInternalList;
+    }
+
+    /** Returns is the read of this record type is enabled */
+    public boolean isRecordOperationsEnabled() {
+        return true;
     }
 
     /** Populate internalRecords fields using extraDataCursor */
@@ -561,7 +567,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Returns extra permissions required to write given record. */
-    public List<String> getExtraWritePermissionsToCheck(RecordInternal<?> recordInternal) {
+    public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
         return Collections.emptyList();
     }
 

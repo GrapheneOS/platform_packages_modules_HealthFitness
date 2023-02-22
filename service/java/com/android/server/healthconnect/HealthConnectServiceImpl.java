@@ -456,16 +456,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         AtomicBoolean enforceSelfRead = new AtomicBoolean();
         if (!holdsDataManagementPermission) {
             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
-            if (mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
-                            request.getRecordType(), attributionSource)
-                    || !isInForeground) {
-                // If requesting app has only write permission allowed but no read permission for
-                // the record type or if app is not in foreground then allow to read its own
-                // records.
-                enforceSelfRead.set(true);
-            } else {
-                enforceSelfRead.set(false);
-            }
+            // If requesting app has only write permission allowed but no read permission for
+            // the record type or if app is not in foreground then allow to read its own
+            // records.
+            enforceSelfRead.set(
+                    mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
+                                    request.getRecordType(), attributionSource)
+                            || !isInForeground);
             RateLimiter.tryAcquireApiCallQuota(
                     uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground);
         }

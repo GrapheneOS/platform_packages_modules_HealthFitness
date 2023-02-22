@@ -112,7 +112,7 @@ public class DataPermissionEnforcer {
             }
             recordTypeIdToExtraPerms
                     .get(recordTypeId)
-                    .addAll(recordHelper.getExtraWritePermissionsToCheck(recordInternal));
+                    .addAll(recordHelper.checkFlagsAndGetExtraWritePermissions(recordInternal));
         }
 
         // Check main write permissions for given recordIds
