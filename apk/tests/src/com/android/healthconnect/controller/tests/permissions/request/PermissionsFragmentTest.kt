@@ -30,6 +30,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.*
 import com.android.healthconnect.controller.R
@@ -41,6 +42,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.WaitForViewAction
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.settingslib.widget.MainSwitchPreference
 import com.google.common.truth.Truth.assertThat
@@ -60,6 +62,7 @@ import org.mockito.Mockito.*
 class PermissionsFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
     @BindValue
     val viewModel: RequestPermissionViewModel = mock(RequestPermissionViewModel::class.java)
 
@@ -90,8 +93,12 @@ class PermissionsFragmentTest {
         }
         launchFragment<PermissionsFragment>(bundleOf())
 
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read")).check(matches(isDisplayed()))
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(matches(isDisplayed()))
+        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -137,7 +144,8 @@ class PermissionsFragmentTest {
             MutableLiveData(permissions)
         }
         launchFragment<PermissionsFragment>(bundleOf())
-        onView(withText("Distance")).perform(click())
+        onView(isRoot()).perform(WaitForViewAction.waitForView(withText("Distance")))
+        onView(withText("Distance")).perform(scrollTo()).perform(click())
 
         verify(viewModel).updatePermission(any(HealthPermission::class.java), eq(true))
     }
