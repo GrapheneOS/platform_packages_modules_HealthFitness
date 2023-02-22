@@ -1375,9 +1375,10 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    public Set<String> getAllBackupFileNames() {
+    public Set<String> getAllBackupFileNames(boolean forDeviceToDevice) {
         try {
-            return mService.getAllBackupFileNames(mContext.getUser()).getFileNames();
+            return mService.getAllBackupFileNames(mContext.getUser(), forDeviceToDevice)
+                    .getFileNames();
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

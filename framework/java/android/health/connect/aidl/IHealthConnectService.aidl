@@ -259,7 +259,7 @@ interface IHealthConnectService {
      *
      * @hide
      */
-    BackupFileNamesSet getAllBackupFileNames(in UserHandle userHandle);
+    BackupFileNamesSet getAllBackupFileNames(in UserHandle userHandle, in boolean forDeviceToDevice);
 
     /**
      * Deletes all previously staged HealthConnect data from the disk.
