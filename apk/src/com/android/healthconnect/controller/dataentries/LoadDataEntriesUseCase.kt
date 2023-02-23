@@ -31,7 +31,7 @@ import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import java.time.Duration.ofHours
 import java.time.Duration.ofMinutes
 import java.time.Instant
-import java.time.temporal.ChronoUnit
+import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -53,7 +53,12 @@ constructor(
     }
 
     private fun getTimeFilter(selectedDate: Instant): TimeInstantRangeFilter {
-        val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
+        val start =
+            selectedDate
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
         val end = start.plus(ofHours(23)).plus(ofMinutes(59))
         return TimeInstantRangeFilter.Builder().setStartTime(start).setEndTime(end).build()
     }

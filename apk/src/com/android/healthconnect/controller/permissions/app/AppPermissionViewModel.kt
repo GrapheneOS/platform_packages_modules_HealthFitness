@@ -67,9 +67,13 @@ constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _appPermissions = MutableLiveData<List<HealthPermissionStatus>>(emptyList())
-    val appPermissions: LiveData<List<HealthPermissionStatus>>
+    private val _appPermissions = MutableLiveData<List<HealthPermission>>(emptyList())
+    val appPermissions: LiveData<List<HealthPermission>>
         get() = _appPermissions
+
+    private val _grantedPermissions = MutableLiveData<Set<HealthPermission>>(emptySet())
+    val grantedPermissions: LiveData<Set<HealthPermission>>
+        get() = _grantedPermissions
 
     private val _allAppPermissionsGranted = MutableLiveData(false)
     val allAppPermissionsGranted: LiveData<Boolean>
@@ -90,8 +94,12 @@ constructor(
 
     fun loadForPackage(packageName: String) {
         viewModelScope.launch {
+            _appInfo.postValue(appInfoReader.getAppMetadata(packageName))
+
             val permissions = loadAppPermissionsStatusUseCase.invoke(packageName)
-            _appPermissions.postValue(permissions)
+            _appPermissions.postValue(permissions.map { it.healthPermission })
+            _grantedPermissions.postValue(
+                permissions.filter { it.isGranted }.map { it.healthPermission }.toSet())
             _allAppPermissionsGranted.postValue(permissions.all { it.isGranted })
             _atLeastOnePermissionGranted.postValue(permissions.any { it.isGranted })
         }
@@ -106,19 +114,26 @@ constructor(
     }
 
     fun updatePermission(packageName: String, healthPermission: HealthPermission, grant: Boolean) {
+        val grantedPermissions = _grantedPermissions.value.orEmpty().toMutableSet()
         if (grant) {
             grantPermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
+            grantedPermissions.add(healthPermission)
+            _grantedPermissions.postValue(grantedPermissions)
         } else {
+            grantedPermissions.remove(healthPermission)
+            _grantedPermissions.postValue(grantedPermissions)
+
             revokePermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
         }
-        loadForPackage(packageName)
     }
 
     fun grantAllPermissions(packageName: String) {
-        appPermissions.value?.forEach {
-            grantPermissionsStatusUseCase.invoke(packageName, it.healthPermission.toString())
+        _appPermissions.value?.forEach {
+            grantPermissionsStatusUseCase.invoke(packageName, it.toString())
         }
-        loadForPackage(packageName)
+        val grantedPermissions = _grantedPermissions.value.orEmpty().toMutableSet()
+        grantedPermissions.addAll(_appPermissions.value.orEmpty())
+        _grantedPermissions.postValue(grantedPermissions)
     }
 
     fun revokeAllPermissions(packageName: String) {
@@ -128,6 +143,7 @@ constructor(
             loadForPackage(packageName)
             _revokeAllPermissionsState.postValue(RevokeAllState.Updated)
         }
+        _grantedPermissions.postValue(emptySet())
     }
 
     fun deleteAppData(packageName: String, appName: String) {

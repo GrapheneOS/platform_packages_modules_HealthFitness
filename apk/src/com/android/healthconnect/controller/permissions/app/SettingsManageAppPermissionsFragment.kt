@@ -41,6 +41,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
@@ -70,6 +71,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     private lateinit var packageName: String
     private lateinit var appName: String
     private val viewModel: AppPermissionViewModel by viewModels()
+    private val permissionMap: MutableMap<HealthPermission, SwitchPreference> = mutableMapOf()
 
     private val allowAllPreference: MainSwitchPreference? by lazy {
         preferenceScreen.findPreference(ALLOW_ALL_PREFERENCE)
@@ -106,6 +108,13 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         viewModel.loadForPackage(packageName)
         viewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
+        }
+        viewModel.grantedPermissions.observe(viewLifecycleOwner) { granted ->
+            permissionMap.forEach { (healthPermission, switchPreference) ->
+                if (healthPermission in granted && !switchPreference.isChecked) {
+                    switchPreference.isChecked = true
+                }
+            }
         }
 
         viewModel.revokeAllPermissionsState.observe(viewLifecycleOwner) { state ->
@@ -167,34 +176,33 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
             .show(childFragmentManager, DisconnectDialogFragment.TAG)
     }
 
-    private fun updatePermissions(permissions: List<HealthPermissionStatus>) {
+    private fun updatePermissions(permissions: List<HealthPermission>) {
         readPermissionCategory?.removeAll()
         writePermissionCategory?.removeAll()
+        permissionMap.clear()
 
-        permissions.forEach { permissionStatus ->
-            val permission = permissionStatus.healthPermission
+        permissions.forEach { permission ->
             val category =
                 if (permission.permissionsAccessType == PermissionsAccessType.READ) {
                     readPermissionCategory
                 } else {
                     writePermissionCategory
                 }
-
-            category?.addPreference(
+            val switchPreference =
                 SwitchPreference(requireContext()).also {
                     val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
                     it.setIcon(healthCategory.icon())
                     it.setTitle(
                         HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
                             .uppercaseLabel)
-                    it.isChecked = permissionStatus.isGranted
                     it.setOnPreferenceChangeListener { _, newValue ->
                         val checked = newValue as Boolean
-                        viewModel.updatePermission(
-                            packageName, permissionStatus.healthPermission, checked)
+                        viewModel.updatePermission(packageName, permission, checked)
                         true
                     }
-                })
+                }
+            permissionMap[permission] = switchPreference
+            category?.addPreference(switchPreference)
         }
     }
 }
