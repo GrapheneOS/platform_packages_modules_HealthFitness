@@ -17,54 +17,54 @@ package com.android.healthconnect.controller.permissions.data
 
 import android.health.connect.HealthPermissionCategory
 
-enum class HealthPermissionType {
+enum class HealthPermissionType(val category: Int) {
     // ACTIVITY
-    ACTIVE_CALORIES_BURNED,
-    DISTANCE,
-    ELEVATION_GAINED,
-    EXERCISE,
-    FLOORS_CLIMBED,
-    STEPS,
-    TOTAL_CALORIES_BURNED,
-    VO2_MAX,
-    WHEELCHAIR_PUSHES,
-    POWER,
-    SPEED,
-    EXERCISE_ROUTE,
+    ACTIVE_CALORIES_BURNED(HealthPermissionCategory.ACTIVE_CALORIES_BURNED),
+    DISTANCE(HealthPermissionCategory.DISTANCE),
+    ELEVATION_GAINED(HealthPermissionCategory.ELEVATION_GAINED),
+    EXERCISE(HealthPermissionCategory.EXERCISE),
+    FLOORS_CLIMBED(HealthPermissionCategory.FLOORS_CLIMBED),
+    STEPS(HealthPermissionCategory.STEPS),
+    TOTAL_CALORIES_BURNED(HealthPermissionCategory.TOTAL_CALORIES_BURNED),
+    VO2_MAX(HealthPermissionCategory.VO2_MAX),
+    WHEELCHAIR_PUSHES(HealthPermissionCategory.WHEELCHAIR_PUSHES),
+    POWER(HealthPermissionCategory.POWER),
+    SPEED(HealthPermissionCategory.SPEED),
+    EXERCISE_ROUTE(HealthPermissionCategory.EXERCISE),
 
     // BODY_MEASUREMENTS
-    BASAL_METABOLIC_RATE,
-    BODY_FAT,
-    BODY_WATER_MASS,
-    BONE_MASS,
-    HEIGHT,
-    LEAN_BODY_MASS,
-    WEIGHT,
+    BASAL_METABOLIC_RATE(HealthPermissionCategory.BASAL_METABOLIC_RATE),
+    BODY_FAT(HealthPermissionCategory.BODY_FAT),
+    BODY_WATER_MASS(HealthPermissionCategory.BODY_WATER_MASS),
+    BONE_MASS(HealthPermissionCategory.BONE_MASS),
+    HEIGHT(HealthPermissionCategory.HEIGHT),
+    LEAN_BODY_MASS(HealthPermissionCategory.LEAN_BODY_MASS),
+    WEIGHT(HealthPermissionCategory.WEIGHT),
 
     // CYCLE_TRACKING
-    CERVICAL_MUCUS,
-    MENSTRUATION,
-    OVULATION_TEST,
-    SEXUAL_ACTIVITY,
-    INTERMENSTRUAL_BLEEDING,
+    CERVICAL_MUCUS(HealthPermissionCategory.CERVICAL_MUCUS),
+    MENSTRUATION(HealthPermissionCategory.MENSTRUATION),
+    OVULATION_TEST(HealthPermissionCategory.OVULATION_TEST),
+    SEXUAL_ACTIVITY(HealthPermissionCategory.SEXUAL_ACTIVITY),
+    INTERMENSTRUAL_BLEEDING(HealthPermissionCategory.INTERMENSTRUAL_BLEEDING),
 
     // NUTRITION
-    HYDRATION,
-    NUTRITION,
+    HYDRATION(HealthPermissionCategory.HYDRATION),
+    NUTRITION(HealthPermissionCategory.NUTRITION),
 
     // SLEEP
-    SLEEP,
+    SLEEP(HealthPermissionCategory.SLEEP),
 
     // VITALS
-    BASAL_BODY_TEMPERATURE,
-    BLOOD_GLUCOSE,
-    BLOOD_PRESSURE,
-    BODY_TEMPERATURE,
-    HEART_RATE,
-    HEART_RATE_VARIABILITY,
-    OXYGEN_SATURATION,
-    RESPIRATORY_RATE,
-    RESTING_HEART_RATE,
+    BASAL_BODY_TEMPERATURE(HealthPermissionCategory.BASAL_BODY_TEMPERATURE),
+    BLOOD_GLUCOSE(HealthPermissionCategory.BLOOD_GLUCOSE),
+    BLOOD_PRESSURE(HealthPermissionCategory.BLOOD_PRESSURE),
+    BODY_TEMPERATURE(HealthPermissionCategory.BODY_TEMPERATURE),
+    HEART_RATE(HealthPermissionCategory.HEART_RATE),
+    HEART_RATE_VARIABILITY(HealthPermissionCategory.HEART_RATE_VARIABILITY),
+    OXYGEN_SATURATION(HealthPermissionCategory.OXYGEN_SATURATION),
+    RESPIRATORY_RATE(HealthPermissionCategory.RESPIRATORY_RATE),
+    RESTING_HEART_RATE(HealthPermissionCategory.RESTING_HEART_RATE),
 }
 
 fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissionType {
