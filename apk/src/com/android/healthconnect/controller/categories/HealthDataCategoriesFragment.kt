@@ -24,7 +24,6 @@ import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
@@ -39,11 +38,12 @@ import com.android.healthconnect.controller.deletion.DeletionViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Fragment for health data categories. */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     companion object {
@@ -68,7 +68,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.health_data_categories_screen, rootKey)
 
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {

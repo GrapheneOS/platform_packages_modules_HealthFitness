@@ -118,12 +118,13 @@ constructor(
                     is DeletionType.DeletionTypeAllData -> {
                         _deletionParameters.value?.let {
                             deleteAllDataUseCase.invoke(timeRangeFilter)
+                            _categoriesReloadNeeded.postValue(true)
                         }
                     }
                     is DeletionType.DeletionTypeCategoryData -> {
                         deletionParameters.value?.let {
                             deleteCategoryUseCase.invoke(deletionType, timeRangeFilter)
-                            _categoriesReloadNeeded.value = true
+                            _categoriesReloadNeeded.postValue(true)
                         }
                     }
                     is DeletionType.DeletionTypeHealthPermissionTypeData -> {

@@ -49,6 +49,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.START_DEL
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
+import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
@@ -89,6 +90,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
     private var appName: String = ""
     private val appPermissionViewModel: AppPermissionViewModel by viewModels()
     private val deletionViewModel: DeletionViewModel by activityViewModels()
+    private val permissionMap: MutableMap<HealthPermission, SwitchPreference> = mutableMapOf()
 
     private val header: AppHeaderPreference? by lazy {
         preferenceScreen.findPreference(PERMISSION_HEADER)
@@ -143,6 +145,13 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
         appPermissionViewModel.appPermissions.observe(viewLifecycleOwner) { permissions ->
             updatePermissions(permissions)
+        }
+        appPermissionViewModel.grantedPermissions.observe(viewLifecycleOwner) { granted ->
+            permissionMap.forEach { (healthPermission, switchPreference) ->
+                if (healthPermission in granted && !switchPreference.isChecked) {
+                    switchPreference.isChecked = true
+                }
+            }
         }
 
         deletionViewModel.appPermissionReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
@@ -215,12 +224,12 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         DisconnectDialogFragment(appName).show(childFragmentManager, DisconnectDialogFragment.TAG)
     }
 
-    private fun updatePermissions(permissions: List<HealthPermissionStatus>) {
+    private fun updatePermissions(permissions: List<HealthPermission>) {
         mReadPermissionCategory?.removeAll()
         mWritePermissionCategory?.removeAll()
+        permissionMap.clear()
 
-        permissions.forEach { permissionStatus ->
-            val permission = permissionStatus.healthPermission
+        permissions.forEach { permission ->
             val category =
                 if (permission.permissionsAccessType == PermissionsAccessType.READ) {
                     mReadPermissionCategory
@@ -228,19 +237,19 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                     mWritePermissionCategory
                 }
 
-            category?.addPreference(
+            val preference =
                 SwitchPreference(requireContext()).also {
                     val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
                     it.setIcon(healthCategory.icon())
                     it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
-                    it.isChecked = permissionStatus.isGranted
                     it.setOnPreferenceChangeListener { _, newValue ->
                         val checked = newValue as Boolean
-                        appPermissionViewModel.updatePermission(
-                            packageName, permissionStatus.healthPermission, checked)
+                        appPermissionViewModel.updatePermission(packageName, permission, checked)
                         true
                     }
-                })
+                }
+            permissionMap[permission] = preference
+            category?.addPreference(preference)
         }
     }
 

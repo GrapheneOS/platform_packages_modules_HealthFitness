@@ -26,7 +26,6 @@ import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.deletion.DeletionConstants
@@ -42,6 +41,7 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
@@ -51,7 +51,7 @@ import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Fragment for connected apps screen. */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     companion object {
@@ -116,6 +116,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
         mHelpAndFeedbackPreference?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_connectedApps_to_helpAndFeedback)
@@ -293,9 +294,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         app: ConnectedAppMetadata,
         onClick: (() -> Unit)? = null
     ): AppPreference {
-        return AppPreference(requireContext()).also {
-            it.title = app.appMetadata.appName
-            it.icon = app.appMetadata.icon
+        return HealthAppPreference(requireContext(), app.appMetadata).also {
             it.setOnPreferenceClickListener {
                 onClick?.invoke()
                 true

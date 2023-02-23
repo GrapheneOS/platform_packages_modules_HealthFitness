@@ -27,16 +27,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.shared.Constants
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Recent access fragment showing a timeline of apps that have recently accessed Health Connect. */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
     companion object {
@@ -63,6 +63,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.recent_access_preference_screen, rootKey)
     }
 

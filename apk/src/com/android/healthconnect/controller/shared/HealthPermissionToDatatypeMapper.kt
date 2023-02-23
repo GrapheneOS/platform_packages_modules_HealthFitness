@@ -90,7 +90,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.VO2_MAX
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WEIGHT
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.WHEELCHAIR_PUSHES
-import com.google.common.annotations.VisibleForTesting
 
 object HealthPermissionToDatatypeMapper {
     private val map =
@@ -138,7 +137,6 @@ object HealthPermissionToDatatypeMapper {
         return map[permissionType].orEmpty()
     }
 
-    @VisibleForTesting
     fun getAllDataTypes(): Map<HealthPermissionType, List<Class<out Record>>> {
         return map
     }
