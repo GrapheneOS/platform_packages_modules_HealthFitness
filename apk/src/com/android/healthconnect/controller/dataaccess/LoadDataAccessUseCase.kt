@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.dataaccess
 
+import com.android.healthconnect.controller.LoadPermissionTypeContributorAppsUseCase
 import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessAppState
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -25,7 +26,6 @@ import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,7 +35,7 @@ import kotlinx.coroutines.withContext
 class LoadDataAccessUseCase
 @Inject
 constructor(
-    private val loadContributorAppInfoUseCase: GetContributorAppInfoUseCase,
+    private val loadPermissionTypeContributorAppsUseCase: LoadPermissionTypeContributorAppsUseCase,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val healthPermissionReader: HealthPermissionReader,
     private val appInfoReader: AppInfoReader,
@@ -48,7 +48,8 @@ constructor(
         withContext(dispatcher) {
             val appsWithHealthPermissions: List<String> =
                 healthPermissionReader.getAppsWithHealthPermissions()
-            val contributingApps: Map<String, AppMetadata> = loadContributorAppInfoUseCase.invoke()
+            val contributingApps: List<AppMetadata> =
+                loadPermissionTypeContributorAppsUseCase.invoke(permissionType)
             val readAppMetadataSet: MutableSet<AppMetadata> = mutableSetOf()
             val writeAppMetadataSet: MutableSet<AppMetadata> = mutableSetOf()
             val writeAppPackageNameSet: MutableSet<String> = mutableSetOf()
@@ -70,9 +71,9 @@ constructor(
                 }
             }
             // Apps that are inactive: can no longer WRITE, but still have data in Health Connect.
-            contributingApps.keys.forEach {
-                if (!writeAppPackageNameSet.contains(it)) {
-                    inactiveAppMetadataSet.add(appInfoReader.getAppMetadata(it))
+            contributingApps.forEach { app ->
+                if (!writeAppPackageNameSet.contains(app.packageName)) {
+                    inactiveAppMetadataSet.add(app)
                 }
             }
 
