@@ -15,7 +15,6 @@
  */
 package android.healthconnect.cts.ui
 
-import android.content.Context
 import android.health.connect.datatypes.Record
 import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
@@ -25,15 +24,12 @@ import android.healthconnect.cts.ui.testing.UiTestUtils.navigateUp
 import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitNotDisplayed
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.uiautomator.By
 import org.junit.After
 import org.junit.Test
 
 /** CTS test for HealthConnect Categories screen. */
-class CategoriesFragmentTest {
-
-    private val context: Context = ApplicationProvider.getApplicationContext()
+class CategoriesFragmentTest : HealthConnectBaseTest() {
 
     @Test
     fun categoriesFragment_openAllCategories() {

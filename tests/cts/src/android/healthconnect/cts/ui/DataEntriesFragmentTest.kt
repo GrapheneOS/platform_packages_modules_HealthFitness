@@ -15,7 +15,6 @@
  */
 package android.healthconnect.cts.ui
 
-import android.content.Context
 import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnContentDescription
@@ -24,15 +23,12 @@ import android.healthconnect.cts.ui.testing.UiTestUtils.distanceRecordFromTestAp
 import android.healthconnect.cts.ui.testing.UiTestUtils.navigateBackToHomeScreen
 import android.healthconnect.cts.ui.testing.UiTestUtils.navigateUp
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.uiautomator.By
 import org.junit.After
 import org.junit.Test
 
 /** CTS test for HealthConnect Data entries screen. */
-class DataEntriesFragmentTest {
-
-    private val context: Context = ApplicationProvider.getApplicationContext()
+class DataEntriesFragmentTest : HealthConnectBaseTest() {
 
     @Test
     fun dataEntries_changeUnit() {
@@ -49,10 +45,6 @@ class DataEntriesFragmentTest {
             clickOnText("Kilometers")
             navigateUp()
 
-            clickOnText("Activity")
-            clickOnText("Distance")
-            clickOnText("See all entries")
-
             waitDisplayed(By.text("0.5 km"))
 
             clickOnContentDescription("More options")
@@ -60,10 +52,6 @@ class DataEntriesFragmentTest {
             clickOnText("Distance")
             clickOnText("Miles")
             navigateUp()
-
-            clickOnText("Activity")
-            clickOnText("Distance")
-            clickOnText("See all entries")
 
             waitDisplayed(By.text("0.311 miles"))
         }
