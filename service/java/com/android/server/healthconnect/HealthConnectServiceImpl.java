@@ -104,6 +104,7 @@ import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaCategory;
+import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataException;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Binder;
@@ -148,6 +149,7 @@ import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -202,9 +204,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
             "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA";
     // Allows an application to act as a backup inter-agent to send and receive HealthConnect data
-    // during a D2D flow
-    private static final String HEALTH_CONNECT_D2D_INTER_AGENT_PERMISSION =
-            "android.permission.HEALTH_CONNECT_D2D_INTER_AGENT";
+    private static final String HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION =
+            "android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT";
     // Key for storing the current data restore state on disk.
     private static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
     // Key for storing the error restoring HC data.
@@ -1181,7 +1182,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IDataStagingFinishedCallback callback) {
         mDataPermissionEnforcer.enforceAnyOfPermissions(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA,
-                HEALTH_CONNECT_D2D_INTER_AGENT_PERMISSION);
+                HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION);
 
         mStatesLock.writeLock().lock();
         try {
@@ -1310,6 +1311,47 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
+    }
+
+    /**
+     * @see HealthConnectManager#getAllDataForBackup
+     */
+    @Override
+    public void getAllDataForBackup(
+            @NonNull StageRemoteDataRequest stageRemoteDataRequest,
+            @NonNull UserHandle userHandle) {
+        mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
+
+        Map<String, ParcelFileDescriptor> pfdsByFileName =
+                stageRemoteDataRequest.getPfdsByFileName();
+
+        pfdsByFileName.forEach(
+                (fileName, pfd) -> {
+                    var backupFilesByFileNames = getBackupFilesByFileNames(userHandle);
+                    Path sourceFilePath = backupFilesByFileNames.get(fileName).toPath();
+                    try (FileOutputStream outputStream =
+                            new FileOutputStream(pfd.getFileDescriptor())) {
+                        Files.copy(sourceFilePath, outputStream);
+                    } catch (IOException | SecurityException e) {
+                        Slog.e(TAG, "Failed to send " + fileName + " for backup", e);
+                    } finally {
+                        try {
+                            pfd.close();
+                        } catch (IOException e) {
+                            Slog.e(TAG, "Failed to close " + fileName + " for backup", e);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * @see HealthConnectManager#getAllBackupFileNames
+     */
+    @Override
+    public BackupFileNamesSet getAllBackupFileNames(@NonNull UserHandle userHandle) {
+        mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
+
+        return new BackupFileNamesSet(getBackupFilesByFileNames(userHandle).keySet());
     }
 
     /**
@@ -1547,6 +1589,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             Slog.e(TAG, "Exception parsing restoreErrorOnDisk " + restoreErrorOnDisk, e);
         }
         return dataRestoreError;
+    }
+
+    private Map<String, File> getBackupFilesByFileNames(UserHandle userHandle) {
+        ArrayMap<String, File> backupFilesByFileNames = new ArrayMap<>();
+        backupFilesByFileNames.put(
+                mTransactionManager.getDatabasePath().getName(),
+                mTransactionManager.getDatabasePath());
+        backupFilesByFileNames.put(
+                mFirstGrantTimeManager.getFile(userHandle).getName(),
+                mFirstGrantTimeManager.getFile(userHandle));
+        return backupFilesByFileNames;
     }
 
     @NonNull
