@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
 import android.annotation.SystemApi;
+import android.health.connect.internal.datatypes.RecordInternal;
 
 import java.util.Objects;
 
@@ -83,4 +84,7 @@ public abstract class Record {
     public int hashCode() {
         return Objects.hash(getMetadata(), getRecordType());
     }
+
+    /** @hide */
+    public abstract RecordInternal<?> toRecordInternal();
 }

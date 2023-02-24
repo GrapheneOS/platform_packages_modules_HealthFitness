@@ -73,21 +73,6 @@ public class PowerRecordInternal
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull PowerRecord powerRecord) {
-        mPowerRecordSamples = new HashSet<>(powerRecord.getSamples().size());
-        for (PowerRecord.PowerRecordSample powerRecordSample : powerRecord.getSamples()) {
-            mPowerRecordSamples.add(
-                    new PowerRecordSample(
-                            powerRecordSample.getPower().getInWatts(),
-                            powerRecordSample.getTime().toEpochMilli()));
-        }
-
-        if (mPowerRecordSamples.size() != powerRecord.getSamples().size()) {
-            throw new IllegalArgumentException("Duplicate time instant values present.");
-        }
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mPowerRecordSamples.size());
         for (PowerRecordSample powerRecordSample : mPowerRecordSamples) {

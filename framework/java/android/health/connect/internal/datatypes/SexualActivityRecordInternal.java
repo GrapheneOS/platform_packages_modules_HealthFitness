@@ -57,11 +57,6 @@ public final class SexualActivityRecordInternal
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull SexualActivityRecord sexualActivityRecord) {
-        mProtectionUsed = sexualActivityRecord.getProtectionUsed();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mProtectionUsed);
     }

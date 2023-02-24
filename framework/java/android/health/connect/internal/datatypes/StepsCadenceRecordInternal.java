@@ -40,21 +40,6 @@ public class StepsCadenceRecordInternal
     private Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
 
     @Override
-    void populateIntervalRecordFrom(@NonNull StepsCadenceRecord stepsCadenceRecord) {
-        mStepsCadenceRecordSamples = new HashSet<>(stepsCadenceRecord.getSamples().size());
-        for (StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecordSample :
-                stepsCadenceRecord.getSamples()) {
-            mStepsCadenceRecordSamples.add(
-                    new StepsCadenceRecordSample(
-                            stepsCadenceRecordSample.getRate(),
-                            stepsCadenceRecordSample.getTime().toEpochMilli()));
-        }
-        if (mStepsCadenceRecordSamples.size() != stepsCadenceRecord.getSamples().size()) {
-            throw new IllegalArgumentException("Duplicate time instant values present.");
-        }
-    }
-
-    @Override
     @NonNull
     public Set<StepsCadenceRecordSample> getSamples() {
         return mStepsCadenceRecordSamples;

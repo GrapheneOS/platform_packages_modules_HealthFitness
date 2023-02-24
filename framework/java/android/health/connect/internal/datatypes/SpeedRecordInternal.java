@@ -73,20 +73,6 @@ public class SpeedRecordInternal
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull SpeedRecord speedRecord) {
-        mSpeedRecordSamples = new HashSet<>(speedRecord.getSamples().size());
-        for (SpeedRecord.SpeedRecordSample speedRecordSample : speedRecord.getSamples()) {
-            mSpeedRecordSamples.add(
-                    new SpeedRecordSample(
-                            speedRecordSample.getSpeed().getInMetersPerSecond(),
-                            speedRecordSample.getTime().toEpochMilli()));
-        }
-        if (mSpeedRecordSamples.size() != speedRecord.getSamples().size()) {
-            throw new IllegalArgumentException("Duplicate time instant values present.");
-        }
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mSpeedRecordSamples.size());
         for (SpeedRecordSample speedRecordSample : mSpeedRecordSamples) {

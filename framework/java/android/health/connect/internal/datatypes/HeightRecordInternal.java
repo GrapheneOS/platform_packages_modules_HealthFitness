@@ -55,11 +55,6 @@ public final class HeightRecordInternal extends InstantRecordInternal<HeightReco
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull HeightRecord heightRecord) {
-        mHeight = heightRecord.getHeight().getInMeters();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mHeight);
     }

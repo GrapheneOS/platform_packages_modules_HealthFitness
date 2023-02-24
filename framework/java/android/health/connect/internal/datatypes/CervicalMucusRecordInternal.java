@@ -72,12 +72,6 @@ public final class CervicalMucusRecordInternal extends InstantRecordInternal<Cer
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull CervicalMucusRecord cervicalMucusRecord) {
-        mSensation = cervicalMucusRecord.getSensation();
-        mAppearance = cervicalMucusRecord.getAppearance();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mSensation);
         parcel.writeInt(mAppearance);

@@ -16,11 +16,14 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /** Captures the user's steps cadence. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE)
@@ -44,7 +47,9 @@ public final class StepsCadenceRecord extends IntervalRecord {
             @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(stepsCadenceRecordSamples);
-        ValidationUtils.validateSampleStartAndEndTime(startTime, endTime,
+        ValidationUtils.validateSampleStartAndEndTime(
+                startTime,
+                endTime,
                 stepsCadenceRecordSamples.stream().map(StepsCadenceRecordSample::getTime).toList());
         mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
     }
@@ -221,5 +226,38 @@ public final class StepsCadenceRecord extends IntervalRecord {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getSamples());
+    }
+
+    /** @hide */
+    @Override
+    public StepsCadenceRecordInternal toRecordInternal() {
+        StepsCadenceRecordInternal recordInternal =
+                (StepsCadenceRecordInternal)
+                        new StepsCadenceRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        Set<StepsCadenceRecordInternal.StepsCadenceRecordSample> samples =
+                new HashSet<>(getSamples().size());
+
+        for (StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecordSample : getSamples()) {
+            samples.add(
+                    new StepsCadenceRecordInternal.StepsCadenceRecordSample(
+                            stepsCadenceRecordSample.getRate(),
+                            stepsCadenceRecordSample.getTime().toEpochMilli()));
+        }
+        recordInternal.setSamples(samples);
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+
+        return recordInternal;
     }
 }

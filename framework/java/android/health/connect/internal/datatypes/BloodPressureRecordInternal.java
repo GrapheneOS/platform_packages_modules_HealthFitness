@@ -104,14 +104,6 @@ public final class BloodPressureRecordInternal extends InstantRecordInternal<Blo
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BloodPressureRecord bloodPressureRecord) {
-        mMeasurementLocation = bloodPressureRecord.getMeasurementLocation();
-        mSystolic = bloodPressureRecord.getSystolic().getInMillimetersOfMercury();
-        mDiastolic = bloodPressureRecord.getDiastolic().getInMillimetersOfMercury();
-        mBodyPosition = bloodPressureRecord.getBodyPosition();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mMeasurementLocation);
         parcel.writeDouble(mSystolic);

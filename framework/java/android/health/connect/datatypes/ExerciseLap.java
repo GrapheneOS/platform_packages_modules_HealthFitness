@@ -19,6 +19,7 @@ package android.health.connect.datatypes;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.units.Length;
+import android.health.connect.internal.datatypes.ExerciseLapInternal;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -87,6 +88,20 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     @Override
     public int hashCode() {
         return Objects.hash(mInterval, getLength());
+    }
+
+    /** @hide */
+    @NonNull
+    public ExerciseLapInternal toExerciseLapInternal() {
+        ExerciseLapInternal internalLap =
+                new ExerciseLapInternal()
+                        .setStarTime(getStartTime().toEpochMilli())
+                        .setEndTime(getEndTime().toEpochMilli());
+        if (getLength() != null) {
+            internalLap.setLength(getLength().getInMeters());
+        }
+
+        return internalLap;
     }
 
     /** Builder class for {@link ExerciseLap} */

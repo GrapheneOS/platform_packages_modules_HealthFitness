@@ -57,7 +57,7 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
             @NonNull String originPackageName,
             @NonNull String originAppName,
             @NonNull Record record) {
-        mRecordInternal = InternalExternalRecordConverter.getInstance().getInternalRecord(record);
+        mRecordInternal = record.toRecordInternal();
         mRecordInternal.setPackageName(originPackageName);
         mRecordInternal.setAppName(originAppName);
 
