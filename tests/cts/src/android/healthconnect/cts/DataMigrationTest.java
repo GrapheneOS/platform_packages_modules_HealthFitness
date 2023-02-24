@@ -59,6 +59,7 @@ import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.migration.PermissionMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
+import android.os.Build;
 import android.os.OutcomeReceiver;
 import android.os.UserHandle;
 
@@ -271,11 +272,31 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void testMigrationStatesFlow() {
-        int version = 33;
+    public void testStartMigrationFromIdleState() {
         runWithShellPermissionIdentity(
                 () -> {
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IDLE);
+                    TestUtils.startMigration();
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
+                    TestUtils.finishMigration();
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
+                },
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    }
+
+    @Test
+    public void testInsertMinDataMigrationSdkExtensionVersion() {
+        int version = Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
+        runWithShellPermissionIdentity(
+                () -> {
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IDLE);
                     TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                    // TODO(b/265616837) Check if the state is updated to ALLOWED or
+                    // UPGRADE_REQUIRED
                     TestUtils.startMigration();
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
                             .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
