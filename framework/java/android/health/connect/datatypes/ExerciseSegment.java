@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -101,6 +102,15 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
     @Override
     public int hashCode() {
         return Objects.hash(mSegmentType, mRepetitionsCount, mInterval);
+    }
+
+    /** @hide */
+    public ExerciseSegmentInternal toSegmentInternal() {
+        return new ExerciseSegmentInternal()
+                .setStarTime(getStartTime().toEpochMilli())
+                .setEndTime(getEndTime().toEpochMilli())
+                .setSegmentType(getSegmentType())
+                .setRepetitionsCount(getRepetitionsCount());
     }
 
     /** Builder class for {@link ExerciseSegment} */

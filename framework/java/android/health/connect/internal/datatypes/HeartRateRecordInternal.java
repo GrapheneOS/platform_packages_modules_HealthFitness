@@ -105,20 +105,6 @@ public class HeartRateRecordInternal
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull HeartRateRecord heartRateRecord) {
-        mHeartRateHeartRateSamples = new HashSet<>(heartRateRecord.getSamples().size());
-        for (HeartRateRecord.HeartRateSample heartRateSample : heartRateRecord.getSamples()) {
-            mHeartRateHeartRateSamples.add(
-                    new HeartRateSample(
-                            heartRateSample.getBeatsPerMinute(),
-                            heartRateSample.getTime().toEpochMilli()));
-        }
-        if (mHeartRateHeartRateSamples.size() != heartRateRecord.getSamples().size()) {
-            throw new IllegalArgumentException("Duplicate time instant values present.");
-        }
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mHeartRateHeartRateSamples.size());
         for (HeartRateSample heartRateSample : mHeartRateHeartRateSamples) {

@@ -58,11 +58,6 @@ public final class BasalMetabolicRateRecordInternal
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BasalMetabolicRateRecord basalMetabolicRateRecord) {
-        mBasalMetabolicRate = basalMetabolicRateRecord.getBasalMetabolicRate().getInWatts();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mBasalMetabolicRate);
     }

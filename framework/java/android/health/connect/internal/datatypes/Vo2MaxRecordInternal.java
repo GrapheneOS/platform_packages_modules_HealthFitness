@@ -74,12 +74,6 @@ public final class Vo2MaxRecordInternal extends InstantRecordInternal<Vo2MaxReco
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull Vo2MaxRecord vo2MaxRecord) {
-        mMeasurementMethod = vo2MaxRecord.getMeasurementMethod();
-        mVo2MillilitersPerMinuteKilogram = vo2MaxRecord.getVo2MillilitersPerMinuteKilogram();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mMeasurementMethod);
         parcel.writeDouble(mVo2MillilitersPerMinuteKilogram);

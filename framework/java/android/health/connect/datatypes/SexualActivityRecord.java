@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.SexualActivityRecordInternal;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -141,5 +142,26 @@ public final class SexualActivityRecord extends InstantRecord {
         public SexualActivityRecord build() {
             return new SexualActivityRecord(mMetadata, mTime, mZoneOffset, mProtectionUsed);
         }
+    }
+
+    /** @hide */
+    @Override
+    public SexualActivityRecordInternal toRecordInternal() {
+        SexualActivityRecordInternal recordInternal =
+                (SexualActivityRecordInternal)
+                        new SexualActivityRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setProtectionUsed(mProtectionUsed);
+        return recordInternal;
     }
 }

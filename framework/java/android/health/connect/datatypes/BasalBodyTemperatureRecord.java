@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Temperature;
+import android.health.connect.internal.datatypes.BasalBodyTemperatureRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -149,5 +150,27 @@ public final class BasalBodyTemperatureRecord extends InstantRecord {
             return new BasalBodyTemperatureRecord(
                     mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature);
         }
+    }
+
+    /** @hide */
+    @Override
+    public BasalBodyTemperatureRecordInternal toRecordInternal() {
+        BasalBodyTemperatureRecordInternal recordInternal =
+                (BasalBodyTemperatureRecordInternal)
+                        new BasalBodyTemperatureRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setMeasurementLocation(mMeasurementLocation);
+        recordInternal.setTemperature(mTemperature.getInCelsius());
+        return recordInternal;
     }
 }

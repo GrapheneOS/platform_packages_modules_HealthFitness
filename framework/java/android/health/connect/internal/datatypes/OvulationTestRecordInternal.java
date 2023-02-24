@@ -56,11 +56,6 @@ public final class OvulationTestRecordInternal extends InstantRecordInternal<Ovu
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull OvulationTestRecord ovulationTestRecord) {
-        mResult = ovulationTestRecord.getResult();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mResult);
     }

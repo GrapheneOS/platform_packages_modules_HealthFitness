@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.CervicalMucusRecordInternal;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -198,5 +199,27 @@ public final class CervicalMucusRecord extends InstantRecord {
         public CervicalMucusRecord build() {
             return new CervicalMucusRecord(mMetadata, mTime, mZoneOffset, mSensation, mAppearance);
         }
+    }
+
+    /** @hide */
+    @Override
+    public CervicalMucusRecordInternal toRecordInternal() {
+        CervicalMucusRecordInternal recordInternal =
+                (CervicalMucusRecordInternal)
+                        new CervicalMucusRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setSensation(mSensation);
+        recordInternal.setAppearance(mAppearance);
+        return recordInternal;
     }
 }

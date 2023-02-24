@@ -55,11 +55,6 @@ public final class BoneMassRecordInternal extends InstantRecordInternal<BoneMass
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull BoneMassRecord boneMassRecord) {
-        mMass = boneMassRecord.getMass().getInKilograms();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mMass);
     }
