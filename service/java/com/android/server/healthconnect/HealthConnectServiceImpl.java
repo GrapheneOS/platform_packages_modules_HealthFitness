@@ -1329,6 +1329,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         AppInfoHelper.getInstance().clearData(mTransactionManager);
         ActivityDateHelper.getInstance().clearData(mTransactionManager);
         MigrationEntityHelper.getInstance().clearData(mTransactionManager);
+        HealthDataCategoryPriorityHelper.getInstance().clearData(mTransactionManager);
     }
 
     /**
