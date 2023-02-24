@@ -58,13 +58,13 @@ public class HealthConnectBackupAgentTest {
     @Captor ArgumentCaptor<Map<String, ParcelFileDescriptor>> mPfdsByFileNameCaptor;
     @Captor ArgumentCaptor<OutcomeReceiver<Void, StageRemoteDataException>> mStagingCallbackCaptor;
     @Mock private Context mContext;
-    private File mD2dDirectory;
+    private File mBackupDataDirectory;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
-        mD2dDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
+        mBackupDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
 
         mHealthConnectBackupAgent = new TestableHealthConnectBackupAgent();
         mHealthConnectBackupAgent.onCreate();
@@ -72,10 +72,10 @@ public class HealthConnectBackupAgentTest {
 
     @Test
     public void testOnRestoreFinished_stagingAll_sendsAllDataForStaging() throws IOException {
-        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getD2dDir(), "testFile1");
-        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getD2dDir(), "testFile2");
+        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile1");
+        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile2");
         Set<String> expectedStagedFileNames =
-                Stream.of(mHealthConnectBackupAgent.getD2dDir().listFiles())
+                Stream.of(mHealthConnectBackupAgent.getBackupDataDir().listFiles())
                         .filter(file -> !file.isDirectory())
                         .map(File::getName)
                         .collect(Collectors.toSet());
@@ -94,9 +94,9 @@ public class HealthConnectBackupAgentTest {
     @Test
     public void testOnRestoreFinished_afterStagingSuccess_deletesLocalData() throws IOException {
         HealthConnectBackupAgent spyForVerification = spy(mHealthConnectBackupAgent);
-        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getD2dDir(), "testFile1");
+        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile1");
         Set<String> expectedStagedFileNames =
-                Stream.of(mHealthConnectBackupAgent.getD2dDir().listFiles())
+                Stream.of(mHealthConnectBackupAgent.getBackupDataDir().listFiles())
                         .filter(file -> !file.isDirectory())
                         .map(File::getName)
                         .collect(Collectors.toSet());
@@ -107,15 +107,15 @@ public class HealthConnectBackupAgentTest {
                 .stageAllHealthConnectRemoteData(any(), any(), mStagingCallbackCaptor.capture());
         mStagingCallbackCaptor.getValue().onResult(null);
 
-        verify(spyForVerification, times(1)).deleteD2dFiles();
+        verify(spyForVerification, times(1)).deleteBackupFiles();
     }
 
     @Test
     public void testOnRestoreFinished_afterStagingFailure_deletesLocalData() throws IOException {
         HealthConnectBackupAgent spyForVerification = spy(mHealthConnectBackupAgent);
-        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getD2dDir(), "testFile1");
+        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile1");
         Set<String> expectedStagedFileNames =
-                Stream.of(mHealthConnectBackupAgent.getD2dDir().listFiles())
+                Stream.of(mHealthConnectBackupAgent.getBackupDataDir().listFiles())
                         .filter(file -> !file.isDirectory())
                         .map(File::getName)
                         .collect(Collectors.toSet());
@@ -126,7 +126,7 @@ public class HealthConnectBackupAgentTest {
                 .stageAllHealthConnectRemoteData(any(), any(), mStagingCallbackCaptor.capture());
         mStagingCallbackCaptor.getValue().onError(new StageRemoteDataException(new ArrayMap<>()));
 
-        verify(spyForVerification, times(1)).deleteD2dFiles();
+        verify(spyForVerification, times(1)).deleteBackupFiles();
     }
 
     private static void createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
@@ -144,8 +144,8 @@ public class HealthConnectBackupAgentTest {
         }
 
         @Override
-        File getD2dDir() {
-            return mD2dDirectory;
+        File getBackupDataDir() {
+            return mBackupDataDirectory;
         }
 
         @Override
