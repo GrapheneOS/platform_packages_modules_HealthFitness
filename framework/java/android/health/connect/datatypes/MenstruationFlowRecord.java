@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -140,5 +141,26 @@ public final class MenstruationFlowRecord extends InstantRecord {
         public MenstruationFlowRecord build() {
             return new MenstruationFlowRecord(mMetadata, mTime, mZoneOffset, mFlow);
         }
+    }
+
+    /** @hide */
+    @Override
+    public MenstruationFlowRecordInternal toRecordInternal() {
+        MenstruationFlowRecordInternal recordInternal =
+                (MenstruationFlowRecordInternal)
+                        new MenstruationFlowRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setFlow(mFlow);
+        return recordInternal;
     }
 }

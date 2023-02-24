@@ -27,7 +27,6 @@ import android.os.Parcel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @see ExerciseSessionRecord
@@ -177,40 +176,6 @@ public final class ExerciseSessionRecordInternal
             builder.setSegments(ExerciseSegmentInternal.getExternalSegments(mExerciseSegments));
         }
         return builder.build();
-    }
-
-    @Override
-    public void populateIntervalRecordFrom(@NonNull ExerciseSessionRecord exerciseSessionRecord) {
-        mExerciseType = exerciseSessionRecord.getExerciseType();
-
-        if (exerciseSessionRecord.getNotes() != null) {
-            mNotes = exerciseSessionRecord.getNotes().toString();
-        }
-
-        if (exerciseSessionRecord.getTitle() != null) {
-            mTitle = exerciseSessionRecord.getTitle().toString();
-        }
-
-        if (exerciseSessionRecord.hasRoute()) {
-            mExerciseRoute =
-                    ExerciseRouteInternal.fromExternalRoute(exerciseSessionRecord.getRoute());
-        }
-        mHasRoute = exerciseSessionRecord.hasRoute();
-
-        if (exerciseSessionRecord.getLaps() != null && !exerciseSessionRecord.getLaps().isEmpty()) {
-            mExerciseLaps =
-                    exerciseSessionRecord.getLaps().stream()
-                            .map(ExerciseLapInternal::fromExternalLap)
-                            .collect(Collectors.toList());
-        }
-
-        if (exerciseSessionRecord.getSegments() != null
-                && !exerciseSessionRecord.getSegments().isEmpty()) {
-            mExerciseSegments =
-                    exerciseSessionRecord.getSegments().stream()
-                            .map(ExerciseSegmentInternal::fromExternalSegment)
-                            .collect(Collectors.toList());
-        }
     }
 
     @Override

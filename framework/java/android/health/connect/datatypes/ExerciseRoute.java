@@ -20,6 +20,7 @@ import android.annotation.FloatRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.units.Length;
+import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -78,6 +79,16 @@ public final class ExerciseRoute implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hash(getRouteLocations());
+    }
+
+    /** @hide */
+    public ExerciseRouteInternal toRouteInternal() {
+        List<ExerciseRouteInternal.LocationInternal> routeLocations =
+                new ArrayList<>(getRouteLocations().size());
+        for (ExerciseRoute.Location location : getRouteLocations()) {
+            routeLocations.add(location.toExerciseRouteLocationInternal());
+        }
+        return new ExerciseRouteInternal(routeLocations);
     }
 
     @Override
@@ -236,6 +247,28 @@ public final class ExerciseRoute implements Parcelable {
         @Nullable
         public Length getAltitude() {
             return mAltitude;
+        }
+
+        /** @hide */
+        public ExerciseRouteInternal.LocationInternal toExerciseRouteLocationInternal() {
+            ExerciseRouteInternal.LocationInternal locationInternal =
+                    new ExerciseRouteInternal.LocationInternal()
+                            .setTime(getTime().toEpochMilli())
+                            .setLatitude(getLatitude())
+                            .setLongitude(getLongitude());
+
+            if (getHorizontalAccuracy() != null) {
+                locationInternal.setHorizontalAccuracy(getHorizontalAccuracy().getInMeters());
+            }
+
+            if (getVerticalAccuracy() != null) {
+                locationInternal.setVerticalAccuracy(getVerticalAccuracy().getInMeters());
+            }
+
+            if (getAltitude() != null) {
+                locationInternal.setAltitude(getAltitude().getInMeters());
+            }
+            return locationInternal;
         }
 
         @Override

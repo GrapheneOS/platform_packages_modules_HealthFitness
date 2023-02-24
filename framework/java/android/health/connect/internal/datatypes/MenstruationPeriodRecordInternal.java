@@ -42,8 +42,5 @@ public final class MenstruationPeriodRecordInternal
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {}
 
     @Override
-    void populateIntervalRecordFrom(@NonNull MenstruationPeriodRecord menstruationPeriodRecord) {}
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {}
 }

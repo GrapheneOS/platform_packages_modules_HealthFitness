@@ -56,11 +56,6 @@ public final class FloorsClimbedRecordInternal extends IntervalRecordInternal<Fl
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull FloorsClimbedRecord floorsClimbedRecord) {
-        mFloors = floorsClimbedRecord.getFloors();
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mFloors);
     }

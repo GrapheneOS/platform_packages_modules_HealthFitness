@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import android.annotation.FloatRange;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -176,5 +177,27 @@ public final class Vo2MaxRecord extends InstantRecord {
                     mMeasurementMethod,
                     mVo2MillilitersPerMinuteKilogram);
         }
+    }
+
+    /** @hide */
+    @Override
+    public Vo2MaxRecordInternal toRecordInternal() {
+        Vo2MaxRecordInternal recordInternal =
+                (Vo2MaxRecordInternal)
+                        new Vo2MaxRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setMeasurementMethod(mMeasurementMethod);
+        recordInternal.setVo2MillilitersPerMinuteKilogram(mVo2MillilitersPerMinuteKilogram);
+        return recordInternal;
     }
 }

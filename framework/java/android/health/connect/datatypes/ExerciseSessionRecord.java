@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTi
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Captures exercise or a sequence of exercises. This can be a playing game like football or a
@@ -329,5 +331,54 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                     mSegments,
                     mLaps);
         }
+    }
+
+    /** @hide */
+    @Override
+    public ExerciseSessionRecordInternal toRecordInternal() {
+        ExerciseSessionRecordInternal recordInternal =
+                (ExerciseSessionRecordInternal)
+                        new ExerciseSessionRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+
+        if (getNotes() != null) {
+            recordInternal.setNotes(getNotes().toString());
+        }
+
+        if (getTitle() != null) {
+            recordInternal.setTitle(getTitle().toString());
+        }
+
+        if (hasRoute()) {
+            recordInternal.setRoute(getRoute().toRouteInternal());
+        }
+
+        if (getLaps() != null && !getLaps().isEmpty()) {
+            recordInternal.setExerciseLaps(
+                    getLaps().stream()
+                            .map(ExerciseLap::toExerciseLapInternal)
+                            .collect(Collectors.toList()));
+        }
+
+        if (getSegments() != null && !getSegments().isEmpty()) {
+            recordInternal.setExerciseSegments(
+                    getSegments().stream()
+                            .map(ExerciseSegment::toSegmentInternal)
+                            .collect(Collectors.toList()));
+        }
+        recordInternal.setExerciseType(mExerciseType);
+        return recordInternal;
     }
 }

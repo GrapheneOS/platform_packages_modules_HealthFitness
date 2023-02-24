@@ -139,8 +139,7 @@ public final class ChangeLogsResponse implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         List<RecordInternal<?>> recordInternal = new ArrayList<>();
         for (Record record : mUpsertedRecords) {
-            recordInternal.add(
-                    InternalExternalRecordConverter.getInstance().getInternalRecord(record));
+            recordInternal.add(record.toRecordInternal());
         }
         dest.writeParcelable(new RecordsParcel(recordInternal), 0);
         dest.writeInt(mDeletedLogs.size());

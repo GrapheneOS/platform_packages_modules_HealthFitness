@@ -42,8 +42,7 @@ public class ExerciseSegmentInternalTest {
                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
                         .setRepetitionsCount(45)
                         .build();
-        ExerciseSegment converted =
-                ExerciseSegmentInternal.fromExternalSegment(externalSegment).toExternalRecord();
+        ExerciseSegment converted = externalSegment.toSegmentInternal().toExternalRecord();
         assertSegmentsAreEqual(converted, externalSegment);
     }
 
@@ -55,8 +54,7 @@ public class ExerciseSegmentInternalTest {
                                 mEndTime,
                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
                         .build();
-        ExerciseSegment converted =
-                ExerciseSegmentInternal.fromExternalSegment(externalSegment).toExternalRecord();
+        ExerciseSegment converted = externalSegment.toSegmentInternal().toExternalRecord();
         assertSegmentsAreEqual(converted, externalSegment);
     }
 

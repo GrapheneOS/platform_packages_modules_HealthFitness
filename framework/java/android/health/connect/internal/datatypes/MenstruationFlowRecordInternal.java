@@ -57,11 +57,6 @@ public final class MenstruationFlowRecordInternal
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull MenstruationFlowRecord menstruationFlowRecord) {
-        mFlow = menstruationFlowRecord.getFlow();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mFlow);
     }

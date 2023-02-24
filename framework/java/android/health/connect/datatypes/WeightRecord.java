@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Mass;
+import android.health.connect.internal.datatypes.WeightRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -155,5 +156,26 @@ public final class WeightRecord extends InstantRecord {
         public WeightRecord build() {
             return new WeightRecord(mMetadata, mTime, mZoneOffset, mWeight);
         }
+    }
+
+    /** @hide */
+    @Override
+    public WeightRecordInternal toRecordInternal() {
+        WeightRecordInternal recordInternal =
+                (WeightRecordInternal)
+                        new WeightRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setWeight(mWeight.getInKilograms());
+        return recordInternal;
     }
 }

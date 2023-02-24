@@ -55,11 +55,6 @@ public final class RestingHeartRateRecordInternal
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull RestingHeartRateRecord restingHeartRateRecord) {
-        mBeatsPerMinute = restingHeartRateRecord.getBeatsPerMinute();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeLong(mBeatsPerMinute);
     }

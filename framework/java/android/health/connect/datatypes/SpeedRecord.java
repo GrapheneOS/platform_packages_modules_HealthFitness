@@ -17,11 +17,14 @@ package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Velocity;
+import android.health.connect.internal.datatypes.SpeedRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /** Captures the user's speed, e.g. during running or cycling. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
@@ -45,7 +48,9 @@ public final class SpeedRecord extends IntervalRecord {
             @NonNull List<SpeedRecordSample> speedRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(speedRecordSamples);
-        ValidationUtils.validateSampleStartAndEndTime(startTime, endTime,
+        ValidationUtils.validateSampleStartAndEndTime(
+                startTime,
+                endTime,
                 speedRecordSamples.stream().map(SpeedRecord.SpeedRecordSample::getTime).toList());
         mSpeedRecordSamples = speedRecordSamples;
     }
@@ -226,5 +231,37 @@ public final class SpeedRecord extends IntervalRecord {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getSamples());
+    }
+
+    /** @hide */
+    @Override
+    public SpeedRecordInternal toRecordInternal() {
+        SpeedRecordInternal recordInternal =
+                (SpeedRecordInternal)
+                        new SpeedRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        Set<SpeedRecordInternal.SpeedRecordSample> samples = new HashSet<>(getSamples().size());
+
+        for (SpeedRecord.SpeedRecordSample speedRecordSample : getSamples()) {
+            samples.add(
+                    new SpeedRecordInternal.SpeedRecordSample(
+                            speedRecordSample.getSpeed().getInMetersPerSecond(),
+                            speedRecordSample.getTime().toEpochMilli()));
+        }
+        recordInternal.setSamples(samples);
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+
+        return recordInternal;
     }
 }

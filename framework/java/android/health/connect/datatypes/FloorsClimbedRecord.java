@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import android.annotation.FloatRange;
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.internal.datatypes.FloorsClimbedRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -164,5 +165,28 @@ public final class FloorsClimbedRecord extends IntervalRecord {
             return new FloorsClimbedRecord(
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mFloors);
         }
+    }
+
+    /** @hide */
+    @Override
+    public FloorsClimbedRecordInternal toRecordInternal() {
+        FloorsClimbedRecordInternal recordInternal =
+                (FloorsClimbedRecordInternal)
+                        new FloorsClimbedRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setFloors(mFloors);
+        return recordInternal;
     }
 }
