@@ -14,7 +14,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.android.health.connect.backuprestore">
 
-    <uses-permission android:name="android.permission.HEALTH_CONNECT_D2D_INTER_AGENT" />
+    <uses-permission android:name="android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT" />
 
     <application
         android:process="system"

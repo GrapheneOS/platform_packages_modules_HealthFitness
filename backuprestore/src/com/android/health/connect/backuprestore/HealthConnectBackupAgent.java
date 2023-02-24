@@ -22,6 +22,7 @@ import android.annotation.NonNull;
 import android.app.backup.BackupAgent;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
+import android.app.backup.FullBackupDataOutput;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.restore.StageRemoteDataException;
 import android.os.OutcomeReceiver;
@@ -34,6 +35,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 
 /**
@@ -41,6 +43,7 @@ import java.util.concurrent.Executors;
  */
 public class HealthConnectBackupAgent extends BackupAgent {
     private static final String TAG = "HealthConnectBackupAgent";
+    private static final String BACKUP_DATA_DIR_NAME = "backup_data";
     private static final boolean DEBUG = false;
 
     private HealthConnectManager mHealthConnectManager;
@@ -55,10 +58,39 @@ public class HealthConnectBackupAgent extends BackupAgent {
     }
 
     @Override
+    public void onFullBackup(FullBackupDataOutput data) throws IOException {
+        Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+        Set<String> backupFileNames = mHealthConnectManager.getAllBackupFileNames();
+        File backupDataDir = getBackupDataDir();
+        backupFileNames.forEach(
+                (fileName) -> {
+                    File file = new File(backupDataDir, fileName);
+                    try {
+                        file.createNewFile();
+                        pfdsByFileName.put(
+                                fileName,
+                                ParcelFileDescriptor.open(
+                                        file, ParcelFileDescriptor.MODE_WRITE_ONLY));
+                    } catch (IOException e) {
+                        Slog.e(TAG, "Unable to backup " + fileName, e);
+                    }
+                });
+
+        mHealthConnectManager.getAllDataForBackup(pfdsByFileName);
+
+        File[] backupFiles = backupDataDir.listFiles(file -> !file.isDirectory());
+        for (var file : backupFiles) {
+            fullBackupFile(file, data);
+        }
+
+        deleteBackupFiles();
+    }
+
+    @Override
     public void onRestoreFinished() {
         Slog.v(TAG, "Staging all of HC data");
         Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
-        File[] filesToTransfer = getD2dDir().listFiles();
+        File[] filesToTransfer = getBackupDataDir().listFiles();
 
         // We work with a flat dir structure where all files to be transferred are sitting in this
         // dir itself.
@@ -77,8 +109,8 @@ public class HealthConnectBackupAgent extends BackupAgent {
                 new OutcomeReceiver<>() {
                     @Override
                     public void onResult(Void result) {
-                        Slog.i(TAG, "D2D data successfully staged. Deleting all files.");
-                        deleteD2dFiles();
+                        Slog.i(TAG, "Backup data successfully staged. Deleting all files.");
+                        deleteBackupFiles();
                     }
 
                     @Override
@@ -86,12 +118,12 @@ public class HealthConnectBackupAgent extends BackupAgent {
                         for (var fileNameToException : err.getExceptionsByFileNames().entrySet()) {
                             Slog.w(
                                     TAG,
-                                    "Failed staging D2D file: "
+                                    "Failed staging Backup file: "
                                             + fileNameToException.getKey()
                                             + " with error: "
                                             + fileNameToException.getValue());
                         }
-                        deleteD2dFiles();
+                        deleteBackupFiles();
                     }
                 });
 
@@ -117,10 +149,10 @@ public class HealthConnectBackupAgent extends BackupAgent {
     }
 
     @VisibleForTesting
-    File getD2dDir() {
-        File d2dDir = new File(this.getFilesDir(), "d2d");
-        d2dDir.mkdirs();
-        return d2dDir;
+    File getBackupDataDir() {
+        File backupDataDir = new File(this.getFilesDir(), BACKUP_DATA_DIR_NAME);
+        backupDataDir.mkdirs();
+        return backupDataDir;
     }
 
     @VisibleForTesting
@@ -129,9 +161,9 @@ public class HealthConnectBackupAgent extends BackupAgent {
     }
 
     @VisibleForTesting
-    void deleteD2dFiles() {
+    void deleteBackupFiles() {
         Slog.i(TAG, "Deleting all files.");
-        File[] filesToTransfer = getD2dDir().listFiles();
+        File[] filesToTransfer = getBackupDataDir().listFiles();
         for (var file : filesToTransfer) {
             file.delete();
         }
