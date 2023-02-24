@@ -344,7 +344,8 @@ public final class BackupRestore {
             }
             // TODO(b/264070899) Store on a per user basis when we have per user db
             PreferenceHelper.getInstance()
-                    .insertPreference(DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
+                    .insertOrReplacePreference(
+                            DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
         } finally {
             mStatesLock.writeLock().unlock();
         }
@@ -414,7 +415,8 @@ public final class BackupRestore {
             }
             // TODO(b/264070899) Store on a per user basis when we have per user db
             PreferenceHelper.getInstance()
-                    .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
+                    .insertOrReplacePreference(
+                            DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
         } finally {
             mStatesLock.writeLock().unlock();
         }
@@ -426,7 +428,8 @@ public final class BackupRestore {
             @HealthConnectDataState.DataRestoreError int dataRestoreError, int userId) {
         // TODO(b/264070899) Store on a per user basis when we have per user db
         PreferenceHelper.getInstance()
-                .insertPreference(DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
+                .insertOrReplacePreference(
+                        DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
     }
 
     /**

@@ -53,6 +53,7 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -83,14 +84,14 @@ public final class AppInfoHelper {
      *
      * <p>TO HAVE THREAD SAFETY DON'T USE THESE VARIABLES DIRECTLY, INSTEAD USE ITS GETTER
      */
-    private ConcurrentHashMap<Long, String> mIdPackageNameMap;
+    private volatile ConcurrentHashMap<Long, String> mIdPackageNameMap;
     /**
      * Map to store application package-name -> AppInfo mapping (such as packageName -> appName,
      * icon, rowId in the DB etc.)
      *
      * <p>TO HAVE THREAD SAFETY DON'T USE THESE VARIABLES DIRECTLY, INSTEAD USE ITS GETTER
      */
-    private ConcurrentHashMap<String, AppInfoInternal> mAppInfoMap;
+    private volatile ConcurrentHashMap<String, AppInfoInternal> mAppInfoMap;
 
     private AppInfoHelper() {}
 
@@ -175,16 +176,15 @@ public final class AppInfoHelper {
                 appInfo = new AppInfoInternal(DEFAULT_LONG, packageName, record.getAppName(), null);
             }
 
-            upsertAppInfo(packageName, appInfo);
+            insertIfNotPresent(packageName, appInfo);
         }
 
         record.setAppInfoId(appInfo.getId());
     }
 
     /**
-     * Inserts or replaces the application info of the specified {@code packageName} with the
-     * specified {@code name} and {@code icon}, only if the corresponding application is not
-     * currently installed.
+     * Updates the application info of the specified {@code packageName} with the specified {@code
+     * name} and {@code icon}, only if the corresponding application is not currently installed.
      */
     public void updateAppInfoIfNotInstalled(
             @NonNull Context context,
@@ -192,7 +192,7 @@ public final class AppInfoHelper {
             @Nullable String name,
             @Nullable byte[] icon) {
         if (!isAppInstalled(context, packageName) && containsAppInfo(packageName)) {
-            upsertAppInfo(
+            updateIfPresent(
                     packageName,
                     new AppInfoInternal(DEFAULT_LONG, packageName, name, decodeBitmap(icon)));
         }
@@ -295,7 +295,7 @@ public final class AppInfoHelper {
                 throw new IllegalArgumentException("Could not find package info for package", e);
             }
 
-            upsertAppInfo(packageName, appInfoInternal);
+            insertIfNotPresent(packageName, appInfoInternal);
         }
 
         return appInfoInternal.getId();
@@ -354,15 +354,34 @@ public final class AppInfoHelper {
         return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap);
     }
 
-    private void upsertAppInfo(@NonNull String packageName, @NonNull AppInfoInternal appInfo) {
+    private synchronized void insertIfNotPresent(
+            @NonNull String packageName, @NonNull AppInfoInternal appInfo) {
+        if (getAppInfoMap().containsKey(packageName)) {
+            return;
+        }
+
         long rowId =
                 TransactionManager.getInitialisedInstance()
-                        .insertOrReplace(
+                        .insert(
                                 new UpsertTableRequest(
                                         TABLE_NAME, getContentValues(packageName, appInfo)));
         appInfo.setId(rowId);
         getAppInfoMap().put(packageName, appInfo);
         getIdPackageNameMap().put(appInfo.getId(), packageName);
+    }
+
+    private synchronized void updateIfPresent(String packageName, AppInfoInternal appInfoInternal) {
+        if (!getAppInfoMap().containsKey(packageName)) {
+            return;
+        }
+
+        UpsertTableRequest upsertTableRequest =
+                new UpsertTableRequest(TABLE_NAME, getContentValues(packageName, appInfoInternal));
+        upsertTableRequest.setWhereClauses(
+                new WhereClauses().addWhereEqualsClause(PACKAGE_COLUMN_NAME, packageName));
+
+        TransactionManager.getInitialisedInstance().updateTable(upsertTableRequest);
+        getAppInfoMap().put(packageName, appInfoInternal);
     }
 
     @NonNull

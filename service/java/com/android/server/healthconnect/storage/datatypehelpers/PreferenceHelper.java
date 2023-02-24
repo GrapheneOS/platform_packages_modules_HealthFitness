@@ -47,7 +47,7 @@ public final class PreferenceHelper {
     private static final String KEY_COLUMN_NAME = "key";
     private static final String VALUE_COLUMN_NAME = "value";
     private static volatile PreferenceHelper sPreferenceHelper;
-    private ConcurrentHashMap<String, String> mPreferences;
+    private volatile ConcurrentHashMap<String, String> mPreferences;
 
     private PreferenceHelper() {}
 
@@ -59,7 +59,8 @@ public final class PreferenceHelper {
         return sPreferenceHelper;
     }
 
-    public void insertPreference(String key, String value) {
+    /** Note: Overrides existing preference (if it exists) with the new value */
+    public synchronized void insertOrReplacePreference(String key, String value) {
         TransactionManager.getInitialisedInstance()
                 .insertOrReplace(new UpsertTableRequest(TABLE_NAME, getContentValues(key, value)));
         getPreferences().put(key, value);

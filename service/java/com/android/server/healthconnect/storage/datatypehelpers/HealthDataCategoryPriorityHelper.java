@@ -67,7 +67,7 @@ public class HealthDataCategoryPriorityHelper {
      * map of {@link HealthDataCategory} to list of app ids from {@link AppInfoHelper}, in the order
      * of their priority
      */
-    private ConcurrentHashMap<Integer, List<Long>> mHealthDataCategoryToAppIdPriorityMap;
+    private volatile ConcurrentHashMap<Integer, List<Long>> mHealthDataCategoryToAppIdPriorityMap;
 
     private HealthDataCategoryPriorityHelper() {}
 
@@ -237,7 +237,7 @@ public class HealthDataCategoryPriorityHelper {
         mHealthDataCategoryToAppIdPriorityMap = healthDataCategoryToAppIdPriorityMap;
     }
 
-    private void safelyUpdateDBAndUpdateCache(
+    private synchronized void safelyUpdateDBAndUpdateCache(
             UpsertTableRequest request,
             @HealthDataCategory.Type int dataCategory,
             List<Long> newList) {
@@ -250,7 +250,7 @@ public class HealthDataCategoryPriorityHelper {
         }
     }
 
-    private void safelyUpdateDBAndUpdateCache(
+    private synchronized void safelyUpdateDBAndUpdateCache(
             DeleteTableRequest request, @HealthDataCategory.Type int dataCategory) {
         try {
             TransactionManager.getInitialisedInstance().delete(request);

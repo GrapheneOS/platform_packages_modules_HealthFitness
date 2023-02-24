@@ -490,6 +490,15 @@ public final class TransactionManager {
         return mHealthConnectDatabase.getDatabasePath();
     }
 
+    public void updateTable(UpsertTableRequest upsertTableRequest) {
+        getWritableDb()
+                .update(
+                        upsertTableRequest.getTable(),
+                        upsertTableRequest.getContentValues(),
+                        upsertTableRequest.getWhereClauses().get(false),
+                        null);
+    }
+
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
         // perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.
@@ -539,7 +548,7 @@ public final class TransactionManager {
 
     /**
      * Do extra sql requests to populate optional extra data. Used to populate {@link
-     * android.healthconnect.internal.datatypes.ExerciseRouteInternal}.
+     * android.health.connect.internal.datatypes.ExerciseRouteInternal}.
      */
     private void populateInternalRecordsWithExtraData(
             SQLiteDatabase readableDb, List<RecordInternal<?>> records, ReadTableRequest request) {
