@@ -29,6 +29,7 @@ import android.util.Log;
 
 import com.android.internal.annotations.GuardedBy;
 
+import java.io.File;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -160,6 +161,11 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                 mGrantTimeLock.writeLock().unlock();
             }
         }
+    }
+
+    /** Returns the name of the file used for storing the data. */
+    public File getFile(@NonNull UserHandle user) {
+        return mDatastore.getFile(user);
     }
 
     void onPackageRemoved(

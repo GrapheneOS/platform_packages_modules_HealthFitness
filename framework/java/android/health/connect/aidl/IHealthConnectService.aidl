@@ -26,6 +26,7 @@ import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IRecordTypeInfoResponseCallback;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.migration.MigrationEntity;
+import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataRequest;
 
 import android.os.UserHandle;
@@ -239,6 +240,26 @@ interface IHealthConnectService {
      */
     void stageAllHealthConnectRemoteData(in StageRemoteDataRequest stageRemoteDataRequest,
             in UserHandle userHandle, in IDataStagingFinishedCallback callback);
+
+    /**
+     * Copies all HealthConnect backup data in the passed FDs.
+     *
+     * <p>The shared data should later be sent for cloud backup or to another device for backup.
+     *
+     * <p>We are responsible for closing the original file descriptors. The caller must not close
+     * the FD before that.
+     *
+     * @param pfdsByFileName The map of file names and their {@link ParcelFileDescriptor}s.
+     * @hide
+     */
+    void getAllDataForBackup(in StageRemoteDataRequest stageRemoteDataRequest, in UserHandle userHandle);
+
+    /**
+     * Shares the names of all HealthConnect backup files
+     *
+     * @hide
+     */
+    BackupFileNamesSet getAllBackupFileNames(in UserHandle userHandle);
 
     /**
      * Deletes all previously staged HealthConnect data from the disk.

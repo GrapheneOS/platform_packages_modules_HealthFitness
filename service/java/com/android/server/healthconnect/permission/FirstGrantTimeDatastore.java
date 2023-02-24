@@ -19,6 +19,8 @@ package com.android.server.healthconnect.permission;
 import android.annotation.NonNull;
 import android.os.UserHandle;
 
+import java.io.File;
+
 /**
  * Class for managing health permissions first grant time datastore.
  *
@@ -39,6 +41,13 @@ public interface FirstGrantTimeDatastore {
      * @hide
      */
     void writeForUser(@NonNull UserGrantTimeState grantTimesState, @NonNull UserHandle user);
+
+    /**
+     * Returns the name of the files used by the store for the given user.
+     *
+     * @hide
+     */
+    File getFile(@NonNull UserHandle user);
 
     /**
      * Create instance of the datastore class.

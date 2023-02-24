@@ -34,6 +34,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -47,6 +48,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "healthconnect.db";
 
     @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;
+    private final Context mContext;
 
     /** Runs create table request on database. */
     public static void createTable(SQLiteDatabase db, CreateTableRequest createTableRequest) {
@@ -63,6 +65,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     public HealthConnectDatabase(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mRecordHelpers = RecordHelperProvider.getInstance().getRecordHelpers().values();
+        mContext = context;
     }
 
     @Override
@@ -107,5 +110,9 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
+    }
+
+    public File getDatabasePath() {
+        return mContext.getDatabasePath(DATABASE_NAME);
     }
 }
