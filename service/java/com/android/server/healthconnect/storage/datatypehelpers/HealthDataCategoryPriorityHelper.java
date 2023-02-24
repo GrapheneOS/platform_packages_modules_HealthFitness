@@ -228,8 +228,7 @@ public class HealthDataCategoryPriorityHelper {
         ConcurrentHashMap<Integer, List<Long>> healthDataCategoryToAppIdPriorityMap =
                 new ConcurrentHashMap<>();
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        final SQLiteDatabase db = transactionManager.getReadableDb();
-        try (Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
+        try (Cursor cursor = transactionManager.read(new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
                 int dataCategory =
                         cursor.getInt(cursor.getColumnIndex(HEALTH_DATA_CATEGORY_COLUMN_NAME));
