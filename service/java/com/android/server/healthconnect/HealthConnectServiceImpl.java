@@ -137,6 +137,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
@@ -1115,6 +1116,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
+        UserHandle callingUserHandle = getCallingUserHandle();
 
         // TODO(b/266553246): Validate write migration data after state cleanup is implemented
         HealthConnectThreadScheduler.scheduleInternalTask(
@@ -1127,7 +1129,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateWriteMigrationData();
-                        getDataMigrationManager(getCallingUserHandle()).apply(entities);
+                        getDataMigrationManager(callingUserHandle).apply(entities);
                         callback.onSuccess();
                     } catch (DataMigrationManager.EntityWriteException e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -1326,6 +1328,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IDLE);
         AppInfoHelper.getInstance().clearData(mTransactionManager);
         ActivityDateHelper.getInstance().clearData(mTransactionManager);
+        MigrationEntityHelper.getInstance().clearData(mTransactionManager);
     }
 
     /**
@@ -1557,6 +1560,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mFirstGrantTimeManager,
                 DeviceInfoHelper.getInstance(),
                 AppInfoHelper.getInstance(),
+                MigrationEntityHelper.getInstance(),
                 RecordHelperProvider.getInstance());
     }
 

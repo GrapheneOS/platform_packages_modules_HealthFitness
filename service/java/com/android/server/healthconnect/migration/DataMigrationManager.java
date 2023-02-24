@@ -39,6 +39,7 @@ import com.android.server.healthconnect.permission.HealthConnectPermissionHelper
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -60,6 +61,7 @@ public final class DataMigrationManager {
     private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
+    private final MigrationEntityHelper mMigrationEntityHelper;
     private final RecordHelperProvider mRecordHelperProvider;
 
     public DataMigrationManager(
@@ -69,6 +71,7 @@ public final class DataMigrationManager {
             @NonNull FirstGrantTimeManager firstGrantTimeManager,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
+            @NonNull MigrationEntityHelper migrationEntityHelper,
             @NonNull RecordHelperProvider recordHelperProvider) {
         mUserContext = userContext;
         mTransactionManager = transactionManager;
@@ -76,6 +79,7 @@ public final class DataMigrationManager {
         mFirstGrantTimeManager = firstGrantTimeManager;
         mDeviceInfoHelper = deviceInfoHelper;
         mAppInfoHelper = appInfoHelper;
+        mMigrationEntityHelper = migrationEntityHelper;
         mRecordHelperProvider = recordHelperProvider;
     }
 
@@ -105,6 +109,10 @@ public final class DataMigrationManager {
     private void migrateEntity(@NonNull SQLiteDatabase db, @NonNull MigrationEntity entity)
             throws EntityWriteException {
         try {
+            if (!insertEntityIdIfNotPresent(db, entity.getEntityId())) {
+                return;
+            }
+
             final MigrationPayload payload = entity.getPayload();
             if (payload instanceof RecordMigrationPayload) {
                 migrateRecord(db, (RecordMigrationPayload) payload);
@@ -176,6 +184,19 @@ public final class DataMigrationManager {
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
+    }
+
+    /**
+     * Inserts the provided {@code entity} into the database if it doesn't exist yet. Used for data
+     * deduplication.
+     *
+     * @return {@code true} if inserted successfully, {@code false} otherwise.
+     */
+    @GuardedBy("sLock")
+    private boolean insertEntityIdIfNotPresent(
+            @NonNull SQLiteDatabase db, @NonNull String entityId) {
+        final UpsertTableRequest request = mMigrationEntityHelper.getInsertRequest(entityId);
+        return mTransactionManager.insertOrIgnore(db, request) != -1;
     }
 
     /** Indicates an error during entity migration. */

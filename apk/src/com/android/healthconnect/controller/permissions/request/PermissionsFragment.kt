@@ -125,12 +125,8 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             }
         }
 
-        if (mReadPermissionCategory?.preferenceCount == 0) {
-            mReadPermissionCategory?.isVisible = false
-        }
-        if (mWritePermissionCategory?.preferenceCount == 0) {
-            mWritePermissionCategory?.isVisible = false
-        }
+        mReadPermissionCategory?.apply { isVisible = (preferenceCount != 0) }
+        mWritePermissionCategory?.apply { isVisible = (preferenceCount != 0) }
     }
 
     private fun getPermissionPreference(

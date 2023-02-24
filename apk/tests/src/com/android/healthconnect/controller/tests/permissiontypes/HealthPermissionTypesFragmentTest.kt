@@ -115,19 +115,19 @@ class HealthPermissionTypesFragmentTest {
         launchFragment<HealthPermissionTypesFragment>(activityCategoryBundle())
 
         onView(withText("Active calories burned")).check(doesNotExist())
-        onView(withText("Distance")).check(matches(isDisplayed()))
+        onView(withText("Distance")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Elevation gained")).check(doesNotExist())
-        onView(withText("Exercise")).check(matches(isDisplayed()))
+        onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Floors climbed")).check(doesNotExist())
         onView(withText("Power")).check(doesNotExist())
-        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Total calories burned")).check(doesNotExist())
         onView(withText("VO2 max")).check(doesNotExist())
         onView(withText("Wheelchair pushes")).check(doesNotExist())
-        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("Manage data")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("App priority")).check(doesNotExist())
         onView(withText("Health Connect test app")).check(doesNotExist())
-        onView(withText("Delete activity data")).check(matches(isDisplayed()))
+        onView(withText("Delete activity data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test
@@ -152,19 +152,19 @@ class HealthPermissionTypesFragmentTest {
         launchFragment<HealthPermissionTypesFragment>(activityCategoryBundle())
 
         onView(withText("Active calories burned")).check(doesNotExist())
-        onView(withText("Distance")).check(matches(isDisplayed()))
+        onView(withText("Distance")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Elevation gained")).check(doesNotExist())
-        onView(withText("Exercise")).check(matches(isDisplayed()))
+        onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Floors climbed")).check(doesNotExist())
         onView(withText("Power")).check(doesNotExist())
-        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Total calories burned")).check(doesNotExist())
         onView(withText("VO2 max")).check(doesNotExist())
         onView(withText("Wheelchair pushes")).check(doesNotExist())
-        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("Manage data")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("App priority")).check(doesNotExist())
         onView(withText("Health Connect test app")).check(doesNotExist())
-        onView(withText("Delete activity data")).check(matches(isDisplayed()))
+        onView(withText("Delete activity data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test

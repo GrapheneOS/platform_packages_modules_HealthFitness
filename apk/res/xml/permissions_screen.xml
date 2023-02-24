@@ -14,15 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.android.healthconnect.controller.permissions.request.RequestPermissionHeaderPreference
         android:key="request_permissions_header"/>
     <com.android.settingslib.widget.MainSwitchPreference
         android:key="allow_all_preference"
         android:title="@string/request_permissions_allow_all"/>
     <PreferenceCategory
-        android:key="read_permission_category"/>
+        android:key="read_permission_category"
+        app:isPreferenceVisible="false"/>
     <PreferenceCategory
-        android:key="write_permission_category">
+        android:key="write_permission_category"
+        app:isPreferenceVisible="false">
     </PreferenceCategory>
 </PreferenceScreen>

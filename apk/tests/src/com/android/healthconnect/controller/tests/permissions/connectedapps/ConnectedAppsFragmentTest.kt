@@ -20,6 +20,8 @@ import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
@@ -130,16 +132,24 @@ class ConnectedAppsFragmentTest {
         launchFragment<ConnectedAppsFragment>(Bundle())
 
         onView(withText("You don’t currently have any compatible apps installed"))
+            .perform(ViewActions.scrollTo())
             .check(matches(isDisplayed()))
-        onView(withText("Things to try")).check(matches(isDisplayed()))
-        onView(withText("Check for updates")).check(matches(isDisplayed()))
-        onView(withText("Make sure installed apps are up-to-date")).check(matches(isDisplayed()))
-        onView(withText("See all compatible apps")).check(matches(isDisplayed()))
-        onView(withText("Find apps on Google\u00A0Play")).check(matches(isDisplayed()))
-        onView(withText("Send feedback")).check(matches(isDisplayed()))
+        onView(withText("Things to try")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Check for updates")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Make sure installed apps are up-to-date"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("See all compatible apps"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Find apps on Google\u00A0Play"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Send feedback")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(
                 withText(
                     "Tell us which health & fitness apps you’d like to work with Health\u00A0Connect"))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Allowed access")).check(doesNotExist())
         onView(withText("Not allowed access")).check(doesNotExist())
