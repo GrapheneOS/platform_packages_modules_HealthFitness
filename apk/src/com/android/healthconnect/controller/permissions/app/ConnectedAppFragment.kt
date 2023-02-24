@@ -251,6 +251,9 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
             permissionMap[permission] = preference
             category?.addPreference(preference)
         }
+
+        mReadPermissionCategory?.apply { isVisible = (preferenceCount != 0) }
+        mWritePermissionCategory?.apply { isVisible = (preferenceCount != 0) }
     }
 
     private fun setupFooter() {

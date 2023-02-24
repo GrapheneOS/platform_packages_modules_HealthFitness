@@ -500,6 +500,29 @@ public final class TransactionManager {
         return rowId;
     }
 
+    /**
+     * Inserts the provided {@link UpsertTableRequest} into the database.
+     *
+     * <p>Assumes that caller will be closing {@code db} and handling the transaction if required.
+     *
+     * @return the row ID of the newly inserted row or <code>-1</code> if an error occurred.
+     */
+    public long insertOrIgnore(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
+        long rowId =
+                db.insertWithOnConflict(
+                        request.getTable(),
+                        null,
+                        request.getContentValues(),
+                        SQLiteDatabase.CONFLICT_IGNORE);
+
+        if (rowId != -1) {
+            request.getChildTableRequests()
+                    .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+        }
+
+        return rowId;
+    }
+
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
         // perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.

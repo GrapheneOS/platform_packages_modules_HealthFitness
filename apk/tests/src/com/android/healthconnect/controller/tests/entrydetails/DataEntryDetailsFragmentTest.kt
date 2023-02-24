@@ -151,7 +151,6 @@ class DataEntryDetailsFragmentTest {
         launchFragment<DataEntryDetailsFragment>(
             DataEntryDetailsFragment.createBundle(permissionType = EXERCISE, entryId = "1"))
 
-        Thread.sleep(10_000)
         onView(withText("12 hour running")).check(matches(isDisplayed()))
         onView(withId(R.id.map_view)).check(matches(isDisplayed()))
     }

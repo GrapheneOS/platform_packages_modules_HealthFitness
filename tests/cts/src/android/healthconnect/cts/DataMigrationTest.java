@@ -53,6 +53,7 @@ import android.health.connect.datatypes.PowerRecord;
 import android.health.connect.datatypes.PowerRecord.PowerRecordSample;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.units.Length;
 import android.health.connect.migration.AppInfoMigrationPayload;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
@@ -215,6 +216,20 @@ public class DataMigrationTest {
 
         mExpect.that(record.getStartTime()).isEqualTo(mStartTime);
         mExpect.that(record.getEndTime()).isEqualTo(mEndTime);
+    }
+
+    @Test
+    public void migrateRecord_sameEntity_notSaved() {
+        final String entityId = "height";
+        final Length originalHeight = fromMeters(3D);
+        migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, originalHeight).build());
+
+        final Length secondHeight = fromMeters(1D);
+        migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, secondHeight).build());
+
+        final HeightRecord record = getRecord(HeightRecord.class, entityId);
+        mExpect.that(record).isNotNull();
+        mExpect.that(record.getHeight()).isEqualTo(originalHeight);
     }
 
     @Test

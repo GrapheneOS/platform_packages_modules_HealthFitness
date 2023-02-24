@@ -15,20 +15,16 @@
  */
 package android.healthconnect.cts.ui
 
-import android.content.Context
 import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
 import android.healthconnect.cts.ui.testing.UiTestUtils.navigateBackToHomeScreen
 import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
-import androidx.test.core.app.ApplicationProvider
 import org.junit.After
 import org.junit.Test
 
 /** CTS test for HealthConnect Permission types screen. */
-class PermissionTypesFragmentTest {
-
-    private val context: Context = ApplicationProvider.getApplicationContext()
+class PermissionTypesFragmentTest : HealthConnectBaseTest() {
 
     @Test
     fun permissionTypes_navigateToPermissionTypes() {
