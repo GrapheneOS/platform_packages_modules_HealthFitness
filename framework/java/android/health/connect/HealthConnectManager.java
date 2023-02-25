@@ -101,6 +101,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 /**
  * This class provides APIs to interact with the centralized HealthConnect storage maintained by the
@@ -475,7 +476,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             List<RecordInternal<?>> recordInternals =
-                    mInternalExternalRecordConverter.getInternalRecords(records);
+                    records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
             mService.insertRecords(
                     mContext.getAttributionSource(),
                     new RecordsParcel(recordInternals),
@@ -1205,7 +1206,7 @@ public class HealthConnectManager {
             }
 
             List<RecordInternal<?>> recordInternals =
-                    mInternalExternalRecordConverter.getInternalRecords(records);
+                    records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
 
             // Verify if the input record has clientRecordId or UUID.
             for (RecordInternal<?> recordInternal : recordInternals) {
@@ -1342,6 +1343,41 @@ public class HealthConnectManager {
                             executor.execute(() -> callback.onError(stageRemoteDataException));
                         }
                     });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Copies all HealthConnect backup data in the passed FDs.
+     *
+     * <p>The shared data must later be sent for Backup to cloud or another device.
+     *
+     * <p>We are responsible for closing the original file descriptors. The caller must not close
+     * the FD before that.
+     *
+     * @param pfdsByFileName The map of file names and their {@link ParcelFileDescriptor}s.
+     * @hide
+     */
+    public void getAllDataForBackup(@NonNull Map<String, ParcelFileDescriptor> pfdsByFileName) {
+        Objects.requireNonNull(pfdsByFileName);
+
+        try {
+            mService.getAllDataForBackup(
+                    new StageRemoteDataRequest(pfdsByFileName), mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns the names of all HealthConnect Backup files
+     *
+     * @hide
+     */
+    public Set<String> getAllBackupFileNames() {
+        try {
+            return mService.getAllBackupFileNames(mContext.getUser()).getFileNames();
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

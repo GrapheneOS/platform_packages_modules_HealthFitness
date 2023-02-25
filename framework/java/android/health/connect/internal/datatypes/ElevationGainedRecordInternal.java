@@ -61,11 +61,6 @@ public final class ElevationGainedRecordInternal
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull ElevationGainedRecord elevationGainedRecord) {
-        mElevation = elevationGainedRecord.getElevation().getInMeters();
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mElevation);
     }

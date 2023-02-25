@@ -57,11 +57,6 @@ public final class WheelchairPushesRecordInternal
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull WheelchairPushesRecord wheelchairPushesRecord) {
-        mCount = wheelchairPushesRecord.getCount();
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeLong(mCount);
     }

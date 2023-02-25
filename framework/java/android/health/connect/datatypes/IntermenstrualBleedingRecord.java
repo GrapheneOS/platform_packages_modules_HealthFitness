@@ -17,6 +17,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.IntermenstrualBleedingRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -90,5 +91,25 @@ public final class IntermenstrualBleedingRecord extends InstantRecord {
         public IntermenstrualBleedingRecord build() {
             return new IntermenstrualBleedingRecord(mMetadata, mTime, mZoneOffset);
         }
+    }
+
+    /** @hide */
+    @Override
+    public IntermenstrualBleedingRecordInternal toRecordInternal() {
+        IntermenstrualBleedingRecordInternal recordInternal =
+                (IntermenstrualBleedingRecordInternal)
+                        new IntermenstrualBleedingRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        return recordInternal;
     }
 }

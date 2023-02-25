@@ -20,11 +20,14 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.internal.datatypes.HeartRateRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /** Captures the user's heart rate. Each record represents a series of measurements. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
@@ -86,7 +89,9 @@ public final class HeartRateRecord extends IntervalRecord {
             @NonNull List<HeartRateSample> heartRateSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(heartRateSamples);
-        ValidationUtils.validateSampleStartAndEndTime(startTime, endTime,
+        ValidationUtils.validateSampleStartAndEndTime(
+                startTime,
+                endTime,
                 heartRateSamples.stream().map(HeartRateSample::getTime).toList());
         mHeartRateSamples = heartRateSamples;
     }
@@ -281,5 +286,37 @@ public final class HeartRateRecord extends IntervalRecord {
                     mEndZoneOffset,
                     mHeartRateSamples);
         }
+    }
+
+    /** @hide */
+    @Override
+    public HeartRateRecordInternal toRecordInternal() {
+        HeartRateRecordInternal recordInternal =
+                (HeartRateRecordInternal)
+                        new HeartRateRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        Set<HeartRateRecordInternal.HeartRateSample> samples = new HashSet<>(getSamples().size());
+
+        for (HeartRateRecord.HeartRateSample heartRateSample : getSamples()) {
+            samples.add(
+                    new HeartRateRecordInternal.HeartRateSample(
+                            heartRateSample.getBeatsPerMinute(),
+                            heartRateSample.getTime().toEpochMilli()));
+        }
+        recordInternal.setSamples(samples);
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+
+        return recordInternal;
     }
 }

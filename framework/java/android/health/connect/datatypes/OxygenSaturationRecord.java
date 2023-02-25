@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Percentage;
+import android.health.connect.internal.datatypes.OxygenSaturationRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -125,5 +126,26 @@ public final class OxygenSaturationRecord extends InstantRecord {
         public OxygenSaturationRecord build() {
             return new OxygenSaturationRecord(mMetadata, mTime, mZoneOffset, mPercentage);
         }
+    }
+
+    /** @hide */
+    @Override
+    public OxygenSaturationRecordInternal toRecordInternal() {
+        OxygenSaturationRecordInternal recordInternal =
+                (OxygenSaturationRecordInternal)
+                        new OxygenSaturationRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setPercentage(mPercentage.getValue());
+        return recordInternal;
     }
 }

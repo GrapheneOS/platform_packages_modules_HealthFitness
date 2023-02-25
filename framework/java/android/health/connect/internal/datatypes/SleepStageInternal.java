@@ -37,14 +37,6 @@ public final class SleepStageInternal {
     private long mEndTime;
     @SleepSessionRecord.StageType.StageTypes private int mStageType;
 
-    /** Creates internal stage from external. */
-    public static SleepStageInternal fromExternalStage(SleepSessionRecord.Stage stage) {
-        return new SleepStageInternal()
-                .setStartTime(stage.getStartTime().toEpochMilli())
-                .setEndTime(stage.getEndTime().toEpochMilli())
-                .setStageType(stage.getType());
-    }
-
     /** Reads record from parcel. */
     @VisibleForTesting
     public static SleepStageInternal readFromParcel(Parcel parcel) {

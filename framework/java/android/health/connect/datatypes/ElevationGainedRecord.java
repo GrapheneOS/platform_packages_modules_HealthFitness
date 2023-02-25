@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Length;
+import android.health.connect.internal.datatypes.ElevationGainedRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -168,5 +169,28 @@ public final class ElevationGainedRecord extends IntervalRecord {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getElevation());
+    }
+
+    /** @hide */
+    @Override
+    public ElevationGainedRecordInternal toRecordInternal() {
+        ElevationGainedRecordInternal recordInternal =
+                (ElevationGainedRecordInternal)
+                        new ElevationGainedRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setElevation(mElevation.getInMeters());
+        return recordInternal;
     }
 }

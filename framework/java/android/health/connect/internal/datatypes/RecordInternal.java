@@ -82,11 +82,6 @@ public abstract class RecordInternal<T extends Record> {
         populateRecordFrom(parcel);
     }
 
-    @SuppressWarnings("unchecked")
-    public final void populateUsing(@NonNull Record record) throws ClassCastException {
-        populateUsingInternal((T) record);
-    }
-
     /**
      * Populates {@code parcel} with the self information, required to reconstructor this object
      * during IPC
@@ -243,20 +238,6 @@ public abstract class RecordInternal<T extends Record> {
     /** Child class must implement this method and return an external record for this record */
     public abstract T toExternalRecord();
 
-    /** Populates self with the data present in {@code bundle} */
-    final void populateUsingInternal(@NonNull T record) {
-        mUuid = record.getMetadata().getId();
-        mPackageName = record.getMetadata().getDataOrigin().getPackageName();
-        mLastModifiedTime = record.getMetadata().getLastModifiedTime().toEpochMilli();
-        mClientRecordId = record.getMetadata().getClientRecordId();
-        mClientRecordVersion = record.getMetadata().getClientRecordVersion();
-        mManufacturer = record.getMetadata().getDevice().getManufacturer();
-        mModel = record.getMetadata().getDevice().getModel();
-        mDeviceType = record.getMetadata().getDevice().getType();
-
-        populateRecordFrom(record);
-    }
-
     @NonNull
     Metadata buildMetaData() {
         return new Metadata.Builder()
@@ -290,10 +271,4 @@ public abstract class RecordInternal<T extends Record> {
      * bundle}
      */
     abstract void populateRecordFrom(@NonNull Parcel bundle);
-
-    /**
-     * Child class must implement this method and populates itself with the data present in {@code
-     * record}
-     */
-    abstract void populateRecordFrom(@NonNull T record);
 }

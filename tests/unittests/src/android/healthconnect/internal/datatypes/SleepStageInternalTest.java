@@ -36,8 +36,7 @@ public class SleepStageInternalTest {
         SleepSessionRecord.Stage external =
                 new SleepSessionRecord.Stage(
                         mStartTime, mEndTime, SleepSessionRecord.StageType.STAGE_TYPE_AWAKE);
-        SleepSessionRecord.Stage converted =
-                SleepStageInternal.fromExternalStage(external).toExternalRecord();
+        SleepSessionRecord.Stage converted = external.toInternalStage().toExternalRecord();
 
         // Compare time in milliseconds as we store time in milliseconds in the database.
         assertThat(converted.getStartTime().toEpochMilli())

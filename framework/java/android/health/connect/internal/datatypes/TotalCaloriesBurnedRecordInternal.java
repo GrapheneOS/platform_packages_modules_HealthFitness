@@ -61,11 +61,6 @@ public final class TotalCaloriesBurnedRecordInternal
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull TotalCaloriesBurnedRecord totalCaloriesBurnedRecord) {
-        mEnergy = totalCaloriesBurnedRecord.getEnergy().getInJoules();
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mEnergy);
     }

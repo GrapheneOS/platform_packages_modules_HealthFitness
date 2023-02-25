@@ -74,16 +74,6 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
         populateIntervalRecordFrom(parcel);
     }
 
-    @Override
-    void populateRecordFrom(@NonNull T intervalRecord) {
-        mStartTime = intervalRecord.getStartTime().toEpochMilli();
-        mStartZoneOffset = intervalRecord.getStartZoneOffset().getTotalSeconds();
-        mEndTime = intervalRecord.getEndTime().toEpochMilli();
-        mEndZoneOffset = intervalRecord.getEndZoneOffset().getTotalSeconds();
-
-        populateIntervalRecordFrom(intervalRecord);
-    }
-
     Instant getStartTime() {
         return Instant.ofEpochMilli(mStartTime);
     }
@@ -138,12 +128,6 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
      * bundle}. Reads should be in the same order as write
      */
     abstract void populateIntervalRecordFrom(@NonNull Parcel parcel);
-
-    /**
-     * Child class must implement this method and populates itself with the data present in {@param
-     * record}
-     */
-    abstract void populateIntervalRecordFrom(@NonNull T intervalRecord);
 
     /**
      * Populate {@param bundle} with the data required to un-bundle self. This is used during IPC

@@ -60,11 +60,6 @@ public final class HydrationRecordInternal extends IntervalRecordInternal<Hydrat
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull HydrationRecord hydrationRecord) {
-        mVolume = hydrationRecord.getVolume().getInMilliliters();
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mVolume);
     }
