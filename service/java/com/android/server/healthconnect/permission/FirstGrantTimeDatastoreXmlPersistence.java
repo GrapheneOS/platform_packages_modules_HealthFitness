@@ -112,6 +112,11 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
         }
     }
 
+    public File getFile(@NonNull UserHandle user) {
+        File moduleDataDirPerUser = getModuleDataDirectoryPerUser(user);
+        return new File(moduleDataDirPerUser, GRANT_TIME_FILE_NAME);
+    }
+
     private static void serializeGrantTimes(
             @NonNull XmlSerializer serializer, @NonNull UserGrantTimeState userGrantTimeState)
             throws IOException {
@@ -231,11 +236,5 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
         File systemDataDir = new File(Environment.getDataDirectory(), /* child= */ "system");
         File moduleDataDir = new File(systemDataDir, /* child= */ "healthconnect");
         return new File(moduleDataDir, String.valueOf(user.getIdentifier()));
-    }
-
-    @NonNull
-    private static File getFile(@NonNull UserHandle user) {
-        File moduleDataDirPerUser = getModuleDataDirectoryPerUser(user);
-        return new File(moduleDataDirPerUser, GRANT_TIME_FILE_NAME);
     }
 }

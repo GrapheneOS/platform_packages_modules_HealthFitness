@@ -96,17 +96,6 @@ public class ExerciseRouteInternal {
         return new ExerciseRoute(routeLocations);
     }
 
-    /** Convert LocationInternal to Location external object. */
-    @VisibleForTesting
-    public static ExerciseRouteInternal fromExternalRoute(ExerciseRoute externalRoute) {
-        List<LocationInternal> routeLocations =
-                new ArrayList<>(externalRoute.getRouteLocations().size());
-        for (ExerciseRoute.Location location : externalRoute.getRouteLocations()) {
-            routeLocations.add(LocationInternal.fromExternalExerciseRouteLocation(location));
-        }
-        return new ExerciseRouteInternal(routeLocations);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -263,32 +252,6 @@ public class ExerciseRouteInternal {
                 builder.setAltitude(Length.fromMeters(getAltitude()));
             }
             return builder.build();
-        }
-
-        /** Convert external Location to LocationInternal object. */
-        @VisibleForTesting
-        public static LocationInternal fromExternalExerciseRouteLocation(
-                ExerciseRoute.Location externalLocation) {
-            LocationInternal locationInternal =
-                    new LocationInternal()
-                            .setTime(externalLocation.getTime().toEpochMilli())
-                            .setLatitude(externalLocation.getLatitude())
-                            .setLongitude(externalLocation.getLongitude());
-
-            if (externalLocation.getHorizontalAccuracy() != null) {
-                locationInternal.setHorizontalAccuracy(
-                        externalLocation.getHorizontalAccuracy().getInMeters());
-            }
-
-            if (externalLocation.getVerticalAccuracy() != null) {
-                locationInternal.setVerticalAccuracy(
-                        externalLocation.getVerticalAccuracy().getInMeters());
-            }
-
-            if (externalLocation.getAltitude() != null) {
-                locationInternal.setAltitude(externalLocation.getAltitude().getInMeters());
-            }
-            return locationInternal;
         }
 
         @Override

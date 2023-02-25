@@ -14,9 +14,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.android.health.connect.backuprestore">
 
-    <!-- Allows an application to send and receive HealthConnect data during a D2D flow.
+    <!-- Allows an application to send and receive HealthConnect data for backup and restore.
          Only this app can hold this permission. -->
     <permission
-        android:name="android.permission.HEALTH_CONNECT_D2D_INTER_AGENT"
+        android:name="android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT"
         android:protectionLevel="signature"/>
 </manifest>

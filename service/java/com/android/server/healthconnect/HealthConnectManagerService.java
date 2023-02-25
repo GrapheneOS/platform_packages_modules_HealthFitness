@@ -135,7 +135,7 @@ public class HealthConnectManagerService extends SystemService {
     @Override
     public boolean isUserSupported(@NonNull TargetUser user) {
         UserManager userManager =
-            getUserContext(mContext, user.getUserHandle()).getSystemService(UserManager.class);
+                getUserContext(mContext, user.getUserHandle()).getSystemService(UserManager.class);
         return !(userManager.isManagedProfile() || userManager.isCloneProfile());
     }
 

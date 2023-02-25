@@ -60,11 +60,6 @@ public final class DistanceRecordInternal extends IntervalRecordInternal<Distanc
     }
 
     @Override
-    void populateIntervalRecordFrom(@NonNull DistanceRecord distanceRecord) {
-        mDistance = distanceRecord.getDistance().getInMeters();
-    }
-
-    @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mDistance);
     }

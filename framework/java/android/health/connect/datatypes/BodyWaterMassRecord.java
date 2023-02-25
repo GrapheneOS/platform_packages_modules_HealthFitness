@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Mass;
+import android.health.connect.internal.datatypes.BodyWaterMassRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -115,5 +116,26 @@ public final class BodyWaterMassRecord extends InstantRecord {
         public BodyWaterMassRecord build() {
             return new BodyWaterMassRecord(mMetadata, mTime, mZoneOffset, mBodyWaterMass);
         }
+    }
+
+    /** @hide */
+    @Override
+    public BodyWaterMassRecordInternal toRecordInternal() {
+        BodyWaterMassRecordInternal recordInternal =
+                (BodyWaterMassRecordInternal)
+                        new BodyWaterMassRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setBodyWaterMass(mBodyWaterMass.getInKilograms());
+        return recordInternal;
     }
 }

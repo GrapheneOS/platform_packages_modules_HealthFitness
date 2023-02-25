@@ -16,11 +16,14 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /** Captures the user's cycling pedaling cadence. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE)
@@ -44,7 +47,9 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
             @NonNull List<CyclingPedalingCadenceRecordSample> cyclingPedalingCadenceRecordSamples) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(cyclingPedalingCadenceRecordSamples);
-        ValidationUtils.validateSampleStartAndEndTime(startTime, endTime,
+        ValidationUtils.validateSampleStartAndEndTime(
+                startTime,
+                endTime,
                 cyclingPedalingCadenceRecordSamples.stream()
                         .map(
                                 CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
@@ -232,5 +237,39 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getSamples());
+    }
+
+    /** @hide */
+    @Override
+    public CyclingPedalingCadenceRecordInternal toRecordInternal() {
+        CyclingPedalingCadenceRecordInternal recordInternal =
+                (CyclingPedalingCadenceRecordInternal)
+                        new CyclingPedalingCadenceRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        Set<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample> samples =
+                new HashSet<>(getSamples().size());
+
+        for (CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
+                cyclingPedalingCadenceRecordSample : getSamples()) {
+            samples.add(
+                    new CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample(
+                            cyclingPedalingCadenceRecordSample.getRevolutionsPerMinute(),
+                            cyclingPedalingCadenceRecordSample.getTime().toEpochMilli()));
+        }
+        recordInternal.setSamples(samples);
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+
+        return recordInternal;
     }
 }

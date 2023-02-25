@@ -57,11 +57,6 @@ public final class OxygenSaturationRecordInternal
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull OxygenSaturationRecord oxygenSaturationRecord) {
-        mPercentage = oxygenSaturationRecord.getPercentage().getValue();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mPercentage);
     }

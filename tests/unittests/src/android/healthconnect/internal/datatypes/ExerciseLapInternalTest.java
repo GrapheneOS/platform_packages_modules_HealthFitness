@@ -38,14 +38,14 @@ public class ExerciseLapInternalTest {
                 new ExerciseLap.Builder(mStartTime, mEndTime)
                         .setLength(Length.fromMeters(10))
                         .build();
-        ExerciseLap converted = ExerciseLapInternal.fromExternalLap(externalLap).toExternalRecord();
+        ExerciseLap converted = externalLap.toExerciseLapInternal().toExternalRecord();
         assertLapsAreEqual(converted, externalLap);
     }
 
     @Test
     public void testExerciseLapInternal_convertToExternalAndBackNoLength_recordsAreEqual() {
         ExerciseLap externalLap = new ExerciseLap.Builder(mStartTime, mEndTime).build();
-        ExerciseLap converted = ExerciseLapInternal.fromExternalLap(externalLap).toExternalRecord();
+        ExerciseLap converted = externalLap.toExerciseLapInternal().toExternalRecord();
         assertLapsAreEqual(converted, externalLap);
     }
 

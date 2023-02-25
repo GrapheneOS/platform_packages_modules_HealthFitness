@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Energy;
+import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -176,5 +177,28 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
             return new TotalCaloriesBurnedRecord(
                     mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mEnergy);
         }
+    }
+
+    /** @hide */
+    @Override
+    public TotalCaloriesBurnedRecordInternal toRecordInternal() {
+        TotalCaloriesBurnedRecordInternal recordInternal =
+                (TotalCaloriesBurnedRecordInternal)
+                        new TotalCaloriesBurnedRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setStartTime(getStartTime().toEpochMilli());
+        recordInternal.setEndTime(getEndTime().toEpochMilli());
+        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
+        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setEnergy(mEnergy.getInJoules());
+        return recordInternal;
     }
 }

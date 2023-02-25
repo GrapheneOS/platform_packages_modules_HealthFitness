@@ -55,11 +55,6 @@ public final class RespiratoryRateRecordInternal
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull RespiratoryRateRecord respiratoryRateRecord) {
-        mRate = respiratoryRateRecord.getRate();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mRate);
     }

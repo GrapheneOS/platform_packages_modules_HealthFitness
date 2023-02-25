@@ -55,11 +55,6 @@ public final class WeightRecordInternal extends InstantRecordInternal<WeightReco
     }
 
     @Override
-    void populateInstantRecordFrom(@NonNull WeightRecord weightRecord) {
-        mWeight = weightRecord.getWeight().getInKilograms();
-    }
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {
         parcel.writeDouble(mWeight);
     }

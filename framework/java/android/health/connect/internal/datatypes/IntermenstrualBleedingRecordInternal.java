@@ -31,10 +31,6 @@ public final class IntermenstrualBleedingRecordInternal
     void populateInstantRecordFrom(@NonNull Parcel parcel) {}
 
     @Override
-    void populateInstantRecordFrom(
-            @NonNull IntermenstrualBleedingRecord intermenstrualBleedingRecord) {}
-
-    @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {}
 
     @NonNull

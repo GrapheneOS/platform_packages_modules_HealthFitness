@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.FloatRange;
 import android.annotation.NonNull;
+import android.health.connect.internal.datatypes.RespiratoryRateRecordInternal;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -122,5 +123,26 @@ public final class RespiratoryRateRecord extends InstantRecord {
         public RespiratoryRateRecord build() {
             return new RespiratoryRateRecord(mMetadata, mTime, mZoneOffset, mRate);
         }
+    }
+
+    /** @hide */
+    @Override
+    public RespiratoryRateRecordInternal toRecordInternal() {
+        RespiratoryRateRecordInternal recordInternal =
+                (RespiratoryRateRecordInternal)
+                        new RespiratoryRateRecordInternal()
+                                .setUuid(getMetadata().getId())
+                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
+                                .setLastModifiedTime(
+                                        getMetadata().getLastModifiedTime().toEpochMilli())
+                                .setClientRecordId(getMetadata().getClientRecordId())
+                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
+                                .setManufacturer(getMetadata().getDevice().getManufacturer())
+                                .setModel(getMetadata().getDevice().getModel())
+                                .setDeviceType(getMetadata().getDevice().getType());
+        recordInternal.setTime(getTime().toEpochMilli());
+        recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
+        recordInternal.setRate(mRate);
+        return recordInternal;
     }
 }
