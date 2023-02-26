@@ -23,14 +23,6 @@ import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
-import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
-import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
-import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IDLE;
-import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IN_PROGRESS;
-import static android.health.connect.HealthConnectDataState.RESTORE_STATE_PENDING;
-import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE;
-import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
-import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
@@ -42,7 +34,6 @@ import static com.android.server.healthconnect.logging.HealthConnectServiceLogge
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.UPDATE_DATA;
 
 import android.Manifest;
-import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.AttributionSource;
@@ -105,10 +96,8 @@ import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaCategory;
 import android.health.connect.restore.BackupFileNamesSet;
-import android.health.connect.restore.StageRemoteDataException;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Binder;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.os.Trace;
@@ -123,6 +112,7 @@ import android.util.Slog;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
+import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.migration.DataMigrationManager;
 import com.android.server.healthconnect.migration.MigrationStateManager;
@@ -139,7 +129,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsReques
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
@@ -147,16 +136,7 @@ import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -166,9 +146,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * IHealthConnectService's implementation
@@ -176,29 +154,6 @@ import java.util.stream.Stream;
  * @hide
  */
 final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
-
-    // Key for storing the current data download state
-    @VisibleForTesting static final String DATA_DOWNLOAD_STATE_KEY = "DATA_DOWNLOAD_STATE_KEY";
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-        INTERNAL_RESTORE_STATE_UNKNOWN,
-        INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
-        INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
-        INTERNAL_RESTORE_STATE_STAGING_DONE,
-        INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS,
-        INTERNAL_RESTORE_STATE_MERGING_DONE
-    })
-    @interface InternalRestoreState {}
-
-    // The below values for the IntDef are defined in chronological order of the restore process.
-    static final int INTERNAL_RESTORE_STATE_UNKNOWN = 0;
-    static final int INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING = 1;
-    static final int INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS = 2;
-    static final int INTERNAL_RESTORE_STATE_STAGING_DONE = 3;
-    static final int INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS = 4;
-    static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 5;
-
     private static final String TAG = "HealthConnectService";
     // Permission for test api for deleting staged data
     private static final String DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION =
@@ -206,10 +161,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // Allows an application to act as a backup inter-agent to send and receive HealthConnect data
     private static final String HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION =
             "android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT";
-    // Key for storing the current data restore state on disk.
-    private static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
-    // Key for storing the error restoring HC data.
-    private static final String DATA_RESTORE_ERROR_KEY = "data_restore_error_key";
 
     private static final String TAG_INSERT = "HealthConnectInsert";
     private static final String TAG_READ = "HealthConnectRead";
@@ -229,10 +180,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final Context mContext;
     private final PermissionManager mPermissionManager;
-    private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
 
-    // Tells whether we are currently ACTIVELY staging remote data.
-    private boolean mActivelyStagingRemoteData = false;
+    private final BackupRestore mBackupRestore;
     private final MigrationStateManager mMigrationStateManager;
 
     private final DataPermissionEnforcer mDataPermissionEnforcer;
@@ -252,6 +201,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mMigrationStateManager = MigrationStateManager.getInstance();
         mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
+        mBackupRestore = new BackupRestore(mFirstGrantTimeManager);
     }
 
     @Override
@@ -1184,36 +1134,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA,
                 HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION);
 
-        mStatesLock.writeLock().lock();
-        try {
-            setDataDownloadState(
-                    DATA_DOWNLOAD_COMPLETE, userHandle.getIdentifier(), false /* force */);
-            @InternalRestoreState
-            int curDataRestoreState = getDataRestoreState(userHandle.getIdentifier());
-            if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
-                if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_DONE) {
-                    Slog.w(TAG, "Staging is already done. Cur state " + curDataRestoreState);
-                } else {
-                    // Maybe the caller died and is trying to stage the data again.
-                    Slog.w(TAG, "Already in the process of staging.");
-                }
-                HealthConnectThreadScheduler.scheduleInternalTask(
-                        () -> {
-                            try {
-                                callback.onResult();
-                            } catch (RemoteException e) {
-                                Log.e(TAG, "Restore response could not be sent to the caller.", e);
-                            }
-                        });
-                return;
-            }
-            mActivelyStagingRemoteData = true;
-            setDataRestoreState(
-                    INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
-                    userHandle.getIdentifier(),
-                    false /* force */);
-        } finally {
-            mStatesLock.writeLock().unlock();
+        if (!mBackupRestore.prepForStagingIfNotAlreadyDone(userHandle.getIdentifier())) {
+            HealthConnectThreadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            callback.onResult();
+                        } catch (RemoteException e) {
+                            Log.e(TAG, "Restore response could not be sent to the caller.", e);
+                        }
+                    });
         }
 
         Map<String, ParcelFileDescriptor> origPfdsByFileName =
@@ -1234,83 +1163,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         }
 
         HealthConnectThreadScheduler.scheduleInternalTask(
-                () -> {
-                    File stagedRemoteDataDir =
-                            getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier());
-                    try {
-                        stagedRemoteDataDir.mkdirs();
-
-                        // Now that we have the dir we can try to copy all the data.
-                        // Any exceptions we face will be collected and shared with the caller.
-                        pfdsByFileName.forEach(
-                                (fileName, pfd) -> {
-                                    File destination = new File(stagedRemoteDataDir, fileName);
-                                    try (FileInputStream inputStream =
-                                            new FileInputStream(pfd.getFileDescriptor())) {
-                                        Path destinationPath =
-                                                FileSystems.getDefault()
-                                                        .getPath(destination.getAbsolutePath());
-                                        Files.copy(
-                                                inputStream,
-                                                destinationPath,
-                                                StandardCopyOption.REPLACE_EXISTING);
-                                    } catch (IOException e) {
-                                        destination.delete();
-                                        exceptionsByFileName.put(
-                                                fileName,
-                                                new HealthConnectException(
-                                                        HealthConnectException.ERROR_IO,
-                                                        e.getMessage()));
-                                    } catch (SecurityException e) {
-                                        destination.delete();
-                                        exceptionsByFileName.put(
-                                                fileName,
-                                                new HealthConnectException(
-                                                        HealthConnectException.ERROR_SECURITY,
-                                                        e.getMessage()));
-                                    } finally {
-                                        try {
-                                            pfd.close();
-                                        } catch (IOException e) {
-                                            exceptionsByFileName.put(
-                                                    fileName,
-                                                    new HealthConnectException(
-                                                            HealthConnectException.ERROR_IO,
-                                                            e.getMessage()));
-                                        }
-                                    }
-                                });
-                    } finally {
-                        // We are done staging all the remote data, update the data restore state.
-                        // Even if we encountered any exception we still say that we are "done" as
-                        // we don't expect the caller to retry and see different results.
-                        setDataRestoreState(
-                                INTERNAL_RESTORE_STATE_STAGING_DONE,
+                () ->
+                        mBackupRestore.stageAllHealthConnectRemoteData(
+                                pfdsByFileName,
+                                exceptionsByFileName,
                                 userHandle.getIdentifier(),
-                                false /* force */);
-                        mActivelyStagingRemoteData = false;
-
-                        // Share the result / exception with the caller.
-                        try {
-                            if (exceptionsByFileName.isEmpty()) {
-                                callback.onResult();
-                            } else {
-                                setDataRestoreError(
-                                        RESTORE_ERROR_FETCHING_DATA, userHandle.getIdentifier());
-                                callback.onError(
-                                        new StageRemoteDataException(exceptionsByFileName));
-                            }
-                        } catch (RemoteException e) {
-                            Log.e(TAG, "Restore response could not be sent to the caller.", e);
-                        } catch (SecurityException e) {
-                            Log.e(
-                                    TAG,
-                                    "Restore response could not be sent due to conflicting AIDL "
-                                            + "definitions",
-                                    e);
-                        }
-                    }
-                });
+                                callback));
     }
 
     /**
@@ -1321,27 +1179,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull StageRemoteDataRequest stageRemoteDataRequest,
             @NonNull UserHandle userHandle) {
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
-
-        Map<String, ParcelFileDescriptor> pfdsByFileName =
-                stageRemoteDataRequest.getPfdsByFileName();
-
-        pfdsByFileName.forEach(
-                (fileName, pfd) -> {
-                    var backupFilesByFileNames = getBackupFilesByFileNames(userHandle);
-                    Path sourceFilePath = backupFilesByFileNames.get(fileName).toPath();
-                    try (FileOutputStream outputStream =
-                            new FileOutputStream(pfd.getFileDescriptor())) {
-                        Files.copy(sourceFilePath, outputStream);
-                    } catch (IOException | SecurityException e) {
-                        Slog.e(TAG, "Failed to send " + fileName + " for backup", e);
-                    } finally {
-                        try {
-                            pfd.close();
-                        } catch (IOException e) {
-                            Slog.e(TAG, "Failed to close " + fileName + " for backup", e);
-                        }
-                    }
-                });
+        mBackupRestore.getAllDataForBackup(stageRemoteDataRequest, userHandle);
     }
 
     /**
@@ -1350,8 +1188,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public BackupFileNamesSet getAllBackupFileNames(@NonNull UserHandle userHandle) {
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
-
-        return new BackupFileNamesSet(getBackupFilesByFileNames(userHandle).keySet());
+        return mBackupRestore.getAllBackupFileNames(userHandle);
     }
 
     /**
@@ -1361,12 +1198,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void deleteAllStagedRemoteData(@NonNull UserHandle userHandle) {
         mContext.enforceCallingPermission(
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
-        deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
-        setDataDownloadState(
-                DATA_DOWNLOAD_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
-        setDataRestoreState(
-                INTERNAL_RESTORE_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
-        setDataRestoreError(RESTORE_ERROR_NONE, userHandle.getIdentifier());
+        mBackupRestore.deleteAndResetEverything(userHandle);
         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IDLE);
         AppInfoHelper.getInstance().clearData(mTransactionManager);
         ActivityDateHelper.getInstance().clearData(mTransactionManager);
@@ -1381,20 +1213,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @DataDownloadState int downloadState, @NonNull UserHandle userHandle) {
         mContext.enforceCallingPermission(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
-        setDataDownloadState(downloadState, userHandle.getIdentifier(), false /* force */);
-
-        if (downloadState == DATA_DOWNLOAD_COMPLETE) {
-            setDataRestoreState(
-                    INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
-                    userHandle.getIdentifier(),
-                    false /* force */);
-        } else if (downloadState == DATA_DOWNLOAD_FAILED) {
-            setDataRestoreState(
-                    INTERNAL_RESTORE_STATE_MERGING_DONE,
-                    userHandle.getIdentifier(),
-                    false /* force */);
-            setDataRestoreError(RESTORE_ERROR_FETCHING_DATA, userHandle.getIdentifier());
-        }
+        mBackupRestore.updateDataDownloadState(downloadState, userHandle);
     }
 
     /**
@@ -1405,34 +1224,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull UserHandle userHandle, @NonNull IGetHealthConnectDataStateCallback callback) {
         mDataPermissionEnforcer.enforceAnyOfPermissions(
                 MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         @HealthConnectDataState.DataRestoreError
-                        int dataRestoreError = getDataRestoreError(userHandle.getIdentifier());
+                        int dataRestoreError =
+                                mBackupRestore.getDataRestoreError(userHandle.getIdentifier());
                         @HealthConnectDataState.DataRestoreState
-                        int dataRestoreState = RESTORE_STATE_IDLE;
-
-                        @InternalRestoreState
-                        int currentRestoreState = getDataRestoreState(userHandle.getIdentifier());
-
-                        if (currentRestoreState == INTERNAL_RESTORE_STATE_MERGING_DONE) {
-                            // already with correct values.
-                        } else if (currentRestoreState
-                                == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
-                            dataRestoreState = RESTORE_STATE_IN_PROGRESS;
-                        } else if (currentRestoreState != INTERNAL_RESTORE_STATE_UNKNOWN) {
-                            dataRestoreState = RESTORE_STATE_PENDING;
-                        }
-
-                        @DataDownloadState
-                        int currentDownloadState = getDataDownloadState(userHandle.getIdentifier());
-                        if (currentDownloadState == DATA_DOWNLOAD_FAILED) {
-                            // already with correct values.
-                        } else if (currentDownloadState != DATA_DOWNLOAD_STATE_UNKNOWN) {
-                            dataRestoreState = RESTORE_STATE_PENDING;
-                        }
+                        int dataRestoreState =
+                                mBackupRestore.getDataRestoreState(userHandle.getIdentifier());
 
                         try {
                             callback.onResult(
@@ -1471,135 +1271,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @VisibleForTesting
     Set<String> getStagedRemoteFileNames(int userId) {
-        return Stream.of(getStagedRemoteDataDirectoryForUser(userId).listFiles())
-                .filter(file -> !file.isDirectory())
-                .map(File::getName)
-                .collect(Collectors.toSet());
-    }
-
-    void setDataRestoreState(
-            @InternalRestoreState int dataRestoreState, int userID, boolean force) {
-        @InternalRestoreState int currentRestoreState = getDataRestoreState(userID);
-        mStatesLock.writeLock().lock();
-        try {
-            if (!force && currentRestoreState >= dataRestoreState) {
-                Slog.w(
-                        TAG,
-                        "Attempt to update data restore state in wrong order from "
-                                + currentRestoreState
-                                + " to "
-                                + dataRestoreState);
-                return;
-            }
-            // TODO(b/264070899) Store on a per user basis when we have per user db
-            PreferenceHelper.getInstance()
-                    .insertPreference(DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
-        } finally {
-            mStatesLock.writeLock().unlock();
-        }
-    }
-
-    @InternalRestoreState
-    int getDataRestoreState(int userId) {
-        mStatesLock.readLock().lock();
-        try {
-            // TODO(b/264070899) Get on a per user basis when we have per user db
-            String restoreStateOnDisk =
-                    PreferenceHelper.getInstance().getPreference(DATA_RESTORE_STATE_KEY);
-            @InternalRestoreState int currentRestoreState = INTERNAL_RESTORE_STATE_UNKNOWN;
-            if (restoreStateOnDisk == null) {
-                return currentRestoreState;
-            }
-            try {
-                currentRestoreState = Integer.parseInt(restoreStateOnDisk);
-            } catch (Exception e) {
-                Slog.e(TAG, "Exception parsing restoreStateOnDisk: " + restoreStateOnDisk, e);
-            }
-            // If we are not actively staging the data right now but the disk still reflects that we
-            // are then that means we died in the middle of staging.  We should be waiting for the
-            // remote data to be staged now.
-            if (!mActivelyStagingRemoteData
-                    && currentRestoreState == INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
-                currentRestoreState = INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING;
-            }
-            return currentRestoreState;
-        } finally {
-            mStatesLock.readLock().unlock();
-        }
-    }
-
-    @DataDownloadState
-    private int getDataDownloadState(int userId) {
-        mStatesLock.readLock().lock();
-        try {
-            // TODO(b/264070899) Get on a per user basis when we have per user db
-            String downloadStateOnDisk =
-                    PreferenceHelper.getInstance().getPreference(DATA_DOWNLOAD_STATE_KEY);
-            @DataDownloadState int currentDownloadState = DATA_DOWNLOAD_STATE_UNKNOWN;
-            if (downloadStateOnDisk == null) {
-                return currentDownloadState;
-            }
-            try {
-                currentDownloadState = Integer.parseInt(downloadStateOnDisk);
-            } catch (Exception e) {
-                Slog.e(TAG, "Exception parsing downloadStateOnDisk " + downloadStateOnDisk, e);
-            }
-            return currentDownloadState;
-        } finally {
-            mStatesLock.readLock().unlock();
-        }
-    }
-
-    private void setDataDownloadState(
-            @DataDownloadState int downloadState, int userId, boolean force) {
-        mStatesLock.writeLock().lock();
-        try {
-            @DataDownloadState int currentDownloadState = getDataDownloadState(userId);
-            if (!force
-                    && (currentDownloadState == DATA_DOWNLOAD_FAILED
-                            || currentDownloadState == DATA_DOWNLOAD_COMPLETE)) {
-                Slog.w(TAG, "HC data download already in terminal state.");
-                return;
-            }
-            // TODO(b/264070899) Store on a per user basis when we have per user db
-            PreferenceHelper.getInstance()
-                    .insertPreference(DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
-        } finally {
-            mStatesLock.writeLock().unlock();
-        }
-    }
-
-    // Creating a separate single line method to keep this code close to the rest of the code that
-    // uses PreferenceHelper to keep data on the disk.
-    private void setDataRestoreError(
-            @HealthConnectDataState.DataRestoreError int dataRestoreError, int userId) {
-        // TODO(b/264070899) Store on a per user basis when we have per user db
-        PreferenceHelper.getInstance()
-                .insertPreference(DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
-    }
-
-    private @HealthConnectDataState.DataRestoreError int getDataRestoreError(int userId) {
-        // TODO(b/264070899) Get on a per user basis when we have per user db
-        @HealthConnectDataState.DataRestoreError int dataRestoreError = RESTORE_ERROR_NONE;
-        String restoreErrorOnDisk =
-                PreferenceHelper.getInstance().getPreference(DATA_RESTORE_ERROR_KEY);
-        try {
-            dataRestoreError = Integer.parseInt(restoreErrorOnDisk);
-        } catch (Exception e) {
-            Slog.e(TAG, "Exception parsing restoreErrorOnDisk " + restoreErrorOnDisk, e);
-        }
-        return dataRestoreError;
-    }
-
-    private Map<String, File> getBackupFilesByFileNames(UserHandle userHandle) {
-        ArrayMap<String, File> backupFilesByFileNames = new ArrayMap<>();
-        backupFilesByFileNames.put(
-                mTransactionManager.getDatabasePath().getName(),
-                mTransactionManager.getDatabasePath());
-        backupFilesByFileNames.put(
-                mFirstGrantTimeManager.getFile(userHandle).getName(),
-                mFirstGrantTimeManager.getFile(userHandle));
-        return backupFilesByFileNames;
+        return mBackupRestore.getStagedRemoteFileNames(userId);
     }
 
     @NonNull
@@ -1740,36 +1412,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new SecurityException(
                         packageName + " must be in foreground to read the change logs"),
                 HealthConnectException.ERROR_SECURITY);
-    }
-
-    // TODO(b/264794517) Refactor pure util methods out into a separate class
-    private static File getDataSystemCeHCDirectoryForUser(int userId) {
-        // Duplicates the implementation of Environment#getDataSystemCeDirectory
-        // TODO(b/191059409): Unhide Environment#getDataSystemCeDirectory and switch to it.
-        File systemCeDir = new File(Environment.getDataDirectory(), "system_ce");
-        File systemCeUserDir = new File(systemCeDir, String.valueOf(userId));
-        return new File(systemCeUserDir, "healthconnect");
-    }
-
-    // TODO(b/264794517) Refactor pure util methods out into a separate class
-    private static void deleteDir(File dir) {
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (var file : files) {
-                if (file.isDirectory()) {
-                    deleteDir(file);
-                } else {
-                    file.delete();
-                }
-            }
-        }
-        dir.delete();
-    }
-
-    // TODO(b/264794517) Refactor pure util methods out into a separate class
-    private static File getStagedRemoteDataDirectoryForUser(int userId) {
-        File hcDirectoryForUser = getDataSystemCeHCDirectoryForUser(userId);
-        return new File(hcDirectoryForUser, "remote_staged");
     }
 
     private static void tryAndThrowException(
