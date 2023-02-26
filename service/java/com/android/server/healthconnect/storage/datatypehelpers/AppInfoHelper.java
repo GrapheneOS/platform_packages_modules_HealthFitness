@@ -249,15 +249,7 @@ public final class AppInfoHelper {
         }
 
         List<Long> result = new ArrayList<>(packageNames.size());
-        packageNames.forEach(
-                (packageName) -> {
-                    AppInfoInternal appInfo = getAppInfoMap().getOrDefault(packageName, null);
-                    if (appInfo == null) {
-                        result.add(DEFAULT_LONG);
-                    } else {
-                        result.add(appInfo.getId());
-                    }
-                });
+        packageNames.forEach(packageName -> result.add(getAppInfoId(packageName)));
 
         return result;
     }
