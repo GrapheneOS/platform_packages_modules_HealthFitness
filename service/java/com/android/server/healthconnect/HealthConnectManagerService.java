@@ -52,6 +52,7 @@ public class HealthConnectManagerService extends SystemService {
     private final PackagePermissionChangesMonitor mPackageMonitor;
     private final HealthConnectServiceImpl mHealthConnectService;
     private final TransactionManager mTransactionManager;
+    private final UserManager mUserManager;
     private UserHandle mCurrentUser;
 
     public HealthConnectManagerService(Context context) {
@@ -70,6 +71,7 @@ public class HealthConnectManagerService extends SystemService {
                         firstGrantTimeManager);
         mPackageMonitor =
                 new PackagePermissionChangesMonitor(permissionIntentTracker, firstGrantTimeManager);
+        mUserManager = context.getSystemService(UserManager.class);
         mCurrentUser = context.getUser();
         mContext = context;
         mTransactionManager =
@@ -97,17 +99,18 @@ public class HealthConnectManagerService extends SystemService {
         mTransactionManager.onUserSwitching();
         RateLimiter.clearCache();
         HealthConnectThreadScheduler.resetThreadPools();
+
+        if (mUserManager.isUserUnlocked(to.getUserHandle())) {
+            // The user is already in unlocked state, so we should proceed with our setup right now,
+            // as we won't be getting a onUserUnlocking callback
+            switchToSetupForUser(to.getUserHandle());
+        }
     }
 
     @Override
     public void onUserUnlocking(@NonNull TargetUser user) {
         Objects.requireNonNull(user);
-
-        if (!user.getUserHandle().equals(mCurrentUser)) {
-            mCurrentUser = user.getUserHandle();
-            mTransactionManager.onUserUnlocking(
-                    new HealthConnectUserContext(mContext, mCurrentUser));
-        }
+        switchToSetupForUser(user.getUserHandle());
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
@@ -136,7 +139,7 @@ public class HealthConnectManagerService extends SystemService {
     public boolean isUserSupported(@NonNull TargetUser user) {
         UserManager userManager =
                 getUserContext(mContext, user.getUserHandle()).getSystemService(UserManager.class);
-        return !(userManager.isManagedProfile() || userManager.isCloneProfile());
+        return !(Objects.requireNonNull(userManager).isProfile());
     }
 
     @Override
@@ -146,6 +149,14 @@ public class HealthConnectManagerService extends SystemService {
             HealthConnectDailyService.stop(mContext, user.getUserHandle().getIdentifier());
         } catch (Exception e) {
             Slog.e(TAG, "Failed to stop Health Connect daily service.", e);
+        }
+    }
+
+    private void switchToSetupForUser(UserHandle user) {
+        if (!user.equals(mCurrentUser)) {
+            mCurrentUser = user;
+            mTransactionManager.onUserUnlocking(
+                    new HealthConnectUserContext(mContext, mCurrentUser));
         }
     }
 
