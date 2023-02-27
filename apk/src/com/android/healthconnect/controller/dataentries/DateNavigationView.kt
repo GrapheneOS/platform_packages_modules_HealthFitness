@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -25,8 +27,12 @@ import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.getInstant
+import com.android.healthconnect.controller.utils.logging.DataEntriesElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthconnect.controller.utils.toLocalDate
+import dagger.hilt.android.EntryPointAccessors
 import java.time.Duration.ofDays
 import java.time.Instant
 
@@ -41,6 +47,8 @@ constructor(
     private val timeSource: TimeSource = SystemTimeSource
 ) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
 
+    private val logger: HealthConnectLogger
+
     private lateinit var previousDayButton: ImageButton
     private lateinit var nextDayButton: ImageButton
     private lateinit var selectedDateView: TextView
@@ -49,6 +57,11 @@ constructor(
     private var onDateChangedListener: OnDateChangedListener? = null
 
     init {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
+
         val view = inflate(context, R.layout.widget_date_navigation, this)
         bindDateTextView(view)
         bindNextDayButton(view)
@@ -71,7 +84,9 @@ constructor(
 
     private fun bindNextDayButton(view: View) {
         nextDayButton = view.findViewById(R.id.navigation_next_day) as ImageButton
+        logger.logImpression(DataEntriesElement.NEXT_DAY_BUTTON)
         nextDayButton.setOnClickListener {
+            logger.logInteraction(DataEntriesElement.NEXT_DAY_BUTTON)
             selectedDate = selectedDate.plus(ofDays(1))
             updateSelectedDate()
         }
@@ -79,7 +94,9 @@ constructor(
 
     private fun bindPreviousDayButton(view: View) {
         previousDayButton = view.findViewById(R.id.navigation_previous_day) as ImageButton
+        logger.logImpression(DataEntriesElement.PREVIOUS_DAY_BUTTON)
         previousDayButton.setOnClickListener {
+            logger.logInteraction(DataEntriesElement.PREVIOUS_DAY_BUTTON)
             selectedDate = selectedDate.minus(ofDays(1))
             updateSelectedDate()
         }
@@ -87,7 +104,9 @@ constructor(
 
     private fun bindDateTextView(view: View) {
         selectedDateView = view.findViewById(R.id.selected_date) as TextView
+        logger.logImpression(DataEntriesElement.SELECT_DATE_BUTTON)
         selectedDateView.setOnClickListener {
+            logger.logInteraction(DataEntriesElement.SELECT_DATE_BUTTON)
             val today = timeSource.currentTimeMillis().toInstant()
             val datePickerDialog = DatePickerFactory.create(context, selectedDate, today)
             datePickerDialog.setOnDateSetListener { _, year, month, day ->

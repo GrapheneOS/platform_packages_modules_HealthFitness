@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.dataentries.units
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.preference.ListPreference
-import androidx.preference.PreferenceFragmentCompat
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.*
 import com.android.healthconnect.controller.dataentries.units.EnergyUnit.*
@@ -35,13 +34,22 @@ import com.android.healthconnect.controller.dataentries.units.UnitPreferencesStr
 import com.android.healthconnect.controller.dataentries.units.WeightUnit.KILOGRAM
 import com.android.healthconnect.controller.dataentries.units.WeightUnit.POUND
 import com.android.healthconnect.controller.dataentries.units.WeightUnit.STONE
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.logging.ElementName
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.UnitsElement
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class UnitsFragment : Hilt_UnitsFragment() {
 
+    @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var unitsPreferences: UnitPreferences
+    init {
+        this.setPageName(PageName.UNITS_PAGE)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.units_screen, rootKey)
@@ -49,37 +57,79 @@ class UnitsFragment : Hilt_UnitsFragment() {
         val height =
             createUnitPreference(
                 HEIGHT_UNIT_PREF_KEY,
+                UnitsElement.CHANGE_UNITS_HEIGHT_BUTTON,
                 R.string.height_unit_title,
                 unitsPreferences.getHeightUnit().toString()) { newUnit ->
-                    unitsPreferences.setHeightUnit(HeightUnit.valueOf(newUnit))
+                    val newHeightUnit = HeightUnit.valueOf(newUnit)
+                    val logName =
+                        when (newHeightUnit) {
+                            CENTIMETERS -> UnitsElement.CENTIMETERS_BUTTON
+                            FEET -> UnitsElement.FEET_AND_INCHES_BUTTON
+                        }
+                    logger.logInteraction(logName)
+                    unitsPreferences.setHeightUnit(newHeightUnit)
                 }
         val weight =
             createUnitPreference(
                 WEIGHT_UNIT_PREF_KEY,
+                UnitsElement.CHANGE_UNITS_WEIGHT_BUTTON,
                 R.string.weight_unit_title,
                 unitsPreferences.getWeightUnit().toString()) { newUnit ->
-                    unitsPreferences.setWeightUnit(WeightUnit.valueOf(newUnit))
+                    val newWeightUnit = WeightUnit.valueOf(newUnit)
+                    val logName =
+                        when (newWeightUnit) {
+                            POUND -> UnitsElement.POUNDS_BUTTON
+                            KILOGRAM -> UnitsElement.KILOGRAMS_BUTTON
+                            STONE -> UnitsElement.STONES_BUTTON
+                        }
+                    logger.logInteraction(logName)
+                    unitsPreferences.setWeightUnit(newWeightUnit)
                 }
         val distance =
             createUnitPreference(
                 DISTANCE_UNIT_PREF_KEY,
+                UnitsElement.CHANGE_UNITS_DISTANCE_BUTTON,
                 R.string.distance_unit_title,
                 unitsPreferences.getDistanceUnit().toString()) { newUnit ->
-                    unitsPreferences.setDistanceUnit(DistanceUnit.valueOf(newUnit))
+                    val newDistanceUnit = DistanceUnit.valueOf(newUnit)
+                    val logName =
+                        when (newDistanceUnit) {
+                            KILOMETERS -> UnitsElement.KILOMETERS_BUTTON
+                            MILES -> UnitsElement.MILES_BUTTON
+                        }
+                    logger.logInteraction(logName)
+                    unitsPreferences.setDistanceUnit(newDistanceUnit)
                 }
         val energy =
             createUnitPreference(
                 ENERGY_UNIT_PREF_KEY,
+                UnitsElement.CHANGE_UNITS_ENERGY_BUTTON,
                 R.string.energy_unit_title,
                 unitsPreferences.getEnergyUnit().toString()) { newUnit ->
-                    unitsPreferences.setEnergyUnit(EnergyUnit.valueOf(newUnit))
+                    val newEnergyUnit = EnergyUnit.valueOf(newUnit)
+                    val logName =
+                        when (newEnergyUnit) {
+                            CALORIE -> UnitsElement.CALORIES_BUTTON
+                            KILOJOULE -> UnitsElement.KILOJOULES_BUTTON
+                        }
+                    logger.logInteraction(logName)
+                    unitsPreferences.setEnergyUnit(newEnergyUnit)
                 }
         val temperature =
             createUnitPreference(
                 TEMPERATURE_UNIT_PREF_KEY,
+                UnitsElement.CHANGE_UNITS_TEMPERATURE_BUTTON,
                 R.string.temperature_unit_title,
                 unitsPreferences.getTemperatureUnit().toString()) { newUnit ->
-                    unitsPreferences.setTemperatureUnit(TemperatureUnit.valueOf(newUnit))
+                    val newTemperatureUnit = TemperatureUnit.valueOf(newUnit)
+                    val logName =
+                        when (newTemperatureUnit) {
+                            CELSIUS -> UnitsElement.CELSIUS_BUTTON
+                            FAHRENHEIT -> UnitsElement.FAHRENHEIT_BUTTON
+                            KELVIN -> UnitsElement.KELVIN_BUTTON
+                        }
+                    logger.logInteraction(logName)
+                    unitsPreferences.setTemperatureUnit(newTemperatureUnit)
                 }
         preferenceScreen.addPreference(height)
         preferenceScreen.addPreference(weight)
@@ -90,11 +140,13 @@ class UnitsFragment : Hilt_UnitsFragment() {
 
     private fun createUnitPreference(
         key: String,
+        logName: ElementName,
         @StringRes title: Int,
         unitValue: String,
         onNewValue: (String) -> Unit
     ): ListPreference {
         val listPreference = ListPreference(context)
+        logger.logImpression(logName)
 
         with(listPreference) {
             isPersistent = false

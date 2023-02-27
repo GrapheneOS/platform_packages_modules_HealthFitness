@@ -52,10 +52,14 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
+import javax.inject.Inject
 
 /** Fragment to show health data entries by date. */
 @AndroidEntryPoint(Fragment::class)
@@ -64,6 +68,9 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     companion object {
         private const val SELECTED_DATE_KEY = "SELECTED_DATE_KEY"
     }
+
+    @Inject lateinit var logger: HealthConnectLogger
+    private val pageName = PageName.DATA_ENTRIES_PAGE
 
     private lateinit var permissionType: HealthPermissionType
     private val entriesViewModel: DataEntriesFragmentViewModel by viewModels()
@@ -111,6 +118,8 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        logger.setPageId(pageName)
+
         val view = inflater.inflate(R.layout.fragment_data_entries, container, false)
         if (requireArguments().containsKey(PERMISSION_TYPE_KEY)) {
             permissionType =
@@ -118,15 +127,17 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                     ?: throw IllegalArgumentException("PERMISSION_TYPE_KEY can't be null!")
         }
         setTitle(fromPermissionType(permissionType).uppercaseLabel)
-        setupMenu(R.menu.data_entries, viewLifecycleOwner) { menuItem ->
+        setupMenu(R.menu.data_entries, viewLifecycleOwner, logger) { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_open_units -> {
+                    logger.logImpression(ToolbarElement.TOOLBAR_UNITS_BUTTON)
                     findNavController().navigate(R.id.action_dataEntriesFragment_to_unitsFragment)
                     true
                 }
                 else -> false
             }
         }
+        logger.logImpression(ToolbarElement.TOOLBAR_SETTINGS_BUTTON)
 
         dateNavigationView = view.findViewById(R.id.date_navigation_view)
         if (savedInstanceState != null) {
@@ -177,6 +188,9 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     override fun onResume() {
         super.onResume()
         entriesViewModel.loadData(permissionType, dateNavigationView.getDate())
+
+        logger.setPageId(pageName)
+        logger.logPageImpression()
     }
 
     private fun observeDeleteState() {
