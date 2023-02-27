@@ -24,6 +24,7 @@
 
   <!-- Home Screen -->
   <string name="request_permissions">Request Permissions</string>
+  <string name="request_route_permissions">Request Route Permissions</string>
   <string name="insert_update_data">Insert / Update Data</string>
   <string name="insert_session">Insert Session</string>
   <string name="seed_random_data">Seed Random Data</string>
