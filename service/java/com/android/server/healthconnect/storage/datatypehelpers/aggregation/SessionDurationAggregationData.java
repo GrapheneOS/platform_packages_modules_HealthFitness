@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.health.connect.Constants;
 import android.util.Slog;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.time.ZoneOffset;
@@ -93,6 +94,14 @@ public class SessionDurationAggregationData extends AggregationRecordData {
         return zoneOffset;
     }
 
+    @VisibleForTesting
+    SessionDurationAggregationData setExcludeIntervals(
+            List<Long> excludeStarts, List<Long> exceludeEnds) {
+        mExcludeStarts = excludeStarts;
+        mExcludeEnds = exceludeEnds;
+        return this;
+    }
+
     private void updateIntervalsToExclude(Cursor cursor) {
         if (isNullValue(cursor, mExcludeIntervalStartTimeColumn)) {
             return;
@@ -118,13 +127,15 @@ public class SessionDurationAggregationData extends AggregationRecordData {
         // Find the latest start timestamp index such that intervalStart <= startTime
         int lowerBoundStartIndex = Collections.binarySearch(mExcludeStarts, startTime);
         if (lowerBoundStartIndex < 0) {
-            // startTime not found in mExcludeStarts, the output is -upperBoundIndex
-            lowerBoundStartIndex = -lowerBoundStartIndex - 1;
+            // startTime not found in mExcludeStarts, bin search output = -(insertionIndex + 1)
+            int insertionIndex = -lowerBoundStartIndex - 1;
+            lowerBoundStartIndex = Math.max(insertionIndex - 1, 0);
         }
 
         // Find the earliest end timestamp index such that intervalEnd >= endTime
         int upperBoundEndIndex = Collections.binarySearch(mExcludeEnds, endTime);
         if (upperBoundEndIndex < 0) {
+            // endTime not found, bin search output = - (insertionIndex + 1) = -upper bound
             upperBoundEndIndex = -upperBoundEndIndex;
         }
 
@@ -138,7 +149,7 @@ public class SessionDurationAggregationData extends AggregationRecordData {
         }
 
         for (int index = lowerBoundStartIndex;
-                index < Math.min(upperBoundEndIndex, mExcludeStarts.size());
+                index < Math.min(upperBoundEndIndex + 1, mExcludeStarts.size());
                 index++) {
             durationToExclude +=
                     AggregationRecordData.calculateIntervalOverlapDuration(
