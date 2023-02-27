@@ -24,10 +24,14 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.fragment.app.FragmentManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.logging.AutoDeleteElement
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 
 /**
  * Custom preference for displaying a custom dialog where the user can confirm the auto-delete range
@@ -37,7 +41,8 @@ class AutoDeleteRangePickerPreference
 constructor(
     context: Context,
     private val childFragmentManager: FragmentManager,
-    private val autoDeleteRange: AutoDeleteRange
+    private val autoDeleteRange: AutoDeleteRange,
+    private val logger: HealthConnectLogger
 ) : Preference(context), RadioGroup.OnCheckedChangeListener {
 
     companion object {
@@ -63,12 +68,30 @@ constructor(
             widgetFrameParent.addView(autoDeleteWidget, 0)
         }
 
-        val radioGroup: RadioGroup = holder.findViewById(R.id.radio_group) as RadioGroup
+        val radioGroup: RadioGroup = holder.findViewById(R.id.radio_group_time_range) as RadioGroup
         setRadioButtonTexts(radioGroup)
+
+        setRadioButtonLogging(radioGroup)
 
         radioGroup.setOnCheckedChangeListener(null)
         setCheckedRadioButton(radioGroup, autoDeleteRange)
         radioGroup.setOnCheckedChangeListener(this)
+    }
+
+    private fun setRadioButtonLogging(radioGroup: RadioGroup) {
+        radioGroup.children.forEach {
+            val element =
+                when (it.id) {
+                    R.id.radio_button_3_months -> AutoDeleteElement.AUTO_DELETE_3_MONTHS_BUTTON
+                    R.id.radio_button_18_months -> AutoDeleteElement.AUTO_DELETE_18_MONTHS_BUTTON
+                    R.id.radio_button_never -> AutoDeleteElement.AUTO_DELETE_NEVER_BUTTON
+                    else -> ErrorPageElement.UNKNOWN_ELEMENT
+                }
+
+            it.setOnClickListener { logger.logInteraction(element) }
+
+            logger.logImpression(element)
+        }
     }
 
     private fun setRadioButtonTexts(radioGroup: RadioGroup) {

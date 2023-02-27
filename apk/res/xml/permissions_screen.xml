@@ -18,7 +18,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.android.healthconnect.controller.permissions.request.RequestPermissionHeaderPreference
         android:key="request_permissions_header"/>
-    <com.android.settingslib.widget.MainSwitchPreference
+    <com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
         android:key="allow_all_preference"
         android:title="@string/request_permissions_allow_all"/>
     <PreferenceCategory

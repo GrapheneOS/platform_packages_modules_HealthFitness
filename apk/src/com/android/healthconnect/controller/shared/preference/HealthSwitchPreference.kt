@@ -29,8 +29,9 @@ import dagger.hilt.android.EntryPointAccessors
 open class HealthSwitchPreference(context: Context) : SwitchPreference(context) {
 
     private var logger: HealthConnectLogger
-    var logNameActive : ElementName = ErrorPageElement.UNKNOWN_ELEMENT
-    var logNameInactive : ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    var logNameActive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    var logNameInactive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    private var loggingClickListener: OnPreferenceChangeListener? = null
 
     init {
         val hiltEntryPoint =
@@ -51,7 +52,7 @@ open class HealthSwitchPreference(context: Context) : SwitchPreference(context) 
     override fun setOnPreferenceChangeListener(
         onPreferenceChangeListener: OnPreferenceChangeListener?
     ) {
-        val loggingClickListener = OnPreferenceChangeListener { preference, newValue ->
+        loggingClickListener = OnPreferenceChangeListener { preference, newValue ->
             if (newValue is Boolean && newValue) {
                 logger.logInteraction(logNameInactive, UIAction.ACTION_TOGGLE_ON)
             } else if (newValue is Boolean) {
