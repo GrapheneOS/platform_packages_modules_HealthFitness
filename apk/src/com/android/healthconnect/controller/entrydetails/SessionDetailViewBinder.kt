@@ -25,9 +25,20 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
+import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 
 class SessionDetailViewBinder : ViewBinder<FormattedSessionDetail, View> {
+    private lateinit var logger: HealthConnectLogger
+
     override fun newView(parent: ViewGroup): View {
+        val context = parent.context.applicationContext
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.item_data_session_detail_entry, parent, false)
     }
@@ -40,5 +51,7 @@ class SessionDetailViewBinder : ViewBinder<FormattedSessionDetail, View> {
         title.contentDescription = data.titleA11y
         header.text = data.header
         header.contentDescription = data.headerA11y
+
+        logger.logImpression(EntryDetailsElement.SESSION_DETAIL_ENTRY_VIEW)
     }
 }

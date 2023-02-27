@@ -42,8 +42,12 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.setupMenu
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint(Fragment::class)
 class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
@@ -55,6 +59,7 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             return bundleOf(PERMISSION_TYPE_KEY to permissionType, ENTRY_ID_KEY to entryId)
         }
     }
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val viewModel: DataEntryDetailsViewModel by viewModels()
 
@@ -86,11 +91,25 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
     private val sessionDetailViewBinder by lazy { SessionDetailViewBinder() }
     private val sessionHeaderViewBinder by lazy { SessionHeaderViewBinder() }
 
+    private val pageName = PageName.ENTRY_DETAILS_PAGE
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        logger.setPageId(pageName)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logger.setPageId(pageName)
+        logger.logPageImpression()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        logger.setPageId(pageName)
         val view = inflater.inflate(R.layout.fragment_data_entry_details, container, false)
         permissionType =
             requireArguments()
@@ -115,9 +134,10 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
                 adapter = detailsAdapter
             }
         viewModel.loadEntryData(permissionType, entryId)
-        setupMenu(R.menu.data_entries, viewLifecycleOwner) { menuItem ->
+        setupMenu(R.menu.data_entries, viewLifecycleOwner, logger) { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_open_units -> {
+                    logger.logInteraction(ToolbarElement.TOOLBAR_UNITS_BUTTON)
                     findNavController()
                         .navigate(R.id.action_dataEntryDetailsFragment_to_unitFragment)
                     true
@@ -125,6 +145,7 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
                 else -> false
             }
         }
+        logger.logImpression(ToolbarElement.TOOLBAR_SETTINGS_BUTTON)
         return view
     }
 
