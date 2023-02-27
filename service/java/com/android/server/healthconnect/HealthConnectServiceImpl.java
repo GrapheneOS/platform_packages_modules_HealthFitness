@@ -132,7 +132,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsReques
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
@@ -144,6 +143,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -170,12 +170,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final String TAG_GRANT_PERMISSION = "HealthConnectGrantReadPermissions";
     private static final String TAG_READ_PERMISSION = "HealthConnectReadPermission";
     private static final String TAG_INSERT_SUBTASKS = "HealthConnectInsertSubtasks";
+
+    private static final String TAG_DELETE_SUBTASKS = "HealthConnectDeleteSubtasks";
     private static final String TAG_READ_SUBTASKS = "HealthConnectReadSubtasks";
     private static final int TRACE_TAG_INSERT = TAG_INSERT.hashCode();
     private static final int TRACE_TAG_READ = TAG_READ.hashCode();
     private static final int TRACE_TAG_GRANT_PERMISSION = TAG_GRANT_PERMISSION.hashCode();
     private static final int TRACE_TAG_READ_PERMISSION = TAG_READ_PERMISSION.hashCode();
     private static final int TRACE_TAG_INSERT_SUBTASKS = TAG_INSERT_SUBTASKS.hashCode();
+    private static final int TRACE_TAG_DELETE_SUBTASKS = TAG_DELETE_SUBTASKS.hashCode();
     private static final int TRACE_TAG_READ_SUBTASKS = TAG_READ_SUBTASKS.hashCode();
 
     private final TransactionManager mTransactionManager;
@@ -325,15 +328,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 /* isInsertRequest */ true),
                                         true);
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
+
                         HealthConnectThreadScheduler.scheduleInternalTask(
                                 () -> {
-                                    Trace.traceBegin(
-                                            TRACE_TAG_INSERT_SUBTASKS,
-                                            TAG_INSERT.concat("InsertRecordDate"));
-                                    ActivityDateHelper.getInstance()
-                                            .insertRecordDate(recordsParcel.getRecords());
-                                    Trace.traceEnd(TRACE_TAG_INSERT_SUBTASKS);
+                                    postInsertTasks(attributionSource, recordsParcel);
                                 });
+
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);
                         builder.setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
@@ -367,6 +367,24 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 },
                 uid,
                 false);
+    }
+
+    private void postInsertTasks(
+            @NonNull AttributionSource attributionSource, @NonNull RecordsParcel recordsParcel) {
+        Trace.traceBegin(TRACE_TAG_INSERT_SUBTASKS, TAG_INSERT.concat("PostInsertTasks"));
+
+        ActivityDateHelper.getInstance().insertRecordDate(recordsParcel.getRecords());
+        Set<Integer> recordsTypesInsertedSet =
+                recordsParcel.getRecords().stream()
+                        .map(RecordInternal::getRecordType)
+                        .collect(Collectors.toSet());
+        // Update AppInfo table with the record types of records
+        // inserted in the request for the current package.
+        AppInfoHelper.getInstance()
+                .updateAppInfoRecordTypesUsedOnInsert(
+                        recordsTypesInsertedSet, attributionSource.getPackageName());
+
+        Trace.traceEnd(TRACE_TAG_INSERT_SUBTASKS);
     }
 
     /**
@@ -939,6 +957,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onResult();
                         finishDataDeliveryWrite(recordTypeIdsToDelete, attributionSource);
                         builder.setHealthDataServiceApiStatusSuccess();
+
+                        HealthConnectThreadScheduler.scheduleInternalTask(
+                                () -> {
+                                    postDeleteTasks(recordTypeIdsToDelete);
+                                });
+
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
                         tryAndThrowException(
@@ -977,6 +1001,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 },
                 uid,
                 holdsDataManagementPermission);
+    }
+
+    private void postDeleteTasks(List<Integer> recordTypeIdsToDelete) {
+        Trace.traceBegin(TRACE_TAG_DELETE_SUBTASKS, TAG_INSERT.concat("PostDeleteTasks"));
+        if (recordTypeIdsToDelete != null && !recordTypeIdsToDelete.isEmpty()) {
+            AppInfoHelper.getInstance()
+                    .updateAppInfoRecordTypesUsedOnDelete(new HashSet<>(recordTypeIdsToDelete));
+        }
+        Trace.traceEnd(TRACE_TAG_DELETE_SUBTASKS);
     }
 
     /** API to get Priority for {@code dataCategory} */
@@ -1169,7 +1202,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
                         }
                         List<AppInfo> applicationInfos =
-                                AppInfoHelper.getInstance().getApplicationInfos();
+                                AppInfoHelper.getInstance().getApplicationInfosWithRecordTypes();
 
                         callback.onResult(new ApplicationInfoResponseParcel(applicationInfos));
                     } catch (SQLiteException sqLiteException) {
@@ -1691,19 +1724,28 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private Map<Integer, List<DataOrigin>> getPopulatedRecordTypeInfoResponses() {
         Map<Integer, Class<? extends Record>> recordIdToExternalRecordClassMap =
                 RecordMapper.getInstance().getRecordIdToExternalRecordClassMap();
+        AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
         Map<Integer, List<DataOrigin>> recordTypeInfoResponses =
                 new ArrayMap<>(recordIdToExternalRecordClassMap.size());
+        Map<Integer, Set<String>> recordTypeToContributingPackagesMap =
+                appInfoHelper.getRecordTypesToContributingPackagesMap();
         recordIdToExternalRecordClassMap
                 .keySet()
                 .forEach(
                         (recordType) -> {
-                            RecordHelper<?> recordHelper =
-                                    RecordHelperProvider.getInstance().getRecordHelper(recordType);
-                            Objects.requireNonNull(recordHelper);
-                            List<DataOrigin> packages =
-                                    mTransactionManager.getDistinctPackageNamesForRecordTable(
-                                            recordHelper);
-                            recordTypeInfoResponses.put(recordType, packages);
+                            if (recordTypeToContributingPackagesMap.containsKey(recordType)) {
+                                List<DataOrigin> packages =
+                                        recordTypeToContributingPackagesMap.get(recordType).stream()
+                                                .map(
+                                                        (packageName) ->
+                                                                new DataOrigin.Builder()
+                                                                        .setPackageName(packageName)
+                                                                        .build())
+                                                .toList();
+                                recordTypeInfoResponses.put(recordType, packages);
+                            } else {
+                                recordTypeInfoResponses.put(recordType, Collections.emptyList());
+                            }
                         });
         return recordTypeInfoResponses;
     }

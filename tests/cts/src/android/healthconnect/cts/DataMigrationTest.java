@@ -313,12 +313,12 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateAppInfo_notInstalledAppAndRecordsMigrated_appInfoSaved() {
+    public void migrateAppInfo_notInstalledAppAndRecordsMigrated_appInfoSaved()
+            throws InterruptedException {
         final String recordEntityId = "steps";
         final String appInfoEntityId = "appInfo";
         final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         final byte[] iconBytes = getBitmapBytes(icon);
-
         migrate(
                 new StepsRecord.Builder(
                                 getMetadata(recordEntityId, PACKAGE_NAME_NOT_INSTALLED),
@@ -326,7 +326,6 @@ public class DataMigrationTest {
                                 mEndTime,
                                 10)
                         .build());
-
         migrate(
                 new MigrationEntity(
                         appInfoEntityId,
@@ -335,6 +334,10 @@ public class DataMigrationTest {
                                 .build()));
 
         finishMigration();
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
         final AppInfo appInfo = getContributorApplicationInfo(PACKAGE_NAME_NOT_INSTALLED);
 
         mExpect.that(appInfo).isNotNull();
@@ -363,12 +366,12 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateAppInfo_installedAppAndRecordsMigrated_appInfoNotSaved() {
+    public void migrateAppInfo_installedAppAndRecordsMigrated_appInfoNotSaved()
+            throws InterruptedException {
         final String recordEntityId = "steps";
         final String appInfoEntityId = "appInfo";
         final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         final byte[] iconBytes = getBitmapBytes(icon);
-
         migrate(
                 new StepsRecord.Builder(
                                 getMetadata(recordEntityId, APP_PACKAGE_NAME),
@@ -385,6 +388,10 @@ public class DataMigrationTest {
                                 .build()));
 
         finishMigration();
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
         final AppInfo appInfo = getContributorApplicationInfo(APP_PACKAGE_NAME);
 
         mExpect.that(appInfo).isNotNull();
