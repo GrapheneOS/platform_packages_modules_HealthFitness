@@ -43,12 +43,15 @@ import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment for connected apps screen. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -67,6 +70,12 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         private const val SEE_ALL_COMPATIBLE_APPS = "see_all_compatible_apps_app_permissions_screen"
         private const val SEND_FEEDBACK = "send_feedback_app_permissions_screen"
     }
+
+    init {
+        this.setPageName(PageName.APP_PERMISSIONS_PAGE)
+    }
+
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val viewModel: ConnectedAppsViewModel by viewModels()
     private lateinit var searchMenuItem: MenuItem

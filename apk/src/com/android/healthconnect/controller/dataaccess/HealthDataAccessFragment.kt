@@ -37,6 +37,7 @@ import com.android.healthconnect.controller.permissiontypes.HealthPermissionType
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppPreference
@@ -55,6 +56,11 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         private const val ALL_ENTRIES_BUTTON = "all_entries_button"
         private const val DELETE_PERMISSION_TYPE_DATA_BUTTON = "delete_permission_type_data"
     }
+
+    init {
+        this.setPageName(PageName.DATA_ACCESS_PAGE)
+    }
+
     private val viewModel: HealthDataAccessViewModel by viewModels()
 
     private lateinit var permissionType: HealthPermissionType

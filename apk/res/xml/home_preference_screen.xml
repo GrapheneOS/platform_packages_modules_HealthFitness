@@ -23,13 +23,13 @@
     <PreferenceCategory
         android:key="permissions_and_data_category"
         android:title="@string/permissions_and_data_header">
-        <Preference
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
             android:key="connected_apps"
-            android:icon="@drawable/quantum_gm_ic_link_vd_theme_24"
+            android:icon="?attr/appPermissionsIcon"
             android:title="@string/connected_apps_title"/>
-        <Preference
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
             android:key="data_and_access"
-            android:icon="@drawable/ic_health_data"
+            android:icon="?attr/dataAndAccessIcon"
             android:title="@string/data_title" />
     </PreferenceCategory>
 </PreferenceScreen>
