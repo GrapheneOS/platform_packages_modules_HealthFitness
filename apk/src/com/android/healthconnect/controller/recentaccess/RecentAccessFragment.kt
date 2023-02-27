@@ -32,8 +32,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.shared.Constants
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Recent access fragment showing a timeline of apps that have recently accessed Health Connect. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -44,6 +48,12 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         private const val RECENT_ACCESS_YESTERDAY_KEY = "recent_access_yesterday"
         private const val RECENT_ACCESS_NO_DATA_KEY = "no_data"
     }
+
+    init {
+        this.setPageName(PageName.RECENT_ACCESS_PAGE)
+    }
+
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val viewModel: RecentAccessViewModel by viewModels()
     private lateinit var contentParent: FrameLayout
@@ -96,13 +106,17 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.loadRecentAccessApps()
+
         if (fab.parent == null) {
             contentParent.addView(fab)
         }
+        logger.logImpression(RecentAccessElement.MANAGE_PERMISSIONS_FAB)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.loadRecentAccessApps()
         viewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
             updateRecentApps(recentApps)
@@ -127,6 +141,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
             mRecentAccessYesterdayPreferenceGroup?.isVisible = !recentAppsList.last().isToday
 
             fab.setOnClickListener {
+                logger.logInteraction(RecentAccessElement.MANAGE_PERMISSIONS_FAB)
                 findNavController()
                     .navigate(R.id.action_recentAccessFragment_to_connectedAppsFragment)
             }
@@ -153,6 +168,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
                             }
                         }
                     }
+
                 if (recentApp.isToday) {
                     mRecentAccessTodayPreferenceGroup?.addPreference(newPreference)
                     if (!isLastUsage) {

@@ -45,6 +45,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,6 +61,10 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         const val PERMISSION_TYPE_KEY = "permission_type_key"
         private const val APP_PRIORITY_BUTTON = "app_priority"
         private const val DELETE_CATEGORY_DATA_BUTTON = "delete_category_data"
+    }
+
+    init {
+        this.setPageName(PageName.PERMISSION_TYPES_PAGE)
     }
 
     @HealthDataCategoryInt private var category: Int = 0
