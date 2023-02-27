@@ -15,8 +15,12 @@
  */
 package com.android.healthconnect.testapps.toolbox.ui
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthPermissions
+import android.health.connect.datatypes.ExerciseSessionRecord
+import android.health.connect.datatypes.ExerciseSessionType
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,8 +37,14 @@ import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.testapps.toolbox.Constants.ALL_PERMISSIONS
 import com.android.healthconnect.testapps.toolbox.PerformanceTesting
 import com.android.healthconnect.testapps.toolbox.R
+import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Companion.WARSAW_ROUTE
+import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Companion.generateExerciseRouteFromLocations
 import com.android.healthconnect.testapps.toolbox.seed.SeedData
+import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 import com.android.healthconnect.testapps.toolbox.viewmodels.PerformanceTestingViewModel
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import kotlinx.coroutines.runBlocking
 
 /** Home fragment for Health Connect Toolbox. */
 class HomeFragment : Fragment() {
@@ -48,6 +58,7 @@ class HomeFragment : Fragment() {
     }
 
     private lateinit var mRequestPermissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var mRequestRoutePermissionLauncher: ActivityResultLauncher<String>
     private lateinit var mNavigationController: NavController
     private val manager by lazy {
         requireContext().getSystemService(HealthConnectManager::class.java)
@@ -63,6 +74,12 @@ class HomeFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
                 permissionMap: Map<String, Boolean> ->
                 requestPermissionResultHandler(permissionMap)
+            }
+        mRequestRoutePermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+                if (granted) {
+                    readRoute()
+                }
             }
     }
 
@@ -97,6 +114,9 @@ class HomeFragment : Fragment() {
             .commit()
         view.findViewById<Button>(R.id.request_permissions_button).setOnClickListener {
             requestPermissions()
+        }
+        view.findViewById<Button>(R.id.request_route_permissions_button).setOnClickListener {
+            requestRoutesPermissions()
         }
         view.findViewById<Button>(R.id.insert_update_data_button).setOnClickListener {
             goToCategoryListPage()
@@ -137,6 +157,42 @@ class HomeFragment : Fragment() {
                 R.string.all_permissions_already_granted_toast,
                 Toast.LENGTH_LONG)
             .show()
+    }
+
+    private fun requestRoutesPermissions() {
+        if (ContextCompat.checkSelfPermission(
+            requireContext(), HealthPermissions.WRITE_EXERCISE_ROUTE) !=
+            PackageManager.PERMISSION_GRANTED) {
+            mRequestRoutePermissionLauncher.launch(HealthPermissions.WRITE_EXERCISE_ROUTE)
+            return
+        }
+        readRoute()
+    }
+
+    private fun readRoute() {
+        // insert a route data
+        val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
+        val end = start.plusSeconds(100_000)
+        val route =
+            ExerciseSessionRecord.Builder(
+                    GeneralUtils.getMetaData(requireContext()),
+                    start,
+                    end,
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                .setRoute(generateExerciseRouteFromLocations(WARSAW_ROUTE, start.toEpochMilli()))
+                .build()
+        runBlocking {
+            val result = GeneralUtils.insertRecords(listOf(route), manager)
+            if (result.isNotEmpty()) {
+                val record = result.first()
+                val intent =
+                    Intent(HealthConnectManager.ACTION_REQUEST_EXERCISE_ROUTE).apply {
+                        putExtra(HealthConnectManager.EXTRA_SESSION_ID, record.metadata.id)
+                        putExtra(Intent.EXTRA_PACKAGE_NAME, requireContext().packageName)
+                    }
+                startActivityForResult(intent, 1)
+            }
+        }
     }
 
     private fun goToCategoryListPage() {
