@@ -21,19 +21,19 @@
   <PreferenceCategory
       android:key="things_to_try"
       android:title="@string/things_to_try">
-    <Preference
+    <com.android.healthconnect.controller.shared.preference.HealthPreference
         android:key="check_for_updates"
-        android:icon="@drawable/check_for_update_icon"
+        android:icon="?attr/checkForUpdatesIcon"
         android:title="@string/check_for_updates"
         android:summary="@string/check_for_updates_description" />
-    <Preference
+    <com.android.healthconnect.controller.shared.preference.HealthPreference
         android:key="see_all_compatible_apps"
-        android:icon="@drawable/see_all_compatible_apps_icon"
+        android:icon="?attr/seeAllCompatibleAppsIcon"
         android:title="@string/see_all_compatible_apps"
         android:summary="@string/see_all_compatible_apps_description" />
     <Preference
         android:key="send_feedback"
-        android:icon="@drawable/send_feedback_icon"
+        android:icon="?attr/sendFeedbackIcon"
         android:title="@string/send_feedback"
         android:summary="@string/send_feedback_description" />
   </PreferenceCategory>
