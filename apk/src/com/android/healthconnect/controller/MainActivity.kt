@@ -21,12 +21,15 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Entry point activity for Health Connect. */
 @AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
 class MainActivity : Hilt_MainActivity() {
+    @Inject lateinit var logger: HealthConnectLogger
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,4 +60,10 @@ class MainActivity : Hilt_MainActivity() {
         }
         return true
     }
+
+    // TODO (b/270864219): implement interaction logging for the menu button
+    //    override fun onMenuOpened(featureId: Int, menu: Menu?): Boolean {
+    //        logger.logInteraction(ElementName.TOOLBAR_SETTINGS_BUTTON)
+    //        return super.onMenuOpened(featureId, menu)
+    //    }
 }

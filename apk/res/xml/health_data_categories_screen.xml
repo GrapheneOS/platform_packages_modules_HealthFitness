@@ -21,13 +21,13 @@
   <PreferenceCategory
       android:key="manage_data_category"
       android:title="@string/manage_data_section">
-    <Preference
+    <com.android.healthconnect.controller.shared.preference.HealthPreference
         android:key="auto_delete_button"
-        android:icon="@drawable/quantum_gm_ic_auto_delete_vd_theme_24"
+        android:icon="?attr/autoDeleteIcon"
         android:title="@string/auto_delete_button" />
-    <Preference
+    <com.android.healthconnect.controller.shared.preference.HealthPreference
         android:key="delete_all_data"
-        android:icon="@drawable/quantum_gm_ic_delete_vd_theme_24"
+        android:icon="?attr/deleteIcon"
         android:title="@string/delete_all_data_button" />
   </PreferenceCategory>
 </PreferenceScreen>

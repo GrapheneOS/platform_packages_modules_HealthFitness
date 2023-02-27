@@ -16,7 +16,9 @@
 package com.android.healthconnect.controller.home
 
 import android.content.Intent
+import android.health.HealthFitnessStatsLog.*
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -30,8 +32,11 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
+import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
-import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.logging.HomePageElement
+import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Home fragment for Health Connect. */
@@ -46,10 +51,14 @@ class HomeFragment : Hilt_HomeFragment() {
         @JvmStatic fun newInstance() = HomeFragment()
     }
 
+    init {
+        this.setPageName(PageName.HOME_PAGE)
+    }
+
     private val recentAccessViewModel: RecentAccessViewModel by viewModels()
     private val homeFragmentViewModel: HomeFragmentViewModel by viewModels()
 
-    private val mDataAndAccessPreference: Preference? by lazy {
+    private val mDataAndAccessPreference: HealthPreference? by lazy {
         preferenceScreen.findPreference(DATA_AND_ACCESS_PREFERENCE_KEY)
     }
 
@@ -57,17 +66,19 @@ class HomeFragment : Hilt_HomeFragment() {
         preferenceScreen.findPreference(RECENT_ACCESS_PREFERENCE_KEY)
     }
 
-    private val mConnectedAppsPreference: Preference? by lazy {
+    private val mConnectedAppsPreference: HealthPreference? by lazy {
         preferenceScreen.findPreference(CONNECTED_APPS_PREFERENCE_KEY)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.home_preference_screen, rootKey)
+        mDataAndAccessPreference?.logName = HomePageElement.DATA_AND_ACCESS_BUTTON
         mDataAndAccessPreference?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_healthDataCategoriesFragment)
             true
         }
+        mConnectedAppsPreference?.logName = HomePageElement.APP_PERMISSIONS_BUTTON
         mConnectedAppsPreference?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
             true
@@ -76,13 +87,13 @@ class HomeFragment : Hilt_HomeFragment() {
 
     override fun onResume() {
         super.onResume()
+        recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
         homeFragmentViewModel.loadConnectedApps()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSharedMenu(viewLifecycleOwner = viewLifecycleOwner)
         recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
         recentAccessViewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
             updateRecentApps(recentApps)
@@ -120,15 +131,17 @@ class HomeFragment : Hilt_HomeFragment() {
 
     private fun updateRecentApps(recentAppsList: List<RecentAccessEntry>) {
         mRecentAccessPreference?.removeAll()
+
         if (recentAppsList.isEmpty()) {
             mRecentAccessPreference?.addPreference(
                 Preference(requireContext()).also { it.setSummary(R.string.no_recent_access) })
         } else {
             recentAppsList.forEach { recentApp ->
                 val newRecentAccessPreference =
-                    RecentAccessPreference(requireContext(), recentApp, false).also {
+                    RecentAccessPreference(requireContext(), recentApp, false).also { newPreference
+                        ->
                         if (!recentApp.isInactive) {
-                            it.setOnPreferenceClickListener {
+                            newPreference.setOnPreferenceClickListener {
                                 findNavController()
                                     .navigate(
                                         R.id.action_homeFragment_to_connectedAppFragment,
@@ -143,9 +156,10 @@ class HomeFragment : Hilt_HomeFragment() {
                 mRecentAccessPreference?.addPreference(newRecentAccessPreference)
             }
             val seeAllPreference =
-                Preference(requireContext()).also {
+                HealthPreference(requireContext()).also {
                     it.setTitle(R.string.show_recent_access_entries_button_title)
-                    it.setIcon(R.drawable.quantum_gm_ic_keyboard_arrow_right_vd_theme_24)
+                    it.setIcon(AttributeResolver.getResource(requireContext(), R.attr.seeAllIcon))
+                    it.logName = HomePageElement.SEE_ALL_RECENT_ACCESS_BUTTON
                 }
             seeAllPreference.setOnPreferenceClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_recentAccessFragment)
