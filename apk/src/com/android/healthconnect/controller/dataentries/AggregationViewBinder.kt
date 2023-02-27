@@ -20,10 +20,21 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
+import com.android.healthconnect.controller.utils.logging.DataEntriesElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 
 class AggregationViewBinder : ViewBinder<FormattedAggregation, View> {
 
+    private lateinit var logger: HealthConnectLogger
+
     override fun newView(parent: ViewGroup): View {
+        val context = parent.context.applicationContext
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.item_data_aggregation, parent, false)
     }
@@ -31,6 +42,7 @@ class AggregationViewBinder : ViewBinder<FormattedAggregation, View> {
     override fun bind(view: View, data: FormattedAggregation, index: Int) {
         val apps = view.findViewById<TextView>(R.id.item_data_origin_apps)
         val aggregation = view.findViewById<TextView>(R.id.item_data_aggregation)
+        logger.logImpression(DataEntriesElement.AGGREGATION_DATA_VIEW)
 
         aggregation.text = data.aggregation
         aggregation.contentDescription = data.aggregationA11y

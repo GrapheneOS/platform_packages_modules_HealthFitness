@@ -29,6 +29,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatRadioButton
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.logging.PermissionTypesElement
+import dagger.hilt.android.EntryPointAccessors
 
 /**
  * The FilterChip is a stylised RadioButton which helps the user filter Health Connect data by the
@@ -51,6 +55,15 @@ constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.chipStyle,
 ) : AppCompatRadioButton(context, attrs, defStyleAttr) {
+
+    private var logger: HealthConnectLogger
+
+    init {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
+    }
 
     private var selectedIcon: Drawable? = null
     var unSelectedIcon: Drawable? = null
@@ -99,6 +112,7 @@ constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        logger.logImpression(PermissionTypesElement.APP_FILTER_BUTTON)
 
         this.setOnCheckedChangeListener { buttonView, isChecked ->
             if (unSelectedIcon == null) {
@@ -106,6 +120,14 @@ constructor(
                 animateLayoutChanges(buttonView)
             }
         }
+    }
+
+    override fun setOnClickListener(l: OnClickListener?) {
+        val loggingClickListener = OnClickListener {
+            logger.logInteraction(PermissionTypesElement.APP_FILTER_BUTTON)
+            l?.onClick(it)
+        }
+        super.setOnClickListener(loggingClickListener)
     }
 
     private fun animateLayoutChanges(view: View) {
