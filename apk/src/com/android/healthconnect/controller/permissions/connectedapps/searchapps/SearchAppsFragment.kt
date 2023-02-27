@@ -33,11 +33,14 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.INACTIVE
+import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
+import com.android.healthconnect.controller.utils.logging.ElementName
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -186,9 +189,12 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         app: ConnectedAppMetadata,
         onClick: (() -> Unit)? = null
     ): Preference {
-        return Preference(requireContext()).also {
-            it.title = app.appMetadata.appName
-            it.icon = app.appMetadata.icon
+        return HealthAppPreference(requireContext(), app.appMetadata).also {
+            if (app.status == ALLOWED) {
+                it.logName = AppPermissionsElement.CONNECTED_APP_BUTTON
+            } else if (app.status == DENIED) {
+                it.logName = AppPermissionsElement.NOT_CONNECTED_APP_BUTTON
+            }
             it.setOnPreferenceClickListener {
                 onClick?.invoke()
                 true

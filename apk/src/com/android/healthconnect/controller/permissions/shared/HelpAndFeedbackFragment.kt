@@ -33,16 +33,18 @@ package com.android.healthconnect.controller.permissions.shared
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.android.healthconnect.controller.shared.preference.HealthPreference
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
+import com.android.healthconnect.controller.utils.logging.ElementName
+import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Can't see all your apps fragment for Health Connect. */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
     companion object {
@@ -50,12 +52,15 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
         private const val SEE_ALL_COMPATIBLE_APPS = "see_all_compatible_apps"
         private const val SEND_FEEDBACK = "send_feedback"
     }
+    init {
+        this.setPageName(PageName.HELP_AND_FEEDBACK_PAGE)
+    }
 
-    private val mCheckForUpdates: Preference? by lazy {
+    private val mCheckForUpdates: HealthPreference? by lazy {
         preferenceScreen.findPreference(CHECK_FOR_UPDATES)
     }
 
-    private val mSeeAllCompatibleApps: Preference? by lazy {
+    private val mSeeAllCompatibleApps: HealthPreference? by lazy {
         preferenceScreen.findPreference(SEE_ALL_COMPATIBLE_APPS)
     }
 
@@ -64,13 +69,16 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.help_and_feedback_screen, rootKey)
 
+        mCheckForUpdates?.logName = AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON
         mCheckForUpdates?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_cant_see_all_apps_to_updated_apps)
             true
         }
 
+        mSeeAllCompatibleApps?.logName = AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON
         mSeeAllCompatibleApps?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_cant_see_all_apps_to_play_store)
             true
@@ -78,13 +86,8 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
         mSendFeedback?.setOnPreferenceClickListener {
             val intent = Intent(Intent.ACTION_BUG_REPORT)
-            getActivity()?.startActivityForResult(intent, 0)
+            activity?.startActivityForResult(intent, 0)
             true
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupSharedMenu(viewLifecycleOwner)
     }
 }
