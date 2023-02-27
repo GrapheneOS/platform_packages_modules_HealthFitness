@@ -147,7 +147,7 @@ public final class HeartRateRecord extends IntervalRecord {
          */
         public HeartRateSample(long beatsPerMinute, @NonNull Instant time) {
             Objects.requireNonNull(time);
-            ValidationUtils.requireInRange(beatsPerMinute, 0, (long) 250, "beatsPerMinute");
+            ValidationUtils.requireInRange(beatsPerMinute, 1, (long) 300, "beatsPerMinute");
 
             mBeatsPerMinute = beatsPerMinute;
             mTime = time;

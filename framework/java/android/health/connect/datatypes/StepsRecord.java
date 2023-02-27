@@ -127,8 +127,7 @@ public final class StepsRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             long count) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        ValidationUtils.requireInRange(
-                ValidationUtils.valuePerSecond(count, startTime, endTime), 0.0, 10.0, "stepsCount");
+        ValidationUtils.requireInRange(count, 0, 1000000, "stepsCount");
         mCount = count;
     }
 

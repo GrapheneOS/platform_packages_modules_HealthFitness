@@ -16,6 +16,8 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.ValidationUtils.requireInRange;
+
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.internal.datatypes.BodyWaterMassRecordInternal;
@@ -44,6 +46,7 @@ public final class BodyWaterMassRecord extends InstantRecord {
             @NonNull Mass bodyWaterMass) {
         super(metadata, time, zoneOffset);
         Objects.requireNonNull(bodyWaterMass);
+        requireInRange(bodyWaterMass.getInKilograms(), 0, 1000, "mass");
         mBodyWaterMass = bodyWaterMass;
     }
 
