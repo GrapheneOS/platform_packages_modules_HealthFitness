@@ -39,7 +39,9 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,6 +61,16 @@ public class HealthPermissionCategoryPriorityTests {
     private static final String TAG = "PermissionCategoryPriorityTests";
     private static final UiAutomation sUiAutomation =
             InstrumentationRegistry.getInstrumentation().getUiAutomation();
+
+    @Before
+    public void setUp() {
+        TestUtils.deleteAllStagedRemoteData();
+    }
+
+    @After
+    public void tearDown() {
+        TestUtils.deleteAllStagedRemoteData();
+    }
 
     @Test
     public void testGetPriority() throws InterruptedException {
