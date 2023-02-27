@@ -14,14 +14,52 @@
   limitations under the License.
 -->
 <resources>
-    <attr name="deleteSettingsIcon" format="reference" />
+    <!-- region Icons -->
+    <!-- Home page -->
+    <attr name="appPermissionsIcon" format="reference"/>
+    <attr name="dataAndAccessIcon" format="reference"/>
+    <attr name="seeAllIcon" format="reference"/>
+
+    <!-- App permissions page-->
+    <attr name="removeAccessForAllAppsIcon" format="reference"/>
+    <attr name="helpAndFeedbackIcon" format="reference"/>
+    <attr name="checkForUpdatesIcon" format="reference"/>
+    <attr name="seeAllCompatibleAppsIcon" format="reference"/>
+    <attr name="sendFeedbackIcon" format="reference"/>
+    <attr name="searchIcon" format="reference"/>
+
+    <!-- Categories page -->
+    <attr name="autoDeleteIcon" format="reference"/>
     <attr name="deleteIcon" format="reference" />
+    <attr name="exportDataIcon" format="reference" />
+<!--     TODO (b/270850335) -->
+<!--    <attr name="activityCategoryIcon" format="reference"/>-->
+<!--    <attr name="bodyMeasurementsCategoryIcon" format="reference"/>-->
+<!--    <attr name="cycleTrackingCategoryIcon" format="reference"/>-->
+<!--    <attr name="nutritionCategoryIcon" format="reference"/>-->
+<!--    <attr name="sleepCategoryIcon" format="reference"/>-->
+<!--    <attr name="vitalsCategoryIcon" format="reference"/>-->
+
+    <!-- Permission types page -->
+    <attr name="appPriorityIcon" format="reference"/>
+    <attr name="checkIcon" format="reference" />
+
+    <!-- Data access page -->
+    <attr name="seeAllEntriesIcon" format="reference"/>
+
+    <!-- Data entries page -->
+    <attr name="nextDayIcon" format="reference"/>
+    <attr name="previousDayIcon" format="reference"/>
+
+    <!-- Dialogs -->
+    <attr name="deleteSettingsIcon" format="reference" />
     <attr name="successIcon" format="reference" />
     <attr name="failureIcon" format="reference" />
-    <attr name="exportDataIcon" format="reference" />
     <attr name="disconnectAllIcon" format="reference" />
     <attr name="disconnectIcon" format="reference" />
     <attr name="deniedAppsBannerIcon" format="reference" />
+    <!--  endregion -->
+
     <!-- Gravity for dialogs. Uses Android gravity values defined at
        https://developer.android.com/reference/android/view/Gravity#constants_1 -->
     <attr name="dialogGravity" format="integer" />
@@ -29,6 +67,7 @@
     <attr name="alertDialogTitleTextAlignment" format="reference" />
     <attr name="alertDialogTitleIconVisibility" format="reference" />
 
+    <!-- Text Appearance -->
     <attr name="textAppearancePageTitle" format="reference" />
     <attr name="textAppearanceTitle" format="reference" />
     <attr name="textAppearanceTitleSecondary" format="reference" />
@@ -52,6 +91,5 @@
     <attr name="outlinedButton" format="reference" />
 
     <attr name="chipStyle" format="reference" />
-    <attr name="checkIcon" format="reference" />
     <attr name="spinnerStyle" format="reference" />
 </resources>

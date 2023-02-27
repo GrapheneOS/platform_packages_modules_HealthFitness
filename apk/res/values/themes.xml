@@ -19,11 +19,39 @@
         <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
         <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
         <item name="alertDialogTheme">@style/Theme.HealthConnect.Dialog.Alert</item>
-        <item name="deleteSettingsIcon">@drawable/ic_deletion_settings</item>
+        <!-- region Icons -->
+        <!-- Home page -->
+        <item name="appPermissionsIcon">@drawable/quantum_gm_ic_link_vd_theme_24</item>
+        <item name="dataAndAccessIcon">@drawable/ic_health_data</item>
+        <item name="seeAllIcon">@drawable/quantum_gm_ic_keyboard_arrow_right_vd_theme_24</item>
+
+        <!-- App permissions page-->
+        <item name="removeAccessForAllAppsIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
+        <item name="helpAndFeedbackIcon">@drawable/quantum_gm_ic_support_vd_theme_24</item>
+        <item name="checkForUpdatesIcon">@drawable/check_for_update_icon</item>
+        <item name="seeAllCompatibleAppsIcon">@drawable/see_all_compatible_apps_icon</item>
+        <item name="sendFeedbackIcon">@drawable/send_feedback_icon</item>
+        <item name="searchIcon">@drawable/ic_find_in_page_24px</item>
+
+        <!-- Categories page -->
+        <item name="autoDeleteIcon">@drawable/quantum_gm_ic_auto_delete_vd_theme_24</item>
         <item name="deleteIcon">@drawable/quantum_gm_ic_delete_vd_theme_24</item>
+        <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
+
+        <!-- Permission types page -->
+        <item name="appPriorityIcon">@drawable/quantum_gm_ic_view_list_vd_theme_24</item>
+
+        <!-- Data access page -->
+        <item name="seeAllEntriesIcon">@drawable/quantum_gm_ic_view_list_vd_theme_24</item>
+
+        <!-- Data entries page -->
+        <item name="nextDayIcon">@drawable/quantum_gm_ic_keyboard_arrow_right_vd_theme_24</item>
+        <item name="previousDayIcon">@drawable/quantum_gm_ic_keyboard_arrow_left_vd_theme_24</item>
+
+        <!-- Deletion dialog -->
+        <item name="deleteSettingsIcon">@drawable/ic_deletion_settings</item>
         <item name="successIcon">@drawable/quantum_gm_ic_check_circle_vd_theme_24</item>
         <item name="failureIcon">@drawable/quantum_ic_cancel_vd_theme_24</item>
-        <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
         <item name="disconnectAllIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
         <item name="disconnectIcon">@drawable/quantum_gm_ic_link_off_vd_theme_24</item>
         <item name="deniedAppsBannerIcon">@drawable/quantum_gm_ic_error_outline_vd_theme_24</item>
@@ -32,6 +60,7 @@
         <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
         <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>
         <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>
+        <!--  endregion -->
 
         <!--    Text styles -->
         <item name="textAppearancePageTitle">@style/TextAppearance.HealthConnect.PageTitle</item>

@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
+import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -40,6 +41,8 @@ constructor(private val loadHealthPermissionApps: LoadHealthPermissionApps) : Vi
     }
 
     fun loadConnectedApps() {
-        viewModelScope.launch { _connectedApps.postValue(loadHealthPermissionApps.invoke()) }
+        viewModelScope.launch {
+            _connectedApps.postValueIfUpdated(loadHealthPermissionApps.invoke())
+        }
     }
 }
