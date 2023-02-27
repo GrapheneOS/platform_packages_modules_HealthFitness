@@ -195,6 +195,12 @@ public class HealthDataCategoryPriorityHelper {
                 newPriorityOrder);
     }
 
+    /** Deletes all entries from the database and clears the cache. */
+    public synchronized void clearData(@NonNull TransactionManager transactionManager) {
+        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
+        clearCache();
+    }
+
     public synchronized void clearCache() {
         mHealthDataCategoryToAppIdPriorityMap = null;
     }
