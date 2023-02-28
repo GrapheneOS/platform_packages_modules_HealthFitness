@@ -293,16 +293,17 @@ public class StepsRecordTest {
                                 .build());
         assertThat(oldStepsRecord.first.size()).isEqualTo(1);
         try {
-            TestUtils.readRecordsWithPagination(
+            ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFilters =
                     new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                             .setPageSize(1)
                             .setPageToken(oldStepsRecord.second)
                             .setAscending(true)
-                            .build());
-            Assert.fail();
+                            .build();
+            TestUtils.readRecordsWithPagination(requestUsingFilters);
+            Assert.fail(
+                    "IllegalStateException  expected when both page token and page order is set");
         } catch (Exception exception) {
-            assertThat(true).isTrue();
-            assertThat(exception).isNotNull();
+            assertThat(exception).isInstanceOf(IllegalStateException.class);
         }
     }
 
@@ -323,15 +324,19 @@ public class StepsRecordTest {
                                 .setAscending(false)
                                 .build());
         assertThat(oldStepsRecord.first.size()).isEqualTo(1);
-        Pair<List<StepsRecord>, Long> newStepsRecords =
-                TestUtils.readRecordsWithPagination(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .setPageSize(1)
-                                .setPageToken(oldStepsRecord.second)
-                                .setAscending(false)
-                                .build());
-        assertThat(newStepsRecords).isNotNull();
-        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+        try {
+            ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFilters =
+                    new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                            .setPageSize(1)
+                            .setPageToken(oldStepsRecord.second)
+                            .setAscending(false)
+                            .build();
+            TestUtils.readRecordsWithPagination(requestUsingFilters);
+            Assert.fail(
+                    "IllegalStateException  expected when both page token and page order is set");
+        } catch (Exception exception) {
+            assertThat(exception).isInstanceOf(IllegalStateException.class);
+        }
     }
 
     @Test
