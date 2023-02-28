@@ -31,13 +31,13 @@
     <PreferenceCategory
         android:key="manage_data"
         android:title="@string/manage_data_section">
-        <Preference
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
             android:key="all_entries_button"
-            android:icon="@drawable/quantum_gm_ic_view_list_vd_theme_24"
+            android:icon="?attr/seeAllEntriesIcon"
             android:title="@string/all_entries_button" />
-        <Preference
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
             android:key="delete_permission_type_data"
-            android:icon="@drawable/quantum_gm_ic_delete_vd_theme_24"
+            android:icon="?attr/deleteIcon"
             android:title="@string/delete_permission_type_data_button" />
     </PreferenceCategory>
 </PreferenceScreen>

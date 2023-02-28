@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.permissions.connectedapps
+package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.AttributeSet
 import androidx.preference.Preference
-import androidx.preference.PreferenceViewHolder
-import com.android.healthconnect.controller.shared.app.AppMetadata
+import androidx.preference.Preference.OnPreferenceClickListener
+import com.android.healthconnect.controller.permissions.connectedapps.ComparablePreference
+import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
-import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.EntryPointAccessors
 
-class HealthAppPreference(context: Context, private val appMetadata: AppMetadata) :
-    AppPreference(context), ComparablePreference {
+/** A [Preference] that allows logging. */
+open class HealthPreference
+@JvmOverloads
+constructor(context: Context, attrs: AttributeSet? = null) :
+        Preference(context, attrs), ComparablePreference {
 
     private var logger: HealthConnectLogger
-    var logName : ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    var logName: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
 
     init {
-        title = appMetadata.appName
-        icon = appMetadata.icon
-
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
                 context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
@@ -47,6 +48,13 @@ class HealthAppPreference(context: Context, private val appMetadata: AppMetadata
         super.onAttached()
         logger.logImpression(logName)
     }
+
+    // TODO (b/270944053) - This does not currently work for preferences defined in XML
+    //  because they don't have the log name when this method is called
+    //    override fun onAttachedToHierarchy(preferenceManager: PreferenceManager?) {
+    //        super.onAttachedToHierarchy(preferenceManager)
+    //        logger.logImpression(logName)
+    //    }
 
     override fun setOnPreferenceClickListener(
         onPreferenceClickListener: OnPreferenceClickListener
@@ -59,24 +67,11 @@ class HealthAppPreference(context: Context, private val appMetadata: AppMetadata
     }
 
     override fun isSameItem(preference: Preference): Boolean {
-        return preference is HealthAppPreference &&
-            TextUtils.equals(appMetadata.appName, preference.appMetadata.appName)
+        return preference is HealthPreference &&
+                TextUtils.equals(this.title, preference.title)
     }
 
     override fun hasSameContents(preference: Preference): Boolean {
-        return preference is HealthAppPreference && appMetadata == preference.appMetadata
+        return preference is HealthPreference && this.title == preference.title
     }
-
-    override fun onBindViewHolder(view: PreferenceViewHolder?) {
-        super.onBindViewHolder(view)
-    }
-}
-
-/** Allows comparison with a [Preference] to determine if it has been changed. */
-internal interface ComparablePreference {
-    /** Returns true if given Preference represents an item of the same kind. */
-    fun isSameItem(preference: Preference): Boolean
-
-    /** Returns true if given Preference contains the same data. */
-    fun hasSameContents(preference: Preference): Boolean
 }

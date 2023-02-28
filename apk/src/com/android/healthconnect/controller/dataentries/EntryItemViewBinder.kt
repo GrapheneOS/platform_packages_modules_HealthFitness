@@ -21,12 +21,23 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
+import com.android.healthconnect.controller.utils.logging.DataEntriesElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 
 /** ViewBinder for FormattedDataEntry. */
 class EntryItemViewBinder(private val onDeleteEntryListener: OnDeleteEntryListener) :
     ViewBinder<FormattedDataEntry, View> {
 
+    private lateinit var logger: HealthConnectLogger
+
     override fun newView(parent: ViewGroup): View {
+        val context = parent.context.applicationContext
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context).inflate(R.layout.item_data_entry, parent, false)
     }
 
@@ -34,6 +45,8 @@ class EntryItemViewBinder(private val onDeleteEntryListener: OnDeleteEntryListen
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
         val deleteButton = view.findViewById<ImageButton>(R.id.item_data_entry_delete)
+        logger.logImpression(DataEntriesElement.DATA_ENTRY_VIEW)
+        logger.logImpression(DataEntriesElement.DATA_ENTRY_DELETE_BUTTON)
 
         title.text = data.title
         title.contentDescription = data.titleA11y
@@ -42,6 +55,7 @@ class EntryItemViewBinder(private val onDeleteEntryListener: OnDeleteEntryListen
         header.contentDescription = data.headerA11y
 
         deleteButton.setOnClickListener {
+            logger.logInteraction(DataEntriesElement.DATA_ENTRY_DELETE_BUTTON)
             onDeleteEntryListener.onDeleteEntry(data.uuid, data.dataType, index)
         }
     }

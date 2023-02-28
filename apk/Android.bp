@@ -90,7 +90,8 @@ android_library {
         "SettingsLibAppPreference",
         "androidx.core_core",
         "guava",
-        "hilt_android"
+        "hilt_android",
+        "healthfitness-statsd"
     ],
     kotlincflags: ["-Xjvm-default=all"],
     apex_available: ["com.android.healthfitness"],

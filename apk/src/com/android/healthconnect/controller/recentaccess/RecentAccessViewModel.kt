@@ -28,6 +28,7 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.shared.dataTypeToCategory
 import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
+import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
 import java.time.Instant
@@ -67,7 +68,7 @@ constructor(
                     it.isInactive = true
                 }
             }
-            _recentAccessApps.postValue(clusters)
+            _recentAccessApps.postValueIfUpdated(clusters)
         }
     }
 
