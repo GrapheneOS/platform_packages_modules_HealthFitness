@@ -118,7 +118,6 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                 } finally {
                     mLock.writeLock().unlock();
                 }
-                mLock.writeLock().unlock();
             } else if (name.equals(SESSION_DATATYPE_FEATURE_FLAG)) {
                 mLock.writeLock().lock();
                 try {
