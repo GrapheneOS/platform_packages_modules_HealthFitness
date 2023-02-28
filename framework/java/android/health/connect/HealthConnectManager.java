@@ -38,6 +38,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.health.connect.accesslog.AccessLog;
+import android.health.connect.accesslog.AccessLogsResponseParcel;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
@@ -1103,9 +1104,9 @@ public class HealthConnectManager {
                     mContext.getPackageName(),
                     new IAccessLogsResponseCallback.Stub() {
                         @Override
-                        public void onResult(List<AccessLog> parcel) {
+                        public void onResult(AccessLogsResponseParcel parcel) {
                             Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(parcel));
+                            executor.execute(() -> callback.onResult(parcel.getAccessLogs()));
                         }
 
                         @Override
