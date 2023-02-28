@@ -51,9 +51,6 @@ public class RecordsParcel implements Parcelable {
                 }
             };
 
-    public static final int USING_SHARED_MEMORY = 0;
-    public static final int USING_PARCEL = 1;
-    private static final int KBS_750 = 750000;
     private final List<RecordInternal<?>> mRecordInternals;
 
     public RecordsParcel(@NonNull List<RecordInternal<?>> recordInternals) {
@@ -62,7 +59,7 @@ public class RecordsParcel implements Parcelable {
 
     private RecordsParcel(@NonNull Parcel in) {
         int parcelType = in.readInt();
-        if (parcelType == USING_SHARED_MEMORY) {
+        if (parcelType == ParcelUtils.USING_SHARED_MEMORY) {
             in = ParcelUtils.getParcelForSharedMemory(in);
         }
 
@@ -96,13 +93,13 @@ public class RecordsParcel implements Parcelable {
         final Parcel dataParcel = Parcel.obtain();
         writeToParcelInternal(dataParcel);
         final int dataParcelSize = dataParcel.dataSize();
-        if (dataParcelSize > KBS_750) {
+        if (dataParcelSize > ParcelUtils.KBS_750) {
             SharedMemory sharedMemory = ParcelUtils.getSharedMemoryForParcel(
                     dataParcel, dataParcelSize);
-            dest.writeInt(USING_SHARED_MEMORY);
+            dest.writeInt(ParcelUtils.USING_SHARED_MEMORY);
             sharedMemory.writeToParcel(dest, flags);
         } else {
-            dest.writeInt(USING_PARCEL);
+            dest.writeInt(ParcelUtils.USING_PARCEL);
             writeToParcelInternal(dest);
         }
     }
