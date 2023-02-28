@@ -25,9 +25,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -100,6 +102,12 @@ public final class SleepSessionRecordHelper
     }
 
     @Override
+    public boolean isRecordOperationsEnabled() {
+        return HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isSessionDatatypeFeatureEnabled();
+    }
+
+    @Override
     List<UpsertTableRequest> getChildTableUpsertRequests(
             @NonNull SleepSessionRecordInternal record) {
         if (record.getSleepStages() != null) {
@@ -119,5 +127,13 @@ public final class SleepSessionRecordHelper
     @Override
     SqlJoin getJoinForReadRequest() {
         return SleepStageRecordHelper.getJoinReadRequest(getMainTableName());
+    }
+
+    @Override
+    public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
+        if (!isRecordOperationsEnabled()) {
+            throw new UnsupportedOperationException("Writing sleep sessions is not supported.");
+        }
+        return Collections.emptyList();
     }
 }
