@@ -28,13 +28,10 @@
         android:order="3"
         android:key="manage_data_category"
         android:title="@string/manage_data_section">
-        <Preference
-            android:key="app_priority"
-            android:icon="@drawable/quantum_gm_ic_view_list_vd_theme_24"
-            android:title="@string/app_priority_button" />
-        <Preference
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
             android:key="delete_category_data"
-            android:icon="@drawable/quantum_gm_ic_delete_vd_theme_24"
+            android:order="5"
+            android:icon="?attr/deleteIcon"
             android:title="@string/delete_category_data_button" />
     </PreferenceCategory>
 </PreferenceScreen>

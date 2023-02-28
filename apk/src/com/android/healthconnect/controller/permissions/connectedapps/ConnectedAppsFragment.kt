@@ -41,14 +41,20 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
+import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
+import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment for connected apps screen. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -58,15 +64,16 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         private const val TOP_INTRO = "connected_apps_top_intro"
         const val ALLOWED_APPS_CATEGORY = "allowed_apps"
         private const val NOT_ALLOWED_APPS = "not_allowed_apps"
-        private const val HELP_AND_FEEDBACK = "help_and_feedback"
-        private const val REMOVE_ALL_APPS = "remove_all_apps"
         private const val INACTIVE_APPS = "inactive_apps"
         private const val THINGS_TO_TRY = "things_to_try_app_permissions_screen"
         private const val SETTINGS_AND_HELP = "settings_and_help"
-        private const val CHECK_FOR_UPDATES = "check_for_updates_app_permissions_screen"
-        private const val SEE_ALL_COMPATIBLE_APPS = "see_all_compatible_apps_app_permissions_screen"
-        private const val SEND_FEEDBACK = "send_feedback_app_permissions_screen"
     }
+
+    init {
+        this.setPageName(PageName.APP_PERMISSIONS_PAGE)
+    }
+
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val viewModel: ConnectedAppsViewModel by viewModels()
     private lateinit var searchMenuItem: MenuItem
@@ -83,7 +90,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         preferenceScreen.findPreference(NOT_ALLOWED_APPS)
     }
 
-    private val mInactiveAppsPreference: PreferenceGroup? by lazy {
+    private val mInactiveAppsCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(INACTIVE_APPS)
     }
 
@@ -91,55 +98,16 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         preferenceScreen.findPreference(THINGS_TO_TRY)
     }
 
-    private val mSettingAndHelpCategory: PreferenceGroup? by lazy {
+    private val mSettingsAndHelpCategory: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(SETTINGS_AND_HELP)
-    }
-
-    private val mHelpAndFeedbackPreference: Preference? by lazy {
-        preferenceScreen.findPreference(HELP_AND_FEEDBACK)
-    }
-
-    private val mRemoveAllApps: Preference? by lazy {
-        preferenceScreen.findPreference(REMOVE_ALL_APPS)
-    }
-
-    private val mCheckForUpdates: Preference? by lazy {
-        preferenceScreen.findPreference(CHECK_FOR_UPDATES)
-    }
-
-    private val mSeeAllCompatibleApps: Preference? by lazy {
-        preferenceScreen.findPreference(SEE_ALL_COMPATIBLE_APPS)
-    }
-
-    private val mSendFeedback: Preference? by lazy {
-        preferenceScreen.findPreference(SEND_FEEDBACK)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
-        mHelpAndFeedbackPreference?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_connectedApps_to_helpAndFeedback)
-            true
-        }
 
         if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
-        }
-        mCheckForUpdates?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_connected_apps_to_updated_apps)
-            true
-        }
-
-        mSeeAllCompatibleApps?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_connected_apps_to_play_store)
-            true
-        }
-
-        mSendFeedback?.setOnPreferenceClickListener {
-            val intent = Intent(Intent.ACTION_BUG_REPORT)
-            requireActivity().startActivity(intent)
-            true
         }
     }
 
@@ -148,10 +116,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             .setIcon(R.attr.disconnectAllIcon)
             .setTitle(R.string.permissions_disconnect_all_dialog_title)
             .setMessage(R.string.permissions_disconnect_all_dialog_message)
-            .setNegativeButton(android.R.string.cancel)
+            .setNegativeButton(
+                android.R.string.cancel)
             .setPositiveButton(R.string.permissions_disconnect_all_dialog_disconnect) { _, _ ->
-                viewModel.disconnectAllApps(apps)
-            }
+                    viewModel.disconnectAllApps(apps)
+                }
             .create()
             .show()
     }
@@ -182,59 +151,61 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun observeConnectedApps() {
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
+            clearAllCategories()
             if (connectedApps.isEmpty()) {
-                setupSharedMenu(viewLifecycleOwner)
-                mTopIntro?.title = getString(R.string.connected_apps_empty_list_section_title)
-                mThingsToTryCategory?.isVisible = true
-                mInactiveAppsPreference?.isVisible = false
-                mAllowedAppsCategory?.isVisible = false
-                mNotAllowedAppsCategory?.isVisible = false
-                mSettingAndHelpCategory?.isVisible = false
+                setupSharedMenu(viewLifecycleOwner, logger)
+                setUpEmptyState()
             } else {
-                setupMenu(R.menu.connected_apps, viewLifecycleOwner) { menuItem ->
+                setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger) { menuItem ->
                     when (menuItem.itemId) {
                         R.id.menu_search -> {
                             searchMenuItem = menuItem
+                            logger.logInteraction(AppPermissionsElement.SEARCH_BUTTON)
                             findNavController().navigate(R.id.action_connectedApps_to_searchApps)
                             true
                         }
                         else -> false
                     }
                 }
+                logger.logImpression(AppPermissionsElement.SEARCH_BUTTON)
+
                 mTopIntro?.title = getString(R.string.connected_apps_text)
                 mThingsToTryCategory?.isVisible = false
-                mInactiveAppsPreference?.isVisible = true
-                mAllowedAppsCategory?.isVisible = true
-                mNotAllowedAppsCategory?.isVisible = true
-                mSettingAndHelpCategory?.isVisible = true
+                setAppAndSettingsCategoriesVisibility(true)
+
                 val connectedAppsGroup = connectedApps.groupBy { it.status }
                 val allowedApps = connectedAppsGroup[ALLOWED].orEmpty()
                 val notAllowedApps = connectedAppsGroup[DENIED].orEmpty()
+                val activeApps: MutableList<ConnectedAppMetadata> = allowedApps.toMutableList()
+                activeApps.addAll(notAllowedApps)
+
+                mSettingsAndHelpCategory?.addPreference(
+                    getRemoveAccessForAllAppsPreference().also {
+                        it.isEnabled = allowedApps.isNotEmpty()
+                        it.setOnPreferenceClickListener {
+                            openRemoveAllAppsAccessDialog(activeApps)
+                            true
+                        }
+                    })
+                mSettingsAndHelpCategory?.addPreference(getHelpAndFeedbackPreference())
+
                 updateAllowedApps(allowedApps)
                 updateDeniedApps(notAllowedApps)
                 updateInactiveApps(connectedAppsGroup[INACTIVE].orEmpty())
-
-                val activeApps: MutableList<ConnectedAppMetadata> = allowedApps.toMutableList()
-                activeApps.addAll(notAllowedApps)
-                mRemoveAllApps?.isEnabled = allowedApps.isNotEmpty()
-                mRemoveAllApps?.setOnPreferenceClickListener {
-                    openRemoveAllAppsAccessDialog(activeApps)
-                    true
-                }
             }
         }
     }
 
     private fun updateInactiveApps(appsList: List<ConnectedAppMetadata>) {
-        mInactiveAppsPreference?.removeAll()
         if (appsList.isEmpty()) {
-            preferenceScreen.removePreference(mInactiveAppsPreference)
+            preferenceScreen.removePreference(mInactiveAppsCategory)
         } else {
             appsList.forEach { app ->
                 val inactiveAppPreference =
                     InactiveAppPreference(requireContext()).also {
                         it.title = app.appMetadata.appName
                         it.icon = app.appMetadata.icon
+                        it.logName = AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON
                         it.setOnDeleteButtonClickListener {
                             val appDeletionType =
                                 DeletionType.DeletionTypeAppData(
@@ -244,13 +215,12 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                                 bundleOf(DELETION_TYPE to appDeletionType))
                         }
                     }
-                mInactiveAppsPreference?.addPreference(inactiveAppPreference)
+                mInactiveAppsCategory?.addPreference(inactiveAppPreference)
             }
         }
     }
 
     private fun updateAllowedApps(appsList: List<ConnectedAppMetadata>) {
-        mAllowedAppsCategory?.removeAll()
         if (appsList.isEmpty()) {
             mAllowedAppsCategory?.addPreference(getNoAppsPreference(R.string.no_apps_allowed))
         } else {
@@ -262,8 +232,6 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     }
 
     private fun updateDeniedApps(appsList: List<ConnectedAppMetadata>) {
-        mNotAllowedAppsCategory?.removeAll()
-
         if (appsList.isEmpty()) {
             mNotAllowedAppsCategory?.addPreference(getNoAppsPreference(R.string.no_apps_denied))
         } else {
@@ -295,10 +263,100 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         onClick: (() -> Unit)? = null
     ): AppPreference {
         return HealthAppPreference(requireContext(), app.appMetadata).also {
+            if (app.status == ALLOWED) {
+                it.logName = AppPermissionsElement.CONNECTED_APP_BUTTON
+            } else if (app.status == DENIED) {
+                it.logName = AppPermissionsElement.NOT_CONNECTED_APP_BUTTON
+            }
             it.setOnPreferenceClickListener {
                 onClick?.invoke()
                 true
             }
         }
+    }
+
+    private fun getRemoveAccessForAllAppsPreference(): HealthPreference {
+        return HealthPreference(requireContext()).also {
+            it.title = resources.getString(R.string.disconnect_all_apps)
+            it.icon =
+                AttributeResolver.getDrawable(requireContext(), R.attr.removeAccessForAllAppsIcon)
+            it.logName = AppPermissionsElement.REMOVE_ALL_APPS_PERMISSIONS_BUTTON
+        }
+    }
+
+    private fun getHelpAndFeedbackPreference(): HealthPreference {
+        return HealthPreference(requireContext()).also {
+            it.title = resources.getString(R.string.help_and_feedback)
+            it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.helpAndFeedbackIcon)
+            it.logName = AppPermissionsElement.HELP_AND_FEEDBACK_BUTTON
+            it.setOnPreferenceClickListener {
+                findNavController().navigate(R.id.action_connectedApps_to_helpAndFeedback)
+                true
+            }
+        }
+    }
+
+    private fun getCheckForUpdatesPreference(): HealthPreference {
+        return HealthPreference(requireContext()).also {
+            it.title = resources.getString(R.string.check_for_updates)
+            it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.checkForUpdatesIcon)
+            it.summary = resources.getString(R.string.check_for_updates_description)
+            it.logName = AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON
+            it.setOnPreferenceClickListener {
+                findNavController().navigate(R.id.action_connected_apps_to_updated_apps)
+                true
+            }
+        }
+    }
+
+    private fun getSeeAllCompatibleAppsPreference(): HealthPreference {
+        return HealthPreference(requireContext()).also {
+            it.title = resources.getString(R.string.see_all_compatible_apps)
+            it.icon =
+                AttributeResolver.getDrawable(requireContext(), R.attr.seeAllCompatibleAppsIcon)
+            it.summary = resources.getString(R.string.see_all_compatible_apps_description)
+            it.logName = AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON
+            it.setOnPreferenceClickListener {
+                findNavController().navigate(R.id.action_connected_apps_to_play_store)
+                true
+            }
+        }
+    }
+
+    private fun getSendFeedbackPreference(): Preference {
+        return Preference(requireContext()).also {
+            it.title = resources.getString(R.string.send_feedback)
+            it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.sendFeedbackIcon)
+            it.summary = resources.getString(R.string.send_feedback_description)
+            it.setOnPreferenceClickListener {
+                val intent = Intent(Intent.ACTION_BUG_REPORT)
+                requireActivity().startActivity(intent)
+                true
+            }
+        }
+    }
+
+    private fun setUpEmptyState() {
+        mTopIntro?.title = getString(R.string.connected_apps_empty_list_section_title)
+        mThingsToTryCategory?.isVisible = true
+        mThingsToTryCategory?.addPreference(getCheckForUpdatesPreference())
+        mThingsToTryCategory?.addPreference(getSeeAllCompatibleAppsPreference())
+        mThingsToTryCategory?.addPreference(getSendFeedbackPreference())
+        setAppAndSettingsCategoriesVisibility(false)
+    }
+
+    private fun setAppAndSettingsCategoriesVisibility(isVisible: Boolean) {
+        mInactiveAppsCategory?.isVisible = isVisible
+        mAllowedAppsCategory?.isVisible = isVisible
+        mNotAllowedAppsCategory?.isVisible = isVisible
+        mSettingsAndHelpCategory?.isVisible = isVisible
+    }
+
+    private fun clearAllCategories() {
+        mThingsToTryCategory?.removeAll()
+        mAllowedAppsCategory?.removeAll()
+        mNotAllowedAppsCategory?.removeAll()
+        mInactiveAppsCategory?.removeAll()
+        mSettingsAndHelpCategory?.removeAll()
     }
 }

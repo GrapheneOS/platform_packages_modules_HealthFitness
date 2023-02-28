@@ -30,6 +30,8 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.ProgressDialogFragment
 import com.android.healthconnect.controller.utils.ExternalActivityLauncher.openHCGetStartedLink
 import com.android.healthconnect.controller.utils.ExternalActivityLauncher.openSendFeedbackActivity
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
 
 /** Sets fragment title on the collapsing layout, delegating to host if needed. */
 fun Fragment.setTitle(@StringRes title: Int) {
@@ -39,7 +41,8 @@ fun Fragment.setTitle(@StringRes title: Int) {
 fun Fragment.setupMenu(
     @MenuRes menuRes: Int,
     viewLifecycleOwner: LifecycleOwner,
-    onMenuItemSelected: (MenuItem) -> Boolean
+    logger: HealthConnectLogger? = null,
+    onMenuItemSelected: (MenuItem) -> Boolean,
 ) {
 
     val menuProvider =
@@ -56,6 +59,9 @@ fun Fragment.setupMenu(
                         true
                     }
                     R.id.menu_help -> {
+                        // TODO (b/270864219) might be able to move impression out of this method
+                        logger?.logImpression(ToolbarElement.TOOLBAR_HELP_BUTTON)
+                        logger?.logInteraction(ToolbarElement.TOOLBAR_HELP_BUTTON)
                         openHCGetStartedLink(requireActivity())
                         true
                     }
@@ -63,16 +69,18 @@ fun Fragment.setupMenu(
                 }
             }
         }
+
     (requireActivity() as MenuHost).addMenuProvider(
         menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
 }
 
 fun Fragment.setupSharedMenu(
     viewLifecycleOwner: LifecycleOwner,
+    logger: HealthConnectLogger? = null,
     @MenuRes menuRes: Int = R.menu.send_feedback_and_help,
     onMenuItemSelected: (MenuItem) -> Boolean = { false }
 ) {
-    setupMenu(menuRes, viewLifecycleOwner, onMenuItemSelected)
+    setupMenu(menuRes, viewLifecycleOwner, logger, onMenuItemSelected)
 }
 
 fun Fragment.showLoadingDialog() {

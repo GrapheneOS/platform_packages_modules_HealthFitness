@@ -15,7 +15,7 @@ class ExerciseRoutesTestData {
     companion object {
 
         // https://screenshot.googleplex.com/9MRH639gSzFpgzY
-        private val WARSAW_ROUTE =
+        val WARSAW_ROUTE =
             listOf(
                 ExerciseRouteLocationData(12, 52.26019, 21.02268),
                 ExerciseRouteLocationData(40, 52.26000, 21.02360),

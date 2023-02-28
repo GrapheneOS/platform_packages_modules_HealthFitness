@@ -21,15 +21,32 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.logging.ElementName
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import com.android.settingslib.widget.AppPreference
+import dagger.hilt.android.EntryPointAccessors
 
 /** Custom preference for displaying an inactive app. */
 class InactiveAppPreference constructor(context: Context) : AppPreference(context) {
     private var deleteButtonListener: OnClickListener? = null
 
+    private var logger: HealthConnectLogger
+    var logName : ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+
     init {
         widgetLayoutResource = R.layout.widget_delete_inactive_app
         isSelectable = false
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
+    }
+
+    override fun onAttached() {
+        super.onAttached()
+        logger.logImpression(logName)
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {
@@ -48,7 +65,11 @@ class InactiveAppPreference constructor(context: Context) : AppPreference(contex
 
     /** Sets the listener for delete button click. */
     fun setOnDeleteButtonClickListener(listener: OnClickListener) {
-        deleteButtonListener = listener
+        val loggingClickListener = OnClickListener {
+            logger.logInteraction(logName)
+            listener.onClick(it)
+        }
+        deleteButtonListener = loggingClickListener
         notifyChanged()
     }
 }
