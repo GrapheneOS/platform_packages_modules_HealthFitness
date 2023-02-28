@@ -117,6 +117,13 @@ public class AggregateTableRequest {
     }
 
     /**
+     * @return {@link RecordHelper} for this request
+     */
+    public RecordHelper<?> getRecordHelper() {
+        return mRecordHelper;
+    }
+
+    /**
      * @return results fetched after performing aggregate operation for this class.
      *     <p>Note: Only available after the call to {@link
      *     TransactionManager#populateWithAggregation} has been made
