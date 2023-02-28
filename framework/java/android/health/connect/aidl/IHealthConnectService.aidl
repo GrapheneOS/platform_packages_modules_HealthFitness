@@ -101,7 +101,7 @@ interface IHealthConnectService {
      *     delete changes corresponding to {@code request}
      */
     void getChangeLogToken(
-        String packageName,
+        in AttributionSource attributionSource,
         in ChangeLogTokenRequest request,
         in IGetChangeLogTokenCallback callback);
 
