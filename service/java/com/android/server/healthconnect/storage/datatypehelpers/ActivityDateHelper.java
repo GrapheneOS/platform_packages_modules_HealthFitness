@@ -148,7 +148,6 @@ public final class ActivityDateHelper {
 
     @NonNull
     List<Pair<String, String>> getColumnInfo() {
-        // TODO(260554339): Update the db columns to store dates as integers
         return Arrays.asList(
                 new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT),
                 new Pair<>(DATE_COLUMN_NAME, INTEGER_NOT_NULL),
