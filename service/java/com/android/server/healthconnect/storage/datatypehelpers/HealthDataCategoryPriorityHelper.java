@@ -162,14 +162,21 @@ public class HealthDataCategoryPriorityHelper {
                 newPriorityList);
     }
 
+    /** Returns list of package names based on priority for the input {@link HealthDataCategory} */
     @NonNull
     public List<String> getPriorityOrder(@HealthDataCategory.Type int type) {
+        return AppInfoHelper.getInstance().getPackageNames(getAppIdPriorityOrder(type));
+    }
+
+    /** Returns list of App ids based on priority for the input {@link HealthDataCategory} */
+    @NonNull
+    public List<Long> getAppIdPriorityOrder(@HealthDataCategory.Type int type) {
         List<Long> packageIds = getHealthDataCategoryToAppIdPriorityMap().get(type);
         if (packageIds == null) {
             return Collections.emptyList();
         }
 
-        return AppInfoHelper.getInstance().getPackageNames(packageIds);
+        return packageIds;
     }
 
     public void setPriorityOrder(int dataCategory, @NonNull List<String> packagePriorityOrder) {
