@@ -92,7 +92,7 @@ public final class MergeDataHelper {
     private TreeSet<RecordData> mBufferWindow;
     private List<RecordData> mRecordDataList = new ArrayList<>();
     private final Cursor mCursor;
-    private List<String> mReversedPriorityList;
+    private List<Long> mReversedPriorityList;
     private Instant mStartTime;
     private Instant mEndTime;
     private final String mColumnNameToMerge;
@@ -100,7 +100,7 @@ public final class MergeDataHelper {
 
     public MergeDataHelper(
             @NonNull Cursor cursor,
-            @NonNull List<String> priorityList,
+            @NonNull List<Long> priorityList,
             @NonNull String columnNameToMerge,
             @NonNull Class<?> valueColumnType) {
         Objects.requireNonNull(cursor);
@@ -344,8 +344,8 @@ public final class MergeDataHelper {
 
     private int compare(RecordData data1, RecordData data2) {
 
-        int priority1 = mReversedPriorityList.indexOf(String.valueOf(data1.getAppId()));
-        int priority2 = mReversedPriorityList.indexOf(String.valueOf(data2.getAppId()));
+        int priority1 = mReversedPriorityList.indexOf(data1.getAppId());
+        int priority2 = mReversedPriorityList.indexOf(data2.getAppId());
 
         return (priority1 != priority2) ? (priority1 - priority2) : getRecentUpdated(data1, data2);
     }

@@ -32,11 +32,13 @@ import android.health.connect.Constants;
 import android.health.connect.TimeRangeFilter;
 import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
 import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MergeDataHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.OrderByClause;
@@ -239,8 +241,12 @@ public class AggregateTableRequest {
                 int index = 0;
                 long groupStartTime = mStartTime;
                 long groupEndTime = getGroupEndTime(groupStartTime);
-                List<String> priorityList =
-                        StorageUtils.getPriorityList(mRecordHelper.getRecordIdentifier());
+                List<Long> priorityList =
+                        HealthDataCategoryPriorityHelper.getInstance()
+                                .getAppIdPriorityOrder(
+                                        RecordTypeRecordCategoryMapper
+                                                .getRecordCategoryForRecordType(
+                                                        mRecordHelper.getRecordIdentifier()));
                 MergeDataHelper mergeDataHelper =
                         new MergeDataHelper(
                                 cursor,
