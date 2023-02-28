@@ -60,7 +60,9 @@ public class HealthConnectBackupAgent extends BackupAgent {
     @Override
     public void onFullBackup(FullBackupDataOutput data) throws IOException {
         Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
-        Set<String> backupFileNames = mHealthConnectManager.getAllBackupFileNames();
+        Set<String> backupFileNames =
+                mHealthConnectManager.getAllBackupFileNames(
+                        (data.getTransportFlags() & FLAG_DEVICE_TO_DEVICE_TRANSFER) != 0);
         File backupDataDir = getBackupDataDir();
         backupFileNames.forEach(
                 (fileName) -> {

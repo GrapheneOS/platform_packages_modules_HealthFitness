@@ -1186,9 +1186,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @see HealthConnectManager#getAllBackupFileNames
      */
     @Override
-    public BackupFileNamesSet getAllBackupFileNames(@NonNull UserHandle userHandle) {
+    public BackupFileNamesSet getAllBackupFileNames(
+            @NonNull UserHandle userHandle, boolean forDeviceToDevice) {
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
-        return mBackupRestore.getAllBackupFileNames(userHandle);
+        return mBackupRestore.getAllBackupFileNames(userHandle, forDeviceToDevice);
     }
 
     /**
