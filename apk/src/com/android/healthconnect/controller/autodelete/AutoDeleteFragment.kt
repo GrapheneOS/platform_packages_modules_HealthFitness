@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.autodelete
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
@@ -64,14 +65,18 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
 
         viewModel.storedAutoDeleteRange.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is AutoDeleteViewModel.AutoDeleteState.Loading -> {}
-                is AutoDeleteViewModel.AutoDeleteState.LoadingFailed -> {}
+                is AutoDeleteViewModel.AutoDeleteState.Loading -> {
+                    // do nothing
+                }
+                is AutoDeleteViewModel.AutoDeleteState.LoadingFailed -> {
+                    Toast.makeText(activity, R.string.default_error, Toast.LENGTH_LONG).show()
+                }
                 is AutoDeleteViewModel.AutoDeleteState.WithData -> {
                     mAutoDeleteSection?.removeAll()
-                    val newPreference =
+                    val autoDeletePreference =
                         AutoDeleteRangePickerPreference(
                             requireContext(), childFragmentManager, state.autoDeleteRange, logger)
-                    mAutoDeleteSection?.addPreference(newPreference)
+                    mAutoDeleteSection?.addPreference(autoDeletePreference)
                 }
             }
         }

@@ -96,13 +96,13 @@ constructor(
 
     private fun setRadioButtonTexts(radioGroup: RadioGroup) {
         val radioButton3Months: RadioButton = radioGroup.findViewById(R.id.radio_button_3_months)
-        var count = numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS)
+        var count = AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS.numberOfMonths
         radioButton3Months.text =
             MessageFormat.format(
                 context.getString(R.string.range_after_x_months), mapOf("count" to count))
 
         val radioButton18Months: RadioButton = radioGroup.findViewById(R.id.radio_button_18_months)
-        count = numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS)
+        count = AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS.numberOfMonths
         radioButton18Months.text =
             MessageFormat.format(
                 context.getString(R.string.range_after_x_months), mapOf("count" to count))
