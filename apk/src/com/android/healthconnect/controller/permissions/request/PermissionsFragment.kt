@@ -19,7 +19,10 @@
 package com.android.healthconnect.controller.permissions.request
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -33,7 +36,11 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.children
-import com.android.settingslib.widget.MainSwitchPreference
+import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
+import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -48,6 +55,8 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         private const val WRITE_CATEGORY = "write_permission_category"
         private const val HEADER = "request_permissions_header"
     }
+    private val pageName = PageName.REQUEST_PERMISSIONS_PAGE
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val viewModel: RequestPermissionViewModel by activityViewModels()
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
@@ -56,7 +65,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         preferenceScreen.findPreference(HEADER)
     }
 
-    private val allowAllPreference: MainSwitchPreference? by lazy {
+    private val allowAllPreference: HealthMainSwitchPreference? by lazy {
         preferenceScreen.findPreference(ALLOW_ALL_PREFERENCE)
     }
 
@@ -79,16 +88,40 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             viewModel.updatePermissions(grant)
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        logger.setPageId(pageName)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logger.setPageId(pageName)
+        logger.logPageImpression()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        logger.setPageId(pageName)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.permissions_screen, rootKey)
+        allowAllPreference?.logNameActive = PermissionsElement.ALLOW_ALL_SWITCH
+        allowAllPreference?.logNameInactive = PermissionsElement.ALLOW_ALL_SWITCH
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.appMetadata.observe(viewLifecycleOwner) { app ->
+            logger.logImpression(PermissionsElement.APP_RATIONALE_LINK)
             header?.bind(app.appName) {
                 val startRationaleIntent =
                     healthPermissionReader.getApplicationRationaleIntent(app.packageName)
+                logger.logInteraction(PermissionsElement.APP_RATIONALE_LINK)
                 startActivity(startRationaleIntent)
             }
             mReadPermissionCategory?.title =
@@ -133,13 +166,15 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         defaultValue: Boolean,
         permission: HealthPermission
     ): Preference {
-        return SwitchPreference(requireContext()).also {
+        return HealthSwitchPreference(requireContext()).also {
             val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
             it.setIcon(healthCategory.icon())
             it.setDefaultValue(defaultValue)
             it.setTitle(
                 HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
                     .uppercaseLabel)
+            it.logNameActive = PermissionsElement.PERMISSION_SWITCH
+            it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
             it.setOnPreferenceChangeListener { _, newValue ->
                 viewModel.updatePermission(permission, newValue as Boolean)
                 true
