@@ -41,14 +41,16 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
+import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,12 +59,16 @@ import dagger.hilt.android.AndroidEntryPoint
  * Fragment to show allowed and denied apps for health permissions. It is used as an entry point
  * from PermissionController.
  */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment() {
 
     companion object {
         const val ALLOWED_APPS_GROUP = "allowed_apps"
         const val DENIED_APPS_GROUP = "denied_apps"
+    }
+
+    init {
+        this.setPageName(PageName.SETTINGS_MANAGE_PERMISSIONS_PAGE)
     }
 
     private val allowedAppsGroup: PreferenceGroup? by lazy {
@@ -76,6 +82,7 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
     private val viewModel: ConnectedAppsViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.settings_manage_permission_screen, rootKey)
     }
 
@@ -130,9 +137,12 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
     }
 
     private fun getAppPreference(app: ConnectedAppMetadata): AppPreference {
-        return AppPreference(requireContext()).also {
-            it.title = app.appMetadata.appName
-            it.icon = app.appMetadata.icon
+        return HealthAppPreference(requireContext(), app.appMetadata).also {
+            if (app.status == ALLOWED) {
+                it.logName = AppPermissionsElement.CONNECTED_APP_BUTTON
+            } else if (app.status == DENIED) {
+                it.logName = AppPermissionsElement.NOT_CONNECTED_APP_BUTTON
+            }
             if (app.healthUsageLastAccess != null) {
                 it.setSummary(R.string.app_perms_content_provider_24h)
             } else {

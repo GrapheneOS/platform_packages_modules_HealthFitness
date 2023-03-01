@@ -20,7 +20,7 @@
     android:id="@+id/auto_delete_range_picker_layout">
     <!-- by default the last radio button is checked -->
     <RadioGroup
-        android:id="@+id/radio_group"
+        android:id="@+id/radio_group_time_range"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
