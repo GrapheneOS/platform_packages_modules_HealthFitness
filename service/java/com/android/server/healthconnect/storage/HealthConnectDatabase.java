@@ -47,7 +47,7 @@ import java.util.Collection;
  */
 public class HealthConnectDatabase extends SQLiteOpenHelper {
     private static final String TAG = "HealthConnectDatabase";
-    private static final int DATABASE_VERSION = 7; // Last bumped on 2023-03-17T17:23:29Z
+    private static final int DATABASE_VERSION = 8; // Last bumped on 2023-03-24T00:37:29Z
     private static final String DATABASE_NAME = "healthconnect.db";
 
     @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;
@@ -100,7 +100,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
         ChangeLogsHelper.getInstance().onUpgrade(newVersion, db);
         ChangeLogsRequestHelper.getInstance().onUpgrade(newVersion, db);
         HealthDataCategoryPriorityHelper.getInstance().onUpgrade(newVersion, db);
-        ActivityDateHelper.getInstance().onUpgrade(newVersion, db);
+        ActivityDateHelper.getInstance().onUpgrade(db, oldVersion);
         MigrationEntityHelper.getInstance().onUpgrade(db, oldVersion);
         PriorityMigrationHelper.getInstance().onUpgrade(db, oldVersion);
     }
