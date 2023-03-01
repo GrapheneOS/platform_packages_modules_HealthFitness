@@ -24,6 +24,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMATION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.utils.logging.DeletionDialogConfirmationElement
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -40,20 +41,33 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
 
         val alertDialogBuilder =
             AlertDialogBuilder(this)
+                .setLogName(
+                    DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_CONTAINER)
                 .setTitle(buildTitle())
                 .setIcon(R.attr.deleteIcon)
                 .setMessage(message)
-                .setPositiveButton(R.string.confirming_question_delete_button) { _, _ ->
-                    setFragmentResult(CONFIRMATION_EVENT, Bundle())
-                }
+                .setPositiveButton(
+                    R.string.confirming_question_delete_button,
+                    DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_DELETE_BUTTON) {
+                        _,
+                        _ ->
+                        setFragmentResult(CONFIRMATION_EVENT, Bundle())
+                    }
 
         if (viewModel.showTimeRangeDialogFragment) {
-            alertDialogBuilder.setNegativeButton(R.string.confirming_question_go_back_button) { _, _
-                ->
-                setFragmentResult(GO_BACK_EVENT, Bundle())
-            }
+            alertDialogBuilder.setNegativeButton(
+                R.string.confirming_question_go_back_button,
+                DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_GO_BACK_BUTTON) {
+                    _,
+                    _ ->
+                    setFragmentResult(GO_BACK_EVENT, Bundle())
+                }
         } else {
-            alertDialogBuilder.setNegativeButton(android.R.string.cancel) { _, _ -> }
+            alertDialogBuilder.setNegativeButton(
+                android.R.string.cancel,
+                DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_CANCEL_BUTTON) { _, _
+                    ->
+                }
         }
 
         return alertDialogBuilder.create()
