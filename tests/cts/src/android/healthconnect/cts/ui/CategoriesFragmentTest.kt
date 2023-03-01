@@ -15,7 +15,11 @@
  */
 package android.healthconnect.cts.ui
 
+import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.StepsRecord
+import android.healthconnect.cts.TestUtils
 import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
@@ -27,12 +31,16 @@ import android.healthconnect.cts.ui.testing.UiTestUtils.waitNotDisplayed
 import androidx.test.uiautomator.By
 import org.junit.After
 import org.junit.Test
+import java.time.Instant
 
 /** CTS test for HealthConnect Categories screen. */
 class CategoriesFragmentTest : HealthConnectBaseTest() {
 
     @Test
     fun categoriesFragment_openAllCategories() {
+        val records: List<Record> = listOf(stepsRecordFromTestApp(), stepsRecordFromTestApp())
+        insertRecords(records)
+
         context.launchMainActivity {
             clickOnText("Data and access")
             clickOnText("See all categories")
@@ -84,6 +92,12 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
 
     @After
     fun tearDown() {
+        TestUtils.verifyDeleteRecords(
+                StepsRecord::class.java,
+                TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build())
         navigateBackToHomeScreen()
     }
 

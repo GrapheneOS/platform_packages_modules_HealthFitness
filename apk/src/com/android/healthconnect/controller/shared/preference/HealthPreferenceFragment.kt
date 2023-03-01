@@ -19,9 +19,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.Animation.AnimationListener
+import android.view.animation.AnimationUtils.loadAnimation
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import androidx.recyclerview.widget.RecyclerView
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.HealthPreferenceComparisonCallback
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
@@ -34,7 +40,13 @@ import dagger.hilt.android.EntryPointAccessors
 abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
 
     private lateinit var logger: HealthConnectLogger
+    private lateinit var loadingView: View
+    private lateinit var errorView: TextView
+    private lateinit var preferenceContainer: ViewGroup
+    private lateinit var prefView: ViewGroup
     private var pageName: PageName = PageName.UNKNOWN_PAGE
+    private var isLoading: Boolean = false
+    private var hasError: Boolean = false
 
     fun setPageName(pageName: PageName) {
         this.pageName = pageName
@@ -42,11 +54,7 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val hiltEntryPoint =
-            EntryPointAccessors.fromApplication(
-                requireContext().applicationContext, HealthConnectLoggerEntryPoint::class.java)
-        logger = hiltEntryPoint.logger()
-        logger.setPageId(pageName)
+        setupLogger()
     }
 
     override fun onResume() {
@@ -61,7 +69,16 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
         savedInstanceState: Bundle?
     ): View? {
         logger.setPageId(pageName)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        val rootView =
+            inflater.inflate(R.layout.preference_frame, container, /*attachToRoot */ false)
+        loadingView = rootView.findViewById(R.id.progress_indicator)
+        errorView = rootView.findViewById(R.id.error_view)
+        prefView = rootView.findViewById(R.id.pref_container)
+        preferenceContainer =
+            super.onCreateView(inflater, container, savedInstanceState) as ViewGroup
+        setLoading(isLoading, animate = false, force = true)
+        prefView.addView(preferenceContainer)
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,5 +99,63 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
          * allow the list to track the changes, we need to ignore the Preference IDs. */
         adapter.setHasStableIds(false)
         return adapter
+    }
+
+    protected fun setLoading(isLoading: Boolean, animate: Boolean = true) {
+        setLoading(isLoading, animate, false)
+    }
+
+    protected fun setError(hasError: Boolean, @StringRes errorText: Int = R.string.default_error) {
+        if (this.hasError != hasError) {
+            this.hasError = hasError
+            // If there is no created view, there is no reason to animate.
+            val canAnimate = view != null
+            setViewShown(preferenceContainer, !hasError, canAnimate)
+            setViewShown(loadingView, !hasError, canAnimate)
+            setViewShown(errorView, hasError, canAnimate)
+        }
+    }
+
+    private fun setLoading(loading: Boolean, animate: Boolean, force: Boolean) {
+        if (isLoading != loading || force) {
+            isLoading = loading
+            // If there is no created view, there is no reason to animate.
+            val canAnimate = animate && view != null
+            setViewShown(preferenceContainer, !loading, canAnimate)
+            setViewShown(errorView, shown = false, animate = false)
+            setViewShown(loadingView, loading, canAnimate)
+        }
+    }
+
+    private fun setViewShown(view: View, shown: Boolean, animate: Boolean) {
+        if (animate) {
+            val animation: Animation =
+                loadAnimation(
+                    context, if (shown) android.R.anim.fade_in else android.R.anim.fade_out)
+            if (shown) {
+                view.visibility = View.VISIBLE
+            } else {
+                animation.setAnimationListener(
+                    object : AnimationListener {
+                        override fun onAnimationStart(animation: Animation) {}
+                        override fun onAnimationRepeat(animation: Animation) {}
+                        override fun onAnimationEnd(animation: Animation) {
+                            view.visibility = View.INVISIBLE
+                        }
+                    })
+            }
+            view.startAnimation(animation)
+        } else {
+            view.clearAnimation()
+            view.visibility = if (shown) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupLogger() {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                requireContext().applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
+        logger.setPageId(pageName)
     }
 }

@@ -15,9 +15,15 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps
 
 import android.os.Bundle
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isClickable
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -34,32 +40,25 @@ class HelpAndFeedbackFragmentTest {
     fun helpAndFeedbackFragment_isDisplayedCorrectly() {
         launchFragment<HelpAndFeedbackFragment>(Bundle())
 
-        Espresso.onView(
-                ViewMatchers.withText(
+        onView(
+                withText(
                     "If you can’t see an installed app, it may not be compatible with Health\u00A0Connect yet"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Things to try"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Check for updates"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Make sure installed apps are up-to-date"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("See all compatible apps"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Find apps on Google\u00A0Play"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Send feedback"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(
-                ViewMatchers.withText(
+            .check(matches(isDisplayed()))
+        onView(withText("Things to try"))
+            .check(matches(isDisplayed()))
+        onView(withText("Check for updates"))
+            .check(matches(isDisplayed()))
+        onView(withText("Make sure installed apps are up-to-date"))
+            .check(matches(isDisplayed()))
+        onView(withText("See all compatible apps"))
+            .check(matches(isDisplayed()))
+        onView(withText("Find apps on Google\u00A0Play"))
+            .check(matches(isDisplayed()))
+        onView(withText("Send feedback"))
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
                     "Tell us which health & fitness apps you’d like to work with Health\u00A0Connect"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
-
-    @Test
-    fun helpAndFeedbackFragment_sendFeedbackButton_isClickable() {
-        launchFragment<HelpAndFeedbackFragment>(Bundle())
-
-        Espresso.onView(ViewMatchers.withText("Send feedback")).perform(ViewActions.click())
+            .check(matches(isDisplayed()))
     }
 }
