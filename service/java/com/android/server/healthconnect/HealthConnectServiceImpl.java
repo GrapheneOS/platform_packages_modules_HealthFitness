@@ -284,7 +284,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 attributionSource.getPackageName(),
                                                 recordInternals,
                                                 mContext,
-                                                /* isInsertRequest */ true));
+                                                /* isInsertRequest */ true),
+                                        true);
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                         HealthConnectThreadScheduler.scheduleInternalTask(
                                 () -> {

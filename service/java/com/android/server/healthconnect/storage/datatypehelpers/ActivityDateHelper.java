@@ -171,8 +171,7 @@ public final class ActivityDateHelper {
      */
     private HashMap<Integer, List<Long>> readDates(@NonNull ReadTableRequest request) {
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        final SQLiteDatabase db = transactionManager.getReadableDb();
-        try (Cursor cursor = transactionManager.read(db, request)) {
+        try (Cursor cursor = transactionManager.read(request)) {
             return getRecordIdToDatesMap(cursor);
         }
     }

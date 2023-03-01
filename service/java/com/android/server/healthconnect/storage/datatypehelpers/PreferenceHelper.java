@@ -23,7 +23,6 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -101,8 +100,7 @@ public final class PreferenceHelper {
 
         mPreferences = new ConcurrentHashMap<>();
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        final SQLiteDatabase db = transactionManager.getReadableDb();
-        try (Cursor cursor = transactionManager.read(db, new ReadTableRequest(TABLE_NAME))) {
+        try (Cursor cursor = transactionManager.read(new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
                 String key = StorageUtils.getCursorString(cursor, KEY_COLUMN_NAME);
                 String value = StorageUtils.getCursorString(cursor, VALUE_COLUMN_NAME);

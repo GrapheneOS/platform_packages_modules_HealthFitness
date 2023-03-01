@@ -87,8 +87,7 @@ public final class ChangeLogsRequestHelper {
                                         .addWhereEqualsClause(
                                                 PACKAGE_NAME_COLUMN_NAME, packageName));
         TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        final SQLiteDatabase db = transactionManager.getReadableDb();
-        try (Cursor cursor = transactionManager.read(db, readTableRequest)) {
+        try (Cursor cursor = transactionManager.read(readTableRequest)) {
             if (!cursor.moveToFirst()) {
                 throw new IllegalArgumentException("Invalid token");
             }
