@@ -32,7 +32,7 @@ import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.permission.PackagePermissionChangesMonitor;
+import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
@@ -49,7 +49,7 @@ import java.util.Objects;
 public class HealthConnectManagerService extends SystemService {
     private static final String TAG = "HealthConnectManagerService";
     private final Context mContext;
-    private final PackagePermissionChangesMonitor mPackageMonitor;
+    private final PermissionPackageChangesOrchestrator mPackageMonitor;
     private final HealthConnectServiceImpl mHealthConnectService;
     private final TransactionManager mTransactionManager;
     private final UserManager mUserManager;
@@ -70,7 +70,8 @@ public class HealthConnectManagerService extends SystemService {
                         permissionIntentTracker,
                         firstGrantTimeManager);
         mPackageMonitor =
-                new PackagePermissionChangesMonitor(permissionIntentTracker, firstGrantTimeManager);
+                new PermissionPackageChangesOrchestrator(
+                        permissionIntentTracker, firstGrantTimeManager, permissionHelper);
         mUserManager = context.getSystemService(UserManager.class);
         mCurrentUser = context.getUser();
         mContext = context;

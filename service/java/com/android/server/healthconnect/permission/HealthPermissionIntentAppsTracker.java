@@ -43,7 +43,7 @@ import java.util.Set;
  */
 // TODO(b/249527134) Add more tests for this class (package_change and package_replaced broadcasts).
 public class HealthPermissionIntentAppsTracker {
-    private static final String TAG = "HealthPermissionIntentAppsTracker";
+    private static final String TAG = "HealthPermIntentTracker";
     private static final Intent HEALTH_PERMISSIONS_USAGE_INTENT = getHealthPermissionsUsageIntent();
 
     private final PackageManager mPackageManager;
@@ -78,21 +78,46 @@ public class HealthPermissionIntentAppsTracker {
             }
 
             if (!mUserToHealthPackageNamesMap.get(userHandle).contains(packageName)) {
-                updatePackageStateForUser(packageName, userHandle);
+                updateStateAndGetIfIntentWasRemoved(packageName, userHandle);
             }
 
             return mUserToHealthPackageNamesMap.get(userHandle).contains(packageName);
         }
     }
 
-    void onPackageChanged(@NonNull String packageName, @NonNull UserHandle userHandle) {
+    /**
+     * Updates package state if needed, returns whether activity for {@link
+     * android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} with {@link
+     * HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS} support has been disabled/removed.
+     */
+    boolean updateStateAndGetIfIntentWasRemoved(
+            @NonNull String packageNameToUpdate, @NonNull UserHandle userHandle) {
         synchronized (mLock) {
             if (!mUserToHealthPackageNamesMap.containsKey(userHandle)) {
-                mUserToHealthPackageNamesMap.put(userHandle, new ArraySet<String>());
+                mUserToHealthPackageNamesMap.put(userHandle, new ArraySet<>());
             }
         }
 
-        updatePackageStateForUser(packageName, userHandle);
+        Intent permissionPackageUsageIntent = getHealthPermissionsUsageIntent();
+        permissionPackageUsageIntent.setPackage(packageNameToUpdate);
+        boolean removedIntent = false;
+        if (!mPackageManager
+                .queryIntentActivitiesAsUser(
+                        permissionPackageUsageIntent,
+                        PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL),
+                        userHandle)
+                .isEmpty()) {
+            synchronized (mLock) {
+                mUserToHealthPackageNamesMap.get(userHandle).add(packageNameToUpdate);
+            }
+        } else {
+            synchronized (mLock) {
+                removedIntent =
+                        mUserToHealthPackageNamesMap.get(userHandle).remove(packageNameToUpdate);
+            }
+        }
+        logStateIfDebugMode(userHandle);
+        return removedIntent;
     }
 
     private static Intent getHealthPermissionsUsageIntent() {
@@ -111,26 +136,6 @@ public class HealthPermissionIntentAppsTracker {
         for (UserHandle userHandle : userHandles) {
             initPackageSetForUser(userHandle);
         }
-    }
-
-    private void updatePackageStateForUser(
-            @NonNull String packageNameToUpdate, @NonNull UserHandle userHandle) {
-        Intent permissionPackageUsageIntent = getHealthPermissionsUsageIntent();
-        permissionPackageUsageIntent.setPackage(packageNameToUpdate);
-        if (mPackageManager.resolveActivity(
-                        permissionPackageUsageIntent,
-                        PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL))
-                != null) {
-            synchronized (mLock) {
-                mUserToHealthPackageNamesMap.get(userHandle).add(packageNameToUpdate);
-            }
-        } else {
-            // TODO(b/249527134) Revoke health permissions in this case.
-            synchronized (mLock) {
-                mUserToHealthPackageNamesMap.get(userHandle).remove(packageNameToUpdate);
-            }
-        }
-        logStateIfDebugMode(userHandle);
     }
 
     /** Update list of health apps for given user. */
@@ -168,7 +173,7 @@ public class HealthPermissionIntentAppsTracker {
 
     private void logStateIfDebugMode(@NonNull UserHandle userHandle) {
         if (Constants.DEBUG) {
-            Log.d(TAG, "State for user: " + String.valueOf(userHandle.getIdentifier()));
+            Log.d(TAG, "State for user: " + userHandle.getIdentifier());
             synchronized (mLock) {
                 Log.d(TAG, mUserToHealthPackageNamesMap.toString());
             }
