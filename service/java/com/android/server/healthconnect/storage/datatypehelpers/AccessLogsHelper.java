@@ -29,7 +29,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -86,8 +85,7 @@ public final class AccessLogsHelper {
         List<AccessLog> accessLogsList = new ArrayList<>();
         final AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        final SQLiteDatabase db = transactionManager.getReadableDb();
-        try (Cursor cursor = transactionManager.read(db, readTableRequest)) {
+        try (Cursor cursor = transactionManager.read(readTableRequest)) {
             while (cursor.moveToNext()) {
                 String packageName =
                         String.valueOf(
