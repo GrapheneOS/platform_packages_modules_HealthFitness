@@ -51,6 +51,7 @@ import android.health.connect.HealthConnectManager.DataDownloadState;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.accesslog.AccessLog;
+import android.health.connect.accesslog.AccessLogsResponseParcel;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
@@ -408,16 +409,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         AtomicBoolean enforceSelfRead = new AtomicBoolean();
         if (!holdsDataManagementPermission) {
             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
-            if (mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
-                            request.getRecordType(), attributionSource)
-                    || !isInForeground) {
-                // If requesting app has only write permission allowed but no read permission for
-                // the record type or if app is not in foreground then allow to read its own
-                // records.
-                enforceSelfRead.set(true);
-            } else {
-                enforceSelfRead.set(false);
-            }
+            // If requesting app has only write permission allowed but no read permission for
+            // the record type or if app is not in foreground then allow to read its own
+            // records.
+            enforceSelfRead.set(
+                    mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
+                                    request.getRecordType(), attributionSource)
+                            || !isInForeground);
             RateLimiter.tryAcquireApiCallQuota(
                     uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground);
         }
@@ -959,7 +957,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         final List<AccessLog> accessLogsList =
                                 AccessLogsHelper.getInstance().queryAccessLogs();
-                        callback.onResult(accessLogsList);
+                        callback.onResult(new AccessLogsResponseParcel(accessLogsList));
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
                         tryAndThrowException(
@@ -1186,9 +1184,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @see HealthConnectManager#getAllBackupFileNames
      */
     @Override
-    public BackupFileNamesSet getAllBackupFileNames(@NonNull UserHandle userHandle) {
+    public BackupFileNamesSet getAllBackupFileNames(
+            @NonNull UserHandle userHandle, boolean forDeviceToDevice) {
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
-        return mBackupRestore.getAllBackupFileNames(userHandle);
+        return mBackupRestore.getAllBackupFileNames(userHandle, forDeviceToDevice);
     }
 
     /**

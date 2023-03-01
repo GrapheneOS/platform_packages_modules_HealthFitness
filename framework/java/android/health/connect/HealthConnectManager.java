@@ -38,6 +38,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.health.connect.accesslog.AccessLog;
+import android.health.connect.accesslog.AccessLogsResponseParcel;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
@@ -1103,9 +1104,9 @@ public class HealthConnectManager {
                     mContext.getPackageName(),
                     new IAccessLogsResponseCallback.Stub() {
                         @Override
-                        public void onResult(List<AccessLog> parcel) {
+                        public void onResult(AccessLogsResponseParcel parcel) {
                             Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(parcel));
+                            executor.execute(() -> callback.onResult(parcel.getAccessLogs()));
                         }
 
                         @Override
@@ -1137,17 +1138,11 @@ public class HealthConnectManager {
      * <p>An app without both read and write permissions will not be able to read any record and the
      * API will throw Security Exception.
      *
-     * <p>For subsequent read using {@link ReadRecordsRequestUsingFilters} in the request it is
-     * expected to set only either pageToken or sort order but not both. When pageToken is set along
-     * with a different sorting order then the API will throw IllegalStateException.
-     *
      * @param request Read request based on {@link ReadRecordsRequestUsingFilters} or {@link
      *     ReadRecordsRequestUsingIds}
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      * @throws IllegalArgumentException if request page size set is more than 5000 in {@link
-     *     ReadRecordsRequestUsingFilters}
-     * @throws IllegalStateException if both pageToken and new sort order is set in {@link
      *     ReadRecordsRequestUsingFilters}
      * @throws SecurityException if app without read or write permission tries to read.
      */
@@ -1375,9 +1370,10 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    public Set<String> getAllBackupFileNames() {
+    public Set<String> getAllBackupFileNames(boolean forDeviceToDevice) {
         try {
-            return mService.getAllBackupFileNames(mContext.getUser()).getFileNames();
+            return mService.getAllBackupFileNames(mContext.getUser(), forDeviceToDevice)
+                    .getFileNames();
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

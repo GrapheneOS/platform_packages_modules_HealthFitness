@@ -30,6 +30,7 @@ import android.util.Slog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -75,6 +76,15 @@ public class MigrationBroadcast {
             Slog.d(TAG, "Calling sendInvocationBroadcast()");
         }
 
+        String hcMigratorPackage =
+                mContext.getString(
+                        mContext.getResources()
+                                .getIdentifier(
+                                        "config_healthConnectMigratorPackageName",
+                                        "string",
+                                        "android"));
+        String migrationAwarePackage;
+
         List<String> permissionFilteredPackages = filterPermissions();
         List<String> filteredPackages = filterIntent(permissionFilteredPackages);
 
@@ -84,28 +94,35 @@ public class MigrationBroadcast {
             if (Constants.DEBUG) {
                 Slog.d(TAG, "There are no migration aware apps");
             }
+            return;
         } else if (numPackages == 1) {
-            if (Constants.DEBUG) {
-                Slog.d(TAG, "Checking if package is installed on user");
-            }
-
-            if (isPackageInstalled(filteredPackages.get(0), mUser)) {
-                Intent intent =
-                        new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
-                                .setPackage(filteredPackages.get(0));
-                mContext.sendBroadcastAsUser(intent, mUser);
-                if (Constants.DEBUG) {
-                    Slog.d(TAG, "Sent broadcast to migration aware application.");
-                }
+            if (Objects.equals(hcMigratorPackage, filteredPackages.get(0))) {
+                migrationAwarePackage = filteredPackages.get(0);
             } else {
-                if (Constants.DEBUG) {
-                    Slog.d(TAG, "Migration aware app is not installed on the current user");
-                }
+                throw new Exception("Migration aware app is not Health Connect");
             }
         } else {
-            // TODO(b/267255123): Explicitly check for certificate and only send to that if
-            // that filters it down to one package name
-            throw new Exception("Multiple packages are migration aware");
+            if (filteredPackages.contains(hcMigratorPackage)) {
+                migrationAwarePackage = hcMigratorPackage;
+            } else {
+                throw new Exception("Multiple packages are migration aware");
+            }
+        }
+
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Checking if migration aware package is installed on user");
+        }
+
+        if (isPackageInstalled(migrationAwarePackage, mUser)) {
+            Intent intent =
+                    new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
+                            .setPackage(migrationAwarePackage);
+            mContext.sendBroadcastAsUser(intent, mUser);
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "Sent broadcast to migration aware application.");
+            }
+        } else if (Constants.DEBUG) {
+            Slog.d(TAG, "Migration aware app is not installed on the current user");
         }
     }
 

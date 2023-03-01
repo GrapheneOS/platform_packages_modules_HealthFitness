@@ -23,6 +23,7 @@ import android.provider.DeviceConfig;
 import com.android.internal.annotations.GuardedBy;
 
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Singleton class to provide values and listen changes of settings flags.
@@ -35,10 +36,15 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
 
     public static final String EXERCISE_ROUTE_FEATURE_FLAG = "exercise_routes_enable";
 
+    // Flag to enable/disable sleep and exercise sessions.
+    public static final String SESSION_DATATYPE_FEATURE_FLAG = "session_types_enable";
+
     public static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
 
+    public static final boolean SESSION_DATATYPE_DEFAULT_FLAG_VALUE = true;
+
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
-    private final Object mLock = new Object();
+    private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
 
     @GuardedBy("mLock")
     private boolean mExerciseRouteEnabled =
@@ -46,6 +52,13 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                     HEALTH_CONNECT_FLAGS_NAMESPACE,
                     EXERCISE_ROUTE_FEATURE_FLAG,
                     EXERCISE_ROUTE_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private boolean mSessionDatatypeEnabled =
+            DeviceConfig.getBoolean(
+                    HEALTH_CONNECT_FLAGS_NAMESPACE,
+                    SESSION_DATATYPE_FEATURE_FLAG,
+                    SESSION_DATATYPE_DEFAULT_FLAG_VALUE);
 
     @NonNull
     static void initializeInstance(Context context) {
@@ -68,26 +81,52 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
 
     /** Returns if operations with exercise route are enabled. */
     public boolean isExerciseRouteFeatureEnabled() {
-        synchronized (mLock) {
+        mLock.readLock().lock();
+        try {
             return mExerciseRouteEnabled;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns if operations with sessions datatypes are enabled. */
+    public boolean isSessionDatatypeFeatureEnabled() {
+        mLock.readLock().lock();
+        try {
+            return mSessionDatatypeEnabled;
+        } finally {
+            mLock.readLock().unlock();
         }
     }
 
     @Override
     public void onPropertiesChanged(DeviceConfig.Properties properties) {
-        synchronized (mLock) {
-            if (!properties.getNamespace().equals(HEALTH_CONNECT_FLAGS_NAMESPACE)) {
-                return;
+        if (!properties.getNamespace().equals(HEALTH_CONNECT_FLAGS_NAMESPACE)) {
+            return;
+        }
+        for (String name : properties.getKeyset()) {
+            if (name == null) {
+                continue;
             }
-            for (String name : properties.getKeyset()) {
-                if (name == null) {
-                    continue;
-                }
 
-                if (name.equals(EXERCISE_ROUTE_FEATURE_FLAG)) {
+            if (name.equals(EXERCISE_ROUTE_FEATURE_FLAG)) {
+                mLock.writeLock().lock();
+                try {
                     mExerciseRouteEnabled =
                             properties.getBoolean(
                                     EXERCISE_ROUTE_FEATURE_FLAG, EXERCISE_ROUTE_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(SESSION_DATATYPE_FEATURE_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mSessionDatatypeEnabled =
+                            properties.getBoolean(
+                                    SESSION_DATATYPE_FEATURE_FLAG,
+                                    SESSION_DATATYPE_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
                 }
             }
         }

@@ -1,6 +1,6 @@
 package android.health.connect.aidl;
 
-import android.health.connect.accesslog.AccessLog;
+import android.health.connect.accesslog.AccessLogsResponseParcel;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 
 /**
@@ -9,7 +9,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
  */
 interface IAccessLogsResponseCallback {
     // Called on a successful operation
-    oneway void onResult(in List<AccessLog> parcel);
+    oneway void onResult(in AccessLogsResponseParcel parcel);
     // Called when an error is hit
     oneway void onError(in HealthConnectExceptionParcel exception);
 }

@@ -47,11 +47,7 @@ public abstract class Record {
         return mMetadata;
     }
 
-    /**
-     * TODO(b/249583483): Add permission so that only UI APK can access this
-     *
-     * @hide
-     */
+    /** @hide */
     @SystemApi
     @RecordTypeIdentifier.RecordType
     public int getRecordType() {
