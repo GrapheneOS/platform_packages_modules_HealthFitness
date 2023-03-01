@@ -25,6 +25,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
@@ -49,6 +50,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
     @Inject lateinit var appInfoReader: AppInfoReader
 
     @VisibleForTesting lateinit var dialog: AlertDialog
+    @VisibleForTesting lateinit var infoDialog: AlertDialog
 
     private val viewModel: ExerciseRouteViewModel by viewModels()
 
@@ -65,10 +67,10 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             return
         }
         viewModel.getExerciseWithRoute(intent.getStringExtra(EXTRA_SESSION_ID)!!)
-        viewModel.exerciseSession.observe(this) { session -> setupDialog(session) }
+        viewModel.exerciseSession.observe(this) { session -> setupRequestDialog(session) }
     }
 
-    private fun setupDialog(data: SessionWithAttribution?) {
+    private fun setupRequestDialog(data: SessionWithAttribution?) {
         if ((data == null) ||
             (data.session?.route == null) ||
             data.session?.route!!.routeLocations.isEmpty()) {
@@ -82,7 +84,6 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
         val session = data.session!!
         val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
-        // TODO(pakoch): Add a reference to the intent sender.
 
         val sessionDetails =
             applicationContext.getString(
@@ -104,6 +105,12 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         view.findViewById<TextView>(R.id.session_title).text = session.title
         view.findViewById<TextView>(R.id.date_app).text = sessionDetails
 
+        view.findViewById<LinearLayout>(R.id.more_info).setOnClickListener {
+            dialog.hide()
+            setupInfoDialog()
+            infoDialog.show()
+        }
+
         view.findViewById<Button>(R.id.route_dont_allow_button).setOnClickListener {
             val result = Intent()
             result.putExtra(EXTRA_SESSION_ID, sessionId)
@@ -118,7 +125,22 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             setResult(Activity.RESULT_OK, result)
             finish()
         }
-        dialog = AlertDialog.Builder(this).setView(view).create()
+        dialog = AlertDialog.Builder(this).setView(view).setCancelable(false).create()
         dialog.show()
+    }
+
+    private fun setupInfoDialog() {
+        val view = layoutInflater.inflate(R.layout.route_sharing_info_dialog, null)
+        view.findViewById<TextView>(R.id.dialog_title).text =
+            applicationContext.getString(R.string.request_route_info_header_title)
+        view
+            .findViewById<ImageView>(R.id.dialog_icon)
+            .setImageDrawable(getDrawable(R.drawable.quantum_gm_ic_privacy_tip_vd_theme_24))
+        infoDialog =
+            AlertDialog.Builder(this)
+                .setNegativeButton(R.string.back_button) { _, _ -> dialog.show() }
+                .setView(view)
+                .setCancelable(false)
+                .create()
     }
 }
