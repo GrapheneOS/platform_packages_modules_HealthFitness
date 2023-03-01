@@ -191,10 +191,20 @@ public final class ExerciseSessionRecordHelper
         return List.of(getRouteReadRequest(whereClause));
     }
 
+    @Override
+    public boolean isRecordOperationsEnabled() {
+        return HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isSessionDatatypeFeatureEnabled();
+    }
+
     /** Returns extra permissions required to write given record. */
     @Override
-    public List<String> getExtraWritePermissionsToCheck(RecordInternal<?> recordInternal) {
+    public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
         ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
+        if (!isRecordOperationsEnabled()) {
+            throw new UnsupportedOperationException("Writing exercise sessions is not supported.");
+        }
+
         if (session.getRoute() != null) {
             if (!isExerciseRouteFeatureEnabled()) {
                 throw new UnsupportedOperationException("Writing exercise route is not supported.");
@@ -241,8 +251,9 @@ public final class ExerciseSessionRecordHelper
     }
 
     private boolean isExerciseRouteFeatureEnabled() {
-        return HealthConnectDeviceConfigManager.getInitialisedInstance()
-                .isExerciseRouteFeatureEnabled();
+        return isRecordOperationsEnabled()
+                && HealthConnectDeviceConfigManager.getInitialisedInstance()
+                        .isExerciseRouteFeatureEnabled();
     }
 
     private ReadTableRequest getRouteReadRequest(WhereClauses clauseToFilterSessionIds) {

@@ -219,7 +219,7 @@ public final class BackupRestore {
 
         pfdsByFileName.forEach(
                 (fileName, pfd) -> {
-                    var backupFilesByFileNames = getBackupFilesByFileNames(userHandle);
+                    var backupFilesByFileNames = getBackupFilesByFileNames(userHandle, false);
                     Path sourceFilePath = backupFilesByFileNames.get(fileName).toPath();
                     try (FileOutputStream outputStream =
                             new FileOutputStream(pfd.getFileDescriptor())) {
@@ -237,18 +237,21 @@ public final class BackupRestore {
     }
 
     /** Get the file names of all the files that are transported during backup / restore. */
-    public BackupFileNamesSet getAllBackupFileNames(@NonNull UserHandle userHandle) {
-        return new BackupFileNamesSet(getBackupFilesByFileNames(userHandle).keySet());
+    public BackupFileNamesSet getAllBackupFileNames(
+            @NonNull UserHandle userHandle, boolean forDeviceToDevice) {
+        return new BackupFileNamesSet(
+                getBackupFilesByFileNames(userHandle, !forDeviceToDevice).keySet());
     }
 
-    private Map<String, File> getBackupFilesByFileNames(UserHandle userHandle) {
+    private Map<String, File> getBackupFilesByFileNames(
+            UserHandle userHandle, boolean excludeLargeFiles) {
         ArrayMap<String, File> backupFilesByFileNames = new ArrayMap<>();
-        backupFilesByFileNames.put(
-                TransactionManager.getInitialisedInstance().getDatabasePath().getName(),
-                TransactionManager.getInitialisedInstance().getDatabasePath());
-        backupFilesByFileNames.put(
-                mFirstGrantTimeManager.getFile(userHandle).getName(),
-                mFirstGrantTimeManager.getFile(userHandle));
+        if (!excludeLargeFiles) {
+            File databasePath = TransactionManager.getInitialisedInstance().getDatabasePath();
+            backupFilesByFileNames.put(databasePath.getName(), databasePath);
+        }
+        File grantTimeFile = mFirstGrantTimeManager.getFile(userHandle);
+        backupFilesByFileNames.put(grantTimeFile.getName(), grantTimeFile);
         return backupFilesByFileNames;
     }
 
