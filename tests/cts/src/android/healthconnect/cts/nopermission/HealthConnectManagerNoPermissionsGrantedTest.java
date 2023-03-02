@@ -55,10 +55,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
         for (Record testRecord : TestUtils.getTestRecords()) {
             try {
                 TestUtils.insertRecords(Collections.singletonList(testRecord));
-                Assert.fail();
+                Assert.fail("Insert must be not allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }
@@ -68,10 +67,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
         for (Record testRecord : TestUtils.getTestRecords()) {
             try {
                 TestUtils.updateRecords(Collections.singletonList(testRecord));
-                Assert.fail();
+                Assert.fail("Update must be not allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }
@@ -81,10 +79,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
         for (Record testRecord : TestUtils.getTestRecords()) {
             try {
                 TestUtils.deleteRecords(Collections.singletonList(testRecord));
-                Assert.fail();
+                Assert.fail("Delete using ids must be not allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }
@@ -99,10 +96,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                                 .setStartTime(Instant.now())
                                 .setEndTime(Instant.now().plusMillis(1000))
                                 .build());
-                Assert.fail();
+                Assert.fail("Delete using filters must be not allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }
@@ -118,10 +114,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                                         .build());
                 TestUtils.getChangeLogs(
                         new ChangeLogsRequest.Builder(tokenResponse.getToken()).build());
-                Assert.fail();
+                Assert.fail("Change logs read must be not allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }
@@ -133,10 +128,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                 TestUtils.readRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(testRecord.getClass())
                                 .build());
-                Assert.fail();
+                Assert.fail("Read records must be not allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }
@@ -161,10 +155,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                                     new DataOrigin.Builder().setPackageName("abc").build())
                             .build(),
                     records);
-            Assert.fail();
+            Assert.fail("Get Aggregations must be not allowed without right HC permission");
         } catch (SecurityException securityException) {
-            assertThat(true).isTrue();
-            assertThat(securityException).isNotNull();
+            assertThat(securityException).isInstanceOf(SecurityException.class);
         }
     }
 
@@ -183,10 +176,11 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                             .addAggregationType(BPM_MIN)
                             .build(),
                     Duration.ofSeconds(1));
-            Assert.fail();
+            Assert.fail(
+                    "Aggregations group by duration must be not allowed without right HC"
+                            + " permission");
         } catch (SecurityException securityException) {
-            assertThat(true).isTrue();
-            assertThat(securityException).isNotNull();
+            assertThat(securityException).isInstanceOf(SecurityException.class);
         }
     }
 
@@ -205,9 +199,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                             .addAggregationType(BPM_MIN)
                             .build(),
                     Period.ofDays(1));
-            Assert.fail();
+            Assert.fail(
+                    "Aggregation group by period must be not allowed without right HC permission");
         } catch (SecurityException securityException) {
-            assertThat(true).isTrue();
             assertThat(securityException).isNotNull();
         }
     }
