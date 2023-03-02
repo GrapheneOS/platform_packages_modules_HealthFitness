@@ -1,8 +1,1 @@
-# Keep runtime annotation
--keep @interface com.android.server.healthconnect.storage.datatypehelpers.HelperFor
-
-# Explicitly keep all classes annotated with HelperFor, if these classes are used.
-# See b/255377941 for more details.
--if @com.android.server.healthconnect.storage.datatypehelpers.HelperFor class **
--keep class <1>
 -keep class * extends android.app.Service
