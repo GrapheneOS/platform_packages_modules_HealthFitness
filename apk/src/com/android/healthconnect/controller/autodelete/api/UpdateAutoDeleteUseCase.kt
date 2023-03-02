@@ -15,9 +15,10 @@
  */
 package com.android.healthconnect.controller.autodelete.api
 
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,12 +30,21 @@ class UpdateAutoDeleteUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : BaseUseCase<Int, Unit>(dispatcher) {
+) {
+
+    companion object {
+        private const val DAYS_IN_MONTH = 30
+    }
 
     /** Updates the stored auto-delete range. */
-    override suspend fun execute(input: Int) {
+    suspend operator fun invoke(numberOfMonths: Int): UseCaseResults<Unit> =
         withContext(dispatcher) {
-            healthConnectManager.setRecordRetentionPeriodInDays(input, Runnable::run) {}
+            try {
+                healthConnectManager.setRecordRetentionPeriodInDays(
+                    numberOfMonths * DAYS_IN_MONTH, Runnable::run) {}
+                UseCaseResults.Success(Unit)
+            } catch (ex: HealthConnectException) {
+                UseCaseResults.Failed(ex)
+            }
         }
-    }
 }
