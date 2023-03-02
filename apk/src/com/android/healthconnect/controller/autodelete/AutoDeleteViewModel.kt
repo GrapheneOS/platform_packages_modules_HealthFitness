@@ -63,7 +63,7 @@ constructor(
     private fun loadAutoDeleteRange() {
         _storedAutoDeleteRange.postValue(AutoDeleteState.Loading)
         viewModelScope.launch {
-            when (val result = loadAutoDeleteUseCase.invoke(null)) {
+            when (val result = loadAutoDeleteUseCase.invoke()) {
                 is UseCaseResults.Success -> {
                     _storedAutoDeleteRange.postValue(
                         AutoDeleteState.WithData(fromNumberOfMonths(result.data)))
@@ -78,7 +78,7 @@ constructor(
 
     fun updateAutoDeleteRange(autoDeleteRange: AutoDeleteRange) {
         viewModelScope.launch {
-            when (val result = updateAutoDeleteUseCase.invoke(numberOfMonths(autoDeleteRange))) {
+            when (val result = updateAutoDeleteUseCase.invoke(autoDeleteRange.numberOfMonths)) {
                 is UseCaseResults.Success -> {
                     _storedAutoDeleteRange.postValue(AutoDeleteState.WithData(autoDeleteRange))
                 }
