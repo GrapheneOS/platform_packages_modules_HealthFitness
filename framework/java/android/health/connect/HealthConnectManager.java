@@ -1412,7 +1412,7 @@ public class HealthConnectManager {
      *       #DATA_DOWNLOAD_COMPLETE}
      *   <li>{@link #DATA_DOWNLOAD_STARTED} to {@link #DATA_DOWNLOAD_FAILED}
      *   <li>{@link #DATA_DOWNLOAD_STARTED} to {@link #DATA_DOWNLOAD_RETRY} to {@link
-     *       #DATA_DOWNLOAD_RETRY}
+     *       #DATA_DOWNLOAD_FAILED}
      * </ul>
      *
      * <p>Note that it's okay if some states are missing in of the sequences above but the order has
