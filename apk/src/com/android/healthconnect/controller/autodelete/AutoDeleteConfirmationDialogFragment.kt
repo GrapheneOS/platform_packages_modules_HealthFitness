@@ -76,14 +76,14 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
     }
 
     private fun buildTitle(autoDeleteRange: AutoDeleteRange): String {
-        val count = numberOfMonths(autoDeleteRange)
+        val count = autoDeleteRange.numberOfMonths
         return MessageFormat.format(
             requireContext().getString(R.string.confirming_question_x_months),
             mapOf("count" to count))
     }
 
     private fun buildMessage(autoDeleteRange: AutoDeleteRange): String {
-        val count = numberOfMonths(autoDeleteRange)
+        val count = autoDeleteRange.numberOfMonths
         return MessageFormat.format(
             requireContext().getString(R.string.confirming_message_x_months),
             mapOf("count" to count))

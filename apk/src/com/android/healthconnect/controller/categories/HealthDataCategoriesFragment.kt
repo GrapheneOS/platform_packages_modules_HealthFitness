@@ -28,7 +28,6 @@ import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
-import com.android.healthconnect.controller.autodelete.numberOfMonths
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -105,12 +104,12 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
         return when (autoDeleteRange) {
             AutoDeleteRange.AUTO_DELETE_RANGE_NEVER -> getString(R.string.range_never)
             AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS -> {
-                val count = numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS)
+                val count = AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS.numberOfMonths
                 MessageFormat.format(
                     getString(R.string.range_after_x_months), mapOf("count" to count))
             }
             AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS -> {
-                val count = numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS)
+                val count = AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS.numberOfMonths
                 MessageFormat.format(
                     getString(R.string.range_after_x_months), mapOf("count" to count))
             }

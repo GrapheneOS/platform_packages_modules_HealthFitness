@@ -22,24 +22,13 @@ import java.time.LocalDateTime
 /**
  * Specifies the range of auto-deletion, where data wil be automatically deleted from (no data gets
  * deleted in case of [AutoDeleteRange.AUTO_DELETE_RANGE_NEVER]).
+ *
+ * @param numberOfMonths: number of months used to retention the data.
  */
-enum class AutoDeleteRange {
-    AUTO_DELETE_RANGE_NEVER,
-    AUTO_DELETE_RANGE_THREE_MONTHS,
-    AUTO_DELETE_RANGE_EIGHTEEN_MONTHS
-}
-
-private const val QUANTITY_0_MONTHS = 0
-private const val QUANTITY_3_MONTHS = 3
-private const val QUANTITY_18_MONTHS = 18
-
-/** Returns the number of months corresponding to the given [AutoDeleteRange]. */
-fun numberOfMonths(range: AutoDeleteRange): Int {
-    return when (range) {
-        AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS -> QUANTITY_3_MONTHS
-        AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS -> QUANTITY_18_MONTHS
-        AutoDeleteRange.AUTO_DELETE_RANGE_NEVER -> QUANTITY_0_MONTHS
-    }
+enum class AutoDeleteRange(val numberOfMonths: Int) {
+    AUTO_DELETE_RANGE_NEVER(0),
+    AUTO_DELETE_RANGE_THREE_MONTHS(3),
+    AUTO_DELETE_RANGE_EIGHTEEN_MONTHS(18)
 }
 
 /**
@@ -47,10 +36,11 @@ fun numberOfMonths(range: AutoDeleteRange): Int {
  * unsupported number of months.
  */
 fun fromNumberOfMonths(numberOfMonths: Int): AutoDeleteRange {
-    if (numberOfMonths == QUANTITY_0_MONTHS) return AutoDeleteRange.AUTO_DELETE_RANGE_NEVER
-    if (numberOfMonths == QUANTITY_3_MONTHS) return AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS
-    if (numberOfMonths == QUANTITY_18_MONTHS)
-        return AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS
+    AutoDeleteRange.values().forEach { range ->
+        if (range.numberOfMonths == numberOfMonths) {
+            return range
+        }
+    }
     throw UnsupportedOperationException("Number of months is not supported: $numberOfMonths")
 }
 
@@ -69,7 +59,7 @@ fun autoDeleteRangeEnd(timeSource: TimeSource, range: AutoDeleteRange): Instant 
         AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS,
         AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS -> {
             val exactlyXMonthsAgo: LocalDateTime =
-                localDateTimeNow.minusMonths(numberOfMonths(range).toLong())
+                localDateTimeNow.minusMonths(range.numberOfMonths.toLong())
             return exactlyXMonthsAgo
                 .toLocalDate()
                 .atStartOfDay(timeSource.deviceZoneOffset())
