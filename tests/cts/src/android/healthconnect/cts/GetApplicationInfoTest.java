@@ -110,10 +110,9 @@ public class GetApplicationInfoTest {
                             latch.countDown();
                         }
                     });
-            Assert.fail();
+            Assert.fail("Reading app info must not be allowed without right HC permission");
         } catch (SecurityException exception) {
-            assertThat(true).isTrue();
-            assertThat(exception).isNotNull();
+            assertThat(exception).isInstanceOf(SecurityException.class);
         }
     }
 
