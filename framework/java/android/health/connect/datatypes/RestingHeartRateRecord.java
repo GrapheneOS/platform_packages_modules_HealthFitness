@@ -86,7 +86,7 @@ public final class RestingHeartRateRecord extends InstantRecord {
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
-        ValidationUtils.requireInRange(beatsPerMinute, 0, (long) 250, "beatsPerMinute");
+        ValidationUtils.requireInRange(beatsPerMinute, 1, (long) 300, "beatsPerMinute");
         mBeatsPerMinute = beatsPerMinute;
     }
     /**
