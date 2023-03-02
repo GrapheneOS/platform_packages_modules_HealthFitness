@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
+import static android.health.connect.datatypes.ValidationUtils.requireInRangeIfExists;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -34,7 +35,7 @@ public final class NutritionRecord extends IntervalRecord {
     private static final Energy ENERGY_0_0 = Energy.fromJoules(0.0);
     private static final Mass MASS_0_0 = Mass.fromKilograms(0.0);
     private static final Mass MASS_0_1 = Mass.fromKilograms(0.1);
-    private static final Mass MASS_1 = Mass.fromKilograms(1.0);
+    private static final Mass MASS_100 = Mass.fromKilograms(100.0);
 
     /** Builder class for {@link NutritionRecord} */
     public static final class Builder {
@@ -144,8 +145,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setUnsaturatedFat(@Nullable Mass unsaturatedFat) {
-            ValidationUtils.requireInRangeIfExists(
-                    unsaturatedFat, MASS_0_0, MASS_1, "unsaturatedFat");
+            requireInRangeIfExists(unsaturatedFat, MASS_0_0, MASS_100, "unsaturatedFat");
             mUnsaturatedFat = unsaturatedFat;
             return this;
         }
@@ -157,7 +157,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setPotassium(@Nullable Mass potassium) {
-            ValidationUtils.requireInRangeIfExists(potassium, MASS_0_0, MASS_0_1, "potassium");
+            requireInRangeIfExists(potassium, MASS_0_0, MASS_0_1, "potassium");
             mPotassium = potassium;
             return this;
         }
@@ -169,7 +169,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setThiamin(@Nullable Mass thiamin) {
-            ValidationUtils.requireInRangeIfExists(thiamin, MASS_0_0, MASS_0_1, "thiamin");
+            requireInRangeIfExists(thiamin, MASS_0_0, MASS_0_1, "thiamin");
             mThiamin = thiamin;
             return this;
         }
@@ -192,7 +192,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setTransFat(@Nullable Mass transFat) {
-            ValidationUtils.requireInRangeIfExists(transFat, MASS_0_0, MASS_1, "transFat");
+            requireInRangeIfExists(transFat, MASS_0_0, MASS_100, "transFat");
             mTransFat = transFat;
             return this;
         }
@@ -204,7 +204,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setManganese(@Nullable Mass manganese) {
-            ValidationUtils.requireInRangeIfExists(manganese, MASS_0_0, MASS_0_1, "manganese");
+            requireInRangeIfExists(manganese, MASS_0_0, MASS_0_1, "manganese");
             mManganese = manganese;
             return this;
         }
@@ -216,7 +216,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setEnergyFromFat(@Nullable Energy energyFromFat) {
-            ValidationUtils.requireInRangeIfExists(
+            requireInRangeIfExists(
                     energyFromFat, ENERGY_0_0, Energy.fromJoules(418400000.0), "energyFromFat");
             mEnergyFromFat = energyFromFat;
             return this;
@@ -229,7 +229,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setCaffeine(@Nullable Mass caffeine) {
-            ValidationUtils.requireInRangeIfExists(caffeine, MASS_0_0, MASS_0_1, "caffeine");
+            requireInRangeIfExists(caffeine, MASS_0_0, MASS_0_1, "caffeine");
             mCaffeine = caffeine;
             return this;
         }
@@ -241,7 +241,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setDietaryFiber(@Nullable Mass dietaryFiber) {
-            ValidationUtils.requireInRangeIfExists(dietaryFiber, MASS_0_0, MASS_1, "dietaryFiber");
+            requireInRangeIfExists(dietaryFiber, MASS_0_0, MASS_100, "dietaryFiber");
             mDietaryFiber = dietaryFiber;
             return this;
         }
@@ -253,7 +253,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setSelenium(@Nullable Mass selenium) {
-            ValidationUtils.requireInRangeIfExists(selenium, MASS_0_0, MASS_0_1, "selenium");
+            requireInRangeIfExists(selenium, MASS_0_0, MASS_0_1, "selenium");
             mSelenium = selenium;
             return this;
         }
@@ -265,7 +265,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setVitaminB6(@Nullable Mass vitaminB6) {
-            ValidationUtils.requireInRangeIfExists(vitaminB6, MASS_0_0, MASS_0_1, "vitaminB6");
+            requireInRangeIfExists(vitaminB6, MASS_0_0, MASS_0_1, "vitaminB6");
             mVitaminB6 = vitaminB6;
             return this;
         }
@@ -277,7 +277,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setProtein(@Nullable Mass protein) {
-            ValidationUtils.requireInRangeIfExists(protein, MASS_0_0, MASS_1, "protein");
+            requireInRangeIfExists(protein, MASS_0_0, MASS_100, "protein");
             mProtein = protein;
             return this;
         }
@@ -289,7 +289,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setChloride(@Nullable Mass chloride) {
-            ValidationUtils.requireInRangeIfExists(chloride, MASS_0_0, MASS_0_1, "chloride");
+            requireInRangeIfExists(chloride, MASS_0_0, MASS_0_1, "chloride");
             mChloride = chloride;
             return this;
         }
@@ -301,7 +301,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setCholesterol(@Nullable Mass cholesterol) {
-            ValidationUtils.requireInRangeIfExists(cholesterol, MASS_0_0, MASS_1, "cholesterol");
+            requireInRangeIfExists(cholesterol, MASS_0_0, MASS_0_1, "cholesterol");
             mCholesterol = cholesterol;
             return this;
         }
@@ -313,7 +313,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setCopper(@Nullable Mass copper) {
-            ValidationUtils.requireInRangeIfExists(copper, MASS_0_0, MASS_0_1, "copper");
+            requireInRangeIfExists(copper, MASS_0_0, MASS_0_1, "copper");
             mCopper = copper;
             return this;
         }
@@ -325,7 +325,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setIodine(@Nullable Mass iodine) {
-            ValidationUtils.requireInRangeIfExists(iodine, MASS_0_0, MASS_0_1, "iodine");
+            requireInRangeIfExists(iodine, MASS_0_0, MASS_0_1, "iodine");
             mIodine = iodine;
             return this;
         }
@@ -337,7 +337,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setVitaminB12(@Nullable Mass vitaminB12) {
-            ValidationUtils.requireInRangeIfExists(vitaminB12, MASS_0_0, MASS_0_1, "vitaminB12");
+            requireInRangeIfExists(vitaminB12, MASS_0_0, MASS_0_1, "vitaminB12");
             mVitaminB12 = vitaminB12;
             return this;
         }
@@ -349,7 +349,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setZinc(@Nullable Mass zinc) {
-            ValidationUtils.requireInRangeIfExists(zinc, MASS_0_0, MASS_0_1, "zinc");
+            requireInRangeIfExists(zinc, MASS_0_0, MASS_0_1, "zinc");
             mZinc = zinc;
             return this;
         }
@@ -361,7 +361,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setRiboflavin(@Nullable Mass riboflavin) {
-            ValidationUtils.requireInRangeIfExists(riboflavin, MASS_0_0, MASS_0_1, "riboflavin");
+            requireInRangeIfExists(riboflavin, MASS_0_0, MASS_0_1, "riboflavin");
             mRiboflavin = riboflavin;
             return this;
         }
@@ -373,8 +373,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setEnergy(@Nullable Energy energy) {
-            ValidationUtils.requireInRangeIfExists(
-                    energy, ENERGY_0_0, Energy.fromJoules(418400000.0), "energy");
+            requireInRangeIfExists(energy, ENERGY_0_0, Energy.fromJoules(418400000.0), "energy");
             mEnergy = energy;
             return this;
         }
@@ -386,7 +385,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setMolybdenum(@Nullable Mass molybdenum) {
-            ValidationUtils.requireInRangeIfExists(molybdenum, MASS_0_0, MASS_0_1, "molybdenum");
+            requireInRangeIfExists(molybdenum, MASS_0_0, MASS_0_1, "molybdenum");
             mMolybdenum = molybdenum;
             return this;
         }
@@ -398,7 +397,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setPhosphorus(@Nullable Mass phosphorus) {
-            ValidationUtils.requireInRangeIfExists(phosphorus, MASS_0_0, MASS_0_1, "phosphorus");
+            requireInRangeIfExists(phosphorus, MASS_0_0, MASS_0_1, "phosphorus");
             mPhosphorus = phosphorus;
             return this;
         }
@@ -410,7 +409,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setChromium(@Nullable Mass chromium) {
-            ValidationUtils.requireInRangeIfExists(chromium, MASS_0_0, MASS_0_1, "chromium");
+            requireInRangeIfExists(chromium, MASS_0_0, MASS_0_1, "chromium");
             mChromium = chromium;
             return this;
         }
@@ -422,7 +421,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setTotalFat(@Nullable Mass totalFat) {
-            ValidationUtils.requireInRangeIfExists(totalFat, MASS_0_0, MASS_1, "totalFat");
+            requireInRangeIfExists(totalFat, MASS_0_0, MASS_100, "totalFat");
             mTotalFat = totalFat;
             return this;
         }
@@ -434,6 +433,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setCalcium(@Nullable Mass calcium) {
+            requireInRangeIfExists(calcium, MASS_0_0, MASS_0_1, "calcium");
             mCalcium = calcium;
             return this;
         }
@@ -445,6 +445,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setVitaminC(@Nullable Mass vitaminC) {
+            requireInRangeIfExists(vitaminC, MASS_0_0, MASS_0_1, "vitaminC");
             mVitaminC = vitaminC;
             return this;
         }
@@ -456,7 +457,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setVitaminE(@Nullable Mass vitaminE) {
-            ValidationUtils.requireInRangeIfExists(vitaminE, MASS_0_0, MASS_0_1, "vitaminE");
+            requireInRangeIfExists(vitaminE, MASS_0_0, MASS_0_1, "vitaminE");
             mVitaminE = vitaminE;
             return this;
         }
@@ -468,7 +469,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setBiotin(@Nullable Mass biotin) {
-            ValidationUtils.requireInRangeIfExists(biotin, MASS_0_0, MASS_0_1, "biotin");
+            requireInRangeIfExists(biotin, MASS_0_0, MASS_0_1, "biotin");
             mBiotin = biotin;
             return this;
         }
@@ -480,7 +481,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setVitaminD(@Nullable Mass vitaminD) {
-            ValidationUtils.requireInRangeIfExists(vitaminD, MASS_0_0, MASS_0_1, "vitaminD");
+            requireInRangeIfExists(vitaminD, MASS_0_0, MASS_0_1, "vitaminD");
             mVitaminD = vitaminD;
             return this;
         }
@@ -492,7 +493,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setNiacin(@Nullable Mass niacin) {
-            ValidationUtils.requireInRangeIfExists(niacin, MASS_0_0, MASS_0_1, "niacin");
+            requireInRangeIfExists(niacin, MASS_0_0, MASS_0_1, "niacin");
             mNiacin = niacin;
             return this;
         }
@@ -504,7 +505,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setMagnesium(@Nullable Mass magnesium) {
-            ValidationUtils.requireInRangeIfExists(magnesium, MASS_0_0, MASS_0_1, "magnesium");
+            requireInRangeIfExists(magnesium, MASS_0_0, MASS_0_1, "magnesium");
             mMagnesium = magnesium;
             return this;
         }
@@ -516,8 +517,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setTotalCarbohydrate(@Nullable Mass totalCarbohydrate) {
-            ValidationUtils.requireInRangeIfExists(
-                    totalCarbohydrate, MASS_0_0, MASS_1, "totalCarbohydrate");
+            requireInRangeIfExists(totalCarbohydrate, MASS_0_0, MASS_100, "totalCarbohydrate");
             mTotalCarbohydrate = totalCarbohydrate;
             return this;
         }
@@ -529,7 +529,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setVitaminK(@Nullable Mass vitaminK) {
-            ValidationUtils.requireInRangeIfExists(vitaminK, MASS_0_0, MASS_0_1, "vitaminK");
+            requireInRangeIfExists(vitaminK, MASS_0_0, MASS_0_1, "vitaminK");
             mVitaminK = vitaminK;
             return this;
         }
@@ -541,8 +541,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setPolyunsaturatedFat(@Nullable Mass polyunsaturatedFat) {
-            ValidationUtils.requireInRangeIfExists(
-                    polyunsaturatedFat, MASS_0_0, MASS_1, "polyunsaturatedFat");
+            requireInRangeIfExists(polyunsaturatedFat, MASS_0_0, MASS_100, "polyunsaturatedFat");
             mPolyunsaturatedFat = polyunsaturatedFat;
             return this;
         }
@@ -554,7 +553,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setSaturatedFat(@Nullable Mass saturatedFat) {
-            ValidationUtils.requireInRangeIfExists(saturatedFat, MASS_0_0, MASS_1, "saturatedFat");
+            requireInRangeIfExists(saturatedFat, MASS_0_0, MASS_100, "saturatedFat");
             mSaturatedFat = saturatedFat;
             return this;
         }
@@ -566,7 +565,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setSodium(@Nullable Mass sodium) {
-            ValidationUtils.requireInRangeIfExists(sodium, MASS_0_0, MASS_0_1, "sodium");
+            requireInRangeIfExists(sodium, MASS_0_0, MASS_0_1, "sodium");
             mSodium = sodium;
             return this;
         }
@@ -578,7 +577,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setFolate(@Nullable Mass folate) {
-            ValidationUtils.requireInRangeIfExists(folate, MASS_0_0, MASS_0_1, "folate");
+            requireInRangeIfExists(folate, MASS_0_0, MASS_0_1, "folate");
             mFolate = folate;
             return this;
         }
@@ -590,8 +589,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setMonounsaturatedFat(@Nullable Mass monounsaturatedFat) {
-            ValidationUtils.requireInRangeIfExists(
-                    monounsaturatedFat, MASS_0_0, MASS_1, "monounsaturatedFat");
+            requireInRangeIfExists(monounsaturatedFat, MASS_0_0, MASS_100, "monounsaturatedFat");
             mMonounsaturatedFat = monounsaturatedFat;
             return this;
         }
@@ -603,8 +601,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setPantothenicAcid(@Nullable Mass pantothenicAcid) {
-            ValidationUtils.requireInRangeIfExists(
-                    pantothenicAcid, MASS_0_0, MASS_0_1, "pantothenicAcid");
+            requireInRangeIfExists(pantothenicAcid, MASS_0_0, MASS_0_1, "pantothenicAcid");
             mPantothenicAcid = pantothenicAcid;
             return this;
         }
@@ -627,6 +624,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setIron(@Nullable Mass iron) {
+            requireInRangeIfExists(iron, MASS_0_0, MASS_0_1, "iron");
             mIron = iron;
             return this;
         }
@@ -638,6 +636,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setVitaminA(@Nullable Mass vitaminA) {
+            requireInRangeIfExists(vitaminA, MASS_0_0, MASS_0_1, "vitaminA");
             mVitaminA = vitaminA;
             return this;
         }
@@ -649,7 +648,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setFolicAcid(@Nullable Mass folicAcid) {
-            ValidationUtils.requireInRangeIfExists(folicAcid, MASS_0_0, MASS_0_1, "folicAcid");
+            requireInRangeIfExists(folicAcid, MASS_0_0, MASS_0_1, "folicAcid");
             mFolicAcid = folicAcid;
             return this;
         }
@@ -661,7 +660,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setSugar(@Nullable Mass sugar) {
-            ValidationUtils.requireInRangeIfExists(sugar, MASS_0_0, MASS_1, "sugar");
+            requireInRangeIfExists(sugar, MASS_0_0, MASS_100, "sugar");
             mSugar = sugar;
             return this;
         }
