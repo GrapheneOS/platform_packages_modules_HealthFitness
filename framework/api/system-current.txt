@@ -37,7 +37,7 @@ package android.health.connect {
     field public static final int MIGRATION_STATE_COMPLETE = 5; // 0x5
     field public static final int MIGRATION_STATE_IDLE = 0; // 0x0
     field public static final int MIGRATION_STATE_IN_PROGRESS = 3; // 0x3
-    field public static final int MIGRATION_STATE_UPGRADE_REQUIRED = 2; // 0x2
+    field public static final int MIGRATION_STATE_MODULE_UPGRADE_REQUIRED = 2; // 0x2
     field public static final int RESTORE_ERROR_FETCHING_DATA = 2; // 0x2
     field public static final int RESTORE_ERROR_NONE = 0; // 0x0
     field public static final int RESTORE_ERROR_UNKNOWN = 1; // 0x1
