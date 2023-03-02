@@ -15,6 +15,7 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION;
 import static android.health.connect.datatypes.RecordUtils.isEqualNullableCharSequences;
 import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTimeIntervalHolders;
 
@@ -43,6 +44,19 @@ import java.util.stream.Collectors;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION)
 public final class SleepSessionRecord extends IntervalRecord {
+
+    /**
+     * Metric identifier to retrieve total sleep session duration using aggregate APIs in {@link
+     * android.health.connect.HealthConnectManager}. Calculated in milliseconds.
+     */
+    @NonNull
+    public static final AggregationType<Long> SLEEP_DURATION_TOTAL =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_SLEEP_SESSION,
+                    Long.class);
+
     private final List<Stage> mStages;
     private final CharSequence mNotes;
     private final CharSequence mTitle;
@@ -230,6 +244,14 @@ public final class SleepSessionRecord extends IntervalRecord {
         })
         @Retention(RetentionPolicy.SOURCE)
         public @interface StageTypes {}
+
+        /**
+         * Sleep stage types which are excluded from sleep session duration.
+         *
+         * @hide
+         */
+        public static final List<Integer> DURATION_EXCLUDE_TYPES =
+                List.of(STAGE_TYPE_AWAKE, STAGE_TYPE_AWAKE_OUT_OF_BED, STAGE_TYPE_AWAKE_IN_BED);
     }
 
     /** Builder class for {@link SleepSessionRecord} */

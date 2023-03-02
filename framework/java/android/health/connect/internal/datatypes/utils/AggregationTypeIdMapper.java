@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.ActiveCaloriesBurnedRecord.ACTIVE
 import static android.health.connect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
 import static android.health.connect.datatypes.DistanceRecord.DISTANCE_TOTAL;
 import static android.health.connect.datatypes.ElevationGainedRecord.ELEVATION_GAINED_TOTAL;
+import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DURATION_TOTAL;
 import static android.health.connect.datatypes.FloorsClimbedRecord.FLOORS_CLIMBED_TOTAL;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
@@ -73,6 +74,7 @@ import static android.health.connect.datatypes.NutritionRecord.ZINC_TOTAL;
 import static android.health.connect.datatypes.PowerRecord.POWER_AVG;
 import static android.health.connect.datatypes.PowerRecord.POWER_MAX;
 import static android.health.connect.datatypes.PowerRecord.POWER_MIN;
+import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_AVG;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MAX;
@@ -124,7 +126,9 @@ public final class AggregationTypeIdMapper {
                         RestingHeartRateRecord.BPM_MIN,
                         RestingHeartRateRecord.BPM_AVG,
                         WHEEL_CHAIR_PUSHES_COUNT_TOTAL,
-                        HEART_MEASUREMENTS_COUNT));
+                        HEART_MEASUREMENTS_COUNT,
+                        SLEEP_DURATION_TOTAL,
+                        EXERCISE_DURATION_TOTAL));
         addDoubleIdsToAggregateResultMap(Arrays.asList(FLOORS_CLIMBED_TOTAL));
         addPowerIdsToAggregateResultMap(Arrays.asList(POWER_MIN, POWER_MAX, POWER_AVG));
         addEnergyIdsToAggregateResultMap(
