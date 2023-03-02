@@ -177,13 +177,14 @@ public class StepsRecordTest {
     @Test
     public void testReadStepsRecordUsingFilters_dataFilter_incorrect() throws InterruptedException {
         TestUtils.insertRecords(Collections.singletonList(getCompleteStepsRecord()));
-        List<StepsRecord> newStepsRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .addDataOrigins(
-                                        new DataOrigin.Builder().setPackageName("abc").build())
-                                .setAscending(false)
-                                .build());
+        ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFilters =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .addDataOrigins(new DataOrigin.Builder().setPackageName("abc").build())
+                        .setAscending(false)
+                        .build();
+        assertThat(requestUsingFilters.getDataOrigins()).isNotNull();
+        assertThat(requestUsingFilters.isAscending()).isFalse();
+        List<StepsRecord> newStepsRecords = TestUtils.readRecords(requestUsingFilters);
         assertThat(newStepsRecords.size()).isEqualTo(0);
     }
 
@@ -209,19 +210,27 @@ public class StepsRecordTest {
                         getStepsRecord_minusDays(3),
                         getStepsRecord_minusDays(4));
         TestUtils.insertRecords(recordList);
+        ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFilters =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setPageSize(1)
+                        .setAscending(true)
+                        .build();
+        assertThat(requestUsingFilters.isAscending()).isTrue();
+        assertThat(requestUsingFilters.getPageSize()).isEqualTo(1);
+        assertThat(requestUsingFilters.getTimeRangeFilter()).isNull();
         Pair<List<StepsRecord>, Long> oldStepsRecord =
-                TestUtils.readRecordsWithPagination(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .setPageSize(1)
-                                .setAscending(true)
-                                .build());
+                TestUtils.readRecordsWithPagination(requestUsingFilters);
         assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFiltersNew =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setPageSize(1)
+                        .setPageToken(oldStepsRecord.second)
+                        .build();
+        assertThat(requestUsingFiltersNew.getPageSize()).isEqualTo(1);
+        assertThat(requestUsingFiltersNew.getPageToken()).isEqualTo(oldStepsRecord.second);
+        assertThat(requestUsingFiltersNew.getTimeRangeFilter()).isNull();
         Pair<List<StepsRecord>, Long> newStepsRecords =
-                TestUtils.readRecordsWithPagination(
-                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                .setPageSize(1)
-                                .setPageToken(oldStepsRecord.second)
-                                .build());
+                TestUtils.readRecordsWithPagination(requestUsingFiltersNew);
         assertThat(newStepsRecords.first.size()).isEqualTo(1);
     }
 
