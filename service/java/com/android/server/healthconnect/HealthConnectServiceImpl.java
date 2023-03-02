@@ -284,7 +284,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 attributionSource.getPackageName(),
                                                 recordInternals,
                                                 mContext,
-                                                /* isInsertRequest */ true));
+                                                /* isInsertRequest */ true),
+                                        true);
                         callback.onResult(new InsertRecordsResponseParcel(uuids));
                         HealthConnectThreadScheduler.scheduleInternalTask(
                                 () -> {
@@ -1299,7 +1300,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (PackageManager.NameNotFoundException e) {
             throw new IllegalStateException(packageName + " not found");
         }
-        if (packageUid != callingUid) {
+        if (UserHandle.getAppId(packageUid) != UserHandle.getAppId(callingUid)) {
             throw new SecurityException(packageName + " does not belong to uid " + callingUid);
         }
     }

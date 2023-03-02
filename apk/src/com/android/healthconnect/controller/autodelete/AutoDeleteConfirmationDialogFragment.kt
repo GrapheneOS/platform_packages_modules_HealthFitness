@@ -24,6 +24,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.utils.logging.AutoDeleteElement
 import dagger.hilt.android.AndroidEntryPoint
 
 /** A {@link DialogFragment} to get confirmation from user to turn auto-delete on. */
@@ -49,21 +50,29 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
 
         viewModel.newAutoDeleteRange.value?.let {
             alertDialog
+                .setLogName(AutoDeleteElement.AUTO_DELETE_DIALOG_CONTAINER)
                 .setTitle(buildTitle(it))
                 .setMessage(buildMessage(it))
-                .setPositiveButton(R.string.set_auto_delete_button) { _, _ ->
-                    setFragmentResult(
-                        AUTO_DELETE_SAVED_EVENT,
-                        bundleOf(AUTO_DELETE_SAVED_EVENT to viewModel.newAutoDeleteRange.value))
-                }
-                .setNegativeButton(android.R.string.cancel) { _, _ ->
-                    setFragmentResult(
-                        AUTO_DELETE_CANCELLED_EVENT,
-                        bundleOf(AUTO_DELETE_CANCELLED_EVENT to viewModel.oldAutoDeleteRange.value))
-                }
+                .setPositiveButton(
+                    R.string.set_auto_delete_button,
+                    AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON) { _, _ ->
+                        setFragmentResult(
+                            AUTO_DELETE_SAVED_EVENT,
+                            bundleOf(AUTO_DELETE_SAVED_EVENT to viewModel.newAutoDeleteRange.value))
+                    }
+                .setNegativeButton(
+                    android.R.string.cancel, AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON) {
+                        _,
+                        _ ->
+                        setFragmentResult(
+                            AUTO_DELETE_CANCELLED_EVENT,
+                            bundleOf(
+                                AUTO_DELETE_CANCELLED_EVENT to viewModel.oldAutoDeleteRange.value))
+                    }
         }
-
-        return alertDialog.create()
+        val dialog = alertDialog.create()
+        dialog.setCanceledOnTouchOutside(false)
+        return dialog
     }
 
     private fun buildTitle(autoDeleteRange: AutoDeleteRange): String {

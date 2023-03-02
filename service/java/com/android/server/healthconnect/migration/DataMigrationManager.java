@@ -89,19 +89,14 @@ public final class DataMigrationManager {
      * @param entities a collection of {@link MigrationEntity} to be applied.
      */
     public void apply(@NonNull Collection<MigrationEntity> entities) throws EntityWriteException {
-        synchronized (sLock) { // Ensure only one migration process at a time
-            final SQLiteDatabase db = mTransactionManager.getWritableDb();
-            db.beginTransaction();
-            try {
-                for (MigrationEntity entity : entities) {
-                    migrateEntity(db, entity);
-                }
-
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
-        }
+        mTransactionManager.runAsTransaction(
+                db -> {
+                    synchronized (sLock) {
+                        for (MigrationEntity entity : entities) {
+                            migrateEntity(db, entity);
+                        }
+                    }
+                });
     }
 
     /** Migrates the provided {@link MigrationEntity}. Must be called inside a DB transaction. */

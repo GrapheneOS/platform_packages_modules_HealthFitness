@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.utils.logging.PermissionTypesElement
 import dagger.hilt.android.AndroidEntryPoint
 
 /** A {@link DialogFragment} that displays the apps in priority order. */
@@ -54,11 +55,16 @@ class PriorityListDialogFragment(
         priorityListMover.attachToRecyclerView(priorityListView)
 
         return AlertDialogBuilder(this)
+            .setLogName(PermissionTypesElement.SET_APP_PRIORITY_DIALOG_CONTAINER)
             .setView(parentView)
-            .setNegativeButton(android.R.string.cancel)
-            .setPositiveButton(R.string.priority_dialog_positive_button) { _, _ ->
-                setFragmentResult(PRIORITY_UPDATED_EVENT, bundle(adapter.getPackageNameList()))
-            }
+            .setNegativeButton(
+                android.R.string.cancel,
+                PermissionTypesElement.SET_APP_PRIORITY_DIALOG_CANCEL_BUTTON)
+            .setPositiveButton(
+                R.string.priority_dialog_positive_button,
+                PermissionTypesElement.SET_APP_PRIORITY_DIALOG_SAVE_BUTTON) { _, _ ->
+                    setFragmentResult(PRIORITY_UPDATED_EVENT, bundle(adapter.getPackageNameList()))
+                }
             .create()
     }
 

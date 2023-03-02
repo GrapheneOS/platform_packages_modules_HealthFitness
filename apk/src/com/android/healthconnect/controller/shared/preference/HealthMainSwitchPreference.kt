@@ -32,14 +32,31 @@ class HealthMainSwitchPreference
 constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreference(context, attrs) {
 
     private var logger: HealthConnectLogger
-    var logNameActive : ElementName = ErrorPageElement.UNKNOWN_ELEMENT
-    var logNameInactive : ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    var logNameActive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    var logNameInactive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    private var loggingSwitchListener: OnMainSwitchChangeListener
 
     init {
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
                 context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
         logger = hiltEntryPoint.logger()
+        loggingSwitchListener = OnMainSwitchChangeListener { preference, newValue ->
+            if (preference.isPressed) {
+                if (newValue) {
+                    logger.logInteraction(
+                        logNameInactive,
+                        com.android.healthconnect.controller.utils.logging.UIAction
+                            .ACTION_TOGGLE_ON)
+                } else {
+                    logger.logInteraction(
+                        logNameActive,
+                        com.android.healthconnect.controller.utils.logging.UIAction
+                            .ACTION_TOGGLE_OFF)
+                }
+            }
+        }
+        this.addOnSwitchChangeListener(loggingSwitchListener)
     }
 
     override fun onAttached() {
@@ -49,20 +66,5 @@ constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreferenc
         } else {
             logger.logImpression(logNameInactive)
         }
-    }
-
-    override fun addOnSwitchChangeListener(listener: OnMainSwitchChangeListener?) {
-        val loggingClickListener = OnMainSwitchChangeListener { preference, newValue ->
-            if (preference.isPressed) {
-                if (newValue) {
-                    logger.logInteraction(logNameInactive, UIAction.ACTION_TOGGLE_ON)
-                } else {
-                    logger.logInteraction(logNameActive, UIAction.ACTION_TOGGLE_OFF)
-                }
-            }
-
-            listener?.onSwitchChanged(preference, newValue)
-        }
-        super.addOnSwitchChangeListener(loggingClickListener)
     }
 }

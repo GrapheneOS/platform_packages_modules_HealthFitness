@@ -34,7 +34,7 @@
             android:text="@string/time_range_message_all" />
         <!-- by default the first radio button is checked -->
         <RadioGroup
-            android:id="@+id/radio_group"
+            android:id="@+id/radio_group_time_range"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
