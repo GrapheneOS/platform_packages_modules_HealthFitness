@@ -686,6 +686,7 @@ package android.health.connect.datatypes {
     method @NonNull public java.util.List<android.health.connect.datatypes.ExerciseSegment> getSegments();
     method @Nullable public CharSequence getTitle();
     method @NonNull public boolean hasRoute();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> EXERCISE_DURATION_TOTAL;
   }
 
   public static final class ExerciseSessionRecord.Builder {
@@ -1176,6 +1177,7 @@ package android.health.connect.datatypes {
     method @Nullable public CharSequence getNotes();
     method @NonNull public java.util.List<android.health.connect.datatypes.SleepSessionRecord.Stage> getStages();
     method @Nullable public CharSequence getTitle();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> SLEEP_DURATION_TOTAL;
   }
 
   public static final class SleepSessionRecord.Builder {

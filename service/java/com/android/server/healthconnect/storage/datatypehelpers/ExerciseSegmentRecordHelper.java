@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.ExerciseSegmentType.DURATION_EXCLUDE_TYPES;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
@@ -33,6 +35,7 @@ import android.util.Pair;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,7 +77,7 @@ public class ExerciseSegmentRecordHelper {
         return requests;
     }
 
-    static void populateSegmentIfRecorded(
+    static void updateSetWithRecordedSegment(
             @NonNull Cursor cursor, ArraySet<ExerciseSegmentInternal> segmentsSet) {
         if (isNullValue(cursor, EXERCISE_SEGMENT_START_TIME)) {
             return;
@@ -113,5 +116,22 @@ public class ExerciseSegmentRecordHelper {
         columnInfo.add(new Pair<>(EXERCISE_SEGMENT_TYPE, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(EXERCISE_SEGMENT_REPETITIONS_COUNT, INTEGER_NOT_NULL));
         return columnInfo;
+    }
+
+    public static String getStartTimeColumnName() {
+        return EXERCISE_SEGMENT_START_TIME;
+    }
+
+    public static String getEndTimeColumnName() {
+        return EXERCISE_SEGMENT_END_TIME;
+    }
+
+    /** Returns sql join needed for calculating exercise sessions duration */
+    public static SqlJoin getJoinForDurationAggregation(String parentTableName) {
+        SqlJoin join = getJoinReadRequest(parentTableName);
+        WhereClauses filterPauses = new WhereClauses();
+        filterPauses.addWhereInIntsClause(EXERCISE_SEGMENT_TYPE, DURATION_EXCLUDE_TYPES);
+        join.setSecondTableWhereClause(filterPauses);
+        return join;
     }
 }
