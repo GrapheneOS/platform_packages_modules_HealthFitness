@@ -21,7 +21,6 @@ import android.util.AttributeSet
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
 import com.android.healthconnect.controller.permissions.connectedapps.ComparablePreference
-import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -32,7 +31,7 @@ import dagger.hilt.android.EntryPointAccessors
 open class HealthPreference
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null) :
-        Preference(context, attrs), ComparablePreference {
+    Preference(context, attrs), ComparablePreference {
 
     private var logger: HealthConnectLogger
     var logName: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
@@ -67,8 +66,7 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun isSameItem(preference: Preference): Boolean {
-        return preference is HealthPreference &&
-                TextUtils.equals(this.title, preference.title)
+        return preference is HealthPreference && TextUtils.equals(this.title, preference.title)
     }
 
     override fun hasSameContents(preference: Preference): Boolean {

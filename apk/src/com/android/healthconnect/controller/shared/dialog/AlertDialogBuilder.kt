@@ -28,9 +28,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.logging.ElementName
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 
 /** {@link AlertDialog.Builder} wrapper for applying theming attributes. */
-class AlertDialogBuilder(fragment: Fragment) {
+class AlertDialogBuilder(private val fragment: Fragment) {
+
+    private var logger: HealthConnectLogger
+
+    init {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                fragment.requireContext().applicationContext,
+                HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
+    }
 
     private var context: Context = fragment.requireContext()
     private var alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
@@ -38,6 +53,19 @@ class AlertDialogBuilder(fragment: Fragment) {
         LayoutInflater.from(context).inflate(R.layout.dialog_title, null)
     private var customMessageLayout: View =
         LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
+
+    private var positiveButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    private var negativeButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    private var elementName: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
+    private var loggingAction = {}
+
+    private var hasPositiveButton = false
+    private var hasNegativeButton = false
+
+    fun setLogName(elementName: ElementName): AlertDialogBuilder {
+        this.elementName = elementName
+        return this
+    }
 
     fun setIcon(@AttrRes iconId: Int): AlertDialogBuilder {
         val iconView: ImageView = customTitleLayout.findViewById(R.id.dialog_icon)
@@ -94,25 +122,67 @@ class AlertDialogBuilder(fragment: Fragment) {
         return this
     }
 
-    fun setPositiveButton(
+    fun setNegativeButton(
         @StringRes textId: Int,
+        buttonId: ElementName,
         onClickListener: DialogInterface.OnClickListener? = null
     ): AlertDialogBuilder {
-        alertDialogBuilder.setPositiveButton(textId, onClickListener)
+        hasNegativeButton = true
+        negativeButtonKey = buttonId
+        val loggingClickListener =
+            DialogInterface.OnClickListener { dialog, which ->
+                logger.logInteraction(negativeButtonKey)
+                onClickListener?.onClick(dialog, which)
+            }
+        alertDialogBuilder.setNegativeButton(textId, loggingClickListener)
         return this
     }
 
-    fun setNegativeButton(
+    fun setPositiveButton(
         @StringRes textId: Int,
+        buttonId: ElementName,
         onClickListener: DialogInterface.OnClickListener? = null
     ): AlertDialogBuilder {
-        alertDialogBuilder.setNegativeButton(textId, onClickListener)
+        hasPositiveButton = true
+        positiveButtonKey = buttonId
+        val loggingClickListener =
+            DialogInterface.OnClickListener { dialog, which ->
+                logger.logInteraction(positiveButtonKey)
+                onClickListener?.onClick(dialog, which)
+            }
+        alertDialogBuilder.setPositiveButton(textId, loggingClickListener)
+        return this
+    }
+
+    /**
+     * Allows setting additional logging actions for custom dialog elements, such as messages,
+     * checkboxes or radio buttons.
+     *
+     * Impressions should be logged only once the dialog has been created.
+     */
+    fun setAdditionalLogging(loggingAction: () -> Unit): AlertDialogBuilder {
+        this.loggingAction = loggingAction
         return this
     }
 
     fun create(): AlertDialog {
         val dialog = alertDialogBuilder.create()
         setDialogGravityFromTheme(dialog)
+
+        // Dialog container
+        logger.logImpression(elementName)
+
+        // Dialog buttons
+        if (hasPositiveButton) {
+            logger.logImpression(positiveButtonKey)
+        }
+        if (hasNegativeButton) {
+            logger.logImpression(negativeButtonKey)
+        }
+
+        // Any additional logging e.g. for dialog messages
+        loggingAction()
+
         return dialog
     }
 

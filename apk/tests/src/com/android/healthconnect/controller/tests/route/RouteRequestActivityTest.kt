@@ -25,6 +25,7 @@ import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
@@ -222,7 +223,7 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_e() {
+    fun intentLaunchesPermissionsActivity_emptyRoute() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
@@ -266,8 +267,6 @@ class RouteRequestActivityTest {
 
         launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
-        // onView(withText("Health Connect test
-        // app")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Don\'t allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(
@@ -283,6 +282,40 @@ class RouteRequestActivityTest {
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(withId(R.id.map_view)).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun intentLaunchesPermissionsActivity_infoDialog() {
+        val startActivityIntent =
+            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
+                .putExtra(EXTRA_SESSION_ID, "sessionID")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        `when`(viewModel.exerciseSession).then {
+            MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
+        }
+
+        val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
+
+        scenario.onActivity { activity: RouteRequestActivity ->
+            activity.dialog.findViewById<LinearLayout>(R.id.more_info).callOnClick()
+        }
+
+        onView(withText("Exercise routes include location information"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(withText("Who can see this data?")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Only apps you allow to access your exercise routes"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(withText("How can I manage access?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(withText("You can manage app access to exercise routes in Health Connect settings"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
     }
 
     @Test

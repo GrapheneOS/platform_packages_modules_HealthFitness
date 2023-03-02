@@ -109,13 +109,18 @@ public final class TransactionManager {
      * @return List of uids of the inserted {@link RecordInternal}, in the same order as they
      *     presented to {@code request}.
      */
-    public List<String> insertAll(@NonNull UpsertTransactionRequest request)
+    public List<String> insertAll(
+            @NonNull UpsertTransactionRequest request, boolean replaceOnConflict)
             throws SQLiteException {
         if (Constants.DEBUG) {
             Slog.d(TAG, "Inserting " + request.getUpsertRequests().size() + " requests.");
         }
 
-        insertAll(request.getUpsertRequests());
+        if (replaceOnConflict) {
+            insertAll(request.getUpsertRequests(), this::insertOrReplaceRecord);
+        } else {
+            insertAll(request.getUpsertRequests(), this::insertRecord);
+        }
         return request.getUUIdsInOrder();
     }
 
@@ -127,16 +132,6 @@ public final class TransactionManager {
     public void insertOrReplaceAll(@NonNull List<UpsertTableRequest> upsertTableRequests)
             throws SQLiteException {
         insertAll(upsertTableRequests, this::insertOrReplace);
-    }
-
-    /**
-     * Inserts all the {@link UpsertTableRequest} into the HealthConnect database.
-     *
-     * @param upsertTableRequests a list of insert table requests.
-     */
-    public void insertAll(@NonNull List<UpsertTableRequest> upsertTableRequests)
-            throws SQLiteException {
-        insertAll(upsertTableRequests, this::insertRecord);
     }
 
     /**
@@ -213,12 +208,11 @@ public final class TransactionManager {
     public List<RecordInternal<?>> readRecords(@NonNull ReadTransactionRequest request)
             throws SQLiteException {
         List<RecordInternal<?>> recordInternals = new ArrayList<>();
-        final SQLiteDatabase db = getReadableDb();
         request.getReadRequests()
                 .forEach(
                         (readTableRequest -> {
                             if (readTableRequest.getRecordHelper().isRecordOperationsEnabled()) {
-                                try (Cursor cursor = read(db, readTableRequest)) {
+                                try (Cursor cursor = read(readTableRequest)) {
                                     Objects.requireNonNull(readTableRequest.getRecordHelper());
                                     List<RecordInternal<?>> internalRecords =
                                             readTableRequest
@@ -226,7 +220,7 @@ public final class TransactionManager {
                                                     .getInternalRecords(cursor, DEFAULT_PAGE_SIZE);
 
                                     populateInternalRecordsWithExtraData(
-                                            db, internalRecords, readTableRequest);
+                                            internalRecords, readTableRequest);
 
                                     recordInternals.addAll(internalRecords);
                                 }
@@ -253,8 +247,6 @@ public final class TransactionManager {
         List<RecordInternal<?>> recordInternalList;
         long token = DEFAULT_LONG;
         ReadTableRequest readTableRequest = request.getReadRequests().get(0);
-        final SQLiteDatabase db = mHealthConnectDatabase.getReadableDatabase();
-
         RecordHelper<?> helper = readTableRequest.getRecordHelper();
         Objects.requireNonNull(helper);
         if (!helper.isRecordOperationsEnabled()) {
@@ -262,11 +254,11 @@ public final class TransactionManager {
             return Pair.create(recordInternalList, token);
         }
 
-        try (Cursor cursor = read(db, readTableRequest)) {
+        try (Cursor cursor = read(readTableRequest)) {
             recordInternalList = helper.getInternalRecords(cursor, readTableRequest.getPageSize());
             String startTimeColumnName = helper.getStartTimeColumnName();
 
-            populateInternalRecordsWithExtraData(db, recordInternalList, readTableRequest);
+            populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
             if (cursor.moveToNext()) {
                 token = getCursorLong(cursor, startTimeColumnName);
             }
@@ -312,13 +304,13 @@ public final class TransactionManager {
         return insertOrReplaceRecord(db, request);
     }
 
-    /** Note: It is the responsibility of the caller to properly manage and close {@code db} */
+    /** Note: It is the responsibility of the caller to close the returned cursor */
     @NonNull
-    public Cursor read(@NonNull SQLiteDatabase db, @NonNull ReadTableRequest request) {
+    public Cursor read(@NonNull ReadTableRequest request) {
         if (Constants.DEBUG) {
             Slog.d(TAG, "Read query: " + request.getReadCommand());
         }
-        return db.rawQuery(request.getReadCommand(), null);
+        return getReadableDb().rawQuery(request.getReadCommand(), null);
     }
 
     public long getLastRowIdFor(String tableName) {
@@ -327,17 +319,6 @@ public final class TransactionManager {
             cursor.moveToFirst();
             return cursor.getLong(cursor.getColumnIndex(PRIMARY_COLUMN_NAME));
         }
-    }
-
-    /** Note: NEVER close this DB */
-    @NonNull
-    public SQLiteDatabase getReadableDb() {
-        SQLiteDatabase sqLiteDatabase = mHealthConnectDatabase.getReadableDatabase();
-
-        if (sqLiteDatabase == null) {
-            throw new InternalError("SQLite DB not found");
-        }
-        return sqLiteDatabase;
     }
 
     /**
@@ -453,15 +434,15 @@ public final class TransactionManager {
         }
     }
 
-    /** Note: NEVER close this DB */
-    @NonNull
-    public SQLiteDatabase getWritableDb() {
-        SQLiteDatabase sqLiteDatabase = mHealthConnectDatabase.getWritableDatabase();
-
-        if (sqLiteDatabase == null) {
-            throw new InternalError("SQLite DB not found");
+    public <E extends Throwable> void runAsTransaction(TransactionRunnable<E> task) throws E {
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            task.run(db);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
-        return sqLiteDatabase;
     }
 
     /** Assumes that caller will be closing {@code db} and handling the transaction if required */
@@ -494,6 +475,28 @@ public final class TransactionManager {
         }
 
         return rowId;
+    }
+
+    /** Note: NEVER close this DB */
+    @NonNull
+    private SQLiteDatabase getReadableDb() {
+        SQLiteDatabase sqLiteDatabase = mHealthConnectDatabase.getReadableDatabase();
+
+        if (sqLiteDatabase == null) {
+            throw new InternalError("SQLite DB not found");
+        }
+        return sqLiteDatabase;
+    }
+
+    /** Note: NEVER close this DB */
+    @NonNull
+    private SQLiteDatabase getWritableDb() {
+        SQLiteDatabase sqLiteDatabase = mHealthConnectDatabase.getWritableDatabase();
+
+        if (sqLiteDatabase == null) {
+            throw new InternalError("SQLite DB not found");
+        }
+        return sqLiteDatabase;
     }
 
     public File getDatabasePath() {
@@ -549,15 +552,15 @@ public final class TransactionManager {
 
     /**
      * Do extra sql requests to populate optional extra data. Used to populate {@link
-     * android.healthconnect.internal.datatypes.ExerciseRouteInternal}.
+     * android.health.connect.internal.datatypes.ExerciseRouteInternal}.
      */
     private void populateInternalRecordsWithExtraData(
-            SQLiteDatabase readableDb, List<RecordInternal<?>> records, ReadTableRequest request) {
+            List<RecordInternal<?>> records, ReadTableRequest request) {
         if (request.getExtraReadRequests() == null) {
             return;
         }
         for (ReadTableRequest extraDataRequest : request.getExtraReadRequests()) {
-            Cursor cursorExtraData = read(readableDb, extraDataRequest);
+            Cursor cursorExtraData = read(extraDataRequest);
             request.getRecordHelper()
                     .updateInternalRecordsWithExtraFields(
                             records, cursorExtraData, extraDataRequest.getTableName());
@@ -581,5 +584,9 @@ public final class TransactionManager {
 
     private void insertOrReplace(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
         db.replace(request.getTable(), null, request.getContentValues());
+    }
+
+    public interface TransactionRunnable<E extends Throwable> {
+        void run(SQLiteDatabase db) throws E;
     }
 }

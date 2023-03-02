@@ -46,6 +46,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
+import com.android.healthconnect.controller.utils.logging.DisconnectAllAppsDialogElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.setupMenu
@@ -113,12 +114,17 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun openRemoveAllAppsAccessDialog(apps: List<ConnectedAppMetadata>) {
         AlertDialogBuilder(this)
+            .setLogName(DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_CONTAINER)
             .setIcon(R.attr.disconnectAllIcon)
             .setTitle(R.string.permissions_disconnect_all_dialog_title)
             .setMessage(R.string.permissions_disconnect_all_dialog_message)
             .setNegativeButton(
-                android.R.string.cancel)
-            .setPositiveButton(R.string.permissions_disconnect_all_dialog_disconnect) { _, _ ->
+                android.R.string.cancel,
+                DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_CANCEL_BUTTON)
+            .setPositiveButton(
+                R.string.permissions_disconnect_all_dialog_disconnect,
+                DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_REMOVE_ALL_BUTTON) { _, _
+                    ->
                     viewModel.disconnectAllApps(apps)
                 }
             .create()

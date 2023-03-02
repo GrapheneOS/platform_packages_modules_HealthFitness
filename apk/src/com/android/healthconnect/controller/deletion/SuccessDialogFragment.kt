@@ -20,6 +20,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.utils.logging.SuccessDialogElement
 import dagger.hilt.android.AndroidEntryPoint
 
 /** A deletion {@link DialogFragment} notifying user about a successful deletion. */
@@ -28,10 +29,13 @@ class SuccessDialogFragment : Hilt_SuccessDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialogBuilder(this)
+            .setLogName(SuccessDialogElement.DELETION_DIALOG_SUCCESS_CONTAINER)
             .setIcon(R.attr.successIcon)
             .setTitle(R.string.delete_dialog_success_title)
             .setMessage(R.string.delete_dialog_success_message)
-            .setNegativeButton(R.string.delete_dialog_success_got_it_button)
+            .setNegativeButton(
+                R.string.delete_dialog_success_got_it_button,
+                SuccessDialogElement.DELETION_DIALOG_SUCCESS_DONE_BUTTON)
             .create()
     }
 

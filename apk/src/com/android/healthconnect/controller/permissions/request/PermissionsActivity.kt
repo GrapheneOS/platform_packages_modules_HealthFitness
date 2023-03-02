@@ -45,8 +45,9 @@ import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
-import com.android.healthconnect.controller.permissions.shared.SettingsActivity
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -58,6 +59,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         private const val TAG = "PermissionsActivity"
     }
 
+    @Inject lateinit var logger: HealthConnectLogger
     private val viewModel: RequestPermissionViewModel by viewModels()
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
@@ -70,7 +72,8 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             finish()
         }
 
-        val rationalIntentDeclared = healthPermissionReader.isRationalIntentDeclared(getPackageNameExtra())
+        val rationalIntentDeclared =
+            healthPermissionReader.isRationalIntentDeclared(getPackageNameExtra())
         if (!rationalIntentDeclared) {
             Log.e(TAG, "App should support rational intent, finishing!")
             finish()
@@ -92,15 +95,24 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
     private fun setupCancelButton() {
         val cancelButton: View = findViewById(R.id.cancel)
-        cancelButton.setOnClickListener { handleResults(viewModel.request(getPackageNameExtra())) }
+        logger.logImpression(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+
+        cancelButton.setOnClickListener {
+            logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+            handleResults(viewModel.request(getPackageNameExtra()))
+        }
     }
 
     private fun setupAllowButton() {
         val allowButton: View = findViewById(R.id.allow)
+        logger.logImpression(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
         viewModel.grantedPermissions.observe(this) { grantedPermissions ->
             allowButton.isEnabled = grantedPermissions.isNotEmpty()
         }
-        allowButton.setOnClickListener { handleResults(viewModel.request(getPackageNameExtra())) }
+        allowButton.setOnClickListener {
+            logger.logInteraction(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+            handleResults(viewModel.request(getPackageNameExtra()))
+        }
     }
 
     private fun handleResults(results: Map<HealthPermission, PermissionState>) {

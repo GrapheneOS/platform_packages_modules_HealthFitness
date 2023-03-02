@@ -37,7 +37,6 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
@@ -48,17 +47,21 @@ import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_A
 import com.android.healthconnect.controller.permissions.shared.DisconnectDialogFragment
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
+import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppHeaderPreference
-import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Fragment to show granted/revoked health permissions for and app. It is used as an entry point
  * from PermissionController.
  */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFragment() {
 
     companion object {
@@ -68,12 +71,16 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         private const val PERMISSION_HEADER = "manage_app_permission_header"
     }
 
+    init {
+        this.setPageName(PageName.MANAGE_PERMISSIONS_PAGE)
+    }
+
     private lateinit var packageName: String
     private lateinit var appName: String
     private val viewModel: AppPermissionViewModel by viewModels()
     private val permissionMap: MutableMap<HealthPermission, SwitchPreference> = mutableMapOf()
 
-    private val allowAllPreference: MainSwitchPreference? by lazy {
+    private val allowAllPreference: HealthMainSwitchPreference? by lazy {
         preferenceScreen.findPreference(ALLOW_ALL_PREFERENCE)
     }
 
@@ -90,7 +97,11 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.settings_manage_app_permission_screen, rootKey)
+
+        allowAllPreference?.logNameActive = PermissionsElement.ALLOW_ALL_SWITCH
+        allowAllPreference?.logNameInactive = PermissionsElement.ALLOW_ALL_SWITCH
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -189,12 +200,14 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                     writePermissionCategory
                 }
             val switchPreference =
-                SwitchPreference(requireContext()).also {
+                HealthSwitchPreference(requireContext()).also {
                     val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
                     it.setIcon(healthCategory.icon())
                     it.setTitle(
                         HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
                             .uppercaseLabel)
+                    it.logNameActive = PermissionsElement.PERMISSION_SWITCH
+                    it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
                     it.setOnPreferenceChangeListener { _, newValue ->
                         val checked = newValue as Boolean
                         viewModel.updatePermission(packageName, permission, checked)
