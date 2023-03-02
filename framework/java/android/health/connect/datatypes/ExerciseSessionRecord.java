@@ -16,6 +16,7 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTimeIntervalHolders;
 
 import android.annotation.NonNull;
@@ -38,8 +39,21 @@ import java.util.stream.Collectors;
  * optional independent lists of time intervals: {@link ExerciseSegment} represents particular
  * exercise within session, {@link ExerciseLap} represents a lap time within session.
  */
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION)
+@Identifier(recordIdentifier = RECORD_TYPE_EXERCISE_SESSION)
 public final class ExerciseSessionRecord extends IntervalRecord {
+
+    /**
+     * Metric identifier to retrieve total exercise session duration using aggregate APIs in {@link
+     * android.health.connect.HealthConnectManager}. Calculated in milliseconds.
+     */
+    @NonNull
+    public static final AggregationType<Long> EXERCISE_DURATION_TOTAL =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_EXERCISE_SESSION,
+                    Long.class);
+
     private final int mExerciseType;
 
     private final CharSequence mNotes;

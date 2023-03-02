@@ -33,17 +33,20 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Parent class for all the Interval type records
  *
+ * @param <T> internal record for which this class is responsible.
  * @hide
  */
-abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends RecordHelper<T> {
-    protected static final String START_TIME_COLUMN_NAME = "start_time";
-    private static final String START_ZONE_OFFSET_COLUMN_NAME = "start_zone_offset";
-    protected static final String END_TIME_COLUMN_NAME = "end_time";
+public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
+        extends RecordHelper<T> {
+    public static final String START_TIME_COLUMN_NAME = "start_time";
+    public static final String START_ZONE_OFFSET_COLUMN_NAME = "start_zone_offset";
+    public static final String END_TIME_COLUMN_NAME = "end_time";
     private static final String END_ZONE_OFFSET_COLUMN_NAME = "end_zone_offset";
     private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
 
@@ -150,4 +153,15 @@ abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>> extends
      */
     @NonNull
     abstract List<Pair<String, String>> getIntervalRecordColumnInfo();
+
+    /** Outputs list of columns needed for interval priority aggregations. */
+    List<String> getPriorityAggregationColumnNames() {
+        return Arrays.asList(
+                START_TIME_COLUMN_NAME,
+                END_TIME_COLUMN_NAME,
+                APP_INFO_ID_COLUMN_NAME,
+                LAST_MODIFIED_TIME_COLUMN_NAME,
+                UUID_COLUMN_NAME,
+                START_ZONE_OFFSET_COLUMN_NAME);
+    }
 }
