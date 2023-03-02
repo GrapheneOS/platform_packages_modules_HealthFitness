@@ -28,7 +28,6 @@ filegroup {
     ]
 }
 
-//TODO(b/250880188) Split permission ui to different lib.
 filegroup {
     name: "healthconnectController-permissions-apis",
     srcs: [
