@@ -27,6 +27,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.health.connect.HealthConnectException;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
@@ -152,7 +153,9 @@ public final class SleepSessionRecordHelper
     @Override
     public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
         if (!isRecordOperationsEnabled()) {
-            throw new UnsupportedOperationException("Writing sleep sessions is not supported.");
+            throw new HealthConnectException(
+                    HealthConnectException.ERROR_UNSUPPORTED_OPERATION,
+                    "Writing sleep sessions is not supported.");
         }
         return Collections.emptyList();
     }
