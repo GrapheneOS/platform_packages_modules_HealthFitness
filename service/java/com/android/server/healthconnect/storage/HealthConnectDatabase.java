@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
@@ -44,6 +45,7 @@ import java.util.Collection;
  * @hide
  */
 public class HealthConnectDatabase extends SQLiteOpenHelper {
+    private static final String TAG = "HealthConnectDatabase";
     private static final int DATABASE_VERSION = 3; // Last bumped on 2023-02-20T16:14:19.978719Z
     private static final String DATABASE_NAME = "healthconnect.db";
 
@@ -109,7 +111,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onDowngrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
-        super.onDowngrade(db, oldVersion, newVersion);
+        Log.i(TAG, "onDowngrade oldVersion = " + oldVersion + " newVersion = " + newVersion);
     }
 
     public File getDatabasePath() {
