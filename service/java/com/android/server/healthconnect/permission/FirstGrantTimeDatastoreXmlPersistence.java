@@ -19,12 +19,13 @@ package com.android.server.healthconnect.permission;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.Constants;
-import android.os.Environment;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 import android.util.AtomicFile;
 import android.util.Log;
 import android.util.Xml;
+
+import com.android.server.healthconnect.utils.FilesUtil;
 
 import libcore.io.IoUtils;
 
@@ -113,7 +114,8 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
     }
 
     public File getFile(@NonNull UserHandle user) {
-        File moduleDataDirPerUser = getModuleDataDirectoryPerUser(user);
+        File moduleDataDirPerUser =
+                FilesUtil.getDataSystemCeHCDirectoryForUser(user.getIdentifier());
         return new File(moduleDataDirPerUser, GRANT_TIME_FILE_NAME);
     }
 
@@ -229,12 +231,5 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
         }
 
         return new UserGrantTimeState(packagePermissions, sharedUserPermissions, version);
-    }
-
-    private static File getModuleDataDirectoryPerUser(@NonNull UserHandle user) {
-        // TODO(b/243144969): Switch to the final data destination once it's finalised.
-        File systemDataDir = new File(Environment.getDataDirectory(), /* child= */ "system");
-        File moduleDataDir = new File(systemDataDir, /* child= */ "healthconnect");
-        return new File(moduleDataDir, String.valueOf(user.getIdentifier()));
     }
 }

@@ -77,7 +77,7 @@ public final class SpeedRecord extends IntervalRecord {
         public SpeedRecordSample(@NonNull Velocity speed, @NonNull Instant time) {
             Objects.requireNonNull(time);
             Objects.requireNonNull(speed);
-            ValidationUtils.requireInRange(speed.getInMetersPerSecond(), 0.0, 11000.0, "speed");
+            ValidationUtils.requireInRange(speed.getInMetersPerSecond(), 0.0, 1000000, "speed");
             mTime = time;
             mSpeed = speed;
         }

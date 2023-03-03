@@ -19,7 +19,6 @@ import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.autoDeleteRangeEnd
 import com.android.healthconnect.controller.autodelete.autoDeleteRangeStart
 import com.android.healthconnect.controller.autodelete.fromNumberOfMonths
-import com.android.healthconnect.controller.autodelete.numberOfMonths
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.utils.TimeSource
 import com.google.common.truth.Truth.assertThat
@@ -43,17 +42,17 @@ class AutoDeleteRangeTest {
 
     @Test
     fun numberOfMonths_rangeNever_returnCorrectValue() {
-        assertThat(numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)).isEqualTo(0)
+        assertThat(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER.numberOfMonths).isEqualTo(0)
     }
 
     @Test
     fun numberOfMonths_threeMonths_returnCorrectValue() {
-        assertThat(numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS)).isEqualTo(3)
+        assertThat(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS.numberOfMonths).isEqualTo(3)
     }
 
     @Test
     fun numberOfMonths_eighteenMonths_returnCorrectValue() {
-        assertThat(numberOfMonths(AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS)).isEqualTo(18)
+        assertThat(AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS.numberOfMonths).isEqualTo(18)
     }
 
     @Test

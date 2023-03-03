@@ -53,6 +53,8 @@ public final class SqlJoin {
     private List<SqlJoin> mAttachedJoins;
     private String mJoinType = SQL_JOIN_INNER;
 
+    private WhereClauses mTableToJoinWhereClause = null;
+
     public SqlJoin(
             String selfTableName,
             String tableNameToJoinOn,
@@ -112,11 +114,16 @@ public final class SqlJoin {
         return this;
     }
 
+    public void setSecondTableWhereClause(WhereClauses whereClause) {
+        mTableToJoinWhereClause = whereClause;
+    }
+
     private String getJoinCommand(boolean withSelfTableNamePrefix) {
         String selfColumnPrefix = withSelfTableNamePrefix ? mSelfTableName + "." : "";
         return " "
                 + mJoinType
                 + " JOIN "
+                + (mTableToJoinWhereClause == null ? "" : "( " + buildFilterQuery() + ") ")
                 + mTableNameToJoinOn
                 + " ON "
                 + selfColumnPrefix
@@ -126,6 +133,10 @@ public final class SqlJoin {
                 + "."
                 + mJoiningColumnNameToMatch
                 + buildAttachedJoinsCommand(withSelfTableNamePrefix);
+    }
+
+    private String buildFilterQuery() {
+        return SELECT_ALL + mTableNameToJoinOn + mTableToJoinWhereClause.get(true);
     }
 
     private String buildAttachedJoinsCommand(boolean withSelfTableNamePrefix) {

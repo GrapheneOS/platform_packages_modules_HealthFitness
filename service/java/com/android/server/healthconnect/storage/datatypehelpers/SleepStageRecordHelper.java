@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.SleepSessionRecord.StageType.DURATION_EXCLUDE_TYPES;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
@@ -34,6 +36,7 @@ import androidx.annotation.Nullable;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +52,23 @@ public final class SleepStageRecordHelper {
     private static final String SLEEP_STAGE_START_TIME = "stage_start_time";
     private static final String SLEEP_STAGE_END_TIME = "stage_end_time";
     private static final String SLEEP_STAGE_TYPE = "stage_type";
+
+    public static String getStartTimeColumnName() {
+        return SLEEP_STAGE_START_TIME;
+    }
+
+    public static String getEndTimeColumnName() {
+        return SLEEP_STAGE_END_TIME;
+    }
+
+    /** Returns sql join needed for calculating sleep duration */
+    public static SqlJoin getJoinForDurationAggregation(String parentTableName) {
+        SqlJoin join = getJoinReadRequest(parentTableName);
+        WhereClauses filterAwakes = new WhereClauses();
+        filterAwakes.addWhereInIntsClause(SLEEP_STAGE_TYPE, DURATION_EXCLUDE_TYPES);
+        join.setSecondTableWhereClause(filterAwakes);
+        return join;
+    }
 
     static CreateTableRequest getCreateStagesTableRequest(String parentTableName) {
         return new CreateTableRequest(SLEEP_STAGES_RECORD_TABLE_NAME, getStagesTableColumnInfo())

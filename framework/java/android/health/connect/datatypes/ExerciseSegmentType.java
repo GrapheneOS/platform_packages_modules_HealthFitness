@@ -20,6 +20,7 @@ import android.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 
 /** Identifier for exercise types, as returned by {@link ExerciseSegment#getSegmentType()}. */
 public final class ExerciseSegmentType {
@@ -303,4 +304,14 @@ public final class ExerciseSegmentType {
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ExerciseSegmentTypes {}
+
+    /**
+     * Exercise segments types which are excluded from exercise session duration.
+     *
+     * @hide
+     */
+    public static final List<Integer> DURATION_EXCLUDE_TYPES =
+            List.of(
+                    ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PAUSE,
+                    ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_REST);
 }

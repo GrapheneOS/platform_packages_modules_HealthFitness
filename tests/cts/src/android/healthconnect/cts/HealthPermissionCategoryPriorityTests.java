@@ -90,10 +90,9 @@ public class HealthPermissionCategoryPriorityTests {
         for (Integer permissionCategory : sAllDataCategories) {
             try {
                 getPriority(permissionCategory);
-                Assert.fail();
+                Assert.fail("Get Priority must not be allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }
@@ -132,10 +131,9 @@ public class HealthPermissionCategoryPriorityTests {
         for (Integer permissionCategory : sAllDataCategories) {
             try {
                 updatePriority(permissionCategory, Arrays.asList("a", "b", "c"));
-                Assert.fail();
+                Assert.fail("Update priority must not be allowed without right HC permission");
             } catch (SecurityException securityException) {
-                assertThat(true).isTrue();
-                assertThat(securityException).isNotNull();
+                assertThat(securityException).isInstanceOf(SecurityException.class);
             }
         }
     }

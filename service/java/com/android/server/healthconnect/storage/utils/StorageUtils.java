@@ -38,6 +38,7 @@ import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.lang.annotation.Retention;
 import java.nio.ByteBuffer;
@@ -307,5 +308,12 @@ public final class StorageUtils {
             }
         }
         return false;
+    }
+
+    /** Returns list of app Ids of contributing apps for the record type in the priority order */
+    public static List<Long> getAppIdPriorityList(int recordType) {
+        return HealthDataCategoryPriorityHelper.getInstance()
+                .getAppIdPriorityOrder(
+                        RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType));
     }
 }

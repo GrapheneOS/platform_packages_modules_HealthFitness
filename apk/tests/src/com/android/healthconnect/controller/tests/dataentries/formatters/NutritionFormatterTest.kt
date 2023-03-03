@@ -121,14 +121,14 @@ class NutritionFormatterTest {
                 .setEnergyFromFat(fromJoules(123456.0))
                 .setEnergy(fromJoules(123457.0))
                 .setChloride(fromKilograms(.011))
-                .setCholesterol(fromKilograms(.22))
+                .setCholesterol(fromKilograms(.02))
                 .setChromium(fromKilograms(.01))
                 .setCopper(fromKilograms(.02))
                 .setDietaryFiber(fromKilograms(0.034))
                 .setFolate(fromKilograms(.1))
                 .setFolicAcid(fromKilograms(.09))
                 .setIodine(fromKilograms(.1))
-                .setIron(fromKilograms(1.3))
+                .setIron(fromKilograms(.03))
                 .setMagnesium(fromKilograms(0.03))
                 .setManganese(fromKilograms(0.041))
                 .setMolybdenum(fromKilograms(0.002))
@@ -165,7 +165,7 @@ class NutritionFormatterTest {
                     "Caffeine: 12 g\n" +
                     "Calcium: 5 g\n" +
                     "Chloride: 11 g\n" +
-                    "Cholesterol: 220 g\n" +
+                    "Cholesterol: 20 g\n" +
                     "Chromium: 10 g\n" +
                     "Copper: 20 g\n" +
                     "Dietary fiber: 34 g\n" +
@@ -174,7 +174,7 @@ class NutritionFormatterTest {
                     "Folate: 100 g\n" +
                     "Folic acid: 90 g\n" +
                     "Iodine: 100 g\n" +
-                    "Iron: 1,300 g\n" +
+                    "Iron: 30 g\n" +
                     "Magnesium: 30 g\n" +
                     "manganese: 41 g\n" +
                     "Molybdenum: 2 g\n" +
