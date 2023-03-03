@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.ExerciseRouteRecordHelper.EXERCISE_ROUTE_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
@@ -33,6 +34,7 @@ import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ExerciseLapInternal;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
@@ -97,7 +99,7 @@ public final class ExerciseSessionRecordHelper
         do {
             // Populate lap and segments from each row.
             ExerciseLapRecordHelper.populateLapIfRecorded(cursor, lapsSet);
-            ExerciseSegmentRecordHelper.populateSegmentIfRecorded(cursor, segmentsSet);
+            ExerciseSegmentRecordHelper.updateSetWithRecordedSegment(cursor, segmentsSet);
         } while (cursor.moveToNext() && uuid.equals(getCursorString(cursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
@@ -110,6 +112,23 @@ public final class ExerciseSessionRecordHelper
         if (!segmentsSet.isEmpty()) {
             exerciseSessionRecord.setExerciseSegments(segmentsSet.stream().toList());
         }
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        List<String> sessionColumns = new ArrayList<>(super.getPriorityAggregationColumnNames());
+        sessionColumns.add(ExerciseSegmentRecordHelper.getStartTimeColumnName());
+        sessionColumns.add(ExerciseSegmentRecordHelper.getEndTimeColumnName());
+        if (aggregateRequest.getAggregationTypeIdentifier() == EXERCISE_SESSION_DURATION_TOTAL) {
+            return new AggregateParams(
+                            EXERCISE_SESSION_RECORD_TABLE_NAME,
+                            sessionColumns,
+                            START_TIME_COLUMN_NAME)
+                    .setJoin(
+                            ExerciseSegmentRecordHelper.getJoinForDurationAggregation(
+                                    getMainTableName()));
+        }
+        return null;
     }
 
     @Override

@@ -52,7 +52,7 @@ class DeletionStartedDialogFragment : Hilt_DeletionStartedDialogFragment() {
     }
 
     private fun buildMessage(autoDeleteRange: AutoDeleteRange): String {
-        val count = numberOfMonths(autoDeleteRange)
+        val count = autoDeleteRange.numberOfMonths
         return MessageFormat.format(
             requireContext().getString(R.string.deletion_started_x_months), mapOf("count" to count))
     }

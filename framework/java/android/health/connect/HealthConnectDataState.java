@@ -38,7 +38,8 @@ import java.lang.annotation.RetentionPolicy;
 public final class HealthConnectDataState implements Parcelable {
     /**
      * The default idle state of HealthConnect data restore process. This states means that nothing
-     * related to the data restore process is undergoing.
+     * related to the data restore process is undergoing. {@link #getDataRestoreError()} could
+     * return an error for previous restoration attempt.
      *
      * <p>See also {@link DataRestoreState}
      *
@@ -109,8 +110,9 @@ public final class HealthConnectDataState implements Parcelable {
      *
      * <p>This is a recoverable error.
      *
-     * <p>Once the HealthConnect version on the device is updated and rebooted then the restore will
-     * be attempted on the same device reboot.
+     * <p>Until the module has been updated we'll be waiting in the {@link #RESTORE_STATE_PENDING}
+     * state. Once the HealthConnect version on the device is updated and rebooted then the restore
+     * will be attempted on the same device reboot.
      *
      * @hide
      */
@@ -174,7 +176,7 @@ public final class HealthConnectDataState implements Parcelable {
      * @hide
      */
     // TODO(b/266720885): update javadoc on how to set the minVersion when it's available.
-    @SystemApi public static final int MIGRATION_STATE_UPGRADE_REQUIRED = 2;
+    @SystemApi public static final int MIGRATION_STATE_MODULE_UPGRADE_REQUIRED = 2;
 
     /**
      * We are in the process of integrating the data shared by the app using the {@link
@@ -206,8 +208,8 @@ public final class HealthConnectDataState implements Parcelable {
      *
      * <ul>
      *   <li>{@link #MIGRATION_STATE_IDLE} if the module is ready to
-     *   <li>{@link #MIGRATION_STATE_UPGRADE_REQUIRED} when the module upgrades to the minimum
-     *       required version.
+     *   <li>{@link #MIGRATION_STATE_MODULE_UPGRADE_REQUIRED} when the module upgrades to the
+     *       minimum required version.
      *   <li>{@link #MIGRATION_STATE_IN_PROGRESS} in case of a timeout of 12 hours.
      * </ul>
      *
@@ -225,7 +227,7 @@ public final class HealthConnectDataState implements Parcelable {
      *
      * <ul>
      *   <li>From {@link #MIGRATION_STATE_IDLE} after a timeout of 30 days.
-     *   <li>From {@link #MIGRATION_STATE_UPGRADE_REQUIRED} after a timeout of 15 days.
+     *   <li>From {@link #MIGRATION_STATE_MODULE_UPGRADE_REQUIRED} after a timeout of 15 days.
      *   <li>From {@link #MIGRATION_STATE_IN_PROGRESS} when {@link
      *       HealthConnectManager#finishMigration} is called.
      *   <li>From {@link #MIGRATION_STATE_ALLOWED} after a timeout of 15 days.
@@ -242,7 +244,7 @@ public final class HealthConnectDataState implements Parcelable {
     @IntDef({
         MIGRATION_STATE_IDLE,
         MIGRATION_STATE_APP_UPGRADE_REQUIRED,
-        MIGRATION_STATE_UPGRADE_REQUIRED,
+        MIGRATION_STATE_MODULE_UPGRADE_REQUIRED,
         MIGRATION_STATE_IN_PROGRESS,
         MIGRATION_STATE_ALLOWED,
         MIGRATION_STATE_COMPLETE

@@ -34,6 +34,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel.SessionWithAttribution
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.map.MapView
+import com.android.healthconnect.controller.utils.FeatureUtils
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -48,6 +49,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
     }
 
     @Inject lateinit var appInfoReader: AppInfoReader
+    @Inject lateinit var featureUtils: FeatureUtils
 
     @VisibleForTesting lateinit var dialog: AlertDialog
     @VisibleForTesting lateinit var infoDialog: AlertDialog
@@ -56,6 +58,13 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (!featureUtils.isExerciseRouteEnabled()) {
+            Log.e(TAG, "Exercise routes not available, finishing.")
+            setResult(Activity.RESULT_CANCELED, Intent())
+            finish()
+            return
+        }
 
         if (!intent.hasExtra(EXTRA_SESSION_ID) ||
             intent.getStringExtra(EXTRA_SESSION_ID) == null ||

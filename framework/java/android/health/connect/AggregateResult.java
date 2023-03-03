@@ -52,15 +52,12 @@ public final class AggregateResult<T> {
      * @return {@link ZoneOffset} for the underlying record, null if aggregation was derived from
      *     multiple records
      */
-    @NonNull
     public ZoneOffset getZoneOffset() {
         return mZoneOffset;
     }
 
     /** Sets the {@link ZoneOffset} for the underlying record. */
-    public AggregateResult<T> setZoneOffset(@NonNull ZoneOffset zoneOffset) {
-        Objects.requireNonNull(zoneOffset);
-
+    public AggregateResult<T> setZoneOffset(ZoneOffset zoneOffset) {
         mZoneOffset = zoneOffset;
         return this;
     }
