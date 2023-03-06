@@ -136,7 +136,8 @@ public final class BoneMassRecord extends InstantRecord {
                                 .setClientRecordVersion(getMetadata().getClientRecordVersion())
                                 .setManufacturer(getMetadata().getDevice().getManufacturer())
                                 .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType());
+                                .setDeviceType(getMetadata().getDevice().getType())
+                                .setRecordingMethod(getMetadata().getRecordingMethod());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setMass(mMass.getInGrams());

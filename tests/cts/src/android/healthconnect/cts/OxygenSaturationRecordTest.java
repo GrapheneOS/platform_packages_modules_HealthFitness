@@ -351,6 +351,7 @@ public class OxygenSaturationRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("OSR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new OxygenSaturationRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Percentage.fromValue(10.0))

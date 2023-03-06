@@ -332,6 +332,7 @@ public class BodyFatRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BFR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BodyFatRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Percentage.fromValue(10.0))

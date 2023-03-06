@@ -324,6 +324,7 @@ public class FloorsClimbedRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("FCR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
         return new FloorsClimbedRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),

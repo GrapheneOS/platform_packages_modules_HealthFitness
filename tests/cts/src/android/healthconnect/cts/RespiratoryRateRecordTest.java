@@ -347,6 +347,7 @@ public class RespiratoryRateRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("RRR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new RespiratoryRateRecord.Builder(testMetadataBuilder.build(), Instant.now(), 10.0)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))

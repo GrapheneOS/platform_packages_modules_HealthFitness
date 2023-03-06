@@ -317,6 +317,7 @@ public class ExerciseSessionRecordTest {
                                                 .build())
                                 .setId("ExerciseSession" + Math.random())
                                 .setClientRecordId("ExerciseSessionClient" + Math.random())
+                                .setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED)
                                 .build(),
                         SESSION_START_TIME,
                         SESSION_END_TIME,

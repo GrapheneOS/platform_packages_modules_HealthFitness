@@ -379,6 +379,7 @@ public class HeightRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("HR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new HeightRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Length.fromMeters(1.0))

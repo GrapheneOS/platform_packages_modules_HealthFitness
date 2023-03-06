@@ -418,6 +418,7 @@ public class BasalMetabolicRateRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BMR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BasalMetabolicRateRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Power.fromWatts(100.0))

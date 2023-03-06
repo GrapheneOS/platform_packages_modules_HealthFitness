@@ -908,6 +908,7 @@ public class TestUtils {
                 .setDataOrigin(
                         new DataOrigin.Builder().setPackageName(context.getPackageName()).build())
                 .setDevice(buildDevice())
+                .setRecordingMethod(Metadata.RECORDING_METHOD_UNKNOWN)
                 .build();
     }
 

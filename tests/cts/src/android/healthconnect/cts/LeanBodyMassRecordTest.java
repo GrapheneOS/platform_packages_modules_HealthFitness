@@ -339,6 +339,7 @@ public class LeanBodyMassRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("LBMR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new LeanBodyMassRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))
