@@ -53,19 +53,22 @@ constructor(
     private val packageManager = context.packageManager
 
     suspend fun getAppMetadata(packageName: String): AppMetadata {
-        return if (isAppInstalled(packageName)) {
-            AppMetadata(
-                packageName = packageName,
-                appName =
-                    packageManager.getApplicationLabel(getPackageInfo(packageName)).toString(),
-                icon = packageManager.getApplicationIcon(packageName))
+        if (cache.containsKey(packageName)) {
+            return cache[packageName]!!
+        } else if (isAppInstalled(packageName)) {
+            val app =
+                AppMetadata(
+                    packageName = packageName,
+                    appName =
+                        packageManager.getApplicationLabel(getPackageInfo(packageName)).toString(),
+                    icon = packageManager.getApplicationIcon(packageName))
+            cache[packageName] = app
+            return app
         } else {
-            if (!cache.containsKey(packageName)) {
-                // refresh cache
-                cache.putAll(applicationsInfoUseCase.invoke())
-            }
-            if (cache.containsKey(packageName)) {
-                cache[packageName]!!
+            val contributorApps = applicationsInfoUseCase.invoke()
+            cache.putAll(contributorApps)
+            return if (contributorApps.containsKey(packageName)) {
+                contributorApps[packageName]!!
             } else {
                 AppMetadata(packageName = packageName, appName = "", icon = null)
             }

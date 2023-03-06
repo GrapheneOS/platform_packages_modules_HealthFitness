@@ -22,16 +22,23 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataaccess.DataAccessAppState
 import com.android.healthconnect.controller.dataaccess.HealthDataAccessFragment
 import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,9 +59,8 @@ class HealthDataAccessFragmentTest {
 
     @Test
     fun dataAccessFragment_noSections_noneDisplayed() {
-        Mockito.`when`(viewModel.appMetadataMap).then {
-            MutableLiveData<Map<HealthDataAccessViewModel.DataAccessAppState, List<AppMetadata>>>(
-                emptyMap())
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<DataAccessScreenState>(WithData(emptyMap()))
         }
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 
@@ -72,13 +78,13 @@ class HealthDataAccessFragmentTest {
 
     @Test
     fun dataAccessFragment_readSection_isDisplayed() {
-        Mockito.`when`(viewModel.appMetadataMap).then {
-            MutableLiveData(
-                mapOf(
-                    HealthDataAccessViewModel.DataAccessAppState.Read to
-                        listOf(AppMetadata("package1", "appName1", null)),
-                    HealthDataAccessViewModel.DataAccessAppState.Write to emptyList(),
-                    HealthDataAccessViewModel.DataAccessAppState.Inactive to emptyList()))
+        val map =
+            mapOf(
+                DataAccessAppState.Read to listOf(AppMetadata("package1", "appName1", null)),
+                DataAccessAppState.Write to emptyList(),
+                DataAccessAppState.Inactive to emptyList())
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<DataAccessScreenState>(WithData(map))
         }
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 
@@ -96,14 +102,13 @@ class HealthDataAccessFragmentTest {
 
     @Test
     fun dataAccessFragment_readAndWriteSections_isDisplayed() {
-        Mockito.`when`(viewModel.appMetadataMap).then {
-            MutableLiveData<Map<HealthDataAccessViewModel.DataAccessAppState, List<AppMetadata>>>(
-                mapOf(
-                    HealthDataAccessViewModel.DataAccessAppState.Read to
-                        listOf(AppMetadata("package1", "appName1", null)),
-                    HealthDataAccessViewModel.DataAccessAppState.Write to
-                        listOf(AppMetadata("package1", "appName1", null)),
-                    HealthDataAccessViewModel.DataAccessAppState.Inactive to emptyList()))
+        val map =
+            mapOf(
+                DataAccessAppState.Read to listOf(AppMetadata("package1", "appName1", null)),
+                DataAccessAppState.Write to listOf(AppMetadata("package1", "appName1", null)),
+                DataAccessAppState.Inactive to emptyList())
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<DataAccessScreenState>(WithData(map))
         }
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 
@@ -121,13 +126,13 @@ class HealthDataAccessFragmentTest {
 
     @Test
     fun dataAccessFragment_inactiveSection_isDisplayed() {
-        Mockito.`when`(viewModel.appMetadataMap).then {
-            MutableLiveData(
-                mapOf(
-                    HealthDataAccessViewModel.DataAccessAppState.Read to emptyList(),
-                    HealthDataAccessViewModel.DataAccessAppState.Write to emptyList(),
-                    HealthDataAccessViewModel.DataAccessAppState.Inactive to
-                        listOf(AppMetadata("package1", "appName1", null))))
+        val map =
+            mapOf(
+                DataAccessAppState.Read to emptyList(),
+                DataAccessAppState.Write to emptyList(),
+                DataAccessAppState.Inactive to listOf(AppMetadata("package1", "appName1", null)))
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<DataAccessScreenState>(WithData(map))
         }
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 
@@ -143,7 +148,33 @@ class HealthDataAccessFragmentTest {
         onView(withText("Delete this data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
-    // TODO(b/245513697): Add tests for permission_type_description.
+    @Test
+    fun dataAccessFragment_loadingState_showsLoading() {
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<DataAccessScreenState>(DataAccessScreenState.Loading)
+        }
+        launchFragment<HealthDataAccessFragment>(distanceBundle())
+        onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun dataAccessFragment_withData_hidesLoading() {
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<DataAccessScreenState>(WithData(emptyMap()))
+        }
+        launchFragment<HealthDataAccessFragment>(distanceBundle())
+        onView(withId(R.id.progress_indicator)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun dataAccessFragment_withError_showError() {
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<DataAccessScreenState>(DataAccessScreenState.Error)
+        }
+        launchFragment<HealthDataAccessFragment>(distanceBundle())
+        onView(withId(R.id.progress_indicator)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+    }
 
     private fun distanceBundle(): Bundle {
         val bundle = Bundle()
