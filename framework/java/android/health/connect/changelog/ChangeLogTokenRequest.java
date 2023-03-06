@@ -27,9 +27,11 @@ import android.os.Parcelable;
 import android.util.ArraySet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A class to request changelog token using {@link HealthConnectManager#getChangeLogToken}
@@ -105,6 +107,16 @@ public final class ChangeLogTokenRequest implements Parcelable {
     }
 
     /**
+     * Returns List of Record types for which logs are to be fetched
+     *
+     * @hide
+     */
+    @NonNull
+    public List<Integer> getRecordTypesList() {
+        return Arrays.stream(getRecordTypesAsInteger()).boxed().collect(Collectors.toList());
+    }
+
+    /**
      * Returns list of package names corresponding to which the logs are required
      *
      * @hide
@@ -172,7 +184,11 @@ public final class ChangeLogTokenRequest implements Parcelable {
             return this;
         }
 
-        /** Returns Object of {@link ChangeLogTokenRequest} */
+        /**
+         * Returns Object of {@link ChangeLogTokenRequest}
+         *
+         * @throws IllegalArgumentException if record types are empty
+         */
         @NonNull
         public ChangeLogTokenRequest build() {
             return new ChangeLogTokenRequest(mDataOriginFilters, mRecordTypes);
