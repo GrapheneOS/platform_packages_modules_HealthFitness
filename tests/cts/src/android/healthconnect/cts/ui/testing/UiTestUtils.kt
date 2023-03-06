@@ -21,6 +21,7 @@ import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.units.Length
+import android.healthconnect.cts.TestUtils
 import android.os.SystemClock
 import android.util.Log
 import androidx.test.uiautomator.By
