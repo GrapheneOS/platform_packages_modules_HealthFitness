@@ -23,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel.CategoriesFragmentState.WithData
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.preference.HealthPreference
@@ -57,13 +58,24 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.allCategoriesData.observe(viewLifecycleOwner) { allCategoriesList ->
-            updateAllDataList(allCategoriesList)
+        viewModel.categoriesData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is WithData -> {
+                    setLoading(false)
+                    updateAllDataList(state.categories)
+                }
+                HealthDataCategoryViewModel.CategoriesFragmentState.Error -> {
+                    setError(true)
+                }
+                HealthDataCategoryViewModel.CategoriesFragmentState.Loading -> {
+                    setLoading(true)
+                }
+            }
         }
     }
 
-    private fun updateAllDataList(categoriesList: List<AllCategoriesScreenHealthDataCategory>) {
-        val sortedAllCategoriesList: List<AllCategoriesScreenHealthDataCategory> =
+    private fun updateAllDataList(categoriesList: List<HealthCategoryUiState>) {
+        val sortedAllCategoriesList: List<HealthCategoryUiState> =
             categoriesList.sortedBy { getString(it.category.uppercaseTitle()) }
         mAllDataCategories?.removeAll()
         if (sortedAllCategoriesList.isEmpty()) {
@@ -76,7 +88,7 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
                         it.setTitle(categoryInfo.category.uppercaseTitle())
                         it.setIcon(categoryInfo.category.icon())
                         it.logName = CategoriesElement.CATEGORY_BUTTON
-                        if (categoryInfo.noData) {
+                        if (!categoryInfo.hasData) {
                             it.setSummary(R.string.no_data)
                             it.isEnabled = false
                         } else {
