@@ -20,27 +20,27 @@ import android.annotation.NonNull;
 
 import java.util.Objects;
 
-/** Represents a unit of volume. Supported units: milliliters */
+/** Represents a unit of volume. Supported units: liters */
 public final class Volume implements Comparable<Volume> {
-    private final double mInMilliliters;
+    private final double mInLiters;
 
     private Volume(double value) {
-        mInMilliliters = value;
+        mInLiters = value;
     }
 
     /**
-     * Creates a Volume object with the specified value in milliliters.
+     * Creates a Volume object with the specified value in liters.
      *
-     * @param value value to be set as milliliters.
+     * @param value value to be set as liters.
      */
     @NonNull
-    public static Volume fromMilliliters(double value) {
+    public static Volume fromLiters(double value) {
         return new Volume(value);
     }
 
-    /** Returns volume in milliliters */
-    public double getInMilliliters() {
-        return mInMilliliters;
+    /** Returns volume in liters */
+    public double getInLiters() {
+        return mInLiters;
     }
 
     /**
@@ -57,7 +57,7 @@ public final class Volume implements Comparable<Volume> {
      */
     @Override
     public int compareTo(@NonNull Volume other) {
-        return Double.compare(this.mInMilliliters, other.mInMilliliters);
+        return Double.compare(this.mInLiters, other.mInLiters);
     }
 
     /**
@@ -72,7 +72,7 @@ public final class Volume implements Comparable<Volume> {
         if (this == object) return true;
         if (object instanceof Volume) {
             Volume other = (Volume) object;
-            return this.getInMilliliters() == other.getInMilliliters();
+            return this.getInLiters() == other.getInLiters();
         }
         return false;
     }
@@ -84,7 +84,7 @@ public final class Volume implements Comparable<Volume> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(this.getInMilliliters());
+        return Objects.hash(this.getInLiters());
     }
 
     /**
@@ -92,6 +92,6 @@ public final class Volume implements Comparable<Volume> {
      */
     @Override
     public String toString() {
-        return mInMilliliters + " mL";
+        return mInLiters + " L";
     }
 }

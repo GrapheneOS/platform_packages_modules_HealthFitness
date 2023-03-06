@@ -72,7 +72,7 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
         records.add(
             HeightRecord.Builder(getMetaData(), Instant.now(), Length.fromMeters(1.75)).build())
         records.add(
-            WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromKilograms(70.0)).build())
+            WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromGrams(70.0)).build())
         insertRecords(records, manager)
     }
 

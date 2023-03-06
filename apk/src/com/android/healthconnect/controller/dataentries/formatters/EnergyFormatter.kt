@@ -20,7 +20,7 @@ import android.health.connect.datatypes.units.Energy
 import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.units.EnergyConverter.convertToCalories
+import com.android.healthconnect.controller.dataentries.units.EnergyConverter.convertToJoules
 import com.android.healthconnect.controller.dataentries.units.EnergyUnit
 import com.android.healthconnect.controller.dataentries.units.EnergyUnit.CALORIE
 import com.android.healthconnect.controller.dataentries.units.EnergyUnit.KILOJOULE
@@ -63,8 +63,8 @@ object EnergyFormatter {
     ): String {
         val value =
             when (energyUnit) {
-                CALORIE -> convertToCalories(energy.inJoules)
-                KILOJOULE -> energy.inJoules / 1000.0
+                CALORIE -> energy.inCalories
+                KILOJOULE -> convertToJoules(energy.inCalories) / 1000.0
             }
         return format(context.getString(res), mapOf("count" to value.roundToInt()))
     }

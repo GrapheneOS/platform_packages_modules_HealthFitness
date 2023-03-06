@@ -133,7 +133,7 @@ class InsertOrUpdateRecords {
             mFieldNameToFieldInput: HashMap<String, InputFieldView>,
             fieldName: String,
         ): Mass {
-            return Mass.fromKilograms(getDoubleValue(mFieldNameToFieldInput, fieldName))
+            return Mass.fromGrams(getDoubleValue(mFieldNameToFieldInput, fieldName))
         }
 
         fun createRecordObject(
@@ -188,7 +188,7 @@ class InsertOrUpdateRecords {
                                 metaData,
                                 getStartTime(mFieldNameToFieldInput),
                                 getEndTime(mFieldNameToFieldInput),
-                                Energy.fromJoules(
+                                Energy.fromCalories(
                                     getDoubleValue(mFieldNameToFieldInput, "mEnergy")))
                             .build()
                 }
@@ -266,7 +266,7 @@ class InsertOrUpdateRecords {
                                 metaData,
                                 getStartTime(mFieldNameToFieldInput),
                                 getEndTime(mFieldNameToFieldInput),
-                                Energy.fromJoules(
+                                Energy.fromCalories(
                                     getDoubleValue(mFieldNameToFieldInput, "mEnergy")))
                             .build()
                 }
@@ -378,7 +378,7 @@ class InsertOrUpdateRecords {
                                 metaData,
                                 getStartTime(mFieldNameToFieldInput),
                                 getEndTime(mFieldNameToFieldInput),
-                                Volume.fromMilliliters(
+                                Volume.fromLiters(
                                     getDoubleValue(mFieldNameToFieldInput, "mVolume")))
                             .build()
                 }
@@ -582,7 +582,7 @@ class InsertOrUpdateRecords {
                                 }
                                 if (!mFieldNameToFieldInput["mEnergy"]!!.isEmpty()) {
                                     setEnergy(
-                                        Energy.fromJoules(
+                                        Energy.fromCalories(
                                             getDoubleValue(mFieldNameToFieldInput, "mEnergy")))
                                 }
                                 if (!mFieldNameToFieldInput["mFolate"]!!.isEmpty()) {
@@ -590,7 +590,7 @@ class InsertOrUpdateRecords {
                                 }
                                 if (!mFieldNameToFieldInput["mEnergyFromFat"]!!.isEmpty()) {
                                     setEnergyFromFat(
-                                        Energy.fromJoules(
+                                        Energy.fromCalories(
                                             getDoubleValue(
                                                 mFieldNameToFieldInput, "mEnergyFromFat")))
                                 }

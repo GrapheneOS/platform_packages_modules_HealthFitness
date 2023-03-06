@@ -150,6 +150,6 @@ class BoneMassFormatterTest {
     }
 
     private fun getRecord(massInKg: Double): BoneMassRecord {
-        return BoneMassRecord.Builder(getMetaData(), NOW, Mass.fromKilograms(massInKg)).build()
+        return BoneMassRecord.Builder(getMetaData(), NOW, Mass.fromGrams(massInKg * 1000)).build()
     }
 }
