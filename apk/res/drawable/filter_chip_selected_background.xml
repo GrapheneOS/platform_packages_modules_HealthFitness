@@ -16,7 +16,6 @@
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid
-        android:color="@color/filter_chip_selected_color"/>
+    <solid android:color="@color/filter_chip_selected_color"/>
     <corners android:radius="@dimen/filter_corner_radius"/>
 </shape>
