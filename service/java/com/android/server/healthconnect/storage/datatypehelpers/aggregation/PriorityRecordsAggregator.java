@@ -25,6 +25,7 @@ import android.health.connect.datatypes.AggregationType;
 import android.util.ArrayMap;
 import android.util.Slog;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.datatypehelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.SleepStageRecordHelper;
 
@@ -33,6 +34,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeSet;
 
 /**
  * Aggregates records with priorities.
@@ -47,7 +49,13 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
     private final Map<Integer, Double> mGroupToAggregationResult;
     private final Map<Integer, ZoneOffset> mGroupToFirstZoneOffset;
     private final int mNumberOfGroups;
+    private int mCurrentGroup = -1;
+
+    private long mLatestPopulatedStart = -1;
     @AggregationType.AggregationTypeIdentifier private final int mAggregationType;
+
+    private final TreeSet<AggregationTimestamp> mTimestampsBuffer;
+    private final TreeSet<AggregationRecordData> mOpenIntervals;
 
     public PriorityRecordsAggregator(
             List<Long> groupSplits,
@@ -61,12 +69,14 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
             mAppIdToPriority.put(appIdPriorityList.get(i), appIdPriorityList.size() - i);
         }
 
+        mTimestampsBuffer = new TreeSet<>();
+        mNumberOfGroups = mGroupSplits.size() - 1;
+        mGroupToFirstZoneOffset = new ArrayMap<>(mNumberOfGroups);
+        mOpenIntervals = new TreeSet<>(this);
         mGroupToAggregationResult = new ArrayMap<>(mGroupSplits.size());
         for (int i = 0; i < mGroupSplits.size() - 1; i++) {
             mGroupToAggregationResult.put(i, 0.0);
         }
-        mNumberOfGroups = mGroupSplits.size();
-        mGroupToFirstZoneOffset = new ArrayMap<>(mNumberOfGroups);
 
         if (Constants.DEBUG) {
             Slog.d(
@@ -78,32 +88,83 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         }
     }
 
-    // TODO(b/270051633): handle overlaps using priorities.
     /** Calculates aggregation result for each group. */
-    public Map<Integer, Double> calculateAggregation(Cursor cursor) {
-        AggregationRecordData data = createAggregationRecordData();
-        int currentGroup = 0;
-        while (cursor.moveToNext()) {
-            data.populateAggregationData(cursor);
-            while (currentGroup < mNumberOfGroups
-                    && data.getStartTime() > getGroupEnd(currentGroup)) {
-                currentGroup += 1;
+    public void calculateAggregation(Cursor cursor) {
+        initialiseTimestampsBuffer(cursor);
+        populateTimestampBuffer(cursor);
+        AggregationTimestamp scanPoint, nextPoint;
+        while (mTimestampsBuffer.size() > 1) {
+            scanPoint = mTimestampsBuffer.pollFirst();
+            nextPoint = mTimestampsBuffer.first();
+            if (scanPoint.getType() == AggregationTimestamp.GROUP_BORDER) {
+                mCurrentGroup += 1;
+            } else if (scanPoint.getType() == AggregationTimestamp.INTERVAL_START) {
+                mOpenIntervals.add(scanPoint.getParentData());
+                recordFirstInGroupZoneOffset(scanPoint.getParentData().getStartTimeZoneOffset());
+            } else if (scanPoint.getType() == AggregationTimestamp.INTERVAL_END) {
+                mOpenIntervals.remove(scanPoint.getParentData());
+            } else {
+                throw new UnsupportedOperationException(
+                        "Unknown aggregation timestamp type: " + scanPoint.getType());
             }
-
-            // Update group score until current record overlaps with group interval.
-            int recordGroup = currentGroup;
-            while (recordGroup < mNumberOfGroups - 1
-                    && data.getEndTime() > getGroupStart(recordGroup)) {
-                updateZoneOffsetForGroup(recordGroup, data.getStartTimeZoneOffset());
-                updateResultForGroup(recordGroup, data);
-                recordGroup += 1;
-            }
+            updateAggregationResult(scanPoint, nextPoint);
+            populateTimestampBuffer(cursor);
         }
 
         if (Constants.DEBUG) {
             Slog.d(TAG, "Aggregation result: " + mGroupToAggregationResult.toString());
         }
-        return mGroupToAggregationResult;
+    }
+
+    private void populateTimestampBuffer(Cursor cursor) {
+        // Buffer populating strategy guarantees that at the moment we start to process the earliest
+        // record, we added to the buffer later overlapping records and the first non-overlapping
+        // record. It guarantees that the aggregation score can be calculated correctly for any
+        // timestamp within the earliest record interval.
+        if (mTimestampsBuffer.first().getType() != AggregationTimestamp.INTERVAL_START) {
+            return;
+        }
+
+        // Add record timestamps to buffer until latest buffer record do not overlap with earliest
+        // buffer record.
+        long expansionBorder = mTimestampsBuffer.first().getParentData().getEndTime();
+        while (mLatestPopulatedStart < expansionBorder && cursor.moveToNext()) {
+            AggregationRecordData data = readNewDataAndAddToBuffer(cursor);
+            mLatestPopulatedStart = data.getStartTime();
+        }
+
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Timestamps buffer: " + mTimestampsBuffer);
+        }
+    }
+
+    private void initialiseTimestampsBuffer(Cursor cursor) {
+        for (Long groupSplit : mGroupSplits) {
+            mTimestampsBuffer.add(
+                    new AggregationTimestamp(AggregationTimestamp.GROUP_BORDER, groupSplit));
+        }
+
+        if (cursor.moveToNext()) {
+            readNewDataAndAddToBuffer(cursor);
+        }
+
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Initialised aggregation buffer: " + mTimestampsBuffer);
+        }
+    }
+
+    private AggregationRecordData readNewDataAndAddToBuffer(Cursor cursor) {
+        AggregationRecordData data = readNewData(cursor);
+        mTimestampsBuffer.add(data.getStartTimestamp());
+        mTimestampsBuffer.add(data.getEndTimestamp());
+        return data;
+    }
+
+    @VisibleForTesting
+    AggregationRecordData readNewData(Cursor cursor) {
+        AggregationRecordData data = createAggregationRecordData();
+        data.populateAggregationData(cursor);
+        return data;
     }
 
     /** Returns result for the given group */
@@ -132,26 +193,40 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         }
     }
 
-    private void updateZoneOffsetForGroup(int recordGroup, ZoneOffset startTimeZoneOffset) {
-        if (!mGroupToFirstZoneOffset.containsKey(recordGroup)) {
-            mGroupToFirstZoneOffset.put(recordGroup, startTimeZoneOffset);
+    private void recordFirstInGroupZoneOffset(ZoneOffset startTimeZoneOffset) {
+        if (mCurrentGroup == -1) {
+            return;
+        }
+
+        if (!mGroupToFirstZoneOffset.containsKey(mCurrentGroup)) {
+            mGroupToFirstZoneOffset.put(mCurrentGroup, startTimeZoneOffset);
         }
     }
 
-    private void updateResultForGroup(int groupIndex, AggregationRecordData data) {
+    private void updateAggregationResult(
+            AggregationTimestamp startPoint, AggregationTimestamp endPoint) {
+        if (Constants.DEBUG) {
+            Slog.d(
+                    TAG,
+                    "Updating result for group "
+                            + mCurrentGroup
+                            + " for interval: ("
+                            + startPoint.getTime()
+                            + ", "
+                            + endPoint.getTime()
+                            + ")");
+        }
+
+        if (mOpenIntervals.isEmpty() || mCurrentGroup < 0 || mCurrentGroup >= mNumberOfGroups) {
+            return;
+        }
+
         mGroupToAggregationResult.put(
-                groupIndex,
-                mGroupToAggregationResult.get(groupIndex)
-                        + data.getResultOnInterval(
-                                getGroupStart(groupIndex), getGroupEnd(groupIndex)));
-    }
-
-    private long getGroupStart(int index) {
-        return mGroupSplits.get(index);
-    }
-
-    private long getGroupEnd(int index) {
-        return mGroupSplits.get(index + 1);
+                mCurrentGroup,
+                mGroupToAggregationResult.get(mCurrentGroup)
+                        + mOpenIntervals
+                                .last()
+                                .getResultOnInterval(startPoint.getTime(), endPoint.getTime()));
     }
 
     // Compared aggregation data by data source priority, then by last modified time.
