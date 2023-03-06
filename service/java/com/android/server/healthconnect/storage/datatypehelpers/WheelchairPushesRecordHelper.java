@@ -18,7 +18,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -85,7 +85,7 @@ public final class WheelchairPushesRecordHelper
     void populateSpecificRecordValue(
             @NonNull Cursor cursor,
             @NonNull WheelchairPushesRecordInternal wheelchairPushesRecord) {
-        wheelchairPushesRecord.setCount(getCursorLong(cursor, COUNT_COLUMN_NAME));
+        wheelchairPushesRecord.setCount(getCursorInt(cursor, COUNT_COLUMN_NAME));
     }
 
     @Override

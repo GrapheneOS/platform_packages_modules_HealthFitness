@@ -308,7 +308,7 @@ public final class HeartRateRecord extends IntervalRecord {
         for (HeartRateRecord.HeartRateSample heartRateSample : getSamples()) {
             samples.add(
                     new HeartRateRecordInternal.HeartRateSample(
-                            heartRateSample.getBeatsPerMinute(),
+                            (int) heartRateSample.getBeatsPerMinute(),
                             heartRateSample.getTime().toEpochMilli()));
         }
         recordInternal.setSamples(samples);

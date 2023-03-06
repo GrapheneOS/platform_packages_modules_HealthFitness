@@ -20,7 +20,7 @@ import static android.health.connect.datatypes.AggregationType.AggregationTypeId
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.RESTING_HEART_RATE_RECORD_BPM_MIN;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -91,7 +91,7 @@ public final class RestingHeartRateRecordHelper
             @NonNull Cursor cursor,
             @NonNull RestingHeartRateRecordInternal restingHeartRateRecord) {
         restingHeartRateRecord.setBeatsPerMinute(
-                getCursorLong(cursor, BEATS_PER_MINUTE_COLUMN_NAME));
+                getCursorInt(cursor, BEATS_PER_MINUTE_COLUMN_NAME));
     }
 
     @Override
