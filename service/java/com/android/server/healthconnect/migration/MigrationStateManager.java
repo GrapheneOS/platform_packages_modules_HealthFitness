@@ -57,7 +57,7 @@ public final class MigrationStateManager {
      */
     public void setMinDataMigrationSdkExtensionVersion(int minVersion) {
         PreferenceHelper.getInstance()
-                .insertPreference(
+                .insertOrReplacePreference(
                         MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY, String.valueOf(minVersion));
     }
 
@@ -126,7 +126,8 @@ public final class MigrationStateManager {
     public void updateMigrationState(
             @HealthConnectDataState.DataMigrationState int migrationState) {
         PreferenceHelper.getInstance()
-                .insertPreference(MIGRATION_STATE_PREFERENCE_KEY, String.valueOf(migrationState));
+                .insertOrReplacePreference(
+                        MIGRATION_STATE_PREFERENCE_KEY, String.valueOf(migrationState));
     }
 
     private void throwIfMigrationIsComplete() throws IllegalMigrationStateException {
