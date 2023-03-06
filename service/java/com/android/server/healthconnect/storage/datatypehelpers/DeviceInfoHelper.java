@@ -58,9 +58,9 @@ public class DeviceInfoHelper {
     private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
     private static volatile DeviceInfoHelper sDeviceInfoHelper;
     /** Map to store deviceInfoId -> DeviceInfo mapping for populating record for read */
-    private ConcurrentHashMap<Long, DeviceInfo> mIdDeviceInfoMap;
+    private volatile ConcurrentHashMap<Long, DeviceInfo> mIdDeviceInfoMap;
     /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
-    private ConcurrentHashMap<DeviceInfo, Long> mDeviceInfoMap;
+    private volatile ConcurrentHashMap<DeviceInfo, Long> mDeviceInfoMap;
 
     public static synchronized DeviceInfoHelper getInstance() {
         if (sDeviceInfoHelper == null) {
@@ -90,7 +90,7 @@ public class DeviceInfoHelper {
         DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
         long rowId = getDeviceInfoMap().getOrDefault(deviceInfo, DEFAULT_LONG);
         if (rowId == DEFAULT_LONG) {
-            rowId = insertDeviceInfoAndGetRowId(deviceInfo);
+            rowId = insertIfNotPresent(deviceInfo);
         }
         recordInternal.setDeviceInfoId(rowId);
     }
@@ -159,7 +159,12 @@ public class DeviceInfoHelper {
         return mDeviceInfoMap;
     }
 
-    private long insertDeviceInfoAndGetRowId(DeviceInfo deviceInfo) {
+    private synchronized long insertIfNotPresent(DeviceInfo deviceInfo) {
+        Long currentRowId = getDeviceInfoMap().get(deviceInfo);
+        if (currentRowId != null) {
+            return currentRowId;
+        }
+
         long rowId =
                 TransactionManager.getInitialisedInstance()
                         .insert(
