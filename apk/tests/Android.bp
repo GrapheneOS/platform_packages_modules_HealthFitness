@@ -61,6 +61,7 @@ android_test {
     kotlincflags: ["-Xjvm-default=all"],
     test_suites: [
       "general-tests",
+      "mts-healthfitness",
     ],
     test_mainline_modules: ["com.google.android.healthfitness.apex"]
 }
