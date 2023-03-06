@@ -523,7 +523,9 @@ public class HeightRecordTest {
 
     static HeightRecord getBaseHeightRecord(double height) {
         return new HeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(height))
+                        new Metadata.Builder().setClientRecordId("HR" + Math.random()).build(),
+                        Instant.now(),
+                        Length.fromMeters(height))
                 .build();
     }
 
