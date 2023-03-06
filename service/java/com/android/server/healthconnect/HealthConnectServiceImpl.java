@@ -598,12 +598,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      */
     @Override
     public void getChangeLogToken(
-            @NonNull String packageName,
+            @NonNull AttributionSource attributionSource,
             @NonNull ChangeLogTokenRequest request,
             @NonNull IGetChangeLogTokenCallback callback) {
         int uid = Binder.getCallingUid();
         HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN);
+        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                request.getRecordTypesList(), attributionSource);
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -611,7 +613,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onResult(
                                 new ChangeLogTokenResponse(
                                         ChangeLogsRequestHelper.getInstance()
-                                                .getToken(packageName, request)));
+                                                .getToken(
+                                                        attributionSource.getPackageName(),
+                                                        request)));
                         builder.setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
@@ -650,6 +654,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         attributionSource.getPackageName(), token.getToken());
         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                 changeLogsTokenRequest.getRecordTypes(), attributionSource);
+        
         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
         if (!isInForeground) {
             throwException(callback, attributionSource.getPackageName());
