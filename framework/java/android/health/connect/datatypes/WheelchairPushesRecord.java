@@ -195,7 +195,7 @@ public final class WheelchairPushesRecord extends IntervalRecord {
         recordInternal.setEndTime(getEndTime().toEpochMilli());
         recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
         recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
-        recordInternal.setCount(mCount);
+        recordInternal.setCount((int) mCount);
         return recordInternal;
     }
 }
