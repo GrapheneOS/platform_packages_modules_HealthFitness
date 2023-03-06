@@ -58,9 +58,13 @@ constructor(
 
     suspend fun getAppsWithHealthPermissions(): List<String> {
         return try {
-            context.packageManager
-                .queryIntentActivities(getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
-                .map { it.activityInfo.packageName }
+            val appsWithDeclaredIntent =
+                context.packageManager
+                    .queryIntentActivities(
+                        getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
+                    .map { it.activityInfo.packageName }
+
+            appsWithDeclaredIntent.filter { getDeclaredPermissions(it).isNotEmpty() }
         } catch (e: Exception) {
             emptyList()
         }
@@ -81,7 +85,7 @@ constructor(
         }
     }
 
-    fun isRationalIntentDeclared(packageName: String) : Boolean {
+    fun isRationalIntentDeclared(packageName: String): Boolean {
         val intent = getRationaleIntent(packageName)
         val resolvedInfo =
             context.packageManager.queryIntentActivities(
