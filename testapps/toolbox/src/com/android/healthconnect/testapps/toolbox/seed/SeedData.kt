@@ -43,24 +43,26 @@ import kotlinx.coroutines.runBlocking
 class SeedData(private val context: Context, private val manager: HealthConnectManager) {
 
     companion object {
-        private const val TAG = "SeedData"
-        const val NUMBER_OF_INTERVAL_RECORDS_TO_INSERT = 2000L
         const val NUMBER_OF_SERIES_RECORDS_TO_INSERT = 200L
     }
 
     fun seedData() {
         runBlocking {
-            seedMenstruationData()
-            seedStepsData(NUMBER_OF_INTERVAL_RECORDS_TO_INSERT)
-            seedHeartRateData(NUMBER_OF_SERIES_RECORDS_TO_INSERT)
+            try {
+                seedMenstruationData()
+                seedStepsData()
+                seedHeartRateData(10)
+            } catch (ex: Exception) {
+                throw ex
+            }
         }
     }
 
-    suspend fun seedStepsData(numberOfRecords: Long) {
-        val start = Instant.now().truncatedTo(ChronoUnit.DAYS).minus(ofDays(1))
+    private suspend fun seedStepsData() {
+        val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val records =
-            (1L..numberOfRecords).map { count ->
-                getStepsRecord(count % 10, start.plus(ofMinutes(count)))
+            (1L..50).map { count ->
+                getStepsRecord(count, start.plus(ofMinutes(count)))
             }
 
         insertRecords(records, manager)
@@ -86,13 +88,13 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
             manager)
     }
 
-    suspend fun seedHeartRateData(numberOfRecords: Long) {
+    suspend fun seedHeartRateData(numberOfRecordsPerBatch: Long) {
         val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val random = Random()
         val records =
-            (1L..numberOfRecords).map { timeOffset ->
+            (1L..numberOfRecordsPerBatch).map { timeOffset ->
                 val hrSamples = ArrayList<Pair<Long, Instant>>()
-                repeat(100) { i ->
+                repeat(10) { i ->
                     hrSamples.add(
                         Pair(getValidHeartRate(random), start.plus(ofMinutes(timeOffset + i))))
                 }
@@ -122,7 +124,7 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
     }
 
     private fun getStepsRecord(count: Long, time: Instant): StepsRecord {
-        return StepsRecord.Builder(getMetaData(), time, time.plusSeconds(10), count).build()
+        return StepsRecord.Builder(getMetaData(), time, time.plusSeconds(30), count).build()
     }
 
     private fun getMetaData(): Metadata {
