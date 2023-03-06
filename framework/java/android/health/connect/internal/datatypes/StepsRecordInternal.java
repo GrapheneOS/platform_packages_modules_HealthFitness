@@ -15,7 +15,7 @@
  */
 package android.health.connect.internal.datatypes;
 
-import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.DEFAULT_INT;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.Identifier;
@@ -29,15 +29,15 @@ import android.os.Parcel;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
 public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecord> {
-    private long mCount = DEFAULT_LONG;
+    private int mCount = DEFAULT_INT;
 
-    public long getCount() {
+    public int getCount() {
         return mCount;
     }
 
     /** returns this object with the specified count */
     @NonNull
-    public StepsRecordInternal setCount(long count) {
+    public StepsRecordInternal setCount(int count) {
         this.mCount = count;
         return this;
     }
@@ -53,11 +53,11 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
 
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mCount = parcel.readLong();
+        mCount = parcel.readInt();
     }
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
-        parcel.writeLong(mCount);
+        parcel.writeInt(mCount);
     }
 }
