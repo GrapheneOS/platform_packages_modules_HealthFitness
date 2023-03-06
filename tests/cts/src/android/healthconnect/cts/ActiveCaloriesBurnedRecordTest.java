@@ -66,6 +66,7 @@ public class ActiveCaloriesBurnedRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -195,6 +196,7 @@ public class ActiveCaloriesBurnedRecordTest {
         ActiveCaloriesBurnedRecord newRecord =
                 newActiveCaloriesBurnedRecords.get(newActiveCaloriesBurnedRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getEnergy()).isEqualTo(testRecord.getEnergy());
     }
 
     @Test

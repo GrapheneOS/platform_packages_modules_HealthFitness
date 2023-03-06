@@ -61,6 +61,7 @@ public class SpeedRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -153,6 +154,14 @@ public class SpeedRecordTest {
                                 .build());
         assertThat(newSpeedRecords.size() - oldSpeedRecords.size()).isEqualTo(1);
         assertThat(newSpeedRecords.get(newSpeedRecords.size() - 1).equals(testRecord)).isTrue();
+        SpeedRecord newRecord = newSpeedRecords.get(newSpeedRecords.size() - 1);
+        assertThat(newRecord.equals(testRecord)).isTrue();
+        for (int idx = 0; idx < newRecord.getSamples().size(); idx++) {
+            assertThat(newRecord.getSamples().get(idx).getTime().toEpochMilli())
+                    .isEqualTo(testRecord.getSamples().get(idx).getTime().toEpochMilli());
+            assertThat(newRecord.getSamples().get(idx).getSpeed())
+                    .isEqualTo(testRecord.getSamples().get(idx).getSpeed());
+        }
     }
 
     @Test
