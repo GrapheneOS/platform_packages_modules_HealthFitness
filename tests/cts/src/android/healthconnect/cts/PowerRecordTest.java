@@ -366,6 +366,11 @@ public class PowerRecordTest {
         assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreatePowerRecord_invalidValue() {
+        new PowerRecord.PowerRecordSample(Power.fromWatts(100001.0), Instant.now().plusMillis(100));
+    }
+
     private static PowerRecord getBasePowerRecord() {
         PowerRecord.PowerRecordSample powerRecord =
                 new PowerRecord.PowerRecordSample(

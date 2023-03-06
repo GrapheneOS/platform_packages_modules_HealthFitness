@@ -314,6 +314,13 @@ public class LeanBodyMassRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateLeanBodyMassRecord_invalidValue() {
+        new LeanBodyMassRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1000.1))
+                .build();
+    }
+
     private static LeanBodyMassRecord getBaseLeanBodyMassRecord() {
         return new LeanBodyMassRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))

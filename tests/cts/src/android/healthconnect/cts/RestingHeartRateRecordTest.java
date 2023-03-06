@@ -377,6 +377,12 @@ public class RestingHeartRateRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateRestingHeartRateRecord_invalidValue() {
+        new RestingHeartRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 500)
+                .build();
+    }
+
     private static RestingHeartRateRecord getBaseRestingHeartRateRecord() {
         return new RestingHeartRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
                 .build();

@@ -387,6 +387,13 @@ public class BasalMetabolicRateRecordTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBasalMetabolicRateRecord_invalidValue() {
+        new BasalMetabolicRateRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(484.26))
+                .build();
+    }
+
     static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
         return new BasalMetabolicRateRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Power.fromWatts(100.0))

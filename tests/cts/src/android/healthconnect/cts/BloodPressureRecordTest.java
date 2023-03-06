@@ -311,6 +311,30 @@ public class BloodPressureRecordTest {
         TestUtils.assertRecordNotFound(id, BloodPressureRecord.class);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBloodPressureRecord_invalidDiastolicValue() {
+        new BloodPressureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Pressure.fromMillimetersOfMercury(19.0),
+                        Pressure.fromMillimetersOfMercury(10.0),
+                        1)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBloodPressureRecord_invalidSystolicValue() {
+        new BloodPressureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Pressure.fromMillimetersOfMercury(20.0),
+                        Pressure.fromMillimetersOfMercury(9.0),
+                        1)
+                .build();
+    }
+
     @Test
     public void testZoneOffsets() {
         final ZoneOffset defaultZoneOffset =
