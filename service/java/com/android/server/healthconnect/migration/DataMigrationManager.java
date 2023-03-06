@@ -89,14 +89,18 @@ public final class DataMigrationManager {
      * @param entities a collection of {@link MigrationEntity} to be applied.
      */
     public void apply(@NonNull Collection<MigrationEntity> entities) throws EntityWriteException {
-        mTransactionManager.runAsTransaction(
-                db -> {
-                    synchronized (sLock) {
-                        for (MigrationEntity entity : entities) {
-                            migrateEntity(db, entity);
+        synchronized (sLock) {
+            mTransactionManager.runAsTransaction(
+                    db -> {
+                        // Grab the lock again to make sure error-prone is happy, and so that tests
+                        // break if the following code is run asynchronously
+                        synchronized (sLock) {
+                            for (MigrationEntity entity : entities) {
+                                migrateEntity(db, entity);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     /** Migrates the provided {@link MigrationEntity}. Must be called inside a DB transaction. */
