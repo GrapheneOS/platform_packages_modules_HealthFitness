@@ -64,6 +64,7 @@ public class HydrationRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -168,6 +169,7 @@ public class HydrationRecordTest {
         assertThat(newHydrationRecords.size() - oldHydrationRecords.size()).isEqualTo(1);
         HydrationRecord newRecord = newHydrationRecords.get(newHydrationRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getVolume()).isEqualTo(testRecord.getVolume());
     }
 
     @Test
