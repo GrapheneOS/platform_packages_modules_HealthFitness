@@ -70,6 +70,7 @@ import com.android.healthconnect.controller.permissions.request.RequestPermissio
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.whenever
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -82,7 +83,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.`when`
 
 @HiltAndroidTest
 class PermissionsActivityTest {
@@ -104,10 +104,10 @@ class PermissionsActivityTest {
                 fromPermissionString(READ_HEART_RATE),
                 fromPermissionString(WRITE_DISTANCE),
                 fromPermissionString(WRITE_EXERCISE))
-        `when`(viewModel.permissionsList).then { MutableLiveData(permissionsList) }
-        `when`(viewModel.grantedPermissions).then { MutableLiveData(permissionsList.toSet()) }
-        `when`(viewModel.allPermissionsGranted).then { MutableLiveData(true) }
-        `when`(viewModel.appMetadata).then {
+        whenever(viewModel.permissionsList).then { MutableLiveData(permissionsList) }
+        whenever(viewModel.grantedPermissions).then { MutableLiveData(permissionsList.toSet()) }
+        whenever(viewModel.allPermissionsGranted).then { MutableLiveData(true) }
+        whenever(viewModel.appMetadata).then {
             MutableLiveData(
                 AppMetadata(
                     TEST_APP_PACKAGE_NAME,
@@ -183,13 +183,7 @@ class PermissionsActivityTest {
     @Test
     fun intentSkipsUnrecognisedPermission() {
         val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
-                .putExtra(
-                    EXTRA_REQUEST_PERMISSIONS_NAMES,
-                    arrayOf(READ_STEPS, WRITE_EXERCISE, "permission"))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            getPermissionScreenIntent(arrayOf(READ_STEPS, WRITE_EXERCISE, "permission"))
 
         context.startActivity(startActivityIntent)
         onView(withId(androidx.preference.R.id.recycler_view))
@@ -223,7 +217,7 @@ class PermissionsActivityTest {
 
     @Test
     fun sendsOkResult_requestWithPermissions() {
-        `when`(viewModel.request(anyString())).then {
+        whenever(viewModel.request(anyString())).then {
             mapOf(
                 fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
                 fromPermissionString(READ_HEART_RATE) to PermissionState.GRANTED,
@@ -232,12 +226,7 @@ class PermissionsActivityTest {
         }
         val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
 
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
-                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
 
@@ -258,14 +247,11 @@ class PermissionsActivityTest {
     @Test
     fun allowButton_noPermissionsSelected_isDisabled() {
         val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
-        `when`(viewModel.grantedPermissions).then { MutableLiveData(emptySet<HealthPermission>()) }
+        whenever(viewModel.grantedPermissions).then {
+            MutableLiveData(emptySet<HealthPermission>())
+        }
 
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
-                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent)
 
@@ -275,16 +261,11 @@ class PermissionsActivityTest {
     @Test
     fun allowButton_permissionsSelected_isEnabled() {
         val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
-        `when`(viewModel.grantedPermissions).then {
+        whenever(viewModel.grantedPermissions).then {
             MutableLiveData(setOf(fromPermissionString(READ_STEPS)))
         }
 
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
-                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent)
 
@@ -294,7 +275,7 @@ class PermissionsActivityTest {
     @Test
     fun sendsOkResult_requestWithPermissionsSomeDenied() {
         val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
-        `when`(viewModel.request(anyString())).then {
+        whenever(viewModel.request(anyString())).then {
             mapOf(
                 fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
                 fromPermissionString(READ_HEART_RATE) to PermissionState.GRANTED,
@@ -302,12 +283,7 @@ class PermissionsActivityTest {
                 fromPermissionString(WRITE_EXERCISE) to PermissionState.GRANTED,
             )
         }
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
-                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
 
@@ -327,7 +303,7 @@ class PermissionsActivityTest {
 
     @Test
     fun sendsOkResult_requestWithPermissionsSomeWithError() {
-        `when`(viewModel.request(anyString())).then {
+        whenever(viewModel.request(anyString())).then {
             mapOf(
                 fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
                 fromPermissionString(READ_HEART_RATE) to PermissionState.GRANTED,
@@ -336,12 +312,7 @@ class PermissionsActivityTest {
         }
         val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
 
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
-                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
 
@@ -358,4 +329,39 @@ class PermissionsActivityTest {
                 intArrayOf(
                     PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_DENIED))
     }
+
+    @Test
+    fun allPermissionsGranted_finishesActivity() {
+        whenever(viewModel.request(anyString())).then {
+            mapOf(
+                fromPermissionString(READ_STEPS) to PermissionState.GRANTED,
+                fromPermissionString(READ_HEART_RATE) to PermissionState.GRANTED,
+                fromPermissionString(WRITE_DISTANCE) to PermissionState.GRANTED,
+                fromPermissionString(WRITE_EXERCISE) to PermissionState.GRANTED)
+        }
+        whenever(viewModel.permissionsList).then {
+            MutableLiveData<List<HealthPermission>>(emptyList())
+        }
+        val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
+
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+
+        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+
+        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+        val returnedIntent = scenario.getResult().getResultData()
+        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+            .isEqualTo(permissions)
+        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+            .isEqualTo(
+                intArrayOf(
+                    PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_GRANTED))
+    }
+
+    private fun getPermissionScreenIntent(permissions: Array<String>): Intent =
+        Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
+            .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
+            .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 }
