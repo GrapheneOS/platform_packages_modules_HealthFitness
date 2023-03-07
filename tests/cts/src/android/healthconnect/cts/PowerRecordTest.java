@@ -68,6 +68,7 @@ public class PowerRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -159,6 +160,14 @@ public class PowerRecordTest {
                                 .build());
         assertThat(newPowerRecords.size() - oldPowerRecords.size()).isEqualTo(1);
         assertThat(newPowerRecords.get(newPowerRecords.size() - 1).equals(testRecord)).isTrue();
+        PowerRecord newRecord = newPowerRecords.get(newPowerRecords.size() - 1);
+        assertThat(newRecord.equals(testRecord)).isTrue();
+        for (int idx = 0; idx < newRecord.getSamples().size(); idx++) {
+            assertThat(newRecord.getSamples().get(idx).getTime().toEpochMilli())
+                    .isEqualTo(testRecord.getSamples().get(idx).getTime().toEpochMilli());
+            assertThat(newRecord.getSamples().get(idx).getPower())
+                    .isEqualTo(testRecord.getSamples().get(idx).getPower());
+        }
     }
 
     @Test

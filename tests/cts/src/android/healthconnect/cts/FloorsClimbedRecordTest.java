@@ -60,6 +60,7 @@ public class FloorsClimbedRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -172,6 +173,7 @@ public class FloorsClimbedRecordTest {
         FloorsClimbedRecord newRecord =
                 newFloorsClimbedRecords.get(newFloorsClimbedRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getFloors()).isEqualTo(testRecord.getFloors());
     }
 
     @Test
