@@ -60,6 +60,7 @@ public class StepsCadenceRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -162,6 +163,15 @@ public class StepsCadenceRecordTest {
         assertThat(newStepsCadenceRecords.size() - oldStepsCadenceRecords.size()).isEqualTo(1);
         assertThat(newStepsCadenceRecords.get(newStepsCadenceRecords.size() - 1).equals(testRecord))
                 .isTrue();
+        StepsCadenceRecord newRecord =
+                newStepsCadenceRecords.get(newStepsCadenceRecords.size() - 1);
+        assertThat(newRecord.equals(testRecord)).isTrue();
+        for (int idx = 0; idx < newRecord.getSamples().size(); idx++) {
+            assertThat(newRecord.getSamples().get(idx).getTime().toEpochMilli())
+                    .isEqualTo(testRecord.getSamples().get(idx).getTime().toEpochMilli());
+            assertThat(newRecord.getSamples().get(idx).getRate())
+                    .isEqualTo(testRecord.getSamples().get(idx).getRate());
+        }
     }
 
     @Test
