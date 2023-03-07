@@ -151,10 +151,12 @@ public class DeleteTableRequest {
     }
 
     public String getReadCommand() {
-        StringBuilder builder = new StringBuilder("SELECT ").append(mIdColumnName);
-        if (mEnforcePackageCheck) {
-            builder.append(", ").append(mPackageColumnName);
-        }
+        StringBuilder builder =
+                new StringBuilder("SELECT ")
+                        .append(mIdColumnName)
+                        .append(", ")
+                        .append(mPackageColumnName);
+
         builder.append(" FROM ").append(mTableName).append(getWhereCommand());
         return builder.toString();
     }
