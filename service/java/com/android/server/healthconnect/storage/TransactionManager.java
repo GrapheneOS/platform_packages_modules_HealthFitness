@@ -503,6 +503,15 @@ public final class TransactionManager {
         return mHealthConnectDatabase.getDatabasePath();
     }
 
+    public void updateTable(UpsertTableRequest upsertTableRequest) {
+        getWritableDb()
+                .update(
+                        upsertTableRequest.getTable(),
+                        upsertTableRequest.getContentValues(),
+                        upsertTableRequest.getWhereClauses().get(false),
+                        null);
+    }
+
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
         // perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.

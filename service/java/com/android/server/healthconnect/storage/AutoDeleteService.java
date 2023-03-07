@@ -50,7 +50,7 @@ public class AutoDeleteService {
     /** Sets auto delete period for automatically deleting record entries */
     public static void setRecordRetentionPeriodInDays(int days) {
         PreferenceHelper.getInstance()
-                .insertPreference(AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(days));
+                .insertOrReplacePreference(AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(days));
     }
 
     /** Starts the Auto Deletion process. */

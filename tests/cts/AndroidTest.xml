@@ -26,6 +26,12 @@
         <option name="test-file-name" value="HealthFitnessCtsTestApp.apk"/>
     </target_preparer>
 
+    <target_preparer class="com.android.tradefed.targetprep.RunCommandTargetPreparer">
+        <!-- Disable syncing to prevent overwriting flags during testing. -->
+        <option name="run-command" value="device_config set_sync_disabled_for_tests persistent" />
+        <option name="teardown-command" value="device_config set_sync_disabled_for_tests none" />
+    </target_preparer>
+
     <option
         name="config-descriptor:metadata"
         key="mainline-param"

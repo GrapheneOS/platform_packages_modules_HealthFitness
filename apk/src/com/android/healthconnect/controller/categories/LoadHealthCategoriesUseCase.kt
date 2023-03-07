@@ -22,6 +22,7 @@ import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HEALTH_DATA_CATEGORIES
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,15 +30,15 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 @Singleton
-class LoadCategoriesWithDataUseCase
+class LoadHealthCategoriesUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    /** Returns list of available data categories. */
-    suspend operator fun invoke(): List<@HealthDataCategoryInt Int> =
+    /** Returns list of health categories to be shown in Health Connect UI. */
+    suspend operator fun invoke(): UseCaseResults<List<HealthCategoryUiState>> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
@@ -45,44 +46,30 @@ constructor(
                         healthConnectManager.queryAllRecordTypesInfo(
                             Runnable::run, continuation.asOutcomeReceiver())
                     }
-                HEALTH_DATA_CATEGORIES.filter { hasData(it, recordTypeInfoMap) }
+                val categories =
+                    HEALTH_DATA_CATEGORIES.map {
+                        HealthCategoryUiState(it, hasData(it, recordTypeInfoMap))
+                    }
+                UseCaseResults.Success(categories)
             } catch (e: Exception) {
-                emptyList()
+                UseCaseResults.Failed(e)
             }
         }
 
     private fun hasData(
         category: @HealthDataCategoryInt Int,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
-    ): Boolean =
-        recordTypeInfoMap.values.firstOrNull {
+    ): Boolean {
+        return recordTypeInfoMap.values.firstOrNull {
             it.dataCategory == category && it.contributingPackages.isNotEmpty()
         } != null
-}
-
-@Singleton
-class LoadCategoriesUseCase
-@Inject
-constructor(private val categoriesUseCase: LoadCategoriesWithDataUseCase) {
-    /** Returns list of data categories that have data. */
-    suspend fun invoke(): List<@HealthDataCategoryInt Int> = categoriesUseCase()
-}
-
-@Singleton
-class LoadAllCategoriesUseCase
-@Inject
-constructor(private val categoriesUseCase: LoadCategoriesWithDataUseCase) {
-    /** Returns list of all available data categories. */
-    suspend fun invoke(): List<AllCategoriesScreenHealthDataCategory> {
-        val categoriesWithData = categoriesUseCase()
-        return HEALTH_DATA_CATEGORIES.map { category ->
-            AllCategoriesScreenHealthDataCategory(category, category !in categoriesWithData)
-        }
     }
 }
 
-/** Represents Category group for HealthConnect data in All Categories screen. */
-data class AllCategoriesScreenHealthDataCategory(
-    val category: @HealthDataCategoryInt Int,
-    val noData: Boolean
-)
+/**
+ * Represents Health Category group to be shown in health connect screens.
+ *
+ * @param category Category id
+ * @param hasData represent this category with related data in health connect.
+ */
+data class HealthCategoryUiState(val category: @HealthDataCategoryInt Int, val hasData: Boolean)

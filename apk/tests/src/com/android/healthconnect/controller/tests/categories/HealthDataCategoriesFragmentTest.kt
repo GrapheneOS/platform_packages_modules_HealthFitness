@@ -23,13 +23,19 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
-import com.android.healthconnect.controller.categories.AllCategoriesScreenHealthDataCategory
+import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel.AutoDeleteState
+import com.android.healthconnect.controller.categories.HealthCategoryUiState
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel
+import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel.CategoriesFragmentState
+import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel.CategoriesFragmentState.WithData
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -42,16 +48,12 @@ import org.mockito.Mockito
 /** List of all Health data categories. */
 private val HEALTH_DATA_ALL_CATEGORIES =
     listOf(
-        AllCategoriesScreenHealthDataCategory(
-            category = HealthDataCategory.ACTIVITY, noData = false),
-        AllCategoriesScreenHealthDataCategory(
-            category = HealthDataCategory.BODY_MEASUREMENTS, noData = false),
-        AllCategoriesScreenHealthDataCategory(category = HealthDataCategory.SLEEP, noData = false),
-        AllCategoriesScreenHealthDataCategory(category = HealthDataCategory.VITALS, noData = false),
-        AllCategoriesScreenHealthDataCategory(
-            category = HealthDataCategory.CYCLE_TRACKING, noData = false),
-        AllCategoriesScreenHealthDataCategory(
-            category = HealthDataCategory.NUTRITION, noData = true),
+        HealthCategoryUiState(category = HealthDataCategory.ACTIVITY, hasData = true),
+        HealthCategoryUiState(category = HealthDataCategory.BODY_MEASUREMENTS, hasData = true),
+        HealthCategoryUiState(category = HealthDataCategory.SLEEP, hasData = false),
+        HealthCategoryUiState(category = HealthDataCategory.VITALS, hasData = false),
+        HealthCategoryUiState(category = HealthDataCategory.CYCLE_TRACKING, hasData = false),
+        HealthCategoryUiState(category = HealthDataCategory.NUTRITION, hasData = false),
     )
 
 @HiltAndroidTest
@@ -69,21 +71,18 @@ class HealthDataCategoriesFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        }
     }
 
     @Test
     fun categoriesFragment_isDisplayed() {
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(emptyList()))
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
         }
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -95,17 +94,11 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun categoriesFragment_emptyCategories_noDataViewIsDisplayed_deleteIconIsDisabled() {
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(emptyList()))
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
         }
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -116,18 +109,11 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun categoriesFragment_withCategories_categoryInformationIsDisplayed() {
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(
-                    listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.BODY_MEASUREMENTS)))
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(HEALTH_DATA_ALL_CATEGORIES))
         }
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -137,18 +123,11 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun seeAllCategoriesPreference_isDisplayed() {
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(
-                    listOf(HealthDataCategory.ACTIVITY)))
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(HEALTH_DATA_ALL_CATEGORIES))
         }
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -157,24 +136,21 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun categoriesFragment_withAllCategoriesPresent_seeAllCategoriesPreferenceIsNotDisplayed() {
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
+        val allCategories =
+            listOf(
+                HealthCategoryUiState(category = HealthDataCategory.ACTIVITY, hasData = true),
+                HealthCategoryUiState(
+                    category = HealthDataCategory.BODY_MEASUREMENTS, hasData = true),
+                HealthCategoryUiState(category = HealthDataCategory.SLEEP, hasData = true),
+                HealthCategoryUiState(category = HealthDataCategory.VITALS, hasData = true),
+                HealthCategoryUiState(category = HealthDataCategory.CYCLE_TRACKING, hasData = true),
+                HealthCategoryUiState(category = HealthDataCategory.NUTRITION, hasData = true),
+            )
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(allCategories))
         }
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(
-                    listOf(
-                        HealthDataCategory.ACTIVITY,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        HealthDataCategory.SLEEP,
-                        HealthDataCategory.VITALS,
-                        HealthDataCategory.NUTRITION,
-                        HealthDataCategory.CYCLE_TRACKING)))
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -183,17 +159,11 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun categoriesFragment_autoDeleteButton_displaysAutoDeleteRangeNever() {
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(emptyList()))
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
         }
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
+            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -203,17 +173,12 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun categoriesFragment_autoDeleteButton_displaysAutoDeleteRange3Months() {
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(emptyList()))
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
         }
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
             MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS))
+                AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -223,21 +188,34 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun categoriesFragment_autoDeleteButton_displaysAutoDeleteRange18Months() {
-        Mockito.`when`(viewModel.categoriesData).then {
-            MutableLiveData<HealthDataCategoryViewModel.CategoriesFragmentState>(
-                HealthDataCategoryViewModel.CategoriesFragmentState.WithData(emptyList()))
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
         }
-        Mockito.`when`(viewModel.allCategoriesData).then {
-            MutableLiveData(HEALTH_DATA_ALL_CATEGORIES)
-        }
-        Mockito.`when`(autoDeleteViewModel.storedAutoDeleteRange).then {
+        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
             MutableLiveData(
-                AutoDeleteViewModel.AutoDeleteState.WithData(
-                    AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS))
+                AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
         onView(withText("Auto-delete")).check(matches(isDisplayed()))
         onView(withText("After 18 months")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun categoriesFragment_loadingState_showsLoading() {
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(CategoriesFragmentState.Loading)
+        }
+        launchFragment<HealthDataCategoriesFragment>(Bundle())
+        onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun categoriesFragment_withData_hidesLoading() {
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
+        }
+        launchFragment<HealthDataCategoriesFragment>(Bundle())
+        onView(withId(R.id.progress_indicator)).check(matches(not(isDisplayed())))
     }
 }
