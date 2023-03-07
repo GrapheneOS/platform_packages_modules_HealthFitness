@@ -25,7 +25,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessAppState
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -152,8 +152,19 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.loadAppMetaDataMap(permissionType)
-        viewModel.appMetadataMap.observe(viewLifecycleOwner) { appMetadataMap ->
-            updateDataAccess(appMetadataMap)
+        viewModel.appMetadataMap.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is DataAccessScreenState.Loading -> {
+                    setLoading(isLoading = true)
+                }
+                is DataAccessScreenState.Error -> {
+                    setError(hasError = true)
+                }
+                is DataAccessScreenState.WithData -> {
+                    setLoading(isLoading = false, animate = false)
+                    updateDataAccess(state.appMetadata)
+                }
+            }
         }
     }
 

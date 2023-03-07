@@ -19,7 +19,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -28,47 +28,38 @@ import kotlinx.coroutines.launch
 class HealthDataCategoryViewModel
 @Inject
 constructor(
-    private val loadCategoriesUseCase: LoadCategoriesUseCase,
-    private val loadAllCategoriesUseCase: LoadAllCategoriesUseCase,
+    private val loadCategoriesUseCase: LoadHealthCategoriesUseCase,
 ) : ViewModel() {
 
     private val _categoriesData = MutableLiveData<CategoriesFragmentState>()
-
-    private val _allCategoriesData = MutableLiveData<List<AllCategoriesScreenHealthDataCategory>>()
     /**
      * Provides a list of HealthDataCategories displayed in {@link HealthDataCategoriesFragment}.
      */
     val categoriesData: LiveData<CategoriesFragmentState>
         get() = _categoriesData
 
-    /**
-     * Provides a list of all HealthDataCategories displayed in {@link
-     * HealthDataAllCategoriesFragment}.
-     */
-    val allCategoriesData: LiveData<List<AllCategoriesScreenHealthDataCategory>>
-        get() = _allCategoriesData
-
     init {
-        _categoriesData.postValue(CategoriesFragmentState.Loading)
-        viewModelScope.launch {
-            val categories = loadCategoriesUseCase.invoke()
-            val allCategories = loadAllCategoriesUseCase.invoke()
-            _categoriesData.postValue(CategoriesFragmentState.WithData(categories))
-            _allCategoriesData.postValue(allCategories)
-        }
+        loadCategories()
     }
 
     fun loadCategories() {
         _categoriesData.postValue(CategoriesFragmentState.Loading)
         viewModelScope.launch {
-            val categories = loadCategoriesUseCase.invoke()
-            _categoriesData.postValue(CategoriesFragmentState.WithData(categories))
+            when (val result = loadCategoriesUseCase()) {
+                is UseCaseResults.Success -> {
+                    _categoriesData.postValue(CategoriesFragmentState.WithData(result.data))
+                }
+                is UseCaseResults.Failed -> {
+                    _categoriesData.postValue(CategoriesFragmentState.Error)
+                }
+            }
         }
     }
 
     sealed class CategoriesFragmentState {
         object Loading : CategoriesFragmentState()
-        data class WithData(val categories: List<@HealthDataCategoryInt Int>) :
+        object Error : CategoriesFragmentState()
+        data class WithData(val categories: List<HealthCategoryUiState>) :
             CategoriesFragmentState()
     }
 }

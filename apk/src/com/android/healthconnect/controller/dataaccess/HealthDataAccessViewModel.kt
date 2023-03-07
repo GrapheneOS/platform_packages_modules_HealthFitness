@@ -20,8 +20,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState.Error
+import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -32,20 +36,35 @@ class HealthDataAccessViewModel
 @Inject
 constructor(private val loadDataAccessUseCase: LoadDataAccessUseCase) : ViewModel() {
 
-    private val _appMetadataMap = MutableLiveData<Map<DataAccessAppState, List<AppMetadata>>>()
+    private val _appMetadataMap = MutableLiveData<DataAccessScreenState>()
 
-    val appMetadataMap: LiveData<Map<DataAccessAppState, List<AppMetadata>>>
+    val appMetadataMap: LiveData<DataAccessScreenState>
         get() = _appMetadataMap
 
     fun loadAppMetaDataMap(permissionType: HealthPermissionType) {
+        val appsMap = _appMetadataMap.value
+        if (appsMap is WithData && appsMap.appMetadata.isEmpty()) {
+            _appMetadataMap.postValue(DataAccessScreenState.Loading)
+        }
         viewModelScope.launch {
-            _appMetadataMap.postValue(loadDataAccessUseCase.invoke(permissionType))
+            when (val result = loadDataAccessUseCase.invoke(permissionType)) {
+                is UseCaseResults.Success -> {
+                    _appMetadataMap.postValueIfUpdated(WithData(result.data))
+                }
+                else -> {
+                    _appMetadataMap.postValue(Error)
+                }
+            }
         }
     }
 
-    sealed class DataAccessAppState {
-        object Read : DataAccessAppState()
-        object Write : DataAccessAppState()
-        object Inactive : DataAccessAppState()
+    /** Represents DataAccessFragment state. */
+    sealed class DataAccessScreenState {
+        object Loading : DataAccessScreenState()
+
+        object Error : DataAccessScreenState()
+
+        data class WithData(val appMetadata: Map<DataAccessAppState, List<AppMetadata>>) :
+            DataAccessScreenState()
     }
 }

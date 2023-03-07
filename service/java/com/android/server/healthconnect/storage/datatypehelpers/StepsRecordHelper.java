@@ -18,7 +18,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -81,7 +81,7 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
     @Override
     void populateSpecificRecordValue(
             @NonNull Cursor cursor, @NonNull StepsRecordInternal recordInternal) {
-        recordInternal.setCount(getCursorLong(cursor, COUNT_COLUMN_NAME));
+        recordInternal.setCount(getCursorInt(cursor, COUNT_COLUMN_NAME));
     }
 
     @Override

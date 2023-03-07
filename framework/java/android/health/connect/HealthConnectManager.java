@@ -887,7 +887,7 @@ public class HealthConnectManager {
             @NonNull OutcomeReceiver<ChangeLogTokenResponse, HealthConnectException> callback) {
         try {
             mService.getChangeLogToken(
-                    mContext.getPackageName(),
+                    mContext.getAttributionSource(),
                     request,
                     new IGetChangeLogTokenCallback.Stub() {
                         @Override

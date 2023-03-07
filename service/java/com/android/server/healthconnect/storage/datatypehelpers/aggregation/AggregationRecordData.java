@@ -24,6 +24,7 @@ import static com.android.server.healthconnect.storage.datatypehelpers.RecordHel
 
 import android.database.Cursor;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.time.ZoneOffset;
@@ -80,6 +81,25 @@ public abstract class AggregationRecordData {
         populateSpecificAggregationData(cursor);
     }
 
+    AggregationTimestamp getStartTimestamp() {
+        return new AggregationTimestamp(AggregationTimestamp.INTERVAL_START, mRecordStartTime)
+                .setParentData(this);
+    }
+
+    AggregationTimestamp getEndTimestamp() {
+        return new AggregationTimestamp(AggregationTimestamp.INTERVAL_END, mRecordEndTime)
+                .setParentData(this);
+    }
+
+    @VisibleForTesting
+    AggregationRecordData setData(long startTime, long endTime, long appId, long lastModifiedTime) {
+        mRecordStartTime = startTime;
+        mRecordEndTime = endTime;
+        mAppId = appId;
+        mLastModifiedTime = lastModifiedTime;
+        return this;
+    }
+
     /**
      * Calculates aggregation result given start and end time of the target interval. Implementation
      * may assume that it's will be called with non overlapping intervals. So (start time, end time)
@@ -90,4 +110,9 @@ public abstract class AggregationRecordData {
     abstract void populateSpecificAggregationData(Cursor cursor);
 
     abstract ZoneOffset readZoneOffset(Cursor cursor);
+
+    @Override
+    public String toString() {
+        return "AggregData{startTime=" + mRecordStartTime + ", endTime=" + mRecordEndTime + "}";
+    }
 }
