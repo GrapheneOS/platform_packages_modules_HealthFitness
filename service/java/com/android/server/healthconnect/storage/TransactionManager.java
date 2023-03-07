@@ -90,7 +90,7 @@ public final class TransactionManager {
         return sTransactionManager;
     }
 
-    public void onUserUnlocking(@NonNull HealthConnectUserContext healthConnectUserContext) {
+    public void onUserUnlocked(@NonNull HealthConnectUserContext healthConnectUserContext) {
         if (!mUserHandleToDatabaseMap.containsKey(
                 healthConnectUserContext.getCurrentUserHandle())) {
             mUserHandleToDatabaseMap.put(
