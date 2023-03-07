@@ -479,12 +479,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                     new WhereClauses().addWhereInLongsClause(APP_INFO_ID_COLUMN_NAME, appIds);
 
             if (request.getPageToken() != DEFAULT_LONG) {
+                // Since pageToken passed contains detail of sort order. Actual token value for read
+                // is calculated back from the requested pageToken based on sort order.
                 if (request.isAscending()) {
                     clauses.addWhereGreaterThanOrEqualClause(
-                            getStartTimeColumnName(), request.getPageToken());
+                            getStartTimeColumnName(), request.getPageToken() / 2);
                 } else {
                     clauses.addWhereLessThanOrEqualClause(
-                            getStartTimeColumnName(), request.getPageToken());
+                            getStartTimeColumnName(), (request.getPageToken() - 1) / 2);
                 }
             }
 
