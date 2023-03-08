@@ -63,9 +63,15 @@ public class CyclingPedalingCadenceRecordTest {
 
     @Test
     public void testInsertCyclingPedalingCadenceRecord() throws InterruptedException {
+        CyclingPedalingCadenceRecord baseCyclingPedalingCadenceRecord =
+                getBaseCyclingPedalingCadenceRecord();
+
+        assertThat(baseCyclingPedalingCadenceRecord.getSamples().get(0).getTime()).isNotNull();
+        assertThat(baseCyclingPedalingCadenceRecord.getSamples().get(0).getRevolutionsPerMinute())
+                .isNotNull();
         TestUtils.insertRecords(
                 Arrays.asList(
-                        getBaseCyclingPedalingCadenceRecord(),
+                        baseCyclingPedalingCadenceRecord,
                         getCompleteCyclingPedalingCadenceRecord()));
     }
 
