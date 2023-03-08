@@ -46,6 +46,7 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.START_DEL
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.DeletionViewModel
+import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel.RevokeAllState
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
@@ -159,9 +160,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         }
         appPermissionViewModel.grantedPermissions.observe(viewLifecycleOwner) { granted ->
             permissionMap.forEach { (healthPermission, switchPreference) ->
-                if (healthPermission in granted && !switchPreference.isChecked) {
-                    switchPreference.isChecked = true
-                }
+                switchPreference.isChecked = healthPermission in granted
             }
         }
 
@@ -171,7 +170,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
         appPermissionViewModel.revokeAllPermissionsState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is AppPermissionViewModel.RevokeAllState.Loading -> {
+                is RevokeAllState.Loading -> {
                     showLoadingDialog()
                 }
                 else -> {
