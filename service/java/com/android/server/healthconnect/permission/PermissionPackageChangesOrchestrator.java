@@ -20,28 +20,34 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.health.connect.Constants;
 import android.net.Uri;
 import android.os.UserHandle;
 import android.util.Log;
+import android.util.Slog;
 
 import com.android.modules.utils.BackgroundThread;
 
 /**
- * Tracks installing/uninstalling, updates and changes of packages.
+ * Tracks packages changes (install, update, uninstall, changed) and calls permission classes to
+ * sync with package states.
  *
  * @hide
  */
-public class PackagePermissionChangesMonitor extends BroadcastReceiver {
+public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
     private static final String TAG = "HealthPackageChangesMonitor";
     static final IntentFilter sPackageFilter = buildPackageChangeFilter();
     private final HealthPermissionIntentAppsTracker mPermissionIntentTracker;
     private final FirstGrantTimeManager mFirstGrantTimeManager;
+    private final HealthConnectPermissionHelper mPermissionHelper;
 
-    public PackagePermissionChangesMonitor(
+    public PermissionPackageChangesOrchestrator(
             HealthPermissionIntentAppsTracker permissionIntentTracker,
-            FirstGrantTimeManager grantTimeManager) {
+            FirstGrantTimeManager grantTimeManager,
+            HealthConnectPermissionHelper permissionHelper) {
         mPermissionIntentTracker = permissionIntentTracker;
         mFirstGrantTimeManager = grantTimeManager;
+        mPermissionHelper = permissionHelper;
     }
 
     /**
@@ -58,16 +64,49 @@ public class PackagePermissionChangesMonitor extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String packageName = getPackageName(intent);
         UserHandle userHandle = getUserHandle(intent);
+        if (Constants.DEBUG) {
+            Slog.d(
+                    TAG,
+                    "onReceive package change for "
+                            + packageName
+                            + " user: "
+                            + userHandle
+                            + " action: "
+                            + intent.getAction());
+        }
+
         if (packageName == null || userHandle == null) {
             Log.w(TAG, "can't extract info from the input intent");
             return;
         }
-        mPermissionIntentTracker.onPackageChanged(packageName, userHandle);
 
-        if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)
-                && !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) {
+        boolean isHealthIntentRemoved =
+                mPermissionIntentTracker.updateStateAndGetIfIntentWasRemoved(
+                        packageName, userHandle);
+        boolean isPackageRemoved =
+                intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)
+                        && !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false);
+
+        // If the package was removed, we reset grant time. If the package is present but the health
+        // intent support removed we revoke all health permissions and also reset grant time
+        // (is done via onPermissionChanged callback)
+        if (isPackageRemoved) {
             final int uid = intent.getIntExtra(Intent.EXTRA_UID, /* default value= */ -1);
             mFirstGrantTimeManager.onPackageRemoved(packageName, uid, userHandle);
+        } else if (isHealthIntentRemoved) {
+            // Revoke all health permissions as we don't grant health permissions if permissions
+            // usage intent is not supported.
+            if (Constants.DEBUG) {
+                Slog.d(
+                        TAG,
+                        "Revoking all health permissions of "
+                                + packageName
+                                + " for user: "
+                                + userHandle);
+            }
+
+            mPermissionHelper.revokeAllHealthPermissions(
+                    packageName, "Health permissions usage activity has been removed.", userHandle);
         }
     }
 
@@ -82,8 +121,7 @@ public class PackagePermissionChangesMonitor extends BroadcastReceiver {
 
     private String getPackageName(Intent intent) {
         Uri uri = intent.getData();
-        String pkg = uri != null ? uri.getSchemeSpecificPart() : null;
-        return pkg;
+        return uri != null ? uri.getSchemeSpecificPart() : null;
     }
 
     private UserHandle getUserHandle(Intent intent) {
