@@ -22,6 +22,7 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.Record
+import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -45,6 +46,10 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseUseCase<LoadDataEntriesInput, List<FormattedEntry>>(dispatcher) {
+
+    companion object {
+        private const val TAG = "LoadDataEntriesUseCase"
+    }
 
     override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
         val timeFilterRange = getTimeFilter(input.selectedDate)
@@ -76,7 +81,16 @@ constructor(
                 }
                 .records
                 .sortedBy { record -> getStartTime(record) }
-        return records.map { record -> healthDataEntryFormatter.format(record) }
+        return records.mapNotNull { record -> getFormatterRecord(record) }
+    }
+
+    private suspend fun getFormatterRecord(record: Record): FormattedEntry? {
+        return try {
+            healthDataEntryFormatter.format(record)
+        } catch (ex: Exception) {
+            Log.i(TAG, "Failed to format record!")
+            null
+        }
     }
 
     private fun getStartTime(record: Record): Instant {
