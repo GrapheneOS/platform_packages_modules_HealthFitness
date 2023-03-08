@@ -301,6 +301,11 @@ public class Vo2MaxRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateVo2MaxRecord_invalidValue() {
+        new Vo2MaxRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1, 100.1).build();
+    }
+
     private static Vo2MaxRecord getBaseVo2MaxRecord() {
         return new Vo2MaxRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1, 10.0)
                 .build();

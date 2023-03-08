@@ -301,6 +301,19 @@ public class BodyFatRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test
+    public void testDeviceObject() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        assertThat(device.getType()).isEqualTo(2);
+        assertThat(device.getModel()).isEqualTo("Pixel4a");
+        assertThat(device.getManufacturer()).isEqualTo("google");
+    }
+
     private static BodyFatRecord getBaseBodyFatRecord() {
         return new BodyFatRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(10.0))
