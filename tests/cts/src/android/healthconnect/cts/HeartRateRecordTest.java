@@ -150,11 +150,14 @@ public class HeartRateRecordTest {
                         .build();
         HeartRateRecord testRecord = getCompleteHeartRateRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
-        List<HeartRateRecord> newHeartRateRecords =
-                TestUtils.readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
-                                .setTimeRangeFilter(filter)
-                                .build());
+        ReadRecordsRequestUsingFilters<HeartRateRecord> requestUsingFilters =
+                new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                        .setTimeRangeFilter(filter)
+                        .build();
+        assertThat(requestUsingFilters.getTimeRangeFilter()).isNotNull();
+        assertThat(requestUsingFilters.isAscending()).isTrue();
+        assertThat(requestUsingFilters.getPageSize()).isEqualTo(1000);
+        List<HeartRateRecord> newHeartRateRecords = TestUtils.readRecords(requestUsingFilters);
         assertThat(newHeartRateRecords.size()).isEqualTo(1);
         assertThat(newHeartRateRecords.get(newHeartRateRecords.size() - 1).equals(testRecord))
                 .isTrue();

@@ -66,6 +66,7 @@ public class DistanceRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -166,6 +167,7 @@ public class DistanceRecordTest {
         assertThat(newDistanceRecords.size() - oldDistanceRecords.size()).isEqualTo(1);
         DistanceRecord newRecord = newDistanceRecords.get(newDistanceRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getDistance()).isEqualTo(testRecord.getDistance());
     }
 
     @Test

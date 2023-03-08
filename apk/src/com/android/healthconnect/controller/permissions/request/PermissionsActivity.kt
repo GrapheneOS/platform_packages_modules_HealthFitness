@@ -37,6 +37,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
+import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -80,6 +82,11 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         }
 
         viewModel.init(getPackageNameExtra(), getPermissionStrings())
+        viewModel.permissionsList.observe(this) { notGrantedPermissions ->
+            if (notGrantedPermissions.isEmpty()) {
+                handleResults(viewModel.request(getPackageNameExtra()))
+            }
+        }
 
         supportFragmentManager
             .beginTransaction()
@@ -127,14 +134,14 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
                 }
                 .toIntArray()
         val result = Intent()
-        result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, getPermissionStrings())
-        result.putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS, grants)
+        result.putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, getPermissionStrings())
+        result.putExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS, grants)
         setResult(Activity.RESULT_OK, result)
         finish()
     }
 
     private fun getPermissionStrings(): Array<out String> {
-        return intent.getStringArrayExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES).orEmpty()
+        return intent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES).orEmpty()
     }
 
     private fun getPackageNameExtra(): String {

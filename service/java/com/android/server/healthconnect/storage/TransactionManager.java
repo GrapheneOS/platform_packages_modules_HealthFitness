@@ -90,7 +90,7 @@ public final class TransactionManager {
         return sTransactionManager;
     }
 
-    public void onUserUnlocking(@NonNull HealthConnectUserContext healthConnectUserContext) {
+    public void onUserUnlocked(@NonNull HealthConnectUserContext healthConnectUserContext) {
         if (!mUserHandleToDatabaseMap.containsKey(
                 healthConnectUserContext.getCurrentUserHandle())) {
             mUserHandleToDatabaseMap.put(
@@ -154,10 +154,6 @@ public final class TransactionManager {
                     */
                     try (Cursor cursor = db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
                         while (cursor.moveToNext()) {
-                            request.onUuidFetched(
-                                    deleteTableRequest.getRecordType(),
-                                    StorageUtils.getCursorString(
-                                            cursor, deleteTableRequest.getIdColumnName()));
                             if (deleteTableRequest.requiresPackageCheck()) {
                                 request.enforcePackageCheck(
                                         StorageUtils.getCursorString(
@@ -165,6 +161,12 @@ public final class TransactionManager {
                                         StorageUtils.getCursorLong(
                                                 cursor, deleteTableRequest.getPackageColumnName()));
                             }
+                            request.onRecordFetched(
+                                    deleteTableRequest.getRecordType(),
+                                    StorageUtils.getCursorLong(
+                                            cursor, deleteTableRequest.getPackageColumnName()),
+                                    StorageUtils.getCursorString(
+                                            cursor, deleteTableRequest.getIdColumnName()));
                         }
                     }
                 }
