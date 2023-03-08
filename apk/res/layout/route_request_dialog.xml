@@ -20,9 +20,7 @@
     android:filterTouchesWhenObscured="true"
     android:orientation="vertical"
     android:paddingBottom="@dimen/spacing_small"
-    android:paddingTop="@dimen/spacing_xlarge"
-    android:paddingStart="@dimen/spacing_large"
-    android:paddingEnd="@dimen/spacing_large">
+    android:paddingTop="@dimen/spacing_xlarge">
 
     <include layout="@layout/dialog_title"/>
 
@@ -33,8 +31,11 @@
         android:orientation="horizontal"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
+        android:paddingBottom="@dimen/spacing_small"
         android:paddingTop="@dimen/spacing_normal"
-        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:layout_marginHorizontal="@dimen/spacing_large"
         android:background="@drawable/filter_chip_background">
 
         <ImageView
@@ -64,13 +65,15 @@
         android:orientation="horizontal"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:paddingTop="@dimen/spacing_small"
-        android:paddingBottom="@dimen/spacing_small"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingEnd="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_large"
         android:layout_weight="1">
 
         <com.android.healthconnect.controller.shared.RoundView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
             android:layout_marginStart="@dimen/spacing_small"
             android:layout_marginEnd="@dimen/spacing_small">
 
@@ -102,18 +105,18 @@
 
     <LinearLayout
         android:paddingBottom="@dimen/spacing_large"
-        android:paddingTop="@dimen/spacing_large"
-        style="@style/PermissionGrantButtonList">
+        android:paddingTop="@dimen/spacing_small"
+        style="@style/PermissionGrantButtonListMaterial3">
 
         <Button
             android:id="@+id/route_allow_button"
             android:text="@string/request_permissions_allow"
-            style="@style/PermissionGrantButton" />
+            style="@style/PermissionGrantButtonTop" />
 
         <Button
             android:id="@+id/route_dont_allow_button"
             android:text="@string/request_permissions_dont_allow"
-            style="@style/PermissionGrantButton" />
+            style="@style/PermissionGrantButtonBottom" />
     </LinearLayout>
 
 </LinearLayout>

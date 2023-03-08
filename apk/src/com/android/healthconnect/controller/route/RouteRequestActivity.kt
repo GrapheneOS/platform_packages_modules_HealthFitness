@@ -31,6 +31,7 @@ import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel.SessionWithAttribution
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.map.MapView
@@ -93,13 +94,18 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
         val session = data.session!!
         val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
-
         val sessionDetails =
             applicationContext.getString(
                 R.string.date_owner_format,
                 LocalDateTimeFormatter(applicationContext).formatLongDate(session.startTime),
                 data.appInfo.appName)
+        val sessionTitle =
+            if (session.title.isNullOrBlank())
+                ExerciseSessionFormatter.Companion.getExerciseType(
+                    applicationContext, session.exerciseType)
+            else session.title
         val view = layoutInflater.inflate(R.layout.route_request_dialog, null)
+
         runBlocking {
             val requester =
                 appInfoReader.getAppMetadata(intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
@@ -107,11 +113,12 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
                 applicationContext.getString(R.string.request_route_header_title, requester.appName)
             view.findViewById<TextView>(R.id.dialog_title).text = title
         }
+
         view
             .findViewById<ImageView>(R.id.dialog_icon)
             .setImageDrawable(getDrawable(R.drawable.health_connect_icon))
         view.findViewById<MapView>(R.id.map_view).setRoute(session.route!!)
-        view.findViewById<TextView>(R.id.session_title).text = session.title
+        view.findViewById<TextView>(R.id.session_title).text = sessionTitle
         view.findViewById<TextView>(R.id.date_app).text = sessionDetails
 
         view.findViewById<LinearLayout>(R.id.more_info).setOnClickListener {
