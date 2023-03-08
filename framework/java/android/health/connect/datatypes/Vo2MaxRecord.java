@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import android.annotation.FloatRange;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 
 import java.lang.annotation.Retention;

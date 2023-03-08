@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package android.health.connect.datatypes;
+package android.health.connect.datatypes.validation;
 
-import java.time.Duration;
+import android.health.connect.datatypes.TimeInterval;
+
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
  * @hide
  */
 public final class ValidationUtils {
+    /** Requires long value to be within the range. */
     public static void requireInRange(long value, long lowerBound, long upperBound, String name) {
         if (value < lowerBound) {
             throw new IllegalArgumentException(
@@ -39,6 +41,7 @@ public final class ValidationUtils {
         }
     }
 
+    /** Requires double value to be within the range. */
     public static void requireInRange(
             double value, double lowerBound, double upperBound, String name) {
         if (value < lowerBound) {
@@ -52,6 +55,7 @@ public final class ValidationUtils {
         }
     }
 
+    /** Requires list of times to be within the range. */
     public static void validateSampleStartAndEndTime(
             Instant sessionStartTime, Instant sessionEndTime, List<Instant> timeInstants) {
         if (timeInstants.size() > 0) {
@@ -72,6 +76,7 @@ public final class ValidationUtils {
         }
     }
 
+    /** Requires comparable class to be within the range. */
     public static <T extends Comparable<T>> void requireInRangeIfExists(
             Comparable<T> value, T threshold, T limit, String name) {
         if (value != null && value.compareTo(threshold) < 0) {
@@ -83,17 +88,6 @@ public final class ValidationUtils {
             throw new IllegalArgumentException(
                     name + " must not be more than " + limit + ", currently " + value);
         }
-    }
-
-
-    public static double valuePerMinute(long value, Instant startTime, Instant endTime) {
-        long minutes = Duration.between(startTime, endTime).toMinutes();
-        return (double) value / (minutes != 0 ? minutes : 1);
-    }
-
-    public static double valuePerSecond(long value, Instant startTime, Instant endTime) {
-        long seconds = Duration.between(startTime, endTime).toSeconds();
-        return (double) value / (seconds != 0 ? seconds : 1);
     }
 
     /**

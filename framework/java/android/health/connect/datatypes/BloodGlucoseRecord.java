@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.BloodGlucose;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.BloodGlucoseRecordInternal;
 
 import java.lang.annotation.Retention;

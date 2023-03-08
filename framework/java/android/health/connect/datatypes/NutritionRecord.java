@@ -16,7 +16,7 @@
 package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
-import static android.health.connect.datatypes.ValidationUtils.requireInRangeIfExists;
+import static android.health.connect.datatypes.validation.ValidationUtils.requireInRangeIfExists;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;

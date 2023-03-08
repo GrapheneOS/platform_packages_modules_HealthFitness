@@ -17,10 +17,11 @@
 package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
-import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTimeIntervalHolders;
+import static android.health.connect.datatypes.validation.ValidationUtils.sortAndValidateTimeIntervalHolders;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.health.connect.datatypes.validation.ExerciseSessionTypesValidation;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 
 import java.time.Instant;
@@ -104,6 +105,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                 Collections.unmodifiableList(
                         (List<ExerciseSegment>)
                                 sortAndValidateTimeIntervalHolders(startTime, endTime, segments));
+        ExerciseSessionTypesValidation.validateSessionAndSegmentsTypes(exerciseType, mSegments);
         mLaps =
                 Collections.unmodifiableList(
                         (List<ExerciseLap>)
