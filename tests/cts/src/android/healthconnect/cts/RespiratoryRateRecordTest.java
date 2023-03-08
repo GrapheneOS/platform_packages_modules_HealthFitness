@@ -323,6 +323,12 @@ public class RespiratoryRateRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateRespiratoryRateRecord_invalidValue() {
+        new RespiratoryRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1001.0)
+                .build();
+    }
+
     private static RespiratoryRateRecord getBaseRespiratoryRateRecord() {
         return new RespiratoryRateRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), 10.0)

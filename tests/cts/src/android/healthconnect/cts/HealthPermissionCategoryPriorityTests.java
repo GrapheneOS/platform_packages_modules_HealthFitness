@@ -193,8 +193,10 @@ public class HealthPermissionCategoryPriorityTests {
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
                 new AtomicReference<>();
+        UpdateDataOriginPriorityOrderRequest updateDataOriginPriorityOrderRequest =
+                new UpdateDataOriginPriorityOrderRequest(dataOrigins, permissionCategory);
         service.updateDataOriginPriorityOrder(
-                new UpdateDataOriginPriorityOrderRequest(dataOrigins, permissionCategory),
+                updateDataOriginPriorityOrderRequest,
                 Executors.newSingleThreadExecutor(),
                 new OutcomeReceiver<>() {
                     @Override
@@ -208,6 +210,9 @@ public class HealthPermissionCategoryPriorityTests {
                         latch.countDown();
                     }
                 });
+        assertThat(updateDataOriginPriorityOrderRequest.getDataCategory())
+                .isEqualTo(permissionCategory);
+        assertThat(updateDataOriginPriorityOrderRequest.getDataOriginInOrder()).isNotNull();
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();

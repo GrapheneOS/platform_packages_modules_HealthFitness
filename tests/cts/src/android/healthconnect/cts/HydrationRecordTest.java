@@ -376,6 +376,16 @@ public class HydrationRecordTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateHydrationRecord_invalidValue() {
+        new HydrationRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        Volume.fromMilliliters(100000.1))
+                .build();
+    }
+
     static HydrationRecord getBaseHydrationRecord() {
         return new HydrationRecord.Builder(
                         new Metadata.Builder().build(),

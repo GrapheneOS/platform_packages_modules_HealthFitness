@@ -321,6 +321,16 @@ public class WheelchairPushesRecordTest {
                 .build();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateWheelchairPushesRecord_invalidValue() {
+        new WheelchairPushesRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        1000001)
+                .build();
+    }
+
     static WheelchairPushesRecord getBaseWheelchairPushesRecord() {
         return new WheelchairPushesRecord.Builder(
                         new Metadata.Builder().build(),

@@ -395,6 +395,16 @@ public class ElevationGainedRecordTest {
                 .isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateElevationGainedRecord_invalidValue() {
+        new ElevationGainedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        Length.fromMeters(1000001.0))
+                .build();
+    }
+
     static ElevationGainedRecord getBaseElevationGainedRecord() {
         return new ElevationGainedRecord.Builder(
                         new Metadata.Builder().build(),

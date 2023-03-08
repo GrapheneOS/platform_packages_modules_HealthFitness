@@ -322,6 +322,18 @@ public class BloodGlucoseRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBloodGlucoseRecord_invalidValue() {
+        new BloodGlucoseRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        BloodGlucose.fromMillimolesPerLiter(51.0),
+                        1,
+                        1)
+                .build();
+    }
+
     private static BloodGlucoseRecord getBaseBloodGlucoseRecord() {
         return new BloodGlucoseRecord.Builder(
                         new Metadata.Builder().build(),

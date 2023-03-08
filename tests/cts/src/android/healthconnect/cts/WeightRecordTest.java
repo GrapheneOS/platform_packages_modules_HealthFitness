@@ -348,6 +348,13 @@ public class WeightRecordTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateWeightRecord_invalidValue() {
+        new WeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1000.1))
+                .build();
+    }
+
     private static WeightRecord getBaseWeightRecord() {
         return new WeightRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))

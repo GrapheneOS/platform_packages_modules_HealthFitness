@@ -374,6 +374,16 @@ public class DistanceRecordTest {
                 .isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateDistanceRecord_invalidValue() {
+        new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        Length.fromMeters(1000001.0))
+                .build();
+    }
+
     static DistanceRecord getBaseDistanceRecord() {
         return new DistanceRecord.Builder(
                         new Metadata.Builder().build(),

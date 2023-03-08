@@ -69,6 +69,16 @@ public class ActiveCaloriesBurnedRecordTest {
         TestUtils.deleteAllStagedRemoteData();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateActiveCaloriesBurnedRecord_invalidValue() {
+        new ActiveCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plus(1, ChronoUnit.HOURS),
+                        Energy.fromJoules(4184000001.0))
+                .build();
+    }
+
     @Test
     public void testInsertActiveCaloriesBurnedRecord() throws InterruptedException {
         List<Record> records =
