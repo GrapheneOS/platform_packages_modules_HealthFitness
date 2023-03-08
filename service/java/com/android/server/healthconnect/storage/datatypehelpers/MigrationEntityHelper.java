@@ -26,6 +26,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
@@ -41,7 +42,7 @@ import java.util.List;
  */
 public final class MigrationEntityHelper {
 
-    private static final String TABLE_NAME = "migration_entity_table";
+    @VisibleForTesting public static final String TABLE_NAME = "migration_entity_table";
     private static final String COLUMN_ENTITY_ID = "entity_id";
     private static final Object sGetInstanceLock = new Object();
     private static final int DB_VERSION_TABLE_CREATED = 3;

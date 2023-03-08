@@ -44,12 +44,12 @@ import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectDataState;
-import android.health.connect.HealthConnectManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.ext.SdkExtensions;
 import android.util.Slog;
 
+import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -61,6 +61,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * A database operations helper for migration states management.
@@ -68,36 +70,58 @@ import java.util.Optional;
  * @hide
  */
 public final class MigrationStateManager {
-    private static volatile MigrationStateManager sMigrationStateManager;
+    @GuardedBy("sInstanceLock")
+    private static MigrationStateManager sMigrationStateManager;
+
+    private static final Object sInstanceLock = new Object();
     private static final String MIGRATION_STATE_PREFERENCE_KEY = "migration_state";
     private static final String MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY =
             "min_data_migration_sdk_extension_version";
     private static final String TAG = "MigrationStateManager";
     private static final String MIGRATION_STARTS_COUNT_KEY = "migration_starts_count";
     private volatile MigrationBroadcastScheduler mMigrationBroadcastScheduler;
+    private final Set<StateChangedListener> mStateChangedListeners = new CopyOnWriteArraySet<>();
     private volatile int mUserId;
 
     private MigrationStateManager(@UserIdInt int userId) {
         mUserId = userId;
     }
 
-    public static void initializeInstance(@UserIdInt int userId) {
-        if (Objects.isNull(sMigrationStateManager)) {
-            sMigrationStateManager = new MigrationStateManager(userId);
+    /**
+     * Initialises {@link MigrationStateManager} with the provided arguments and returns the
+     * instance.
+     */
+    @NonNull
+    public static MigrationStateManager initializeInstance(@UserIdInt int userId) {
+        synchronized (sInstanceLock) {
+            if (Objects.isNull(sMigrationStateManager)) {
+                sMigrationStateManager = new MigrationStateManager(userId);
+            }
+
+            return sMigrationStateManager;
         }
     }
 
     /** Re-initialize this class instance with the new user */
     public void onUserSwitching(@NonNull Context context, @UserIdInt int userId) {
-        MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
-        mUserId = userId;
+        synchronized (sInstanceLock) {
+            MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
+            mUserId = userId;
+        }
     }
 
     /** Returns initialised instance of this class. */
     @NonNull
     public static MigrationStateManager getInitialisedInstance() {
-        Objects.requireNonNull(sMigrationStateManager);
-        return sMigrationStateManager;
+        synchronized (sInstanceLock) {
+            Objects.requireNonNull(sMigrationStateManager);
+            return sMigrationStateManager;
+        }
+    }
+
+    /** Registers {@link StateChangedListener} for observing migration state changes. */
+    public void addStateChangedListener(@NonNull StateChangedListener listener) {
+        mStateChangedListeners.add(listener);
     }
 
     public void setMigrationBroadcastScheduler(
@@ -330,6 +354,10 @@ public final class MigrationStateManager {
                     TAG,
                     "Unable to schedule migration broadcasts: "
                             + "MigrationBroadcastScheduler object is null");
+        }
+
+        for (StateChangedListener listener : mStateChangedListeners) {
+            listener.onChanged(migrationState);
         }
     }
 
@@ -570,5 +598,20 @@ public final class MigrationStateManager {
 
     private int getUdcSdkExtensionVersion() {
         return SdkExtensions.getExtensionVersion(Build.VERSION_CODES.UPSIDE_DOWN_CAKE);
+    }
+
+    /**
+     * A listener for observing migration state changes.
+     *
+     * @see MigrationStateManager#addStateChangedListener(StateChangedListener)
+     */
+    public interface StateChangedListener {
+
+        /**
+         * Called on every migration state change.
+         *
+         * @param state the new migration state.
+         */
+        void onChanged(@HealthConnectDataState.DataMigrationState int state);
     }
 }
