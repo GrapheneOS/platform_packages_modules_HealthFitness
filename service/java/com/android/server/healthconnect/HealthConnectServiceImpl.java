@@ -657,7 +657,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         attributionSource.getPackageName(), token.getToken());
         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                 changeLogsTokenRequest.getRecordTypes(), attributionSource);
-        
+
         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
         if (!isInForeground) {
             throwException(callback, attributionSource.getPackageName());
@@ -675,7 +675,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         .toEpochMilli();
                         final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                                 ChangeLogsHelper.getInstance()
-                                        .getChangeLogs(changeLogsTokenRequest, token.getPageSize());
+                                        .getChangeLogs(changeLogsTokenRequest, token);
 
                         List<RecordInternal<?>> recordInternals =
                                 mTransactionManager.readRecords(

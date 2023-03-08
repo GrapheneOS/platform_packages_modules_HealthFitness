@@ -35,6 +35,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.accesslog.AccessLog.OperationType;
+import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse.DeletedLog;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
@@ -133,7 +134,8 @@ public final class ChangeLogsHelper {
 
     /** Returns change logs post the time when {@code changeLogTokenRequest} was generated */
     public ChangeLogsResponse getChangeLogs(
-            ChangeLogsRequestHelper.TokenRequest changeLogTokenRequest, int pageSize) {
+            ChangeLogsRequestHelper.TokenRequest changeLogTokenRequest,
+            ChangeLogsRequest changeLogsRequest) {
         long token = changeLogTokenRequest.getRowIdChangeLogs();
         WhereClauses whereClause =
                 new WhereClauses()
@@ -153,6 +155,7 @@ public final class ChangeLogsHelper {
         // In setLimit(pagesize) method size will be set to pageSize + 1,so that if number of
         // records returned is more than pageSize we know there are more records available to return
         // for the next read.
+        int pageSize = changeLogsRequest.getPageSize();
         final ReadTableRequest readTableRequest =
                 new ReadTableRequest(TABLE_NAME).setWhereClause(whereClause).setLimit(pageSize);
 
@@ -176,7 +179,7 @@ public final class ChangeLogsHelper {
                 nextChangesToken != DEFAULT_LONG
                         ? ChangeLogsRequestHelper.getNextPageToken(
                                 changeLogTokenRequest, nextChangesToken)
-                        : String.valueOf(token);
+                        : String.valueOf(changeLogsRequest.getToken());
 
         return new ChangeLogsResponse(operationToChangeLogMap, nextToken, hasMoreRecords);
     }
