@@ -22,8 +22,12 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 
 import android.annotation.NonNull;
+import android.content.Context;
+import android.health.connect.Constants;
 import android.health.connect.HealthConnectDataState;
+import android.util.Slog;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.util.Objects;
@@ -38,6 +42,8 @@ public final class MigrationStateManager {
     private static final String MIGRATION_STATE_PREFERENCE_KEY = "migration_state";
     private static final String MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY =
             "min_data_migration_sdk_extension_version";
+    private static final String TAG = "MigrationStateManager";
+    private volatile MigrationBroadcastScheduler mMigrationBroadcastScheduler;
 
     /**
      * @return an initialized instance of this helper.
@@ -48,6 +54,11 @@ public final class MigrationStateManager {
             sMigrationStateManager = new MigrationStateManager();
         }
         return sMigrationStateManager;
+    }
+
+    public void setMigrationBroadcastScheduler(
+            MigrationBroadcastScheduler migrationBroadcastScheduler) {
+        mMigrationBroadcastScheduler = migrationBroadcastScheduler;
     }
 
     /**
@@ -124,10 +135,26 @@ public final class MigrationStateManager {
     }
 
     public void updateMigrationState(
-            @HealthConnectDataState.DataMigrationState int migrationState) {
+            @HealthConnectDataState.DataMigrationState int migrationState, Context context) {
         PreferenceHelper.getInstance()
                 .insertOrReplacePreference(
                         MIGRATION_STATE_PREFERENCE_KEY, String.valueOf(migrationState));
+
+        if (mMigrationBroadcastScheduler != null) {
+            HealthConnectThreadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            mMigrationBroadcastScheduler.prescheduleNewJobs(context);
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Migration broadcast schedule failed", e);
+                        }
+                    });
+        } else if (Constants.DEBUG) {
+            Slog.d(
+                    TAG,
+                    "Unable to schedule migration broadcasts: "
+                            + "MigrationBroadcastScheduler object is null");
+        }
     }
 
     private void throwIfMigrationIsComplete() throws IllegalMigrationStateException {

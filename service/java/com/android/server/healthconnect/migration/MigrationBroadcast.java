@@ -26,6 +26,7 @@ import android.content.pm.ResolveInfo;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
+import android.os.UserManager;
 import android.util.Slog;
 
 import java.util.ArrayList;
@@ -114,12 +115,18 @@ public class MigrationBroadcast {
         }
 
         if (isPackageInstalled(migrationAwarePackage, mUser)) {
-            Intent intent =
-                    new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
-                            .setPackage(migrationAwarePackage);
-            mContext.sendBroadcastAsUser(intent, mUser);
-            if (Constants.DEBUG) {
-                Slog.d(TAG, "Sent broadcast to migration aware application.");
+            if (Objects.requireNonNull(mContext.getSystemService(UserManager.class))
+                    .isUserRunning(mUser)) {
+                // TODO(b/271951037): Use explicit intent by setting the target component
+                Intent intent =
+                        new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
+                                .setPackage(migrationAwarePackage);
+                mContext.sendBroadcastAsUser(intent, mUser);
+                if (Constants.DEBUG) {
+                    Slog.d(TAG, "Sent broadcast to migration aware application.");
+                }
+            } else if (Constants.DEBUG) {
+                Slog.d(TAG, "User " + mUser + " is not currently active");
             }
         } else if (Constants.DEBUG) {
             Slog.d(TAG, "Migration aware app is not installed on the current user");
