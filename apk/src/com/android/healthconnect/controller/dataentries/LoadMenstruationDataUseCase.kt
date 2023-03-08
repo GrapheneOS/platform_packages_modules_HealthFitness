@@ -24,6 +24,8 @@ import android.health.connect.ReadRecordsResponse
 import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
+import android.health.connect.datatypes.Record
+import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
@@ -48,6 +50,7 @@ constructor(
 ) : BaseUseCase<Instant, List<FormattedEntry>>(dispatcher) {
 
     companion object {
+        private const val TAG = "LoadMenstruationDataUse"
         private val SEARCH_RANGE = ofDays(30)
     }
 
@@ -105,6 +108,15 @@ constructor(
                 }
                 .records
 
-        return records.map { healthDataEntryFormatter.format(it) }
+        return records.mapNotNull { record -> getFormatterRecord(record) }
+    }
+
+    private suspend fun getFormatterRecord(record: Record): FormattedEntry? {
+        return try {
+            healthDataEntryFormatter.format(record)
+        } catch (ex: Exception) {
+            Log.i(TAG, "Failed to format record!")
+            null
+        }
     }
 }
