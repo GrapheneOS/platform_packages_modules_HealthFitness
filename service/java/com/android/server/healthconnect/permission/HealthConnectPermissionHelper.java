@@ -328,7 +328,8 @@ public final class HealthConnectPermissionHelper {
         }
 
         boolean canInteractAcrossUsersFull =
-                mContext.checkCallingPermission(INTERACT_ACROSS_USERS_FULL) == PERMISSION_GRANTED;
+                mContext.checkCallingOrSelfPermission(INTERACT_ACROSS_USERS_FULL)
+                        == PERMISSION_GRANTED;
         if (canInteractAcrossUsersFull) {
             if (userId == UserHandle.CURRENT.getIdentifier()) {
                 return ActivityManager.getCurrentUser();
