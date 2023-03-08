@@ -21,7 +21,6 @@ android_test {
         "src/**/*.java",
         "src/**/*.kt",
     ],
-    certificate: "platform",
     defaults: ["modules-utils-testable-device-config-defaults"],
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
