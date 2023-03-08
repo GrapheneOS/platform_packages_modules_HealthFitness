@@ -98,10 +98,10 @@ constructor(
 
             val permissions = loadAppPermissionsStatusUseCase.invoke(packageName)
             _appPermissions.postValue(permissions.map { it.healthPermission })
-            _grantedPermissions.postValue(
-                permissions.filter { it.isGranted }.map { it.healthPermission }.toSet())
             _allAppPermissionsGranted.postValue(permissions.all { it.isGranted })
             _atLeastOnePermissionGranted.postValue(permissions.any { it.isGranted })
+            _grantedPermissions.postValue(
+                permissions.filter { it.isGranted }.map { it.healthPermission }.toSet())
         }
     }
 
@@ -122,7 +122,6 @@ constructor(
         } else {
             grantedPermissions.remove(healthPermission)
             _grantedPermissions.postValue(grantedPermissions)
-
             revokePermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
         }
     }
@@ -142,8 +141,8 @@ constructor(
             revokeAllHealthPermissionsUseCase.invoke(packageName)
             loadForPackage(packageName)
             _revokeAllPermissionsState.postValue(RevokeAllState.Updated)
+            _grantedPermissions.postValue(emptySet())
         }
-        _grantedPermissions.postValue(emptySet())
     }
 
     fun deleteAppData(packageName: String, appName: String) {
