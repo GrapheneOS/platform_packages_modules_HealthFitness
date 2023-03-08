@@ -340,6 +340,11 @@ public class StepsCadenceRecordTest {
         assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateStepsCadenceRecord_invalidValue() {
+        new StepsCadenceRecord.StepsCadenceRecordSample(10001.0, Instant.now().plusMillis(100));
+    }
+
     private static StepsCadenceRecord getBaseStepsCadenceRecord() {
         StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
                 new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now().plusMillis(100));

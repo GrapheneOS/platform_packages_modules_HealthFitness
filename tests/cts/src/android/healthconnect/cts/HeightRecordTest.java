@@ -354,6 +354,13 @@ public class HeightRecordTest {
                 .build();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateHeightRecord_invalidValue() {
+        new HeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(3.1))
+                .build();
+    }
+
     static HeightRecord getBaseHeightRecord(double height) {
         return new HeightRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Length.fromMeters(height))

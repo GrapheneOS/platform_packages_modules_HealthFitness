@@ -354,6 +354,16 @@ public class TotalCaloriesBurnedRecordTest {
                 .build();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateTotalCaloriesBurnedRecord_invalidValue() {
+        new TotalCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        Energy.fromJoules(4184000001.0))
+                .build();
+    }
+
     static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord(int days) {
         Instant startTime = Instant.now().minus(days, ChronoUnit.DAYS);
         return new TotalCaloriesBurnedRecord.Builder(

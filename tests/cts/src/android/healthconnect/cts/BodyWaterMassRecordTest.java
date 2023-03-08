@@ -361,6 +361,13 @@ public class BodyWaterMassRecordTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBodyWaterMassRecord_invalidValue() {
+        new BodyWaterMassRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1001.0))
+                .build();
+    }
+
     static BodyWaterMassRecord getBaseBodyWaterMassRecord() {
         return new BodyWaterMassRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(100.0))
