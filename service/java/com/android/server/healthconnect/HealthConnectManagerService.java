@@ -53,7 +53,7 @@ public class HealthConnectManagerService extends SystemService {
     private final HealthConnectServiceImpl mHealthConnectService;
     private final TransactionManager mTransactionManager;
     private final UserManager mUserManager;
-    private UserHandle mCurrentUser;
+    private UserHandle mCurrentForegroundUser;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -72,11 +72,11 @@ public class HealthConnectManagerService extends SystemService {
         mPackageMonitor =
                 new PackagePermissionChangesMonitor(permissionIntentTracker, firstGrantTimeManager);
         mUserManager = context.getSystemService(UserManager.class);
-        mCurrentUser = context.getUser();
+        mCurrentForegroundUser = context.getUser();
         mContext = context;
         mTransactionManager =
                 TransactionManager.getInstance(
-                        new HealthConnectUserContext(mContext, mCurrentUser));
+                        new HealthConnectUserContext(mContext, mCurrentForegroundUser));
         HealthConnectDeviceConfigManager.initializeInstance(context);
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -100,39 +100,28 @@ public class HealthConnectManagerService extends SystemService {
         RateLimiter.clearCache();
         HealthConnectThreadScheduler.resetThreadPools();
 
+        mCurrentForegroundUser = to.getUserHandle();
         if (mUserManager.isUserUnlocked(to.getUserHandle())) {
             // The user is already in unlocked state, so we should proceed with our setup right now,
-            // as we won't be getting a onUserUnlocking callback
+            // as we won't be getting a onUserUnlocked callback
             switchToSetupForUser(to.getUserHandle());
         }
     }
 
+    // NOTE: The only scenario in which onUserUnlocked's code should be triggered is if the
+    // foreground user is unlocked. If {@code user} is not a foreground user, the following
+    // code should only be triggered when the {@code user} actually gets unlocked. And in
+    // such cases onUserSwitching will be triggered for {@code user} and this code will be
+    // triggered then.
     @Override
-    public void onUserUnlocking(@NonNull TargetUser user) {
+    public void onUserUnlocked(@NonNull TargetUser user) {
         Objects.requireNonNull(user);
+        if (!user.getUserHandle().equals(mCurrentForegroundUser)) {
+            // Ignore unlocking requests for non-foreground users
+            return;
+        }
+
         switchToSetupForUser(user.getUserHandle());
-
-        HealthConnectThreadScheduler.scheduleInternalTask(
-                () -> {
-                    try {
-                        HealthConnectDailyService.schedule(mContext, mCurrentUser.getIdentifier());
-                    } catch (Exception e) {
-                        Slog.e(TAG, "Failed to scheduled Health Connect daily service.", e);
-                    }
-                });
-
-        HealthConnectThreadScheduler.scheduleInternalTask(
-                () -> {
-                    try {
-                        // TODO(b/267255123): Send broadcast up to 10 times with a 60s delay
-                        // (configurable)
-                        MigrationBroadcast migrationBroadcast =
-                                new MigrationBroadcast(mContext, mCurrentUser);
-                        migrationBroadcast.sendInvocationBroadcast();
-                    } catch (Exception e) {
-                        Slog.e(TAG, "Sending migration broadcast failed", e);
-                    }
-                });
     }
 
     @Override
@@ -153,11 +142,33 @@ public class HealthConnectManagerService extends SystemService {
     }
 
     private void switchToSetupForUser(UserHandle user) {
-        if (!user.equals(mCurrentUser)) {
-            mCurrentUser = user;
-            mTransactionManager.onUserUnlocking(
-                    new HealthConnectUserContext(mContext, mCurrentUser));
-        }
+        // Note: This is for test setup debugging, please don't surround with DEBUG flag
+        Slog.d(TAG, "switchToSetupForUser: " + user);
+        mTransactionManager.onUserUnlocked(
+                new HealthConnectUserContext(mContext, mCurrentForegroundUser));
+
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        HealthConnectDailyService.schedule(
+                                        mContext, mCurrentForegroundUser.getIdentifier());
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Failed to scheduled Health Connect daily service.", e);
+                    }
+                });
+
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        // TODO(b/267255123): Send broadcast up to 10 times with a 60s delay
+                        // (configurable)
+                        MigrationBroadcast migrationBroadcast =
+                                new MigrationBroadcast(mContext, mCurrentForegroundUser);
+                        migrationBroadcast.sendInvocationBroadcast();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Sending migration broadcast failed", e);
+                    }
+                });
     }
 
     @NonNull

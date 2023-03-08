@@ -66,6 +66,7 @@ public class ElevationGainedRecordTest {
                         .setStartTime(Instant.EPOCH)
                         .setEndTime(Instant.now())
                         .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test
@@ -182,6 +183,7 @@ public class ElevationGainedRecordTest {
         ElevationGainedRecord newRecord =
                 newElevationGainedRecords.get(newElevationGainedRecords.size() - 1);
         assertThat(newRecord.equals(testRecord)).isTrue();
+        assertThat(newRecord.getElevation()).isEqualTo(testRecord.getElevation());
     }
 
     @Test
