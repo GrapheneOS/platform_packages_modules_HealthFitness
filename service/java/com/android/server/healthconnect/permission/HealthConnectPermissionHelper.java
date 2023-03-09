@@ -106,7 +106,7 @@ public final class HealthConnectPermissionHelper {
                     packageName,
                     MASK_PERMISSION_FLAGS,
                     PackageManager.FLAG_PERMISSION_USER_SET,
-                    user);
+                    checkedUser);
             addToPriorityListIfRequired(packageName, permissionName);
 
         } finally {
@@ -132,7 +132,7 @@ public final class HealthConnectPermissionHelper {
                     mPackageManager.checkPermission(permissionName, packageName)
                             == PackageManager.PERMISSION_DENIED;
             int permissionFlags =
-                    mPackageManager.getPermissionFlags(permissionName, packageName, user);
+                    mPackageManager.getPermissionFlags(permissionName, packageName, checkedUser);
             if (!isAlreadyDenied) {
                 mPackageManager.revokeRuntimePermission(
                         packageName, permissionName, checkedUser, reason);
@@ -145,7 +145,11 @@ public final class HealthConnectPermissionHelper {
             }
             permissionFlags = permissionFlags & ~PackageManager.FLAG_PERMISSION_AUTO_REVOKED;
             mPackageManager.updatePermissionFlags(
-                    permissionName, packageName, MASK_PERMISSION_FLAGS, permissionFlags, user);
+                    permissionName,
+                    packageName,
+                    MASK_PERMISSION_FLAGS,
+                    permissionFlags,
+                    checkedUser);
             removeFromPriorityListIfRequired(packageName, permissionName);
         } finally {
             Binder.restoreCallingIdentity(token);
@@ -315,8 +319,7 @@ public final class HealthConnectPermissionHelper {
     }
 
     /**
-     * Returns the target userId after handling the incoming user for packages with {@link
-     * INTERACT_ACROSS_USERS_FULL}.
+     * Checks input user id and converts it to positive id if needed, returns converted user id.
      *
      * @throws java.lang.SecurityException if the caller is affecting different users without
      *     holding the {@link INTERACT_ACROSS_USERS_FULL} permission.
@@ -331,6 +334,8 @@ public final class HealthConnectPermissionHelper {
                 mContext.checkCallingOrSelfPermission(INTERACT_ACROSS_USERS_FULL)
                         == PERMISSION_GRANTED;
         if (canInteractAcrossUsersFull) {
+            // If the UserHandle.CURRENT has been passed (negative value),
+            // convert it to positive userId.
             if (userId == UserHandle.CURRENT.getIdentifier()) {
                 return ActivityManager.getCurrentUser();
             }
