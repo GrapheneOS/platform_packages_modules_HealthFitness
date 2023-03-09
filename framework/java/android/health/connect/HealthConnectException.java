@@ -64,6 +64,12 @@ public class HealthConnectException extends RuntimeException {
      * <p>Caller should try this api call again later.
      */
     public static final int ERROR_DATA_SYNC_IN_PROGRESS = 8;
+    /**
+     * This operation is currently not supported by the platform.
+     *
+     * <p>Caller may try this api call again later.
+     */
+    public static final int ERROR_UNSUPPORTED_OPERATION = 9;
 
     @ErrorCode private final int mErrorCode;
 
@@ -106,7 +112,9 @@ public class HealthConnectException extends RuntimeException {
                 ERROR_IO,
                 ERROR_SECURITY,
                 ERROR_REMOTE,
-                ERROR_RATE_LIMIT_EXCEEDED
+                ERROR_DATA_SYNC_IN_PROGRESS,
+                ERROR_RATE_LIMIT_EXCEEDED,
+                ERROR_UNSUPPORTED_OPERATION
             })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ErrorCode {}

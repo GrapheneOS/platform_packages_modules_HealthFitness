@@ -24,7 +24,6 @@ import android.health.connect.internal.datatypes.utils.ParcelRecordConverter;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.SharedMemory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -90,24 +89,14 @@ public class RecordsParcel implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        final Parcel dataParcel = Parcel.obtain();
-        writeToParcelInternal(dataParcel);
-        final int dataParcelSize = dataParcel.dataSize();
-        if (dataParcelSize > ParcelUtils.KBS_750) {
-            SharedMemory sharedMemory = ParcelUtils.getSharedMemoryForParcel(
-                    dataParcel, dataParcelSize);
-            dest.writeInt(ParcelUtils.USING_SHARED_MEMORY);
-            sharedMemory.writeToParcel(dest, flags);
-        } else {
-            dest.writeInt(ParcelUtils.USING_PARCEL);
-            writeToParcelInternal(dest);
-        }
+        ParcelUtils.putToRequiredMemory(dest, flags, this::writeToParcelInternal);
     }
 
     @NonNull
     public List<RecordInternal<?>> getRecords() {
         return mRecordInternals;
     }
+
     private void writeToParcelInternal(@NonNull Parcel dest) {
         dest.writeInt(mRecordInternals.size());
         for (RecordInternal<?> recordInternal : mRecordInternals) {

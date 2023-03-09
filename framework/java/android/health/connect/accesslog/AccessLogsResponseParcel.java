@@ -20,7 +20,6 @@ import android.annotation.NonNull;
 import android.health.connect.internal.ParcelUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.SharedMemory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,18 +66,7 @@ public final class AccessLogsResponseParcel implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        final Parcel dataParcel = Parcel.obtain();
-        writeToAccessLogParcel(dataParcel);
-        final int dataParcelSize = dataParcel.dataSize();
-        if (dataParcelSize > ParcelUtils.KBS_750) {
-            SharedMemory sharedMemory =
-                    ParcelUtils.getSharedMemoryForParcel(dataParcel, dataParcelSize);
-            dest.writeInt(ParcelUtils.USING_SHARED_MEMORY);
-            sharedMemory.writeToParcel(dest, flags);
-        } else {
-            dest.writeInt(ParcelUtils.USING_PARCEL);
-            writeToAccessLogParcel(dest);
-        }
+        ParcelUtils.putToRequiredMemory(dest, flags, this::writeToAccessLogParcel);
     }
 
     private void writeToAccessLogParcel(@NonNull Parcel dest) {
