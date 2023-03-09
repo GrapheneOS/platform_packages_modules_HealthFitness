@@ -343,4 +343,31 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse newResponse = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(newResponse.getUpsertedRecords().size()).isEqualTo(testRecord.size());
     }
+
+    // Test added for b/271607816 to make sure that getChangeLogs() method returns the requested
+    // changelog token as nextPageToken in the response when it is the end of page.
+    // ( i.e. hasMoreRecords is false)
+    @Test
+    public void testChangeLogs_checkToken_hasMorePages_False() throws InterruptedException {
+        ChangeLogTokenResponse tokenResponse =
+                TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
+        assertThat(response.hasMorePages()).isFalse();
+        List<Record> testRecord = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(testRecord.size());
+        assertThat(response.hasMorePages()).isFalse();
+        ChangeLogsRequest changeLogsRequestNew =
+                new ChangeLogsRequest.Builder(response.getNextChangesToken())
+                        .setPageSize(2)
+                        .build();
+        ChangeLogsResponse newResponse = TestUtils.getChangeLogs(changeLogsRequestNew);
+        assertThat(newResponse.getUpsertedRecords().size()).isEqualTo(0);
+        assertThat(newResponse.hasMorePages()).isFalse();
+        assertThat(newResponse.getNextChangesToken()).isEqualTo(changeLogsRequestNew.getToken());
+    }
 }
