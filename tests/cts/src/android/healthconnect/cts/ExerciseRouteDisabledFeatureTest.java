@@ -21,6 +21,7 @@ import static android.Manifest.permission.WRITE_DEVICE_CONFIG;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
+import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
@@ -29,6 +30,7 @@ import android.provider.DeviceConfig;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -43,12 +45,18 @@ public class ExerciseRouteDisabledFeatureTest {
         setExerciseRouteFeatureEnabledFlag(true);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testWriteRoute_insertWithDisableFeature_throwsException()
             throws InterruptedException {
         setExerciseRouteFeatureEnabledFlag(false);
         List<Record> records = List.of(TestUtils.buildExerciseSession());
-        TestUtils.insertRecords(records);
+        try {
+            TestUtils.insertRecords(records);
+            Assert.fail("Writing route when flag is disabled should not be allowed");
+        } catch (HealthConnectException healthConnectException) {
+            assertThat(healthConnectException.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
+        }
     }
 
     @Test

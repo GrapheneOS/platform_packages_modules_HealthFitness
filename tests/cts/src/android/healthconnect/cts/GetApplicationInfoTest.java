@@ -95,24 +95,11 @@ public class GetApplicationInfoTest {
         AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
                 new AtomicReference<>();
         try {
-            service.getContributorApplicationsInfo(
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<>() {
-                        @Override
-                        public void onResult(ApplicationInfoResponse result) {
-                            response.set(result.getApplicationInfoList());
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException exception) {
-                            healthConnectExceptionAtomicReference.set(exception);
-                            latch.countDown();
-                        }
-                    });
+            getApplicationInfo();
             Assert.fail("Reading app info must not be allowed without right HC permission");
-        } catch (SecurityException exception) {
-            assertThat(exception).isInstanceOf(SecurityException.class);
+        } catch (HealthConnectException healthConnectException) {
+            assertThat(healthConnectException.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_SECURITY);
         }
     }
 
@@ -147,6 +134,8 @@ public class GetApplicationInfoTest {
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(service).isNotNull();
         AtomicReference<List<AppInfo>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
         service.getContributorApplicationsInfo(
                 Executors.newSingleThreadExecutor(),
                 new OutcomeReceiver<>() {
@@ -158,10 +147,15 @@ public class GetApplicationInfoTest {
 
                     @Override
                     public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+
         return response.get();
     }
 }
