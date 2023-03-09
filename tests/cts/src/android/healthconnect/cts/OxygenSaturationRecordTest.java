@@ -326,6 +326,13 @@ public class OxygenSaturationRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateOxygenSaturationRecord_invalidValue() {
+        new OxygenSaturationRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(100.1))
+                .build();
+    }
+
     private static OxygenSaturationRecord getBaseOxygenSaturationRecord() {
         return new OxygenSaturationRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(10.0))

@@ -324,6 +324,27 @@ public class SpeedRecordTest {
         assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateSpeedRecord_invalidValue() {
+        new SpeedRecord.SpeedRecordSample(
+                Velocity.fromMetersPerSecond(1000001), Instant.now().plusMillis(100));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateSpeedRecord_invalidSampleTime() {
+        SpeedRecord.SpeedRecordSample speedRecord =
+                new SpeedRecord.SpeedRecordSample(
+                        Velocity.fromMetersPerSecond(10.0), Instant.now().plusMillis(100));
+        ArrayList<SpeedRecord.SpeedRecordSample> speedRecords = new ArrayList<>();
+        speedRecords.add(speedRecord);
+        new SpeedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(99),
+                        speedRecords)
+                .build();
+    }
+
     private static SpeedRecord getBaseSpeedRecord() {
         SpeedRecord.SpeedRecordSample speedRecord =
                 new SpeedRecord.SpeedRecordSample(

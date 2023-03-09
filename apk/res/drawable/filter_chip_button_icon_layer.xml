@@ -15,7 +15,6 @@
   limitations under the License.
 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:left="@dimen/spacing_small"
         android:top="@dimen/spacing_xsmall"
@@ -23,9 +22,6 @@
         android:width="@dimen/chip_icon_size"
         android:height="@dimen/chip_icon_size"
         android:id="@+id/icon_layer"
-        android:drawable="@drawable/quantum_gm_ic_check_vd_theme_24"
-        >
-
+        android:drawable="@drawable/quantum_gm_ic_check_vd_theme_24">
     </item>
-
 </layer-list>

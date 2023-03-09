@@ -114,6 +114,11 @@ public class HeartRateRecordTest {
         readHeartRateRecordUsingClientId(insertedRecords);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateHeartRateRecord_invalidValue() {
+        new HeartRateRecord.HeartRateSample(301, Instant.now().plusMillis(100));
+    }
+
     @Test
     public void testReadHeartRateRecord_invalidClientRecordIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<HeartRateRecord> request =
@@ -365,8 +370,9 @@ public class HeartRateRecordTest {
                 ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
         final ZoneOffset startZoneOffset = ZoneOffset.UTC;
         final ZoneOffset endZoneOffset = ZoneOffset.MAX;
+        Instant timeInstant = Instant.now().plusMillis(100);
         HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
+                new HeartRateRecord.HeartRateSample(10, timeInstant);
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
@@ -377,6 +383,8 @@ public class HeartRateRecordTest {
                         Instant.now().plusMillis(500),
                         heartRateRecords);
 
+        assertThat(heartRateRecord.getTime()).isEqualTo(timeInstant);
+        assertThat(heartRateRecord.getBeatsPerMinute()).isEqualTo(10);
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
         assertThat(builder.setEndZoneOffset(endZoneOffset).build().getEndZoneOffset())

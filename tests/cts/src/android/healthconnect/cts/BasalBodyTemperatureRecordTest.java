@@ -60,6 +60,16 @@ public class BasalBodyTemperatureRecordTest {
         TestUtils.insertRecords(records);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBasalBodyTemperatureRecord_invalidValue() {
+        new BasalBodyTemperatureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Temperature.fromCelsius(101.0))
+                .build();
+    }
+
     @Test
     public void testReadBasalBodyTemperatureRecord_usingIds() throws InterruptedException {
         List<Record> recordList =
