@@ -17,6 +17,7 @@
 package android.health.connect.internal;
 
 import android.annotation.NonNull;
+import android.os.IBinder;
 import android.os.Parcel;
 import android.os.SharedMemory;
 import android.system.ErrnoException;
@@ -27,7 +28,11 @@ import java.nio.ByteBuffer;
 public final class ParcelUtils {
     public static final int USING_SHARED_MEMORY = 0;
     public static final int USING_PARCEL = 1;
-    public static final int KBS_750 = 750000;
+    public static final int IPC_PARCEL_LIMIT = IBinder.getSuggestedMaxIpcSizeBytes() / 2;
+
+    public interface IPutToParcelRunnable {
+        void writeToParcel(Parcel dest);
+    }
 
     @NonNull
     public static Parcel getParcelForSharedMemory(Parcel in) {
@@ -54,6 +59,26 @@ public final class ParcelUtils {
             return sharedMemory;
         } catch (ErrnoException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Determines which memory to use and puts the {@code parcel} in it, and details of it in {@code
+     * dest}
+     */
+    public static void putToRequiredMemory(
+            Parcel dest, int flags, IPutToParcelRunnable parcelRunnable) {
+        final Parcel dataParcel = Parcel.obtain();
+        parcelRunnable.writeToParcel(dataParcel);
+        final int dataParcelSize = dataParcel.dataSize();
+        if (dataParcelSize > ParcelUtils.IPC_PARCEL_LIMIT) {
+            SharedMemory sharedMemory =
+                    ParcelUtils.getSharedMemoryForParcel(dataParcel, dataParcelSize);
+            dest.writeInt(ParcelUtils.USING_SHARED_MEMORY);
+            sharedMemory.writeToParcel(dest, flags);
+        } else {
+            dest.writeInt(ParcelUtils.USING_PARCEL);
+            parcelRunnable.writeToParcel(dest);
         }
     }
 }

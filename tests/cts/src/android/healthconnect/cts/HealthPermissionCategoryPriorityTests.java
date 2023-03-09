@@ -91,8 +91,9 @@ public class HealthPermissionCategoryPriorityTests {
             try {
                 getPriority(permissionCategory);
                 Assert.fail("Get Priority must not be allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                assertThat(securityException).isInstanceOf(SecurityException.class);
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
@@ -114,11 +115,11 @@ public class HealthPermissionCategoryPriorityTests {
                 List<String> currentPriorityString =
                         currentPriority.getDataOriginsPriorityOrder().stream()
                                 .map(DataOrigin::getPackageName)
-                                .collect(Collectors.toList());
+                                .toList();
                 List<String> newPriorityString =
                         newPriority.getDataOriginsPriorityOrder().stream()
                                 .map(DataOrigin::getPackageName)
-                                .collect(Collectors.toList());
+                                .toList();
                 assertThat(currentPriorityString.equals(newPriorityString)).isTrue();
             }
         } finally {
@@ -132,8 +133,9 @@ public class HealthPermissionCategoryPriorityTests {
             try {
                 updatePriority(permissionCategory, Arrays.asList("a", "b", "c"));
                 Assert.fail("Update priority must not be allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                assertThat(securityException).isInstanceOf(SecurityException.class);
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
