@@ -44,6 +44,7 @@ package android.health.connect {
     field public static final int ERROR_REMOTE = 6; // 0x6
     field public static final int ERROR_SECURITY = 5; // 0x5
     field public static final int ERROR_UNKNOWN = 1; // 0x1
+    field public static final int ERROR_UNSUPPORTED_OPERATION = 9; // 0x9
   }
 
   public class HealthConnectManager {

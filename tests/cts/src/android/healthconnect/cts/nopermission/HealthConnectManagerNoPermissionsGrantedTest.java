@@ -19,11 +19,13 @@ package android.healthconnect.cts.nopermission;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MIN;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
-import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.TestUtils;
@@ -53,8 +55,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             try {
                 TestUtils.insertRecords(Collections.singletonList(testRecord));
                 Assert.fail("Insert must be not allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                // ignore
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
@@ -65,8 +68,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             try {
                 TestUtils.updateRecords(Collections.singletonList(testRecord));
                 Assert.fail("Update must be not allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                // ignore
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
@@ -77,8 +81,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             try {
                 TestUtils.deleteRecords(Collections.singletonList(testRecord));
                 Assert.fail("Delete using ids must be not allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                // ignore
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
@@ -94,8 +99,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                                 .setEndTime(Instant.now().plusMillis(1000))
                                 .build());
                 Assert.fail("Delete using filters must be not allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                // ignore
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
@@ -110,8 +116,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                                 .build());
                 Assert.fail(
                         "Getting change log token must be not allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                // ignore
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
@@ -124,8 +131,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                         new ReadRecordsRequestUsingFilters.Builder<>(testRecord.getClass())
                                 .build());
                 Assert.fail("Read records must be not allowed without right HC permission");
-            } catch (SecurityException securityException) {
-                // ignore
+            } catch (HealthConnectException healthConnectException) {
+                assertThat(healthConnectException.getErrorCode())
+                        .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
     }
@@ -151,8 +159,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                             .build(),
                     records);
             Assert.fail("Get Aggregations must be not allowed without right HC permission");
-        } catch (SecurityException securityException) {
-            // ignore
+        } catch (HealthConnectException healthConnectException) {
+            assertThat(healthConnectException.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_SECURITY);
         }
     }
 
@@ -174,8 +183,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             Assert.fail(
                     "Aggregations group by duration must be not allowed without right HC"
                             + " permission");
-        } catch (SecurityException securityException) {
-            // ignore
+        } catch (HealthConnectException healthConnectException) {
+            assertThat(healthConnectException.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_SECURITY);
         }
     }
 
@@ -196,8 +206,9 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                     Period.ofDays(1));
             Assert.fail(
                     "Aggregation group by period must be not allowed without right HC permission");
-        } catch (SecurityException securityException) {
-            // ignore
+        } catch (HealthConnectException healthConnectException) {
+            assertThat(healthConnectException.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_SECURITY);
         }
     }
 }
