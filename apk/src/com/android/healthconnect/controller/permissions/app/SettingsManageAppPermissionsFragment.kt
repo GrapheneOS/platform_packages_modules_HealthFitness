@@ -122,9 +122,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         }
         viewModel.grantedPermissions.observe(viewLifecycleOwner) { granted ->
             permissionMap.forEach { (healthPermission, switchPreference) ->
-                if (healthPermission in granted && !switchPreference.isChecked) {
-                    switchPreference.isChecked = true
-                }
+                switchPreference.isChecked = healthPermission in granted
             }
         }
 

@@ -124,7 +124,7 @@ public final class HealthConnectThreadScheduler {
     }
 
     /** Schedules the task on the executor dedicated for performing internal tasks */
-    static void scheduleInternalTask(Runnable task) {
+    public static void scheduleInternalTask(Runnable task) {
         sInternalBackgroundExecutor.execute(task);
     }
 

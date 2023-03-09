@@ -52,7 +52,7 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(basalMetabolicRate);
         ValidationUtils.requireInRange(
-                basalMetabolicRate.getInWatts(), 0.0, 418400000.0, "basalMetabolicRate");
+                basalMetabolicRate.getInWatts(), 0.0, 484.259, "basalMetabolicRate");
         mBasalMetabolicRate = basalMetabolicRate;
     }
 

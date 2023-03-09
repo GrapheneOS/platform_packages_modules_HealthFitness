@@ -105,6 +105,19 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
     }
 
     public List<Integer> getRecordTypeFilters() {
+        if (mRecordIdFiltersParcel != null
+                && !mRecordIdFiltersParcel.getRecordIdFilters().isEmpty()) {
+            return mRecordIdFiltersParcel.getRecordIdFilters().stream()
+                    .map(
+                            (recordIdFilter) ->
+                                    RecordMapper.getInstance()
+                                            .getRecordType(recordIdFilter.getRecordType()))
+                    .toList()
+                    .stream()
+                    .distinct()
+                    .toList();
+        }
+
         return Arrays.stream(mRecordTypeFilters).boxed().toList();
     }
 

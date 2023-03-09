@@ -304,6 +304,13 @@ public class BoneMassRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBoneMassRecord_invalidValue() {
+        new BoneMassRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1001.0))
+                .build();
+    }
+
     private static BoneMassRecord getBaseBoneMassRecord() {
         return new BoneMassRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))

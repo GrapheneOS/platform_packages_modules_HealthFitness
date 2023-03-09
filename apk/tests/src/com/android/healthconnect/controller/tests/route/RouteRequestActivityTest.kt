@@ -285,6 +285,50 @@ class RouteRequestActivityTest {
     }
 
     @Test
+    fun intentLaunchesPermissionsActivity_sessionWithNoTitle() {
+        val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
+                        .putExtra(EXTRA_SESSION_ID, "sessionID")
+                        .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        `when`(viewModel.exerciseSession).then {
+            MutableLiveData(SessionWithAttribution( ExerciseSessionRecord.Builder(
+                    getMetaData(),
+                    START,
+                    START.plusMillis(123456),
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                    .setRoute(
+                            ExerciseRoute(
+                                    listOf(
+                                            ExerciseRoute.Location.Builder(START.plusSeconds(12), 52.26019, 21.02268)
+                                                    .build(),
+                                            ExerciseRoute.Location.Builder(START.plusSeconds(40), 52.26000, 21.02360)
+                                                    .build())))
+                    .build(), TEST_APP))
+        }
+
+        launchActivityForResult<RouteRequestActivity>(startActivityIntent)
+
+        onView(withText("Don\'t allow")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(
+                withText(
+                        "Allow Health Connect test app 2 to access this exercise route in Health Connect?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+        onView(withText("This app will be able to read your past location in the route"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+        onView(withText("Running")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("February 13, 2009 • Health Connect test app"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+        onView(withId(R.id.map_view)).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun intentLaunchesPermissionsActivity_infoDialog() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))

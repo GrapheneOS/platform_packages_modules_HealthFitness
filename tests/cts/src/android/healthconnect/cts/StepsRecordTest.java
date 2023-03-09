@@ -757,6 +757,16 @@ public class StepsRecordTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateStepsRecord_invalidValue() {
+        new StepsRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        1000001)
+                .build();
+    }
+
     static StepsRecord getBaseStepsRecord() {
         return new StepsRecord.Builder(
                         new Metadata.Builder().build(),
