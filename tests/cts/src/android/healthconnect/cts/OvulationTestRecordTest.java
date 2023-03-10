@@ -335,6 +335,7 @@ public class OvulationTestRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("OTR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new OvulationTestRecord.Builder(testMetadataBuilder.build(), Instant.now(), 1)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))

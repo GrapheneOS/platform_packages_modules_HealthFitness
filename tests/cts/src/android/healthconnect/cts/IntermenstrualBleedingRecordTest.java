@@ -410,6 +410,7 @@ public class IntermenstrualBleedingRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("IMB" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new IntermenstrualBleedingRecord.Builder(testMetadataBuilder.build(), Instant.now())
                 .build();

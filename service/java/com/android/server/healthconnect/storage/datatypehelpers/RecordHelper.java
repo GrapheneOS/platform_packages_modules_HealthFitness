@@ -45,6 +45,7 @@ import android.os.Trace;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -78,8 +79,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
+    private static final String RECORDING_METHOD_COLUMN_NAME = "recording_method";
     private static final String TAG_RECORD_HELPER = "HealthConnectRecordHelper";
     private static final int TRACE_TAG_RECORD_HELPER = TAG_RECORD_HELPER.hashCode();
+    private static final int DB_VERSION_ADD_RECORDING_METHOD_COLUMN = 4;
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
     RecordHelper() {
@@ -108,7 +111,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * or tables.
      */
     public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
-        // empty by default
+        if (oldVersion < DB_VERSION_ADD_RECORDING_METHOD_COLUMN) {
+            addRecordingMethodColumn(db);
+        }
     }
 
     /**
@@ -287,6 +292,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
                 record.setClientRecordVersion(
                         getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
+                record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
                 record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
                 long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
                 DeviceInfoHelper.getInstance().populateRecordWithValue(deviceInfoId, record);
@@ -536,6 +542,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         recordContentValues.put(CLIENT_RECORD_ID_COLUMN_NAME, recordInternal.getClientRecordId());
         recordContentValues.put(
                 CLIENT_RECORD_VERSION_COLUMN_NAME, recordInternal.getClientRecordVersion());
+        recordContentValues.put(RECORDING_METHOD_COLUMN_NAME, recordInternal.getRecordingMethod());
         recordContentValues.put(DEVICE_INFO_ID_COLUMN_NAME, recordInternal.getDeviceInfoId());
         recordContentValues.put(APP_INFO_ID_COLUMN_NAME, recordInternal.getAppInfoId());
 
@@ -562,6 +569,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         columnInfo.add(new Pair<>(CLIENT_RECORD_VERSION_COLUMN_NAME, TEXT_NULL));
         columnInfo.add(new Pair<>(DEVICE_INFO_ID_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(APP_INFO_ID_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(RECORDING_METHOD_COLUMN_NAME, INTEGER));
 
         columnInfo.addAll(getSpecificColumnInfo());
 
@@ -576,6 +584,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /** Returns permissions required to read extra record data. */
     public List<String> getExtraReadPermissions() {
         return Collections.emptyList();
+    }
+
+    /** Alters the table to add new recording method column */
+    private void addRecordingMethodColumn(SQLiteDatabase db) {
+        List<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(RECORDING_METHOD_COLUMN_NAME, INTEGER));
+        AlterTableRequest alterTableRequest = new AlterTableRequest(getMainTableName(), columnInfo);
+        db.execSQL(alterTableRequest.getAlterTableAddColumnsCommand());
     }
 
     static class AggregateParams {

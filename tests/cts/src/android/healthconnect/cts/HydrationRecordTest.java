@@ -407,6 +407,7 @@ public class HydrationRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("HDR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
         return new HydrationRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),

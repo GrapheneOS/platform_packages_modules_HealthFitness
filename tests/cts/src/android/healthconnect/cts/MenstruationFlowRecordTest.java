@@ -342,6 +342,7 @@ public class MenstruationFlowRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("MFR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new MenstruationFlowRecord.Builder(testMetadataBuilder.build(), Instant.now(), 1)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
