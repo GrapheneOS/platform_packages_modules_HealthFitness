@@ -31,15 +31,15 @@ import org.junit.runner.RunWith;
 public class VolumeTest {
     @Test
     public void testCreate() {
-        assertThat(Volume.fromMilliliters(10.0)).isInstanceOf(Volume.class);
-        assertThat(Volume.fromMilliliters(10.0).getInMilliliters()).isEqualTo(10.0);
+        assertThat(Volume.fromLiters(10.0)).isInstanceOf(Volume.class);
+        assertThat(Volume.fromLiters(10.0).getInLiters()).isEqualTo(10.0);
     }
 
     @Test
     public void testEquals() {
-        Volume Volume1 = Volume.fromMilliliters(10.0);
-        Volume Volume2 = Volume.fromMilliliters(10.0);
-        Volume Volume3 = Volume.fromMilliliters(20.0);
+        Volume Volume1 = Volume.fromLiters(10.0);
+        Volume Volume2 = Volume.fromLiters(10.0);
+        Volume Volume3 = Volume.fromLiters(20.0);
 
         assertThat(Volume1.equals(Volume2)).isEqualTo(true);
         assertThat(Volume1.equals(Volume3)).isEqualTo(false);
@@ -47,9 +47,9 @@ public class VolumeTest {
 
     @Test
     public void testCompare() {
-        Volume Volume1 = Volume.fromMilliliters(10.0);
-        Volume Volume2 = Volume.fromMilliliters(10.0);
-        Volume Volume3 = Volume.fromMilliliters(20.0);
+        Volume Volume1 = Volume.fromLiters(10.0);
+        Volume Volume2 = Volume.fromLiters(10.0);
+        Volume Volume3 = Volume.fromLiters(20.0);
 
         assertThat(Volume1.compareTo(Volume2)).isEqualTo(0);
         assertThat(Volume1.compareTo(Volume3)).isEqualTo(-1);

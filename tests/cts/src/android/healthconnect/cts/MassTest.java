@@ -31,15 +31,15 @@ import org.junit.runner.RunWith;
 public class MassTest {
     @Test
     public void testCreate() {
-        assertThat(Mass.fromKilograms(10.0)).isInstanceOf(Mass.class);
-        assertThat(Mass.fromKilograms(10.0).getInKilograms()).isEqualTo(10.0);
+        assertThat(Mass.fromGrams(10.0)).isInstanceOf(Mass.class);
+        assertThat(Mass.fromGrams(10.0).getInGrams()).isEqualTo(10.0);
     }
 
     @Test
     public void testEquals() {
-        Mass Mass1 = Mass.fromKilograms(10.0);
-        Mass Mass2 = Mass.fromKilograms(10.0);
-        Mass Mass3 = Mass.fromKilograms(20.0);
+        Mass Mass1 = Mass.fromGrams(10.0);
+        Mass Mass2 = Mass.fromGrams(10.0);
+        Mass Mass3 = Mass.fromGrams(20.0);
 
         assertThat(Mass1.equals(Mass2)).isEqualTo(true);
         assertThat(Mass1.equals(Mass3)).isEqualTo(false);
@@ -47,9 +47,9 @@ public class MassTest {
 
     @Test
     public void testCompare() {
-        Mass Mass1 = Mass.fromKilograms(10.0);
-        Mass Mass2 = Mass.fromKilograms(10.0);
-        Mass Mass3 = Mass.fromKilograms(20.0);
+        Mass Mass1 = Mass.fromGrams(10.0);
+        Mass Mass2 = Mass.fromGrams(10.0);
+        Mass Mass3 = Mass.fromGrams(20.0);
 
         assertThat(Mass1.compareTo(Mass2)).isEqualTo(0);
         assertThat(Mass1.compareTo(Mass3)).isEqualTo(-1);

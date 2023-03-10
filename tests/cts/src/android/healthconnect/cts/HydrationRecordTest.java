@@ -304,7 +304,7 @@ public class HydrationRecordTest {
         Volume oldVolume = oldResponse.get(VOLUME_TOTAL);
         assertThat(newVolume).isNotNull();
         assertThat(oldVolume).isNotNull();
-        assertThat(newVolume.getInMilliliters() - oldVolume.getInMilliliters()).isEqualTo(20);
+        assertThat(newVolume.getInLiters() - oldVolume.getInLiters()).isEqualTo(20);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(VOLUME_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -326,7 +326,7 @@ public class HydrationRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Volume.fromMilliliters(10.0));
+                        Volume.fromLiters(10.0));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
@@ -382,7 +382,7 @@ public class HydrationRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Volume.fromMilliliters(100000.1))
+                        Volume.fromLiters(100.1))
                 .build();
     }
 
@@ -391,7 +391,7 @@ public class HydrationRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Volume.fromMilliliters(10.0))
+                        Volume.fromLiters(10.0))
                 .build();
     }
 
@@ -411,7 +411,7 @@ public class HydrationRecordTest {
                         testMetadataBuilder.build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Volume.fromMilliliters(10.0))
+                        Volume.fromLiters(10.0))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

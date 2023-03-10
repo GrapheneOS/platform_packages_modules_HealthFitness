@@ -249,7 +249,8 @@ public class TotalCaloriesBurnedRecordTest {
         Energy totEnergyAfter = newResponse.get(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
         assertThat(totEnergyBefore).isNotNull();
         assertThat(totEnergyAfter).isNotNull();
-        assertThat(totEnergyAfter.getInJoules()).isEqualTo(totEnergyBefore.getInJoules() + 20.0);
+        assertThat(totEnergyAfter.getInCalories())
+                .isEqualTo(totEnergyBefore.getInCalories() + 20.0);
         Set<DataOrigin> newDataOrigin =
                 newResponse.getDataOrigins(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
@@ -273,7 +274,7 @@ public class TotalCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(10.0));
+                        Energy.fromCalories(10.0));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
@@ -339,7 +340,7 @@ public class TotalCaloriesBurnedRecordTest {
                         testMetadataBuilder.build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(10.0))
+                        Energy.fromCalories(10.0))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
@@ -350,7 +351,7 @@ public class TotalCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(10.0))
+                        Energy.fromCalories(10.0))
                 .build();
     }
 
@@ -360,7 +361,7 @@ public class TotalCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(4184000001.0))
+                        Energy.fromCalories(1000000001.0))
                 .build();
     }
 
@@ -370,7 +371,7 @@ public class TotalCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         startTime,
                         startTime.plusMillis(1000),
-                        Energy.fromJoules(10.0))
+                        Energy.fromCalories(10.0))
                 .build();
     }
 }

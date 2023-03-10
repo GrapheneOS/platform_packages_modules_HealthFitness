@@ -48,12 +48,12 @@ object MassFormatter {
     ): String {
         return when (weightUnit) {
             POUND -> {
-                val pounds = WeightConverter.convertFromKilograms(POUND, mass.inKilograms)
+                val pounds = WeightConverter.convertFromGrams(POUND, mass.inGrams)
                 val truncatedPounds = Math.round(pounds * 10) / 10.0
                 format(context.getString(poundStringId), mapOf("count" to truncatedPounds))
             }
             WeightUnit.STONE -> {
-                val pounds = WeightConverter.convertFromKilograms(POUND, mass.inKilograms)
+                val pounds = WeightConverter.convertFromGrams(POUND, mass.inGrams)
                 val stonePounds = stonePoundsFromPounds(pounds, 1)
                 if (stonePounds.pounds > 0) {
                     val part1 =
@@ -71,7 +71,7 @@ object MassFormatter {
                 }
             }
             WeightUnit.KILOGRAM -> {
-                val truncatedKg = Math.round(mass.inKilograms * 10) / 10.0
+                val truncatedKg = Math.round(mass.inGrams / 1000 * 10) / 10.0
                 format(context.getString(kilogramStringId), mapOf("count" to truncatedKg))
             }
         }

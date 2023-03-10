@@ -53,7 +53,7 @@ class ActiveCaloriesBurnedFormatterTest {
     @Test
     fun formatValue_calories_returnsFormattedEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
-        val record = getActiveCaloriesBurnedRecord(joules = 13000.0)
+        val record = getActiveCaloriesBurnedRecord(calories = 3.0)
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("3 Cal")
     }
@@ -61,7 +61,7 @@ class ActiveCaloriesBurnedFormatterTest {
     @Test
     fun formatValue_kj_returnsFormattedEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
-        val record = getActiveCaloriesBurnedRecord(joules = 13000.0)
+        val record = getActiveCaloriesBurnedRecord(calories = 3107.0)
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("13 kJ")
     }
@@ -69,22 +69,22 @@ class ActiveCaloriesBurnedFormatterTest {
     @Test
     fun formatA11yValue_calories_returnsFormattedEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
-        val record = getActiveCaloriesBurnedRecord(joules = 13000.0)
+        val record = getActiveCaloriesBurnedRecord(calories = 13000.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("3 calories")
+        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("13,000 calories")
     }
 
     @Test
     fun formatA11yValue_kj_returnsFormattedEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
-        val record = getActiveCaloriesBurnedRecord(joules = 13000.0)
+        val record = getActiveCaloriesBurnedRecord(calories = 3107.0)
 
         assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("13 kilojoules")
     }
 
-    private fun getActiveCaloriesBurnedRecord(joules: Double): ActiveCaloriesBurnedRecord {
+    private fun getActiveCaloriesBurnedRecord(calories: Double): ActiveCaloriesBurnedRecord {
         return ActiveCaloriesBurnedRecord.Builder(
-                getMetaData(), NOW, NOW.plusSeconds(1), Energy.fromJoules(joules))
+                getMetaData(), NOW, NOW.plusSeconds(1), Energy.fromCalories(calories))
             .build()
     }
 }

@@ -150,6 +150,7 @@ class LeanBodyMassFormatterTest {
     }
 
     private fun getRecord(massInKg: Double): LeanBodyMassRecord {
-        return LeanBodyMassRecord.Builder(getMetaData(), NOW, Mass.fromKilograms(massInKg)).build()
+        return LeanBodyMassRecord.Builder(getMetaData(), NOW, Mass.fromGrams(massInKg * 1000))
+            .build()
     }
 }
