@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.HealthConnectException.ERROR_UNSUPPORTED_OPERATION;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL;
@@ -33,6 +34,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getInt
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.HealthConnectException;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -221,12 +223,14 @@ public final class ExerciseSessionRecordHelper
     public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
         ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
         if (!isRecordOperationsEnabled()) {
-            throw new UnsupportedOperationException("Writing exercise sessions is not supported.");
+            throw new HealthConnectException(
+                    ERROR_UNSUPPORTED_OPERATION, "Writing exercise sessions is not supported.");
         }
 
         if (session.getRoute() != null) {
             if (!isExerciseRouteFeatureEnabled()) {
-                throw new UnsupportedOperationException("Writing exercise route is not supported.");
+                throw new HealthConnectException(
+                        ERROR_UNSUPPORTED_OPERATION, "Writing exercise route is not supported.");
             }
             return Collections.singletonList(WRITE_EXERCISE_ROUTE);
         }

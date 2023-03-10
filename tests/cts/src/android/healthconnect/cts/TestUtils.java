@@ -89,10 +89,10 @@ import java.util.stream.Collectors;
 
 public class TestUtils {
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-    private static final String TAG = "HCTestUtils";
     public static final Instant SESSION_START_TIME = Instant.now().minus(10, ChronoUnit.DAYS);
     public static final Instant SESSION_END_TIME =
             Instant.now().minus(10, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS);
+    private static final String TAG = "HCTestUtils";
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
@@ -101,14 +101,28 @@ public class TestUtils {
         assertThat(service).isNotNull();
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<ChangeLogTokenResponse> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
         service.getChangeLogToken(
                 request,
                 Executors.newSingleThreadExecutor(),
-                result -> {
-                    response.set(result);
-                    latch.countDown();
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ChangeLogTokenResponse result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                        exceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
         return response.get();
     }
 
@@ -481,6 +495,8 @@ public class TestUtils {
                     @Override
                     public void onError(HealthConnectException exception) {
                         Log.e(TAG, exception.getMessage());
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
@@ -883,24 +899,6 @@ public class TestUtils {
         return returnedHealthConnectDataState.get().getDataMigrationState();
     }
 
-    static final class RecordAndIdentifier {
-        private final int id;
-        private final Record recordClass;
-
-        public RecordAndIdentifier(int id, Record recordClass) {
-            this.id = id;
-            this.recordClass = recordClass;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public Record getRecordClass() {
-            return recordClass;
-        }
-    }
-
     static Metadata generateMetadata() {
         Context context = ApplicationProvider.getApplicationContext();
         return new Metadata.Builder()
@@ -950,5 +948,23 @@ public class TestUtils {
                 .setNotes(notes)
                 .setTitle(title)
                 .build();
+    }
+
+    static final class RecordAndIdentifier {
+        private final int id;
+        private final Record recordClass;
+
+        public RecordAndIdentifier(int id, Record recordClass) {
+            this.id = id;
+            this.recordClass = recordClass;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public Record getRecordClass() {
+            return recordClass;
+        }
     }
 }

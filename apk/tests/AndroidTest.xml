@@ -35,7 +35,7 @@
       type="module_controller">
     <option
         name="mainline-module-package-name"
-        value="com.google.android.healthconnect"/>
+        value="com.google.android.healthfitness"/>
   </object>
 
 </configuration>
