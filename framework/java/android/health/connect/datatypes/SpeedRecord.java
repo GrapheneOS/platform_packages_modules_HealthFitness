@@ -247,7 +247,8 @@ public final class SpeedRecord extends IntervalRecord {
                                 .setClientRecordVersion(getMetadata().getClientRecordVersion())
                                 .setManufacturer(getMetadata().getDevice().getManufacturer())
                                 .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType());
+                                .setDeviceType(getMetadata().getDevice().getType())
+                                .setRecordingMethod(getMetadata().getRecordingMethod());
         Set<SpeedRecordInternal.SpeedRecordSample> samples = new HashSet<>(getSamples().size());
 
         for (SpeedRecord.SpeedRecordSample speedRecordSample : getSamples()) {

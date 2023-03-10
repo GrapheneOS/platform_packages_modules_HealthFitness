@@ -329,6 +329,7 @@ public class BoneMassRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BMR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BoneMassRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))

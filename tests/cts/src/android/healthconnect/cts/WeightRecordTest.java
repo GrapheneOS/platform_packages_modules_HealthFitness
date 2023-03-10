@@ -379,6 +379,7 @@ public class WeightRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("WR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new WeightRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))
