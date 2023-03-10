@@ -19,7 +19,7 @@
   <option
       name="config-descriptor:metadata"
       key="mainline-param"
-      value="com.google.android.healthconnect.apex" />
+      value="com.google.android.healthfitness.apex" />
   <target_preparer class="com.android.tradefed.targetprep.suite.SuiteApkInstaller">
     <option name="cleanup-apks" value="true"/>
     <option name="test-file-name" value="HealthConnectControllerUITests.apk"/>
