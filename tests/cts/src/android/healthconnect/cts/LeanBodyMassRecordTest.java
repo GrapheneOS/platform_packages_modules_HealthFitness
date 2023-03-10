@@ -308,7 +308,7 @@ public class LeanBodyMassRecordTest {
         final ZoneOffset zoneOffset = ZoneOffset.UTC;
         LeanBodyMassRecord.Builder builder =
                 new LeanBodyMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0));
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(10.0));
 
         assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
@@ -317,13 +317,13 @@ public class LeanBodyMassRecordTest {
     @Test(expected = IllegalArgumentException.class)
     public void testCreateLeanBodyMassRecord_invalidValue() {
         new LeanBodyMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1000.1))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(1000000.1))
                 .build();
     }
 
     private static LeanBodyMassRecord getBaseLeanBodyMassRecord() {
         return new LeanBodyMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(10.0))
                 .build();
     }
 
@@ -341,7 +341,7 @@ public class LeanBodyMassRecordTest {
         testMetadataBuilder.setClientRecordId("LBMR" + Math.random());
 
         return new LeanBodyMassRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Mass.fromKilograms(10.0))
+                        testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

@@ -1338,8 +1338,8 @@ package android.health.connect.datatypes.units {
 
   public final class Energy implements java.lang.Comparable<android.health.connect.datatypes.units.Energy> {
     method public int compareTo(@NonNull android.health.connect.datatypes.units.Energy);
-    method @NonNull public static android.health.connect.datatypes.units.Energy fromJoules(double);
-    method public double getInJoules();
+    method @NonNull public static android.health.connect.datatypes.units.Energy fromCalories(double);
+    method public double getInCalories();
   }
 
   public final class Length implements java.lang.Comparable<android.health.connect.datatypes.units.Length> {
@@ -1350,8 +1350,8 @@ package android.health.connect.datatypes.units {
 
   public final class Mass implements java.lang.Comparable<android.health.connect.datatypes.units.Mass> {
     method public int compareTo(@NonNull android.health.connect.datatypes.units.Mass);
-    method @NonNull public static android.health.connect.datatypes.units.Mass fromKilograms(double);
-    method public double getInKilograms();
+    method @NonNull public static android.health.connect.datatypes.units.Mass fromGrams(double);
+    method public double getInGrams();
   }
 
   public final class Percentage implements java.lang.Comparable<android.health.connect.datatypes.units.Percentage> {
@@ -1386,8 +1386,8 @@ package android.health.connect.datatypes.units {
 
   public final class Volume implements java.lang.Comparable<android.health.connect.datatypes.units.Volume> {
     method public int compareTo(@NonNull android.health.connect.datatypes.units.Volume);
-    method @NonNull public static android.health.connect.datatypes.units.Volume fromMilliliters(double);
-    method public double getInMilliliters();
+    method @NonNull public static android.health.connect.datatypes.units.Volume fromLiters(double);
+    method public double getInLiters();
   }
 
 }

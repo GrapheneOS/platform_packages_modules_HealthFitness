@@ -46,7 +46,7 @@ public final class BodyWaterMassRecord extends InstantRecord {
             @NonNull Mass bodyWaterMass) {
         super(metadata, time, zoneOffset);
         Objects.requireNonNull(bodyWaterMass);
-        requireInRange(bodyWaterMass.getInKilograms(), 0, 1000, "mass");
+        requireInRange(bodyWaterMass.getInGrams(), 0, 1000000, "mass");
         mBodyWaterMass = bodyWaterMass;
     }
 
@@ -138,7 +138,7 @@ public final class BodyWaterMassRecord extends InstantRecord {
                                 .setDeviceType(getMetadata().getDevice().getType());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
-        recordInternal.setBodyWaterMass(mBodyWaterMass.getInKilograms());
+        recordInternal.setBodyWaterMass(mBodyWaterMass.getInGrams());
         return recordInternal;
     }
 }

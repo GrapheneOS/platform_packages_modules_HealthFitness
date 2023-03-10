@@ -45,6 +45,6 @@ class HydrationFormatter @Inject constructor(@ApplicationContext private val con
     }
 
     private fun formatVolume(@StringRes res: Int, volume: Volume): String {
-        return format(context.getString(res), mapOf("count" to volume.inMilliliters / 1000.0))
+        return format(context.getString(res), mapOf("count" to volume.inLiters))
     }
 }

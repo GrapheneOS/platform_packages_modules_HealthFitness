@@ -286,7 +286,7 @@ public class BodyWaterMassRecordTest {
         final ZoneOffset zoneOffset = ZoneOffset.UTC;
         BodyWaterMassRecord.Builder builder =
                 new BodyWaterMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1));
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(1));
 
         assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
@@ -296,7 +296,7 @@ public class BodyWaterMassRecordTest {
     public void testBodyWaterMass_buildSession_buildCorrectObject() {
         BodyWaterMassRecord record =
                 new BodyWaterMassRecord.Builder(
-                                TestUtils.generateMetadata(), TIME, Mass.fromKilograms(40))
+                                TestUtils.generateMetadata(), TIME, Mass.fromGrams(40))
                         .build();
         assertThat(record.getTime()).isEqualTo(TIME);
     }
@@ -305,9 +305,9 @@ public class BodyWaterMassRecordTest {
     public void testBodyWaterMass_buildEqualSessions_equalsReturnsTrue() {
         Metadata metadata = TestUtils.generateMetadata();
         BodyWaterMassRecord record =
-                new BodyWaterMassRecord.Builder(metadata, TIME, Mass.fromKilograms(40)).build();
+                new BodyWaterMassRecord.Builder(metadata, TIME, Mass.fromGrams(40)).build();
         BodyWaterMassRecord record2 =
-                new BodyWaterMassRecord.Builder(metadata, TIME, Mass.fromKilograms(40)).build();
+                new BodyWaterMassRecord.Builder(metadata, TIME, Mass.fromGrams(40)).build();
         assertThat(record).isEqualTo(record2);
     }
 
@@ -315,11 +315,11 @@ public class BodyWaterMassRecordTest {
     public void testBodyWaterMass_buildSessionWithAllFields_buildCorrectObject() {
         BodyWaterMassRecord record =
                 new BodyWaterMassRecord.Builder(
-                                TestUtils.generateMetadata(), TIME, Mass.fromKilograms(40))
+                                TestUtils.generateMetadata(), TIME, Mass.fromGrams(40))
                         .setZoneOffset(ZoneOffset.MAX)
                         .build();
         assertThat(record.getZoneOffset()).isEqualTo(ZoneOffset.MAX);
-        assertThat(record.getBodyWaterMass()).isEqualTo(Mass.fromKilograms(40));
+        assertThat(record.getBodyWaterMass()).isEqualTo(Mass.fromGrams(40));
     }
 
     private void readBodyWaterMassRecordUsingClientId(List<Record> insertedRecord)
@@ -364,19 +364,19 @@ public class BodyWaterMassRecordTest {
     @Test(expected = IllegalArgumentException.class)
     public void testCreateBodyWaterMassRecord_invalidValue() {
         new BodyWaterMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1001.0))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(1001000.0))
                 .build();
     }
 
     static BodyWaterMassRecord getBaseBodyWaterMassRecord() {
         return new BodyWaterMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(100.0))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(100.0))
                 .build();
     }
 
     static BodyWaterMassRecord getBodyWaterMassRecord(double mass) {
         return new BodyWaterMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(mass))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(mass))
                 .build();
     }
 
@@ -394,7 +394,7 @@ public class BodyWaterMassRecordTest {
         testMetadataBuilder.setClientRecordId("BWM" + Math.random());
 
         return new BodyWaterMassRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Mass.fromKilograms(100.0))
+                        testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(100.0))
                 .build();
     }
 }

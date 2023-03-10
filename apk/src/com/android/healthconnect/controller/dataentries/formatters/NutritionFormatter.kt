@@ -44,7 +44,7 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
             getAggregations(
                 record,
                 { mass ->
-                    val grams = mass.inKilograms * 1000.0
+                    val grams = mass.inGrams
                     format(context.getString(R.string.gram_short_format), mapOf("count" to grams))
                 },
                 { energy -> formatEnergyValue(context, energy, unitPreferences) })
@@ -59,7 +59,7 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
             getAggregations(
                 record,
                 { mass ->
-                    val grams = mass.inKilograms * 1000.0
+                    val grams = mass.inGrams
                     format(context.getString(R.string.gram_long_format), mapOf("count" to grams))
                 },
                 { energy -> formatEnergyA11yValue(context, energy, unitPreferences) })
