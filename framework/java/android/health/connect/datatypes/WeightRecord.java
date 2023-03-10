@@ -80,7 +80,7 @@ public final class WeightRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(weight);
-        ValidationUtils.requireInRange(weight.getInKilograms(), 0.0, 1000.0, "weight");
+        ValidationUtils.requireInRange(weight.getInGrams(), 0.0, 1000000.0, "weight");
         mWeight = weight;
     }
     /**
@@ -121,8 +121,8 @@ public final class WeightRecord extends InstantRecord {
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param time Start time of this activity
-         * @param weight User's weight in {@link Mass} unit. Required field. Valid range: 0-1000
-         *     kilograms.
+         * @param weight User's weight in {@link Mass} unit. Required field. Valid range: 0-1000000
+         *     grams.
          */
         public Builder(@NonNull Metadata metadata, @NonNull Instant time, @NonNull Mass weight) {
             Objects.requireNonNull(metadata);
@@ -175,7 +175,7 @@ public final class WeightRecord extends InstantRecord {
                                 .setDeviceType(getMetadata().getDevice().getType());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
-        recordInternal.setWeight(mWeight.getInKilograms());
+        recordInternal.setWeight(mWeight.getInGrams());
         return recordInternal;
     }
 }

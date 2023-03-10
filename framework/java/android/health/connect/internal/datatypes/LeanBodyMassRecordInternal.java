@@ -44,8 +44,7 @@ public final class LeanBodyMassRecordInternal extends InstantRecordInternal<Lean
     @NonNull
     @Override
     public LeanBodyMassRecord toExternalRecord() {
-        return new LeanBodyMassRecord.Builder(
-                        buildMetaData(), getTime(), Mass.fromKilograms(getMass()))
+        return new LeanBodyMassRecord.Builder(buildMetaData(), getTime(), Mass.fromGrams(getMass()))
                 .setZoneOffset(getZoneOffset())
                 .build();
     }

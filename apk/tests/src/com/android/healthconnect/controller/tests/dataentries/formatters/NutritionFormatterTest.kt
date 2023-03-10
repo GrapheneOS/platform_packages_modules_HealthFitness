@@ -64,14 +64,14 @@ class NutritionFormatterTest {
 
     @Test
     fun formatValue_formatsMass() = runBlocking {
-        val record = getBuilder().setCaffeine(fromKilograms(.032)).build()
+        val record = getBuilder().setCaffeine(fromGrams(32.0)).build()
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("Caffeine: 32 g")
     }
 
     @Test
     fun formatA11yValue_formatsMass() = runBlocking {
-        val record = getBuilder().setCaffeine(fromKilograms(.032)).build()
+        val record = getBuilder().setCaffeine(fromGrams(32.0)).build()
 
         assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("Caffeine: 32 grams")
     }
@@ -79,24 +79,24 @@ class NutritionFormatterTest {
     @Test
     fun formatValue_kj_formatsEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
-        val record = getBuilder().setEnergy(fromJoules(1234567.0)).build()
+        val record = getBuilder().setEnergy(fromCalories(1234567.0)).build()
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Energy: 1,235 kJ")
+        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Energy: 5,165 kJ")
     }
 
     @Test
     fun formatA11yValue_kj_formatsMass() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
-        val record = getBuilder().setEnergy(fromJoules(1234567.0)).build()
+        val record = getBuilder().setEnergy(fromCalories(1234567.0)).build()
 
         assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("Energy: 1,235 kilojoules")
+            .isEqualTo("Energy: 5,165 kilojoules")
     }
 
     @Test
     fun formatValue_cal_formatsEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
-        val record = getBuilder().setEnergy(fromJoules(1234567.0)).build()
+        val record = getBuilder().setEnergy(fromCalories(295.0)).build()
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("Energy: 295 Cal")
     }
@@ -104,7 +104,7 @@ class NutritionFormatterTest {
     @Test
     fun formatA11yValue_cal_formatsMass() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
-        val record = getBuilder().setEnergy(fromJoules(1234567.0)).build()
+        val record = getBuilder().setEnergy(fromCalories(295.0)).build()
 
         assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("Energy: 295 calories")
     }
@@ -115,53 +115,53 @@ class NutritionFormatterTest {
         val record =
             getBuilder()
                 .setMealName("Custom meal")
-                .setBiotin(fromKilograms(0.04))
-                .setCaffeine(fromKilograms(.012))
-                .setCalcium(fromKilograms(.005))
-                .setEnergyFromFat(fromJoules(123456.0))
-                .setEnergy(fromJoules(123457.0))
-                .setChloride(fromKilograms(.011))
-                .setCholesterol(fromKilograms(.02))
-                .setChromium(fromKilograms(.01))
-                .setCopper(fromKilograms(.02))
-                .setDietaryFiber(fromKilograms(0.034))
-                .setFolate(fromKilograms(.1))
-                .setFolicAcid(fromKilograms(.09))
-                .setIodine(fromKilograms(.1))
-                .setIron(fromKilograms(.03))
-                .setMagnesium(fromKilograms(0.03))
-                .setManganese(fromKilograms(0.041))
-                .setMolybdenum(fromKilograms(0.002))
-                .setMonounsaturatedFat(fromKilograms(0.04))
-                .setNiacin(fromKilograms(0.02))
-                .setPantothenicAcid(fromKilograms(0.056))
-                .setPhosphorus(fromKilograms(0.067))
-                .setPolyunsaturatedFat(fromKilograms(0.067))
-                .setPotassium(fromKilograms(0.023))
-                .setProtein(fromKilograms(0.089))
-                .setRiboflavin(fromKilograms(0.022))
-                .setSaturatedFat(fromKilograms(0.045))
-                .setSelenium(fromKilograms(0.043))
-                .setSodium(fromKilograms(0.022))
-                .setSugar(fromKilograms(0.032))
-                .setThiamin(fromKilograms(0.098))
-                .setTotalCarbohydrate(fromKilograms(0.098))
-                .setTotalFat(fromKilograms(0.023))
-                .setTransFat(fromKilograms(0.023))
-                .setUnsaturatedFat(fromKilograms(0.012))
-                .setVitaminA(fromKilograms(0.04))
-                .setVitaminB12(fromKilograms(0.05))
-                .setVitaminB6(fromKilograms(0.01))
-                .setVitaminC(fromKilograms(0.06))
-                .setVitaminD(fromKilograms(0.07))
-                .setVitaminE(fromKilograms(0.08))
-                .setVitaminK(fromKilograms(0.09))
-                .setZinc(fromKilograms(0.012))
+                .setBiotin(fromGrams(4.0))
+                .setCaffeine(fromGrams(12.0))
+                .setCalcium(fromGrams(5.0))
+                .setEnergyFromFat(fromCalories(30.0))
+                .setEnergy(fromCalories(30.0))
+                .setChloride(fromGrams(11.0))
+                .setCholesterol(fromGrams(20.0))
+                .setChromium(fromGrams(10.0))
+                .setCopper(fromGrams(20.0))
+                .setDietaryFiber(fromGrams(34.0))
+                .setFolate(fromGrams(100.0))
+                .setFolicAcid(fromGrams(90.0))
+                .setIodine(fromGrams(100.0))
+                .setIron(fromGrams(30.0))
+                .setMagnesium(fromGrams(30.0))
+                .setManganese(fromGrams(41.0))
+                .setMolybdenum(fromGrams(2.0))
+                .setMonounsaturatedFat(fromGrams(40.0))
+                .setNiacin(fromGrams(20.0))
+                .setPantothenicAcid(fromGrams(56.0))
+                .setPhosphorus(fromGrams(67.0))
+                .setPolyunsaturatedFat(fromGrams(67.0))
+                .setPotassium(fromGrams(23.0))
+                .setProtein(fromGrams(89.0))
+                .setRiboflavin(fromGrams(22.0))
+                .setSaturatedFat(fromGrams(45.0))
+                .setSelenium(fromGrams(43.0))
+                .setSodium(fromGrams(22.0))
+                .setSugar(fromGrams(32.0))
+                .setThiamin(fromGrams(98.0))
+                .setTotalCarbohydrate(fromGrams(98.0))
+                .setTotalFat(fromGrams(23.0))
+                .setTransFat(fromGrams(23.0))
+                .setUnsaturatedFat(fromGrams(12.0))
+                .setVitaminA(fromGrams(40.0))
+                .setVitaminB12(fromGrams(50.0))
+                .setVitaminB6(fromGrams(10.0))
+                .setVitaminC(fromGrams(60.0))
+                .setVitaminD(fromGrams(70.0))
+                .setVitaminE(fromGrams(80.0))
+                .setVitaminK(fromGrams(90.0))
+                .setZinc(fromGrams(12.0))
                 .build()
         assertThat(formatter.formatValue(record, preferences))
             .isEqualTo(
                 "Name: Custom meal\n" +
-                    "Biotin: 40 g\n" +
+                    "Biotin: 4 g\n" +
                     "Caffeine: 12 g\n" +
                     "Calcium: 5 g\n" +
                     "Chloride: 11 g\n" +

@@ -86,7 +86,7 @@ class HydrationFormatterTest {
 
     private fun getRecord(liters: Double): HydrationRecord {
         return HydrationRecord.Builder(
-                getMetaData(), NOW, NOW.plusSeconds(2), Volume.fromMilliliters(liters * 1000))
+                getMetaData(), NOW, NOW.plusSeconds(2), Volume.fromLiters(liters))
             .build()
     }
 }

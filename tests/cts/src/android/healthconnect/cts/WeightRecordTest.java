@@ -198,11 +198,11 @@ public class WeightRecordTest {
         Mass minWeight = response.get(WEIGHT_MIN);
         Mass avgWeight = response.get(WEIGHT_AVG);
         assertThat(maxWeight).isNotNull();
-        assertThat(maxWeight.getInKilograms()).isEqualTo(15.0);
+        assertThat(maxWeight.getInGrams()).isEqualTo(15.0);
         assertThat(minWeight).isNotNull();
-        assertThat(minWeight.getInKilograms()).isEqualTo(5.0);
+        assertThat(minWeight.getInGrams()).isEqualTo(5.0);
         assertThat(avgWeight).isNotNull();
-        assertThat(avgWeight.getInKilograms()).isEqualTo(10.0);
+        assertThat(avgWeight.getInGrams()).isEqualTo(10.0);
         Set<DataOrigin> dataOrigins = response.getDataOrigins(WEIGHT_AVG);
         for (DataOrigin itr : dataOrigins) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -304,7 +304,7 @@ public class WeightRecordTest {
         final ZoneOffset zoneOffset = ZoneOffset.UTC;
         WeightRecord.Builder builder =
                 new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0));
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(10.0));
 
         assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
@@ -351,19 +351,19 @@ public class WeightRecordTest {
     @Test(expected = IllegalArgumentException.class)
     public void testCreateWeightRecord_invalidValue() {
         new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1000.1))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(1000000.1))
                 .build();
     }
 
     private static WeightRecord getBaseWeightRecord() {
         return new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(10.0))
                 .build();
     }
 
     static WeightRecord getBaseWeightRecord(double weight) {
         return new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(weight))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(weight))
                 .build();
     }
 
@@ -381,7 +381,7 @@ public class WeightRecordTest {
         testMetadataBuilder.setClientRecordId("WR" + Math.random());
 
         return new WeightRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Mass.fromKilograms(10.0))
+                        testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

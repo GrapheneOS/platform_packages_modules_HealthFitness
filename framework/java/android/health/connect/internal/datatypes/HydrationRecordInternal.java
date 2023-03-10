@@ -48,7 +48,7 @@ public final class HydrationRecordInternal extends IntervalRecordInternal<Hydrat
                         buildMetaData(),
                         getStartTime(),
                         getEndTime(),
-                        Volume.fromMilliliters(getVolume()))
+                        Volume.fromLiters(getVolume()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .build();

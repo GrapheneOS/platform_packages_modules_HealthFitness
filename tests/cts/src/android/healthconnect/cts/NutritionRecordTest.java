@@ -507,7 +507,7 @@ public class NutritionRecordTest {
             Mass oldTotal = oldResponse.get(type);
             assertThat(newTotal).isNotNull();
             assertThat(oldTotal).isNotNull();
-            assertThat(newTotal.getInKilograms() - oldTotal.getInKilograms()).isEqualTo(0.2);
+            assertThat(newTotal.getInGrams() - oldTotal.getInGrams()).isEqualTo(0.2);
             Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(type);
             for (DataOrigin itr : newDataOrigin) {
                 assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -553,8 +553,8 @@ public class NutritionRecordTest {
         assertThat(oldEnergy).isNotNull();
         assertThat(newFatEnergy).isNotNull();
         assertThat(oldFatEnergy).isNotNull();
-        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(0.1);
-        assertThat(newFatEnergy.getInJoules() - oldFatEnergy.getInJoules()).isEqualTo(0.1);
+        assertThat(newEnergy.getInCalories() - oldEnergy.getInCalories()).isEqualTo(0.1);
+        assertThat(newFatEnergy.getInCalories() - oldFatEnergy.getInCalories()).isEqualTo(0.1);
     }
 
     @Test
@@ -602,50 +602,50 @@ public class NutritionRecordTest {
 
         return new NutritionRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Instant.now().plusMillis(1000))
-                .setUnsaturatedFat(Mass.fromKilograms(0.1))
-                .setPotassium(Mass.fromKilograms(0.1))
-                .setThiamin(Mass.fromKilograms(0.1))
+                .setUnsaturatedFat(Mass.fromGrams(0.1))
+                .setPotassium(Mass.fromGrams(0.1))
+                .setThiamin(Mass.fromGrams(0.1))
                 .setMealType(1)
-                .setTransFat(Mass.fromKilograms(0.1))
-                .setManganese(Mass.fromKilograms(0.1))
-                .setEnergyFromFat(Energy.fromJoules(0.1))
-                .setCaffeine(Mass.fromKilograms(0.1))
-                .setDietaryFiber(Mass.fromKilograms(0.1))
-                .setSelenium(Mass.fromKilograms(0.1))
-                .setVitaminB6(Mass.fromKilograms(0.1))
-                .setProtein(Mass.fromKilograms(0.1))
-                .setChloride(Mass.fromKilograms(0.1))
-                .setCholesterol(Mass.fromKilograms(0.1))
-                .setCopper(Mass.fromKilograms(0.1))
-                .setIodine(Mass.fromKilograms(0.1))
-                .setVitaminB12(Mass.fromKilograms(0.1))
-                .setZinc(Mass.fromKilograms(0.1))
-                .setRiboflavin(Mass.fromKilograms(0.1))
-                .setEnergy(Energy.fromJoules(0.1))
-                .setMolybdenum(Mass.fromKilograms(0.1))
-                .setPhosphorus(Mass.fromKilograms(0.1))
-                .setChromium(Mass.fromKilograms(0.1))
-                .setTotalFat(Mass.fromKilograms(0.1))
-                .setCalcium(Mass.fromKilograms(0.1))
-                .setVitaminC(Mass.fromKilograms(0.1))
-                .setVitaminE(Mass.fromKilograms(0.1))
-                .setBiotin(Mass.fromKilograms(0.1))
-                .setVitaminD(Mass.fromKilograms(0.1))
-                .setNiacin(Mass.fromKilograms(0.1))
-                .setMagnesium(Mass.fromKilograms(0.1))
-                .setTotalCarbohydrate(Mass.fromKilograms(0.1))
-                .setVitaminK(Mass.fromKilograms(0.1))
-                .setPolyunsaturatedFat(Mass.fromKilograms(0.1))
-                .setSaturatedFat(Mass.fromKilograms(0.1))
-                .setSodium(Mass.fromKilograms(0.1))
-                .setFolate(Mass.fromKilograms(0.1))
-                .setMonounsaturatedFat(Mass.fromKilograms(0.1))
-                .setPantothenicAcid(Mass.fromKilograms(0.1))
+                .setTransFat(Mass.fromGrams(0.1))
+                .setManganese(Mass.fromGrams(0.1))
+                .setEnergyFromFat(Energy.fromCalories(0.1))
+                .setCaffeine(Mass.fromGrams(0.1))
+                .setDietaryFiber(Mass.fromGrams(0.1))
+                .setSelenium(Mass.fromGrams(0.1))
+                .setVitaminB6(Mass.fromGrams(0.1))
+                .setProtein(Mass.fromGrams(0.1))
+                .setChloride(Mass.fromGrams(0.1))
+                .setCholesterol(Mass.fromGrams(0.1))
+                .setCopper(Mass.fromGrams(0.1))
+                .setIodine(Mass.fromGrams(0.1))
+                .setVitaminB12(Mass.fromGrams(0.1))
+                .setZinc(Mass.fromGrams(0.1))
+                .setRiboflavin(Mass.fromGrams(0.1))
+                .setEnergy(Energy.fromCalories(0.1))
+                .setMolybdenum(Mass.fromGrams(0.1))
+                .setPhosphorus(Mass.fromGrams(0.1))
+                .setChromium(Mass.fromGrams(0.1))
+                .setTotalFat(Mass.fromGrams(0.1))
+                .setCalcium(Mass.fromGrams(0.1))
+                .setVitaminC(Mass.fromGrams(0.1))
+                .setVitaminE(Mass.fromGrams(0.1))
+                .setBiotin(Mass.fromGrams(0.1))
+                .setVitaminD(Mass.fromGrams(0.1))
+                .setNiacin(Mass.fromGrams(0.1))
+                .setMagnesium(Mass.fromGrams(0.1))
+                .setTotalCarbohydrate(Mass.fromGrams(0.1))
+                .setVitaminK(Mass.fromGrams(0.1))
+                .setPolyunsaturatedFat(Mass.fromGrams(0.1))
+                .setSaturatedFat(Mass.fromGrams(0.1))
+                .setSodium(Mass.fromGrams(0.1))
+                .setFolate(Mass.fromGrams(0.1))
+                .setMonounsaturatedFat(Mass.fromGrams(0.1))
+                .setPantothenicAcid(Mass.fromGrams(0.1))
                 .setMealName("Brunch")
-                .setIron(Mass.fromKilograms(0.1))
-                .setVitaminA(Mass.fromKilograms(0.1))
-                .setFolicAcid(Mass.fromKilograms(0.1))
-                .setSugar(Mass.fromKilograms(0.1))
+                .setIron(Mass.fromGrams(0.1))
+                .setVitaminA(Mass.fromGrams(0.1))
+                .setFolicAcid(Mass.fromGrams(0.1))
+                .setSugar(Mass.fromGrams(0.1))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

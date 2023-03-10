@@ -20,28 +20,28 @@ import android.annotation.NonNull;
 
 import java.util.Objects;
 
-/** Represents a unit of mass. Supported units: kilograms */
+/** Represents a unit of mass. Supported units: grams */
 public final class Mass implements Comparable<Mass> {
 
-    private final double mInKilograms;
+    private final double mInGrams;
 
     private Mass(double value) {
-        mInKilograms = value;
+        mInGrams = value;
     }
 
     /**
-     * Creates a Mass object with the specified value in kilograms.
+     * Creates a Mass object with the specified value in grams.
      *
-     * @param value value to be set as kilograms.
+     * @param value value to be set as grams.
      */
     @NonNull
-    public static Mass fromKilograms(double value) {
+    public static Mass fromGrams(double value) {
         return new Mass(value);
     }
 
-    /** Returns mass in kilograms */
-    public double getInKilograms() {
-        return mInKilograms;
+    /** Returns mass in grams */
+    public double getInGrams() {
+        return mInGrams;
     }
 
     /**
@@ -58,7 +58,7 @@ public final class Mass implements Comparable<Mass> {
      */
     @Override
     public int compareTo(@NonNull Mass other) {
-        return Double.compare(this.mInKilograms, other.mInKilograms);
+        return Double.compare(this.mInGrams, other.mInGrams);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class Mass implements Comparable<Mass> {
         if (this == object) return true;
         if (object instanceof Mass) {
             Mass other = (Mass) object;
-            return this.getInKilograms() == other.getInKilograms();
+            return this.getInGrams() == other.getInGrams();
         }
         return false;
     }
@@ -85,7 +85,7 @@ public final class Mass implements Comparable<Mass> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(this.getInKilograms());
+        return Objects.hash(this.getInGrams());
     }
 
     /**
@@ -93,6 +93,6 @@ public final class Mass implements Comparable<Mass> {
      */
     @Override
     public String toString() {
-        return mInKilograms + " kilograms";
+        return mInGrams + " grams";
     }
 }
