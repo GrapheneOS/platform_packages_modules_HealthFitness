@@ -303,6 +303,16 @@ public class FloorsClimbedRecordTest {
                 .build();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateFloorsClimbedRecord_invalidTime() {
+        new FloorsClimbedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now().plusMillis(100),
+                        Instant.now().plus(30, ChronoUnit.MINUTES),
+                        1000001.0)
+                .build();
+    }
+
     static FloorsClimbedRecord getBaseFloorsClimbedRecord(int days) {
         return new FloorsClimbedRecord.Builder(
                         new Metadata.Builder().build(),
