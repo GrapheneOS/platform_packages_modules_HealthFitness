@@ -22,6 +22,7 @@ import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
+import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
@@ -367,10 +368,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception e) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_INTERNAL);
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         Slog.e(TAG, "Exception: ", e);
-                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, e, ERROR_INTERNAL);
                     } finally {
                         Trace.traceEnd(TRACE_TAG_INSERT);
                         builder.build().log();
@@ -478,10 +478,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception e) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_INTERNAL);
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         Slog.e(TAG, "Exception: ", e);
-                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, e, ERROR_INTERNAL);
                     } finally {
                         builder.build().log();
                     }
@@ -517,14 +516,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+                            throw new HealthConnectException(
+                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
+                                    "Storage data sync in progress. API calls are blocked");
                         }
-
                         AtomicBoolean enforceSelfRead = new AtomicBoolean();
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -556,6 +551,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         mPermissionHelper.getHealthDataStartDateAccess(
                                                 attributionSource.getPackageName(),
                                                 mContext.getUser());
+                                if (startInstant == null) {
+                                    throwExceptionIncorrectPermissionState();
+                                }
                                 if (startInstant.toEpochMilli() > startDateAccess) {
                                     startDateAccess = startInstant.toEpochMilli();
                                 }
@@ -641,6 +639,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         Slog.e(TAG, "SecurityException: ", securityException);
                         tryAndThrowException(
                                 callback, securityException, HealthConnectException.ERROR_SECURITY);
+                    } catch (IllegalStateException illegalStateException) {
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
+                        Slog.e(TAG, "IllegalStateException: ", illegalStateException);
+                        tryAndThrowException(callback, illegalStateException, ERROR_INTERNAL);
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
@@ -650,10 +652,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception e) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_INTERNAL);
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         Slog.e(TAG, "Exception: ", e);
-                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, e, ERROR_INTERNAL);
                     } finally {
                         Trace.traceEnd(TRACE_TAG_READ);
                         builder.build().log();
@@ -740,11 +741,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception e) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_INTERNAL);
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
 
                         Slog.e(TAG, "Exception: ", e);
-                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, e, ERROR_INTERNAL);
                     } finally {
                         builder.build().log();
                     }
@@ -807,9 +807,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception e) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_INTERNAL);
-                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
+                        tryAndThrowException(callback, e, ERROR_INTERNAL);
                     }
                     {
                         builder.build().log();
@@ -838,12 +837,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+                            throw new HealthConnectException(
+                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
+                                    "Storage data sync in progress. API calls are blocked");
                         }
 
                         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
@@ -857,12 +853,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                         tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, builder);
-                        long startDateAccess =
-                                mPermissionHelper
-                                        .getHealthDataStartDateAccess(
-                                                attributionSource.getPackageName(),
-                                                mContext.getUser())
-                                        .toEpochMilli();
+                        Instant startDateInstant =
+                                mPermissionHelper.getHealthDataStartDateAccess(
+                                        attributionSource.getPackageName(), mContext.getUser());
+                        if (startDateInstant == null) {
+                            throwExceptionIncorrectPermissionState();
+                        }
+                        long startDateAccess = startDateInstant.toEpochMilli();
                         final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                                 ChangeLogsHelper.getInstance()
                                         .getChangeLogs(changeLogsTokenRequest, token);
@@ -905,6 +902,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         Slog.e(TAG, "SecurityException: ", securityException);
                         tryAndThrowException(
                                 callback, securityException, HealthConnectException.ERROR_SECURITY);
+                    } catch (IllegalStateException illegalStateException) {
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
+                        Slog.e(TAG, "IllegalStateException: ", illegalStateException);
+                        tryAndThrowException(callback, illegalStateException, ERROR_INTERNAL);
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
@@ -914,11 +915,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception exception) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_INTERNAL);
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         Slog.e(TAG, "Exception: ", exception);
-                        tryAndThrowException(
-                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, exception, ERROR_INTERNAL);
                     } finally {
                         builder.build().log();
                     }
@@ -1018,11 +1017,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception exception) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_INTERNAL);
+                        builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         Slog.e(TAG, "Exception: ", exception);
-                        tryAndThrowException(
-                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, exception, ERROR_INTERNAL);
                     } finally {
                         builder.build().log();
                     }
@@ -1090,8 +1087,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException.getErrorCode());
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
-                        tryAndThrowException(
-                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, exception, ERROR_INTERNAL);
                     }
                 });
     }
@@ -1137,8 +1133,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException.getErrorCode());
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
-                        tryAndThrowException(
-                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, exception, ERROR_INTERNAL);
                     }
                 });
     }
@@ -1178,8 +1173,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException.getErrorCode());
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
-                        tryAndThrowException(
-                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, exception, ERROR_INTERNAL);
                     }
                 });
     }
@@ -1249,7 +1243,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException.getErrorCode());
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
-                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, e, ERROR_INTERNAL);
                     }
                 });
     }
@@ -1288,8 +1282,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException,
                                 healthConnectException.getErrorCode());
                     } catch (Exception exception) {
-                        tryAndThrowException(
-                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, exception, ERROR_INTERNAL);
                     }
                 });
     }
@@ -1329,8 +1322,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException.getErrorCode());
                     } catch (Exception exception) {
                         Slog.e(TAG, "Exception: ", exception);
-                        tryAndThrowException(
-                                callback, exception, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, exception, ERROR_INTERNAL);
                     }
                 });
     }
@@ -1385,7 +1377,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 healthConnectException.getErrorCode());
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
-                        tryAndThrowException(callback, e, HealthConnectException.ERROR_INTERNAL);
+                        tryAndThrowException(callback, e, ERROR_INTERNAL);
                     }
                 });
     }
@@ -2001,6 +1993,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
+    }
+
+    private void throwExceptionIncorrectPermissionState() {
+        throw new IllegalStateException(
+                "Incorrect health permission state, likely"
+                        + " because the calling application's manifest does not specify handling"
+                        + Intent.ACTION_VIEW_PERMISSION_USAGE
+                        + " with "
+                        + HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS);
     }
 
     private void logRecordTypeSpecificUpsertMetrics(
