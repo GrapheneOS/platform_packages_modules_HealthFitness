@@ -392,6 +392,7 @@ public class BodyWaterMassRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BWM" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BodyWaterMassRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(100.0))

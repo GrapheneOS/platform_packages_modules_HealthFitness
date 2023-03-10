@@ -463,6 +463,7 @@ public class ActiveCaloriesBurnedRecordTest {
                 new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
         testMetadataBuilder.setClientRecordId("ACBR" + Math.random());
 
         return new ActiveCaloriesBurnedRecord.Builder(

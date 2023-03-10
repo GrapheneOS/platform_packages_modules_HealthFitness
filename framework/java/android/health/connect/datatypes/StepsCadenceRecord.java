@@ -242,7 +242,8 @@ public final class StepsCadenceRecord extends IntervalRecord {
                                 .setClientRecordVersion(getMetadata().getClientRecordVersion())
                                 .setManufacturer(getMetadata().getDevice().getManufacturer())
                                 .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType());
+                                .setDeviceType(getMetadata().getDevice().getType())
+                                .setRecordingMethod(getMetadata().getRecordingMethod());
         Set<StepsCadenceRecordInternal.StepsCadenceRecordSample> samples =
                 new HashSet<>(getSamples().size());
 

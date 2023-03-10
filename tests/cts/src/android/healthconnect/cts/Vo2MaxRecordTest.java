@@ -323,6 +323,7 @@ public class Vo2MaxRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("VMR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new Vo2MaxRecord.Builder(testMetadataBuilder.build(), Instant.now(), 1, 10.0)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))

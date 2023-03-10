@@ -923,6 +923,11 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.Device getDevice();
     method @NonNull public String getId();
     method @NonNull public java.time.Instant getLastModifiedTime();
+    method public int getRecordingMethod();
+    field public static final int RECORDING_METHOD_ACTIVELY_RECORDED = 1; // 0x1
+    field public static final int RECORDING_METHOD_AUTOMATICALLY_RECORDED = 2; // 0x2
+    field public static final int RECORDING_METHOD_MANUAL_ENTRY = 3; // 0x3
+    field public static final int RECORDING_METHOD_UNKNOWN = 0; // 0x0
   }
 
   public static final class Metadata.Builder {
@@ -934,6 +939,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.Metadata.Builder setDevice(@NonNull android.health.connect.datatypes.Device);
     method @NonNull public android.health.connect.datatypes.Metadata.Builder setId(@NonNull String);
     method @NonNull public android.health.connect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setRecordingMethod(int);
   }
 
   public final class NutritionRecord extends android.health.connect.datatypes.IntervalRecord {
