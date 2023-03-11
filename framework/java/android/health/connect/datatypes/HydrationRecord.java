@@ -60,7 +60,7 @@ public final class HydrationRecord extends IntervalRecord {
             @NonNull Volume volume) {
         super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
         Objects.requireNonNull(volume);
-        ValidationUtils.requireInRange(volume.getInMilliliters(), 0.0, 100000.0, "volume");
+        ValidationUtils.requireInRange(volume.getInLiters(), 0.0, 100.0, "volume");
         mVolume = volume;
     }
 
@@ -183,12 +183,13 @@ public final class HydrationRecord extends IntervalRecord {
                                 .setClientRecordVersion(getMetadata().getClientRecordVersion())
                                 .setManufacturer(getMetadata().getDevice().getManufacturer())
                                 .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType());
+                                .setDeviceType(getMetadata().getDevice().getType())
+                                .setRecordingMethod(getMetadata().getRecordingMethod());
         recordInternal.setStartTime(getStartTime().toEpochMilli());
         recordInternal.setEndTime(getEndTime().toEpochMilli());
         recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
         recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
-        recordInternal.setVolume(mVolume.getInMilliliters());
+        recordInternal.setVolume(mVolume.getInLiters());
         return recordInternal;
     }
 }

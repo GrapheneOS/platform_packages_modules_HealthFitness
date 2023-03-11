@@ -231,7 +231,7 @@ public final class AggregationTypeIdMapper {
 
     @NonNull
     private AggregateResult<Energy> getEnergyResult(double result) {
-        return new AggregateResult<>(Energy.fromJoules(result));
+        return new AggregateResult<>(Energy.fromCalories(result));
     }
 
     @NonNull
@@ -246,12 +246,12 @@ public final class AggregationTypeIdMapper {
 
     @NonNull
     private AggregateResult<Volume> getVolumeResult(double result) {
-        return new AggregateResult<>(Volume.fromMilliliters(result));
+        return new AggregateResult<>(Volume.fromLiters(result));
     }
 
     @NonNull
     private AggregateResult<Mass> getMassResult(double result) {
-        return new AggregateResult<>(Mass.fromKilograms(result));
+        return new AggregateResult<>(Mass.fromGrams(result));
     }
 
     private void addLongIdsToAggregateResultMap(

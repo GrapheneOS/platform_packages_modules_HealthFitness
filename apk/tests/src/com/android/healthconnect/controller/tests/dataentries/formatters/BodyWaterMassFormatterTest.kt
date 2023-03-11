@@ -149,6 +149,7 @@ class BodyWaterMassFormatterTest {
     }
 
     private fun getRecord(massInKg: Double): BodyWaterMassRecord {
-        return BodyWaterMassRecord.Builder(getMetaData(), NOW, Mass.fromKilograms(massInKg)).build()
+        return BodyWaterMassRecord.Builder(getMetaData(), NOW, Mass.fromGrams(massInKg * 1000))
+            .build()
     }
 }

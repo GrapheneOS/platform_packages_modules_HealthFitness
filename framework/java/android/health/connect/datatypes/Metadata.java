@@ -16,19 +16,48 @@
 
 package android.health.connect.datatypes;
 
+import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.util.Objects;
 
 /** Set of shared metadata fields for {@link Record} */
 public final class Metadata {
+    /** Unknown recording method. */
+    public static final int RECORDING_METHOD_UNKNOWN = 0;
+
+    /**
+     * For actively recorded data by the user.
+     *
+     * <p>For e.g. An exercise session actively recorded by the user using a phone or a watch
+     * device.
+     */
+    public static final int RECORDING_METHOD_ACTIVELY_RECORDED = 1;
+
+    /**
+     * For passively recorded data by the app.
+     *
+     * <p>For e.g. Steps data recorded by a watch or phone without the user starting a session.
+     */
+    public static final int RECORDING_METHOD_AUTOMATICALLY_RECORDED = 2;
+
+    /**
+     * For manually entered data by the user.
+     *
+     * <p>For e.g. Nutrition or weight data entered by the user.
+     */
+    public static final int RECORDING_METHOD_MANUAL_ENTRY = 3;
+
     private final Device mDevice;
     private final DataOrigin mDataOrigin;
     private final Instant mLastModifiedTime;
     private final String mClientRecordId;
     private final long mClientRecordVersion;
+    @RecordingMethod private final int mRecordingMethod;
     private String mId;
 
     /**
@@ -52,6 +81,8 @@ public final class Metadata {
      *     determines conflict resolution outcome when there are multiple insertions of the same
      *     {@code clientRecordId}. Data with the highest {@code clientRecordVersion} takes
      *     precedence. {@code clientRecordVersion} starts with 0. @see clientRecordId
+     * @param recordingMethod Optional client supplied data recording method to help to understand
+     *     how the data was recorded.
      */
     private Metadata(
             Device device,
@@ -59,13 +90,15 @@ public final class Metadata {
             String id,
             Instant lastModifiedTime,
             String clientRecordId,
-            long clientRecordVersion) {
+            long clientRecordVersion,
+            int recordingMethod) {
         mDevice = device;
         mDataOrigin = dataOrigin;
         mId = id;
         mLastModifiedTime = lastModifiedTime;
         mClientRecordId = clientRecordId;
         mClientRecordVersion = clientRecordVersion;
+        mRecordingMethod = recordingMethod;
     }
 
     /**
@@ -111,6 +144,12 @@ public final class Metadata {
         mId = id;
     }
 
+    /** Returns recording method which indicates how data was recorded for the {@link Record} */
+    @RecordingMethod
+    public int getRecordingMethod() {
+        return mRecordingMethod;
+    }
+
     /**
      * @return Record's last modified time if set, Instant.EPOCH otherwise
      */
@@ -142,7 +181,8 @@ public final class Metadata {
                     && getDataOrigin().equals(other.getDataOrigin())
                     && getId().equals(other.getId())
                     && Objects.equals(getClientRecordId(), other.getClientRecordId())
-                    && getClientRecordVersion() == other.getClientRecordVersion();
+                    && getClientRecordVersion() == other.getClientRecordVersion()
+                    && getRecordingMethod() == other.getRecordingMethod();
         }
         return false;
     }
@@ -160,8 +200,23 @@ public final class Metadata {
                 getId(),
                 getClientRecordId(),
                 getClientRecordVersion(),
-                getLastModifiedTime());
+                getLastModifiedTime(),
+                getRecordingMethod());
     }
+
+    /**
+     * List of possible Recording method for the {@link Record}.
+     *
+     * @hide
+     */
+    @IntDef({
+        RECORDING_METHOD_UNKNOWN,
+        RECORDING_METHOD_ACTIVELY_RECORDED,
+        RECORDING_METHOD_AUTOMATICALLY_RECORDED,
+        RECORDING_METHOD_MANUAL_ENTRY
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface RecordingMethod {}
 
     /**
      * @see Metadata
@@ -173,6 +228,8 @@ public final class Metadata {
         private Instant mLastModifiedTime = Instant.EPOCH;
         private String mClientRecordId;
         private long mClientRecordVersion = 0;
+
+        @RecordingMethod private int mRecordingMethod = RECORDING_METHOD_UNKNOWN;
 
         public Builder() {}
 
@@ -252,6 +309,17 @@ public final class Metadata {
         }
 
         /**
+         * Sets recording method for the {@link Record}. This detail helps to know how the data was
+         * recorded which can be useful for prioritization of the record
+         */
+        @NonNull
+        public Builder setRecordingMethod(@RecordingMethod int recordingMethod) {
+
+            mRecordingMethod = recordingMethod;
+            return this;
+        }
+
+        /**
          * @return {@link Metadata} object
          */
         @NonNull
@@ -262,7 +330,8 @@ public final class Metadata {
                     mId,
                     mLastModifiedTime,
                     mClientRecordId,
-                    mClientRecordVersion);
+                    mClientRecordVersion,
+                    mRecordingMethod);
         }
     }
 }

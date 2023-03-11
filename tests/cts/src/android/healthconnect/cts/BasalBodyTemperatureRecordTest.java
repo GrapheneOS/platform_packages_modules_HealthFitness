@@ -380,6 +380,7 @@ public class BasalBodyTemperatureRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BBTR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BasalBodyTemperatureRecord.Builder(
                         testMetadataBuilder.build(),

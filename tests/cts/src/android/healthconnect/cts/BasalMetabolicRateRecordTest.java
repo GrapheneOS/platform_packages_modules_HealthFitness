@@ -324,7 +324,7 @@ public class BasalMetabolicRateRecordTest {
         assertThat(newResponse.get(BASAL_CALORIES_TOTAL)).isNotNull();
         Energy newEnergy = newResponse.get(BASAL_CALORIES_TOTAL);
         Energy oldEnergy = oldResponse.get(BASAL_CALORIES_TOTAL);
-        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(45.5);
+        assertThat(newEnergy.getInCalories() - oldEnergy.getInCalories()).isEqualTo(45.5);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(BASAL_CALORIES_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -418,6 +418,7 @@ public class BasalMetabolicRateRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BMR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BasalMetabolicRateRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Power.fromWatts(100.0))

@@ -298,7 +298,7 @@ public class BoneMassRecordTest {
         final ZoneOffset zoneOffset = ZoneOffset.UTC;
         BoneMassRecord.Builder builder =
                 new BoneMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0));
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(10.0));
 
         assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
@@ -307,13 +307,13 @@ public class BoneMassRecordTest {
     @Test(expected = IllegalArgumentException.class)
     public void testCreateBoneMassRecord_invalidValue() {
         new BoneMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(1001.0))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(1001000.0))
                 .build();
     }
 
     private static BoneMassRecord getBaseBoneMassRecord() {
         return new BoneMassRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromKilograms(10.0))
+                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(10.0))
                 .build();
     }
 
@@ -329,9 +329,10 @@ public class BoneMassRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BMR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BoneMassRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Mass.fromKilograms(10.0))
+                        testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

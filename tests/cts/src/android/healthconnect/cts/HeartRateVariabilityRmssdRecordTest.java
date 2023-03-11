@@ -414,6 +414,7 @@ public class HeartRateVariabilityRmssdRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("HRV" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new HeartRateVariabilityRmssdRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), 0.3)

@@ -150,6 +150,6 @@ class WeightFormatterTest {
     }
 
     private fun getRecord(massInKg: Double): WeightRecord {
-        return WeightRecord.Builder(getMetaData(), NOW, Mass.fromKilograms(massInKg)).build()
+        return WeightRecord.Builder(getMetaData(), NOW, Mass.fromGrams(massInKg * 1000)).build()
     }
 }

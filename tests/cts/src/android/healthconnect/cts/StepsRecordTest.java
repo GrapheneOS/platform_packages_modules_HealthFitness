@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts;
 
+import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -805,11 +806,11 @@ public class StepsRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("SR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(RECORDING_METHOD_ACTIVELY_RECORDED);
+        Metadata testMetaData = testMetadataBuilder.build();
+        assertThat(testMetaData.getRecordingMethod()).isEqualTo(RECORDING_METHOD_ACTIVELY_RECORDED);
         return new StepsRecord.Builder(
-                        testMetadataBuilder.build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000),
-                        10)
+                        testMetaData, Instant.now(), Instant.now().plusMillis(1000), 10)
                 .build();
     }
 

@@ -373,6 +373,7 @@ public class StepsCadenceRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("SCR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
         StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
                 new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now().plusMillis(100));
         ArrayList<StepsCadenceRecord.StepsCadenceRecordSample> stepsCadenceRecords =

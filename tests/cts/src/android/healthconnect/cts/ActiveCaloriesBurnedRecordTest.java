@@ -75,7 +75,7 @@ public class ActiveCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plus(1, ChronoUnit.HOURS),
-                        Energy.fromJoules(4184000001.0))
+                        Energy.fromCalories(1000000001.0))
                 .build();
     }
 
@@ -340,7 +340,7 @@ public class ActiveCaloriesBurnedRecordTest {
         assertThat(newResponse.get(ACTIVE_CALORIES_TOTAL)).isNotNull();
         Energy newEnergy = newResponse.get(ACTIVE_CALORIES_TOTAL);
         Energy oldEnergy = oldResponse.get(ACTIVE_CALORIES_TOTAL);
-        assertThat(newEnergy.getInJoules() - oldEnergy.getInJoules()).isEqualTo(45.5);
+        assertThat(newEnergy.getInCalories() - oldEnergy.getInCalories()).isEqualTo(45.5);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(ACTIVE_CALORIES_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -374,7 +374,7 @@ public class ActiveCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(10.0));
+                        Energy.fromCalories(10.0));
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
                 .isEqualTo(startZoneOffset);
@@ -430,7 +430,7 @@ public class ActiveCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(10.0))
+                        Energy.fromCalories(10.0))
                 .build();
     }
 
@@ -439,7 +439,7 @@ public class ActiveCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(energy))
+                        Energy.fromCalories(energy))
                 .build();
     }
 
@@ -448,7 +448,7 @@ public class ActiveCaloriesBurnedRecordTest {
                         new Metadata.Builder().build(),
                         Instant.now().minus(days, ChronoUnit.DAYS),
                         Instant.now().minus(days, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS),
-                        Energy.fromJoules(energy))
+                        Energy.fromCalories(energy))
                 .build();
     }
 
@@ -463,13 +463,14 @@ public class ActiveCaloriesBurnedRecordTest {
                 new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
         testMetadataBuilder.setClientRecordId("ACBR" + Math.random());
 
         return new ActiveCaloriesBurnedRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
-                        Energy.fromJoules(10.0))
+                        Energy.fromCalories(10.0))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

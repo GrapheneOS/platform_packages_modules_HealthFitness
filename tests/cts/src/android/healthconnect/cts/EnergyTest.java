@@ -31,15 +31,15 @@ import org.junit.runner.RunWith;
 public class EnergyTest {
     @Test
     public void testCreate() {
-        assertThat(Energy.fromJoules(10.0)).isInstanceOf(Energy.class);
-        assertThat(Energy.fromJoules(10.0).getInJoules()).isEqualTo(10.0);
+        assertThat(Energy.fromCalories(10.0)).isInstanceOf(Energy.class);
+        assertThat(Energy.fromCalories(10.0).getInCalories()).isEqualTo(10.0);
     }
 
     @Test
     public void testEquals() {
-        Energy Energy1 = Energy.fromJoules(10.0);
-        Energy Energy2 = Energy.fromJoules(10.0);
-        Energy Energy3 = Energy.fromJoules(20.0);
+        Energy Energy1 = Energy.fromCalories(10.0);
+        Energy Energy2 = Energy.fromCalories(10.0);
+        Energy Energy3 = Energy.fromCalories(20.0);
 
         assertThat(Energy1.equals(Energy2)).isEqualTo(true);
         assertThat(Energy1.equals(Energy3)).isEqualTo(false);
@@ -47,9 +47,9 @@ public class EnergyTest {
 
     @Test
     public void testCompare() {
-        Energy Energy1 = Energy.fromJoules(10.0);
-        Energy Energy2 = Energy.fromJoules(10.0);
-        Energy Energy3 = Energy.fromJoules(20.0);
+        Energy Energy1 = Energy.fromCalories(10.0);
+        Energy Energy2 = Energy.fromCalories(10.0);
+        Energy Energy3 = Energy.fromCalories(20.0);
 
         assertThat(Energy1.compareTo(Energy2)).isEqualTo(0);
         assertThat(Energy1.compareTo(Energy3)).isEqualTo(-1);
