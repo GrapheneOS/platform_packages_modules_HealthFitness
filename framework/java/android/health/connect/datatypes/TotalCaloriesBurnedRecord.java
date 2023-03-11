@@ -70,7 +70,7 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(energy);
-        ValidationUtils.requireInRange(energy.getInJoules(), 0.0, 4184000000.0, "energy");
+        ValidationUtils.requireInRange(energy.getInCalories(), 0.0, 1000000000.0, "energy");
         mEnergy = energy;
     }
 
@@ -193,12 +193,13 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
                                 .setClientRecordVersion(getMetadata().getClientRecordVersion())
                                 .setManufacturer(getMetadata().getDevice().getManufacturer())
                                 .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType());
+                                .setDeviceType(getMetadata().getDevice().getType())
+                                .setRecordingMethod(getMetadata().getRecordingMethod());
         recordInternal.setStartTime(getStartTime().toEpochMilli());
         recordInternal.setEndTime(getEndTime().toEpochMilli());
         recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
         recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
-        recordInternal.setEnergy(mEnergy.getInJoules());
+        recordInternal.setEnergy(mEnergy.getInCalories());
         return recordInternal;
     }
 }

@@ -302,7 +302,8 @@ public final class HeartRateRecord extends IntervalRecord {
                                 .setClientRecordVersion(getMetadata().getClientRecordVersion())
                                 .setManufacturer(getMetadata().getDevice().getManufacturer())
                                 .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType());
+                                .setDeviceType(getMetadata().getDevice().getType())
+                                .setRecordingMethod(getMetadata().getRecordingMethod());
         Set<HeartRateRecordInternal.HeartRateSample> samples = new HashSet<>(getSamples().size());
 
         for (HeartRateRecord.HeartRateSample heartRateSample : getSamples()) {

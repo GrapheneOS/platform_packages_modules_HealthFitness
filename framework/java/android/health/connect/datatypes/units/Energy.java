@@ -20,28 +20,28 @@ import android.annotation.NonNull;
 
 import java.util.Objects;
 
-/** Represents a unit of energy. Supported units: joules */
+/** Represents a unit of energy. Supported units: calories */
 public final class Energy implements Comparable<Energy> {
 
-    private final double mInJoules;
+    private final double mInCalories;
 
     private Energy(double value) {
-        mInJoules = value;
+        mInCalories = value;
     }
 
     /**
-     * Creates an Energy object with the specified value in joules.
+     * Creates an Energy object with the specified value in calories.
      *
-     * @param value value to be set as joules.
+     * @param value value to be set as calories.
      */
     @NonNull
-    public static Energy fromJoules(double value) {
+    public static Energy fromCalories(double value) {
         return new Energy(value);
     }
 
-    /** Returns energy in joules */
-    public double getInJoules() {
-        return mInJoules;
+    /** Returns energy in calories */
+    public double getInCalories() {
+        return mInCalories;
     }
 
     /**
@@ -58,7 +58,7 @@ public final class Energy implements Comparable<Energy> {
      */
     @Override
     public int compareTo(@NonNull Energy other) {
-        return Double.compare(this.mInJoules, other.mInJoules);
+        return Double.compare(this.mInCalories, other.mInCalories);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class Energy implements Comparable<Energy> {
         if (this == object) return true;
         if (object instanceof Energy) {
             Energy other = (Energy) object;
-            return this.getInJoules() == other.getInJoules();
+            return this.getInCalories() == other.getInCalories();
         }
         return false;
     }
@@ -85,7 +85,7 @@ public final class Energy implements Comparable<Energy> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(this.getInJoules());
+        return Objects.hash(this.getInCalories());
     }
 
     /**
@@ -93,6 +93,6 @@ public final class Energy implements Comparable<Energy> {
      */
     @Override
     public String toString() {
-        return mInJoules + " J";
+        return mInCalories + " cal";
     }
 }

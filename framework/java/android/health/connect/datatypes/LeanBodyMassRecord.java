@@ -47,7 +47,7 @@ public final class LeanBodyMassRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(mass);
-        ValidationUtils.requireInRange(mass.getInKilograms(), 0.0, 1000.0, "mass");
+        ValidationUtils.requireInRange(mass.getInGrams(), 0.0, 1000000.0, "mass");
         mMass = mass;
     }
     /**
@@ -88,7 +88,7 @@ public final class LeanBodyMassRecord extends InstantRecord {
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param time Start time of this activity
-         * @param mass Mass in {@link Mass} unit. Required field. Valid range: 0-1000 kilograms.
+         * @param mass Mass in {@link Mass} unit. Required field. Valid range: 0-1000000 grams.
          */
         public Builder(@NonNull Metadata metadata, @NonNull Instant time, @NonNull Mass mass) {
             Objects.requireNonNull(metadata);
@@ -138,10 +138,11 @@ public final class LeanBodyMassRecord extends InstantRecord {
                                 .setClientRecordVersion(getMetadata().getClientRecordVersion())
                                 .setManufacturer(getMetadata().getDevice().getManufacturer())
                                 .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType());
+                                .setDeviceType(getMetadata().getDevice().getType())
+                                .setRecordingMethod(getMetadata().getRecordingMethod());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
-        recordInternal.setMass(mMass.getInKilograms());
+        recordInternal.setMass(mMass.getInGrams());
         return recordInternal;
     }
 }

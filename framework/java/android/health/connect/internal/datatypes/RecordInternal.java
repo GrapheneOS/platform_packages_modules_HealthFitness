@@ -53,6 +53,8 @@ public abstract class RecordInternal<T extends Record> {
     private long mAppInfoId = DEFAULT_LONG;
     private int mRowId = DEFAULT_INT;
 
+    @Metadata.RecordingMethod private int mRecordingMethod;
+
     RecordInternal() {
         Identifier annotation = this.getClass().getAnnotation(Identifier.class);
         Objects.requireNonNull(annotation);
@@ -78,6 +80,7 @@ public abstract class RecordInternal<T extends Record> {
         mManufacturer = parcel.readString();
         mModel = parcel.readString();
         mDeviceType = parcel.readInt();
+        mRecordingMethod = parcel.readInt();
 
         populateRecordFrom(parcel);
     }
@@ -97,6 +100,7 @@ public abstract class RecordInternal<T extends Record> {
         parcel.writeString(mManufacturer);
         parcel.writeString(mModel);
         parcel.writeInt(mDeviceType);
+        parcel.writeInt(mRecordingMethod);
 
         populateRecordTo(parcel);
     }
@@ -235,6 +239,19 @@ public abstract class RecordInternal<T extends Record> {
         return this;
     }
 
+    /** Returns recording method which indicates how data was recorded for the {@link Record} */
+    @Metadata.RecordingMethod
+    public int getRecordingMethod() {
+        return mRecordingMethod;
+    }
+
+    /** Sets Recording method to know how data was recorded for the {@link Record} */
+    @NonNull
+    public RecordInternal<T> setRecordingMethod(@Metadata.RecordingMethod int recordingMethod) {
+        this.mRecordingMethod = recordingMethod;
+        return this;
+    }
+
     /** Child class must implement this method and return an external record for this record */
     public abstract T toExternalRecord();
 
@@ -246,6 +263,7 @@ public abstract class RecordInternal<T extends Record> {
                 .setDataOrigin(new DataOrigin.Builder().setPackageName(getPackageName()).build())
                 .setId(getUuid())
                 .setLastModifiedTime(Instant.ofEpochMilli(getLastModifiedTime()))
+                .setRecordingMethod(getRecordingMethod())
                 .setDevice(
                         new Device.Builder()
                                 .setManufacturer(getManufacturer())

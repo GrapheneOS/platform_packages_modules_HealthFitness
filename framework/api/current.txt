@@ -923,6 +923,11 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.Device getDevice();
     method @NonNull public String getId();
     method @NonNull public java.time.Instant getLastModifiedTime();
+    method public int getRecordingMethod();
+    field public static final int RECORDING_METHOD_ACTIVELY_RECORDED = 1; // 0x1
+    field public static final int RECORDING_METHOD_AUTOMATICALLY_RECORDED = 2; // 0x2
+    field public static final int RECORDING_METHOD_MANUAL_ENTRY = 3; // 0x3
+    field public static final int RECORDING_METHOD_UNKNOWN = 0; // 0x0
   }
 
   public static final class Metadata.Builder {
@@ -934,6 +939,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.Metadata.Builder setDevice(@NonNull android.health.connect.datatypes.Device);
     method @NonNull public android.health.connect.datatypes.Metadata.Builder setId(@NonNull String);
     method @NonNull public android.health.connect.datatypes.Metadata.Builder setLastModifiedTime(@NonNull java.time.Instant);
+    method @NonNull public android.health.connect.datatypes.Metadata.Builder setRecordingMethod(int);
   }
 
   public final class NutritionRecord extends android.health.connect.datatypes.IntervalRecord {
@@ -1338,8 +1344,8 @@ package android.health.connect.datatypes.units {
 
   public final class Energy implements java.lang.Comparable<android.health.connect.datatypes.units.Energy> {
     method public int compareTo(@NonNull android.health.connect.datatypes.units.Energy);
-    method @NonNull public static android.health.connect.datatypes.units.Energy fromJoules(double);
-    method public double getInJoules();
+    method @NonNull public static android.health.connect.datatypes.units.Energy fromCalories(double);
+    method public double getInCalories();
   }
 
   public final class Length implements java.lang.Comparable<android.health.connect.datatypes.units.Length> {
@@ -1350,8 +1356,8 @@ package android.health.connect.datatypes.units {
 
   public final class Mass implements java.lang.Comparable<android.health.connect.datatypes.units.Mass> {
     method public int compareTo(@NonNull android.health.connect.datatypes.units.Mass);
-    method @NonNull public static android.health.connect.datatypes.units.Mass fromKilograms(double);
-    method public double getInKilograms();
+    method @NonNull public static android.health.connect.datatypes.units.Mass fromGrams(double);
+    method public double getInGrams();
   }
 
   public final class Percentage implements java.lang.Comparable<android.health.connect.datatypes.units.Percentage> {
@@ -1386,8 +1392,8 @@ package android.health.connect.datatypes.units {
 
   public final class Volume implements java.lang.Comparable<android.health.connect.datatypes.units.Volume> {
     method public int compareTo(@NonNull android.health.connect.datatypes.units.Volume);
-    method @NonNull public static android.health.connect.datatypes.units.Volume fromMilliliters(double);
-    method public double getInMilliliters();
+    method @NonNull public static android.health.connect.datatypes.units.Volume fromLiters(double);
+    method public double getInLiters();
   }
 
 }

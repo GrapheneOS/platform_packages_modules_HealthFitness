@@ -71,7 +71,7 @@ public final class SleepSessionRecordHelper
             createTable(db, getCreateTableRequest());
             return; // No more queries running after this, the table is already on latest schema
         }
-
+        super.onUpgrade(db, oldVersion, newVersion);
         // Add more upgrades here
     }
 

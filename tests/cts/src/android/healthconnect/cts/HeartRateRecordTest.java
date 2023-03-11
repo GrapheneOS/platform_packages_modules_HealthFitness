@@ -770,6 +770,7 @@ public class HeartRateRecordTest {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("HRR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         HeartRateRecord.HeartRateSample heartRateRecord =
                 new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
