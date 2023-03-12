@@ -37,6 +37,13 @@ public abstract class InstantRecord extends Record {
         super(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
+        if (time.isAfter(Instant.now())) {
+            throw new IllegalArgumentException(
+                    "Record time must not be in the future, record time: "
+                            + time
+                            + " currentTime: "
+                            + Instant.now());
+        }
         mTime = time;
         mZoneOffset = zoneOffset;
     }
