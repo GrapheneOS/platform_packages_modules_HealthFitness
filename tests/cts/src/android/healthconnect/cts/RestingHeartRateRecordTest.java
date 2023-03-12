@@ -383,6 +383,13 @@ public class RestingHeartRateRecordTest {
                 .build();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateRestingHeartRateRecord_invalidTime() {
+        new RestingHeartRateRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now().plusMillis(100), 500)
+                .build();
+    }
+
     private static RestingHeartRateRecord getBaseRestingHeartRateRecord() {
         return new RestingHeartRateRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
                 .build();
