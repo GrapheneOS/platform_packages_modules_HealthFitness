@@ -123,6 +123,7 @@ class HomeFragment : Fragment() {
         }
         view.findViewById<Button>(R.id.seed_random_data_button).setOnClickListener {
             SeedData(requireContext(), manager).seedData()
+            Toast.makeText(requireContext(), "Seed data done", Toast.LENGTH_LONG).show()
         }
         view.findViewById<Button>(R.id.seed_performance_read_data_button).setOnClickListener {
             performanceTestingViewModel.beginReadingData()
