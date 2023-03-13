@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.FloatRange;
 import android.annotation.NonNull;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.RespiratoryRateRecordInternal;
 
 import java.time.Instant;
