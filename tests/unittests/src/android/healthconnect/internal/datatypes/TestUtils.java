@@ -63,8 +63,7 @@ public class TestUtils {
     public static ExerciseSessionRecordInternal buildExerciseSessionInternal() {
         return (ExerciseSessionRecordInternal)
                 new ExerciseSessionRecordInternal()
-                        .setExerciseType(
-                                ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                        .setExerciseType(ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
                         .setRoute(buildExerciseRouteInternal())
                         .setTitle("Morning walk")
                         .setNotes("Sunny weather")
@@ -124,8 +123,7 @@ public class TestUtils {
     public static ExerciseSessionRecordInternal buildExerciseSessionInternalNoExtraFields() {
         return (ExerciseSessionRecordInternal)
                 new ExerciseSessionRecordInternal()
-                        .setExerciseType(
-                                ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                        .setExerciseType(ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
                         .setStartTime((long) 1e9)
                         .setEndTime((long) 1e10)
                         .setUuid("id")

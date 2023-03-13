@@ -21,6 +21,7 @@ import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 
 import java.time.Instant;

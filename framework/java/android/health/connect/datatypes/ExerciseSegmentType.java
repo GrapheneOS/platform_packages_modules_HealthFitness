@@ -21,6 +21,7 @@ import android.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
+import java.util.Set;
 
 /** Identifier for exercise types, as returned by {@link ExerciseSegment#getSegmentType()}. */
 public final class ExerciseSegmentType {
@@ -314,4 +315,90 @@ public final class ExerciseSegmentType {
             List.of(
                     ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PAUSE,
                     ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_REST);
+
+    // Update this set when add new type or deprecate existing type.
+    private static final Set<Integer> VALID_TYPES =
+            Set.of(
+                    EXERCISE_SEGMENT_TYPE_UNKNOWN,
+                    EXERCISE_SEGMENT_TYPE_BARBELL_SHOULDER_PRESS,
+                    EXERCISE_SEGMENT_TYPE_BENCH_SIT_UP,
+                    EXERCISE_SEGMENT_TYPE_BIKING,
+                    EXERCISE_SEGMENT_TYPE_BIKING_STATIONARY,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_LEFT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_RIGHT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_FRONT_RAISE,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_LATERAL_RAISE,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_LEFT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_RIGHT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_TWO_ARM,
+                    EXERCISE_SEGMENT_TYPE_FORWARD_TWIST,
+                    EXERCISE_SEGMENT_TYPE_ELLIPTICAL,
+                    EXERCISE_SEGMENT_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING,
+                    EXERCISE_SEGMENT_TYPE_PILATES,
+                    EXERCISE_SEGMENT_TYPE_ROWING_MACHINE,
+                    EXERCISE_SEGMENT_TYPE_RUNNING,
+                    EXERCISE_SEGMENT_TYPE_RUNNING_TREADMILL,
+                    EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING,
+                    EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING_MACHINE,
+                    EXERCISE_SEGMENT_TYPE_STRETCHING,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_OPEN_WATER,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_POOL,
+                    EXERCISE_SEGMENT_TYPE_UPPER_TWIST,
+                    EXERCISE_SEGMENT_TYPE_WALKING,
+                    EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING,
+                    EXERCISE_SEGMENT_TYPE_WHEELCHAIR,
+                    EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT,
+                    EXERCISE_SEGMENT_TYPE_YOGA,
+                    EXERCISE_SEGMENT_TYPE_ARM_CURL,
+                    EXERCISE_SEGMENT_TYPE_BACK_EXTENSION,
+                    EXERCISE_SEGMENT_TYPE_BALL_SLAM,
+                    EXERCISE_SEGMENT_TYPE_BENCH_PRESS,
+                    EXERCISE_SEGMENT_TYPE_BURPEE,
+                    EXERCISE_SEGMENT_TYPE_CRUNCH,
+                    EXERCISE_SEGMENT_TYPE_DEADLIFT,
+                    EXERCISE_SEGMENT_TYPE_DOUBLE_ARM_TRICEPS_EXTENSION,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_ROW,
+                    EXERCISE_SEGMENT_TYPE_FRONT_RAISE,
+                    EXERCISE_SEGMENT_TYPE_HIP_THRUST,
+                    EXERCISE_SEGMENT_TYPE_HULA_HOOP,
+                    EXERCISE_SEGMENT_TYPE_JUMPING_JACK,
+                    EXERCISE_SEGMENT_TYPE_JUMP_ROPE,
+                    EXERCISE_SEGMENT_TYPE_KETTLEBELL_SWING,
+                    EXERCISE_SEGMENT_TYPE_LATERAL_RAISE,
+                    EXERCISE_SEGMENT_TYPE_LAT_PULL_DOWN,
+                    EXERCISE_SEGMENT_TYPE_LEG_CURL,
+                    EXERCISE_SEGMENT_TYPE_LEG_EXTENSION,
+                    EXERCISE_SEGMENT_TYPE_LEG_PRESS,
+                    EXERCISE_SEGMENT_TYPE_LEG_RAISE,
+                    EXERCISE_SEGMENT_TYPE_LUNGE,
+                    EXERCISE_SEGMENT_TYPE_MOUNTAIN_CLIMBER,
+                    EXERCISE_SEGMENT_TYPE_PLANK,
+                    EXERCISE_SEGMENT_TYPE_PULL_UP,
+                    EXERCISE_SEGMENT_TYPE_PUNCH,
+                    EXERCISE_SEGMENT_TYPE_SHOULDER_PRESS,
+                    EXERCISE_SEGMENT_TYPE_SINGLE_ARM_TRICEPS_EXTENSION,
+                    EXERCISE_SEGMENT_TYPE_SIT_UP,
+                    EXERCISE_SEGMENT_TYPE_SQUAT,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_FREESTYLE,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_BACKSTROKE,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_BREASTSTROKE,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_BUTTERFLY,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_MIXED,
+                    EXERCISE_SEGMENT_TYPE_SWIMMING_OTHER,
+                    EXERCISE_SEGMENT_TYPE_REST,
+                    EXERCISE_SEGMENT_TYPE_PAUSE);
+
+    /**
+     * Returns whether given segment type is known by current module version, throws exception if
+     * the type is negative.
+     *
+     * @hide
+     */
+    public static boolean isKnownSegmentType(int segmentType) {
+        if (segmentType < 0) {
+            throw new IllegalArgumentException("Exercise segment type must be non negative.");
+        }
+
+        return VALID_TYPES.contains(segmentType);
+    }
 }
