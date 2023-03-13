@@ -115,7 +115,7 @@ public class ExerciseSessionRecordTest {
                         new ExerciseSegment.Builder(
                                         SESSION_START_TIME,
                                         SESSION_END_TIME,
-                                        ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                                        ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT)
                                 .setRepetitionsCount(10)
                                 .build());
 
@@ -149,6 +149,62 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getSegments()).isEqualTo(segmentList);
         assertThat(record.getLaps()).isEqualTo(lapsList);
         assertThat(record.getTitle()).isEqualTo(title);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSessionBuilds_sessionTypeDoesntMatchSegment_throwsException() {
+        buildRecordWithOneSegment(
+                ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING_STATIONARY,
+                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE);
+    }
+
+    @Test
+    public void testExerciseSessionBuilds_sessionTypeSwimming_noException() {
+        buildRecordWithOneSegment(
+                ExerciseSessionType.EXERCISE_SESSION_TYPE_SWIMMING_OPEN_WATER,
+                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_BREASTSTROKE);
+    }
+
+    @Test
+    public void testExerciseSessionBuilds_segmentsTypeExercises_noException() {
+        buildRecordWithOneSegment(
+                ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS,
+                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE);
+    }
+
+    @Test
+    public void testExerciseSessionBuilds_segmentTypeRest_noException() {
+        buildRecordWithOneSegment(
+                ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS,
+                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_REST);
+    }
+
+    @Test
+    public void testExerciseSessionBuilds_universalSegment_noException() {
+        buildRecordWithOneSegment(
+                ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING_STATIONARY,
+                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_REST);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSessionBuilds_negativeSessionType_throwsException() {
+        buildRecordWithOneSegment(-1, ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_REST);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSessionBuilds_negativeSegmentType_throwsException() {
+        buildRecordWithOneSegment(ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING_STATIONARY, -2);
+    }
+
+    @Test
+    public void testExerciseSessionBuilds_unknownSessionType_noException() {
+        buildRecordWithOneSegment(1000, ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_REST);
+    }
+
+    @Test
+    public void testExerciseSessionBuilds_unknownSegmentType_noException() {
+        buildRecordWithOneSegment(
+                ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING_STATIONARY, 1000);
     }
 
     @Test
@@ -462,6 +518,20 @@ public class ExerciseSessionRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
+    private ExerciseSessionRecord buildRecordWithOneSegment(int sessionType, int segmentType) {
+        return new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        sessionType)
+                .setSegments(
+                        List.of(
+                                new ExerciseSegment.Builder(
+                                                SESSION_START_TIME, SESSION_END_TIME, segmentType)
+                                        .build()))
+                .build();
+    }
+
     private void assertRecordsAreEqual(List<Record> records, List<ExerciseSessionRecord> result) {
         ArrayList<ExerciseSessionRecord> recordsExercises = new ArrayList<>();
         for (Record record : records) {
@@ -502,7 +572,7 @@ public class ExerciseSessionRecordTest {
                 .build();
     }
 
-    ExerciseSessionRecord getExerciseSessionRecord_update(
+    private ExerciseSessionRecord getExerciseSessionRecord_update(
             Record record, String id, String clientRecordId) {
         Metadata metadata = record.getMetadata();
         Metadata metadataWithId =

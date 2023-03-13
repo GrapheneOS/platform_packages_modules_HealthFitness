@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Velocity;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 
 import java.time.Instant;

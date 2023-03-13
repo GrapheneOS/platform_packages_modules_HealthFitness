@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import android.annotation.NonNull;
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations;
 import android.health.connect.datatypes.units.Temperature;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.BodyTemperatureRecordInternal;
 
 import java.time.Instant;
