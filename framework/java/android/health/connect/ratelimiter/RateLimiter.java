@@ -42,9 +42,9 @@ public final class RateLimiter {
     // The maximum size in bytes of a single record a client can insert in one go.
     private static final String RECORD_SIZE_LIMIT_IN_BYTES = "record_size_limit_in_bytes";
     private static final float DEFAULT_QUOTA_BUCKET_PER_15M_FOREGROUND_LIMIT_VALUE = 1000f;
-    private static final float DEFAULT_QUOTA_BUCKET_PER_24H_FOREGROUND_LIMIT_VALUE = 2000f;
+    private static final float DEFAULT_QUOTA_BUCKET_PER_24H_FOREGROUND_LIMIT_VALUE = 5000f;
     private static final float DEFAULT_QUOTA_BUCKET_PER_15M_BACKGROUND_LIMIT_VALUE = 300f;
-    private static final float DEFAULT_QUOTA_BUCKET_PER_24h_BACKGROUND_LIMIT_VALUE = 600f;
+    private static final float DEFAULT_QUOTA_BUCKET_PER_24h_BACKGROUND_LIMIT_VALUE = 5000f;
     private static final int DEFAULT_CHUNK_SIZE_LIMIT_IN_BYTES_VALUE = 5000000;
     private static final int DEFAULT_RECORD_SIZE_LIMIT_IN_BYTES_VALUE = 1000000;
     private static final int DEFAULT_API_CALL_COST = 1;
@@ -137,7 +137,7 @@ public final class RateLimiter {
                                                 getAvailableQuota(
                                                         quotaBucket, getQuota(uid, quotaBucket))));
         for (@QuotaBucket.Type int quotaBucket : quotaBuckets) {
-            hasSufficientQuota(quotaBucketToAvailableQuotaMap.get(quotaBucket), cost);
+            hasSufficientQuota(quotaBucketToAvailableQuotaMap.get(quotaBucket), cost, quotaBucket);
         }
         for (@QuotaBucket.Type int quotaBucket : quotaBuckets) {
             spendResources(uid, quotaBucket, quotaBucketToAvailableQuotaMap.get(quotaBucket), cost);
@@ -151,14 +151,16 @@ public final class RateLimiter {
                 .put(quotaBucket, new Quota(Instant.now(), availableQuota - cost));
     }
 
-    private static void hasSufficientQuota(float availableQuota, int cost) {
+    private static void hasSufficientQuota(
+            float availableQuota, int cost, @QuotaBucket.Type int quotaBucket) {
         if (availableQuota < cost) {
-            throw new HealthConnectException(
-                    HealthConnectException.ERROR_RATE_LIMIT_EXCEEDED,
+            throw new RateLimiterException(
                     "API call quota exceeded, availableQuota: "
                             + availableQuota
                             + " requested: "
-                            + cost);
+                            + cost,
+                    quotaBucket,
+                    getConfiguredApiCallMaxQuota(quotaBucket));
         }
     }
 
