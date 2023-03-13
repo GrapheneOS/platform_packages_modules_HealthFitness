@@ -62,5 +62,9 @@ android_test {
       "general-tests",
       "mts-healthfitness",
     ],
-    test_mainline_modules: ["com.google.android.healthfitness.apex"]
+    test_mainline_modules: ["com.google.android.healthfitness.apex"],
+    data: [
+        ":HealthConnectUITestApp",
+        ":HealthConnectUITestApp2",
+    ],
 }
