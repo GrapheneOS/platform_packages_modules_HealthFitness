@@ -50,7 +50,6 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
 
     fun seedData() {
         runBlocking {
-            seedBodyMeasurementData()
             seedMenstruationData()
             seedStepsData(NUMBER_OF_INTERVAL_RECORDS_TO_INSERT)
             seedHeartRateData(NUMBER_OF_SERIES_RECORDS_TO_INSERT)
@@ -58,21 +57,12 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
     }
 
     suspend fun seedStepsData(numberOfRecords: Long) {
-        val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
+        val start = Instant.now().truncatedTo(ChronoUnit.DAYS).minus(ofDays(1))
         val records =
             (1L..numberOfRecords).map { count ->
-                getStepsRecord(count, start.plus(ofMinutes(count)))
+                getStepsRecord(count % 10, start.plus(ofMinutes(count)))
             }
 
-        insertRecords(records, manager)
-    }
-
-    private suspend fun seedBodyMeasurementData() {
-        val records = mutableListOf<Record>()
-        records.add(
-            HeightRecord.Builder(getMetaData(), Instant.now(), Length.fromMeters(1.75)).build())
-        records.add(
-            WeightRecord.Builder(getMetaData(), Instant.now(), Mass.fromGrams(70.0)).build())
         insertRecords(records, manager)
     }
 
@@ -84,7 +74,7 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
             (-5..0).map { days ->
                 MenstruationFlowRecord.Builder(
                         getMetaData(),
-                        today.minus(ofDays(days.toLong())),
+                        today.plus(ofDays(days.toLong())),
                         MenstruationFlowType.FLOW_MEDIUM)
                     .build()
             }
