@@ -76,7 +76,7 @@ public final class TimeRangeFilterHelper {
         } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
             return ((LocalTimeRangeFilter) timeRangeFilter)
                     .getStartTime()
-                    .toInstant(ZoneOffset.MIN)
+                    .toInstant(ZoneOffset.MAX)
                     .toEpochMilli();
         } else {
             throw new IllegalArgumentException(
@@ -94,7 +94,7 @@ public final class TimeRangeFilterHelper {
         } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
             return ((LocalTimeRangeFilter) timeRangeFilter)
                     .getEndTime()
-                    .toInstant(ZoneOffset.MAX)
+                    .toInstant(ZoneOffset.MIN)
                     .toEpochMilli();
         } else {
             throw new IllegalArgumentException(
