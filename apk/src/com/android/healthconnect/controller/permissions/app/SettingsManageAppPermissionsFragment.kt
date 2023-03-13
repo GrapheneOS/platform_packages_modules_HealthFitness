@@ -42,6 +42,7 @@ import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
+import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.permissions.shared.DisconnectDialogFragment
@@ -190,30 +191,39 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         writePermissionCategory?.removeAll()
         permissionMap.clear()
 
-        permissions.forEach { permission ->
-            val category =
-                if (permission.permissionsAccessType == PermissionsAccessType.READ) {
-                    readPermissionCategory
-                } else {
-                    writePermissionCategory
-                }
-            val switchPreference =
-                HealthSwitchPreference(requireContext()).also {
-                    val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
-                    it.setIcon(healthCategory.icon())
-                    it.setTitle(
-                        HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
+        permissions
+            .sortedBy {
+                requireContext()
+                    .getString(
+                        fromPermissionType(it.healthPermissionType)
                             .uppercaseLabel)
-                    it.logNameActive = PermissionsElement.PERMISSION_SWITCH
-                    it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
-                    it.setOnPreferenceChangeListener { _, newValue ->
-                        val checked = newValue as Boolean
-                        viewModel.updatePermission(packageName, permission, checked)
-                        true
+            }
+            .forEach { permission ->
+                val category =
+                    if (permission.permissionsAccessType == PermissionsAccessType.READ) {
+                        readPermissionCategory
+                    } else {
+                        writePermissionCategory
                     }
-                }
-            permissionMap[permission] = switchPreference
-            category?.addPreference(switchPreference)
-        }
+                val switchPreference =
+                    HealthSwitchPreference(requireContext()).also {
+                        val healthCategory =
+                            fromHealthPermissionType(permission.healthPermissionType)
+                        it.setIcon(healthCategory.icon())
+                        it.setTitle(
+                            fromPermissionType(
+                                    permission.healthPermissionType)
+                                .uppercaseLabel)
+                        it.logNameActive = PermissionsElement.PERMISSION_SWITCH
+                        it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
+                        it.setOnPreferenceChangeListener { _, newValue ->
+                            val checked = newValue as Boolean
+                            viewModel.updatePermission(packageName, permission, checked)
+                            true
+                        }
+                    }
+                permissionMap[permission] = switchPreference
+                category?.addPreference(switchPreference)
+            }
     }
 }
