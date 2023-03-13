@@ -287,9 +287,14 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         boolean stateChanged = false;
         logIfInDebugMode("Valid apps for " + user + ": ", healthPackagesInfos);
 
-        // If package holds health permissions but doesn't have recorded grant
-        // time (e.g. because of permissions rollback), set current time as the first grant time.
+        // If package holds health permissions and supports health permission intent
+        // but doesn't have recorded grant time (e.g. because of permissions rollback),
+        // set current time as the first grant time.
         for (PackageInfo info : healthPackagesInfos) {
+            if (!mTracker.supportsPermissionUsageIntent(info.packageName, user)) {
+                continue;
+            }
+
             if (info.sharedUserId == null) {
                 stateChanged |= setPackageGrantTimeIfNotRecorded(recordedState, info.packageName);
                 validPackagesPerUser.add(info.packageName);
