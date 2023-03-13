@@ -46,6 +46,8 @@ import android.util.ArraySet;
 import android.util.Pair;
 
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
+import com.android.server.healthconnect.logging.ExerciseRoutesLogger;
+import com.android.server.healthconnect.logging.ExerciseRoutesLogger.Operations;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -58,6 +60,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Helper class for ExerciseSessionRecord.
@@ -277,6 +280,44 @@ public final class ExerciseSessionRecordHelper
         return isRecordOperationsEnabled()
                 && HealthConnectDeviceConfigManager.getInitialisedInstance()
                         .isExerciseRouteFeatureEnabled();
+    }
+
+    @Override
+    public void logUpsertMetrics(
+            @NonNull List<RecordInternal<?>> recordInternals, @NonNull String packageName) {
+        Objects.requireNonNull(recordInternals);
+
+        ExerciseRoutesLogger.log(
+                Operations.UPSERT,
+                packageName,
+                getNumberOfRecordsWithExerciseRoutes(recordInternals));
+    }
+
+    @Override
+    public void logReadMetrics(
+            @NonNull List<RecordInternal<?>> recordInternals, @NonNull String packageName) {
+        Objects.requireNonNull(recordInternals);
+
+        ExerciseRoutesLogger.log(
+                Operations.READ,
+                packageName,
+                getNumberOfRecordsWithExerciseRoutes(recordInternals));
+    }
+
+    private int getNumberOfRecordsWithExerciseRoutes(
+            @NonNull List<RecordInternal<?>> recordInternals) {
+
+        int numberOfRecordsWithExerciseRoutes = 0;
+        for (RecordInternal<?> recordInternal : recordInternals) {
+            try {
+                if (((ExerciseSessionRecordInternal) recordInternal).hasRoute()) {
+                    numberOfRecordsWithExerciseRoutes++;
+                }
+            } catch (ClassCastException ignored) {
+                // List might contain record types other than ExerciseSession which can be ignored.
+            }
+        }
+        return numberOfRecordsWithExerciseRoutes;
     }
 
     private ReadTableRequest getRouteReadRequest(WhereClauses clauseToFilterSessionIds) {

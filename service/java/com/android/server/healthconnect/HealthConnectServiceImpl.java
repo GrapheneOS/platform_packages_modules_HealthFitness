@@ -133,6 +133,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsReques
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
@@ -147,6 +148,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -301,7 +303,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IInsertRecordsResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final HealthConnectServiceLogger.Builder builder =
-                new HealthConnectServiceLogger.Builder(false, INSERT_DATA);
+                new HealthConnectServiceLogger.Builder(false, INSERT_DATA)
+                        .setPackageName(attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -317,7 +320,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
 
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
-                        builder.setNumberOfRecords(recordInternals.size());
+
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -339,7 +342,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 });
 
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);
-                        builder.setHealthDataServiceApiStatusSuccess();
+                        logRecordTypeSpecificUpsertMetrics(
+                                recordInternals, attributionSource.getPackageName());
+                        builder.setDataTypesFromRecordInternals(recordInternals)
+                                .setNumberOfRecords(recordInternals.size())
+                                .setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
@@ -406,7 +413,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(
-                        holdsDataManagementPermission, READ_AGGREGATED_DATA);
+                                holdsDataManagementPermission, READ_AGGREGATED_DATA)
+                        .setPackageName(attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -447,7 +455,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 attributionSource.getPackageName(), request)
                                         .getAggregateDataResponseParcel());
                         finishDataDeliveryRead(recordTypesToTest, attributionSource);
-                        builder.setHealthDataServiceApiStatusSuccess();
+                        builder.setNumberOfRecords(request.getAggregateIds().length)
+                                .setDataTypesFromRecordTypes(recordTypesToTest)
+                                .setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
@@ -499,7 +509,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         final HealthConnectServiceLogger.Builder builder =
-                new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA);
+                new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA)
+                        .setPackageName(attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -557,7 +568,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     startDateAccess,
                                                     enforceSelfRead.get(),
                                                     extraReadPermsToGrantState));
-                            builder.setNumberOfRecords(readRecordsResponse.first.size());
                             long pageToken =
                                     request.getRecordIdFiltersParcel() == null
                                             ? readRecordsResponse.second
@@ -596,9 +606,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                             READ);
                                             Trace.traceEnd(TRACE_TAG_READ_SUBTASKS);
                                         });
+                                logRecordTypeSpecificReadMetrics(
+                                        readRecordsResponse.first,
+                                        attributionSource.getPackageName());
                             }
                             finishDataDeliveryRead(request.getRecordType(), attributionSource);
-                            builder.setHealthDataServiceApiStatusSuccess();
+                            builder.setDataTypesFromRecordInternals(readRecordsResponse.first)
+                                    .setNumberOfRecords(readRecordsResponse.first.size())
+                                    .setHealthDataServiceApiStatusSuccess();
                         } catch (TypeNotPresentException exception) {
                             // All the requested package names are not present, so simply
                             // return an empty list
@@ -663,7 +678,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IEmptyResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final HealthConnectServiceLogger.Builder builder =
-                new HealthConnectServiceLogger.Builder(false, UPDATE_DATA);
+                new HealthConnectServiceLogger.Builder(false, UPDATE_DATA)
+                        .setPackageName(attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -677,7 +693,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
                         }
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
-                        builder.setNumberOfRecords(recordInternals.size());
+
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -691,7 +707,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         /* isInsertRequest */ false));
                         callback.onResult();
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);
-                        builder.setHealthDataServiceApiStatusSuccess();
+                        logRecordTypeSpecificUpsertMetrics(
+                                recordInternals, attributionSource.getPackageName());
+                        builder.setDataTypesFromRecordInternals(recordInternals)
+                                .setNumberOfRecords(recordInternals.size())
+                                .setHealthDataServiceApiStatusSuccess();
                     } catch (SecurityException securityException) {
                         builder.setHealthDataServiceApiStatusError(
                                 HealthConnectException.ERROR_SECURITY);
@@ -743,7 +763,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IGetChangeLogTokenCallback callback) {
         final int uid = Binder.getCallingUid();
         final HealthConnectServiceLogger.Builder builder =
-                new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN);
+                new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN)
+                        .setPackageName(attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -809,7 +830,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             IChangeLogsResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final HealthConnectServiceLogger.Builder builder =
-                new HealthConnectServiceLogger.Builder(false, GET_CHANGES);
+                new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
+                        .setPackageName(attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -851,7 +873,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 ChangeLogsHelper.getRecordTypeToInsertedUuids(
                                                         changeLogsResponse.getChangeLogsMap()),
                                                 startDateAccess));
-                        builder.setNumberOfRecords(recordInternals.size());
+
                         callback.onResult(
                                 new ChangeLogsResponse(
                                         new RecordsParcel(recordInternals),
@@ -861,7 +883,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         changeLogsResponse.hasMorePages()));
                         finishDataDeliveryRead(
                                 changeLogsTokenRequest.getRecordTypes(), attributionSource);
-                        builder.setHealthDataServiceApiStatusSuccess();
+                        builder.setHealthDataServiceApiStatusSuccess()
+                                .setNumberOfRecords(recordInternals.size())
+                                .setDataTypesFromRecordInternals(recordInternals);
                     } catch (IllegalArgumentException illegalArgumentException) {
                         builder.setHealthDataServiceApiStatusError(
                                 HealthConnectException.ERROR_INVALID_ARGUMENT);
@@ -918,7 +942,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         final HealthConnectServiceLogger.Builder builder =
-                new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA);
+                new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA)
+                        .setPackageName(attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -956,16 +981,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                         attributionSource.getPackageName(), request)
                                                 .setHasManageHealthDataPermission(
                                                         hasDataManagementPermission(uid, pid)));
-                        builder.setNumberOfRecords(numberOfRecordsDeleted);
                         callback.onResult();
                         finishDataDeliveryWrite(recordTypeIdsToDelete, attributionSource);
-                        builder.setHealthDataServiceApiStatusSuccess();
-
                         HealthConnectThreadScheduler.scheduleInternalTask(
                                 () -> {
                                     postDeleteTasks(recordTypeIdsToDelete);
                                 });
 
+                        builder.setNumberOfRecords(numberOfRecordsDeleted)
+                                .setDataTypesFromRecordTypes(recordTypeIdsToDelete)
+                                .setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
                         tryAndThrowException(
@@ -1976,5 +2001,44 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
+    }
+
+    private void logRecordTypeSpecificUpsertMetrics(
+            @NonNull List<RecordInternal<?>> recordInternals, @NonNull String packageName) {
+        Objects.requireNonNull(recordInternals);
+        Objects.requireNonNull(packageName);
+
+        Map<Integer, List<RecordInternal<?>>> recordTypeToRecordInternals =
+                getRecordTypeToListOfRecords(recordInternals);
+        for (Entry<Integer, List<RecordInternal<?>>> recordTypeToRecordInternalsEntry :
+                recordTypeToRecordInternals.entrySet()) {
+            RecordHelper<?> recordHelper =
+                    RecordHelperProvider.getInstance()
+                            .getRecordHelper(recordTypeToRecordInternalsEntry.getKey());
+            recordHelper.logUpsertMetrics(recordTypeToRecordInternalsEntry.getValue(), packageName);
+        }
+    }
+
+    private void logRecordTypeSpecificReadMetrics(
+            @NonNull List<RecordInternal<?>> recordInternals, @NonNull String packageName) {
+        Objects.requireNonNull(recordInternals);
+        Objects.requireNonNull(packageName);
+
+        Map<Integer, List<RecordInternal<?>>> recordTypeToRecordInternals =
+                getRecordTypeToListOfRecords(recordInternals);
+        for (Entry<Integer, List<RecordInternal<?>>> recordTypeToRecordInternalsEntry :
+                recordTypeToRecordInternals.entrySet()) {
+            RecordHelper<?> recordHelper =
+                    RecordHelperProvider.getInstance()
+                            .getRecordHelper(recordTypeToRecordInternalsEntry.getKey());
+            recordHelper.logReadMetrics(recordTypeToRecordInternalsEntry.getValue(), packageName);
+        }
+    }
+
+    private Map<Integer, List<RecordInternal<?>>> getRecordTypeToListOfRecords(
+            List<RecordInternal<?>> recordInternals) {
+
+        return recordInternals.stream()
+                .collect(Collectors.groupingBy(RecordInternal::getRecordType));
     }
 }
