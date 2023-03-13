@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.migration;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Migration related constants.
  *
@@ -30,10 +33,27 @@ public class MigrationConstants {
     public static final int COUNT_MIGRATION_STATE_ALLOWED = 5;
     public static final int COUNT_DEFAULT = 0;
 
+    static final int MAX_START_MIGRATION_CALLS_ALLOWED = 3;
+
     // TODO(b/268043064): Replace these with the fallback hours for each migration state and use a
     // combination of the fallback hours and requiredCount to calculate the interval
     public static final int INTERVAL_MIGRATION_STATE_IDLE = 10000;
     public static final int INTERVAL_MIGRATION_STATE_IN_PROGRESS = 10000;
     public static final int INTERVAL_MIGRATION_STATE_ALLOWED = 10000;
     public static final int INTERVAL_DEFAULT = 0;
+
+    // TODO(b/270562874) Refactor the timeouts to be server-side configurable.
+    static final Duration IDLE_STATE_TIMEOUT_PERIOD = Duration.ofDays(30);
+    static final Duration NON_IDLE_STATE_TIMEOUT_PERIOD = Duration.ofDays(15);
+    static final Duration IN_PROGRESS_STATE_TIMEOUT_PERIOD = Duration.ofHours(12);
+    static final long EXECUTION_TIME_BUFFER = TimeUnit.MINUTES.toMillis(30);
+
+    static final String HC_RELEASE_CERT_CONFIG_NAME =
+            "android:array/config_healthConnectMigrationKnownSigners";
+    static final String HC_PACKAGE_NAME_CONFIG_NAME =
+            "android:string/config_healthConnectMigratorPackageName";
+    public static final String MIGRATION_COMPLETE_JOB_NAME = "migration_completion_job";
+    public static final String MIGRATION_PAUSE_JOB_NAME = "migration_pause_job";
+    static final String CURRENT_STATE_START_TIME_KEY = "current_state_start_time";
+    static final String ALLOWED_STATE_TIMEOUT_KEY = "allowed_state_timeout_key";
 }
