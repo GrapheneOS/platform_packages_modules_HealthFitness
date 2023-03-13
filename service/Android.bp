@@ -38,6 +38,7 @@ java_sdk_library {
         "framework-healthfitness.impl",
         "androidx.annotation_annotation",
         "framework-configinfrastructure",
+        "keepanno-annotations",
     ],
     static_libs: [
         "guava",
