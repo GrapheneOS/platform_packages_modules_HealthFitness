@@ -239,7 +239,12 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         mWritePermissionCategory?.removeAll()
         permissionMap.clear()
 
-        permissions.forEach { permission ->
+        permissions
+            .sortedBy {
+                requireContext()
+                    .getString(fromPermissionType(it.healthPermissionType).uppercaseLabel)
+            }
+            .forEach { permission ->
             val category =
                 if (permission.permissionsAccessType == PermissionsAccessType.READ) {
                     mReadPermissionCategory
