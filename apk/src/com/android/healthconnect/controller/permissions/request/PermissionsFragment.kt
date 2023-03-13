@@ -29,7 +29,7 @@ import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
+import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
@@ -148,14 +148,21 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         mReadPermissionCategory?.removeAll()
         mWritePermissionCategory?.removeAll()
 
-        permissionsList.forEach { permission ->
-            val value = viewModel.isPermissionGranted(permission)
-            if (PermissionsAccessType.READ == permission.permissionsAccessType) {
-                mReadPermissionCategory?.addPreference(getPermissionPreference(value, permission))
-            } else if (PermissionsAccessType.WRITE == permission.permissionsAccessType) {
-                mWritePermissionCategory?.addPreference(getPermissionPreference(value, permission))
+        permissionsList
+            .sortedBy {
+                requireContext()
+                    .getString(fromPermissionType(it.healthPermissionType).uppercaseLabel)
             }
-        }
+            .forEach { permission ->
+                val value = viewModel.isPermissionGranted(permission)
+                if (PermissionsAccessType.READ == permission.permissionsAccessType) {
+                    mReadPermissionCategory?.addPreference(
+                        getPermissionPreference(value, permission))
+                } else if (PermissionsAccessType.WRITE == permission.permissionsAccessType) {
+                    mWritePermissionCategory?.addPreference(
+                        getPermissionPreference(value, permission))
+                }
+            }
 
         mReadPermissionCategory?.apply { isVisible = (preferenceCount != 0) }
         mWritePermissionCategory?.apply { isVisible = (preferenceCount != 0) }
@@ -169,9 +176,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
             it.setIcon(healthCategory.icon())
             it.setDefaultValue(defaultValue)
-            it.setTitle(
-                HealthPermissionStrings.fromPermissionType(permission.healthPermissionType)
-                    .uppercaseLabel)
+            it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
             it.logNameActive = PermissionsElement.PERMISSION_SWITCH
             it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
             it.setOnPreferenceChangeListener { _, newValue ->
