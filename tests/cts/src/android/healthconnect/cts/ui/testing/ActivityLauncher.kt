@@ -24,8 +24,10 @@ import com.android.compatibility.common.util.UiAutomatorUtils2.getUiDevice
 object ActivityLauncher {
     /** Launches the Main activity and exits it once [block] completes. */
     fun Context.launchMainActivity(block: () -> Unit) {
-        val intent = Intent("android.health.connect.action.HEALTH_HOME_SETTINGS")
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intent =
+            Intent("android.health.connect.action.HEALTH_HOME_SETTINGS")
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         executeBlockAndExit(block) {
             startActivity(intent)
             skipOnboardingIfAppears()
