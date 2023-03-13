@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Pressure;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 
 import java.lang.annotation.Retention;

@@ -19,6 +19,7 @@ package android.health.connect.datatypes;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.units.Length;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.ExerciseLapInternal;
 
 import java.time.Instant;
@@ -33,7 +34,7 @@ import java.util.Objects;
  * running without any segments can be divided as laps of different lengths.
  */
 public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
-    private static final int MAX_LAP_LENGTH_METRES = 10000000;
+    private static final int MAX_LAP_LENGTH_METRES = 1000000;
 
     private final TimeInterval mInterval;
     private final Length mLength;
@@ -41,7 +42,7 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     private ExerciseLap(@NonNull TimeInterval interval, @Nullable Length length) {
         Objects.requireNonNull(interval);
         ValidationUtils.requireInRangeIfExists(
-                length, Length.fromMeters(0.0), Length.fromMeters(1000000.0), "length");
+                length, Length.fromMeters(0.0), Length.fromMeters(MAX_LAP_LENGTH_METRES), "length");
         mInterval = interval;
         mLength = length;
     }
@@ -74,6 +75,11 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     @Override
     public TimeInterval getInterval() {
         return mInterval;
+    }
+
+    /** @hide */
+    public int getType() {
+        return 0;
     }
 
     @Override
