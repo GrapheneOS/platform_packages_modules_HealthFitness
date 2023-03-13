@@ -75,7 +75,7 @@ public class MigrationBroadcastSendingTest {
         when(mResources.getIdentifier(
                         eq("config_healthConnectMigratorPackageName"), eq("string"), eq("android")))
                 .thenReturn(1);
-        when(mContext.getString(anyInt())).thenReturn(MOCK_CONFIGURED_PACKAGE);
+        when(mResources.getString(anyInt())).thenReturn(MOCK_CONFIGURED_PACKAGE);
 
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
 
