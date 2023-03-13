@@ -15,11 +15,19 @@
  */
 package android.healthconnect.cts.ui
 
+import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.StepsRecord
+import android.healthconnect.cts.TestUtils.insertRecords
+import android.healthconnect.cts.TestUtils.verifyDeleteRecords
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
 import android.healthconnect.cts.ui.testing.UiTestUtils.navigateBackToHomeScreen
+import android.healthconnect.cts.ui.testing.UiTestUtils.navigateUp
+import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
+import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp2
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
 import androidx.test.uiautomator.By
+import java.time.Instant
 import org.junit.After
 import org.junit.Test
 
@@ -49,10 +57,56 @@ class HomeFragmentTest : HealthConnectBaseTest() {
         }
     }
 
-    // TODO(b/265789268): Add recent access test.
+    @Test
+    fun homeFragment_recentAccessShownOnHomeScreen() {
+        // TODO(b/265789268): Finish when ag/21642785 is merged.
+        insertRecords(listOf(stepsRecordFromTestApp()))
+        insertRecords(listOf(stepsRecordFromTestApp2()))
+        context.launchMainActivity {
+            // waitDisplayed(By.text("TestApp"))
+            // waitDisplayed(By.text("TestApp2"))
+            waitDisplayed(By.text("See all recent access"))
+
+            // Delete all data
+            clickOnText("Data and access")
+            clickOnText("Delete all data")
+            clickOnText("Delete all data")
+            clickOnText("Next")
+            clickOnText("Delete")
+            clickOnText("Done")
+        }
+    }
+
+    @Test
+    fun homeFragment_navigateToRecentAccess() {
+        // TODO(b/265789268): Finish when ag/21642785 is merged.
+        insertRecords(listOf(stepsRecordFromTestApp()))
+        insertRecords(listOf(stepsRecordFromTestApp2()))
+        context.launchMainActivity {
+            clickOnText("See all recent access")
+
+            // waitDisplayed(By.text("TestApp"))
+            // waitDisplayed(By.text("TestApp2"))
+
+            // Delete all data
+            navigateUp()
+            clickOnText("Data and access")
+            clickOnText("Delete all data")
+            clickOnText("Delete all data")
+            clickOnText("Next")
+            clickOnText("Delete")
+            clickOnText("Done")
+        }
+    }
 
     @After
     fun tearDown() {
+        verifyDeleteRecords(
+            StepsRecord::class.java,
+            TimeInstantRangeFilter.Builder()
+                .setStartTime(Instant.EPOCH)
+                .setEndTime(Instant.now())
+                .build())
         navigateBackToHomeScreen()
     }
 
