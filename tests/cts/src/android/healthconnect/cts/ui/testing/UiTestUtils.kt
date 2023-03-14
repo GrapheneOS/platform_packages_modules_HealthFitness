@@ -21,7 +21,6 @@ import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.units.Length
-import android.healthconnect.cts.TestUtils
 import android.os.SystemClock
 import android.util.Log
 import androidx.test.uiautomator.By
@@ -223,6 +222,15 @@ object UiTestUtils {
         return stepsRecord(TEST_APP_PACKAGE_NAME, stepCount)
     }
 
+    fun stepsRecordFromTestApp(startTime: Instant): StepsRecord {
+        return stepsRecord(
+            TEST_APP_PACKAGE_NAME, /* stepCount= */ 10, startTime, startTime.plusSeconds(100))
+    }
+
+    fun stepsRecordFromTestApp(stepCount: Long, startTime: Instant): StepsRecord {
+        return stepsRecord(TEST_APP_PACKAGE_NAME, stepCount, startTime, startTime.plusSeconds(100))
+    }
+
     fun stepsRecordFromTestApp2(): StepsRecord {
         return stepsRecord(TEST_APP_2_PACKAGE_NAME, /* stepCount= */ 10)
     }
@@ -236,15 +244,20 @@ object UiTestUtils {
     }
 
     private fun stepsRecord(packageName: String, stepCount: Long): StepsRecord {
+        return stepsRecord(packageName, stepCount, Instant.now().minusMillis(1000), Instant.now())
+    }
+
+    private fun stepsRecord(
+        packageName: String,
+        stepCount: Long,
+        startTime: Instant,
+        endTime: Instant
+    ): StepsRecord {
         val dataOrigin: DataOrigin = DataOrigin.Builder().setPackageName(packageName).build()
         val testMetadataBuilder: Metadata.Builder = Metadata.Builder()
         testMetadataBuilder.setDevice(TEST_DEVICE).setDataOrigin(dataOrigin)
         testMetadataBuilder.setClientRecordId("SR" + Math.random())
-        return StepsRecord.Builder(
-                testMetadataBuilder.build(),
-                Instant.now().minusMillis(1000),
-                Instant.now(),
-                stepCount)
+        return StepsRecord.Builder(testMetadataBuilder.build(), startTime, endTime, stepCount)
             .build()
     }
 
