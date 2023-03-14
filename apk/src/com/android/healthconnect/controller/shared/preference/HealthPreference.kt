@@ -16,7 +16,6 @@
 package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
@@ -66,10 +65,14 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun isSameItem(preference: Preference): Boolean {
-        return preference is HealthPreference && TextUtils.equals(this.title, preference.title)
+        return preference == this
     }
 
     override fun hasSameContents(preference: Preference): Boolean {
-        return preference is HealthPreference && this.title == preference.title
+        return preference is HealthPreference &&
+            this.title == preference.title &&
+            this.summary == preference.summary &&
+            this.icon == preference.icon &&
+            this.isEnabled == preference.isEnabled
     }
 }

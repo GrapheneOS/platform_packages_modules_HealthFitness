@@ -26,6 +26,7 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
@@ -89,6 +90,26 @@ class ConnectedAppsFragmentTest {
 
         onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
         onView(withText("No apps denied")).check(doesNotExist())
+    }
+
+    @Test
+    fun allowedApps_removeAccessEnabled() {
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText(R.string.disconnect_all_apps)).check(matches(isEnabled()))
+    }
+
+    @Test
+    fun noAllowedApps_removeAccessDisabled() {
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText(R.string.disconnect_all_apps)).check(matches(isDisplayed()))
     }
 
     @Test
