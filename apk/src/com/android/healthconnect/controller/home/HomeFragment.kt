@@ -17,14 +17,20 @@ package com.android.healthconnect.controller.home
 
 import android.content.Intent
 import android.health.HealthFitnessStatsLog.*
+import android.health.connect.HealthConnectDataState
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter
+import com.android.healthconnect.controller.migration.DataMigrationState
+import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.permissions.shared.Constants
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
@@ -32,12 +38,17 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
+import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.shared.preference.BannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.SystemTimeSource
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Duration
 
 /** Home fragment for Health Connect. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -47,6 +58,7 @@ class HomeFragment : Hilt_HomeFragment() {
         private const val DATA_AND_ACCESS_PREFERENCE_KEY = "data_and_access"
         private const val RECENT_ACCESS_PREFERENCE_KEY = "recent_access"
         private const val CONNECTED_APPS_PREFERENCE_KEY = "connected_apps"
+        private const val MIGRATION_BANNER_PREFERENCE_KEY = "migration_banner"
 
         @JvmStatic fun newInstance() = HomeFragment()
     }
@@ -57,6 +69,7 @@ class HomeFragment : Hilt_HomeFragment() {
 
     private val recentAccessViewModel: RecentAccessViewModel by viewModels()
     private val homeFragmentViewModel: HomeFragmentViewModel by viewModels()
+    private val migrationViewModel: MigrationViewModel by activityViewModels()
 
     private val mDataAndAccessPreference: HealthPreference? by lazy {
         preferenceScreen.findPreference(DATA_AND_ACCESS_PREFERENCE_KEY)
@@ -69,6 +82,9 @@ class HomeFragment : Hilt_HomeFragment() {
     private val mConnectedAppsPreference: HealthPreference? by lazy {
         preferenceScreen.findPreference(CONNECTED_APPS_PREFERENCE_KEY)
     }
+
+    private lateinit var migrationBannerSummary: String
+    private var migrationBanner: BannerPreference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -83,12 +99,42 @@ class HomeFragment : Hilt_HomeFragment() {
             findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
             true
         }
+
+        migrationBannerSummary = getString(R.string.resume_migration_banner_description_fallback)
+        migrationBanner = getMigrationBanner()
+    }
+
+    private fun showWhatsNewDialog() {
+        AlertDialogBuilder(this)
+            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+            .setTitle(R.string.migration_whats_new_dialog_title)
+            .setMessage(R.string.migration_whats_new_dialog_content)
+            .setNegativeButton(
+                R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT)
+            .create()
+            .show()
+    }
+
+    private fun showHealthConnectIntegrationPendingDialog() {
+        AlertDialogBuilder(this)
+            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+            .setTitle(R.string.migration_pending_permissions_dialog_title)
+            .setMessage(R.string.migration_pending_permissions_dialog_content)
+            .setNegativeButton(android.R.string.cancel, ErrorPageElement.UNKNOWN_ELEMENT) { _, _
+                -> // TODO if this is pressed twice, should count as permissions not granted
+            }
+            .setPositiveButton(
+                R.string.migration_pending_permissions_dialog_button_continue,
+                ErrorPageElement.UNKNOWN_ELEMENT)
+            .create()
+            .show()
     }
 
     override fun onResume() {
         super.onResume()
         recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
         homeFragmentViewModel.loadConnectedApps()
+        migrationViewModel.loadTimeout(SystemTimeSource)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,6 +153,63 @@ class HomeFragment : Hilt_HomeFragment() {
         }
         homeFragmentViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             updateConnectedApps(connectedApps)
+        }
+        migrationViewModel.loadTimeout(SystemTimeSource)
+        migrationViewModel.migrationState.observe(viewLifecycleOwner) { showMigrationState(it) }
+
+        migrationViewModel.migrationTimeout.observe(viewLifecycleOwner) {
+            updateMigrationBannerText(it)
+        }
+    }
+
+    private fun updateMigrationBannerText(duration: Duration) {
+        val formattedDuration =
+            DurationFormatter.formatDurationDaysOrHours(requireContext(), duration)
+        migrationBannerSummary =
+            getString(R.string.resume_migration_banner_description, formattedDuration)
+        migrationBanner?.summary = migrationBannerSummary
+    }
+
+    private fun showMigrationState(migrationState: @DataMigrationState Int) {
+        preferenceScreen.removePreferenceRecursively(MIGRATION_BANNER_PREFERENCE_KEY)
+
+        when (migrationState) {
+            HealthConnectDataState.MIGRATION_STATE_IDLE -> {
+                // show nothing, maybe clear banners
+            }
+            HealthConnectDataState.MIGRATION_STATE_ALLOWED -> {
+                // start migration
+                // TODO (b/) for new states show error dialog
+            }
+            HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS -> {
+                // should not be on this screen
+            }
+            HealthConnectDataState.MIGRATION_STATE_APP_UPGRADE_REQUIRED -> {
+                migrationBanner = getMigrationBanner()
+                preferenceScreen.addPreference(migrationBanner)
+            }
+            HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED -> {
+                migrationBanner = getMigrationBanner()
+                preferenceScreen.addPreference(migrationBanner)
+            }
+            HealthConnectDataState.MIGRATION_STATE_COMPLETE -> {
+                showWhatsNewDialog()
+            }
+        }
+    }
+
+    private fun getMigrationBanner(): BannerPreference {
+        return BannerPreference(requireContext()).also {
+            it.setButton(resources.getString(R.string.resume_migration_banner_button))
+            it.title = resources.getString(R.string.resume_migration_banner_title)
+            it.key = MIGRATION_BANNER_PREFERENCE_KEY
+            Log.i("MIGRATION_UI", "bannerSummary in crate = $migrationBannerSummary")
+            it.summary = migrationBannerSummary
+            it.setIcon(R.drawable.ic_settings_alert)
+            it.setButtonOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_migrationActivity)
+            }
+            it.order = 1
         }
     }
 
