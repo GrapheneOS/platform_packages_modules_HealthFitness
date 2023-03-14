@@ -188,6 +188,14 @@ public class HealthConnectManagerService extends SystemService {
                         Slog.e(TAG, "Failed to start user unlocked state changes actions", e);
                     }
                 });
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        PreferenceHelper.getInstance().initializePreferences();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Failed to initialize preferences cache", e);
+                    }
+                });
     }
 
     @NonNull

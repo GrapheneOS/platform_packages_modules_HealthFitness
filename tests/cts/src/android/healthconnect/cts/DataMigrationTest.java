@@ -170,6 +170,7 @@ public class DataMigrationTest {
 
         migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, fromMeters(3D)).build());
 
+        finishMigration();
         final HeightRecord record = getRecord(HeightRecord.class, entityId);
         mExpect.that(record).isNotNull();
         mExpect.that(record.getHeight().getInMeters()).isEqualTo(3D);
@@ -182,6 +183,7 @@ public class DataMigrationTest {
 
         migrate(new StepsRecord.Builder(getMetadata(entityId), mStartTime, mEndTime, 10).build());
 
+        finishMigration();
         final StepsRecord record = getRecord(StepsRecord.class, entityId);
         mExpect.that(record).isNotNull();
         mExpect.that(record.getCount()).isEqualTo(10);
@@ -204,6 +206,7 @@ public class DataMigrationTest {
                                         new PowerRecordSample(fromWatts(30D), mEndTime)))
                         .build());
 
+        finishMigration();
         final PowerRecord record = getRecord(PowerRecord.class, entityId);
 
         mExpect.that(record).isNotNull();
@@ -228,6 +231,7 @@ public class DataMigrationTest {
         final Length secondHeight = fromMeters(1D);
         migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, secondHeight).build());
 
+        finishMigration();
         final HeightRecord record = getRecord(HeightRecord.class, entityId);
         mExpect.that(record).isNotNull();
         mExpect.that(record.getHeight()).isEqualTo(originalHeight);
@@ -246,7 +250,7 @@ public class DataMigrationTest {
                                 .addPermission(READ_HEIGHT)
                                 .addPermission(WRITE_HEIGHT)
                                 .build()));
-
+        finishMigration();
         assertThat(getGrantedAppPermissions()).containsAtLeast(READ_HEIGHT, WRITE_HEIGHT);
     }
 
@@ -268,6 +272,7 @@ public class DataMigrationTest {
         } catch (MigrationException e) {
             assertEquals(MigrationException.ERROR_MIGRATE_ENTITY, e.getErrorCode());
             assertEquals(entityId, e.getFailedEntityId());
+            finishMigration();
         }
     }
 
@@ -329,6 +334,7 @@ public class DataMigrationTest {
                                 .setAppIcon(iconBytes)
                                 .build()));
 
+        finishMigration();
         final AppInfo appInfo = getContributorApplicationInfo(PACKAGE_NAME_NOT_INSTALLED);
 
         mExpect.that(appInfo).isNotNull();
@@ -350,6 +356,7 @@ public class DataMigrationTest {
                                 .setAppIcon(iconBytes)
                                 .build()));
 
+        finishMigration();
         final AppInfo appInfo = getContributorApplicationInfo(PACKAGE_NAME_NOT_INSTALLED);
 
         assertThat(appInfo).isNull();
@@ -377,6 +384,7 @@ public class DataMigrationTest {
                                 .setAppIcon(iconBytes)
                                 .build()));
 
+        finishMigration();
         final AppInfo appInfo = getContributorApplicationInfo(APP_PACKAGE_NAME);
 
         mExpect.that(appInfo).isNotNull();
@@ -392,6 +400,12 @@ public class DataMigrationTest {
         DataMigrationTest.<Void, MigrationException>blockingCallWithPermissions(
                 callback ->
                         mManager.writeMigrationData(List.of(entities), mOutcomeExecutor, callback),
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    }
+
+    private void finishMigration() {
+        DataMigrationTest.<Void, MigrationException>blockingCallWithPermissions(
+                callback -> mManager.finishMigration(mOutcomeExecutor, callback),
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
