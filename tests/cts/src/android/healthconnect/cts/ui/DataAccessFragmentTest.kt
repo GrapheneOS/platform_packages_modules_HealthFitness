@@ -20,6 +20,8 @@ import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
 import android.healthconnect.cts.ui.testing.UiTestUtils.navigateBackToHomeScreen
 import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
+import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
 
