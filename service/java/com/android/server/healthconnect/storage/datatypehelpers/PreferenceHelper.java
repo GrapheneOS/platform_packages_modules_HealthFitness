@@ -93,6 +93,11 @@ public final class PreferenceHelper {
         mPreferences = null;
     }
 
+    /** Fetch preferences into memory. */
+    public void initializePreferences() {
+        populatePreferences();
+    }
+
     private Map<String, String> getPreferences() {
         if (mPreferences == null) {
             populatePreferences();
