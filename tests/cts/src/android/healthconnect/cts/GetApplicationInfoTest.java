@@ -95,7 +95,7 @@ public class GetApplicationInfoTest {
         AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
                 new AtomicReference<>();
         try {
-            getApplicationInfo();
+            TestUtils.getApplicationInfo();
             Assert.fail("Reading app info must not be allowed without right HC permission");
         } catch (HealthConnectException healthConnectException) {
             assertThat(healthConnectException.getErrorCode())
@@ -111,7 +111,7 @@ public class GetApplicationInfoTest {
             Context context = ApplicationProvider.getApplicationContext();
             TestUtils.insertRecords(TestUtils.getTestRecords());
 
-            List<AppInfo> result = getApplicationInfo();
+            List<AppInfo> result = TestUtils.getApplicationInfo();
             assertThat(result).hasSize(1);
 
             AppInfo appInfo = result.get(0);
@@ -126,36 +126,5 @@ public class GetApplicationInfoTest {
         } finally {
             sUiAutomation.dropShellPermissionIdentity();
         }
-    }
-
-    private List<AppInfo> getApplicationInfo() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<List<AppInfo>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.getContributorApplicationsInfo(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ApplicationInfoResponse result) {
-                        response.set(result.getApplicationInfoList());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-
-        return response.get();
     }
 }
