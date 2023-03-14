@@ -129,7 +129,10 @@ public final class PriorityMigrationHelper {
 
     /** Delete pre-migration priority data when migration is finished. */
     public void clearData(@NonNull TransactionManager transactionManager) {
-        transactionManager.delete(new DeleteTableRequest(PRE_MIGRATION_TABLE_NAME));
+        synchronized (mPriorityMigrationHelperInstanceLock) {
+            transactionManager.delete(new DeleteTableRequest(PRE_MIGRATION_TABLE_NAME));
+            mPreMigrationPriorityCache = null;
+        }
     }
 
     /** Returns a requests for creating pre-migration priority table. */
