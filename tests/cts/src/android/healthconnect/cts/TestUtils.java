@@ -918,7 +918,7 @@ public class TestUtils {
                         generateMetadata(),
                         SESSION_START_TIME,
                         SESSION_END_TIME,
-                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
                 .setRoute(route)
                 .setLaps(
                         List.of(

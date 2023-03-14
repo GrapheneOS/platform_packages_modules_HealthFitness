@@ -20,10 +20,15 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
@@ -35,6 +40,8 @@ import android.platform.test.annotations.AppModeFull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,13 +50,23 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class BloodPressureRecordTest {
     private static final String TAG = "BloodPressureRecordTest";
+
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                BloodPressureRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
+        TestUtils.deleteAllStagedRemoteData();
+    }
 
     @Test
     public void testInsertBloodPressureRecord() throws InterruptedException {
@@ -62,7 +79,8 @@ public class BloodPressureRecordTest {
     public void testReadBloodPressureRecord_usingIds() throws InterruptedException {
         List<Record> recordList =
                 Arrays.asList(getCompleteBloodPressureRecord(), getCompleteBloodPressureRecord());
-        readBloodPressureRecordUsingIds(recordList);
+        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
+        readBloodPressureRecordUsingIds(insertedRecords);
     }
 
     @Test
@@ -189,35 +207,23 @@ public class BloodPressureRecordTest {
             request.addClientRecordId(record.getMetadata().getClientRecordId());
         }
         List<BloodPressureRecord> result = TestUtils.readRecords(request.build());
-        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
-        insertedRecord.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
-
-        for (int i = 0; i < result.size(); i++) {
-            BloodPressureRecord other = (BloodPressureRecord) insertedRecord.get(i);
-            assertThat(result.get(i).equals(other)).isTrue();
-        }
+        assertThat(result.size()).isEqualTo(insertedRecord.size());
+        assertThat(result).containsExactlyElementsIn(insertedRecord);
     }
 
     private void readBloodPressureRecordUsingIds(List<Record> recordList)
             throws InterruptedException {
-        List<Record> insertedRecords = TestUtils.insertRecords(recordList);
         ReadRecordsRequestUsingIds.Builder<BloodPressureRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(BloodPressureRecord.class);
-        for (Record record : insertedRecords) {
+        for (Record record : recordList) {
             request.addId(record.getMetadata().getId());
         }
         ReadRecordsRequestUsingIds requestUsingIds = request.build();
         assertThat(requestUsingIds.getRecordType()).isEqualTo(BloodPressureRecord.class);
         assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
         List<BloodPressureRecord> result = TestUtils.readRecords(requestUsingIds);
-        assertThat(result).hasSize(insertedRecords.size());
-        result.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
-        insertedRecords.sort(Comparator.comparing(item -> item.getMetadata().getClientRecordId()));
-
-        for (int i = 0; i < result.size(); i++) {
-            BloodPressureRecord other = (BloodPressureRecord) insertedRecords.get(i);
-            assertThat(result.get(i).equals(other)).isTrue();
-        }
+        assertThat(result).hasSize(recordList.size());
+        assertThat(result).containsExactlyElementsIn(recordList);
     }
 
     @Test
@@ -364,6 +370,168 @@ public class BloodPressureRecordTest {
                 .build();
     }
 
+    @Test
+    public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully()
+            throws InterruptedException {
+
+        List<Record> insertedRecords =
+                TestUtils.insertRecords(
+                        Arrays.asList(
+                                getCompleteBloodPressureRecord(),
+                                getCompleteBloodPressureRecord()));
+
+        // read inserted records and verify that the data is same as inserted.
+        readBloodPressureRecordUsingIds(insertedRecords);
+
+        // Generate a new set of records that will be used to perform the update operation.
+        List<Record> updateRecords =
+                Arrays.asList(getCompleteBloodPressureRecord(), getCompleteBloodPressureRecord());
+
+        // Modify the uid of the updateRecords to the uuid that was present in the insert records.
+        for (int itr = 0; itr < updateRecords.size(); itr++) {
+            updateRecords.set(
+                    itr,
+                    getBloodPressureRecord_update(
+                            updateRecords.get(itr),
+                            insertedRecords.get(itr).getMetadata().getId(),
+                            insertedRecords.get(itr).getMetadata().getClientRecordId()));
+        }
+
+        TestUtils.updateRecords(updateRecords);
+
+        // assert the inserted data has been modified by reading the data.
+        readBloodPressureRecordUsingIds(updateRecords);
+    }
+
+    @Test
+    public void testUpdateRecords_invalidInputRecords_noChangeInDataBase()
+            throws InterruptedException {
+        List<Record> insertedRecords =
+                TestUtils.insertRecords(
+                        Arrays.asList(
+                                getCompleteBloodPressureRecord(),
+                                getCompleteBloodPressureRecord()));
+
+        // read inserted records and verify that the data is same as inserted.
+        readBloodPressureRecordUsingIds(insertedRecords);
+
+        // Generate a second set of records that will be used to perform the update operation.
+        List<Record> updateRecords =
+                Arrays.asList(getCompleteBloodPressureRecord(), getCompleteBloodPressureRecord());
+
+        // Modify the Uid of the updateRecords to the UUID that was present in the insert records,
+        // leaving out alternate records so that they have a new UUID which is not present in the
+        // dataBase.
+        for (int itr = 0; itr < updateRecords.size(); itr++) {
+            updateRecords.set(
+                    itr,
+                    getBloodPressureRecord_update(
+                            updateRecords.get(itr),
+                            itr % 2 == 0
+                                    ? insertedRecords.get(itr).getMetadata().getId()
+                                    : String.valueOf(Math.random()),
+                            itr % 2 == 0
+                                    ? insertedRecords.get(itr).getMetadata().getId()
+                                    : String.valueOf(Math.random())));
+        }
+
+        try {
+            TestUtils.updateRecords(updateRecords);
+            Assert.fail("Expected to fail due to invalid records ids.");
+        } catch (HealthConnectException exception) {
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        }
+
+        // assert the inserted data has not been modified by reading the data.
+        readBloodPressureRecordUsingIds(insertedRecords);
+    }
+
+    @Test
+    public void testUpdateRecords_recordWithInvalidPackageName_noChangeInDataBase()
+            throws InterruptedException {
+        List<Record> insertedRecords =
+                TestUtils.insertRecords(
+                        Arrays.asList(
+                                getCompleteBloodPressureRecord(),
+                                getCompleteBloodPressureRecord()));
+
+        // read inserted records and verify that the data is same as inserted.
+        readBloodPressureRecordUsingIds(insertedRecords);
+
+        // Generate a second set of records that will be used to perform the update operation.
+        List<Record> updateRecords =
+                Arrays.asList(getCompleteBloodPressureRecord(), getCompleteBloodPressureRecord());
+
+        // Modify the Uuid of the updateRecords to the uuid that was present in the insert records.
+        for (int itr = 0; itr < updateRecords.size(); itr++) {
+            updateRecords.set(
+                    itr,
+                    getBloodPressureRecord_update(
+                            updateRecords.get(itr),
+                            insertedRecords.get(itr).getMetadata().getId(),
+                            insertedRecords.get(itr).getMetadata().getClientRecordId()));
+            //             adding an entry with invalid packageName.
+            updateRecords.set(itr, getCompleteBloodPressureRecord());
+        }
+
+        try {
+            TestUtils.updateRecords(updateRecords);
+            Assert.fail("Expected to fail due to invalid package.");
+        } catch (Exception exception) {
+            // verify that the testcase failed due to invalid argument exception.
+            assertThat(exception).isNotNull();
+        }
+
+        // assert the inserted data has not been modified by reading the data.
+        readBloodPressureRecordUsingIds(insertedRecords);
+    }
+
+    @Test
+    public void testInsertAndDeleteRecord_changelogs() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        ChangeLogTokenResponse tokenResponse =
+                TestUtils.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .addRecordType(BloodPressureRecord.class)
+                                .build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        ChangeLogsResponse response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
+
+        List<Record> testRecord = Collections.singletonList(getCompleteBloodPressureRecord());
+        TestUtils.insertRecords(testRecord);
+        response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(1);
+        assertThat(
+                        response.getUpsertedRecords().stream()
+                                .map(Record::getMetadata)
+                                .map(Metadata::getId)
+                                .toList())
+                .containsExactlyElementsIn(
+                        testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
+
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(BloodPressureRecord.class)
+                        .build());
+        response = TestUtils.getChangeLogs(changeLogsRequest);
+        assertThat(response.getDeletedLogs().size()).isEqualTo(testRecord.size());
+        assertThat(
+                        response.getDeletedLogs().stream()
+                                .map(ChangeLogsResponse.DeletedLog::getDeletedRecordId)
+                                .toList())
+                .containsExactlyElementsIn(
+                        testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
+    }
+
     private static BloodPressureRecord getCompleteBloodPressureRecord() {
         Device device =
                 new Device.Builder()
@@ -385,6 +553,29 @@ public class BloodPressureRecordTest {
                         Pressure.fromMillimetersOfMercury(20.0),
                         Pressure.fromMillimetersOfMercury(10.0),
                         1)
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    BloodPressureRecord getBloodPressureRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new BloodPressureRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        2,
+                        Pressure.fromMillimetersOfMercury(30.0),
+                        Pressure.fromMillimetersOfMercury(20.0),
+                        2)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

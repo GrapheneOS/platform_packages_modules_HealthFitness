@@ -21,7 +21,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
-import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
@@ -97,6 +96,7 @@ import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaCategory;
+import android.health.connect.ratelimiter.RateLimiterException;
 import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Binder;
@@ -117,7 +117,6 @@ import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.migration.DataMigrationManager;
-import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -195,15 +194,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             TransactionManager transactionManager,
             HealthConnectPermissionHelper permissionHelper,
             FirstGrantTimeManager firstGrantTimeManager,
-            MigrationBroadcastScheduler migrationBroadcastScheduler,
             Context context) {
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
         mFirstGrantTimeManager = firstGrantTimeManager;
         mContext = context;
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
-        mMigrationStateManager = MigrationStateManager.getInstance();
-        mMigrationStateManager.setMigrationBroadcastScheduler(migrationBroadcastScheduler);
+        mMigrationStateManager = MigrationStateManager.getInitialisedInstance();
         mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
         mBackupRestore = new BackupRestore(mFirstGrantTimeManager);
@@ -280,7 +277,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
-                        RateLimiter.tryAcquireApiCallQuota(
+                        tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_WRITE, isInForeground);
                         Trace.traceBegin(TRACE_TAG_INSERT, TAG_INSERT);
                         List<String> uuids =
@@ -372,7 +369,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             }
                             mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                                     recordTypesToTest, attributionSource);
-                            RateLimiter.tryAcquireApiCallQuota(
+                            tryAcquireApiCallQuota(
                                     uid,
                                     RateLimiter.QuotaCategory.QUOTA_CATEGORY_READ,
                                     isInForeground);
@@ -453,7 +450,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
                                                     request.getRecordType(), attributionSource)
                                             || !isInForeground);
-                            RateLimiter.tryAcquireApiCallQuota(
+                            tryAcquireApiCallQuota(
                                     uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground);
                         }
                         final Map<String, Boolean> extraReadPermsToGrantState =
@@ -595,7 +592,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
-                        RateLimiter.tryAcquireApiCallQuota(
+                        tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_WRITE, isInForeground);
                         mTransactionManager.updateAll(
                                 new UpsertTransactionRequest(
@@ -729,7 +726,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         if (!isInForeground) {
                             throwException(callback, attributionSource.getPackageName());
                         }
-                        RateLimiter.tryAcquireApiCallQuota(
+                        tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground);
                         long startDateAccess =
                                 mPermissionHelper
@@ -830,7 +827,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         if (!holdsDataManagementPermission) {
                             mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
                                     recordTypeIdsToDelete, attributionSource);
-                            RateLimiter.tryAcquireApiCallQuota(
+                            tryAcquireApiCallQuota(
                                     uid,
                                     QuotaCategory.QUOTA_CATEGORY_WRITE,
                                     mAppOpsManagerLocal.isUidInForeground(uid));
@@ -1188,8 +1185,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateStartMigration();
-                        mMigrationStateManager.updateMigrationState(
-                                MIGRATION_STATE_IN_PROGRESS, mContext);
+                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IN_PROGRESS);
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -1215,8 +1211,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateFinishMigration();
-                        mMigrationStateManager.updateMigrationState(
-                                MIGRATION_STATE_COMPLETE, mContext);
+                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -1368,7 +1363,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingPermission(
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
         mBackupRestore.deleteAndResetEverything(userHandle);
-        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IDLE, mContext);
+        mMigrationStateManager.clearCaches();
         AppInfoHelper.getInstance().clearData(mTransactionManager);
         ActivityDateHelper.getInstance().clearData(mTransactionManager);
         MigrationEntityHelper.getInstance().clearData(mTransactionManager);
@@ -1434,6 +1429,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
+    }
+
+    private void tryAcquireApiCallQuota(
+            int uid, @QuotaCategory.Type int quotaCategory, boolean isInForeground) {
+        try {
+            RateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground);
+        } catch (RateLimiterException rateLimiterException) {
+            // Todo (b/271399704): Add logging for rate limiter.
+            throw new HealthConnectException(
+                    rateLimiterException.getErrorCode(), rateLimiterException.getMessage());
+        }
     }
 
     private boolean isDataSyncInProgress() {

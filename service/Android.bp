@@ -37,6 +37,7 @@ java_sdk_library {
     libs: [
         "framework-healthfitness.impl",
         "androidx.annotation_annotation",
+        "framework-sdkextensions",
         "framework-configinfrastructure",
     ],
     static_libs: [

@@ -45,7 +45,7 @@ import androidx.test.runner.AndroidJUnit4;
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
-import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
+import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -71,7 +71,6 @@ public class HealthConnectServiceImplTest {
     @Mock private TransactionManager mTransactionManager;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    @Mock private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
     @Mock private Context mContext;
     @Mock private Context mServiceContext;
     @Mock private PreferenceHelper mPreferenceHelper;
@@ -98,13 +97,13 @@ public class HealthConnectServiceImplTest {
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
                 .thenReturn(mAppOpsManagerLocal);
+        MigrationStateManager.initializeInstance(mContext, mUserHandle.getIdentifier());
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
                         mTransactionManager,
                         mHealthConnectPermissionHelper,
                         mFirstGrantTimeManager,
-                        mMigrationBroadcastScheduler,
                         mServiceContext);
     }
 

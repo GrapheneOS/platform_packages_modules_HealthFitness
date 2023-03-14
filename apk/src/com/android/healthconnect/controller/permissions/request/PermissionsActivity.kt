@@ -106,7 +106,14 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
         cancelButton.setOnClickListener {
             logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
-            handleResults(viewModel.request(getPackageNameExtra()))
+            val result = Intent()
+            val permissions = getPermissionStrings()
+            result.putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
+            result.putExtra(
+                EXTRA_REQUEST_PERMISSIONS_RESULTS,
+                permissions.map { PackageManager.PERMISSION_DENIED }.toIntArray())
+            setResult(Activity.RESULT_CANCELED, result)
+            finish()
         }
     }
 

@@ -17,7 +17,7 @@ package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION;
 import static android.health.connect.datatypes.RecordUtils.isEqualNullableCharSequences;
-import static android.health.connect.datatypes.ValidationUtils.sortAndValidateTimeIntervalHolders;
+import static android.health.connect.datatypes.validation.ValidationUtils.sortAndValidateTimeIntervalHolders;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;

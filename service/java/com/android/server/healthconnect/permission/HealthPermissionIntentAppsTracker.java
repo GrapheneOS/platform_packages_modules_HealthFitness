@@ -41,7 +41,6 @@ import java.util.Set;
  *
  * @hide
  */
-// TODO(b/249527134) Add more tests for this class (package_change and package_replaced broadcasts).
 public class HealthPermissionIntentAppsTracker {
     private static final String TAG = "HealthPermIntentTracker";
     private static final Intent HEALTH_PERMISSIONS_USAGE_INTENT = getHealthPermissionsUsageIntent();
