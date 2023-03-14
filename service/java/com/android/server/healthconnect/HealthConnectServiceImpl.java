@@ -118,6 +118,7 @@ import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.migration.DataMigrationManager;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -1347,6 +1348,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateStartMigration();
                         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IN_PROGRESS);
+                        PriorityMigrationHelper.getInstance().populatePreMigrationPriority();
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -1372,6 +1374,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateFinishMigration();
+                        // TODO(b/272549734) clearing pre-migration priority table on force
+                        //  completion of migration.
+                        PriorityMigrationHelper.getInstance().clearData(mTransactionManager);
                         mMigrationStateManager.updateMigrationState(MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
                     } catch (Exception e) {
@@ -1529,6 +1534,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         ActivityDateHelper.getInstance().clearData(mTransactionManager);
         MigrationEntityHelper.getInstance().clearData(mTransactionManager);
         HealthDataCategoryPriorityHelper.getInstance().clearData(mTransactionManager);
+        PriorityMigrationHelper.getInstance().clearData(mTransactionManager);
         RateLimiter.clearCache();
     }
 
@@ -1625,7 +1631,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 DeviceInfoHelper.getInstance(),
                 AppInfoHelper.getInstance(),
                 MigrationEntityHelper.getInstance(),
-                RecordHelperProvider.getInstance());
+                RecordHelperProvider.getInstance(),
+                HealthDataCategoryPriorityHelper.getInstance(),
+                PriorityMigrationHelper.getInstance());
     }
 
     private void enforceCallingPackageBelongsToUid(String packageName, int callingUid) {
