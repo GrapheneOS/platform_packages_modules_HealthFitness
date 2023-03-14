@@ -16,11 +16,10 @@
 package android.healthconnect.cts.ui
 
 import android.health.connect.TimeInstantRangeFilter
-import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
-import android.healthconnect.cts.TestUtils
 import android.healthconnect.cts.TestUtils.insertRecords
+import android.healthconnect.cts.TestUtils.verifyDeleteRecords
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
 import android.healthconnect.cts.ui.testing.UiTestUtils.navigateBackToHomeScreen
@@ -29,9 +28,10 @@ import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitNotDisplayed
 import androidx.test.uiautomator.By
+import java.time.Duration.ofDays
+import java.time.Instant
 import org.junit.After
 import org.junit.Test
-import java.time.Instant
 
 /** CTS test for HealthConnect Categories screen. */
 class CategoriesFragmentTest : HealthConnectBaseTest() {
@@ -55,8 +55,8 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
 
             clickOnText("Auto-delete")
             clickOnText("Never")
-            navigateUp()
 
+            navigateUp()
             waitDisplayed(By.text("Never"))
 
             clickOnText("Auto-delete")
@@ -65,15 +65,32 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
             clickOnText("Done")
 
             navigateUp()
-
             waitDisplayed(By.text("After 3 months"))
         }
     }
 
     @Test
-    fun categoriesFragment_deleteData() {
-        val records: List<Record> = listOf(stepsRecordFromTestApp(), stepsRecordFromTestApp())
+    fun categoriesFragment_deleteAllData() {
+        val records: List<Record> = listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(100))))
         insertRecords(records)
+
+        context.launchMainActivity {
+            clickOnText("Data and access")
+            waitDisplayed(By.text("Activity"))
+
+            clickOnText("Delete all data")
+            clickOnText("Delete all data")
+            clickOnText("Next")
+            clickOnText("Delete")
+            clickOnText("Done")
+
+            waitNotDisplayed(By.text("Activity"))
+        }
+    }
+
+    @Test
+    fun categoriesFragment_deleteFromTimeRange() {
+        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
 
         context.launchMainActivity {
             clickOnText("Data and access")
@@ -85,6 +102,14 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
             clickOnText("Delete")
             clickOnText("Done")
 
+            waitDisplayed(By.text("Activity"))
+
+            clickOnText("Delete all data")
+            clickOnText("Delete last 30 days")
+            clickOnText("Next")
+            clickOnText("Delete")
+            clickOnText("Done")
+
             navigateUp()
             waitNotDisplayed(By.text("Activity"))
         }
@@ -92,12 +117,12 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
 
     @After
     fun tearDown() {
-        TestUtils.verifyDeleteRecords(
-                StepsRecord::class.java,
-                TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build())
+        verifyDeleteRecords(
+            StepsRecord::class.java,
+            TimeInstantRangeFilter.Builder()
+                .setStartTime(Instant.EPOCH)
+                .setEndTime(Instant.now())
+                .build())
         navigateBackToHomeScreen()
     }
 
