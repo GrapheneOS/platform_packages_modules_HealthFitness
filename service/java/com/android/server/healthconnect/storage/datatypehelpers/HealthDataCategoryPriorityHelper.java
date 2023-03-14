@@ -220,6 +220,11 @@ public class HealthDataCategoryPriorityHelper {
         return mHealthDataCategoryToAppIdPriorityMap;
     }
 
+    /** Returns an immutable map of data categories along with their priority order. */
+    public Map<Integer, List<Long>> getHealthDataCategoryToAppIdPriorityMapImmutable() {
+        return Collections.unmodifiableMap(getHealthDataCategoryToAppIdPriorityMap());
+    }
+
     private synchronized void populateDataCategoryToAppIdPriorityMap() {
         if (mHealthDataCategoryToAppIdPriorityMap != null) {
             return;

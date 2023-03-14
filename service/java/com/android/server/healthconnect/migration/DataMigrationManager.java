@@ -27,24 +27,31 @@ import android.content.pm.PackageManager.PackageInfoFlags;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.migration.AppInfoMigrationPayload;
+import android.health.connect.migration.MetadataMigrationPayload;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationPayload;
 import android.health.connect.migration.PermissionMigrationPayload;
+import android.health.connect.migration.PriorityMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
 import android.os.UserHandle;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
+import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Controls the data migration flow. Accepts and applies collections of {@link MigrationEntity}.
@@ -63,6 +70,8 @@ public final class DataMigrationManager {
     private final AppInfoHelper mAppInfoHelper;
     private final MigrationEntityHelper mMigrationEntityHelper;
     private final RecordHelperProvider mRecordHelperProvider;
+    private final PriorityMigrationHelper mPriorityMigrationHelper;
+    private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
 
     public DataMigrationManager(
             @NonNull Context userContext,
@@ -72,7 +81,9 @@ public final class DataMigrationManager {
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull MigrationEntityHelper migrationEntityHelper,
-            @NonNull RecordHelperProvider recordHelperProvider) {
+            @NonNull RecordHelperProvider recordHelperProvider,
+            @NonNull HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            @NonNull PriorityMigrationHelper priorityMigrationHelper) {
         mUserContext = userContext;
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
@@ -81,6 +92,8 @@ public final class DataMigrationManager {
         mAppInfoHelper = appInfoHelper;
         mMigrationEntityHelper = migrationEntityHelper;
         mRecordHelperProvider = recordHelperProvider;
+        mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
+        mPriorityMigrationHelper = priorityMigrationHelper;
     }
 
     /**
@@ -119,6 +132,10 @@ public final class DataMigrationManager {
                 migratePermissions((PermissionMigrationPayload) payload);
             } else if (payload instanceof AppInfoMigrationPayload) {
                 migrateAppInfo((AppInfoMigrationPayload) payload);
+            } else if (payload instanceof PriorityMigrationPayload) {
+                migratePriority((PriorityMigrationPayload) payload);
+            } else if (payload instanceof MetadataMigrationPayload) {
+                migrateMetadata((MetadataMigrationPayload) payload);
             } else {
                 throw new IllegalArgumentException("Unsupported payload type: " + payload);
             }
@@ -216,5 +233,53 @@ public final class DataMigrationManager {
         public String getEntityId() {
             return mEntityId;
         }
+    }
+
+    /**
+     * Internal method to migrate priority list of packages for data category
+     *
+     * @param priorityMigrationPayload contains data category and priority list
+     */
+    private void migratePriority(@NonNull PriorityMigrationPayload priorityMigrationPayload) {
+        if (priorityMigrationPayload.getDataOrigins().isEmpty()) {
+            return;
+        }
+
+        List<String> priorityToMigrate =
+                priorityMigrationPayload.getDataOrigins().stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .toList();
+
+        List<String> preMigrationPriority =
+                mAppInfoHelper.getPackageNames(
+                        mPriorityMigrationHelper.getPreMigrationPriority(
+                                priorityMigrationPayload.getDataCategory()));
+
+        /*
+        The combined priority would contain priority order from module appended by additional
+        packages from apk priority order.
+        */
+        List<String> combinedPriorityOrder =
+                Stream.concat(preMigrationPriority.stream(), priorityToMigrate.stream())
+                        .distinct()
+                        .collect(Collectors.toList());
+
+        /*
+         * setPriorityOrder removes any additional packages that were not present already in
+         * priority, and it adds any package in priority that was present earlier but missing in
+         * updated priority. This means it will remove any package that don't have required
+         * permission for category as well as it will remove any package that is uninstalled.
+         */
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(
+                priorityMigrationPayload.getDataCategory(), combinedPriorityOrder);
+    }
+
+    /**
+     * Migrates Metadata like recordRetentionPeriod
+     *
+     * @param payload of type MetadataMigrationPayload having retention period.
+     */
+    private void migrateMetadata(MetadataMigrationPayload payload) {
+        AutoDeleteService.setRecordRetentionPeriodInDays(payload.getRecordRetentionPeriodDays());
     }
 }
