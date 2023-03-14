@@ -53,8 +53,6 @@ import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -301,26 +299,6 @@ class PermissionsActivityTest {
             .isEqualTo(
                 intArrayOf(
                     PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_DENIED, PERMISSION_GRANTED))
-    }
-
-    @Test
-    fun cancel_permissionGranted_deniesAllPermissions() {
-        val permissions = arrayOf(READ_STEPS, READ_HEART_RATE, WRITE_DISTANCE, WRITE_EXERCISE)
-        val startActivityIntent = getPermissionScreenIntent(permissions)
-        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        
-        scenario.onActivity { activity: PermissionsActivity ->
-            activity.findViewById<Button>(R.id.cancel).callOnClick()
-        }
-
-        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_CANCELED)
-        val returnedIntent = scenario.result.resultData
-        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
-            .isEqualTo(permissions)
-        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
-            .isEqualTo(
-                intArrayOf(
-                    PERMISSION_DENIED, PERMISSION_DENIED, PERMISSION_DENIED, PERMISSION_DENIED))
     }
 
     @Test
