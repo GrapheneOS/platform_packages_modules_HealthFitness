@@ -39,6 +39,7 @@ import java.util.Objects;
  * @hide
  */
 public class DeleteTableRequest {
+
     private static final String TAG = "HealthConnectDelete";
     private final String mTableName;
     @RecordTypeIdentifier.RecordType private final int mRecordType;
@@ -52,6 +53,7 @@ public class DeleteTableRequest {
     private boolean mRequiresUuId;
     private List<String> mIds;
     private boolean mEnforcePackageCheck;
+    private int mNumberOfUuidsToDelete;
 
     public DeleteTableRequest(
             @NonNull String tableName, @RecordTypeIdentifier.RecordType int recordType) {
@@ -194,5 +196,26 @@ public class DeleteTableRequest {
         mTimeColumnName = timeColumnName;
 
         return this;
+    }
+
+    /**
+     * Sets total number of UUIDs being deleted by this request.
+     *
+     * @param numberOfUuidsToDelete Number of UUIDs being deleted
+     */
+    public void setNumberOfUuidsToDelete(int numberOfUuidsToDelete) {
+        this.mNumberOfUuidsToDelete = numberOfUuidsToDelete;
+    }
+
+    /**
+     * Total number of records deleted.
+     *
+     * @return Number of records deleted by this request
+     */
+    public int getTotalNumberOfRecordsDeleted() {
+        if (requiresRead()) {
+            return mNumberOfUuidsToDelete;
+        }
+        return mIds.size();
     }
 }
