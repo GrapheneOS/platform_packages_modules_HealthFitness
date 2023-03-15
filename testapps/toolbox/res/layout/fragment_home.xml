@@ -32,6 +32,15 @@
       android:src="@mipmap/ic_launcher" />
 
   <Button
+      android:id="@+id/launch_health_connect_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_gravity="center_horizontal"
+      android:minWidth="250dp"
+      android:text="@string/launch_health_connect" />
+
+  <Button
       android:id="@+id/request_permissions_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -93,6 +102,15 @@
       android:layout_gravity="center_horizontal"
       android:minWidth="250dp"
       android:text="@string/seed_performance_read_data" />
+
+  <Button
+      android:id="@+id/toggle_permission_intent_filter"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_gravity="center_horizontal"
+      android:minWidth="250dp"
+      android:text="@string/toggle_permission_intent_filter" />
 
 
 
