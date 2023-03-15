@@ -312,13 +312,6 @@
     <!--endregion-->
     <!--endregion-->
 
-    <!--region apps -->
-    <string name="app_1" translatable="false">App 1</string>
-    <string name="app_2" translatable="false">App 2</string>
-    <string name="app_3" translatable="false">App 3</string>
-    <string name="app_4" translatable="false">App 4</string>
-    <!--endregion-->
-
     <!-- region Permissions -->
     <string name="read_permission_category" description="Title for read permission category in the app permission screen">Allow &#8220;<xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g>&#8221; to read</string>
     <string name="write_permission_category" description="Title for write permission category in the app permission screen">Allow &#8220;<xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g>&#8221; to write</string>
@@ -465,7 +458,7 @@
 
     <!-- region Data entries -->
     <string name="data_entry_header" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
-    <string name="data_point_action_content_description" description="Content description for the menu button of an individual data entry [CHAR LIMIT=NONE]">Data entry options</string>
+    <string name="data_point_action_content_description" description="Content description for the menu button of an individual data entry [CHAR LIMIT=NONE]">Delete data entry</string>
     <string name="delete_data_point" description="Menu option for deleting an individual data entry [CHAR LIMIT=50]">Delete entry</string>
 
     <string name="watt_format" description="Power value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 W} other {# W}}</string>
