@@ -16,24 +16,33 @@
 
 package android.healthconnect.cts.device;
 
+import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
+import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
+import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.health.connect.HealthConnectException;
+import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
 
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.cts.install.lib.TestApp;
 
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectDeviceTest {
     static final String TAG = "HealthConnectDeviceTest";
-
     static final long VERSION_CODE = 1;
 
     private static final TestApp APP_A_WITH_READ_WRITE_PERMS =
@@ -52,9 +61,46 @@ public class HealthConnectDeviceTest {
                     false,
                     "CtsHealthConnectTestAppB.apk");
 
+    @After
+    public void tearDown() {
+        deleteAllStagedRemoteData();
+    }
+
     @Test
     public void testAppWithNormalReadWritePermCanInsertRecord() throws Exception {
         Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
         assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+    }
+
+    @Test
+    public void testAnAppCantDeleteAnotherAppEntry() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        try {
+            deleteRecordsAs(APP_B_WITH_READ_WRITE_PERMS, listOfRecordIdsAndClass);
+            Assert.fail("Should have thrown an Invalid Argument Exception!");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        }
+    }
+
+    @Test
+    public void testAnAppCantUpdateAnotherAppEntry() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        try {
+            updateRecordsAs(APP_B_WITH_READ_WRITE_PERMS, listOfRecordIdsAndClass);
+            Assert.fail("Should have thrown an Invalid Argument Exception!");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        }
     }
 }

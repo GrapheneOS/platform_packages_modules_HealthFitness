@@ -16,19 +16,30 @@
 
 package android.healthconnect.cts.testhelper;
 
+import static android.healthconnect.cts.lib.TestUtils.DELETE_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
 import static android.healthconnect.cts.lib.TestUtils.QUERY_TYPE;
+import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
+import static android.healthconnect.cts.lib.TestUtils.UPDATE_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.getTestRecords;
-import static android.healthconnect.cts.lib.TestUtils.insertRecords;
+import static android.healthconnect.cts.lib.TestUtils.insertRecordsAndGetIds;
+import static android.healthconnect.cts.lib.TestUtils.readRecords;
+import static android.healthconnect.cts.lib.TestUtils.updateRecords;
+import static android.healthconnect.cts.lib.TestUtils.verifyDeleteRecords;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.datatypes.Record;
+import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HealthConnectTestHelper extends Activity {
@@ -38,12 +49,29 @@ public class HealthConnectTestHelper extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Context context = getApplicationContext();
-        String queryType = getIntent().getStringExtra(QUERY_TYPE);
+        Bundle bundle = getIntent().getExtras();
+        String queryType = bundle.getString(QUERY_TYPE);
         Intent returnIntent;
         try {
             switch (queryType) {
                 case INSERT_RECORD_QUERY:
                     returnIntent = insertRecord(queryType, context);
+                    break;
+                case DELETE_RECORDS_QUERY:
+                    returnIntent =
+                            deleteRecords(
+                                    queryType,
+                                    (List<TestUtils.RecordTypeAndRecordIds>)
+                                            bundle.getSerializable(RECORD_IDS),
+                                    context);
+                    break;
+                case UPDATE_RECORDS_QUERY:
+                    returnIntent =
+                            updateRecordsAs(
+                                    queryType,
+                                    (List<TestUtils.RecordTypeAndRecordIds>)
+                                            bundle.getSerializable(RECORD_IDS),
+                                    context);
                     break;
                 default:
                     throw new IllegalStateException(
@@ -55,16 +83,102 @@ public class HealthConnectTestHelper extends Activity {
         }
 
         sendBroadcast(returnIntent);
+        this.finish();
     }
 
+    /**
+     * Method to get test records, insert them, and put the list of recordId and recordClass in the
+     * intent
+     *
+     * @param queryType - specifies the action, here it should be INSERT_RECORDS_QUERY
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
     private Intent insertRecord(String queryType, Context context) {
         List<Record> records = getTestRecords(context.getPackageName());
         final Intent intent = new Intent(queryType);
         try {
-            insertRecords(records, context);
+            List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                    insertRecordsAndGetIds(records, context);
+            intent.putExtra(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
             intent.putExtra(SUCCESS, true);
         } catch (InterruptedException e) {
             intent.putExtra(SUCCESS, false);
+        }
+
+        return intent;
+    }
+
+    /**
+     * Method to delete the records and put the Exception in the intent if deleting records throws
+     * an exception
+     *
+     * @param queryType - specifies the action, here it should be DELETE_RECORDS_QUERY
+     * @param listOfRecordIdsAndClassName - list of recordId and recordClass of records to be
+     *     deleted
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     * @throws ClassNotFoundException if a record category class is not found for any class name
+     *     present in the list @listOfRecordIdsAndClassName
+     */
+    private Intent deleteRecords(
+            String queryType,
+            List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClassName,
+            Context context)
+            throws ClassNotFoundException {
+        final Intent intent = new Intent(queryType);
+
+        List<RecordIdFilter> recordIdFilters = new ArrayList<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds :
+                listOfRecordIdsAndClassName) {
+            for (String recordId : recordTypeAndRecordIds.getRecordIds()) {
+                recordIdFilters.add(
+                        RecordIdFilter.fromId(
+                                (Class<? extends Record>)
+                                        Class.forName(recordTypeAndRecordIds.getRecordType()),
+                                recordId));
+            }
+        }
+        try {
+            verifyDeleteRecords(recordIdFilters, context);
+        } catch (Exception e) {
+            intent.putExtra(INTENT_EXCEPTION, e);
+        }
+        return intent;
+    }
+
+    /**
+     * Method to update the records and put the exception in the intent if updating the records
+     * throws an exception
+     *
+     * @param queryType - specifies the action, here it should be UPDATE_RECORDS_QUERY
+     * @param listOfRecordIdsAndClassName - list of recordId and recordClass of records to be
+     *     updated
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent updateRecordsAs(
+            String queryType,
+            List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClassName,
+            Context context) {
+        final Intent intent = new Intent(queryType);
+
+        try {
+            for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds :
+                    listOfRecordIdsAndClassName) {
+                List<? extends Record> recordsToBeUpdated =
+                        readRecords(
+                                new ReadRecordsRequestUsingFilters.Builder<>(
+                                                (Class<? extends Record>)
+                                                        Class.forName(
+                                                                recordTypeAndRecordIds
+                                                                        .getRecordType()))
+                                        .build(),
+                                context);
+                updateRecords((List<Record>) recordsToBeUpdated, context);
+            }
+        } catch (Exception e) {
+            intent.putExtra(INTENT_EXCEPTION, e);
         }
 
         return intent;
