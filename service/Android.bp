@@ -39,6 +39,7 @@ java_sdk_library {
         "androidx.annotation_annotation",
         "framework-sdkextensions",
         "framework-configinfrastructure",
+        "keepanno-annotations",
     ],
     static_libs: [
         "guava",
