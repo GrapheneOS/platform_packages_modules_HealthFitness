@@ -1358,7 +1358,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateStartMigration();
-                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_IN_PROGRESS);
+                        mMigrationStateManager.updateMigrationState(
+                                mContext, MIGRATION_STATE_IN_PROGRESS);
                         PriorityMigrationHelper.getInstance().populatePreMigrationPriority();
                         callback.onSuccess();
                     } catch (Exception e) {
@@ -1388,7 +1389,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         // TODO(b/272549734) clearing pre-migration priority table on force
                         //  completion of migration.
                         PriorityMigrationHelper.getInstance().clearData(mTransactionManager);
-                        mMigrationStateManager.updateMigrationState(MIGRATION_STATE_COMPLETE);
+                        mMigrationStateManager.updateMigrationState(
+                                mContext, MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
@@ -1452,7 +1454,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateSetMinSdkVersion();
                         mMigrationStateManager.setMinDataMigrationSdkExtensionVersion(
-                                requiredSdkExtension);
+                                mContext, requiredSdkExtension);
 
                         callback.onSuccess();
                     } catch (Exception e) {
@@ -1540,7 +1542,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mContext.enforceCallingPermission(
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
         mBackupRestore.deleteAndResetEverything(userHandle);
-        mMigrationStateManager.clearCaches();
+        mMigrationStateManager.clearCaches(mContext);
         AppInfoHelper.getInstance().clearData(mTransactionManager);
         ActivityDateHelper.getInstance().clearData(mTransactionManager);
         MigrationEntityHelper.getInstance().clearData(mTransactionManager);
