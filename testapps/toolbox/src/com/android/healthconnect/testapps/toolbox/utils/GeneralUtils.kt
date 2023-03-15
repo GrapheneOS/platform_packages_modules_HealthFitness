@@ -16,7 +16,6 @@
 package com.android.healthconnect.testapps.toolbox.utils
 
 import android.content.Context
-import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.InsertRecordsResponse
 import android.health.connect.ReadRecordsRequestUsingFilters
@@ -68,7 +67,7 @@ class GeneralUtils {
                                 records, Runnable::run, continuation.asOutcomeReceiver())
                         }
                         .records
-                } catch (ex: HealthConnectException) {
+                } catch (ex: Exception) {
                     throw ex
                 }
             return insertedRecords
@@ -82,7 +81,7 @@ class GeneralUtils {
                 suspendCancellableCoroutine<Void> { continuation ->
                     manager.updateRecords(records, Runnable::run, continuation.asOutcomeReceiver())
                 }
-            } catch (ex: HealthConnectException) {
+            } catch (ex: Exception) {
                 throw ex
             }
         }
