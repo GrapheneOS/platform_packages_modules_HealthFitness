@@ -331,6 +331,11 @@ public final class BackupRestore {
                 .collect(Collectors.toSet());
     }
 
+    /** Returns true if restore is in progress. API calls are blocked when this is true, */
+    public boolean isRestoreInProgress(int userId) {
+        return getInternalRestoreState(userId) == INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
+    }
+
     void setInternalRestoreState(
             @InternalRestoreState int dataRestoreState, int userID, boolean force) {
         @InternalRestoreState int currentRestoreState = getInternalRestoreState(userID);

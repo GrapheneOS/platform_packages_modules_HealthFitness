@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import android.annotation.FloatRange;
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.FloorsClimbedRecordInternal;
 
 import java.time.Instant;

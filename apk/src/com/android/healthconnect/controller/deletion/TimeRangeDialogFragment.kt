@@ -32,7 +32,6 @@ import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
-import java.util.Locale
 import javax.inject.Inject
 
 /** A {@link DialogFragment} for choosing the deletion time range. */
@@ -78,14 +77,11 @@ class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
                 resources.getString(R.string.time_range_message_all)
             is DeletionType.DeletionTypeHealthPermissionTypeData,
             is DeletionType.DeletionTypeHealthPermissionTypeFromApp -> {
-                val permissionTypeLabel =
-                    getString(deletionParameters.getPermissionTypeLabel())
-                        .lowercase(Locale.getDefault())
+                val permissionTypeLabel = getString(deletionParameters.getPermissionTypeLabel())
                 resources.getString(R.string.time_range_message_data_type, permissionTypeLabel)
             }
             is DeletionType.DeletionTypeCategoryData -> {
-                val categoryLabel =
-                    getString(deletionParameters.getCategoryLabel()).lowercase(Locale.getDefault())
+                val categoryLabel = getString(deletionParameters.getCategoryLabel())
                 resources.getString(R.string.time_range_message_category, categoryLabel)
             }
             is DeletionType.DeletionTypeAppData -> {

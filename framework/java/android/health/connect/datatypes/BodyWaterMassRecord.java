@@ -16,7 +16,7 @@
 
 package android.health.connect.datatypes;
 
-import static android.health.connect.datatypes.ValidationUtils.requireInRange;
+import static android.health.connect.datatypes.validation.ValidationUtils.requireInRange;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.Mass;

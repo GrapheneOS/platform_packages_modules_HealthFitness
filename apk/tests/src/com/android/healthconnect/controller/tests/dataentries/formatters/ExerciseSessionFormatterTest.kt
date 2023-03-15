@@ -24,6 +24,7 @@ import android.health.connect.datatypes.ExerciseSegment
 import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_JUMPING_JACK
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING
+import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT
 import android.health.connect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.FormattedEntry
@@ -102,7 +103,7 @@ class ExerciseSessionFormatterTest {
                         .build())
             }
         val record =
-            getRecord(type = EXERCISE_SESSION_TYPE_BIKING, segments = segments, laps = laps)
+            getRecord(type = EXERCISE_SESSION_TYPE_OTHER_WORKOUT, segments = segments, laps = laps)
         assertThat(formatter.formatRecordDetails(record))
             .isEqualTo(
                 listOf(

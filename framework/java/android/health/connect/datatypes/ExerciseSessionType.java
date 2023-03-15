@@ -20,6 +20,7 @@ import android.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Set;
 
 /**
  * Identifier for exercise types, as returned by {@link ExerciseSessionRecord#getExerciseType()}.
@@ -281,4 +282,84 @@ public final class ExerciseSessionType {
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ExerciseSessionTypes {}
+
+    // Update this set when add new type or deprecate existing type.
+    private static final Set<Integer> VALID_TYPES =
+            Set.of(
+                    EXERCISE_SESSION_TYPE_UNKNOWN,
+                    EXERCISE_SESSION_TYPE_BADMINTON,
+                    EXERCISE_SESSION_TYPE_BASEBALL,
+                    EXERCISE_SESSION_TYPE_BASKETBALL,
+                    EXERCISE_SESSION_TYPE_BIKING,
+                    EXERCISE_SESSION_TYPE_BIKING_STATIONARY,
+                    EXERCISE_SESSION_TYPE_BOOT_CAMP,
+                    EXERCISE_SESSION_TYPE_BOXING,
+                    EXERCISE_SESSION_TYPE_CALISTHENICS,
+                    EXERCISE_SESSION_TYPE_CRICKET,
+                    EXERCISE_SESSION_TYPE_DANCING,
+                    EXERCISE_SESSION_TYPE_ELLIPTICAL,
+                    EXERCISE_SESSION_TYPE_EXERCISE_CLASS,
+                    EXERCISE_SESSION_TYPE_FENCING,
+                    EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN,
+                    EXERCISE_SESSION_TYPE_FOOTBALL_AUSTRALIAN,
+                    EXERCISE_SESSION_TYPE_FRISBEE_DISC,
+                    EXERCISE_SESSION_TYPE_GOLF,
+                    EXERCISE_SESSION_TYPE_GUIDED_BREATHING,
+                    EXERCISE_SESSION_TYPE_GYMNASTICS,
+                    EXERCISE_SESSION_TYPE_HANDBALL,
+                    EXERCISE_SESSION_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING,
+                    EXERCISE_SESSION_TYPE_HIKING,
+                    EXERCISE_SESSION_TYPE_ICE_HOCKEY,
+                    EXERCISE_SESSION_TYPE_ICE_SKATING,
+                    EXERCISE_SESSION_TYPE_MARTIAL_ARTS,
+                    EXERCISE_SESSION_TYPE_PADDLING,
+                    EXERCISE_SESSION_TYPE_PARAGLIDING,
+                    EXERCISE_SESSION_TYPE_PILATES,
+                    EXERCISE_SESSION_TYPE_RACQUETBALL,
+                    EXERCISE_SESSION_TYPE_ROCK_CLIMBING,
+                    EXERCISE_SESSION_TYPE_ROLLER_HOCKEY,
+                    EXERCISE_SESSION_TYPE_ROWING,
+                    EXERCISE_SESSION_TYPE_ROWING_MACHINE,
+                    EXERCISE_SESSION_TYPE_RUGBY,
+                    EXERCISE_SESSION_TYPE_RUNNING,
+                    EXERCISE_SESSION_TYPE_RUNNING_TREADMILL,
+                    EXERCISE_SESSION_TYPE_SAILING,
+                    EXERCISE_SESSION_TYPE_SCUBA_DIVING,
+                    EXERCISE_SESSION_TYPE_SKATING,
+                    EXERCISE_SESSION_TYPE_SKIING,
+                    EXERCISE_SESSION_TYPE_SNOWBOARDING,
+                    EXERCISE_SESSION_TYPE_SNOWSHOEING,
+                    EXERCISE_SESSION_TYPE_SOCCER,
+                    EXERCISE_SESSION_TYPE_SOFTBALL,
+                    EXERCISE_SESSION_TYPE_SQUASH,
+                    EXERCISE_SESSION_TYPE_STAIR_CLIMBING,
+                    EXERCISE_SESSION_TYPE_STAIR_CLIMBING_MACHINE,
+                    EXERCISE_SESSION_TYPE_STRENGTH_TRAINING,
+                    EXERCISE_SESSION_TYPE_STRETCHING,
+                    EXERCISE_SESSION_TYPE_SURFING,
+                    EXERCISE_SESSION_TYPE_SWIMMING_OPEN_WATER,
+                    EXERCISE_SESSION_TYPE_SWIMMING_POOL,
+                    EXERCISE_SESSION_TYPE_TABLE_TENNIS,
+                    EXERCISE_SESSION_TYPE_TENNIS,
+                    EXERCISE_SESSION_TYPE_VOLLEYBALL,
+                    EXERCISE_SESSION_TYPE_WALKING,
+                    EXERCISE_SESSION_TYPE_WATER_POLO,
+                    EXERCISE_SESSION_TYPE_WEIGHTLIFTING,
+                    EXERCISE_SESSION_TYPE_WHEELCHAIR,
+                    EXERCISE_SESSION_TYPE_OTHER_WORKOUT,
+                    EXERCISE_SESSION_TYPE_YOGA);
+
+    /**
+     * Returns whether given session type is known by current module version, throws exception if
+     * the type is negative.
+     *
+     * @hide
+     */
+    public static boolean isKnownSessionType(int sessionType) {
+        if (sessionType < 0) {
+            throw new IllegalArgumentException("Exercise session type must be non negative.");
+        }
+
+        return VALID_TYPES.contains(sessionType);
+    }
 }

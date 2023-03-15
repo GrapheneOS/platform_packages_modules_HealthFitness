@@ -28,6 +28,8 @@ import android.util.Slog;
 
 import com.android.server.SystemService;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
+import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -49,12 +51,12 @@ import java.util.Objects;
 public class HealthConnectManagerService extends SystemService {
     private static final String TAG = "HealthConnectManagerService";
     private final Context mContext;
-    private final PermissionPackageChangesOrchestrator mPackageMonitor;
+    private final PermissionPackageChangesOrchestrator mPermissionPackageChangesOrchestrator;
     private final HealthConnectServiceImpl mHealthConnectService;
     private final TransactionManager mTransactionManager;
     private final UserManager mUserManager;
     private UserHandle mCurrentForegroundUser;
-    private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
+    private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -70,7 +72,7 @@ public class HealthConnectManagerService extends SystemService {
                         HealthConnectManager.getHealthPermissions(context),
                         permissionIntentTracker,
                         firstGrantTimeManager);
-        mPackageMonitor =
+        mPermissionPackageChangesOrchestrator =
                 new PermissionPackageChangesOrchestrator(
                         permissionIntentTracker, firstGrantTimeManager, permissionHelper);
         mUserManager = context.getSystemService(UserManager.class);
@@ -82,18 +84,19 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectDeviceConfigManager.initializeInstance(context);
         mMigrationBroadcastScheduler =
                 new MigrationBroadcastScheduler(mCurrentForegroundUser.getIdentifier());
+        MigrationStateManager.initializeInstance(mContext, mCurrentForegroundUser.getIdentifier());
+        MigrationStateManager.getInitialisedInstance()
+                .setMigrationBroadcastScheduler(mMigrationBroadcastScheduler);
         mHealthConnectService =
                 new HealthConnectServiceImpl(
-                        mTransactionManager,
-                        permissionHelper,
-                        firstGrantTimeManager,
-                        mMigrationBroadcastScheduler,
-                        mContext);
+                        mTransactionManager, permissionHelper, firstGrantTimeManager, mContext);
     }
 
     @Override
     public void onStart() {
-        mPackageMonitor.registerBroadcastReceiver(mContext);
+        mPermissionPackageChangesOrchestrator.registerBroadcastReceiver(mContext);
+        new MigratorPackageChangesReceiver(MigrationStateManager.getInitialisedInstance())
+                .registerBroadcastReceiver(mContext);
         publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
     }
 
@@ -107,6 +110,8 @@ public class HealthConnectManagerService extends SystemService {
         mTransactionManager.onUserSwitching();
         RateLimiter.clearCache();
         HealthConnectThreadScheduler.resetThreadPools();
+        MigrationStateManager.getInitialisedInstance()
+                .onUserSwitching(to.getUserHandle().getIdentifier());
 
         mCurrentForegroundUser = to.getUserHandle();
         if (mUserManager.isUserUnlocked(to.getUserHandle())) {
@@ -143,7 +148,7 @@ public class HealthConnectManagerService extends SystemService {
     public void onUserStopping(@NonNull TargetUser user) {
         Objects.requireNonNull(user);
         try {
-            HealthConnectDailyService.stop(mContext, user.getUserHandle().getIdentifier());
+            HealthConnectDailyJobs.stop(mContext, user.getUserHandle().getIdentifier());
         } catch (Exception e) {
             Slog.e(TAG, "Failed to stop Health Connect daily service.", e);
         }
@@ -159,8 +164,8 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        HealthConnectDailyService.schedule(
-                                        mContext, mCurrentForegroundUser.getIdentifier());
+                        HealthConnectDailyJobs.schedule(
+                                mContext, mCurrentForegroundUser.getIdentifier());
                     } catch (Exception e) {
                         Slog.e(TAG, "Failed to scheduled Health Connect daily service.", e);
                     }
@@ -172,6 +177,23 @@ public class HealthConnectManagerService extends SystemService {
                         mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
                     } catch (Exception e) {
                         Slog.e(TAG, "Migration broadcast schedule failed", e);
+                    }
+                });
+
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        MigrationStateManager.getInitialisedInstance().switchToSetupForUser();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Failed to start user unlocked state changes actions", e);
+                    }
+                });
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        PreferenceHelper.getInstance().initializePreferences();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Failed to initialize preferences cache", e);
                     }
                 });
     }

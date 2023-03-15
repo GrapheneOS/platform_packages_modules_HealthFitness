@@ -32,6 +32,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,6 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @hide
  */
 public final class PreferenceHelper {
+    private static final String TAG = "PreferenceHelper";
     private static final String TABLE_NAME = "preference_table";
     private static final String KEY_COLUMN_NAME = "key";
     private static final String VALUE_COLUMN_NAME = "value";
@@ -65,6 +67,18 @@ public final class PreferenceHelper {
         getPreferences().put(key, value);
     }
 
+    /** Inserts multiple preferences together in a transaction */
+    public synchronized void insertOrReplacePreferencesTransaction(
+            HashMap<String, String> keyValues) {
+        List<UpsertTableRequest> requests = new ArrayList<>();
+        keyValues.forEach(
+                (key, value) ->
+                        requests.add(
+                                new UpsertTableRequest(TABLE_NAME, getContentValues(key, value))));
+        TransactionManager.getInitialisedInstance().insertOrReplaceAll(requests);
+        getPreferences().putAll(keyValues);
+    }
+
     @NonNull
     public CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo());
@@ -77,6 +91,11 @@ public final class PreferenceHelper {
 
     public synchronized void clearCache() {
         mPreferences = null;
+    }
+
+    /** Fetch preferences into memory. */
+    public void initializePreferences() {
+        populatePreferences();
     }
 
     private Map<String, String> getPreferences() {

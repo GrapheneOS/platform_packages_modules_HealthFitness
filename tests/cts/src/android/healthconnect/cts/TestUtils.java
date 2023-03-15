@@ -30,6 +30,7 @@ import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
@@ -46,6 +47,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
@@ -710,13 +712,28 @@ public class TestUtils {
 
             CountDownLatch latch = new CountDownLatch(1);
             AtomicReference<List<AccessLog>> response = new AtomicReference<>();
+            AtomicReference<HealthConnectException> exceptionAtomicReference =
+                    new AtomicReference<>();
             service.queryAccessLogs(
                     Executors.newSingleThreadExecutor(),
-                    result -> {
-                        response.set(result);
-                        latch.countDown();
+                    new OutcomeReceiver<List<AccessLog>, HealthConnectException>() {
+
+                        @Override
+                        public void onResult(List<AccessLog> result) {
+                            response.set(result);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException exception) {
+                            exceptionAtomicReference.set(exception);
+                            latch.countDown();
+                        }
                     });
             assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            if (exceptionAtomicReference.get() != null) {
+                throw exceptionAtomicReference.get();
+            }
             return response.get();
         } finally {
             uiAutomation.dropShellPermissionIdentity();
@@ -899,6 +916,36 @@ public class TestUtils {
         return returnedHealthConnectDataState.get().getDataMigrationState();
     }
 
+    public static List<AppInfo> getApplicationInfo() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        AtomicReference<List<AppInfo>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        service.getContributorApplicationsInfo(
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ApplicationInfoResponse result) {
+                        response.set(result.getApplicationInfoList());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        exceptionAtomicReference.set(exception);
+                        Log.e(TAG, exception.getMessage());
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
+        return response.get();
+    }
+
     static Metadata generateMetadata() {
         Context context = ApplicationProvider.getApplicationContext();
         return new Metadata.Builder()
@@ -918,7 +965,7 @@ public class TestUtils {
                         generateMetadata(),
                         SESSION_START_TIME,
                         SESSION_END_TIME,
-                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
                 .setRoute(route)
                 .setLaps(
                         List.of(

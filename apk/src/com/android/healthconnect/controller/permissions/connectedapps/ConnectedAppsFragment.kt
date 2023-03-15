@@ -186,9 +186,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 activeApps.addAll(notAllowedApps)
 
                 mSettingsAndHelpCategory?.addPreference(
-                    getRemoveAccessForAllAppsPreference().also {
-                        it.isEnabled = allowedApps.isNotEmpty()
-                        it.setOnPreferenceClickListener {
+                    getRemoveAccessForAllAppsPreference().apply {
+                        isEnabled = allowedApps.isNotEmpty()
+                        setOnPreferenceClickListener {
                             openRemoveAllAppsAccessDialog(activeApps)
                             true
                         }
