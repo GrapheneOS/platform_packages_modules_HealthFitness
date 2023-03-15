@@ -17,7 +17,6 @@
 package com.android.healthconnect.controller.recentaccess
 
 import android.content.Context
-import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -99,13 +98,12 @@ constructor(
     }
 
     override fun isSameItem(preference: Preference): Boolean {
-        return preference is RecentAccessPreference &&
-            TextUtils.equals(this.comparableTitle, preference.comparableTitle)
+        return preference is RecentAccessPreference && this == preference
     }
 
     override fun hasSameContents(preference: Preference): Boolean {
         return preference is RecentAccessPreference &&
-            this.comparableTitle == preference.comparableTitle
+            this.recentAccessApp == preference.recentAccessApp
     }
 
     private fun formatTime(instant: Instant): String {
