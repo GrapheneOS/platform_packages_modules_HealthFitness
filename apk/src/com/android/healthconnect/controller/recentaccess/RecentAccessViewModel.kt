@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
+import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState.Loading
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
@@ -44,32 +45,49 @@ constructor(
     private val loadRecentAccessUseCase: ILoadRecentAccessUseCase,
 ) : ViewModel() {
 
-    private val _recentAccessApps = MutableLiveData<List<RecentAccessEntry>>()
+    companion object {
+        private val MAX_CLUSTER_DURATION = Duration.ofMinutes(10)
+        private val MAX_GAP_BETWEEN_LOGS_IN_CLUSTER_DURATION = Duration.ofMinutes(1)
+    }
 
-    private val MAX_CLUSTER_DURATION = Duration.ofMinutes(10)
-    private val MAX_GAP_BETWEEN_LOGS_IN_CLUSTER_DURATION = Duration.ofMinutes(1)
-
-    val recentAccessApps: LiveData<List<RecentAccessEntry>>
+    private val _recentAccessApps = MutableLiveData<RecentAccessState>()
+    val recentAccessApps: LiveData<RecentAccessState>
         get() = _recentAccessApps
 
     fun loadRecentAccessApps(maxNumEntries: Int = -1, timeSource: TimeSource = SystemTimeSource) {
-        viewModelScope.launch {
-            val accessLogs = loadRecentAccessUseCase.invoke()
-            val connectedApps = loadHealthPermissionApps.invoke()
-            val inactiveApps =
-                connectedApps
-                    .groupBy { it.status }[ConnectedAppStatus.INACTIVE]
-                    .orEmpty()
-                    .map { connectedAppMetadata -> connectedAppMetadata.appMetadata.packageName }
-
-            val clusters = clusterEntries(accessLogs, maxNumEntries, timeSource)
-            clusters.forEach {
-                if (inactiveApps.contains(it.metadata.packageName)) {
-                    it.isInactive = true
-                }
-            }
-            _recentAccessApps.postValueIfUpdated(clusters)
+        // Don't show loading if data was loaded before just refresh.
+        if (_recentAccessApps.value !is RecentAccessState.WithData) {
+            _recentAccessApps.postValue(Loading)
         }
+        viewModelScope.launch {
+            try {
+                val clusters = getRecentAccessAppsClusters(maxNumEntries, timeSource)
+                _recentAccessApps.postValueIfUpdated(RecentAccessState.WithData(clusters))
+            } catch (ex: Exception) {
+                _recentAccessApps.postValueIfUpdated(RecentAccessState.Error)
+            }
+        }
+    }
+
+    private suspend fun getRecentAccessAppsClusters(
+        maxNumEntries: Int,
+        timeSource: TimeSource
+    ): List<RecentAccessEntry> {
+        val accessLogs = loadRecentAccessUseCase.invoke()
+        val connectedApps = loadHealthPermissionApps.invoke()
+        val inactiveApps =
+            connectedApps
+                .groupBy { it.status }[ConnectedAppStatus.INACTIVE]
+                .orEmpty()
+                .map { connectedAppMetadata -> connectedAppMetadata.appMetadata.packageName }
+
+        val clusters = clusterEntries(accessLogs, maxNumEntries, timeSource)
+        clusters.forEach {
+            if (inactiveApps.contains(it.metadata.packageName)) {
+                it.isInactive = true
+            }
+        }
+        return clusters
     }
 
     private data class DataAccessEntryCluster(
@@ -190,5 +208,11 @@ constructor(
             cluster.recentDataAccessEntry.dataTypesWritten.addAll(
                 accessLog.recordTypes.map { dataTypeToCategory(it).uppercaseTitle() })
         }
+    }
+
+    sealed class RecentAccessState {
+        object Loading : RecentAccessState()
+        object Error : RecentAccessState()
+        data class WithData(val recentAccessEntries: List<RecentAccessEntry>) : RecentAccessState()
     }
 }
