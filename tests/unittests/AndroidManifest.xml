@@ -26,7 +26,7 @@
     </application>
 
     <!-- To get visibility of the app with health permissions definitions,
-     required for testing defined permissions. -->
+     required for testing defined permissions; for testing first grant time. -->
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
 
     <instrumentation
