@@ -97,6 +97,12 @@ public final class AggregationType<T> {
         return mType;
     }
 
+    /** @hide */
+    public boolean isSessionPriorityRequest() {
+        return mId == AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL
+                || mId == AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL;
+    }
+
     /**
      * Identifier for each aggregate type, as returned by {@link
      * AggregationType#getAggregationTypeIdentifier()}. This is used at various places to determine

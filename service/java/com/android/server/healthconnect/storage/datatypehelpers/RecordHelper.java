@@ -148,6 +148,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             params.appendAdditionalColumns(columns);
         }
 
+        if (StorageUtils.isDerivedType(mRecordIdentifier)) {
+            params.appendAdditionalColumns(Arrays.asList(getStartTimeColumnName()));
+        }
+
         return new AggregateTableRequest(
                         params.mTableName,
                         params.mColumnNames,
@@ -179,6 +183,19 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      */
     public AggregateResult getAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double total) {
+        return null;
+    }
+
+    /**
+     * Used to calculate and get aggregate results for data types that support derived aggregates
+     */
+    public double[] deriveAggregate(
+            Cursor cursor,
+            long startTime,
+            long endTime,
+            int groupSize,
+            long groupDelta,
+            String groupByColumnName) {
         return null;
     }
 
