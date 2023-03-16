@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Specification of time range for read and delete requests. Internally represents a SQLLite
@@ -33,8 +34,10 @@ public final class TimeInstantRangeFilter implements TimeRangeFilter {
     private final Instant mEndTime;
 
     /**
-     * @param startTime represents start time of this filter
-     * @param endTime represents end time of this filter
+     * @param startTime represents start time of this filter. If the value is null, Instant.Epoch is
+     *     set as default value.
+     * @param endTime represents end time of this filter If the value is null, Instant.now() + 1 day
+     *     is set as default value.
      * @hide
      */
     private TimeInstantRangeFilter(@Nullable Instant startTime, @Nullable Instant endTime) {
@@ -46,8 +49,8 @@ public final class TimeInstantRangeFilter implements TimeRangeFilter {
                 throw new IllegalArgumentException("end time needs to be after start time.");
             }
         }
-        mStartTime = startTime != null ? startTime : Instant.MIN;
-        mEndTime = endTime != null ? endTime : Instant.MAX;
+        mStartTime = startTime != null ? startTime : Instant.EPOCH;
+        mEndTime = endTime != null ? endTime : Instant.now().plus(1, ChronoUnit.DAYS);
     }
 
     /**
