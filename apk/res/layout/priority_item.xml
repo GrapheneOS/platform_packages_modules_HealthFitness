@@ -18,6 +18,8 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
+    android:layoutDirection="locale"
+    android:textDirection="locale"
     android:clickable="false">
 
     <ImageView
