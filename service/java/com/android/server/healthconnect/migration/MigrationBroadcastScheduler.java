@@ -25,10 +25,10 @@ import static com.android.server.healthconnect.migration.MigrationConstants.COUN
 import static com.android.server.healthconnect.migration.MigrationConstants.COUNT_MIGRATION_STATE_IDLE;
 import static com.android.server.healthconnect.migration.MigrationConstants.COUNT_MIGRATION_STATE_IN_PROGRESS;
 import static com.android.server.healthconnect.migration.MigrationConstants.EXTRA_USER_ID;
+import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_STATE_TIMEOUT_PERIOD;
 import static com.android.server.healthconnect.migration.MigrationConstants.INTERVAL_DEFAULT;
-import static com.android.server.healthconnect.migration.MigrationConstants.INTERVAL_MIGRATION_STATE_ALLOWED;
-import static com.android.server.healthconnect.migration.MigrationConstants.INTERVAL_MIGRATION_STATE_IDLE;
-import static com.android.server.healthconnect.migration.MigrationConstants.INTERVAL_MIGRATION_STATE_IN_PROGRESS;
+import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_STATE_TIMEOUT_PERIOD;
+import static com.android.server.healthconnect.migration.MigrationConstants.NON_IDLE_STATE_TIMEOUT_PERIOD;
 
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
@@ -40,6 +40,7 @@ import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -99,7 +100,7 @@ public final class MigrationBroadcastScheduler {
 
             int scheduledCount = 0;
             int requiredCount = getRequiredCount(migrationState);
-            int requiredInterval = getRequiredInterval(migrationState);
+            long requiredInterval = getRequiredInterval(migrationState);
 
             while (scheduledCount < requiredCount) {
                 try {
@@ -124,7 +125,7 @@ public final class MigrationBroadcastScheduler {
      * @throws Exception if migration broadcast job scheduling fails.
      */
     @GuardedBy("mLock")
-    private void createJobLocked(int scheduledCount, int requiredInterval, Context context)
+    private void createJobLocked(int scheduledCount, long requiredInterval, Context context)
             throws Exception {
         ComponentName schedulerServiceComponent =
                 new ComponentName(context, MigrationBroadcastJobService.class);
@@ -132,7 +133,7 @@ public final class MigrationBroadcastScheduler {
         int uuid = UUID.randomUUID().toString().hashCode();
         int jobId = String.valueOf(mUserId + uuid).hashCode();
 
-        int interval = requiredInterval * scheduledCount;
+        long interval = requiredInterval * scheduledCount;
 
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, mUserId);
@@ -173,18 +174,23 @@ public final class MigrationBroadcastScheduler {
     }
 
     /** Returns the interval between each migration broadcast job for the given migration state. */
-    private static int getRequiredInterval(int migrationState) {
-        // TODO(b/268043064): Automatic calculation of the interval using a combination of the
-        // fallback hours and requiredCount for each state
+    private static long getRequiredInterval(int migrationState) {
         switch (migrationState) {
             case MIGRATION_STATE_IDLE:
-                return INTERVAL_MIGRATION_STATE_IDLE;
+                return calculateRequiredInterval(
+                        IDLE_STATE_TIMEOUT_PERIOD, COUNT_MIGRATION_STATE_IDLE);
             case MIGRATION_STATE_IN_PROGRESS:
-                return INTERVAL_MIGRATION_STATE_IN_PROGRESS;
+                return calculateRequiredInterval(
+                        IN_PROGRESS_STATE_TIMEOUT_PERIOD, COUNT_MIGRATION_STATE_IN_PROGRESS);
             case MIGRATION_STATE_ALLOWED:
-                return INTERVAL_MIGRATION_STATE_ALLOWED;
+                return calculateRequiredInterval(
+                        NON_IDLE_STATE_TIMEOUT_PERIOD, COUNT_MIGRATION_STATE_ALLOWED);
             default:
                 return INTERVAL_DEFAULT;
         }
+    }
+
+    private static long calculateRequiredInterval(Duration timeoutPeriod, int maxBroadcastCount) {
+        return timeoutPeriod.toMillis() / maxBroadcastCount;
     }
 }
