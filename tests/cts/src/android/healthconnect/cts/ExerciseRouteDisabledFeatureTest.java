@@ -79,7 +79,10 @@ public class ExerciseRouteDisabledFeatureTest {
     private void setExerciseRouteFeatureEnabledFlag(boolean flag) {
         mUiAutomation.adoptShellPermissionIdentity(WRITE_DEVICE_CONFIG);
         DeviceConfig.setProperty(
-                "health_connect", "exercise_routes_enable", flag ? "true" : "false", false);
+                DeviceConfig.NAMESPACE_HEALTH_FITNESS,
+                "exercise_routes_enable",
+                flag ? "true" : "false",
+                false);
         mUiAutomation.dropShellPermissionIdentity();
     }
 }

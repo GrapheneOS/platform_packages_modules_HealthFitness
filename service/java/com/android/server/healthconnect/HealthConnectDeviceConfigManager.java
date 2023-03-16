@@ -31,9 +31,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @hide
  */
 public class HealthConnectDeviceConfigManager implements DeviceConfig.OnPropertiesChangedListener {
-    // TODO(b/268472587): switch to DeviceInfo.NAMESPACE_HEALTH_CONNECT
-    public static final String HEALTH_CONNECT_FLAGS_NAMESPACE = "health_connect";
-
     public static final String EXERCISE_ROUTE_FEATURE_FLAG = "exercise_routes_enable";
 
     // Flag to enable/disable sleep and exercise sessions.
@@ -49,14 +46,14 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     @GuardedBy("mLock")
     private boolean mExerciseRouteEnabled =
             DeviceConfig.getBoolean(
-                    HEALTH_CONNECT_FLAGS_NAMESPACE,
+                    DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                     EXERCISE_ROUTE_FEATURE_FLAG,
                     EXERCISE_ROUTE_DEFAULT_FLAG_VALUE);
 
     @GuardedBy("mLock")
     private boolean mSessionDatatypeEnabled =
             DeviceConfig.getBoolean(
-                    HEALTH_CONNECT_FLAGS_NAMESPACE,
+                    DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                     SESSION_DATATYPE_FEATURE_FLAG,
                     SESSION_DATATYPE_DEFAULT_FLAG_VALUE);
 
@@ -65,7 +62,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         if (sDeviceConfigManager == null) {
             sDeviceConfigManager = new HealthConnectDeviceConfigManager();
             DeviceConfig.addOnPropertiesChangedListener(
-                    HEALTH_CONNECT_FLAGS_NAMESPACE,
+                    DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                     context.getMainExecutor(),
                     sDeviceConfigManager);
         }
@@ -101,7 +98,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
 
     @Override
     public void onPropertiesChanged(DeviceConfig.Properties properties) {
-        if (!properties.getNamespace().equals(HEALTH_CONNECT_FLAGS_NAMESPACE)) {
+        if (!properties.getNamespace().equals(DeviceConfig.NAMESPACE_HEALTH_FITNESS)) {
             return;
         }
         for (String name : properties.getKeyset()) {
