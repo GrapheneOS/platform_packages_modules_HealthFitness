@@ -16,16 +16,21 @@
 
 package android.healthconnect.cts.device;
 
+
 import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
+import static android.healthconnect.cts.lib.TestUtils.insertRecordWithAnotherAppPackageName;
+import static android.healthconnect.cts.lib.TestUtils.readRecords;
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthConnectException;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
 
@@ -101,6 +106,33 @@ public class HealthConnectDeviceTest {
             Assert.fail("Should have thrown an Invalid Argument Exception!");
         } catch (HealthConnectException e) {
             assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        }
+    }
+
+    @Test
+    public void testDataOriginGetsOverriddenBySelfPackageName() throws Exception {
+        Bundle bundle =
+                insertRecordWithAnotherAppPackageName(
+                        APP_A_WITH_READ_WRITE_PERMS, APP_B_WITH_READ_WRITE_PERMS);
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            List<Record> records =
+                    (List<Record>)
+                            readRecords(
+                                    new ReadRecordsRequestUsingFilters.Builder<>(
+                                                    (Class<? extends Record>)
+                                                            Class.forName(
+                                                                    recordTypeAndRecordIds
+                                                                            .getRecordType()))
+                                            .build());
+
+            for (Record record : records) {
+                assertThat(record.getMetadata().getDataOrigin().getPackageName())
+                        .isEqualTo(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+            }
         }
     }
 }

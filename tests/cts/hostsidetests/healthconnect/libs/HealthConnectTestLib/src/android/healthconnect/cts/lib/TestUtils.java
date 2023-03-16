@@ -68,7 +68,11 @@ public class TestUtils {
     public static final String INTENT_EXTRA_CALLING_PKG = "android.healthconnect.cts.calling_pkg";
 
     public static final String APP_PKG_NAME_WHOSE_DATA_TO_BE_UPDATED =
-            "android.healthconnect.cts.pkg";
+            "android.healthconnect.cts.pkg.dataToBeUpdated";
+    public static final String APP_PKG_NAME_USED_IN_DATA_ORIGIN =
+            "android.healthconnect.cts.pkg.usedInDataOrigin";
+    public static final String INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME =
+            "android.healthconnect.cts.insertRecord.withAnotherPkgName";
     public static final String INSERT_RECORD_QUERY = "android.healthconnect.cts.insertRecord";
 
     public static final String SUCCESS = "android.healthconnect.cts.success";
@@ -126,6 +130,15 @@ public class TestUtils {
         bundle.putSerializable(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
 
         return getFromTestApp(testAppToUpdateData, bundle);
+    }
+
+    public static Bundle insertRecordWithAnotherAppPackageName(
+            TestApp testAppToInsertData, TestApp testAppPkgNameUsed) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME);
+        bundle.putString(APP_PKG_NAME_USED_IN_DATA_ORIGIN, testAppPkgNameUsed.getPackageName());
+
+        return getFromTestApp(testAppToInsertData, bundle);
     }
 
     private static Bundle getFromTestApp(TestApp testApp, Bundle bundleToCreateIntent)
@@ -400,6 +413,40 @@ public class TestUtils {
             return exceptionAtomicReference.get().getErrorCode();
         }
         return 0;
+    }
+
+    public static <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        assertThat(request.getRecordType()).isNotNull();
+        AtomicReference<List<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        service.readRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ReadRecordsResponse<T> result) {
+                        response.set(result.getRecords());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+        return response.get();
     }
 
     public static void deleteAllStagedRemoteData() {

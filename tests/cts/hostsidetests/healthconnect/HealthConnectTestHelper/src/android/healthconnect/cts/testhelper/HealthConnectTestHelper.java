@@ -16,7 +16,9 @@
 
 package android.healthconnect.cts.testhelper;
 
+import static android.healthconnect.cts.lib.TestUtils.APP_PKG_NAME_USED_IN_DATA_ORIGIN;
 import static android.healthconnect.cts.lib.TestUtils.DELETE_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME;
 import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
 import static android.healthconnect.cts.lib.TestUtils.QUERY_TYPE;
@@ -71,6 +73,13 @@ public class HealthConnectTestHelper extends Activity {
                                     queryType,
                                     (List<TestUtils.RecordTypeAndRecordIds>)
                                             bundle.getSerializable(RECORD_IDS),
+                                    context);
+                    break;
+                case INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME:
+                    returnIntent =
+                            insertRecordsWithDifferentPkgName(
+                                    queryType,
+                                    bundle.getString(APP_PKG_NAME_USED_IN_DATA_ORIGIN),
                                     context);
                     break;
                 default:
@@ -181,6 +190,30 @@ public class HealthConnectTestHelper extends Activity {
             intent.putExtra(INTENT_EXCEPTION, e);
         }
 
+        return intent;
+    }
+
+    /**
+     * Method to insert records with different package name in dataOrigin of the record and add the
+     * details in the intent
+     *
+     * @param queryType - specifies the action, here it should be
+     *     INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME
+     * @param pkgNameUsedInDataOrigin - package name to be added in the dataOrigin of the records
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     * @throws InterruptedException
+     */
+    private Intent insertRecordsWithDifferentPkgName(
+            String queryType, String pkgNameUsedInDataOrigin, Context context)
+            throws InterruptedException {
+        final Intent intent = new Intent(queryType);
+
+        List<Record> recordsToBeInserted = getTestRecords(pkgNameUsedInDataOrigin);
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                insertRecordsAndGetIds(recordsToBeInserted, context);
+
+        intent.putExtra(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
         return intent;
     }
 }
