@@ -16,6 +16,8 @@
 
 package android.health.connect.migration;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.NonNull;
 import android.annotation.SystemApi;
 import android.os.Parcel;
@@ -52,6 +54,9 @@ public final class MigrationEntity implements Parcelable {
      * @param payload a payload of the entity to migrate.
      */
     public MigrationEntity(@NonNull String entityId, @NonNull MigrationPayload payload) {
+        requireNonNull(entityId);
+        requireNonNull(payload);
+
         mEntityId = entityId;
         mPayload = payload;
     }
