@@ -31,6 +31,7 @@ import androidx.preference.PreferenceGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.shared.Constants
+import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -118,8 +119,19 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.loadRecentAccessApps()
-        viewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
-            updateRecentApps(recentApps)
+        viewModel.recentAccessApps.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is RecentAccessState.Loading -> {
+                    setLoading(true)
+                }
+                is RecentAccessState.Error -> {
+                    setError(true)
+                }
+                is RecentAccessState.WithData -> {
+                    setLoading(false)
+                    updateRecentApps(state.recentAccessEntries)
+                }
+            }
         }
     }
 

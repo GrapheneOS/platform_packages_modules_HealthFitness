@@ -23,15 +23,21 @@ import java.util.concurrent.TimeoutException
 
 /* Copyright 2019 Google LLC.
 SPDX-License-Identifier: Apache-2.0 */
-fun <T> LiveData<T>.getOrAwaitValue(time: Long = 2, timeUnit: TimeUnit = TimeUnit.SECONDS): T {
+fun <T> LiveData<T>.getOrAwaitValue(
+    time: Long = 2,
+    timeUnit: TimeUnit = TimeUnit.SECONDS,
+    callsCount: Int = 1
+): T {
     var data: T? = null
-    val latch = CountDownLatch(1)
+    val latch = CountDownLatch(callsCount)
     val observer =
         object : Observer<T> {
             override fun onChanged(o: T?) {
                 data = o
                 latch.countDown()
-                this@getOrAwaitValue.removeObserver(this)
+                if (latch.count == 0L) {
+                    this@getOrAwaitValue.removeObserver(this)
+                }
             }
         }
 
