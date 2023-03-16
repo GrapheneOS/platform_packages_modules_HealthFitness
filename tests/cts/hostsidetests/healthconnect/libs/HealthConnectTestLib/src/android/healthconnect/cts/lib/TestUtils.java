@@ -74,7 +74,10 @@ public class TestUtils {
     public static final String INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME =
             "android.healthconnect.cts.insertRecord.withAnotherPkgName";
     public static final String INSERT_RECORD_QUERY = "android.healthconnect.cts.insertRecord";
-
+    public static final String READ_RECORDS_QUERY = "android.healthconnect.cts.readRecords";
+    public static final String READ_RECORDS_SIZE = "android.healthconnect.cts.readRecordsNumber";
+    public static final String READ_RECORD_CLASS_NAME =
+            "android.healthconnect.cts.readRecordsClass";
     public static final String SUCCESS = "android.healthconnect.cts.success";
 
     public static final String RECORD_IDS = "android.healthconnect.cts.records";
@@ -139,6 +142,15 @@ public class TestUtils {
         bundle.putString(APP_PKG_NAME_USED_IN_DATA_ORIGIN, testAppPkgNameUsed.getPackageName());
 
         return getFromTestApp(testAppToInsertData, bundle);
+    }
+
+    public static Bundle readRecordsAs(TestApp testApp, ArrayList<String> recordClassesToRead)
+            throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, READ_RECORDS_QUERY);
+        bundle.putStringArrayList(READ_RECORD_CLASS_NAME, recordClassesToRead);
+
+        return getFromTestApp(testApp, bundle);
     }
 
     private static Bundle getFromTestApp(TestApp testApp, Bundle bundleToCreateIntent)

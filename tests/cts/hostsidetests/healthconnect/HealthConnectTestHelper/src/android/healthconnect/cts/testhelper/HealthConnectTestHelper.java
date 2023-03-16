@@ -22,6 +22,9 @@ import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORDS_QUERY_WITH_
 import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
 import static android.healthconnect.cts.lib.TestUtils.QUERY_TYPE;
+import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
+import static android.healthconnect.cts.lib.TestUtils.READ_RECORD_CLASS_NAME;
 import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.UPDATE_RECORDS_QUERY;
@@ -36,6 +39,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
@@ -80,6 +84,13 @@ public class HealthConnectTestHelper extends Activity {
                             insertRecordsWithDifferentPkgName(
                                     queryType,
                                     bundle.getString(APP_PKG_NAME_USED_IN_DATA_ORIGIN),
+                                    context);
+                    break;
+                case READ_RECORDS_QUERY:
+                    returnIntent =
+                            readRecordsAs(
+                                    queryType,
+                                    bundle.getStringArrayList(READ_RECORD_CLASS_NAME),
                                     context);
                     break;
                 default:
@@ -214,6 +225,40 @@ public class HealthConnectTestHelper extends Activity {
                 insertRecordsAndGetIds(recordsToBeInserted, context);
 
         intent.putExtra(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
+        return intent;
+    }
+
+    /**
+     * Method to read records and put the number of records read in the intent or put the exception
+     * in the intent in case reading records throws exception
+     *
+     * @param queryType - specifies the action, here it should be READ_RECORDS_QUERY
+     * @param recordClassesToRead - List of Record Class names for the records to be read
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent readRecordsAs(
+            String queryType, ArrayList<String> recordClassesToRead, Context context) {
+        final Intent intent = new Intent(queryType);
+        int recordsSize = 0;
+        try {
+            for (String recordClass : recordClassesToRead) {
+                List<? extends Record> recordsRead =
+                        readRecords(
+                                new ReadRecordsRequestUsingFilters.Builder<>(
+                                                (Class<? extends Record>)
+                                                        Class.forName(recordClass))
+                                        .addDataOrigins(new DataOrigin.Builder().build())
+                                        .build(),
+                                context);
+                recordsSize += recordsRead.size();
+            }
+        } catch (Exception e) {
+            intent.putExtra(INTENT_EXCEPTION, e);
+        }
+
+        intent.putExtra(READ_RECORDS_SIZE, recordsSize);
+
         return intent;
     }
 }

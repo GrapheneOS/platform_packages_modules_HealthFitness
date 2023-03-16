@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.device;
 
-
+import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
 import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
@@ -24,6 +24,7 @@ import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordWithAnotherAppPackageName;
 import static android.healthconnect.cts.lib.TestUtils.readRecords;
+import static android.healthconnect.cts.lib.TestUtils.readRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -43,6 +44,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -65,6 +67,14 @@ public class HealthConnectDeviceTest {
                     VERSION_CODE,
                     false,
                     "CtsHealthConnectTestAppB.apk");
+
+    private static final TestApp APP_WITH_WRITE_PERMS_ONLY =
+            new TestApp(
+                    "TestAppC",
+                    "android.healthconnect.cts.testapp.writePermsOnly",
+                    VERSION_CODE,
+                    false,
+                    "CtsHealthConnectTestAppWithWritePermissionsOnly.apk");
 
     @After
     public void tearDown() {
@@ -134,5 +144,39 @@ public class HealthConnectDeviceTest {
                         .isEqualTo(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
             }
         }
+    }
+
+    @Test
+    public void testAppWithWritePermsOnlyCanReadItsOwnEntry() throws Exception {
+        Bundle bundle = insertRecordAs(APP_WITH_WRITE_PERMS_ONLY);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        ArrayList<String> recordClassesToRead = new ArrayList<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
+        }
+
+        bundle = readRecordsAs(APP_WITH_WRITE_PERMS_ONLY, recordClassesToRead);
+        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isNotEqualTo(0);
+    }
+
+    @Test
+    public void testAppWithWritePermsOnlyCantReadAnotherAppEntry() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        ArrayList<String> recordClassesToRead = new ArrayList<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
+        }
+
+        bundle = readRecordsAs(APP_WITH_WRITE_PERMS_ONLY, recordClassesToRead);
+        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isEqualTo(0);
     }
 }
