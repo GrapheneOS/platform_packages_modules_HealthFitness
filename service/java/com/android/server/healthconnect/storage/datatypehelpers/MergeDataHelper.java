@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.storage.datatypehelpers.RecordHel
 
 import android.annotation.NonNull;
 import android.database.Cursor;
+import android.util.Pair;
 
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TimeUtils;
@@ -120,6 +121,11 @@ public final class MergeDataHelper {
         mBufferWindow = new TreeSet<>(mRecordDataComparator);
     }
 
+    /** Returns aggregate sum between the startTime and endTime */
+    public double readCursor(Instant startTime, Instant endTime) {
+        return readCursor(startTime.toEpochMilli(), endTime.toEpochMilli());
+    }
+
     /**
      * Returns the aggregate sum for the records by iterating the cursor to form a buffer window by
      * eliminating overlapping records between the interval based on App priority
@@ -190,6 +196,24 @@ public final class MergeDataHelper {
             }
         }
         return sum;
+    }
+
+    /**
+     * Returns list of empty intervals where there are gaps without any record data in the final
+     * merge used to calculate aggregate
+     */
+    public List<Pair<Instant, Instant>> getEmptyIntervals() {
+        List<Pair<Instant, Instant>> emptyIntervals = new ArrayList<>();
+        if (mRecordDataList != null) {
+            for (int i = 0; i < mRecordDataList.size() - 1; i++) {
+                Instant currentEnd = mRecordDataList.get(i).getEndTime();
+                Instant nextStart = mRecordDataList.get(i + 1).getStartTime();
+                if (nextStart.isAfter(currentEnd)) {
+                    emptyIntervals.add(new Pair(currentEnd, nextStart));
+                }
+            }
+        }
+        return emptyIntervals;
     }
 
     private TreeSet<RecordData> eliminateEarliestRecordOverlaps(TreeSet<RecordData> bufferWindow) {

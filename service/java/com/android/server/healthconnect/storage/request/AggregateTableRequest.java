@@ -21,8 +21,6 @@ import static android.health.connect.datatypes.AggregationType.COUNT;
 import static android.health.connect.datatypes.AggregationType.MAX;
 import static android.health.connect.datatypes.AggregationType.MIN;
 import static android.health.connect.datatypes.AggregationType.SUM;
-import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DURATION_TOTAL;
-import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 
@@ -159,10 +157,11 @@ public class AggregateTableRequest {
         final StringBuilder builder = new StringBuilder("SELECT ");
         String aggCommand;
         boolean usingPriority =
-                isSessionPriorityRequest()
+                mAggregationType.isSessionPriorityRequest()
                         || StorageUtils.supportsPriority(
                                 mRecordHelper.getRecordIdentifier(),
-                                mAggregationType.getAggregateOperationType());
+                                mAggregationType.getAggregateOperationType())
+                        || StorageUtils.isDerivedType(mRecordHelper.getRecordIdentifier());
         if (usingPriority) {
             for (String columnName : mColumnNamesToAggregate) {
                 builder.append(columnName).append(", ");
@@ -231,8 +230,10 @@ public class AggregateTableRequest {
     }
 
     public void onResultsFetched(Cursor cursor, Cursor metaDataCursor) {
-        if (isSessionPriorityRequest()) {
+        if (mAggregationType.isSessionPriorityRequest()) {
             processSessionPriorityRequest(cursor);
+        } else if (StorageUtils.isDerivedType(mRecordHelper.getRecordIdentifier())) {
+            deriveAggregate(cursor);
         } else if (StorageUtils.supportsPriority(
                 mRecordHelper.getRecordIdentifier(),
                 mAggregationType.getAggregateOperationType())) {
@@ -242,11 +243,6 @@ public class AggregateTableRequest {
         }
 
         updateResultWithDataOriginPackageNames(metaDataCursor);
-    }
-
-    private boolean isSessionPriorityRequest() {
-        return mAggregationType == SLEEP_DURATION_TOTAL
-                || mAggregationType == EXERCISE_DURATION_TOTAL;
     }
 
     private void processSessionPriorityRequest(Cursor cursor) {
@@ -399,6 +395,24 @@ public class AggregateTableRequest {
         } else {
             // Calculate and return endtime for group Aggregation based on duration
             return groupStartTime + mGroupByDelta;
+        }
+    }
+
+    private void deriveAggregate(Cursor cursor) {
+        double[] derivedAggregateArray =
+                mRecordHelper.deriveAggregate(
+                        cursor,
+                        mStartTime,
+                        mEndTime,
+                        mGroupBySize,
+                        mGroupByDelta,
+                        mGroupByColumnName);
+        int index = 0;
+        cursor.moveToFirst();
+        for (double aggregate : derivedAggregateArray) {
+            mAggregateResults.put(
+                    index, mRecordHelper.getAggregateResult(cursor, mAggregationType, aggregate));
+            index++;
         }
     }
 }
