@@ -113,7 +113,10 @@ public class SessionDatatypeDisabledFeatureTest {
     private void setSessionDatatypesFeatureEnabledFlag(boolean flag) {
         mUiAutomation.adoptShellPermissionIdentity(WRITE_DEVICE_CONFIG);
         DeviceConfig.setProperty(
-                "health_connect", "session_types_enable", flag ? "true" : "false", false);
+                DeviceConfig.NAMESPACE_HEALTH_FITNESS,
+                "session_types_enable",
+                flag ? "true" : "false",
+                false);
         mUiAutomation.dropShellPermissionIdentity();
     }
 }
