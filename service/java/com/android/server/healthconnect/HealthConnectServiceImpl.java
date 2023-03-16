@@ -496,11 +496,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                             // If requesting app has only write permission allowed but no read
-                            // permission for
-                            // the record type or if app is not in foreground then allow to read
-                            // its
-                            // own
-                            // records.
+                            // permission for the record type or if app is not in foreground then
+                            // allow to read its own records.
                             enforceSelfRead.set(
                                     mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
                                                     request.getRecordType(), attributionSource)
@@ -560,8 +557,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     new ReadRecordsResponseParcel(
                                             new RecordsParcel(readRecordsResponse.first),
                                             pageToken));
-                            // Calls from controller APK should not be recorded in access logs.
-                            if (!holdsDataManagementPermission) {
+                            // Calls from controller APK should not be recorded in access logs
+                            // If an app is reading only its own data then it is not recorded in
+                            // access logs.
+                            if (!holdsDataManagementPermission && !enforceSelfRead.get()) {
                                 HealthConnectThreadScheduler.scheduleInternalTask(
                                         () -> {
                                             Trace.traceBegin(
