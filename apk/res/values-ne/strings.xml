@@ -335,7 +335,8 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Health Connect सम्बन्धी डेटा मेटाइँदै छ"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Health Connect सम्बन्धी डेटा मेटाइँदै छ"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"डेटा मेटाउने कार्य"</string>
-    <string name="data_point_action_content_description" msgid="5594307313451433706">"डेटा हाल्नेसम्बन्धी विकल्पहरू"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"हालेको डेटा मेटाइयोस्"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{१ वाट}other{# वाट}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{१ वाट}other{# वाट}}"</string>

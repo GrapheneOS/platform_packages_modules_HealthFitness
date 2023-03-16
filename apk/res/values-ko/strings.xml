@@ -335,7 +335,8 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"헬스 커넥트 데이터 삭제"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"헬스 커넥트 데이터 삭제"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"데이터 삭제"</string>
-    <string name="data_point_action_content_description" msgid="5594307313451433706">"데이터 항목 옵션"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"항목 삭제"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1W}other{#W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1와트}other{#와트}}"</string>
