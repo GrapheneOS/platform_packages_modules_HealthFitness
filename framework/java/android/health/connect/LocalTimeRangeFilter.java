@@ -19,7 +19,10 @@ package android.health.connect;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 /** Specification of local time range for health connect requests. */
 public final class LocalTimeRangeFilter implements TimeRangeFilter {
@@ -27,8 +30,10 @@ public final class LocalTimeRangeFilter implements TimeRangeFilter {
     private final LocalDateTime mLocalEndTime;
 
     /**
-     * @param localStartTime represents local start time of this filter
-     * @param localEndTime represents local end time of this filter
+     * @param localStartTime represents local start time of this filter. If the value is null, the
+     *     Instant.Epoch with min zoneOffset is set as default value.
+     * @param localEndTime represents local end time of this filter. If the value is null,
+     *     Instant.now() + 1 day with max zoneOffset is set as default value.
      * @hide
      */
     private LocalTimeRangeFilter(
@@ -42,8 +47,15 @@ public final class LocalTimeRangeFilter implements TimeRangeFilter {
             }
         }
 
-        mLocalStartTime = localStartTime != null ? localStartTime : LocalDateTime.MIN;
-        mLocalEndTime = localEndTime != null ? localEndTime : LocalDateTime.MAX;
+        mLocalStartTime =
+                localStartTime != null
+                        ? localStartTime
+                        : LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.MIN);
+        mLocalEndTime =
+                localEndTime != null
+                        ? localEndTime
+                        : LocalDateTime.ofInstant(
+                                Instant.now().plus(1, ChronoUnit.DAYS), ZoneOffset.MAX);
     }
 
     /**
