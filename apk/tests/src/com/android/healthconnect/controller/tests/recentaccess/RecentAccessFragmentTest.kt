@@ -29,6 +29,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessFragment
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
+import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.tests.utils.*
 import dagger.hilt.android.testing.BindValue
@@ -91,8 +92,9 @@ class RecentAccessFragmentTest {
                         HealthDataCategory.ACTIVITY.uppercaseTitle(),
                         HealthDataCategory.VITALS.uppercaseTitle()))
 
-        Mockito.`when`(viewModel.recentAccessApps).then {
-            MutableLiveData(listOf(recentApp1, recentApp2))
+        whenever(viewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(
+                RecentAccessState.WithData(listOf(recentApp1, recentApp2)))
         }
 
         launchFragment<RecentAccessFragment>(Bundle())
@@ -142,8 +144,9 @@ class RecentAccessFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle(),
                         HealthDataCategory.NUTRITION.uppercaseTitle()))
 
-        Mockito.`when`(viewModel.recentAccessApps).then {
-            MutableLiveData(listOf(recentApp1, recentApp2))
+        whenever(viewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(
+                RecentAccessState.WithData(listOf(recentApp1, recentApp2)))
         }
 
         launchFragment<RecentAccessFragment>(Bundle())

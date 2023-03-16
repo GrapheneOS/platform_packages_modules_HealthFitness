@@ -15,14 +15,15 @@
  */
 package com.android.healthconnect.controller.tests.recentaccess
 
-import android.health.connect.accesslog.AccessLog
 import android.health.connect.Constants
+import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.RecordTypeIdentifier
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.WeightRecord
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
+import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.dataTypeToCategory
@@ -112,7 +113,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue()
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -191,7 +192,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue()
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -267,7 +268,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue()
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -314,7 +315,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue()
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
 
         val expected =
             listOf(
@@ -370,7 +371,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue()
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -418,7 +419,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(timeSource = timeSource)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue()
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -505,7 +506,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(maxNumEntries = 3, timeSource = timeSource)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue()
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -540,9 +541,11 @@ class RecentAccessViewModelTest {
     }
 
     private fun assertRecentAccessEquality(
-        actualValues: List<RecentAccessEntry>,
+        state: RecentAccessState,
         expectedValues: List<RecentAccessEntry>
     ) {
+        assertThat(state).isInstanceOf(RecentAccessState.WithData::class.java)
+        val actualValues = (state as RecentAccessState.WithData).recentAccessEntries
         assertThat(actualValues).isNotNull()
         assertThat(actualValues).hasSize(expectedValues.size)
         actualValues.zip(expectedValues).forEach { pair ->
