@@ -38,6 +38,7 @@ import android.annotation.NonNull;
 import android.annotation.UserIdInt;
 import android.app.job.JobInfo;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Resources;
@@ -74,25 +75,22 @@ public final class MigrationStateManager {
     private static final String TAG = "MigrationStateManager";
     private static final String MIGRATION_STARTS_COUNT_KEY = "migration_starts_count";
     private volatile MigrationBroadcastScheduler mMigrationBroadcastScheduler;
-    private final int mUserId;
-    private final Context mContext;
+    private volatile int mUserId;
 
-    private MigrationStateManager(@NonNull Context context, @UserIdInt int userId) {
-        Objects.requireNonNull(context);
+    private MigrationStateManager(@UserIdInt int userId) {
         mUserId = userId;
-        mContext = context;
     }
 
-    public static void initializeInstance(@NonNull Context context, @UserIdInt int userId) {
+    public static void initializeInstance(@UserIdInt int userId) {
         if (Objects.isNull(sMigrationStateManager)) {
-            sMigrationStateManager = new MigrationStateManager(context, userId);
+            sMigrationStateManager = new MigrationStateManager(userId);
         }
     }
 
     /** Re-initialize this class instance with the new user */
-    public void onUserSwitching(@UserIdInt int userId) {
-        MigrationStateChangeJob.cancelAllPendingJobs(mContext, mUserId);
-        sMigrationStateManager = new MigrationStateManager(mContext, userId);
+    public void onUserSwitching(@NonNull Context context, @UserIdInt int userId) {
+        MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
+        mUserId = userId;
     }
 
     /** Returns initialised instance of this class. */
@@ -112,15 +110,15 @@ public final class MigrationStateManager {
      *
      * @param minVersion the desired sdk version.
      */
-    public void setMinDataMigrationSdkExtensionVersion(int minVersion) {
+    public void setMinDataMigrationSdkExtensionVersion(@NonNull Context context, int minVersion) {
         if (minVersion <= getUdcSdkExtensionVersion()) {
-            updateMigrationState(MIGRATION_STATE_ALLOWED);
+            updateMigrationState(context, MIGRATION_STATE_ALLOWED);
             return;
         }
         PreferenceHelper.getInstance()
                 .insertOrReplacePreference(
                         MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY, String.valueOf(minVersion));
-        updateMigrationState(MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
+        updateMigrationState(context, MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
     }
 
     /**
@@ -141,14 +139,14 @@ public final class MigrationStateManager {
         return Integer.parseInt(migrationState);
     }
 
-    // TODO(b/272745797): Check if we are in non-idle state and apk is no longer available, move
-    // migration to complete
-    public void switchToSetupForUser() {
-        reconcileStateChangeJob();
+    public void switchToSetupForUser(@NonNull Context context) {
+        reconcilePackageChangesWithStates(context);
+
+        reconcileStateChangeJob(context);
     }
 
     public synchronized void updateMigrationState(
-            @HealthConnectDataState.DataMigrationState int state) {
+            @NonNull Context context, @HealthConnectDataState.DataMigrationState int state) {
         if (state == getMigrationState()) {
             Slog.e(TAG, "The new state same as the current state.");
             return;
@@ -158,35 +156,35 @@ public final class MigrationStateManager {
             case MIGRATION_STATE_APP_UPGRADE_REQUIRED:
             case MIGRATION_STATE_MODULE_UPGRADE_REQUIRED:
                 MigrationStateChangeJob.cancelPendingJob(
-                        mContext, mUserId, MIGRATION_COMPLETE_JOB_NAME);
-                updateMigrationStatePreference(state);
-                MigrationStateChangeJob.scheduleMigrationCompletionJob(mContext, mUserId);
+                        context, mUserId, MIGRATION_COMPLETE_JOB_NAME);
+                updateMigrationStatePreference(context, state);
+                MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
                 return;
             case MIGRATION_STATE_IN_PROGRESS:
                 MigrationStateChangeJob.cancelPendingJob(
-                        mContext, mUserId, MIGRATION_COMPLETE_JOB_NAME);
-                updateMigrationStatePreference(MIGRATION_STATE_IN_PROGRESS);
-                MigrationStateChangeJob.scheduleMigrationPauseJob(mContext, mUserId);
+                        context, mUserId, MIGRATION_COMPLETE_JOB_NAME);
+                updateMigrationStatePreference(context, MIGRATION_STATE_IN_PROGRESS);
+                MigrationStateChangeJob.scheduleMigrationPauseJob(context, mUserId);
                 updateMigrationStartsCount();
                 return;
             case MIGRATION_STATE_ALLOWED:
-                MigrationStateChangeJob.cancelAllPendingJobs(mContext, mUserId);
+                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
                 if (hasAllowedStateTimedOut()) {
-                    updateMigrationState(MIGRATION_STATE_COMPLETE);
+                    updateMigrationState(context, MIGRATION_STATE_COMPLETE);
                     return;
                 }
-                updateMigrationStatePreference(MIGRATION_STATE_ALLOWED);
-                MigrationStateChangeJob.scheduleMigrationCompletionJob(mContext, mUserId);
+                updateMigrationStatePreference(context, MIGRATION_STATE_ALLOWED);
+                MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
                 return;
             case MIGRATION_STATE_COMPLETE:
-                updateMigrationStatePreference(MIGRATION_STATE_COMPLETE);
-                MigrationStateChangeJob.cancelAllPendingJobs(mContext, mUserId);
+                updateMigrationStatePreference(context, MIGRATION_STATE_COMPLETE);
+                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
         }
     }
 
-    public void clearCaches() {
+    public void clearCaches(@NonNull Context context) {
         PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
-        updateMigrationStatePreference(MIGRATION_STATE_IDLE);
+        updateMigrationStatePreference(context, MIGRATION_STATE_IDLE);
         preferenceHelper.insertOrReplacePreference(MIGRATION_STARTS_COUNT_KEY, String.valueOf(0));
         preferenceHelper.insertOrReplacePreference(
                 ALLOWED_STATE_TIMEOUT_KEY,
@@ -274,14 +272,18 @@ public final class MigrationStateManager {
             return;
         }
 
-        if (isMigrationAware(context, hcMigratorPackage)) {
-            updateMigrationState(MIGRATION_STATE_ALLOWED);
+        int migrationState = getMigrationState();
+        if ((migrationState == MIGRATION_STATE_IDLE
+                        || migrationState == MIGRATION_STATE_APP_UPGRADE_REQUIRED)
+                && isMigrationAware(context, packageName)) {
+            updateMigrationState(context, MIGRATION_STATE_ALLOWED);
             return;
         }
 
-        if (hasMigratorPackageKnownSignerSignature(context, hcMigratorPackage)) {
+        if (migrationState == MIGRATION_STATE_IDLE
+                && hasMigratorPackageKnownSignerSignature(context, packageName)) {
             // apk needs to upgrade
-            updateMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
+            updateMigrationState(context, MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         }
     }
 
@@ -293,11 +295,12 @@ public final class MigrationStateManager {
         }
 
         if (getMigrationState() != MIGRATION_STATE_COMPLETE) {
-            updateMigrationState(MIGRATION_STATE_COMPLETE);
+            updateMigrationState(context, MIGRATION_STATE_COMPLETE);
         }
     }
 
     private void updateMigrationStatePreference(
+            @NonNull Context context,
             @HealthConnectDataState.DataMigrationState int migrationState) {
         HashMap<String, String> preferences =
                 new HashMap<>(
@@ -317,7 +320,7 @@ public final class MigrationStateManager {
             HealthConnectThreadScheduler.scheduleInternalTask(
                     () -> {
                         try {
-                            mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
+                            mMigrationBroadcastScheduler.prescheduleNewJobs(context);
                         } catch (Exception e) {
                             Slog.e(TAG, "Migration broadcast schedule failed", e);
                         }
@@ -345,24 +348,52 @@ public final class MigrationStateManager {
         return false;
     }
 
+    /**
+     * Reconcile migration state to the current migrator package status in case we missed a package
+     * change broadcast.
+     */
+    private void reconcilePackageChangesWithStates(Context context) {
+        int migrationState = getMigrationState();
+        if (migrationState == MIGRATION_STATE_APP_UPGRADE_REQUIRED
+                && existsMigrationAwarePackage(context)) {
+            updateMigrationState(context, MIGRATION_STATE_ALLOWED);
+            return;
+        }
+
+        if (migrationState == MIGRATION_STATE_IDLE) {
+            if (existsMigrationAwarePackage(context)) {
+                updateMigrationState(context, MIGRATION_STATE_ALLOWED);
+                return;
+            }
+
+            if (existsMigratorPackage(context)) {
+                updateMigrationState(context, MIGRATION_STATE_APP_UPGRADE_REQUIRED);
+                return;
+            }
+        }
+        if (migrationState != MIGRATION_STATE_IDLE && migrationState != MIGRATION_STATE_COMPLETE) {
+            completeMigrationIfNoMigratorPackageAvailable(context);
+        }
+    }
+
     /** Reconcile the current state with its appropriate state change job. */
-    private void reconcileStateChangeJob() {
+    private void reconcileStateChangeJob(@NonNull Context context) {
         switch (getMigrationState()) {
             case MIGRATION_STATE_IDLE:
             case MIGRATION_STATE_APP_UPGRADE_REQUIRED:
             case MIGRATION_STATE_ALLOWED:
-                rescheduleCompleteJobIfNoneFound();
+                rescheduleCompleteJobIfNoneFound(context);
                 return;
             case MIGRATION_STATE_MODULE_UPGRADE_REQUIRED:
-                handleIsUpgradeStillRequired();
+                handleIsUpgradeStillRequired(context);
                 return;
 
             case MIGRATION_STATE_IN_PROGRESS:
-                handleInProgressState();
+                handleInProgressState(context);
                 return;
 
             case MIGRATION_STATE_COMPLETE:
-                MigrationStateChangeJob.cancelAllPendingJobs(mContext, mUserId);
+                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
         }
     }
 
@@ -370,12 +401,12 @@ public final class MigrationStateManager {
      * Handles migration state change jobs if migration state is {@link MIGRATION_STATE_IN_PROGRESS}
      * on user unlock
      */
-    private void handleInProgressState() {
+    private void handleInProgressState(@NonNull Context context) {
         JobInfo jobInfo =
                 MigrationStateChangeJob.getPendingJob(
-                        mContext, Binder.getCallingUid(), MIGRATION_PAUSE_JOB_NAME);
+                        context, Binder.getCallingUid(), MIGRATION_PAUSE_JOB_NAME);
         if (Objects.isNull(jobInfo)) {
-            MigrationStateChangeJob.scheduleMigrationPauseJob(mContext, mUserId);
+            MigrationStateChangeJob.scheduleMigrationPauseJob(context, mUserId);
         }
     }
 
@@ -384,24 +415,24 @@ public final class MigrationStateManager {
      * HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY intent. If not, re-sync the state
      * update job.}
      */
-    private void handleIsUpgradeStillRequired() {
+    private void handleIsUpgradeStillRequired(@NonNull Context context) {
         if (Integer.parseInt(
                         PreferenceHelper.getInstance()
                                 .getPreference(MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY))
                 <= getUdcSdkExtensionVersion()) {
-            updateMigrationState(MIGRATION_STATE_ALLOWED);
+            updateMigrationState(context, MIGRATION_STATE_ALLOWED);
         } else {
-            rescheduleCompleteJobIfNoneFound();
+            rescheduleCompleteJobIfNoneFound(context);
         }
     }
 
-    private void rescheduleCompleteJobIfNoneFound() {
+    private void rescheduleCompleteJobIfNoneFound(@NonNull Context context) {
         JobInfo jobInfo =
                 MigrationStateChangeJob.getPendingJob(
-                        mContext, Binder.getCallingUid(), MIGRATION_COMPLETE_JOB_NAME);
+                        context, Binder.getCallingUid(), MIGRATION_COMPLETE_JOB_NAME);
 
         if (Objects.isNull(jobInfo)) {
-            MigrationStateChangeJob.scheduleMigrationCompletionJob(mContext, mUserId);
+            MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
         }
     }
 
@@ -435,6 +466,55 @@ public final class MigrationStateManager {
                 context.getResources().getIdentifier(HC_PACKAGE_NAME_CONFIG_NAME, null, null));
     }
 
+    private void completeMigrationIfNoMigratorPackageAvailable(@NonNull Context context) {
+        if (existsMigrationAwarePackage(context)) {
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "There is a migration aware package.");
+            }
+            return;
+        }
+
+        if (existsMigratorPackage(context)) {
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "There is a package with migration known signers certificate.");
+            }
+            return;
+        }
+
+        if (Constants.DEBUG) {
+            Slog.d(
+                    TAG,
+                    "There is no migration aware package or any package with migration known "
+                            + "signers certificate. Marking migration as complete.");
+        }
+        updateMigrationState(context, MIGRATION_STATE_COMPLETE);
+    }
+
+    private boolean existsMigrationAwarePackage(@NonNull Context context) {
+        List<String> filteredPackages = filterIntent(context, filterPermissions(context));
+        String dataMigratorPackageName = getDataMigratorPackageName(context);
+        List<String> filteredDataMigratorPackageNames =
+                filteredPackages.stream()
+                        .filter(packageName -> packageName.equals(dataMigratorPackageName))
+                        .toList();
+        return filteredDataMigratorPackageNames.size() != 0;
+    }
+
+    private boolean existsMigratorPackage(@NonNull Context context) {
+        // Search through all packages by known signer certificate.
+        List<PackageInfo> allPackages =
+                context.getPackageManager()
+                        .getInstalledPackages(PackageManager.GET_SIGNING_CERTIFICATES);
+        String[] knownSignerCerts = getMigrationKnownSignerCertificates(context);
+
+        for (PackageInfo packageInfo : allPackages) {
+            if (hasMatchingSignatures(getPackageSignatures(packageInfo), knownSignerCerts)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isMigrationAware(@NonNull Context context, @NonNull String packageName) {
         List<String> permissionFilteredPackages = filterPermissions(context);
         List<String> filteredPackages = filterIntent(context, permissionFilteredPackages);
@@ -452,13 +532,11 @@ public final class MigrationStateManager {
             @NonNull Context context, @NonNull String packageName) {
         List<String> stringSignatures;
         try {
-            Signature[] packageSignatures =
-                    context.getPackageManager()
-                            .getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
-                            .signingInfo
-                            .getApkContentsSigners();
             stringSignatures =
-                    Arrays.stream(packageSignatures).map(Signature::toCharsString).toList();
+                    getPackageSignatures(
+                            context.getPackageManager()
+                                    .getPackageInfo(
+                                            packageName, PackageManager.GET_SIGNING_CERTIFICATES));
         } catch (PackageManager.NameNotFoundException e) {
             Slog.i(TAG, "Could not get package signatures. Package not found");
             return false;
@@ -467,13 +545,27 @@ public final class MigrationStateManager {
         if (stringSignatures.isEmpty()) {
             return false;
         }
-        String[] certs =
-                context.getResources()
-                        .getStringArray(
-                                Resources.getSystem()
-                                        .getIdentifier(HC_RELEASE_CERT_CONFIG_NAME, null, null));
+        return hasMatchingSignatures(
+                stringSignatures, getMigrationKnownSignerCertificates(context));
+    }
 
-        return !Collections.disjoint(stringSignatures, Arrays.stream(certs).toList());
+    private static boolean hasMatchingSignatures(
+            List<String> stringSignatures, String[] migrationKnownSignerCertificates) {
+        return !Collections.disjoint(
+                stringSignatures, Arrays.stream(migrationKnownSignerCertificates).toList());
+    }
+
+    private static String[] getMigrationKnownSignerCertificates(Context context) {
+        return context.getResources()
+                .getStringArray(
+                        Resources.getSystem()
+                                .getIdentifier(HC_RELEASE_CERT_CONFIG_NAME, null, null));
+    }
+
+    private static List<String> getPackageSignatures(PackageInfo packageInfo) {
+        return Arrays.stream(packageInfo.signingInfo.getApkContentsSigners())
+                .map(Signature::toCharsString)
+                .toList();
     }
 
     private int getUdcSdkExtensionVersion() {
