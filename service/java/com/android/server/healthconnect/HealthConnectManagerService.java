@@ -28,8 +28,10 @@ import android.util.Slog;
 
 import com.android.server.SystemService;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
+import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver;
+import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -39,6 +41,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.util.Objects;
@@ -84,12 +87,22 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectDeviceConfigManager.initializeInstance(context);
         mMigrationBroadcastScheduler =
                 new MigrationBroadcastScheduler(mCurrentForegroundUser.getIdentifier());
-        MigrationStateManager.initializeInstance(mCurrentForegroundUser.getIdentifier());
-        MigrationStateManager.getInitialisedInstance()
-                .setMigrationBroadcastScheduler(mMigrationBroadcastScheduler);
+        final MigrationStateManager migrationStateManager =
+                MigrationStateManager.initializeInstance(mCurrentForegroundUser.getIdentifier());
+        migrationStateManager.setMigrationBroadcastScheduler(mMigrationBroadcastScheduler);
+        final MigrationCleaner migrationCleaner =
+                new MigrationCleaner(
+                        mTransactionManager,
+                        MigrationEntityHelper.getInstance(),
+                        PriorityMigrationHelper.getInstance());
         mHealthConnectService =
                 new HealthConnectServiceImpl(
-                        mTransactionManager, permissionHelper, firstGrantTimeManager, mContext);
+                        mTransactionManager,
+                        permissionHelper,
+                        migrationCleaner,
+                        firstGrantTimeManager,
+                        migrationStateManager,
+                        mContext);
     }
 
     @Override
