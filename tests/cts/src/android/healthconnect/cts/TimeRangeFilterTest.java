@@ -29,6 +29,8 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -63,5 +65,44 @@ public class TimeRangeFilterTest {
         assertThat(timeRangeFilter.getStartTime()).isEqualTo(startTime);
         assertThat(timeRangeFilter.getEndTime()).isEqualTo(endTime);
         assertThat(timeRangeFilter.isBounded()).isTrue();
+    }
+
+    @Test
+    public void testStartTimeInstantRangeFilter_startTimeNull() {
+        Instant endTime = Instant.now().plusMillis(1000);
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder().setEndTime(endTime).build();
+        assertThat(timeRangeFilter.getStartTime()).isEqualTo(Instant.EPOCH);
+    }
+
+    @Test
+    public void testEndTimeInstantRangeFilter_endTimeNull() {
+        Instant startTime = Instant.now();
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder().setStartTime(startTime).build();
+        assertThat(
+                        Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
+                                - timeRangeFilter.getEndTime().toEpochMilli())
+                .isLessThan(100);
+    }
+
+    @Test
+    public void testStartTimeLocalRangeFilter_startTimeNull() {
+        LocalDateTime endTime = LocalDateTime.MAX;
+        LocalTimeRangeFilter timeRangeFilter =
+                new LocalTimeRangeFilter.Builder().setEndTime(endTime).build();
+        assertThat(timeRangeFilter.getStartTime().toInstant(ZoneOffset.MAX))
+                .isLessThan(Instant.EPOCH);
+    }
+
+    @Test
+    public void testEndTimeLocalRangeFilter_endTimeNull() {
+        LocalDateTime startTime = LocalDateTime.MIN;
+        LocalTimeRangeFilter timeRangeFilter =
+                new LocalTimeRangeFilter.Builder().setStartTime(startTime).build();
+        assertThat(
+                        timeRangeFilter.getEndTime().toInstant(ZoneOffset.MAX).toEpochMilli()
+                                - Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli())
+                .isLessThan(100);
     }
 }
