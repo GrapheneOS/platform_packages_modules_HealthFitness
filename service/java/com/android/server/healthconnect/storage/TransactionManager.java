@@ -142,9 +142,10 @@ public final class TransactionManager {
      *
      * @param request a delete request.
      */
-    public void deleteAll(@NonNull DeleteTransactionRequest request) throws SQLiteException {
+    public int deleteAll(@NonNull DeleteTransactionRequest request) throws SQLiteException {
         final SQLiteDatabase db = getWritableDb();
         db.beginTransaction();
+        int numberOfRecordsDeleted = 0;
         try {
             for (DeleteTableRequest deleteTableRequest : request.getDeleteTableRequests()) {
                 if (deleteTableRequest.requiresRead()) {
@@ -153,7 +154,9 @@ public final class TransactionManager {
                     deleted, fetch and set it in {@code request}
                     */
                     try (Cursor cursor = db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
+                        int numberOfUuidsToDelete = 0;
                         while (cursor.moveToNext()) {
+                            numberOfUuidsToDelete++;
                             if (deleteTableRequest.requiresPackageCheck()) {
                                 request.enforcePackageCheck(
                                         StorageUtils.getCursorString(
@@ -168,8 +171,10 @@ public final class TransactionManager {
                                     StorageUtils.getCursorString(
                                             cursor, deleteTableRequest.getIdColumnName()));
                         }
+                        deleteTableRequest.setNumberOfUuidsToDelete(numberOfUuidsToDelete);
                     }
                 }
+                numberOfRecordsDeleted += deleteTableRequest.getTotalNumberOfRecordsDeleted();
                 db.execSQL(deleteTableRequest.getDeleteCommand());
             }
 
@@ -180,6 +185,7 @@ public final class TransactionManager {
         } finally {
             db.endTransaction();
         }
+        return numberOfRecordsDeleted;
     }
 
     /**
