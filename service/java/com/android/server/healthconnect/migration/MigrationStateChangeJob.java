@@ -129,7 +129,7 @@ public final class MigrationStateChangeJob {
 
         if (Instant.now().isAfter(executionTime)) {
             MigrationStateManager.getInitialisedInstance()
-                    .updateMigrationState(MIGRATION_STATE_COMPLETE);
+                    .updateMigrationState(context, MIGRATION_STATE_COMPLETE);
         }
     }
 
@@ -156,7 +156,7 @@ public final class MigrationStateChangeJob {
 
         if (Instant.now().isAfter(executionTime)) {
             MigrationStateManager.getInitialisedInstance()
-                    .updateMigrationState(MIGRATION_STATE_ALLOWED);
+                    .updateMigrationState(context, MIGRATION_STATE_ALLOWED);
         }
     }
 
