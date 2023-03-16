@@ -16,6 +16,16 @@
 
 package android.healthconnect.cts;
 
+import static android.health.connect.HealthDataCategory.ACTIVITY;
+import static android.health.connect.HealthDataCategory.BODY_MEASUREMENTS;
+import static android.health.connect.HealthDataCategory.CYCLE_TRACKING;
+import static android.health.connect.HealthDataCategory.NUTRITION;
+import static android.health.connect.HealthDataCategory.SLEEP;
+import static android.health.connect.HealthDataCategory.VITALS;
+import static android.health.connect.HealthPermissionCategory.BASAL_METABOLIC_RATE;
+import static android.health.connect.HealthPermissionCategory.EXERCISE;
+import static android.health.connect.HealthPermissionCategory.HEART_RATE;
+import static android.health.connect.HealthPermissionCategory.STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
@@ -35,33 +45,68 @@ import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissionCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.InsertRecordsResponse;
 import android.health.connect.ReadRecordsRequest;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.RecordTypeInfoResponse;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.AppInfo;
+import android.health.connect.datatypes.BasalBodyTemperatureRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.health.connect.datatypes.BloodGlucoseRecord;
+import android.health.connect.datatypes.BloodPressureRecord;
+import android.health.connect.datatypes.BodyFatRecord;
+import android.health.connect.datatypes.BodyTemperatureRecord;
+import android.health.connect.datatypes.BodyWaterMassRecord;
+import android.health.connect.datatypes.BoneMassRecord;
+import android.health.connect.datatypes.CervicalMucusRecord;
+import android.health.connect.datatypes.CyclingPedalingCadenceRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.DistanceRecord;
+import android.health.connect.datatypes.ElevationGainedRecord;
 import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.datatypes.FloorsClimbedRecord;
 import android.health.connect.datatypes.HeartRateRecord;
+import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord;
+import android.health.connect.datatypes.HeightRecord;
+import android.health.connect.datatypes.HydrationRecord;
+import android.health.connect.datatypes.IntermenstrualBleedingRecord;
+import android.health.connect.datatypes.LeanBodyMassRecord;
+import android.health.connect.datatypes.MenstruationFlowRecord;
+import android.health.connect.datatypes.MenstruationPeriodRecord;
 import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.NutritionRecord;
+import android.health.connect.datatypes.OvulationTestRecord;
+import android.health.connect.datatypes.OxygenSaturationRecord;
+import android.health.connect.datatypes.PowerRecord;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.RespiratoryRateRecord;
+import android.health.connect.datatypes.RestingHeartRateRecord;
+import android.health.connect.datatypes.SexualActivityRecord;
 import android.health.connect.datatypes.SleepSessionRecord;
+import android.health.connect.datatypes.SpeedRecord;
+import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
+import android.health.connect.datatypes.Vo2MaxRecord;
+import android.health.connect.datatypes.WeightRecord;
+import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.migration.MigrationException;
@@ -82,7 +127,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -659,7 +706,6 @@ public class TestUtils {
             throw exceptionAtomicReference.get();
         }
     }
-
     public static void verifyDeleteRecords(
             Class<? extends Record> recordType, TimeInstantRangeFilter timeRangeFilter)
             throws InterruptedException {
@@ -738,6 +784,45 @@ public class TestUtils {
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
+    }
+
+    public static Map<Class<? extends Record>, RecordTypeInfoResponse> queryAllRecordTypesInfo()
+            throws InterruptedException, NullPointerException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        AtomicReference<Map<Class<? extends Record>, RecordTypeInfoResponse>> response =
+                new AtomicReference<>();
+        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            CountDownLatch latch = new CountDownLatch(1);
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            assertThat(service).isNotNull();
+            service.queryAllRecordTypesInfo(
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<
+                            Map<Class<? extends Record>, RecordTypeInfoResponse>,
+                            HealthConnectException>() {
+                        @Override
+                        public void onResult(
+                                Map<Class<? extends Record>, RecordTypeInfoResponse> result) {
+                            response.set(result);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(HealthConnectException exception) {
+                            responseException.set(exception);
+                            latch.countDown();
+                        }
+                    });
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            assertThat(responseException.get()).isNull();
+            assertThat(response).isNotNull();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+        return response.get();
     }
 
     public static List<LocalDate> getActivityDates(List<Class<? extends Record>> recordTypes)
@@ -1013,6 +1098,205 @@ public class TestUtils {
 
         public Record getRecordClass() {
             return recordClass;
+        }
+    }
+
+    static void populateAndResetExpectedResponseMap(
+            HashMap<Class<? extends Record>, RecordTypeInfoTestResponse> expectedResponseMap) {
+        expectedResponseMap.put(
+                ElevationGainedRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY, HealthPermissionCategory.ELEVATION_GAINED, new ArrayList<>()));
+        expectedResponseMap.put(
+                OvulationTestRecord.class,
+                new RecordTypeInfoTestResponse(
+                        CYCLE_TRACKING,
+                        HealthPermissionCategory.OVULATION_TEST,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                DistanceRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY, HealthPermissionCategory.DISTANCE, new ArrayList<>()));
+        expectedResponseMap.put(
+                SpeedRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY, HealthPermissionCategory.SPEED, new ArrayList<>()));
+
+        expectedResponseMap.put(
+                Vo2MaxRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY, HealthPermissionCategory.VO2_MAX, new ArrayList<>()));
+        expectedResponseMap.put(
+                OxygenSaturationRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS, HealthPermissionCategory.OXYGEN_SATURATION, new ArrayList<>()));
+        expectedResponseMap.put(
+                TotalCaloriesBurnedRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY,
+                        HealthPermissionCategory.TOTAL_CALORIES_BURNED,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                HydrationRecord.class,
+                new RecordTypeInfoTestResponse(
+                        NUTRITION, HealthPermissionCategory.HYDRATION, new ArrayList<>()));
+        expectedResponseMap.put(
+                StepsRecord.class,
+                new RecordTypeInfoTestResponse(ACTIVITY, STEPS, new ArrayList<>()));
+        expectedResponseMap.put(
+                CervicalMucusRecord.class,
+                new RecordTypeInfoTestResponse(
+                        CYCLE_TRACKING,
+                        HealthPermissionCategory.CERVICAL_MUCUS,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                ExerciseSessionRecord.class,
+                new RecordTypeInfoTestResponse(ACTIVITY, EXERCISE, new ArrayList<>()));
+        expectedResponseMap.put(
+                HeartRateRecord.class,
+                new RecordTypeInfoTestResponse(VITALS, HEART_RATE, new ArrayList<>()));
+        expectedResponseMap.put(
+                RespiratoryRateRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS, HealthPermissionCategory.RESPIRATORY_RATE, new ArrayList<>()));
+        expectedResponseMap.put(
+                BasalBodyTemperatureRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS,
+                        HealthPermissionCategory.BASAL_BODY_TEMPERATURE,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                WheelchairPushesRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY, HealthPermissionCategory.WHEELCHAIR_PUSHES, new ArrayList<>()));
+        expectedResponseMap.put(
+                PowerRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY, HealthPermissionCategory.POWER, new ArrayList<>()));
+        expectedResponseMap.put(
+                BodyWaterMassRecord.class,
+                new RecordTypeInfoTestResponse(
+                        BODY_MEASUREMENTS,
+                        HealthPermissionCategory.BODY_WATER_MASS,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                WeightRecord.class,
+                new RecordTypeInfoTestResponse(
+                        BODY_MEASUREMENTS, HealthPermissionCategory.WEIGHT, new ArrayList<>()));
+        expectedResponseMap.put(
+                BoneMassRecord.class,
+                new RecordTypeInfoTestResponse(
+                        BODY_MEASUREMENTS, HealthPermissionCategory.BONE_MASS, new ArrayList<>()));
+        expectedResponseMap.put(
+                RestingHeartRateRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS, HealthPermissionCategory.RESTING_HEART_RATE, new ArrayList<>()));
+        expectedResponseMap.put(
+                ActiveCaloriesBurnedRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY,
+                        HealthPermissionCategory.ACTIVE_CALORIES_BURNED,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                BodyFatRecord.class,
+                new RecordTypeInfoTestResponse(
+                        BODY_MEASUREMENTS, HealthPermissionCategory.BODY_FAT, new ArrayList<>()));
+        expectedResponseMap.put(
+                BodyTemperatureRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS, HealthPermissionCategory.BODY_TEMPERATURE, new ArrayList<>()));
+        expectedResponseMap.put(
+                NutritionRecord.class,
+                new RecordTypeInfoTestResponse(
+                        NUTRITION, HealthPermissionCategory.NUTRITION, new ArrayList<>()));
+        expectedResponseMap.put(
+                LeanBodyMassRecord.class,
+                new RecordTypeInfoTestResponse(
+                        BODY_MEASUREMENTS,
+                        HealthPermissionCategory.LEAN_BODY_MASS,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                HeartRateVariabilityRmssdRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS,
+                        HealthPermissionCategory.HEART_RATE_VARIABILITY,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                MenstruationFlowRecord.class,
+                new RecordTypeInfoTestResponse(
+                        CYCLE_TRACKING, HealthPermissionCategory.MENSTRUATION, new ArrayList<>()));
+        expectedResponseMap.put(
+                BloodGlucoseRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS, HealthPermissionCategory.BLOOD_GLUCOSE, new ArrayList<>()));
+        expectedResponseMap.put(
+                BloodPressureRecord.class,
+                new RecordTypeInfoTestResponse(
+                        VITALS, HealthPermissionCategory.BLOOD_PRESSURE, new ArrayList<>()));
+        expectedResponseMap.put(
+                CyclingPedalingCadenceRecord.class,
+                new RecordTypeInfoTestResponse(ACTIVITY, EXERCISE, new ArrayList<>()));
+        expectedResponseMap.put(
+                IntermenstrualBleedingRecord.class,
+                new RecordTypeInfoTestResponse(
+                        CYCLE_TRACKING,
+                        HealthPermissionCategory.INTERMENSTRUAL_BLEEDING,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                FloorsClimbedRecord.class,
+                new RecordTypeInfoTestResponse(
+                        ACTIVITY, HealthPermissionCategory.FLOORS_CLIMBED, new ArrayList<>()));
+        expectedResponseMap.put(
+                StepsCadenceRecord.class,
+                new RecordTypeInfoTestResponse(ACTIVITY, STEPS, new ArrayList<>()));
+        expectedResponseMap.put(
+                HeightRecord.class,
+                new RecordTypeInfoTestResponse(
+                        BODY_MEASUREMENTS, HealthPermissionCategory.HEIGHT, new ArrayList<>()));
+        expectedResponseMap.put(
+                SexualActivityRecord.class,
+                new RecordTypeInfoTestResponse(
+                        CYCLE_TRACKING,
+                        HealthPermissionCategory.SEXUAL_ACTIVITY,
+                        new ArrayList<>()));
+        expectedResponseMap.put(
+                MenstruationPeriodRecord.class,
+                new RecordTypeInfoTestResponse(
+                        CYCLE_TRACKING, HealthPermissionCategory.MENSTRUATION, new ArrayList<>()));
+        expectedResponseMap.put(
+                SleepSessionRecord.class,
+                new RecordTypeInfoTestResponse(
+                        SLEEP, HealthPermissionCategory.SLEEP, new ArrayList<>()));
+        expectedResponseMap.put(
+                BasalMetabolicRateRecord.class,
+                new RecordTypeInfoTestResponse(
+                        BODY_MEASUREMENTS, BASAL_METABOLIC_RATE, new ArrayList<>()));
+    }
+
+    static class RecordTypeInfoTestResponse {
+        private final int mRecordTypePermission;
+        private final ArrayList<String> mContributingPackages;
+        private final int mRecordTypeCategory;
+
+        RecordTypeInfoTestResponse(
+                int recordTypeCategory,
+                int recordTypePermission,
+                ArrayList<String> contributingPackages) {
+            mRecordTypeCategory = recordTypeCategory;
+            mRecordTypePermission = recordTypePermission;
+            mContributingPackages = contributingPackages;
+        }
+
+        public int getRecordTypeCategory() {
+            return mRecordTypeCategory;
+        }
+
+        public int getRecordTypePermission() {
+            return mRecordTypePermission;
+        }
+
+        public ArrayList<String> getContributingPackages() {
+            return mContributingPackages;
         }
     }
 }
