@@ -53,4 +53,14 @@ public class MigrationEntityTest {
         mExpect.that(payload.getAppName()).isEqualTo(DEFAULT_APP_NAME);
         mExpect.that(payload.getAppIcon()).isEqualTo(DEFAULT_ICON_BYTES);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void nullEntityId_throws() {
+        new MigrationEntity(/*entityId=*/ null, APP_INFO_PAYLOAD);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void nullPayload_throws() {
+        new MigrationEntity(DEFAULT_ENTITY_ID, /*payload=*/ null);
+    }
 }
