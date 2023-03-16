@@ -122,8 +122,9 @@ public class HealthConnectTestHelper extends Activity {
                     insertRecordsAndGetIds(records, context);
             intent.putExtra(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
             intent.putExtra(SUCCESS, true);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             intent.putExtra(SUCCESS, false);
+            intent.putExtra(INTENT_EXCEPTION, e);
         }
 
         return intent;

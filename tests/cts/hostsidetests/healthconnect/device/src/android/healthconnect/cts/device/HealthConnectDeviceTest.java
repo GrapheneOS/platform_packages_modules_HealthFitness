@@ -76,6 +76,14 @@ public class HealthConnectDeviceTest {
                     false,
                     "CtsHealthConnectTestAppWithWritePermissionsOnly.apk");
 
+    private static final TestApp APP_WITH_DATA_MANAGE_PERMS_ONLY =
+            new TestApp(
+                    "TestAppD",
+                    "android.healthconnect.cts.testapp.dataManagePerms",
+                    VERSION_CODE,
+                    false,
+                    "CtsHealthConnectTestAppWithDataManagePermission.apk");
+
     @After
     public void tearDown() {
         deleteAllStagedRemoteData();
@@ -178,5 +186,31 @@ public class HealthConnectDeviceTest {
 
         bundle = readRecordsAs(APP_WITH_WRITE_PERMS_ONLY, recordClassesToRead);
         assertThat(bundle.getInt(READ_RECORDS_SIZE)).isEqualTo(0);
+    }
+
+    @Test
+    public void testAppWithManageHealthDataPermsOnlyCantInsertRecords() throws Exception {
+        try {
+            insertRecordAs(APP_WITH_DATA_MANAGE_PERMS_ONLY);
+            Assert.fail("Should have thrown Exception while inserting records!");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
+    }
+
+    @Test
+    public void testAppWithManageHealthDataPermsOnlyCantUpdateRecords() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        try {
+            updateRecordsAs(APP_WITH_DATA_MANAGE_PERMS_ONLY, listOfRecordIdsAndClass);
+            Assert.fail("Should have thrown Health Connect Exception!");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
     }
 }
