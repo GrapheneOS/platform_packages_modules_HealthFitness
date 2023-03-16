@@ -146,6 +146,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
     override fun onResume() {
         super.onResume()
         setTitle(fromPermissionType(permissionType).uppercaseLabel)
+        viewModel.loadAppMetaDataMap(permissionType)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
