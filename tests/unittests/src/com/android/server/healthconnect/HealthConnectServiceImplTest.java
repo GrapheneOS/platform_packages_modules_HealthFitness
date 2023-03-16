@@ -97,7 +97,7 @@ public class HealthConnectServiceImplTest {
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
                 .thenReturn(mAppOpsManagerLocal);
-        MigrationStateManager.initializeInstance(mContext, mUserHandle.getIdentifier());
+        MigrationStateManager.initializeInstance(mUserHandle.getIdentifier());
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(

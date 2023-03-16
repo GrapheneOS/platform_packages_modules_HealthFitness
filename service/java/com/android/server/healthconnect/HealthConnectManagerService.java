@@ -84,7 +84,7 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectDeviceConfigManager.initializeInstance(context);
         mMigrationBroadcastScheduler =
                 new MigrationBroadcastScheduler(mCurrentForegroundUser.getIdentifier());
-        MigrationStateManager.initializeInstance(mContext, mCurrentForegroundUser.getIdentifier());
+        MigrationStateManager.initializeInstance(mCurrentForegroundUser.getIdentifier());
         MigrationStateManager.getInitialisedInstance()
                 .setMigrationBroadcastScheduler(mMigrationBroadcastScheduler);
         mHealthConnectService =
@@ -111,7 +111,7 @@ public class HealthConnectManagerService extends SystemService {
         RateLimiter.clearCache();
         HealthConnectThreadScheduler.resetThreadPools();
         MigrationStateManager.getInitialisedInstance()
-                .onUserSwitching(to.getUserHandle().getIdentifier());
+                .onUserSwitching(mContext, to.getUserHandle().getIdentifier());
 
         mCurrentForegroundUser = to.getUserHandle();
         if (mUserManager.isUserUnlocked(to.getUserHandle())) {
@@ -183,7 +183,8 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        MigrationStateManager.getInitialisedInstance().switchToSetupForUser();
+                        MigrationStateManager.getInitialisedInstance()
+                                .switchToSetupForUser(mContext);
                     } catch (Exception e) {
                         Slog.e(TAG, "Failed to start user unlocked state changes actions", e);
                     }
