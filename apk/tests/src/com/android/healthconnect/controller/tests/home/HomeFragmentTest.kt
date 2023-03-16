@@ -28,6 +28,7 @@ import com.android.healthconnect.controller.home.HomeFragment
 import com.android.healthconnect.controller.home.HomeFragmentViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
+import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
@@ -36,6 +37,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -86,10 +88,10 @@ class HomeFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle(),
                         HealthDataCategory.NUTRITION.uppercaseTitle()))
 
-        Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData(listOf(recentApp))
+        whenever(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(listOf(recentApp)))
         }
-        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+        whenever(homeFragmentViewModel.connectedApps).then {
             MutableLiveData(listOf<ConnectedAppMetadata>())
         }
         launchFragment<HomeFragment>(Bundle())
@@ -110,10 +112,10 @@ class HomeFragmentTest {
 
     @Test
     fun test_HomeFragment_withNoRecentAccessApps() {
-        Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<List<RecentAccessEntry>>(emptyList())
+        whenever(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
         }
-        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+        whenever(homeFragmentViewModel.connectedApps).then {
             MutableLiveData(
                 listOf(
                     ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
@@ -136,10 +138,10 @@ class HomeFragmentTest {
 
     @Test
     fun test_HomeFragment_withOneApp() {
-        Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<List<RecentAccessEntry>>(emptyList())
+        whenever(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
         }
-        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+        whenever(homeFragmentViewModel.connectedApps).then {
             MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)))
         }
         launchFragment<HomeFragment>(Bundle())
@@ -155,10 +157,10 @@ class HomeFragmentTest {
 
     @Test
     fun test_HomeFragment_withOneAppConnected_oneAppNotConnected() {
-        Mockito.`when`(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<List<RecentAccessEntry>>(emptyList())
+        whenever(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
         }
-        Mockito.`when`(homeFragmentViewModel.connectedApps).then {
+        whenever(homeFragmentViewModel.connectedApps).then {
             MutableLiveData(
                 listOf(
                     ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
