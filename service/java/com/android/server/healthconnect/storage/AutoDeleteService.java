@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
@@ -61,6 +62,9 @@ public class AutoDeleteService {
             deleteStaleRecordEntries();
             deleteStaleChangeLogEntries();
             deleteStaleAccessLogEntries();
+            // updates the recordTypesUsed by packages if required after the deletion of
+            // records.
+            AppInfoHelper.getInstance().updateAppInfoRecordTypesUsedOnDelete(null);
         } catch (Exception e) {
             Slog.e(TAG, "Auto delete run failed", e);
             // Don't rethrow as that will crash system_server
