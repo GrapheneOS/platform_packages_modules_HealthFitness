@@ -27,6 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthDataCategory;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
@@ -50,7 +51,8 @@ import java.util.Map;
  */
 public final class PriorityMigrationHelper {
 
-    private static final String PRE_MIGRATION_TABLE_NAME = "pre_migration_category_priority_table";
+    @VisibleForTesting
+    public static final String PRE_MIGRATION_TABLE_NAME = "pre_migration_category_priority_table";
 
     private static final String CATEGORY_COLUMN_NAME = "category";
     private static final String PRIORITY_ORDER_COLUMN_NAME = "priority_order";
