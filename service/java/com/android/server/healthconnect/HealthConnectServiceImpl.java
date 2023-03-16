@@ -117,6 +117,7 @@ import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.migration.DataMigrationManager;
+import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
@@ -194,17 +195,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
             HealthConnectPermissionHelper permissionHelper,
+            MigrationCleaner migrationCleaner,
             FirstGrantTimeManager firstGrantTimeManager,
+            MigrationStateManager migrationStateManager,
             Context context) {
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
         mFirstGrantTimeManager = firstGrantTimeManager;
         mContext = context;
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
-        mMigrationStateManager = MigrationStateManager.getInitialisedInstance();
+        mMigrationStateManager = migrationStateManager;
         mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
         mBackupRestore = new BackupRestore(mFirstGrantTimeManager);
+
+        migrationCleaner.attachTo(migrationStateManager);
     }
 
     @Override
@@ -1385,9 +1390,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateFinishMigration();
-                        // TODO(b/272549734) clearing pre-migration priority table on force
-                        //  completion of migration.
-                        PriorityMigrationHelper.getInstance().clearData(mTransactionManager);
                         mMigrationStateManager.updateMigrationState(
                                 mContext, MIGRATION_STATE_COMPLETE);
                         callback.onSuccess();
