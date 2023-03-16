@@ -20,6 +20,8 @@ import android.annotation.Nullable;
 import android.graphics.Bitmap;
 import android.health.connect.datatypes.AppInfo;
 
+import java.util.Set;
+
 /**
  * @hide
  * @see AppInfo
@@ -30,15 +32,19 @@ public final class AppInfoInternal {
     private final String mName;
     private final Bitmap mIcon;
 
+    private Set<Integer> mRecordTypesUsed;
+
     public AppInfoInternal(
             @NonNull long id,
             @NonNull String packageName,
             @Nullable String name,
-            @Nullable Bitmap icon) {
+            @Nullable Bitmap icon,
+            @Nullable Set<Integer> recordTypesUsed) {
         mId = id;
         mPackageName = packageName;
         mName = name;
         mIcon = icon;
+        mRecordTypesUsed = recordTypesUsed;
     }
 
     @NonNull
@@ -51,6 +57,11 @@ public final class AppInfoInternal {
     public AppInfoInternal setId(long id) {
         mId = id;
         return this;
+    }
+
+    /** sets or updates the value of recordTypesUsed for app info. */
+    public void setRecordTypesUsed(@Nullable Set<Integer> recordTypesUsed) {
+        mRecordTypesUsed = recordTypesUsed;
     }
 
     @NonNull
@@ -66,6 +77,11 @@ public final class AppInfoInternal {
     @Nullable
     public Bitmap getIcon() {
         return mIcon;
+    }
+
+    @Nullable
+    public Set<Integer> getRecordTypesUsed() {
+        return mRecordTypesUsed;
     }
 
     /** returns a new {@link AppInfo} object from this object */

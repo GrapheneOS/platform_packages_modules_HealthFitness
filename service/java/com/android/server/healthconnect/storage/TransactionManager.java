@@ -30,7 +30,6 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.health.connect.Constants;
-import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.UserHandle;
 import android.util.Pair;
@@ -46,13 +45,16 @@ import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 /**
@@ -293,6 +295,23 @@ public final class TransactionManager {
     }
 
     /**
+     * Update record into the table in {@code request} into the HealthConnect database.
+     *
+     * <p>NOTE: PLEASE ONLY USE THIS FUNCTION IF YOU WANT TO UPDATE A SINGLE RECORD PER API. PLEASE
+     * DON'T USE THIS FUNCTION INSIDE A FOR LOOP OR REPEATEDLY: The reason is that this function
+     * tries to update a record inside its own transaction and if you are trying to insert multiple
+     * things using this method in the same api call, they will all get updates in their separate
+     * transactions and will be less performant. If at all, the requirement is to update them in
+     * different transactions, as they are not related to each, then this method can be used.
+     *
+     * @param request an update request.
+     */
+    public void update(@NonNull UpsertTableRequest request) {
+        final SQLiteDatabase db = getWritableDb();
+        updateRecord(db, request);
+    }
+
+    /**
      * Inserts (or updates if the row exists) record into the table in {@code request} into the
      * HealthConnect database.
      *
@@ -377,31 +396,38 @@ public final class TransactionManager {
      * @return list of distinct packageNames corresponding to the input table name after querying
      *     the table.
      */
-    public ArrayList<DataOrigin> getDistinctPackageNamesForRecordTable(RecordHelper<?> recordHelper)
-            throws SQLiteException {
+    public HashMap<Integer, HashSet<String>> getDistinctPackageNamesForRecordsTable(
+            Set<Integer> recordTypes) throws SQLiteException {
         final SQLiteDatabase db = getReadableDb();
-        ArrayList<DataOrigin> packageNamesForDatatype = new ArrayList<>();
-        try (Cursor cursorForDistinctPackageNames =
-                db.rawQuery(
-                        /* sql query */
-                        recordHelper.getReadTableRequestWithDistinctAppInfoIds().getReadCommand(),
-                        /* selectionArgs */ null)) {
-            if (cursorForDistinctPackageNames.getCount() > 0) {
-                AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
-                while (cursorForDistinctPackageNames.moveToNext()) {
-                    String packageName =
-                            appInfoHelper.getPackageName(
-                                    cursorForDistinctPackageNames.getLong(
-                                            cursorForDistinctPackageNames.getColumnIndex(
-                                                    APP_INFO_ID_COLUMN_NAME)));
-                    if (!packageName.isEmpty()) {
-                        packageNamesForDatatype.add(
-                                new DataOrigin.Builder().setPackageName(packageName).build());
+        HashMap<Integer, HashSet<String>> packagesForRecordTypeMap = new HashMap<>();
+        for (Integer recordType : recordTypes) {
+            RecordHelper<?> recordHelper =
+                    RecordHelperProvider.getInstance().getRecordHelper(recordType);
+            HashSet<String> packageNamesForDatatype = new HashSet<>();
+            try (Cursor cursorForDistinctPackageNames =
+                    db.rawQuery(
+                            /* sql query */
+                            recordHelper
+                                    .getReadTableRequestWithDistinctAppInfoIds()
+                                    .getReadCommand(),
+                            /* selectionArgs */ null)) {
+                if (cursorForDistinctPackageNames.getCount() > 0) {
+                    AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
+                    while (cursorForDistinctPackageNames.moveToNext()) {
+                        String packageName =
+                                appInfoHelper.getPackageName(
+                                        cursorForDistinctPackageNames.getLong(
+                                                cursorForDistinctPackageNames.getColumnIndex(
+                                                        APP_INFO_ID_COLUMN_NAME)));
+                        if (!packageName.isEmpty()) {
+                            packageNamesForDatatype.add(packageName);
+                        }
                     }
                 }
             }
+            packagesForRecordTypeMap.put(recordType, packageNamesForDatatype);
         }
-        return packageNamesForDatatype;
+        return packagesForRecordTypeMap;
     }
 
     /**
