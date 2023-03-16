@@ -24,6 +24,7 @@
 
   <!-- Home Screen -->
   <string name="request_permissions">Request Permissions</string>
+  <string name="launch_health_connect">Launch Health Connect</string>
   <string name="request_route_permissions">Request Route Permissions</string>
   <string name="insert_update_data">Insert / Update Data</string>
   <string name="insert_session">Insert Session</string>
@@ -34,6 +35,10 @@
   <string name="seed_performance_insert_data">Seed Performance Data</string>
   <string name="seed_performance_insert_data_in_parallel">Seed Performance Data (In Parallel)</string>
   <string name="seed_performance_read_data">Read Performance Data</string>
+  <string name="toggle_permission_intent_filter">Toggle Intent Filter</string>
+  <string name="toast_permission_filter_enabled">Intent Filter Enabled</string>
+  <string name="toast_permission_filter_disabled">Intent Filter Disabled</string>
+  <string name="toast_seed_data_success">Data inserted successfully</string>
 
   <!-- Data Categories -->
   <string name="activity_category" description="Title for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
