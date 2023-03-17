@@ -86,7 +86,7 @@ public class HeartRateRecordTest {
         ArrayList<Record> hearRateRecords = new ArrayList<>();
         for (int i = 0; i < 2500; i++) {
             hearRateRecords.addAll(
-                    Arrays.asList(getBaseHeartRateRecord(), getCompleteHeartRateRecord()));
+                    Arrays.asList(getBaseHeartRateRecord(10), getCompleteHeartRateRecord()));
         }
         TestUtils.insertRecords(hearRateRecords);
     }
@@ -94,7 +94,7 @@ public class HeartRateRecordTest {
     @Test
     public void testInsertHeartRateRecord() throws InterruptedException {
         TestUtils.insertRecords(
-                Arrays.asList(getBaseHeartRateRecord(), getCompleteHeartRateRecord()));
+                Arrays.asList(getBaseHeartRateRecord(10), getCompleteHeartRateRecord()));
     }
 
     @Test
@@ -313,7 +313,7 @@ public class HeartRateRecordTest {
 
     @Test
     public void testDeleteHeartRateRecord_recordId_filters() throws InterruptedException {
-        List<Record> records = List.of(getBaseHeartRateRecord(), getCompleteHeartRateRecord());
+        List<Record> records = List.of(getBaseHeartRateRecord(10), getCompleteHeartRateRecord());
         TestUtils.insertRecords(records);
 
         for (Record record : records) {
@@ -352,7 +352,7 @@ public class HeartRateRecordTest {
 
     @Test
     public void testDeleteHeartRateRecord_usingIds() throws InterruptedException {
-        List<Record> records = List.of(getBaseHeartRateRecord(), getCompleteHeartRateRecord());
+        List<Record> records = List.of(getBaseHeartRateRecord(10), getCompleteHeartRateRecord());
         List<Record> insertedRecord = TestUtils.insertRecords(records);
         List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
         for (Record record : insertedRecord) {
@@ -412,9 +412,9 @@ public class HeartRateRecordTest {
     public void testBpmAggregation_timeRange_all() throws Exception {
         List<Record> records =
                 Arrays.asList(
-                        TestUtils.getHeartRateRecord(71),
-                        TestUtils.getHeartRateRecord(72),
-                        TestUtils.getHeartRateRecord(73));
+                        getBaseHeartRateRecord(71),
+                        getBaseHeartRateRecord(72),
+                        getBaseHeartRateRecord(73));
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -485,9 +485,9 @@ public class HeartRateRecordTest {
         Context context = ApplicationProvider.getApplicationContext();
         List<Record> records =
                 Arrays.asList(
-                        TestUtils.getHeartRateRecord(71),
-                        TestUtils.getHeartRateRecord(72),
-                        TestUtils.getHeartRateRecord(73));
+                        getBaseHeartRateRecord(71),
+                        getBaseHeartRateRecord(72),
+                        getBaseHeartRateRecord(73));
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -653,9 +653,9 @@ public class HeartRateRecordTest {
     public void testHeartAggregation_measurement_count() throws Exception {
         List<Record> records =
                 Arrays.asList(
-                        TestUtils.getHeartRateRecord(71),
-                        TestUtils.getHeartRateRecord(72),
-                        TestUtils.getHeartRateRecord(73));
+                        getBaseHeartRateRecord(71),
+                        getBaseHeartRateRecord(72),
+                        getBaseHeartRateRecord(73));
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -669,9 +669,9 @@ public class HeartRateRecordTest {
                         records);
         List<Record> recordsNew =
                 Arrays.asList(
-                        TestUtils.getHeartRateRecord(71),
-                        TestUtils.getHeartRateRecord(72),
-                        TestUtils.getHeartRateRecord(73));
+                        getBaseHeartRateRecord(71),
+                        getBaseHeartRateRecord(72),
+                        getBaseHeartRateRecord(73));
         AggregateRecordsResponse<Long> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -883,9 +883,9 @@ public class HeartRateRecordTest {
         for (int i = 0; i < times; i++) {
             List<Record> records =
                     Arrays.asList(
-                            TestUtils.getHeartRateRecord(71),
-                            TestUtils.getHeartRateRecord(72),
-                            TestUtils.getHeartRateRecord(73));
+                            getBaseHeartRateRecord(71),
+                            getBaseHeartRateRecord(72),
+                            getBaseHeartRateRecord(73));
 
             TestUtils.insertRecords(records);
             Thread.sleep(delayInMillis);
@@ -907,15 +907,15 @@ public class HeartRateRecordTest {
         }
     }
 
-    private static HeartRateRecord getBaseHeartRateRecord() {
+    private static HeartRateRecord getBaseHeartRateRecord(long beatsPerMinute) {
         HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
+                new HeartRateRecord.HeartRateSample(beatsPerMinute, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
 
         return new HeartRateRecord.Builder(
-                        new Metadata.Builder().build(),
+                        new Metadata.Builder().setClientRecordId("HRR" + Math.random()).build(),
                         Instant.now(),
                         Instant.now().plusMillis(500),
                         heartRateRecords)

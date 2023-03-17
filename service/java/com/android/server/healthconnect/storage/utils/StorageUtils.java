@@ -20,6 +20,8 @@ import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.datatypes.AggregationType.SUM;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
@@ -35,9 +37,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.internal.datatypes.InstantRecordInternal;
+import android.health.connect.internal.datatypes.IntervalRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
+import android.text.TextUtils;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
@@ -75,6 +80,7 @@ public final class StorageUtils {
     public static final String PRIMARY = "INTEGER PRIMARY KEY";
     public static final String DELIMITER = ",";
     public static final String BLOB = "BLOB";
+    public static final String BLOB_UNIQUE_NULL = "BLOB UNIQUE";
     public static final String SELECT_ALL = "SELECT * FROM ";
     public static final String LIMIT_SIZE = " LIMIT ";
     public static final int BOOLEAN_FALSE_VALUE = 0;
@@ -239,6 +245,48 @@ public final class StorageUtils {
 
     public static long getDurationDelta(Duration duration) {
         return Math.max(duration.toMillis(), 1); // to millis
+    }
+
+    /** Encodes record properties participating in deduplication into a byte array. */
+    @Nullable
+    public static byte[] getDedupeByteBuffer(@NonNull RecordInternal<?> record) {
+        if (!TextUtils.isEmpty(record.getClientRecordId())) {
+            return null; // If dedupe by clientRecordId then don't dedupe by hash
+        }
+
+        if (record instanceof InstantRecordInternal<?>) {
+            return getDedupeByteBuffer((InstantRecordInternal<?>) record);
+        }
+
+        if (record instanceof IntervalRecordInternal<?>) {
+            return getDedupeByteBuffer((IntervalRecordInternal<?>) record);
+        }
+
+        throw new IllegalArgumentException("Unexpected record type: " + record);
+    }
+
+    @NonNull
+    private static byte[] getDedupeByteBuffer(@NonNull InstantRecordInternal<?> record) {
+        return ByteBuffer.allocate(Long.BYTES * 3)
+                .putLong(record.getAppInfoId())
+                .putLong(record.getDeviceInfoId())
+                .putLong(record.getTimeInMillis())
+                .array();
+    }
+
+    @Nullable
+    private static byte[] getDedupeByteBuffer(@NonNull IntervalRecordInternal<?> record) {
+        final int type = record.getRecordType();
+        if ((type == RECORD_TYPE_HYDRATION) || (type == RECORD_TYPE_NUTRITION)) {
+            return null; // Some records are exempt from deduplication
+        }
+
+        return ByteBuffer.allocate(Long.BYTES * 4)
+                .putLong(record.getAppInfoId())
+                .putLong(record.getDeviceInfoId())
+                .putLong(record.getStartTimeInMillis())
+                .putLong(record.getEndTimeInMillis())
+                .array();
     }
 
     private static byte[] getUUIDByteBuffer(long appId, byte[] clientIDBlob, int recordId) {

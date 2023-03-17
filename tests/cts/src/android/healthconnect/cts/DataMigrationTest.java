@@ -51,12 +51,16 @@ import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.HeightRecord;
+import android.health.connect.datatypes.HydrationRecord;
 import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.NutritionRecord;
 import android.health.connect.datatypes.PowerRecord;
 import android.health.connect.datatypes.PowerRecord.PowerRecordSample;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Length;
+import android.health.connect.datatypes.units.Mass;
+import android.health.connect.datatypes.units.Volume;
 import android.health.connect.migration.AppInfoMigrationPayload;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
@@ -136,6 +140,10 @@ public class DataMigrationTest {
 
     private static Metadata getMetadata(String clientRecordId) {
         return getMetadata(clientRecordId, APP_PACKAGE_NAME);
+    }
+
+    private static Metadata getMetadata() {
+        return getMetadata(/*clientRecordId=*/ null);
     }
 
     private static byte[] getBitmapBytes(Bitmap bitmap) {
@@ -227,18 +235,149 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateRecord_sameEntity_notSaved() {
+    public void migrateRecord_sameEntityId_ignored() {
         final String entityId = "height";
-        final Length originalHeight = fromMeters(3D);
-        migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, originalHeight).build());
 
-        final Length secondHeight = fromMeters(1D);
-        migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, secondHeight).build());
+        final Length height1 = fromMeters(3D);
+        migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height1).build(), entityId);
+
+        final Length height2 = fromMeters(1D);
+        migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height2).build(), entityId);
 
         finishMigration();
-        final HeightRecord record = getRecord(HeightRecord.class, entityId);
-        mExpect.that(record).isNotNull();
-        mExpect.that(record.getHeight()).isEqualTo(originalHeight);
+
+        final List<HeightRecord> records = getRecords(HeightRecord.class);
+        mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
+                .containsExactly(height1);
+    }
+
+    @Test
+    public void migrateInstantRecord_noClientIdsAndSameTime_ignored() {
+        final String entityId1 = "steps1";
+        final long steps1 = 1000L;
+        migrate(
+                new StepsRecord.Builder(getMetadata(), mStartTime, mEndTime, steps1).build(),
+                entityId1);
+
+        final String entityId2 = "steps2";
+        final long steps2 = 2000L;
+        migrate(
+                new StepsRecord.Builder(getMetadata(), mStartTime, mEndTime, steps2).build(),
+                entityId2);
+
+        finishMigration();
+
+        final List<StepsRecord> records = getRecords(StepsRecord.class);
+        mExpect.that(records.stream().map(StepsRecord::getCount).toList()).containsExactly(steps1);
+    }
+
+    @Test
+    public void migrateInstantRecord_differentClientIdsAndSameTime_notIgnored() {
+        final String entityId1 = "steps1";
+        final long steps1 = 1000L;
+        migrate(
+                new StepsRecord.Builder(getMetadata(entityId1), mStartTime, mEndTime, steps1)
+                        .build(),
+                entityId1);
+
+        final String entityId2 = "steps2";
+        final long steps2 = 2000L;
+        migrate(
+                new StepsRecord.Builder(getMetadata(entityId2), mStartTime, mEndTime, steps2)
+                        .build(),
+                entityId2);
+
+        finishMigration();
+
+        final List<StepsRecord> records = getRecords(StepsRecord.class);
+        mExpect.that(records.stream().map(StepsRecord::getCount).toList())
+                .containsExactly(steps1, steps2);
+    }
+
+    @Test
+    public void migrateIntervalRecord_noClientIdsAndSameTime_ignored() {
+        final String entityId1 = "height1";
+        final Length height1 = fromMeters(1.0);
+        migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height1).build(), entityId1);
+
+        final String entityId2 = "height2";
+        final Length height2 = fromMeters(2.0);
+        migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height2).build(), entityId2);
+
+        finishMigration();
+
+        final List<HeightRecord> records = getRecords(HeightRecord.class);
+        mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
+                .containsExactly(height1);
+    }
+
+    @Test
+    public void migrateIntervalRecord_differentClientIdsAndSameTime_notIgnored() {
+        final String entityId1 = "height1";
+        final Length height1 = fromMeters(1.0);
+        migrate(
+                new HeightRecord.Builder(getMetadata(entityId1), mEndTime, height1).build(),
+                entityId1);
+
+        final String entityId2 = "height2";
+        final Length height2 = fromMeters(2.0);
+        migrate(
+                new HeightRecord.Builder(getMetadata(entityId2), mEndTime, height2).build(),
+                entityId2);
+
+        finishMigration();
+
+        final List<HeightRecord> records = getRecords(HeightRecord.class);
+        mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
+                .containsExactly(height1, height2);
+    }
+
+    // Special case for hydration, must not ignore
+    @Test
+    public void migrateHydration_noClientIdsAndSameTime_notIgnored() {
+        final String entityId1 = "hydration1";
+        final Volume volume1 = Volume.fromLiters(0.2);
+        migrate(
+                new HydrationRecord.Builder(getMetadata(), mStartTime, mEndTime, volume1).build(),
+                entityId1);
+
+        final String entityId2 = "hydration2";
+        final Volume volume2 = Volume.fromLiters(0.3);
+        migrate(
+                new HydrationRecord.Builder(getMetadata(), mStartTime, mEndTime, volume2).build(),
+                entityId2);
+
+        finishMigration();
+
+        final List<HydrationRecord> records = getRecords(HydrationRecord.class);
+        mExpect.that(records.stream().map(HydrationRecord::getVolume).toList())
+                .containsExactly(volume1, volume2);
+    }
+
+    // Special case for nutrition, must not ignore
+    @Test
+    public void migrateNutrition_noClientIdsAndSameTime_notIgnored() {
+        final String entityId1 = "nutrition1";
+        final Mass protein1 = Mass.fromGrams(1.0);
+        migrate(
+                new NutritionRecord.Builder(getMetadata(), mStartTime, mEndTime)
+                        .setProtein(protein1)
+                        .build(),
+                entityId1);
+
+        final String entityId2 = "nutrition2";
+        final Mass protein2 = Mass.fromGrams(2.0);
+        migrate(
+                new NutritionRecord.Builder(getMetadata(), mStartTime, mEndTime)
+                        .setProtein(protein2)
+                        .build(),
+                entityId2);
+
+        finishMigration();
+
+        final List<NutritionRecord> records = getRecords(NutritionRecord.class);
+        mExpect.that(records.stream().map(NutritionRecord::getProtein).toList())
+                .containsExactly(protein1, protein2);
     }
 
     @Test
@@ -441,12 +580,16 @@ public class DataMigrationTest {
     }
 
     private void migrate(Record record) {
-        migrate(getRecordEntity(record));
+        migrate(record, /*entityId=*/ record.getMetadata().getClientRecordId());
     }
 
-    private MigrationEntity getRecordEntity(Record record) {
+    private void migrate(Record record, String entityId) {
+        migrate(getRecordEntity(record, entityId));
+    }
+
+    private MigrationEntity getRecordEntity(Record record, String entityId) {
         return new MigrationEntity(
-                record.getMetadata().getClientRecordId(),
+                entityId,
                 new RecordMigrationPayload.Builder(
                                 record.getMetadata().getDataOrigin().getPackageName(),
                                 "Example App",
