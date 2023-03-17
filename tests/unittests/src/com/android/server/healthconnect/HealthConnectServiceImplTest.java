@@ -32,6 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Environment;
@@ -45,6 +46,7 @@ import androidx.test.runner.AndroidJUnit4;
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
+import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -70,11 +72,14 @@ import java.util.Map;
 public class HealthConnectServiceImplTest {
     @Mock private TransactionManager mTransactionManager;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
+    @Mock private MigrationCleaner mMigrationCleaner;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
+    @Mock private MigrationStateManager mMigrationStateManager;
     @Mock private Context mContext;
     @Mock private Context mServiceContext;
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
+    @Mock private PackageManager mPackageManager;
 
     private HealthConnectServiceImpl mHealthConnectService;
     private MockitoSession mStaticMockSession;
@@ -97,13 +102,15 @@ public class HealthConnectServiceImplTest {
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
                 .thenReturn(mAppOpsManagerLocal);
-        MigrationStateManager.initializeInstance(mContext, mUserHandle.getIdentifier());
+        when(mServiceContext.getPackageManager()).thenReturn(mPackageManager);
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
                         mTransactionManager,
                         mHealthConnectPermissionHelper,
+                        mMigrationCleaner,
                         mFirstGrantTimeManager,
+                        mMigrationStateManager,
                         mServiceContext);
     }
 
@@ -112,6 +119,11 @@ public class HealthConnectServiceImplTest {
         deleteDir(mMockDataDirectory);
         clearInvocations(mPreferenceHelper);
         mStaticMockSession.finishMocking();
+    }
+
+    @Test
+    public void testInstatiated_attachesMigrationCleanerToMigrationStateManager() {
+        verify(mMigrationCleaner).attachTo(mMigrationStateManager);
     }
 
     @Test

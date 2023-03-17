@@ -24,6 +24,7 @@ android_test {
         "android.test.base",
         "framework-healthfitness",
         "framework-configinfrastructure",
+        "framework-sdkextensions"
     ],
     srcs: [
         ":healthfitness-cts-testapp-srcs",

@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.Constants.DEBUG;
 import static android.health.connect.Constants.DEFAULT_LONG;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
@@ -30,6 +31,7 @@ import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -46,6 +48,8 @@ import android.health.connect.Constants;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.RecordMapper;
+import android.util.Log;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -58,10 +62,14 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -73,12 +81,15 @@ import java.util.stream.Collectors;
  * @hide
  */
 public final class AppInfoHelper {
+    private static final String TAG = "HealthConnectAppInfoHelper";
     private static final String TABLE_NAME = "application_info_table";
     private static final String APPLICATION_COLUMN_NAME = "app_name";
     private static final String PACKAGE_COLUMN_NAME = "package_name";
     private static final String APP_ICON_COLUMN_NAME = "app_icon";
+    private static final String RECORD_TYPES_USED_COLUMN_NAME = "record_types_used";
     private static final int COMPRESS_FACTOR = 100;
     private static volatile AppInfoHelper sAppInfoHelper;
+
     /**
      * Map to store appInfoId -> packageName mapping for populating record for read
      *
@@ -173,7 +184,9 @@ public final class AppInfoHelper {
                     throw new IllegalArgumentException("Could not find package info", e);
                 }
 
-                appInfo = new AppInfoInternal(DEFAULT_LONG, packageName, record.getAppName(), null);
+                appInfo =
+                        new AppInfoInternal(
+                                DEFAULT_LONG, packageName, record.getAppName(), null, null);
             }
 
             insertIfNotPresent(packageName, appInfo);
@@ -192,9 +205,15 @@ public final class AppInfoHelper {
             @Nullable String name,
             @Nullable byte[] icon) {
         if (!isAppInstalled(context, packageName) && containsAppInfo(packageName)) {
+            // using pre-existing value of recordTypesUsed.
             updateIfPresent(
                     packageName,
-                    new AppInfoInternal(DEFAULT_LONG, packageName, name, decodeBitmap(icon)));
+                    new AppInfoInternal(
+                            DEFAULT_LONG,
+                            packageName,
+                            name,
+                            decodeBitmap(icon),
+                            mAppInfoMap.get(packageName).getRecordTypesUsed()));
         }
     }
 
@@ -277,9 +296,13 @@ public final class AppInfoHelper {
         return packageNames;
     }
 
-    /** Returns a list of AppInfo objects */
-    public List<AppInfo> getApplicationInfos() {
+    /** Returns a list of AppInfo objects which are contributing data to some recordType. */
+    public List<AppInfo> getApplicationInfosWithRecordTypes() {
         return getAppInfoMap().values().stream()
+                .filter(
+                        (appInfo) ->
+                                (appInfo.getRecordTypesUsed() != null
+                                        && !appInfo.getRecordTypesUsed().isEmpty()))
                 .map(AppInfoInternal::toExternal)
                 .collect(Collectors.toList());
     }
@@ -305,7 +328,6 @@ public final class AppInfoHelper {
         if (mAppInfoMap != null) {
             return;
         }
-
         ConcurrentHashMap<String, AppInfoInternal> appInfoMap = new ConcurrentHashMap<>();
         ConcurrentHashMap<Long, String> idPackageNameMap = new ConcurrentHashMap<>();
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
@@ -316,13 +338,242 @@ public final class AppInfoHelper {
                 String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
                 byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
                 Bitmap bitmap = decodeBitmap(icon);
+                String recordTypesUsed = getCursorString(cursor, RECORD_TYPES_USED_COLUMN_NAME);
+
+                Set<Integer> recordTypesListAsSet = getRecordTypesAsSet(recordTypesUsed);
+
                 appInfoMap.put(
-                        packageName, new AppInfoInternal(rowId, packageName, appName, bitmap));
+                        packageName,
+                        new AppInfoInternal(
+                                rowId, packageName, appName, bitmap, recordTypesListAsSet));
                 idPackageNameMap.put(rowId, packageName);
             }
         }
         mAppInfoMap = appInfoMap;
         mIdPackageNameMap = idPackageNameMap;
+    }
+
+    @Nullable
+    private Set<Integer> getRecordTypesAsSet(String recordTypesUsed) {
+        if (recordTypesUsed != null && !recordTypesUsed.isEmpty()) {
+            return Arrays.stream(recordTypesUsed.split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toSet());
+        }
+        return null;
+    }
+
+    /**
+     * Updates recordTypesUsed for the {@code packageName} in app info table.
+     *
+     * <p><b>NOTE:</b> This method should only be used for insert operation on recordType tables.
+     * Should not be called elsewhere.
+     *
+     * <p>see {@link AppInfoHelper#updateAppInfoRecordTypesUsedOnDelete(Set)} for updating this
+     * table during delete operations on recordTypes.
+     *
+     * @param recordTypes The record types that needs to be inserted.
+     * @param packageName The package for which the records need to be inserted.
+     */
+    public synchronized void updateAppInfoRecordTypesUsedOnInsert(
+            Set<Integer> recordTypes, String packageName) {
+        AppInfoInternal appInfo = getAppInfoMap().get(packageName);
+        Objects.requireNonNull(appInfo);
+
+        if (recordTypes == null || recordTypes.isEmpty()) {
+            return;
+        }
+        Set<Integer> updatedRecordTypes = new HashSet<>(recordTypes);
+        if (appInfo.getRecordTypesUsed() != null) {
+            updatedRecordTypes.addAll(appInfo.getRecordTypesUsed());
+        }
+        if (!updatedRecordTypes.equals(appInfo.getRecordTypesUsed())) {
+            updateAppInfoRecordTypesUsedSync(packageName, appInfo, updatedRecordTypes);
+        }
+    }
+
+    /**
+     * Updates recordTypesUsed by for all packages in app info table.
+     *
+     * <p><b>NOTE:</b> This method should only be used for delete operation on recordType tables.
+     * Should not be called elsewhere.
+     *
+     * <p>Use this method to update the table for passed recordTypes, pass null as a parameter if
+     * all {@code allRecordTypes} needs to be updated.
+     *
+     * <p>see {@link AppInfoHelper#updateAppInfoRecordTypesUsedOnInsert(Set, String)} for updating
+     * this table during insert operations on recordTypes.
+     */
+    public synchronized void updateAppInfoRecordTypesUsedOnDelete(
+            @Nullable Set<Integer> allRecordTypes) {
+        Set<Integer> recordTypesToBeUpdated =
+                Objects.requireNonNullElseGet(
+                        allRecordTypes,
+                        () ->
+                                RecordMapper.getInstance()
+                                        .getRecordIdToExternalRecordClassMap()
+                                        .keySet());
+
+        HashMap<Integer, HashSet<String>> recordTypeToContributingPackagesMap =
+                TransactionManager.getInitialisedInstance()
+                        .getDistinctPackageNamesForRecordsTable(recordTypesToBeUpdated);
+
+        if (allRecordTypes == null) {
+            syncAppInfoMapRecordTypesUsed(recordTypeToContributingPackagesMap);
+        } else {
+            getAppInfoMap()
+                    .keySet()
+                    .forEach(
+                            (packageName) -> {
+                                deleteRecordTypesForPackagesIfRequiredInternal(
+                                        recordTypesToBeUpdated,
+                                        recordTypeToContributingPackagesMap,
+                                        packageName);
+                            });
+        }
+    }
+
+    /**
+     * This method updates recordTypesUsed for all packages and hence is a heavy operation. This
+     * method is used during AutoDeleteService and is run once per day.
+     */
+    @SuppressLint("LongLogTag")
+    private synchronized void syncAppInfoMapRecordTypesUsed(
+            @NonNull Map<Integer, HashSet<String>> recordTypeToContributingPackagesMap) {
+        HashMap<String, List<Integer>> packageToRecordTypesMap =
+                getPackageToRecordTypesMap(recordTypeToContributingPackagesMap);
+        getAppInfoMap()
+                .forEach(
+                        (packageName, appInfo) -> {
+                            if (packageToRecordTypesMap.containsKey(packageName)) {
+                                updateAppInfoRecordTypesUsedSync(
+                                        packageName,
+                                        appInfo,
+                                        new HashSet<>(packageToRecordTypesMap.get(packageName)));
+                            } else {
+                                updateAppInfoRecordTypesUsedSync(
+                                        packageName, appInfo, /* recordTypesUsed */ null);
+                            }
+                            if (DEBUG) {
+                                Log.d(
+                                        TAG,
+                                        "Syncing packages and corresponding recordTypesUsed for"
+                                                + " package : "
+                                                + packageName
+                                                + ", recordTypesUsed : "
+                                                + appInfo.getRecordTypesUsed());
+                            }
+                        });
+    }
+
+    private HashMap<String, List<Integer>> getPackageToRecordTypesMap(
+            @NonNull Map<Integer, HashSet<String>> recordTypeToContributingPackagesMap) {
+        HashMap<String, List<Integer>> packageToRecordTypesMap = new HashMap<>();
+        recordTypeToContributingPackagesMap.forEach(
+                (recordType, packageList) -> {
+                    packageList.forEach(
+                            (packageName) -> {
+                                if (packageToRecordTypesMap.containsKey(packageName)) {
+                                    packageToRecordTypesMap.get(packageName).add(recordType);
+                                } else {
+                                    packageToRecordTypesMap.put(
+                                            packageName,
+                                            new ArrayList<>() {
+                                                {
+                                                    add(recordType);
+                                                }
+                                            });
+                                }
+                            });
+                });
+        return packageToRecordTypesMap;
+    }
+
+    /**
+     * Checks and deletes record types in app info table for which the package is no longer
+     * contributing data. This is done after delete records operation has been performed.
+     */
+    private synchronized void deleteRecordTypesForPackagesIfRequiredInternal(
+            Set<Integer> recordTypesToBeDeleted,
+            HashMap<Integer, HashSet<String>> currentRecordTypePackageMap,
+            String packageName) {
+        AppInfoInternal appInfo = getAppInfoMap().get(packageName);
+        Objects.requireNonNull(appInfo);
+        if (appInfo.getRecordTypesUsed() == null || appInfo.getRecordTypesUsed().isEmpty()) {
+            // return since this package is not contributing to any recordType and hence there
+            // is nothing to delete.
+            return;
+        }
+        Set<Integer> updatedRecordTypesUsed = new HashSet<>(appInfo.getRecordTypesUsed());
+        for (Integer recordType : recordTypesToBeDeleted) {
+            // get the distinct packages used by the record after the deletion process, check if
+            // the recordType does not have the current package then remove record type from
+            // the package's app info record.
+            if (!currentRecordTypePackageMap.get(recordType).contains(packageName)) {
+                updatedRecordTypesUsed.remove(recordType);
+            }
+        }
+        if (updatedRecordTypesUsed.equals(appInfo.getRecordTypesUsed())) {
+            return;
+        }
+        if (updatedRecordTypesUsed.isEmpty()) {
+            updatedRecordTypesUsed = null;
+        }
+        updateAppInfoRecordTypesUsedSync(packageName, appInfo, updatedRecordTypesUsed);
+    }
+
+    @SuppressLint("LongLogTag")
+    private synchronized void updateAppInfoRecordTypesUsedSync(
+            @NonNull String packageName,
+            @NonNull AppInfoInternal appInfo,
+            Set<Integer> recordTypesUsed) {
+        appInfo.setRecordTypesUsed(recordTypesUsed);
+        // create upsert table request to modify app info table, keyed by packages name.
+        WhereClauses whereClauseForAppInfoTableUpdate = new WhereClauses();
+        whereClauseForAppInfoTableUpdate.addWhereEqualsClause(
+                PACKAGE_COLUMN_NAME, appInfo.getPackageName());
+        UpsertTableRequest upsertRequestForAppInfoUpdate =
+                new UpsertTableRequest(TABLE_NAME, getContentValues(packageName, appInfo));
+        upsertRequestForAppInfoUpdate.setWhereClauses(whereClauseForAppInfoTableUpdate);
+        TransactionManager.getInitialisedInstance().update(upsertRequestForAppInfoUpdate);
+
+        // update locally stored maps to keep data in sync.
+        getAppInfoMap().put(packageName, appInfo);
+        getIdPackageNameMap().put(appInfo.getId(), packageName);
+        if (DEBUG) {
+            Log.d(
+                    TAG,
+                    "Updated app info table. PackageName : "
+                            + packageName
+                            + " , RecordTypesUsed : "
+                            + appInfo.getRecordTypesUsed()
+                            + ".");
+        }
+    }
+
+    /** Returns a map for recordTypes and their contributing packages. */
+    public Map<Integer, Set<String>> getRecordTypesToContributingPackagesMap() {
+        Map<Integer, Set<String>> recordTypeContributingPackagesMap = new HashMap<>();
+        Map<String, AppInfoInternal> appInfoMap = getAppInfoMap();
+        appInfoMap.forEach(
+                (packageName, appInfo) -> {
+                    Set<Integer> recordTypesUsed = appInfo.getRecordTypesUsed();
+                    if (recordTypesUsed != null) {
+                        recordTypesUsed.forEach(
+                                (recordType) -> {
+                                    if (recordTypeContributingPackagesMap.containsKey(recordType)) {
+                                        recordTypeContributingPackagesMap
+                                                .get(recordType)
+                                                .add(packageName);
+                                    } else {
+                                        recordTypeContributingPackagesMap.put(
+                                                recordType,
+                                                new HashSet<>(Collections.singleton(packageName)));
+                                    }
+                                });
+                    }
+                });
+        return recordTypeContributingPackagesMap;
     }
 
     private Map<String, AppInfoInternal> getAppInfoMap() {
@@ -350,7 +601,7 @@ public final class AppInfoHelper {
         String appName = packageManager.getApplicationLabel(info).toString();
         Drawable icon = packageManager.getApplicationIcon(info);
         Bitmap bitmap = getBitmapFromDrawable(icon);
-        return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap);
+        return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap, null);
     }
 
     private synchronized void insertIfNotPresent(
@@ -389,6 +640,17 @@ public final class AppInfoHelper {
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
         contentValues.put(APPLICATION_COLUMN_NAME, appInfo.getName());
         contentValues.put(APP_ICON_COLUMN_NAME, encodeBitmap(appInfo.getIcon()));
+        String recordTypesUsedAsString = null;
+        // Since a list of recordTypeIds cannot be saved directly in the database, record types IDs
+        // are concatenated using ',' and are saved as a string.
+        if (appInfo.getRecordTypesUsed() != null) {
+            recordTypesUsedAsString =
+                    appInfo.getRecordTypesUsed().stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.joining(","));
+        }
+        contentValues.put(RECORD_TYPES_USED_COLUMN_NAME, recordTypesUsedAsString);
+
         return contentValues;
     }
 
@@ -407,6 +669,7 @@ public final class AppInfoHelper {
         columnInfo.add(new Pair<>(PACKAGE_COLUMN_NAME, TEXT_NOT_NULL_UNIQUE));
         columnInfo.add(new Pair<>(APPLICATION_COLUMN_NAME, TEXT_NULL));
         columnInfo.add(new Pair<>(APP_ICON_COLUMN_NAME, BLOB));
+        columnInfo.add(new Pair<>(RECORD_TYPES_USED_COLUMN_NAME, TEXT_NULL));
 
         return columnInfo;
     }

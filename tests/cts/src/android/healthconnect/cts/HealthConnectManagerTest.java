@@ -45,12 +45,14 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.RecordTypeInfoResponse;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
@@ -86,6 +88,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -98,6 +101,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectManagerTest {
     private static final String TAG = "HealthConnectManagerTest";
+    private static final String APP_PACKAGE_NAME = "android.healthconnect.cts";
 
     @Before
     public void setUp() {
@@ -148,65 +152,6 @@ public class HealthConnectManagerTest {
                 .isFalse();
         assertThat(isHealthPermission(context, CAMERA)).isFalse();
     }
-
-    /*
-    @Test
-    public void test_getRecordTypeInfo() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<Map<Class<? extends Record>, RecordTypeInfoResponse>> response =
-                new AtomicReference<>();
-        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
-
-        service.queryAllRecordTypesInfo(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<
-                        Map<Class<? extends Record>, RecordTypeInfoResponse>,
-                        HealthConnectException>() {
-                    @Override
-                    public void onResult(
-                            Map<Class<? extends Record>, RecordTypeInfoResponse> result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        responseException.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        assertThat(responseException.get()).isNull();
-        assertThat(response).isNotNull();
-        Log.d(TAG, "GetDataTypeInfoResponse : \n");
-        response.get()
-                .forEach(
-                        (recordTypeClass, recordTypeInfoResponse) -> {
-                            StringBuilder builder =
-                                    new StringBuilder(recordTypeClass.getTypeName() + " : ");
-                            builder.append(
-                                    " HealthPermissionCategory : "
-                                            + recordTypeInfoResponse.getPermissionCategory());
-                            builder.append(
-                                    " HealthDataCategory : "
-                                            + recordTypeInfoResponse.getDataCategory());
-                            builder.append(
-                                    " Contributing Packages : "
-                                            + String.join(
-                                                    ",",
-                                                    recordTypeInfoResponse
-                                                            .getContributingPackages()
-                                                            .stream()
-                                                            .map(DataOrigin::getPackageName)
-                                                            .collect(Collectors.toList())));
-                            builder.append("\n");
-                            Log.d(TAG, builder.toString());
-                        });
-    }
-    */
 
     /**
      * Test to verify the working of {@link HealthConnectManager#updateRecords(java.util.List,
@@ -1375,6 +1320,202 @@ public class HealthConnectManagerTest {
                 TestUtils::finishMigration, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
+    @Test
+    public void testGetRecordTypeInfo_InsertRecords_correctContributingPackages() throws Exception {
+        // Insert a set of test records for StepRecords, ExerciseSessionRecord, HeartRateRecord,
+        // BasalMetabolicRateRecord.
+        List<Record> testRecords = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecords);
+
+        // Populate expected records. This method puts empty lists as contributing packages for all
+        // records.
+        HashMap<Class<? extends Record>, TestUtils.RecordTypeInfoTestResponse> expectedResponseMap =
+                new HashMap<>();
+        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
+        // Populate contributing packages list for expected records by adding the current cts
+        // package.
+        expectedResponseMap.get(StepsRecord.class).getContributingPackages().add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(ExerciseSessionRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(HeartRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(BasalMetabolicRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        // since test records contains the following records
+        Map<Class<? extends Record>, RecordTypeInfoResponse> response =
+                TestUtils.queryAllRecordTypesInfo();
+
+        // verify response data is correct.
+        verifyRecordTypeResponse(response, expectedResponseMap);
+
+        // delete first set inserted records.
+        TestUtils.deleteRecords(testRecords);
+
+        // clear out contributing packages.
+        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
+        // delete inserted records.
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        response = TestUtils.queryAllRecordTypesInfo();
+        // verify that the API still returns all record types with the cts packages as contributing
+        // package. this is because only one of the inserted record for each record type was
+        // deleted.
+        verifyRecordTypeResponse(response, expectedResponseMap);
+    }
+
+    @Test
+    public void testGetRecordTypeInfo_partiallyDeleteInsertedRecords_correctContributingPackages()
+            throws Exception {
+        // Insert a sets of test records for StepRecords, ExerciseSessionRecord, HeartRateRecord,
+        // BasalMetabolicRateRecord.
+        List<Record> testRecords = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecords);
+
+        // Populate expected records. This method puts empty lists as contributing packages for all
+        // records.
+        HashMap<Class<? extends Record>, TestUtils.RecordTypeInfoTestResponse> expectedResponseMap =
+                new HashMap<>();
+        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
+        // Populate contributing packages list for expected records by adding the current cts
+        // package.
+        expectedResponseMap.get(StepsRecord.class).getContributingPackages().add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(ExerciseSessionRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(HeartRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(BasalMetabolicRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        // since test records contains the following records
+        Map<Class<? extends Record>, RecordTypeInfoResponse> response =
+                TestUtils.queryAllRecordTypesInfo();
+
+        // verify response data is correct.
+        verifyRecordTypeResponse(response, expectedResponseMap);
+
+        // delete 2 of the inserted records.
+        ArrayList<Record> recordsToBeDeleted = new ArrayList<>();
+        for (int itr = 0; itr < testRecords.size() / 2; itr++) {
+            recordsToBeDeleted.add(testRecords.get(itr));
+            expectedResponseMap
+                    .get(testRecords.get(itr).getClass())
+                    .getContributingPackages()
+                    .clear();
+        }
+
+        TestUtils.deleteRecords(recordsToBeDeleted);
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        response = TestUtils.queryAllRecordTypesInfo();
+        verifyRecordTypeResponse(response, expectedResponseMap);
+    }
+
+    @Test
+    public void testGetRecordTypeInfo_MultipleInsertedRecords_correctContributingPackages()
+            throws Exception {
+        // Insert 2 sets of test records for StepRecords, ExerciseSessionRecord, HeartRateRecord,
+        // BasalMetabolicRateRecord.
+        List<Record> testRecords = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecords);
+
+        List<Record> testRecords2 = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecords2);
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        // Populate expected records. This method puts empty lists as contributing packages for all
+        // records.
+        HashMap<Class<? extends Record>, TestUtils.RecordTypeInfoTestResponse> expectedResponseMap =
+                new HashMap<>();
+        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
+        // Populate contributing packages list for expected records by adding the current cts
+        // package.
+        expectedResponseMap.get(StepsRecord.class).getContributingPackages().add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(ExerciseSessionRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(HeartRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(BasalMetabolicRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+
+        // since test records contains the following records
+        Map<Class<? extends Record>, RecordTypeInfoResponse> response =
+                TestUtils.queryAllRecordTypesInfo();
+
+        // verify response data is correct.
+        verifyRecordTypeResponse(response, expectedResponseMap);
+
+        // delete only one set of inserted records.
+        TestUtils.deleteRecords(testRecords);
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        response = TestUtils.queryAllRecordTypesInfo();
+
+        verifyRecordTypeResponse(response, expectedResponseMap);
+    }
+
+    private void verifyRecordTypeResponse(
+            Map<Class<? extends Record>, RecordTypeInfoResponse> responses,
+            HashMap<Class<? extends Record>, TestUtils.RecordTypeInfoTestResponse>
+                    expectedResponse) {
+        responses.forEach(
+                (recordTypeClass, recordTypeInfoResponse) -> {
+                    TestUtils.RecordTypeInfoTestResponse expectedTestResponse =
+                            expectedResponse.get(recordTypeClass);
+                    assertThat(expectedTestResponse).isNotNull();
+                    assertThat(recordTypeInfoResponse.getPermissionCategory())
+                            .isEqualTo(expectedTestResponse.getRecordTypePermission());
+                    assertThat(recordTypeInfoResponse.getDataCategory())
+                            .isEqualTo(expectedTestResponse.getRecordTypeCategory());
+                    ArrayList<String> contributingPackagesAsStrings = new ArrayList<>();
+                    for (DataOrigin pck : recordTypeInfoResponse.getContributingPackages()) {
+                        contributingPackagesAsStrings.add(pck.getPackageName());
+                    }
+                    Collections.sort(contributingPackagesAsStrings);
+                    Collections.sort(expectedTestResponse.getContributingPackages());
+                    assertThat(contributingPackagesAsStrings)
+                            .isEqualTo(expectedTestResponse.getContributingPackages());
+                });
+    }
+
     private void deleteAllStagedRemoteData()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         try {
@@ -1455,8 +1596,7 @@ public class HealthConnectManagerTest {
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin =
                 new DataOrigin.Builder()
-                        .setPackageName(
-                                packageName.isEmpty() ? "android.healthconnect.cts" : packageName)
+                        .setPackageName(packageName.isEmpty() ? APP_PACKAGE_NAME : packageName)
                         .build();
 
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
@@ -1480,8 +1620,7 @@ public class HealthConnectManagerTest {
         heartRateSamples.add(heartRateSample);
         Device device =
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
-        DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(APP_PACKAGE_NAME).build();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         if (isSetClientRecordId) {
@@ -1502,8 +1641,7 @@ public class HealthConnectManagerTest {
                         .setModel("Pixel4a")
                         .setType(2)
                         .build();
-        DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(APP_PACKAGE_NAME).build();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         if (isSetClientRecordId) {

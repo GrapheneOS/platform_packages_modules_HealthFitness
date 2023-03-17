@@ -80,4 +80,22 @@ public class RecordMigrationPayloadTest {
         mExpect.that(payload.getOriginAppName()).isEqualTo(DEFAULT_ORIGIN_APP_NAME);
         mExpect.that(payload.getRecord()).isEqualTo(DEFAULT_RECORD);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void nullOriginPackageName_throws() {
+        new RecordMigrationPayload.Builder(
+                /*originPackageName=*/ null, DEFAULT_ORIGIN_APP_NAME, DEFAULT_RECORD);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void nullOriginAppName_throws() {
+        new RecordMigrationPayload.Builder(
+                DEFAULT_ORIGIN_PACKAGE_NAME, /*originAppName=*/ null, DEFAULT_RECORD);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void nullRecord_throws() {
+        new RecordMigrationPayload.Builder(
+                DEFAULT_ORIGIN_PACKAGE_NAME, DEFAULT_ORIGIN_APP_NAME, /*record=*/ null);
+    }
 }

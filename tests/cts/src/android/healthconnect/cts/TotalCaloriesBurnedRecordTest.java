@@ -215,7 +215,7 @@ public class TotalCaloriesBurnedRecordTest {
     }
 
     @Test
-    public void testAggregation_totalCalriesBurnt() throws Exception {
+    public void testAggregation_totalCaloriesBurnt() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         List<Record> records =
                 Arrays.asList(

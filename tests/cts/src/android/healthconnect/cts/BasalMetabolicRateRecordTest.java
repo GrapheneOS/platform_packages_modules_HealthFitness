@@ -151,7 +151,7 @@ public class BasalMetabolicRateRecordTest {
             throws InterruptedException {
         TimeInstantRangeFilter filter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.now())
+                        .setStartTime(Instant.now().minus(1, ChronoUnit.DAYS))
                         .setEndTime(Instant.now().plusMillis(3000))
                         .build();
         BasalMetabolicRateRecord testRecord = getCompleteBasalMetabolicRateRecord();
@@ -223,7 +223,7 @@ public class BasalMetabolicRateRecordTest {
     public void testDeleteBasalMetabolicRateRecord_time_filters() throws InterruptedException {
         TimeInstantRangeFilter timeRangeFilter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.now())
+                        .setStartTime(Instant.now().minus(1, ChronoUnit.DAYS))
                         .setEndTime(Instant.now().plusMillis(1000))
                         .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBasalMetabolicRateRecord());
@@ -296,7 +296,7 @@ public class BasalMetabolicRateRecordTest {
     public void testDeleteBasalMetabolicRateRecord_time_range() throws InterruptedException {
         TimeInstantRangeFilter timeRangeFilter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.now())
+                        .setStartTime(Instant.now().minus(1, ChronoUnit.DAYS))
                         .setEndTime(Instant.now().plusMillis(1000))
                         .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteBasalMetabolicRateRecord());
@@ -307,24 +307,27 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_BasalCaloriesBurntTotal() throws Exception {
         List<Record> records =
-                Arrays.asList(getBasalMetabolicRateRecord(25.5), getBasalMetabolicRateRecord(71.5));
+                Arrays.asList(
+                        getBasalMetabolicRateRecord(30.0, 3), getBasalMetabolicRateRecord(75.0, 2));
         AggregateRecordsResponse<Energy> oldResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Energy>(
                                         new TimeInstantRangeFilter.Builder()
-                                                .setStartTime(Instant.ofEpochMilli(0))
-                                                .setEndTime(Instant.now().plus(3, ChronoUnit.DAYS))
+                                                .setStartTime(
+                                                        Instant.now().minus(10, ChronoUnit.DAYS))
+                                                .setEndTime(Instant.now().minus(1, ChronoUnit.DAYS))
                                                 .build())
                                 .addAggregationType(BASAL_CALORIES_TOTAL)
                                 .build(),
                         records);
-        List<Record> recordNew = Arrays.asList(getBasalMetabolicRateRecord(45.5));
+        List<Record> recordNew = Arrays.asList(getBasalMetabolicRateRecord(46, 1));
         AggregateRecordsResponse<Energy> newResponse =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Energy>(
                                         new TimeInstantRangeFilter.Builder()
-                                                .setStartTime(Instant.ofEpochMilli(0))
-                                                .setEndTime(Instant.now().plus(3, ChronoUnit.DAYS))
+                                                .setStartTime(
+                                                        Instant.now().minus(10, ChronoUnit.DAYS))
+                                                .setEndTime(Instant.now())
                                                 .build())
                                 .addAggregationType(BASAL_CALORIES_TOTAL)
                                 .build(),
@@ -332,7 +335,8 @@ public class BasalMetabolicRateRecordTest {
         assertThat(newResponse.get(BASAL_CALORIES_TOTAL)).isNotNull();
         Energy newEnergy = newResponse.get(BASAL_CALORIES_TOTAL);
         Energy oldEnergy = oldResponse.get(BASAL_CALORIES_TOTAL);
-        assertThat(newEnergy.getInCalories() - oldEnergy.getInCalories()).isEqualTo(45.5);
+        assertThat((double) Math.round(newEnergy.getInCalories() - oldEnergy.getInCalories()))
+                .isEqualTo(46);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(BASAL_CALORIES_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -560,13 +564,17 @@ public class BasalMetabolicRateRecordTest {
 
     static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
         return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(100.0))
+                        new Metadata.Builder().build(),
+                        Instant.now().minus(1, ChronoUnit.DAYS),
+                        Power.fromWatts(100.0))
                 .build();
     }
 
-    static BasalMetabolicRateRecord getBasalMetabolicRateRecord(double power) {
+    static BasalMetabolicRateRecord getBasalMetabolicRateRecord(double power, int days) {
         return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Power.fromWatts(power))
+                        new Metadata.Builder().build(),
+                        Instant.now().minus(days, ChronoUnit.DAYS),
+                        Power.fromWatts(power))
                 .build();
     }
 
@@ -585,7 +593,9 @@ public class BasalMetabolicRateRecordTest {
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new BasalMetabolicRateRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Power.fromWatts(100.0))
+                        testMetadataBuilder.build(),
+                        Instant.now().minus(1, ChronoUnit.DAYS),
+                        Power.fromWatts(100.0))
                 .build();
     }
 
