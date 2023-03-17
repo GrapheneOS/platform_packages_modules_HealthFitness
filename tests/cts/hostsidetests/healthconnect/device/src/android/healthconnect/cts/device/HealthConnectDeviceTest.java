@@ -16,9 +16,17 @@
 
 package android.healthconnect.cts.device;
 
+import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
+import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
+
+import static com.google.common.truth.Truth.assertThat;
+
+import android.os.Bundle;
+
 import androidx.test.runner.AndroidJUnit4;
 
-import org.junit.Assert;
+import com.android.cts.install.lib.TestApp;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,10 +34,27 @@ import org.junit.runner.RunWith;
 public class HealthConnectDeviceTest {
     static final String TAG = "HealthConnectDeviceTest";
 
+    static final long VERSION_CODE = 1;
+
+    private static final TestApp APP_A_WITH_READ_WRITE_PERMS =
+            new TestApp(
+                    "TestAppA",
+                    "android.healthconnect.cts.testapp.readWritePerms.A",
+                    VERSION_CODE,
+                    false,
+                    "CtsHealthConnectTestAppA.apk");
+
+    private static final TestApp APP_B_WITH_READ_WRITE_PERMS =
+            new TestApp(
+                    "TestAppB",
+                    "android.healthconnect.cts.testapp.readWritePerms.B",
+                    VERSION_CODE,
+                    false,
+                    "CtsHealthConnectTestAppB.apk");
+
     @Test
-    public void testSampleTest() throws Exception {
-        String obj1 = "Junit";
-        String obj2 = "Junit";
-        Assert.assertEquals(obj1, obj2);
+    public void testAppWithNormalReadWritePermCanInsertRecord() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
     }
 }
