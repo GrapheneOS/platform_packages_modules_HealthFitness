@@ -14,11 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:key="no_search_result" />
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="search_apps_top_intro"
+        android:title="@string/connected_apps_text"/>
     <PreferenceCategory
         android:key="allowed_apps"
         android:title="@string/connected_apps_section_title"/>
