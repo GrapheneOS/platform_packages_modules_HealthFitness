@@ -149,7 +149,7 @@ public final class DataMigrationManager {
     @GuardedBy("sLock")
     private void migrateRecord(
             @NonNull SQLiteDatabase db, @NonNull RecordMigrationPayload payload) {
-        mTransactionManager.insertRecord(db, parseRecord(payload));
+        mTransactionManager.insertOrIgnore(db, parseRecord(payload));
     }
 
     @NonNull

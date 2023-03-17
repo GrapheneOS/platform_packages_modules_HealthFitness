@@ -557,7 +557,9 @@ public class RestingHeartRateRecordTest {
 
     static RestingHeartRateRecord getBaseRestingHeartRateRecord(int beats) {
         return new RestingHeartRateRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), beats)
+                        new Metadata.Builder().setClientRecordId("RHRR" + Math.random()).build(),
+                        Instant.now(),
+                        beats)
                 .build();
     }
 
