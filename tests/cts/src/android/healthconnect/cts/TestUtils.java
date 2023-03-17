@@ -1031,6 +1031,16 @@ public class TestUtils {
         return response.get();
     }
 
+    public static <T extends Record> T getRecordById(List<T> list, String id) {
+        for (T record : list) {
+            if (record.getMetadata().getId().equals(id)) {
+                return record;
+            }
+        }
+
+        throw new AssertionError("Record not found with id: " + id);
+    }
+
     static Metadata generateMetadata() {
         Context context = ApplicationProvider.getApplicationContext();
         return new Metadata.Builder()
