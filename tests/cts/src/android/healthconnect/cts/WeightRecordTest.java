@@ -524,7 +524,9 @@ public class WeightRecordTest {
 
     static WeightRecord getBaseWeightRecord(double weight) {
         return new WeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(weight))
+                        new Metadata.Builder().setClientRecordId("WR" + Math.random()).build(),
+                        Instant.now(),
+                        Mass.fromGrams(weight))
                 .build();
     }
 
