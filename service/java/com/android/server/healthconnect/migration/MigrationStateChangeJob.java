@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_J
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
 import static com.android.server.healthconnect.migration.MigrationConstants.ALLOWED_STATE_TIMEOUT_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.ENABLE_STATE_CHANGE_JOBS;
 import static com.android.server.healthconnect.migration.MigrationConstants.EXECUTION_TIME_BUFFER;
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_STATE_TIMEOUT_PERIOD;
 import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_STATE_TIMEOUT_PERIOD;
@@ -61,29 +62,35 @@ public final class MigrationStateChangeJob {
     private static final int MIGRATION_PAUSE_JOB_ID = MigrationStateChangeJob.class.hashCode() + 2;
 
     public static void scheduleMigrationCompletionJob(Context context, int userId) {
-        ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
-        final PersistableBundle extras = new PersistableBundle();
-        extras.putInt(EXTRA_USER_ID, userId);
-        extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_COMPLETE_JOB_NAME);
-        JobInfo.Builder builder =
-                new JobInfo.Builder(MIGRATION_COMPLETION_JOB_ID + userId, componentName);
-        builder.setPeriodic(MIGRATION_COMPLETION_JOB_RUN_INTERVAL);
-        builder.setPersisted(true);
+        if (ENABLE_STATE_CHANGE_JOBS) {
+            ComponentName componentName =
+                    new ComponentName(context, HealthConnectDailyService.class);
+            final PersistableBundle extras = new PersistableBundle();
+            extras.putInt(EXTRA_USER_ID, userId);
+            extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_COMPLETE_JOB_NAME);
+            JobInfo.Builder builder =
+                    new JobInfo.Builder(MIGRATION_COMPLETION_JOB_ID + userId, componentName);
+            builder.setPeriodic(MIGRATION_COMPLETION_JOB_RUN_INTERVAL);
+            builder.setPersisted(true);
 
-        HealthConnectDailyService.schedule(context, userId, builder.build());
+            HealthConnectDailyService.schedule(context, userId, builder.build());
+        }
     }
 
     public static void scheduleMigrationPauseJob(Context context, int userId) {
-        ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
-        final PersistableBundle extras = new PersistableBundle();
-        extras.putInt(EXTRA_USER_ID, userId);
-        extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_PAUSE_JOB_NAME);
-        JobInfo.Builder builder =
-                new JobInfo.Builder(MIGRATION_PAUSE_JOB_ID + userId, componentName);
-        builder.setPeriodic(MIGRATION_PAUSE_JOB_RUN_INTERVAL);
-        builder.setPersisted(true);
+        if (ENABLE_STATE_CHANGE_JOBS) {
+            ComponentName componentName =
+                    new ComponentName(context, HealthConnectDailyService.class);
+            final PersistableBundle extras = new PersistableBundle();
+            extras.putInt(EXTRA_USER_ID, userId);
+            extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_PAUSE_JOB_NAME);
+            JobInfo.Builder builder =
+                    new JobInfo.Builder(MIGRATION_PAUSE_JOB_ID + userId, componentName);
+            builder.setPeriodic(MIGRATION_PAUSE_JOB_RUN_INTERVAL);
+            builder.setPersisted(true);
 
-        HealthConnectDailyService.schedule(context, userId, builder.build());
+            HealthConnectDailyService.schedule(context, userId, builder.build());
+        }
     }
 
     /** Execute migration completion job */
