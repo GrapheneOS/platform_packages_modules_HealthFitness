@@ -58,8 +58,8 @@ public class HealthConnectManagerService extends SystemService {
     private final HealthConnectServiceImpl mHealthConnectService;
     private final TransactionManager mTransactionManager;
     private final UserManager mUserManager;
-    private UserHandle mCurrentForegroundUser;
     private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
+    private UserHandle mCurrentForegroundUser;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -157,22 +157,13 @@ public class HealthConnectManagerService extends SystemService {
         return !(Objects.requireNonNull(userManager).isProfile());
     }
 
-    @Override
-    public void onUserStopping(@NonNull TargetUser user) {
-        Objects.requireNonNull(user);
-        try {
-            HealthConnectDailyJobs.stop(mContext, user.getUserHandle().getIdentifier());
-        } catch (Exception e) {
-            Slog.e(TAG, "Failed to stop Health Connect daily service.", e);
-        }
-    }
-
     private void switchToSetupForUser(UserHandle user) {
         // Note: This is for test setup debugging, please don't surround with DEBUG flag
         Slog.d(TAG, "switchToSetupForUser: " + user);
         mTransactionManager.onUserUnlocked(
                 new HealthConnectUserContext(mContext, mCurrentForegroundUser));
         mMigrationBroadcastScheduler.setUserId(mCurrentForegroundUser.getIdentifier());
+        HealthConnectDailyJobs.cancelAllJobs(mContext);
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
