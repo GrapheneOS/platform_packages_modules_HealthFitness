@@ -50,4 +50,5 @@ public class MigrationConstants {
     public static final String MIGRATION_PAUSE_JOB_NAME = "migration_pause_job";
     static final String CURRENT_STATE_START_TIME_KEY = "current_state_start_time";
     static final String ALLOWED_STATE_TIMEOUT_KEY = "allowed_state_timeout_key";
+    static final boolean ENABLE_STATE_CHANGE_JOBS = false;
 }
