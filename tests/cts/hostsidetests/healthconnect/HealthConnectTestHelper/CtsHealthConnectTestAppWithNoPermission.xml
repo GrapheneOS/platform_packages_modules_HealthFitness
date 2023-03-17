@@ -16,16 +16,17 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.cts.ctshealthconnecttestappwithnopermission"
+          package="android.healthconnect.cts.testapp.noPerms"
           android:versionCode="1"
-          android:versionName="1.0" >
+          android:versionName="1.0">
 
     <application android:label="CtsHealthConnectTestAppWithNoPermission">
-        <activity android:name="android.healthconnect.cts.healthConnectTestHelper" android:exported="true" >
+        <activity android:name="android.healthconnect.cts.HealthConnectTestHelper"
+                  android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
