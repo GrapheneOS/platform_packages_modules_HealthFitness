@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.home
 import android.content.Intent
 import android.health.HealthFitnessStatsLog.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -30,6 +29,7 @@ import com.android.healthconnect.controller.permissions.shared.Constants
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
+import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.shared.preference.HealthPreference
@@ -95,8 +95,15 @@ class HomeFragment : Hilt_HomeFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
-        recentAccessViewModel.recentAccessApps.observe(viewLifecycleOwner) { recentApps ->
-            updateRecentApps(recentApps)
+        recentAccessViewModel.recentAccessApps.observe(viewLifecycleOwner) { recentAppsState ->
+            when (recentAppsState) {
+                is RecentAccessState.WithData -> {
+                    updateRecentApps(recentAppsState.recentAccessEntries)
+                }
+                else -> {
+                    updateRecentApps(emptyList())
+                }
+            }
         }
         homeFragmentViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             updateConnectedApps(connectedApps)

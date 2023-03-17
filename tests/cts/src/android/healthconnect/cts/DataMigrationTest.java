@@ -18,6 +18,9 @@ package android.healthconnect.cts;
 
 import static android.content.pm.PackageManager.GET_PERMISSIONS;
 import static android.content.pm.PackageManager.PackageInfoFlags;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_ALLOWED;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 import static android.health.connect.HealthPermissions.READ_HEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
@@ -62,6 +65,7 @@ import android.health.connect.migration.RecordMigrationPayload;
 import android.os.Build;
 import android.os.OutcomeReceiver;
 import android.os.UserHandle;
+import android.os.ext.SdkExtensions;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
@@ -281,7 +285,7 @@ public class DataMigrationTest {
         runWithShellPermissionIdentity(
                 () -> {
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IDLE);
+                            .isEqualTo(MIGRATION_STATE_IDLE);
                     TestUtils.startMigration();
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
                             .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
@@ -293,15 +297,15 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void testInsertMinDataMigrationSdkExtensionVersion() {
-        int version = Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
+    public void testInsertMinDataMigrationSdkExtensionVersion_upgradeRequired() {
+        int version = SdkExtensions.getExtensionVersion(Build.VERSION_CODES.UPSIDE_DOWN_CAKE) + 1;
         runWithShellPermissionIdentity(
                 () -> {
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IDLE);
+                            .isEqualTo(MIGRATION_STATE_IDLE);
                     TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
-                    // TODO(b/265616837) Check if the state is updated to ALLOWED or
-                    // UPGRADE_REQUIRED
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
                     TestUtils.startMigration();
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
                             .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
@@ -313,12 +317,32 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateAppInfo_notInstalledAppAndRecordsMigrated_appInfoSaved() {
+    public void testInsertMinDataMigrationSdkExtensionVersion_noUpgradeRequired() {
+        int version = SdkExtensions.getExtensionVersion(Build.VERSION_CODES.UPSIDE_DOWN_CAKE);
+        runWithShellPermissionIdentity(
+                () -> {
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(MIGRATION_STATE_IDLE);
+                    TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(MIGRATION_STATE_ALLOWED);
+                    TestUtils.startMigration();
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
+                    TestUtils.finishMigration();
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
+                },
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    }
+
+    @Test
+    public void migrateAppInfo_notInstalledAppAndRecordsMigrated_appInfoSaved()
+            throws InterruptedException {
         final String recordEntityId = "steps";
         final String appInfoEntityId = "appInfo";
         final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         final byte[] iconBytes = getBitmapBytes(icon);
-
         migrate(
                 new StepsRecord.Builder(
                                 getMetadata(recordEntityId, PACKAGE_NAME_NOT_INSTALLED),
@@ -326,7 +350,6 @@ public class DataMigrationTest {
                                 mEndTime,
                                 10)
                         .build());
-
         migrate(
                 new MigrationEntity(
                         appInfoEntityId,
@@ -335,6 +358,10 @@ public class DataMigrationTest {
                                 .build()));
 
         finishMigration();
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
         final AppInfo appInfo = getContributorApplicationInfo(PACKAGE_NAME_NOT_INSTALLED);
 
         mExpect.that(appInfo).isNotNull();
@@ -363,12 +390,12 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateAppInfo_installedAppAndRecordsMigrated_appInfoNotSaved() {
+    public void migrateAppInfo_installedAppAndRecordsMigrated_appInfoNotSaved()
+            throws InterruptedException {
         final String recordEntityId = "steps";
         final String appInfoEntityId = "appInfo";
         final Bitmap icon = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         final byte[] iconBytes = getBitmapBytes(icon);
-
         migrate(
                 new StepsRecord.Builder(
                                 getMetadata(recordEntityId, APP_PACKAGE_NAME),
@@ -385,6 +412,10 @@ public class DataMigrationTest {
                                 .build()));
 
         finishMigration();
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
         final AppInfo appInfo = getContributorApplicationInfo(APP_PACKAGE_NAME);
 
         mExpect.that(appInfo).isNotNull();

@@ -16,6 +16,7 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
@@ -25,11 +26,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
-import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.utils.StorageUtils;
+
+import java.com.android.server.healthconnect.storage.datatypehelpers.DeriveTotalCaloriesBurnedHelper;
+import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +45,7 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED)
+@HelperFor(recordIdentifier = RECORD_TYPE_TOTAL_CALORIES_BURNED)
 public final class TotalCaloriesBurnedRecordHelper
         extends IntervalRecordHelper<TotalCaloriesBurnedRecordInternal> {
     private static final String TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME =
@@ -85,6 +90,55 @@ public final class TotalCaloriesBurnedRecordHelper
             @NonNull Cursor cursor,
             @NonNull TotalCaloriesBurnedRecordInternal totalCaloriesBurnedRecord) {
         totalCaloriesBurnedRecord.setEnergy(getCursorDouble(cursor, ENERGY_COLUMN_NAME));
+    }
+
+    @Override
+    public double[] deriveAggregate(
+            Cursor cursor,
+            long startTime,
+            long endTime,
+            int groupSize,
+            long groupDelta,
+            String groupByColumnName) {
+        int index = 0;
+        long groupStartTime = startTime;
+        long groupEndTime = getGroupEndTime(groupStartTime, groupDelta, groupByColumnName);
+        List<Long> priorityList =
+                StorageUtils.getAppIdPriorityList(RECORD_TYPE_TOTAL_CALORIES_BURNED);
+        MergeDataHelper mergeDataHelper =
+                new MergeDataHelper(cursor, priorityList, ENERGY_COLUMN_NAME, Double.class);
+        DeriveTotalCaloriesBurnedHelper deriveTotalCaloriesBurnedHelper =
+                new DeriveTotalCaloriesBurnedHelper(startTime, endTime, priorityList);
+        double[] totalCaloriesBurnedArray = new double[groupSize];
+        while (index < groupSize) {
+            // Based on the number of groups calculate aggregate for each group by calling
+            // MergeDataHelper by eliminate duplicate for overlapping time interval
+            double total = mergeDataHelper.readCursor(groupStartTime, groupEndTime);
+            // For only TotalCaloriesBurned aggregate request we derive data from
+            // ActiveCaloriesRecord and BasalMetabolicRateRecord for empty intervals
+            List<Pair<Instant, Instant>> emptyIntervalList = mergeDataHelper.getEmptyIntervals();
+            if (emptyIntervalList.size() > 0) {
+                total += deriveTotalCaloriesBurnedHelper.getDerivedCalories(emptyIntervalList);
+            }
+            groupStartTime = groupEndTime;
+            groupEndTime = getGroupEndTime(groupStartTime, groupDelta, groupByColumnName);
+            totalCaloriesBurnedArray[index++] = total;
+        }
+        if (deriveTotalCaloriesBurnedHelper != null) {
+            deriveTotalCaloriesBurnedHelper.closeCursors();
+        }
+        return totalCaloriesBurnedArray;
+    }
+
+    private long getGroupEndTime(long groupStartTime, long groupByDelta, String groupByColumnName) {
+        if (groupByColumnName.equals(getPeriodGroupByColumnName())) {
+            // Calculate and return endtime for group Aggregation based on period
+            return (Instant.ofEpochMilli(groupStartTime).plus(groupByDelta, ChronoUnit.DAYS))
+                    .toEpochMilli();
+        } else {
+            // Calculate and return endtime for group Aggregation based on duration
+            return groupStartTime + groupByDelta;
+        }
     }
 
     @Override

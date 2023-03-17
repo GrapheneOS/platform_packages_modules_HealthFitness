@@ -18,7 +18,9 @@ package com.android.server.healthconnect.storage.utils;
 
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.datatypes.AggregationType.SUM;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
@@ -315,5 +317,14 @@ public final class StorageUtils {
         return HealthDataCategoryPriorityHelper.getInstance()
                 .getAppIdPriorityOrder(
                         RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType));
+    }
+
+    /** Returns if derivation needs to be done to calculate aggregate */
+    public static boolean isDerivedType(int recordType) {
+        if (recordType == RECORD_TYPE_BASAL_METABOLIC_RATE
+                || recordType == RECORD_TYPE_TOTAL_CALORIES_BURNED) {
+            return true;
+        }
+        return false;
     }
 }

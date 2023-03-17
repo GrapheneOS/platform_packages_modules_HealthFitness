@@ -50,9 +50,6 @@ public final class AggregateTransactionRequest {
     private final Duration mDuration;
     private final TimeRangeFilter mTimeRangeFilter;
 
-    /**
-     * TODO(b/249581069): Add support for aggregates that require information from multiple tables
-     */
     public AggregateTransactionRequest(
             @NonNull String packageName, @NonNull AggregateDataRequestParcel request) {
         mPackageName = packageName;
