@@ -29,6 +29,7 @@ import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.Context;
+import android.health.connect.Constants;
 import android.util.Slog;
 
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
@@ -58,7 +59,12 @@ public class HealthConnectDailyService extends JobService {
             Slog.e(
                     TAG,
                     "Failed to schedule the job: "
-                            + jobInfo.getExtras().getLong(EXTRA_JOB_NAME_KEY));
+                            + jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY));
+        } else if (Constants.DEBUG) {
+            Slog.d(
+                    TAG,
+                    "Scheduled a job successfully: "
+                            + jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY));
         }
     }
 
