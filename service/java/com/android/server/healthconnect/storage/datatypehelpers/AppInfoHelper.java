@@ -53,6 +53,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -88,6 +89,7 @@ public final class AppInfoHelper {
     private static final String APP_ICON_COLUMN_NAME = "app_icon";
     private static final String RECORD_TYPES_USED_COLUMN_NAME = "record_types_used";
     private static final int COMPRESS_FACTOR = 100;
+    private static final int DB_VERSION_WITH_RECORD_TYPES_USED_COLUMN = 7;
     private static volatile AppInfoHelper sAppInfoHelper;
 
     /**
@@ -236,9 +238,26 @@ public final class AppInfoHelper {
         record.setPackageName(getIdPackageNameMap().get(appInfoId));
     }
 
-    // Called on DB update.
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
-        // empty by default
+    /**
+     * Called when a db update happens to make any required changes in appInfoHelper respecting
+     * version upgrade.
+     */
+    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion) {
+        if (oldVersion < DB_VERSION_WITH_RECORD_TYPES_USED_COLUMN) {
+            addRecordTypesUsedColumnName(db);
+        }
+    }
+
+    private void addRecordTypesUsedColumnName(@NonNull SQLiteDatabase db) {
+        try {
+            db.execSQL(
+                    new AlterTableRequest(
+                                    TABLE_NAME,
+                                    List.of(new Pair<>(RECORD_TYPES_USED_COLUMN_NAME, TEXT_NULL)))
+                            .getAlterTableAddColumnsCommand());
+        } catch (Exception e) {
+            // do nothing as
+        }
     }
 
     /**
