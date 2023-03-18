@@ -40,9 +40,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsResponse;
@@ -62,9 +64,11 @@ import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Volume;
 import android.health.connect.migration.AppInfoMigrationPayload;
+import android.health.connect.migration.MetadataMigrationPayload;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.migration.PermissionMigrationPayload;
+import android.health.connect.migration.PriorityMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
 import android.os.Build;
 import android.os.OutcomeReceiver;
@@ -94,11 +98,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 public class DataMigrationTest {
 
     private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
+    private static final String APP_PACKAGE_NAME_2 = "android.healthconnect.cts.app2";
     private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
@@ -382,7 +388,7 @@ public class DataMigrationTest {
 
     @Test
     public void migratePermissions_permissionsGranted() {
-        revokeAppPermissions(READ_HEIGHT, WRITE_HEIGHT);
+        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
 
         final String entityId = "permissions";
 
@@ -399,7 +405,7 @@ public class DataMigrationTest {
 
     @Test
     public void migratePermissions_invalidPermission_throwsMigrationException() {
-        revokeAppPermissions(READ_HEIGHT, WRITE_HEIGHT);
+        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
 
         final String entityId = "permissions";
 
@@ -417,6 +423,74 @@ public class DataMigrationTest {
             assertEquals(entityId, e.getFailedEntityId());
             finishMigration();
         }
+    }
+
+    /** Test metadata migration, migrating record retention period. */
+    @Test
+    public void migrateMetadata_migratingRetentionPeriod_metadataSaved() {
+
+        final String entityId = "metadata";
+
+        migrate(
+                new MigrationEntity(
+                        entityId,
+                        new MetadataMigrationPayload.Builder()
+                                .setRecordRetentionPeriodDays(100)
+                                .build()));
+        finishMigration();
+
+        assertThat(getRecordRetentionPeriodInDays()).isEqualTo(100);
+    }
+
+    /** Test priority migration where migration payload have additional apps. */
+    @Test
+    public void migratePriority_additionalAppsInMigrationPayload_prioritySaved() {
+        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
+        revokeAppPermissions(APP_PACKAGE_NAME_2, READ_HEIGHT, WRITE_HEIGHT);
+
+        String permissionMigrationEntityId1 = "permissionMigration1";
+        String permissionMigrationEntityId2 = "permissionMigration2";
+        String priorityMigrationEntityId = "priorityMigration";
+
+        /*
+        Migrating permissions first as any package that do not have required permissions would be
+        removed from the priority list during priority migration.
+        */
+
+        migrate(
+                new MigrationEntity(
+                        permissionMigrationEntityId1,
+                        new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
+                                .addPermission(READ_HEIGHT)
+                                .addPermission(WRITE_HEIGHT)
+                                .build()),
+                new MigrationEntity(
+                        permissionMigrationEntityId2,
+                        new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME_2, Instant.now())
+                                .addPermission(READ_HEIGHT)
+                                .addPermission(WRITE_HEIGHT)
+                                .build()),
+                new MigrationEntity(
+                        priorityMigrationEntityId,
+                        new PriorityMigrationPayload.Builder()
+                                .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
+                                .addDataOrigin(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(APP_PACKAGE_NAME_2)
+                                                .build())
+                                .addDataOrigin(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(APP_PACKAGE_NAME)
+                                                .build())
+                                .build()));
+
+        finishMigration();
+
+        List<String> activityPriorityList =
+                getHealthDataCategoryPriority(HealthDataCategory.BODY_MEASUREMENTS);
+
+        verifyAddedPriorityOrder(
+                List.of(APP_PACKAGE_NAME_2, APP_PACKAGE_NAME), activityPriorityList);
     }
 
     @Test
@@ -654,14 +728,14 @@ public class DataMigrationTest {
                 "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
     }
 
-    private void revokeAppPermissions(String... permissions) {
+    private void revokeAppPermissions(String packageName, String... permissions) {
         final PackageManager pm = mTargetContext.getPackageManager();
         final UserHandle user = mTargetContext.getUser();
 
         runWithShellPermissionIdentity(
                 () -> {
                     for (String permission : permissions) {
-                        pm.revokeRuntimePermission(APP_PACKAGE_NAME, permission, user);
+                        pm.revokeRuntimePermission(packageName, permission, user);
                     }
                 });
     }
@@ -750,5 +824,70 @@ public class DataMigrationTest {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /**
+     * Verifies that the added priority matches with expected priority
+     *
+     * @param expectedAddedPriorityList expected added packages priority list.
+     * @param actualPriorityList actual priority stored in HealthConnect module
+     */
+    private void verifyAddedPriorityOrder(
+            List<String> expectedAddedPriorityList, List<String> actualPriorityList) {
+        assertThat(actualPriorityList.size()).isAtLeast(expectedAddedPriorityList.size());
+
+        List<String> addedPriorityList =
+                actualPriorityList.stream()
+                        .filter(packageName -> expectedAddedPriorityList.contains(packageName))
+                        .toList();
+
+        assertThat(addedPriorityList).isEqualTo(expectedAddedPriorityList);
+    }
+
+    /**
+     * Fetches data category's priority of packages.
+     *
+     * @param dataCategory category for which priority is being fetched
+     * @return list of packages ordered in priority.
+     */
+    private List<String> getHealthDataCategoryPriority(int dataCategory) {
+        return runWithShellPermissionIdentity(
+                () ->
+                        DataMigrationTest
+                                .<FetchDataOriginsPriorityOrderResponse, HealthConnectException>
+                                        blockingCall(
+                                                callback ->
+                                                        getHealthDataCategoryPriorityAsync(
+                                                                dataCategory, callback))
+                                .getDataOriginsPriorityOrder()
+                                .stream()
+                                .map(dataOrigin -> dataOrigin.getPackageName())
+                                .collect(Collectors.toList()),
+                HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
+    }
+
+    /**
+     * Fetches data category's priority of packages asynchronously
+     *
+     * @param dataCategory category for which priority is being fetched
+     * @param callback called after receiving results.
+     */
+    private void getHealthDataCategoryPriorityAsync(
+            int dataCategory,
+            OutcomeReceiver<FetchDataOriginsPriorityOrderResponse, HealthConnectException>
+                    callback) {
+        mManager.fetchDataOriginsPriorityOrder(
+                dataCategory, Executors.newSingleThreadExecutor(), callback);
+    }
+
+    /**
+     * Fetched recordRetentionPeriodInDays from HealthConnectModule
+     *
+     * @return number of days for retention.
+     */
+    private int getRecordRetentionPeriodInDays() {
+        return runWithShellPermissionIdentity(
+                () -> mManager.getRecordRetentionPeriodInDays(),
+                HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
     }
 }
