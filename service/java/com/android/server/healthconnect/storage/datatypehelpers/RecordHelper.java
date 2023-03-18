@@ -22,6 +22,8 @@ import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.request.ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_UNIQUE_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
@@ -29,6 +31,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getDedupeByteBuffer;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.supportsPriority;
 
 import android.annotation.NonNull;
@@ -46,6 +49,7 @@ import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
+import com.android.server.healthconnect.storage.request.CreateIndexRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -83,9 +87,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
     private static final String RECORDING_METHOD_COLUMN_NAME = "recording_method";
+    private static final String DEDUPE_HASH_COLUMN_NAME = "dedupe_hash";
     private static final String TAG_RECORD_HELPER = "HealthConnectRecordHelper";
     private static final int TRACE_TAG_RECORD_HELPER = TAG_RECORD_HELPER.hashCode();
     private static final int DB_VERSION_ADD_RECORDING_METHOD_COLUMN = 4;
+    private static final int DB_VERSION_ADD_DEDUPE_HASH_COLUMN = 6;
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
     @UsesReflection(
@@ -125,6 +131,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < DB_VERSION_ADD_RECORDING_METHOD_COLUMN) {
             addRecordingMethodColumn(db);
+        }
+
+        if (oldVersion < DB_VERSION_ADD_DEDUPE_HASH_COLUMN) {
+            addDedupeHashColumn(db);
         }
     }
 
@@ -574,6 +584,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         recordContentValues.put(RECORDING_METHOD_COLUMN_NAME, recordInternal.getRecordingMethod());
         recordContentValues.put(DEVICE_INFO_ID_COLUMN_NAME, recordInternal.getDeviceInfoId());
         recordContentValues.put(APP_INFO_ID_COLUMN_NAME, recordInternal.getAppInfoId());
+        recordContentValues.put(DEDUPE_HASH_COLUMN_NAME, getDedupeByteBuffer(recordInternal));
 
         populateContentValues(recordContentValues, recordInternal);
 
@@ -599,6 +610,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         columnInfo.add(new Pair<>(DEVICE_INFO_ID_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(APP_INFO_ID_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(RECORDING_METHOD_COLUMN_NAME, INTEGER));
+        columnInfo.add(new Pair<>(DEDUPE_HASH_COLUMN_NAME, BLOB_UNIQUE_NULL));
 
         columnInfo.addAll(getSpecificColumnInfo());
 
@@ -621,6 +633,22 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         columnInfo.add(new Pair<>(RECORDING_METHOD_COLUMN_NAME, INTEGER));
         AlterTableRequest alterTableRequest = new AlterTableRequest(getMainTableName(), columnInfo);
         db.execSQL(alterTableRequest.getAlterTableAddColumnsCommand());
+    }
+
+    private void addDedupeHashColumn(@NonNull SQLiteDatabase db) {
+        final String tableName = getMainTableName();
+
+        db.execSQL(
+                new AlterTableRequest(tableName, List.of(new Pair<>(DEDUPE_HASH_COLUMN_NAME, BLOB)))
+                        .getAlterTableAddColumnsCommand());
+
+        db.execSQL(
+                new CreateIndexRequest(
+                                tableName,
+                                /*indexName=*/ "ux_" + tableName + "_dedupe_hash",
+                                /*isUnique=*/ true,
+                                List.of(DEDUPE_HASH_COLUMN_NAME))
+                        .getCommand());
     }
 
     static class AggregateParams {

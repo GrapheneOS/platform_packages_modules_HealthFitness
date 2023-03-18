@@ -111,18 +111,13 @@ public final class TransactionManager {
      * @return List of uids of the inserted {@link RecordInternal}, in the same order as they
      *     presented to {@code request}.
      */
-    public List<String> insertAll(
-            @NonNull UpsertTransactionRequest request, boolean replaceOnConflict)
+    public List<String> insertAll(@NonNull UpsertTransactionRequest request)
             throws SQLiteException {
         if (Constants.DEBUG) {
             Slog.d(TAG, "Inserting " + request.getUpsertRequests().size() + " requests.");
         }
 
-        if (replaceOnConflict) {
-            insertAll(request.getUpsertRequests(), this::insertOrReplaceRecord);
-        } else {
-            insertAll(request.getUpsertRequests(), this::insertRecord);
-        }
+        insertAll(request.getUpsertRequests(), this::insertOrReplaceRecord);
         return request.getUUIdsInOrder();
     }
 

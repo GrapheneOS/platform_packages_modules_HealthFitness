@@ -31,6 +31,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
+import static android.healthconnect.cts.TestUtils.getRecordById;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -40,6 +41,7 @@ import android.Manifest;
 import android.app.UiAutomation;
 import android.content.Context;
 import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
@@ -54,10 +56,14 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
+import android.health.connect.datatypes.HydrationRecord;
 import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.NutritionRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.datatypes.units.Volume;
 import android.health.connect.restore.StageRemoteDataException;
 import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
@@ -102,6 +108,46 @@ import java.util.concurrent.atomic.AtomicReference;
 public class HealthConnectManagerTest {
     private static final String TAG = "HealthConnectManagerTest";
     private static final String APP_PACKAGE_NAME = "android.healthconnect.cts";
+
+    private static Device getWatchDevice() {
+        return new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
+    }
+
+    private static Device getPhoneDevice() {
+        return new Device.Builder()
+                .setManufacturer("google")
+                .setModel("Pixel4a")
+                .setType(2)
+                .build();
+    }
+
+    private static DataOrigin getDataOrigin() {
+        return getDataOrigin(/*packageName=*/ "");
+    }
+
+    private static DataOrigin getDataOrigin(String packageName) {
+        return new DataOrigin.Builder()
+                .setPackageName(packageName.isEmpty() ? APP_PACKAGE_NAME : packageName)
+                .build();
+    }
+
+    @Before
+    public void before() throws InterruptedException {
+        deleteAllRecords();
+    }
+
+    @After
+    public void after() throws InterruptedException {
+        deleteAllRecords();
+    }
+
+    private void deleteAllRecords() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder().setPackageName(APP_PACKAGE_NAME).build())
+                        .build());
+    }
 
     @Before
     public void setUp() {
@@ -179,7 +225,7 @@ public class HealthConnectManagerTest {
         // read inserted records and verify that the data is same as inserted.
 
         // Generate a second set of records that will be used to perform the update operation.
-        List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
+        List<Record> updateRecords = getTestRecords();
 
         // Modify the Uid of the updateRecords to the uuid that was present in the insert records.
         for (int itr = 0; itr < updateRecords.size(); itr++) {
@@ -250,7 +296,7 @@ public class HealthConnectManagerTest {
         // read inserted records and verify that the data is same as inserted.
 
         // Generate a second set of records that will be used to perform the update operation.
-        List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
+        List<Record> updateRecords = getTestRecords();
 
         // Modify the Uid of the updateRecords to the UUID that was present in the insert records,
         // leaving out alternate records so that they have a new UUID which is not present in the
@@ -326,7 +372,7 @@ public class HealthConnectManagerTest {
         // read inserted records and verify that the data is same as inserted.
 
         // Generate a second set of records that will be used to perform the update operation.
-        List<Record> updateRecords = getTestRecords(/* isSetClientRecordId */ false);
+        List<Record> updateRecords = getTestRecords();
 
         // Modify the Uuid of the updateRecords to the uuid that was present in the insert records.
         for (int itr = 0; itr < updateRecords.size(); itr++) {
@@ -337,7 +383,8 @@ public class HealthConnectManagerTest {
             //             adding an entry with invalid packageName.
             if (updateRecords.get(itr).getRecordType() == RECORD_TYPE_STEPS) {
                 updateRecords.set(
-                        itr, getStepsRecord(false, /* incorrectPackageName */ "abc.xyz.pqr"));
+                        itr,
+                        getStepsRecord(/*clientRecordId=*/ null, /*packageName=*/ "abc.xyz.pqr"));
             }
         }
 
@@ -378,6 +425,227 @@ public class HealthConnectManagerTest {
         // verify that the testcase failed due to invalid argument exception.
         assertThat(responseException.get()).isNotNull();
         assertThat(responseException.get().getClass()).isEqualTo(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void testInsertRecords_intervalWithSameClientId_overwrites()
+            throws InterruptedException {
+        final String clientId = "stepsClientId";
+        final int count1 = 10;
+        final int count2 = 10;
+        final Instant endTime1 = Instant.now();
+        final Instant startTime1 = endTime1.minusMillis(1000L);
+        final Instant endTime2 = endTime1.minusMillis(100L);
+        final Instant startTime2 = startTime1.minusMillis(100L);
+
+        TestUtils.insertRecordAndGetId(
+                getStepsRecord(clientId, /*packageName=*/ "", count1, startTime1, endTime1));
+        TestUtils.insertRecordAndGetId(
+                getStepsRecord(clientId, /*packageName=*/ "", count2, startTime2, endTime2));
+
+        final List<StepsRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                                .addClientRecordId(clientId)
+                                .build());
+
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getCount()).isEqualTo(count2);
+    }
+
+    @Test
+    public void testInsertRecords_intervalNoClientIdsAndSameTime_overwrites()
+            throws InterruptedException {
+        final int count1 = 10;
+        final int count2 = 20;
+        final Instant endTime = Instant.now();
+        final Instant startTime = endTime.minusMillis(1000L);
+
+        final String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getStepsRecord(
+                                /*clientRecordId=*/ null,
+                                /*packageName=*/ "",
+                                count1,
+                                startTime,
+                                endTime));
+        final String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getStepsRecord(
+                                /*clientRecordId=*/ null,
+                                /*packageName=*/ "",
+                                count2,
+                                startTime,
+                                endTime));
+
+        final List<StepsRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                                .addId(id1)
+                                .addId(id2)
+                                .build());
+
+        assertThat(records).hasSize(1);
+        assertThat(getRecordById(records, id2).getCount()).isEqualTo(count2);
+    }
+
+    @Test
+    public void testInsertRecords_intervalDifferentClientIdsAndSameTime_doesNotOverwrite()
+            throws InterruptedException {
+        final int count1 = 10;
+        final int count2 = 20;
+        final Instant endTime = Instant.now();
+        final Instant startTime = endTime.minusMillis(1000L);
+
+        final String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getStepsRecord(
+                                "stepsClientId1", /*packageName=*/ "", count1, startTime, endTime));
+        final String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getStepsRecord(
+                                "stepsClientId2", /*packageName=*/ "", count2, startTime, endTime));
+
+        final List<StepsRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                                .addId(id1)
+                                .addId(id2)
+                                .build());
+
+        assertThat(records).hasSize(2);
+        assertThat(getRecordById(records, id1).getCount()).isEqualTo(count1);
+        assertThat(getRecordById(records, id2).getCount()).isEqualTo(count2);
+    }
+
+    @Test
+    public void testInsertRecords_instantWithSameClientId_overwrites() throws InterruptedException {
+        final String clientId = "bmrClientId";
+        final Power bmr1 = Power.fromWatts(100.0);
+        final Power bmr2 = Power.fromWatts(110.0);
+        final Instant time1 = Instant.now();
+        final Instant time2 = time1.minusMillis(100L);
+
+        TestUtils.insertRecordAndGetId(getBasalMetabolicRateRecord(clientId, bmr1, time1));
+        TestUtils.insertRecordAndGetId(getBasalMetabolicRateRecord(clientId, bmr2, time2));
+
+        final List<BasalMetabolicRateRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(BasalMetabolicRateRecord.class)
+                                .addClientRecordId(clientId)
+                                .build());
+
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getBasalMetabolicRate()).isEqualTo(bmr2);
+    }
+
+    @Test
+    public void testInsertRecords_instantNoClientIdsAndSameTime_overwrites()
+            throws InterruptedException {
+        final Power bmr1 = Power.fromWatts(100.0);
+        final Power bmr2 = Power.fromWatts(110.0);
+        final Instant time = Instant.now();
+
+        final String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getBasalMetabolicRateRecord(/*clientRecordId=*/ null, bmr1, time));
+        final String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getBasalMetabolicRateRecord(/*clientRecordId=*/ null, bmr2, time));
+
+        final List<BasalMetabolicRateRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(BasalMetabolicRateRecord.class)
+                                .addId(id1)
+                                .addId(id2)
+                                .build());
+
+        assertThat(records).hasSize(1);
+        assertThat(getRecordById(records, id2).getBasalMetabolicRate()).isEqualTo(bmr2);
+    }
+
+    @Test
+    public void testInsertRecords_instantDifferentClientIdsAndSameTime_doesNotOwerwrite()
+            throws InterruptedException {
+        final Power bmr1 = Power.fromWatts(100.0);
+        final Power bmr2 = Power.fromWatts(110.0);
+        final Instant time = Instant.now();
+
+        final String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getBasalMetabolicRateRecord(
+                                /*clientRecordId=*/ "bmrClientId1", bmr1, time));
+        final String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getBasalMetabolicRateRecord(
+                                /*clientRecordId=*/ "bmrClientId2", bmr2, time));
+
+        final List<BasalMetabolicRateRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(BasalMetabolicRateRecord.class)
+                                .addId(id1)
+                                .addId(id2)
+                                .build());
+
+        assertThat(records).hasSize(2);
+        assertThat(getRecordById(records, id1).getBasalMetabolicRate()).isEqualTo(bmr1);
+        assertThat(getRecordById(records, id2).getBasalMetabolicRate()).isEqualTo(bmr2);
+    }
+
+    // Special case for hydration, must not override
+    @Test
+    public void testInsertRecords_hydrationNoClientIdsAndSameTime_doesNotOverwrite()
+            throws InterruptedException {
+        final Volume volume1 = Volume.fromLiters(0.1);
+        final Volume volume2 = Volume.fromLiters(0.2);
+        final Instant endTime = Instant.now();
+        final Instant startTime = endTime.minusMillis(1000L);
+
+        final String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getHydrationRecord(/*clientRecordId=*/ null, startTime, endTime, volume1));
+        final String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getHydrationRecord(/*clientRecordId=*/ null, startTime, endTime, volume2));
+
+        final List<HydrationRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(HydrationRecord.class)
+                                .addId(id1)
+                                .addId(id2)
+                                .build());
+
+        assertThat(records).hasSize(2);
+        assertThat(getRecordById(records, id1).getVolume()).isEqualTo(volume1);
+        assertThat(getRecordById(records, id2).getVolume()).isEqualTo(volume2);
+    }
+
+    // Special case for nutrition, must not override
+    @Test
+    public void testInsertRecords_nutritionNoClientIdsAndSameTime_doesNotOverwrite()
+            throws InterruptedException {
+        final Mass protein1 = Mass.fromGrams(1.0);
+        final Mass protein2 = Mass.fromGrams(1.0);
+        final Instant endTime = Instant.now();
+        final Instant startTime = endTime.minusMillis(1000L);
+
+        final String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getNutritionRecord(/*clientRecordId=*/ null, startTime, endTime, protein1));
+        final String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getNutritionRecord(/*clientRecordId=*/ null, startTime, endTime, protein2));
+
+        final List<NutritionRecord> records =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(NutritionRecord.class)
+                                .addId(id1)
+                                .addId(id2)
+                                .build());
+
+        assertThat(records).hasSize(2);
+        assertThat(getRecordById(records, id1).getProtein()).isEqualTo(protein1);
+        assertThat(getRecordById(records, id2).getProtein()).isEqualTo(protein2);
     }
 
     @Test
@@ -1545,11 +1813,11 @@ public class HealthConnectManagerTest {
         return file;
     }
 
-    private List<Record> getTestRecords(boolean isSetClientRecordId) {
+    private List<Record> getTestRecords() {
         return Arrays.asList(
-                getStepsRecord(isSetClientRecordId, ""),
-                getHeartRateRecord(isSetClientRecordId),
-                getBasalMetabolicRateRecord(isSetClientRecordId));
+                getStepsRecord(/*clientRecordId=*/ null, /*packageName=*/ ""),
+                getHeartRateRecord(),
+                getBasalMetabolicRateRecord());
     }
 
     private Record setTestRecordId(Record record, String id) {
@@ -1591,41 +1859,42 @@ public class HealthConnectManagerTest {
         }
     }
 
-    private StepsRecord getStepsRecord(boolean isSetClientRecordId, String packageName) {
-        Device device =
-                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
-        DataOrigin dataOrigin =
-                new DataOrigin.Builder()
-                        .setPackageName(packageName.isEmpty() ? APP_PACKAGE_NAME : packageName)
-                        .build();
+    private StepsRecord getStepsRecord(String clientRecordId, String packageName) {
+        return getStepsRecord(
+                clientRecordId,
+                packageName,
+                /*count=*/ 10,
+                Instant.now(),
+                Instant.now().plusMillis(1000));
+    }
 
+    private StepsRecord getStepsRecord(
+            String clientRecordId,
+            String packageName,
+            int count,
+            Instant startTime,
+            Instant endTime) {
+        Device device = getWatchDevice();
+        DataOrigin dataOrigin = getDataOrigin(packageName);
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        if (isSetClientRecordId) {
-            testMetadataBuilder.setClientRecordId("SR" + Math.random());
+        if (clientRecordId != null) {
+            testMetadataBuilder.setClientRecordId(clientRecordId);
         }
-        return new StepsRecord.Builder(
-                        testMetadataBuilder.build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000),
-                        10)
+        return new StepsRecord.Builder(testMetadataBuilder.build(), startTime, endTime, count)
                 .build();
     }
 
-    private HeartRateRecord getHeartRateRecord(boolean isSetClientRecordId) {
+    private HeartRateRecord getHeartRateRecord() {
         HeartRateRecord.HeartRateSample heartRateSample =
                 new HeartRateRecord.HeartRateSample(72, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
         heartRateSamples.add(heartRateSample);
         heartRateSamples.add(heartRateSample);
-        Device device =
-                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
-        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(APP_PACKAGE_NAME).build();
+        Device device = getWatchDevice();
+        DataOrigin dataOrigin = getDataOrigin();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        if (isSetClientRecordId) {
-            testMetadataBuilder.setClientRecordId("HR" + Math.random());
-        }
         return new HeartRateRecord.Builder(
                         testMetadataBuilder.build(),
                         Instant.now(),
@@ -1634,22 +1903,47 @@ public class HealthConnectManagerTest {
                 .build();
     }
 
-    private BasalMetabolicRateRecord getBasalMetabolicRateRecord(boolean isSetClientRecordId) {
-        Device device =
-                new Device.Builder()
-                        .setManufacturer("google")
-                        .setModel("Pixel4a")
-                        .setType(2)
-                        .build();
-        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(APP_PACKAGE_NAME).build();
+    private BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
+        return getBasalMetabolicRateRecord(
+                /*clientRecordId=*/ null, /*bmr=*/ Power.fromWatts(100.0), Instant.now());
+    }
+
+    private BasalMetabolicRateRecord getBasalMetabolicRateRecord(
+            String clientRecordId, Power bmr, Instant time) {
+        Device device = getPhoneDevice();
+        DataOrigin dataOrigin = getDataOrigin();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
         testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        if (isSetClientRecordId) {
-            testMetadataBuilder.setClientRecordId("BMR" + Math.random());
+        if (clientRecordId != null) {
+            testMetadataBuilder.setClientRecordId(clientRecordId);
         }
-        return new BasalMetabolicRateRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Power.fromWatts(100.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+        return new BasalMetabolicRateRecord.Builder(testMetadataBuilder.build(), time, bmr).build();
+    }
+
+    private HydrationRecord getHydrationRecord(
+            String clientRecordId, Instant startTime, Instant endTime, Volume volume) {
+        Device device = getPhoneDevice();
+        DataOrigin dataOrigin = getDataOrigin();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        if (clientRecordId != null) {
+            testMetadataBuilder.setClientRecordId(clientRecordId);
+        }
+        return new HydrationRecord.Builder(testMetadataBuilder.build(), startTime, endTime, volume)
+                .build();
+    }
+
+    private NutritionRecord getNutritionRecord(
+            String clientRecordId, Instant startTime, Instant endTime, Mass protein) {
+        Device device = getPhoneDevice();
+        DataOrigin dataOrigin = getDataOrigin();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        if (clientRecordId != null) {
+            testMetadataBuilder.setClientRecordId(clientRecordId);
+        }
+        return new NutritionRecord.Builder(testMetadataBuilder.build(), startTime, endTime)
+                .setProtein(protein)
                 .build();
     }
 }

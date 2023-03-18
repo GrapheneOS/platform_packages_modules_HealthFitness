@@ -550,7 +550,7 @@ public class PowerRecordTest {
         powerRecords.add(powerRecord);
 
         return new PowerRecord.Builder(
-                        new Metadata.Builder().build(),
+                        new Metadata.Builder().setClientRecordId("PR" + Math.random()).build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         powerRecords)
