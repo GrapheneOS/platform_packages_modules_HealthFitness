@@ -47,6 +47,7 @@
 
     <queries>
         <package android:name="android.healthconnect.cts.app"/>
+        <package android:name="android.healthconnect.cts.app2"/>
     </queries>
 
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
