@@ -47,7 +47,7 @@ import java.util.Collection;
  */
 public class HealthConnectDatabase extends SQLiteOpenHelper {
     private static final String TAG = "HealthConnectDatabase";
-    private static final int DATABASE_VERSION = 5; // Last bumped on 2023-03-13T11:47:48Z
+    private static final int DATABASE_VERSION = 6; // Last bumped on 2023-03-14T14:46:29.027119Z
     private static final String DATABASE_NAME = "healthconnect.db";
 
     @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;

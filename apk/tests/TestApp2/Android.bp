@@ -22,7 +22,7 @@ filegroup {
         "src/**/*.java",
     ],
     visibility: [
-        "//packages/modules/HealthConnect:__subpackages__"
+        "//packages/modules/HealthFitness:__subpackages__"
     ],
 }
 
