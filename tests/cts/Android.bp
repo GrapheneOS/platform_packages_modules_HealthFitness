@@ -48,6 +48,7 @@ android_test {
     sdk_version: "module_current",
     data: [
         ":HealthFitnessCtsTestApp",
+        ":HealthFitnessCtsTestApp2",
     ],
 }
 
