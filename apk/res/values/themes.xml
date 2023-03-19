@@ -35,6 +35,7 @@
 
         <!-- Categories page -->
         <item name="autoDeleteIcon">@drawable/quantum_gm_ic_auto_delete_vd_theme_24</item>
+        <item name="autoDeleteOffIcon">@drawable/auto_delete_off</item>
         <item name="deleteIcon">@drawable/quantum_gm_ic_delete_vd_theme_24</item>
         <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
 

@@ -57,7 +57,7 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
             clickOnText("Never")
 
             navigateUp()
-            waitDisplayed(By.text("Never"))
+            waitDisplayed(By.text("Off"))
 
             clickOnText("Auto-delete")
             clickOnText("After 3 months")
