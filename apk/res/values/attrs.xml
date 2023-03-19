@@ -30,6 +30,7 @@
 
     <!-- Categories page -->
     <attr name="autoDeleteIcon" format="reference"/>
+    <attr name="autoDeleteOffIcon" format="reference"/>
     <attr name="deleteIcon" format="reference" />
     <attr name="exportDataIcon" format="reference" />
 <!--     TODO (b/270850335) -->

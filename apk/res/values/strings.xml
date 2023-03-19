@@ -893,6 +893,7 @@
     <string name="auto_delete_section" description="Label for a section that picks the time range for auto-deletion. [CHAR_LIMIT=50]">Auto-delete data</string>
     <string name="range_after_x_months" description="Item in a list of possible time ranges for auto-deletion. Choosing this will automatically delete data older than x months. [CHAR_LIMIT=50]">{count, plural, =1{After # month}other{After # months}}</string>
     <string name="range_never" description="Item in a list of possible time ranges for auto-deletion. Choosing this will never delete data automatically. [CHAR_LIMIT=50]">Never</string>
+    <string name="range_off" description="Summary of the auto-delete button when auto-delete is set to never. [CHAR_LIMIT=50]">Off</string>
     <string name="auto_delete_rationale" description="Footer note explaining that after changing auto-delete settings, corresponding data will be deleted. [CHAR_LIMIT=NONE]">When you change these settings, Health&#160;Connect deletes existing data to reflect your new preferences</string>
     <string name="confirming_question_x_months" description="Title of a dialog that asks the user to confirm whether they want to auto-delete all data that is older than x months. [CHAR_LIMIT=NONE]">{count, plural,
     =1{Auto-delete data after # month?}
