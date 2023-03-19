@@ -18,7 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
@@ -51,7 +50,7 @@ class ExerciseSessionItemViewBinder(
     }
 
     override fun bind(view: View, data: ExerciseSessionEntry, index: Int) {
-        val container = view.findViewById<RelativeLayout>(R.id.item_data_entry_container)
+        val container = view.findViewById<LinearLayout>(R.id.item_data_entry_container)
         val divider = view.findViewById<LinearLayout>(R.id.item_data_entry_divider)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)

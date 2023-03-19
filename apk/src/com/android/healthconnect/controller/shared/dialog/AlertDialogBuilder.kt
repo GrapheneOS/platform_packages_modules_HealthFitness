@@ -26,6 +26,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.logging.ElementName
@@ -35,24 +36,18 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEnt
 import dagger.hilt.android.EntryPointAccessors
 
 /** {@link AlertDialog.Builder} wrapper for applying theming attributes. */
-class AlertDialogBuilder(private val fragment: Fragment) {
+class AlertDialogBuilder(private val context: Context) {
 
-    private var logger: HealthConnectLogger
-
-    init {
-        val hiltEntryPoint =
-            EntryPointAccessors.fromApplication(
-                fragment.requireContext().applicationContext,
-                HealthConnectLoggerEntryPoint::class.java)
-        logger = hiltEntryPoint.logger()
-    }
-
-    private var context: Context = fragment.requireContext()
-    private var alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
+    private var alertDialogBuilder: AlertDialog.Builder
     private var customTitleLayout: View =
         LayoutInflater.from(context).inflate(R.layout.dialog_title, null)
     private var customMessageLayout: View =
         LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
+    private var logger: HealthConnectLogger
+
+    constructor(fragment: Fragment) : this(fragment.requireContext())
+
+    constructor(activity: FragmentActivity) : this(activity as Context)
 
     private var positiveButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
     private var negativeButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
@@ -61,6 +56,20 @@ class AlertDialogBuilder(private val fragment: Fragment) {
 
     private var hasPositiveButton = false
     private var hasNegativeButton = false
+
+    init {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                this.context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
+
+        alertDialogBuilder = AlertDialog.Builder(context)
+    }
+
+    fun setCancelable(isCancelable: Boolean): AlertDialogBuilder {
+        alertDialogBuilder.setCancelable(isCancelable)
+        return this
+    }
 
     fun setLogName(elementName: ElementName): AlertDialogBuilder {
         this.elementName = elementName

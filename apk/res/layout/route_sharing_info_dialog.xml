@@ -14,86 +14,82 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     android:filterTouchesWhenObscured="true"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/spacing_small"
-    android:paddingTop="@dimen/spacing_xlarge">
-
-    <include layout="@layout/dialog_title"/>
-
+    android:paddingHorizontal="@dimen/spacing_large"
+    android:paddingTop="@dimen/spacing_normal">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top|start"
-        android:layout_marginHorizontal="@dimen/spacing_normal"
-        android:layout_marginTop="@dimen/spacing_banner">
-
-        <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_margin="@dimen/spacing_small"
-            android:src="@drawable/quantum_gm_ic_link_vd_theme_24"
-            app:tint="?android:attr/textColorPrimary"
-            android:importantForAccessibility="no"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="top|start"
+            android:layout_marginBottom="@dimen/spacing_normal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/request_route_info_who_can_see_data_title"
-                style="@style/TextAppearance.EntityHeaderTitle"
-                android:paddingVertical="@dimen/spacing_small"/>
+            <ImageView
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:src="?attr/appPermissionsIcon"
+                android:importantForAccessibility="no"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/request_route_info_who_can_see_data_summary"
-                android:textAppearance="?attr/textAppearanceSummary"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_route_info_who_can_see_data_title"
+                    android:textAppearance="?attr/textAppearanceSubheader"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_route_info_who_can_see_data_summary"
+                    android:textAppearance="?attr/textAppearanceSummary"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top|start"
-        android:layout_marginHorizontal="@dimen/spacing_normal"
-        android:layout_marginTop="@dimen/spacing_banner">
-
-        <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_margin="@dimen/spacing_small"
-            android:src="@drawable/manage_settings_icon"
-            app:tint="?android:attr/textColorPrimary"
-            android:importantForAccessibility="no"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="top|start">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/request_route_info_access_management_title"
-                style="@style/TextAppearance.EntityHeaderTitle"
-                android:paddingVertical="@dimen/spacing_small"/>
+            <ImageView
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:src="?attr/syncIcon"
+                android:importantForAccessibility="no"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/request_route_info_access_management_summary"
-                android:textAppearance="?attr/textAppearanceSummary"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_route_info_access_management_title"
+                    android:textAppearance="?attr/textAppearanceSubheader"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_route_info_access_management_summary"
+                    android:textAppearance="?attr/textAppearanceSummary"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+</ScrollView>

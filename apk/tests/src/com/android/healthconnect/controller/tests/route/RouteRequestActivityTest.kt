@@ -355,7 +355,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<LinearLayout>(R.id.more_info).callOnClick()
+            activity.dialog.findViewById<LinearLayout>(R.id.more_info)?.callOnClick()
         }
 
         onView(withText("Exercise routes include location information"))
@@ -389,7 +389,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<Button>(R.id.route_dont_allow_button).callOnClick()
+            activity.dialog.findViewById<Button>(R.id.route_dont_allow_button)?.callOnClick()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
@@ -413,7 +413,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<Button>(R.id.route_allow_button).callOnClick()
+            activity.dialog.findViewById<Button>(R.id.route_allow_button)?.callOnClick()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
