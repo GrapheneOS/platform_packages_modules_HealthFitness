@@ -89,7 +89,7 @@ class HealthDataCategoriesFragmentTest {
         onView(withText("Browse data")).check(matches(isDisplayed()))
         onView(withText("Manage data")).check(matches(isDisplayed()))
         onView(withText("Auto-delete")).check(matches(isDisplayed()))
-        onView(withText("Never")).check(matches(isDisplayed()))
+        onView(withText("Off")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -168,7 +168,7 @@ class HealthDataCategoriesFragmentTest {
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
         onView(withText("Auto-delete")).check(matches(isDisplayed()))
-        onView(withText("Never")).check(matches(isDisplayed()))
+        onView(withText("Off")).check(matches(isDisplayed()))
     }
 
     @Test
