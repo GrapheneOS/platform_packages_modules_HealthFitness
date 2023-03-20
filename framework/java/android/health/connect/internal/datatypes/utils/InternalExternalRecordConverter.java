@@ -16,6 +16,8 @@
 
 package android.health.connect.internal.datatypes.utils;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.INTDEF_VALIDATION_ERROR_PREFIX;
+
 import android.annotation.NonNull;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -81,7 +83,15 @@ public final class InternalExternalRecordConverter {
         List<Record> externalRecordList = new ArrayList<>(recordInternals.size());
 
         for (RecordInternal<?> recordInternal : recordInternals) {
+            try {
             externalRecordList.add(recordInternal.toExternalRecord());
+            } catch (IllegalArgumentException illegalArgumentException) {
+                if (!illegalArgumentException
+                        .getMessage()
+                        .contains(INTDEF_VALIDATION_ERROR_PREFIX)) {
+                    throw illegalArgumentException;
+                }
+            }
         }
 
         return externalRecordList;

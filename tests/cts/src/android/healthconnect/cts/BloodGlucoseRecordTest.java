@@ -454,6 +454,18 @@ public class BloodGlucoseRecordTest {
                 .build();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateBloodGlucoseRecord_invalidMealTypeValue() {
+        new BloodGlucoseRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        BloodGlucose.fromMillimolesPerLiter(20.0),
+                        1,
+                        5)
+                .build();
+    }
+
     @Test
     public void testInsertAndDeleteRecord_changelogs() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();

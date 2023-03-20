@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.connect.internal.datatypes.OvulationTestRecordInternal;
@@ -24,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Set;
 
 /** Each record represents the result of an ovulation test. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST)
@@ -46,6 +49,8 @@ public final class OvulationTestRecord extends InstantRecord {
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
+        validateIntDefValue(
+                result, OvulationTestResult.VALID_TYPES, OvulationTestResult.class.getSimpleName());
         mResult = result;
     }
 
@@ -83,6 +88,15 @@ public final class OvulationTestRecord extends InstantRecord {
          * cycle where fertility/conception is expected to be low.
          */
         public static final int RESULT_NEGATIVE = 3;
+
+        /**
+         * Valid set of values for this IntDef. Update this set when add new type or deprecate
+         * existing type.
+         *
+         * @hide
+         */
+        public static final Set<Integer> VALID_TYPES =
+                Set.of(RESULT_INCONCLUSIVE, RESULT_POSITIVE, RESULT_HIGH, RESULT_NEGATIVE);
 
         OvulationTestResult() {}
 
