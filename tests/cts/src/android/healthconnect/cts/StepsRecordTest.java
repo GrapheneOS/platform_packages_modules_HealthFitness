@@ -438,10 +438,37 @@ public class StepsRecordTest {
         for (Record record : insertedRecord) {
             recordIds.add(RecordIdFilter.fromId(record.getClass(), record.getMetadata().getId()));
         }
+        for (RecordIdFilter recordIdFilter : recordIds) {
+            assertThat(recordIdFilter.getClientRecordId()).isNull();
+            assertThat(recordIdFilter.getId()).isNotNull();
+            assertThat(recordIdFilter.getRecordType()).isEqualTo(StepsRecord.class);
+        }
 
         TestUtils.verifyDeleteRecords(recordIds);
         for (Record record : records) {
             TestUtils.assertRecordNotFound(record.getMetadata().getId(), record.getClass());
+        }
+    }
+
+    @Test
+    public void testDeleteStepsRecord_usingInvalidClientIds() throws InterruptedException {
+        List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
+        List<Record> insertedRecord = TestUtils.insertRecords(records);
+        List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
+        for (Record record : insertedRecord) {
+            recordIds.add(
+                    RecordIdFilter.fromClientRecordId(
+                            record.getClass(), record.getMetadata().getId()));
+        }
+        for (RecordIdFilter recordIdFilter : recordIds) {
+            assertThat(recordIdFilter.getClientRecordId()).isNotNull();
+            assertThat(recordIdFilter.getId()).isNull();
+            assertThat(recordIdFilter.getRecordType()).isEqualTo(StepsRecord.class);
+        }
+
+        TestUtils.verifyDeleteRecords(recordIds);
+        for (Record record : records) {
+            TestUtils.assertRecordFound(record.getMetadata().getId(), record.getClass());
         }
     }
 
