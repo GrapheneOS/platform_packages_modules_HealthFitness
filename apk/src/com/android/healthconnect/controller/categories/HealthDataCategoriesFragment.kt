@@ -197,12 +197,11 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                     }
                 mBrowseDataCategory?.addPreference(newCategoryPreference)
             }
-            if (categoriesList.any { !it.hasData }) {
-                addSeeAllCategoriesPreference()
-            }
         }
-
-        mDeleteAllData?.isEnabled = categoriesList.isNotEmpty()
+        if (sortedCategoriesList.isEmpty() || categoriesList.any { !it.hasData }) {
+            addSeeAllCategoriesPreference()
+        }
+        mDeleteAllData?.isEnabled = sortedCategoriesList.isNotEmpty()
     }
 
     private fun addSeeAllCategoriesPreference() {
