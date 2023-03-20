@@ -21,6 +21,7 @@ import android.health.connect.datatypes.TimeInterval;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * An util class for HC datatype validation
@@ -28,6 +29,8 @@ import java.util.List;
  * @hide
  */
 public final class ValidationUtils {
+    public static final String INTDEF_VALIDATION_ERROR_PREFIX = "Unknown Intdef value";
+
     /** Requires long value to be within the range. */
     public static void requireInRange(long value, long lowerBound, long upperBound, String name) {
         if (value < lowerBound) {
@@ -52,6 +55,14 @@ public final class ValidationUtils {
         if (value > upperBound) {
             throw new IllegalArgumentException(
                     name + " must not be more than " + upperBound + ", currently " + value);
+        }
+    }
+
+    /** Requires an integer value to be among the set of allowed values. */
+    public static void validateIntDefValue(int value, Set<Integer> allowedValues, String name) {
+        if (!allowedValues.contains(value)) {
+            throw new IllegalArgumentException(
+                    INTDEF_VALIDATION_ERROR_PREFIX + ": " + value + " for Intdef: " + name + ".");
         }
     }
 

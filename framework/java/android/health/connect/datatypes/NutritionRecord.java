@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.validation.ValidationUtils.requireInRangeIfExists;
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -181,6 +182,7 @@ public final class NutritionRecord extends IntervalRecord {
          */
         @NonNull
         public Builder setMealType(@MealType.MealTypes int mealType) {
+            validateIntDefValue(mealType, MealType.VALID_TYPES, MealType.class.getSimpleName());
             mMealType = mealType;
             return this;
         }

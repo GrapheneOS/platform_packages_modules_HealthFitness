@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.FloatRange;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
@@ -26,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Set;
 
 /** Capture user's VO2 max score and optionally the measurement method. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_VO2_MAX)
@@ -51,6 +54,10 @@ public final class Vo2MaxRecord extends InstantRecord {
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
+        validateIntDefValue(
+                measurementMethod,
+                Vo2MaxMeasurementMethod.VALID_TYPES,
+                Vo2MaxMeasurementMethod.class.getSimpleName());
         ValidationUtils.requireInRange(
                 vo2MillilitersPerMinuteKilogram, 0.0, 100.0, "vo2MillilitersPerMinuteKilogram");
         mMeasurementMethod = measurementMethod;
@@ -80,6 +87,21 @@ public final class Vo2MaxRecord extends InstantRecord {
         public static final int MEASUREMENT_METHOD_COOPER_TEST = 3;
         public static final int MEASUREMENT_METHOD_MULTISTAGE_FITNESS_TEST = 4;
         public static final int MEASUREMENT_METHOD_ROCKPORT_FITNESS_TEST = 5;
+
+        /**
+         * Valid set of values for this IntDef. Update this set when add new type or deprecate
+         * existing type.
+         *
+         * @hide
+         */
+        public static final Set<Integer> VALID_TYPES =
+                Set.of(
+                        MEASUREMENT_METHOD_OTHER,
+                        MEASUREMENT_METHOD_METABOLIC_CART,
+                        MEASUREMENT_METHOD_HEART_RATE_RATIO,
+                        MEASUREMENT_METHOD_COOPER_TEST,
+                        MEASUREMENT_METHOD_MULTISTAGE_FITNESS_TEST,
+                        MEASUREMENT_METHOD_ROCKPORT_FITNESS_TEST);
 
         Vo2MaxMeasurementMethod() {}
 

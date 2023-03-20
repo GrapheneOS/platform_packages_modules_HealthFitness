@@ -16,6 +16,8 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
@@ -25,6 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class to represent aggregation types in {@link Record} classes.
@@ -72,6 +75,12 @@ public final class AggregationType<T> {
             @AggregateOperationType int type,
             @NonNull @RecordTypeIdentifier.RecordType int applicableRecordType,
             Class<T> templateClass) {
+        validateIntDefValue(
+                id,
+                AggregationTypeIdentifier.IDENTIFIER_VALID_TYPES,
+                AggregationTypeIdentifier.class.getSimpleName());
+        validateIntDefValue(
+                type, OPERATION_VALID_TYPES, AggregateOperationType.class.getSimpleName());
 
         mId = id;
         mType = type;
@@ -180,6 +189,83 @@ public final class AggregationType<T> {
         int SLEEP_SESSION_DURATION_TOTAL = 66;
         int EXERCISE_SESSION_DURATION_TOTAL = 67;
 
+        /**
+         * Valid set of values for this IntDef. Update this set when add new type or deprecate
+         * existing type.
+         *
+         * @hide
+         */
+        Set<Integer> IDENTIFIER_VALID_TYPES =
+                Set.of(
+                        HEART_RATE_RECORD_BPM_MAX,
+                        HEART_RATE_RECORD_BPM_MIN,
+                        STEPS_RECORD_COUNT_TOTAL,
+                        ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL,
+                        BMR_RECORD_BASAL_CALORIES_TOTAL,
+                        DISTANCE_RECORD_DISTANCE_TOTAL,
+                        ELEVATION_RECORD_ELEVATION_GAINED_TOTAL,
+                        HEART_RATE_RECORD_BPM_AVG,
+                        POWER_RECORD_POWER_MIN,
+                        POWER_RECORD_POWER_MAX,
+                        POWER_RECORD_POWER_AVG,
+                        HYDRATION_RECORD_VOLUME_TOTAL,
+                        FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
+                        NUTRITION_RECORD_BIOTIN_TOTAL,
+                        NUTRITION_RECORD_CAFFEINE_TOTAL,
+                        NUTRITION_RECORD_CALCIUM_TOTAL,
+                        NUTRITION_RECORD_CHLORIDE_TOTAL,
+                        NUTRITION_RECORD_CHOLESTEROL_TOTAL,
+                        NUTRITION_RECORD_CHROMIUM_TOTAL,
+                        NUTRITION_RECORD_COPPER_TOTAL,
+                        NUTRITION_RECORD_DIETARY_FIBER_TOTAL,
+                        NUTRITION_RECORD_ENERGY_TOTAL,
+                        NUTRITION_RECORD_ENERGY_FROM_FAT_TOTAL,
+                        NUTRITION_RECORD_FOLATE_TOTAL,
+                        NUTRITION_RECORD_FOLIC_ACID_TOTAL,
+                        NUTRITION_RECORD_IODINE_TOTAL,
+                        NUTRITION_RECORD_IRON_TOTAL,
+                        NUTRITION_RECORD_MAGNESIUM_TOTAL,
+                        NUTRITION_RECORD_MANGANESE_TOTAL,
+                        NUTRITION_RECORD_MOLYBDENUM_TOTAL,
+                        NUTRITION_RECORD_MONOUNSATURATED_FAT_TOTAL,
+                        NUTRITION_RECORD_NIACIN_TOTAL,
+                        NUTRITION_RECORD_PANTOTHENIC_ACID_TOTAL,
+                        NUTRITION_RECORD_PHOSPHORUS_TOTAL,
+                        NUTRITION_RECORD_POLYUNSATURATED_FAT_TOTAL,
+                        NUTRITION_RECORD_POTASSIUM_TOTAL,
+                        NUTRITION_RECORD_PROTEIN_TOTAL,
+                        NUTRITION_RECORD_RIBOFLAVIN_TOTAL,
+                        NUTRITION_RECORD_SATURATED_FAT_TOTAL,
+                        NUTRITION_RECORD_SELENIUM_TOTAL,
+                        NUTRITION_RECORD_SODIUM_TOTAL,
+                        NUTRITION_RECORD_SUGAR_TOTAL,
+                        NUTRITION_RECORD_THIAMIN_TOTAL,
+                        NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL,
+                        NUTRITION_RECORD_TOTAL_FAT_TOTAL,
+                        NUTRITION_RECORD_UNSATURATED_FAT_TOTAL,
+                        NUTRITION_RECORD_VITAMIN_A_TOTAL,
+                        NUTRITION_RECORD_VITAMIN_B12_TOTAL,
+                        NUTRITION_RECORD_VITAMIN_B6_TOTAL,
+                        NUTRITION_RECORD_VITAMIN_C_TOTAL,
+                        NUTRITION_RECORD_VITAMIN_D_TOTAL,
+                        NUTRITION_RECORD_VITAMIN_E_TOTAL,
+                        NUTRITION_RECORD_VITAMIN_K_TOTAL,
+                        NUTRITION_RECORD_ZINC_TOTAL,
+                        HEIGHT_RECORD_HEIGHT_AVG,
+                        HEIGHT_RECORD_HEIGHT_MAX,
+                        HEIGHT_RECORD_HEIGHT_MIN,
+                        RESTING_HEART_RATE_RECORD_BPM_MAX,
+                        RESTING_HEART_RATE_RECORD_BPM_MIN,
+                        TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL,
+                        WEIGHT_RECORD_WEIGHT_AVG,
+                        WEIGHT_RECORD_WEIGHT_MAX,
+                        WEIGHT_RECORD_WEIGHT_MIN,
+                        WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL,
+                        HEART_RATE_RECORD_MEASUREMENTS_COUNT,
+                        RESTING_HEART_RATE_RECORD_BPM_AVG,
+                        SLEEP_SESSION_DURATION_TOTAL,
+                        EXERCISE_SESSION_DURATION_TOTAL);
+
         /** @hide */
         @IntDef({
             HEART_RATE_RECORD_BPM_MAX,
@@ -254,6 +340,14 @@ public final class AggregationType<T> {
         @Retention(RetentionPolicy.SOURCE)
         @interface Id {}
     }
+
+    /**
+     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
+     * type.
+     *
+     * @hide
+     */
+    public static final Set<Integer> OPERATION_VALID_TYPES = Set.of(MAX, MIN, AVG, SUM, COUNT);
 
     /** @hide */
     @IntDef({MAX, MIN, AVG, SUM, COUNT})

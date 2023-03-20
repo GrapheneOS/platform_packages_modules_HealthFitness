@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
@@ -24,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Captures a description of how heavy a user's menstrual flow was (spotting, light, medium, or
@@ -49,6 +52,8 @@ public final class MenstruationFlowRecord extends InstantRecord {
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
+        validateIntDefValue(
+                flow, MenstruationFlowType.VALID_TYPES, MenstruationFlowType.class.getSimpleName());
         mFlow = flow;
     }
 
@@ -65,6 +70,15 @@ public final class MenstruationFlowRecord extends InstantRecord {
         public static final int FLOW_LIGHT = 1;
         public static final int FLOW_MEDIUM = 2;
         public static final int FLOW_HEAVY = 3;
+
+        /**
+         * Valid set of values for this IntDef. Update this set when add new type or deprecate
+         * existing type.
+         *
+         * @hide
+         */
+        public static final Set<Integer> VALID_TYPES =
+                Set.of(FLOW_UNKNOWN, FLOW_LIGHT, FLOW_MEDIUM, FLOW_HEAVY);
 
         MenstruationFlowType() {}
 
