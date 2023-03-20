@@ -21,9 +21,11 @@ import static com.android.server.healthconnect.migration.MigrationUtils.filterIn
 import static com.android.server.healthconnect.migration.MigrationUtils.filterPermissions;
 
 import android.annotation.NonNull;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectManager;
@@ -115,10 +117,12 @@ public class MigrationBroadcast {
         if (isPackageInstalled(migrationAwarePackage, mUser)) {
             if (Objects.requireNonNull(mContext.getSystemService(UserManager.class))
                     .isUserRunning(mUser)) {
-                // TODO(b/271951037): Use explicit intent by setting the target component
                 Intent intent =
                         new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
                                 .setPackage(migrationAwarePackage);
+
+                queryAndSetComponentForIntent(intent);
+
                 mContext.sendBroadcastAsUser(intent, mUser);
                 if (Constants.DEBUG) {
                     Slog.d(TAG, "Sent broadcast to migration aware application.");
@@ -131,6 +135,7 @@ public class MigrationBroadcast {
         }
     }
 
+    /** Checks if the package is installed on the given user. */
     private boolean isPackageInstalled(String packageName, UserHandle user) {
         try {
             PackageManager packageManager =
@@ -139,6 +144,44 @@ public class MigrationBroadcast {
             return true;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
+        }
+    }
+
+    /**
+     * Sets the component to send the migration ready intent to, if only one such receiver is found.
+     *
+     * <p>This is needed to send an explicit broadcast containing an explicit intent which has the
+     * target component specified.
+     *
+     * @param intent Intent which has the package set, for which the broadcast receiver is to be
+     *     queried.
+     * @throws Exception if multiple broadcast receivers are found for the migration ready intent.
+     */
+    private void queryAndSetComponentForIntent(Intent intent) throws Exception {
+        List<ResolveInfo> queryResults =
+                mContext.getPackageManager()
+                        .queryBroadcastReceiversAsUser(
+                                intent,
+                                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL),
+                                mUser);
+
+        int numReceivers = queryResults.size();
+
+        if (numReceivers == 0 && Constants.DEBUG) {
+            Slog.d(TAG, "Found no broadcast receivers for the migration broadcast intent");
+        } else if (numReceivers == 1) {
+            ResolveInfo queryResult = queryResults.get(0);
+            if (queryResult.activityInfo != null) {
+                ComponentName componentName =
+                        new ComponentName(
+                                queryResult.activityInfo.packageName,
+                                queryResult.activityInfo.name);
+                intent.setComponent(componentName);
+            } else if (Constants.DEBUG) {
+                Slog.d(TAG, "Found no corresponding broadcast receiver for intent resolution");
+            }
+        } else if (numReceivers > 1 && Constants.DEBUG) {
+            Slog.d(TAG, "Found multiple broadcast receivers for migration broadcast intent");
         }
     }
 }
