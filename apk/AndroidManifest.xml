@@ -30,7 +30,6 @@
         android:icon="@drawable/health_connect_logo"
         android:label="@string/app_label"
         android:supportsRtl="true"
-        android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.HealthConnect">
 
         <activity
