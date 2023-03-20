@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.categories
 import android.icu.text.MessageFormat
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.AttrRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
@@ -104,7 +105,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     private fun buildSummary(autoDeleteRange: AutoDeleteRange): String {
         return when (autoDeleteRange) {
-            AutoDeleteRange.AUTO_DELETE_RANGE_NEVER -> getString(R.string.range_never)
+            AutoDeleteRange.AUTO_DELETE_RANGE_NEVER -> getString(R.string.range_off)
             AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS -> {
                 val count = AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS.numberOfMonths
                 MessageFormat.format(
@@ -115,6 +116,14 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                 MessageFormat.format(
                     getString(R.string.range_after_x_months), mapOf("count" to count))
             }
+        }
+    }
+
+    @AttrRes
+    private fun iconAttribute(autoDeleteRange: AutoDeleteRange): Int {
+        return when (autoDeleteRange) {
+            AutoDeleteRange.AUTO_DELETE_RANGE_NEVER -> R.attr.autoDeleteOffIcon
+            else -> R.attr.autoDeleteIcon
         }
     }
 
@@ -140,12 +149,17 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             when (state) {
                 AutoDeleteViewModel.AutoDeleteState.Loading -> {
                     mAutoDelete?.summary = ""
+                    mAutoDelete?.icon = null
                 }
                 is AutoDeleteViewModel.AutoDeleteState.LoadingFailed -> {
                     mAutoDelete?.summary = ""
+                    mAutoDelete?.icon = null
                 }
                 is AutoDeleteViewModel.AutoDeleteState.WithData -> {
                     mAutoDelete?.summary = buildSummary(state.autoDeleteRange)
+                    mAutoDelete?.setIcon(
+                        AttributeResolver.getResource(
+                            requireContext(), iconAttribute(state.autoDeleteRange)))
                 }
             }
         }
