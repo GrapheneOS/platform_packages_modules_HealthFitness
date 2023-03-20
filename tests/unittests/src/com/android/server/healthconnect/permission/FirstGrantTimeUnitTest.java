@@ -23,6 +23,15 @@ import static org.mockito.Mockito.when;
 
 import android.app.UiAutomation;
 import android.content.Context;
+import android.health.connect.HealthConnectException;
+import android.health.connect.HealthConnectManager;
+import android.health.connect.ReadRecordsRequest;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.ReadRecordsResponse;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
+import android.os.OutcomeReceiver;
 import android.os.Process;
 import android.os.UserHandle;
 
@@ -35,6 +44,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FirstGrantTimeUnitTest {
 
@@ -86,5 +100,52 @@ public class FirstGrantTimeUnitTest {
                 .isLessThan(Instant.now().plusSeconds((long) 1e3));
         verify(mDatastore).writeForUser(ArgumentMatchers.any(), ArgumentMatchers.eq(CURRENT_USER));
         verify(mDatastore).readForUser(CURRENT_USER);
+    }
+
+    @Test(expected = HealthConnectException.class)
+    public <T extends Record> void testReadRecords_WithNoIntent() throws InterruptedException {
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now())
+                        .setEndTime(Instant.now().plusMillis(3000))
+                        .build();
+        ReadRecordsRequestUsingFilters<StepsRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setTimeRangeFilter(filter)
+                        .build();
+        readRecords(request);
+    }
+
+    private static <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)
+            throws InterruptedException {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        assertThat(request.getRecordType()).isNotNull();
+        AtomicReference<List<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        service.readRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ReadRecordsResponse<T> result) {
+                        response.set(result.getRecords());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+        return response.get();
     }
 }
