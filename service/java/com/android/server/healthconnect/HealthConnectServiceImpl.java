@@ -221,11 +221,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
-        if (isDataSyncInProgress()) {
-            throw new HealthConnectException(
-                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                    "Storage data sync in progress. API calls are blocked");
-        }
+        throwExceptionIfDataSyncInProgress();
         Trace.traceBegin(TRACE_TAG_GRANT_PERMISSION, TAG_GRANT_PERMISSION);
         mPermissionHelper.grantHealthPermission(packageName, permissionName, user);
         Trace.traceEnd(TRACE_TAG_GRANT_PERMISSION);
@@ -237,33 +233,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull String permissionName,
             @Nullable String reason,
             @NonNull UserHandle user) {
-        if (isDataSyncInProgress()) {
-            throw new HealthConnectException(
-                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                    "Storage data sync in progress. API calls are blocked");
-        }
+        throwExceptionIfDataSyncInProgress();
         mPermissionHelper.revokeHealthPermission(packageName, permissionName, reason, user);
     }
 
     @Override
     public void revokeAllHealthPermissions(
             @NonNull String packageName, @Nullable String reason, @NonNull UserHandle user) {
-        if (isDataSyncInProgress()) {
-            throw new HealthConnectException(
-                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                    "Storage data sync in progress. API calls are blocked");
-        }
+        throwExceptionIfDataSyncInProgress();
         mPermissionHelper.revokeAllHealthPermissions(packageName, reason, user);
     }
 
     @Override
     public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
-        if (isDataSyncInProgress()) {
-            throw new HealthConnectException(
-                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                    "Storage data sync in progress. API calls are blocked");
-        }
+        throwExceptionIfDataSyncInProgress();
         Trace.traceBegin(TRACE_TAG_READ_PERMISSION, TAG_READ_PERMISSION);
         List<String> grantedPermissions =
                 mPermissionHelper.getGrantedHealthPermissions(packageName, user);
@@ -274,11 +258,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public long getHistoricalAccessStartDateInMilliseconds(
             @NonNull String packageName, @NonNull UserHandle userHandle) {
-        if (isDataSyncInProgress()) {
-            throw new HealthConnectException(
-                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                    "Storage data sync in progress. API calls are blocked");
-        }
+        throwExceptionIfDataSyncInProgress();
         Instant date = mPermissionHelper.getHealthDataStartDateAccess(packageName, userHandle);
         if (date == null) {
             return Constants.DEFAULT_LONG;
@@ -311,15 +291,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
-
+                        throwExceptionIfDataSyncInProgress();
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
 
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
@@ -420,15 +392,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
-
+                        throwExceptionIfDataSyncInProgress();
                         List<Integer> recordTypesToTest = new ArrayList<>();
                         for (int aggregateId : request.getAggregateIds()) {
                             recordTypesToTest.addAll(
@@ -440,7 +404,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                             if (!isInForeground) {
-                                throwException(callback, attributionSource.getPackageName());
+                                throwSecurityException(
+                                        attributionSource.getPackageName()
+                                                + "must be in foreground to call aggregate method");
                             }
                             mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                                     recordTypesToTest, attributionSource);
@@ -472,7 +438,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
-                        Slog.e(TAG, "SecurityException: ", healthConnectException);
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
                                 callback,
                                 healthConnectException,
@@ -515,11 +481,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        if (isDataSyncInProgress()) {
-                            throw new HealthConnectException(
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                    "Storage data sync in progress. API calls are blocked");
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         AtomicBoolean enforceSelfRead = new AtomicBoolean();
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -630,7 +592,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
-                        Slog.e(TAG, "Exception: ", sqLiteException);
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
@@ -646,7 +608,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
-                        Slog.e(TAG, "SecurityException: ", healthConnectException);
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
                                 callback,
                                 healthConnectException,
@@ -685,14 +647,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
 
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
@@ -727,7 +682,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         builder.setHealthDataServiceApiStatusError(
                                 HealthConnectException.ERROR_INVALID_ARGUMENT);
 
-                        Slog.e(TAG, "Exception: ", illegalArgumentException);
+                        Slog.e(TAG, "IllegalArgumentException: ", illegalArgumentException);
                         tryAndThrowException(
                                 callback,
                                 illegalArgumentException,
@@ -735,7 +690,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
-                        Slog.e(TAG, "SecurityException: ", healthConnectException);
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
                                 callback,
                                 healthConnectException,
@@ -769,15 +724,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
-
+                        throwExceptionIfDataSyncInProgress();
                         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                                 request.getRecordTypesList(), attributionSource);
                         callback.onResult(
@@ -836,12 +783,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        if (isDataSyncInProgress()) {
-                            throw new HealthConnectException(
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                    "Storage data sync in progress. API calls are blocked");
-                        }
-
+                        throwExceptionIfDataSyncInProgress();
                         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                                 ChangeLogsRequestHelper.getRequest(
                                         attributionSource.getPackageName(), token.getToken());
@@ -849,7 +791,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 changeLogsTokenRequest.getRecordTypes(), attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                         if (!isInForeground) {
-                            throwException(callback, attributionSource.getPackageName());
+                            throwSecurityException(
+                                    attributionSource.getPackageName()
+                                            + " must be in foreground to read the change logs");
                         }
                         tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, builder);
@@ -948,15 +892,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
-
+                        throwExceptionIfDataSyncInProgress();
                         List<Integer> recordTypeIdsToDelete =
                                 (!request.getRecordTypeFilters().isEmpty())
                                         ? request.getRecordTypeFilters()
@@ -1049,14 +985,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         List<DataOrigin> dataOriginInPriorityOrder =
                                 HealthDataCategoryPriorityHelper.getInstance()
                                         .getPriorityOrder(dataCategory)
@@ -1104,14 +1033,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         HealthDataCategoryPriorityHelper.getInstance()
                                 .setPriorityOrder(
                                         updatePriorityRequest.getDataCategory(),
@@ -1147,14 +1069,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         AutoDeleteService.setRecordRetentionPeriodInDays(days);
                         callback.onResult();
                     } catch (SQLiteException sqLiteException) {
@@ -1181,11 +1096,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public int getRecordRetentionPeriodInDays(@NonNull UserHandle user) {
 
-        if (isDataSyncInProgress()) {
-            throw new HealthConnectException(
-                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                    "Storage data sync in progress. API calls are blocked");
-        }
+        throwExceptionIfDataSyncInProgress();
         try {
             mContext.enforceCallingPermission(MANAGE_HEALTH_DATA_PERMISSION, null);
             return AutoDeleteService.getRecordRetentionPeriodInDays();
@@ -1215,14 +1126,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         List<AppInfo> applicationInfos =
                                 AppInfoHelper.getInstance().getApplicationInfosWithRecordTypes();
 
@@ -1257,14 +1161,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         callback.onResult(
                                 new RecordTypeInfoResponseParcel(
                                         getPopulatedRecordTypeInfoResponses()));
@@ -1299,14 +1196,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         final List<AccessLog> accessLogsList =
                                 AccessLogsHelper.getInstance().queryAccessLogs();
                         callback.onResult(new AccessLogsResponseParcel(accessLogsList));
@@ -1347,14 +1237,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                        if (isDataSyncInProgress()) {
-                            tryAndThrowException(
-                                    callback,
-                                    new HealthConnectException(
-                                            HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-                                            "Storage data sync in progress. API calls are blocked"),
-                                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-                        }
+                        throwExceptionIfDataSyncInProgress();
                         List<LocalDate> localDates =
                                 ActivityDateHelper.getInstance()
                                         .getActivityDates(
@@ -1399,13 +1282,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         if (mBackupRestore.isRestoreInProgress(
                                 mContext.getUser().getIdentifier())) {
-                            tryAndThrowException(
-                                    callback,
-                                    new MigrationException(
-                                            "Cannot start data migration. Backup and restore in"
-                                                    + " progress.",
-                                            MigrationException.ERROR_INTERNAL,
-                                            null),
+                            throw new MigrationException(
+                                    "Cannot start data migration. Backup and restore in"
+                                            + " progress.",
                                     MigrationException.ERROR_INTERNAL,
                                     null);
                         }
@@ -1716,7 +1595,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             throw new IllegalStateException(packageName + " not found");
         }
         if (UserHandle.getAppId(packageUid) != UserHandle.getAppId(callingUid)) {
-            throw new SecurityException(packageName + " does not belong to uid " + callingUid);
+            throwSecurityException(packageName + " does not belong to uid " + callingUid);
         }
     }
 
@@ -1821,22 +1700,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (Exception exception) {
             // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
         }
-    }
-
-    private void throwException(IAggregateRecordsResponseCallback callback, String packageName) {
-        tryAndThrowException(
-                callback,
-                new SecurityException(
-                        packageName + " must be in foreground to call aggregate method"),
-                HealthConnectException.ERROR_SECURITY);
-    }
-
-    private void throwException(IChangeLogsResponseCallback callback, String packageName) {
-        tryAndThrowException(
-                callback,
-                new SecurityException(
-                        packageName + " must be in foreground to read the change logs"),
-                HealthConnectException.ERROR_SECURITY);
     }
 
     private static void tryAndThrowException(
@@ -2002,6 +1865,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         + Intent.ACTION_VIEW_PERMISSION_USAGE
                         + " with "
                         + HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS);
+    }
+
+    private void throwSecurityException(String message) {
+        throw new SecurityException(message);
+    }
+
+    private void throwExceptionIfDataSyncInProgress() {
+        if (isDataSyncInProgress()) {
+            throw new HealthConnectException(
+                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
+                    "Storage data sync in progress. API calls are blocked");
+        }
     }
 
     private void logRecordTypeSpecificUpsertMetrics(
