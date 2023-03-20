@@ -20,6 +20,7 @@ import android.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Set;
 
 /** Identifier for the meal type. */
 public final class MealType {
@@ -36,6 +37,20 @@ public final class MealType {
 
     /** Any meal outside of the usual three meals per day. */
     public static final int MEAL_TYPE_SNACK = 4;
+
+    /**
+     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
+     * type.
+     *
+     * @hide
+     */
+    public static final Set<Integer> VALID_TYPES =
+            Set.of(
+                    MEAL_TYPE_UNKNOWN,
+                    MEAL_TYPE_BREAKFAST,
+                    MEAL_TYPE_LUNCH,
+                    MEAL_TYPE_DINNER,
+                    MEAL_TYPE_SNACK);
 
     private MealType() {}
 

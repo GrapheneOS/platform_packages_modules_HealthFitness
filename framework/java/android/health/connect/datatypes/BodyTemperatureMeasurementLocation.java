@@ -20,6 +20,7 @@ import android.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Set;
 
 /** Where on the user's body a temperature measurement was taken from. */
 public final class BodyTemperatureMeasurementLocation {
@@ -45,6 +46,26 @@ public final class BodyTemperatureMeasurementLocation {
     public static final int MEASUREMENT_LOCATION_WRIST = 9;
     /** Vaginal body temperature measurement. */
     public static final int MEASUREMENT_LOCATION_VAGINA = 10;
+
+    /**
+     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
+     * type.
+     *
+     * @hide
+     */
+    public static final Set<Integer> VALID_TYPES =
+            Set.of(
+                    MEASUREMENT_LOCATION_UNKNOWN,
+                    MEASUREMENT_LOCATION_ARMPIT,
+                    MEASUREMENT_LOCATION_FINGER,
+                    MEASUREMENT_LOCATION_FOREHEAD,
+                    MEASUREMENT_LOCATION_MOUTH,
+                    MEASUREMENT_LOCATION_RECTUM,
+                    MEASUREMENT_LOCATION_TEMPORAL_ARTERY,
+                    MEASUREMENT_LOCATION_TOE,
+                    MEASUREMENT_LOCATION_EAR,
+                    MEASUREMENT_LOCATION_WRIST,
+                    MEASUREMENT_LOCATION_VAGINA);
 
     private BodyTemperatureMeasurementLocation() {}
 
