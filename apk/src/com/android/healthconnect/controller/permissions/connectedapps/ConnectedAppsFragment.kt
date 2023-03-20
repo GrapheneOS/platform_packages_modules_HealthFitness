@@ -20,6 +20,7 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
@@ -125,7 +126,10 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 R.string.permissions_disconnect_all_dialog_disconnect,
                 DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_REMOVE_ALL_BUTTON) { _, _
                     ->
-                    viewModel.disconnectAllApps(apps)
+                    if (!viewModel.disconnectAllApps(apps)) {
+                        Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             .create()
             .show()
