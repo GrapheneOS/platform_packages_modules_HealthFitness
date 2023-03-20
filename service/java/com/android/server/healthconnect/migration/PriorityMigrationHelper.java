@@ -54,8 +54,8 @@ public final class PriorityMigrationHelper {
     @VisibleForTesting
     public static final String PRE_MIGRATION_TABLE_NAME = "pre_migration_category_priority_table";
 
-    private static final String CATEGORY_COLUMN_NAME = "category";
-    private static final String PRIORITY_ORDER_COLUMN_NAME = "priority_order";
+    @VisibleForTesting static final String CATEGORY_COLUMN_NAME = "category";
+    @VisibleForTesting static final String PRIORITY_ORDER_COLUMN_NAME = "priority_order";
 
     private static final int DB_VERSION_TABLE_CREATED = 5;
 
@@ -64,13 +64,9 @@ public final class PriorityMigrationHelper {
 
     private static volatile PriorityMigrationHelper sPriorityMigrationHelper;
 
-    private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
-
     private final Object mPriorityMigrationHelperInstanceLock = new Object();
 
-    private PriorityMigrationHelper() {
-        mHealthDataCategoryPriorityHelper = HealthDataCategoryPriorityHelper.getInstance();
-    }
+    private PriorityMigrationHelper() {}
 
     /** Creates(if it was not already created) and returns instance of PriorityMigrationHelper. */
     @NonNull
@@ -160,7 +156,7 @@ public final class PriorityMigrationHelper {
     private void populatePreMigrationTable() {
         synchronized (mPriorityMigrationHelperInstanceLock) {
             Map<Integer, List<Long>> existingPriority =
-                    mHealthDataCategoryPriorityHelper
+                    HealthDataCategoryPriorityHelper.getInstance()
                             .getHealthDataCategoryToAppIdPriorityMapImmutable();
 
             if (existingPriority.isEmpty()) {
