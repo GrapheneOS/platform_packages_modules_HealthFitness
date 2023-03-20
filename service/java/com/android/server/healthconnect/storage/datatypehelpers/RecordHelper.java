@@ -667,8 +667,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         db.execSQL(
                 new CreateIndexRequest(
                                 tableName,
-                                /*indexName=*/ "ux_" + tableName + "_dedupe_hash",
-                                /*isUnique=*/ true,
+                                /* indexName= */ "ux_" + tableName + "_dedupe_hash",
+                                /* isUnique= */ true,
                                 List.of(DEDUPE_HASH_COLUMN_NAME))
                         .getCommand());
     }
