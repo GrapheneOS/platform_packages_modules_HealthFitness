@@ -81,6 +81,13 @@ class SettingsActivity : Hilt_SettingsActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (!navController.popBackStack()) {
+            finish()
+        }
+    }
+
     override fun onNavigateUp(): Boolean {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         if (!navController.popBackStack()) {
