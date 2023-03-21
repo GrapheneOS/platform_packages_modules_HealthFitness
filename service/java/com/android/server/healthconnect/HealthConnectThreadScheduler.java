@@ -21,6 +21,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Slog;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -49,7 +51,8 @@ public final class HealthConnectThreadScheduler {
     private static final String TAG = "HealthConnectScheduler";
 
     // Executor to run HC background tasks
-    private static volatile ThreadPoolExecutor sBackgroundThreadExecutor =
+    @VisibleForTesting
+    static volatile ThreadPoolExecutor sBackgroundThreadExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_BACKGROUND,
                     NUM_EXECUTOR_THREADS_BACKGROUND,
@@ -57,7 +60,8 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC background tasks
-    private static volatile ThreadPoolExecutor sInternalBackgroundExecutor =
+    @VisibleForTesting
+    static volatile ThreadPoolExecutor sInternalBackgroundExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
                     NUM_EXECUTOR_THREADS_INTERNAL_BACKGROUND,
@@ -65,7 +69,8 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC tasks for clients
-    private static volatile ThreadPoolExecutor sForegroundExecutor =
+    @VisibleForTesting
+    static volatile ThreadPoolExecutor sForegroundExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_FOREGROUND,
                     NUM_EXECUTOR_THREADS_FOREGROUND,
@@ -73,7 +78,8 @@ public final class HealthConnectThreadScheduler {
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>());
     // Executor to run HC controller tasks
-    private static volatile ThreadPoolExecutor sControllerExecutor =
+    @VisibleForTesting
+    static volatile ThreadPoolExecutor sControllerExecutor =
             new ThreadPoolExecutor(
                     NUM_EXECUTOR_THREADS_CONTROLLER,
                     NUM_EXECUTOR_THREADS_CONTROLLER,
