@@ -129,6 +129,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoriesViewModel.loadCategories()
 
         categoriesViewModel.categoriesData.observe(viewLifecycleOwner) { state ->
             when (state) {
