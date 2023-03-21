@@ -25,6 +25,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
@@ -196,7 +197,13 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
     }
 
     private fun updatePermissionTypesList(permissionTypeList: List<HealthPermissionType>) {
+        mDeleteCategoryData?.isEnabled = permissionTypeList.isNotEmpty()
         mPermissionTypes?.removeAll()
+        if (permissionTypeList.isEmpty()) {
+            mPermissionTypes?.addPreference(
+                Preference(requireContext()).also { it.setSummary(R.string.no_categories) })
+            return
+        }
         permissionTypeList.forEach { permissionType ->
             mPermissionTypes?.addPreference(
                 HealthPreference(requireContext()).also {
