@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
@@ -56,6 +57,7 @@ import dagger.hilt.android.AndroidEntryPoint
 open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() {
 
     companion object {
+        private const val TAG = "HealthPermissionTypesFT"
         private const val PERMISSION_TYPES_HEADER = "permission_types_header"
         private const val APP_FILTERS_PREFERENCE = "app_filters_preference"
         private const val PERMISSION_TYPES_CATEGORY = "permission_types"
@@ -144,9 +146,14 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
             }
         }
         childFragmentManager.setFragmentResultListener(PRIORITY_UPDATED_EVENT, this) { _, bundle ->
-            Log.e("SUCCESSFUL_UPDATE", "event sent")
             bundle.getStringArrayList(PRIORITY_UPDATED_EVENT)?.let {
-                viewModel.updatePriorityList(category, it)
+                try {
+                    viewModel.updatePriorityList(category, it)
+                } catch (ex: Exception) {
+                    Log.e(TAG, "Failed to update priorities!", ex)
+                    Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
 
