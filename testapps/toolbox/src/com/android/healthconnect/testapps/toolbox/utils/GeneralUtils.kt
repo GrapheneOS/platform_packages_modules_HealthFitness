@@ -91,7 +91,11 @@ class GeneralUtils {
         ): EnumFieldsWithValues {
             val fieldNameToValue: MutableMap<String, Any> = emptyMap<String, Any>().toMutableMap()
             val fields: List<Field> =
-                obj.java.declaredFields.filter { field -> Modifier.isStatic(field.modifiers) }
+                obj.java.declaredFields.filter { field ->
+                    Modifier.isStatic(field.modifiers) &&
+                        field.isAccessible &&
+                        field.type == Int::class.java
+                }
             for (field in fields) {
                 fieldNameToValue[field.name] = field.get(obj)!!
             }
