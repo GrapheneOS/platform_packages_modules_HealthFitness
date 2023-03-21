@@ -34,6 +34,7 @@ package com.android.healthconnect.controller.permissions.app
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
@@ -207,7 +208,12 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
             if (preference.isPressed) {
                 if (grantAll) {
-                    appPermissionViewModel.grantAllPermissions(packageName)
+                    val permissionsUpdated = appPermissionViewModel.grantAllPermissions(packageName)
+                    if (!permissionsUpdated) {
+                        preference.isChecked = false
+                        Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 } else {
                     showRevokeAllPermissions()
                 }
@@ -225,7 +231,10 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         }
 
         childFragmentManager.setFragmentResultListener(DISCONNECT_ALL_EVENT, this) { _, bundle ->
-            appPermissionViewModel.revokeAllPermissions(packageName)
+            val permissionsUpdated = appPermissionViewModel.revokeAllPermissions(packageName)
+            if (!permissionsUpdated) {
+                Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
+            }
             if (bundle.containsKey(KEY_DELETE_DATA) && bundle.getBoolean(KEY_DELETE_DATA)) {
                 appPermissionViewModel.deleteAppData(packageName, appName)
             }
@@ -245,29 +254,40 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                     .getString(fromPermissionType(it.healthPermissionType).uppercaseLabel)
             }
             .forEach { permission ->
-            val category =
-                if (permission.permissionsAccessType == PermissionsAccessType.READ) {
-                    mReadPermissionCategory
-                } else {
-                    mWritePermissionCategory
-                }
-
-            val preference =
-                HealthSwitchPreference(requireContext()).also {
-                    val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
-                    it.setIcon(healthCategory.icon())
-                    it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
-                    it.logNameActive = AppAccessElement.PERMISSION_SWITCH_ACTIVE
-                    it.logNameInactive = AppAccessElement.PERMISSION_SWITCH_INACTIVE
-                    it.setOnPreferenceChangeListener { _, newValue ->
-                        val checked = newValue as Boolean
-                        appPermissionViewModel.updatePermission(packageName, permission, checked)
-                        true
+                val category =
+                    if (permission.permissionsAccessType == PermissionsAccessType.READ) {
+                        mReadPermissionCategory
+                    } else {
+                        mWritePermissionCategory
                     }
-                }
-            permissionMap[permission] = preference
-            category?.addPreference(preference)
-        }
+
+                val preference =
+                    HealthSwitchPreference(requireContext()).also {
+                        val healthCategory =
+                            fromHealthPermissionType(permission.healthPermissionType)
+                        it.setIcon(healthCategory.icon())
+                        it.setTitle(
+                            fromPermissionType(permission.healthPermissionType).uppercaseLabel)
+                        it.logNameActive = AppAccessElement.PERMISSION_SWITCH_ACTIVE
+                        it.logNameInactive = AppAccessElement.PERMISSION_SWITCH_INACTIVE
+                        it.setOnPreferenceChangeListener { _, newValue ->
+                            val checked = newValue as Boolean
+                            val permissionUpdated =
+                                appPermissionViewModel.updatePermission(
+                                    packageName, permission, checked)
+                            if (!permissionUpdated) {
+                                Toast.makeText(
+                                        requireContext(),
+                                        R.string.default_error,
+                                        Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                            permissionUpdated
+                        }
+                    }
+                permissionMap[permission] = preference
+                category?.addPreference(preference)
+            }
 
         mReadPermissionCategory?.apply { isVisible = (preferenceCount != 0) }
         mWritePermissionCategory?.apply { isVisible = (preferenceCount != 0) }
