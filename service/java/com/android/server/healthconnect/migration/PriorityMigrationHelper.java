@@ -87,8 +87,14 @@ public final class PriorityMigrationHelper {
      * of migration.
      */
     public void populatePreMigrationPriority() {
-        // TODO(b/272443882) handle case where multiple startMigration should be no-op
-        populatePreMigrationTable();
+        synchronized (mPriorityMigrationHelperInstanceLock) {
+            // Populating table only if it was not already populated.
+            if (TransactionManager.getInitialisedInstance()
+                            .getNumberOfEntriesInTheTable(PRE_MIGRATION_TABLE_NAME)
+                    == 0) {
+                populatePreMigrationTable();
+            }
+        }
     }
 
     /**
@@ -154,14 +160,9 @@ public final class PriorityMigrationHelper {
      * priority table.
      */
     private void populatePreMigrationTable() {
-        synchronized (mPriorityMigrationHelperInstanceLock) {
             Map<Integer, List<Long>> existingPriority =
                     HealthDataCategoryPriorityHelper.getInstance()
                             .getHealthDataCategoryToAppIdPriorityMapImmutable();
-
-            if (existingPriority.isEmpty()) {
-                return;
-            }
 
             TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
             existingPriority.forEach(
@@ -174,6 +175,20 @@ public final class PriorityMigrationHelper {
                             transactionManager.insert(request);
                         }
                     });
+        if (existingPriority.values().stream()
+                .filter(priority -> !priority.isEmpty())
+                .findAny()
+                .isEmpty()) {
+            /*
+            Adding placeholder row to signify that pre-migration have no priority for
+            any category and the table should not be repopulated even after multiple calls to
+            startMigration
+            */
+            UpsertTableRequest request =
+                    new UpsertTableRequest(
+                            PRE_MIGRATION_TABLE_NAME,
+                            getContentValuesFor(HealthDataCategory.UNKNOWN, new ArrayList<>()));
+            transactionManager.insert(request);
         }
     }
 

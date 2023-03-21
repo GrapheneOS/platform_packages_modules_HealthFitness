@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -93,7 +94,7 @@ public class PriorityMigrationHelperTest {
     }
 
     @Test
-    public void testPopulatePreMigrationPriority_preMigrationPrioritySaved() {
+    public void testPopulatePreMigrationPriority_preMigrationPriorityExists_prioritySaved() {
         Map<Integer, List<Long>> preMigrationPriority = new HashMap<>();
         preMigrationPriority.put(
                 HealthDataCategory.BODY_MEASUREMENTS, List.of(APP_PACKAGE_ID, APP_PACKAGE_ID_2));
@@ -103,6 +104,8 @@ public class PriorityMigrationHelperTest {
 
         when(mHealthDataCategoryPriorityHelper.getHealthDataCategoryToAppIdPriorityMapImmutable())
                 .thenReturn(preMigrationPriority);
+        when(mTransactionManager.getNumberOfEntriesInTheTable(eq(PRE_MIGRATION_TABLE_NAME)))
+                .thenReturn(0L);
 
         mPriorityMigrationHelper.populatePreMigrationPriority();
 
@@ -113,6 +116,41 @@ public class PriorityMigrationHelperTest {
         verifyPreMigrationPriorityWrite(
                 times(1), HealthDataCategory.ACTIVITY, List.of(APP_PACKAGE_ID_3, APP_PACKAGE_ID_4));
         verifyPreMigrationPriorityWrite(never(), HealthDataCategory.SLEEP, new ArrayList<>());
+    }
+
+    @Test
+    public void
+            testPopulatePreMigrationPriority_preMigrationTableIsPopulated_noOperationPerformed() {
+        Map<Integer, List<Long>> preMigrationPriority = new HashMap<>();
+        preMigrationPriority.put(
+                HealthDataCategory.BODY_MEASUREMENTS, List.of(APP_PACKAGE_ID, APP_PACKAGE_ID_2));
+        preMigrationPriority.put(
+                HealthDataCategory.ACTIVITY, List.of(APP_PACKAGE_ID_3, APP_PACKAGE_ID_4));
+        preMigrationPriority.put(HealthDataCategory.SLEEP, new ArrayList<>());
+
+        when(mHealthDataCategoryPriorityHelper.getHealthDataCategoryToAppIdPriorityMapImmutable())
+                .thenReturn(preMigrationPriority);
+        when(mTransactionManager.getNumberOfEntriesInTheTable(eq(PRE_MIGRATION_TABLE_NAME)))
+                .thenReturn(1L);
+        mPriorityMigrationHelper.populatePreMigrationPriority();
+
+        verify(mTransactionManager, never()).insert(any());
+    }
+
+    @Test
+    public void testPopulatePreMigrationPriority_NoPreMigrationPriorityExists_placeholderSaved() {
+        Map<Integer, List<Long>> preMigrationPriority = new HashMap<>();
+        preMigrationPriority.put(HealthDataCategory.SLEEP, new ArrayList<>());
+
+        when(mHealthDataCategoryPriorityHelper.getHealthDataCategoryToAppIdPriorityMapImmutable())
+                .thenReturn(preMigrationPriority);
+        when(mTransactionManager.getNumberOfEntriesInTheTable(eq(PRE_MIGRATION_TABLE_NAME)))
+                .thenReturn(0L);
+
+        mPriorityMigrationHelper.populatePreMigrationPriority();
+
+        verifyPreMigrationPriorityWrite(never(), HealthDataCategory.SLEEP, new ArrayList<>());
+        verifyPreMigrationPriorityWrite(times(1), HealthDataCategory.UNKNOWN, new ArrayList<>());
     }
 
     @Test
