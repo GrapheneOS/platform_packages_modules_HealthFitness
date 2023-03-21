@@ -36,12 +36,12 @@ package com.android.healthconnect.controller.permissions.app
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
@@ -175,7 +175,10 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
 
         childFragmentManager.setFragmentResultListener(
             DisconnectDialogFragment.DISCONNECT_ALL_EVENT, this) { _, bundle ->
-                viewModel.revokeAllPermissions(packageName)
+                if (!viewModel.revokeAllPermissions(packageName)) {
+                    Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+                        .show()
+                }
                 if (bundle.containsKey(DisconnectDialogFragment.KEY_DELETE_DATA) &&
                     bundle.getBoolean(DisconnectDialogFragment.KEY_DELETE_DATA)) {
                     viewModel.deleteAppData(packageName, appName)
@@ -218,8 +221,16 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                         it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
                         it.setOnPreferenceChangeListener { _, newValue ->
                             val checked = newValue as Boolean
-                            viewModel.updatePermission(packageName, permission, checked)
-                            true
+                            val permissionUpdated =
+                                viewModel.updatePermission(packageName, permission, checked)
+                            if (!permissionUpdated) {
+                                Toast.makeText(
+                                        requireContext(),
+                                        R.string.default_error,
+                                        Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                            permissionUpdated
                         }
                     }
                 permissionMap[permission] = switchPreference
