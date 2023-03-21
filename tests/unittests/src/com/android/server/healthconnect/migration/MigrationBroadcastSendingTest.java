@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.migration;
 
-import static junit.framework.Assert.fail;
-
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -29,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -47,6 +46,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.verification.VerificationMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** Unit tests for broadcast sending logic in {@link MigrationBroadcast} */
 @RunWith(AndroidJUnit4.class)
@@ -56,6 +56,8 @@ public class MigrationBroadcastSendingTest {
     private static final String MOCK_CONFIGURED_PACKAGE = "com.configured.app";
     private static final String MOCK_UNCONFIGURED_PACKAGE_ONE = "com.unconfigured.app";
     private static final String MOCK_UNCONFIGURED_PACKAGE_TWO = "com.unconfigured.apptwo";
+    private static final String MOCK_QUERIED_BROADCAST_RECEIVER_ONE = ".SampleReceiverOne";
+    private static final String MOCK_QUERIED_BROADCAST_RECEIVER_TWO = ".SampleReceiverTwo";
 
     @Mock private Context mContext;
     @Mock private Context mUserContext;
@@ -72,9 +74,6 @@ public class MigrationBroadcastSendingTest {
         MockitoAnnotations.initMocks(this);
 
         when(mContext.getResources()).thenReturn(mResources);
-        when(mResources.getIdentifier(
-                        eq("config_healthConnectMigratorPackageName"), eq("string"), eq("android")))
-                .thenReturn(1);
         when(mResources.getString(anyInt())).thenReturn(MOCK_CONFIGURED_PACKAGE);
 
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
@@ -87,60 +86,160 @@ public class MigrationBroadcastSendingTest {
         mMigrationBroadcast = new MigrationBroadcast(mContext, mUser);
     }
 
+    /** Tests case where there are no apps holding the required permission. */
     @Test
-    public void testSendInvocationBroadcast_noPermissionMatchingApps_noBroadcastSent()
-            throws Exception {
+    public void testBroadcast_noPermissionMatchingApps_noBroadcastSent() throws Exception {
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new ArrayList<PackageInfo>());
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
-        verifyInvocations(never());
+        verifyExplicitBroadcastInvocation(never());
+        verifyImplicitBroadcastInvocation(never());
     }
 
+    /** Tests case where there are no apps handling the required intent. */
     @Test
-    public void testSendInvocationBroadcast_noIntentMatchingApps_noBroadcastSent()
+    public void testBroadcast_noIntentMatchingApps_noBroadcastSent() throws Exception {
+        ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(packageInfoArray);
+        setResolveActivityResult(null);
+
+        mMigrationBroadcast.sendInvocationBroadcast();
+
+        verifyExplicitBroadcastInvocation(never());
+        verifyImplicitBroadcastInvocation(never());
+    }
+
+    /**
+     * Tests case where there is exactly one migration aware app, which is the configured app that
+     * is installed on the currently active user, and has exactly one broadcast receiver handling
+     * the required intent.
+     */
+    @Test
+    public void testBroadcast_oneConfiguredMigratorAppWithNonNullReceiver_explicitBroadcastSent()
             throws Exception {
         ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(null);
-
-        mMigrationBroadcast.sendInvocationBroadcast();
-
-        verifyInvocations(never());
-    }
-
-    @Test
-    public void
-            testSendInvocationBroadcast_oneMigrationAwareConfiguredAppInstalledUserRunning_broadcastSentToConfiguredApp()
-                    throws Exception {
-        ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
-        when(mPackageManager.getPackagesHoldingPermissions(
-                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
-                .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
         when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<ResolveInfo> resolveInfoList =
+                createResolveInfoList(
+                        false, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
-        verifyInvocations(times(1));
+        verifyExplicitBroadcastInvocation(times(1));
+        verifyImplicitBroadcastInvocation(never());
     }
 
+    /**
+     * Tests case where there is exactly one migration aware app, which is the configured app that
+     * is installed on the currently active user, but does not have any broadcast receivers handling
+     * the required intent.
+     */
     @Test
-    public void
-            testSendInvocationBroadcast_oneMigrationAwareConfiguredAppInstalledUserNotRunning_noBroadcastSent()
-                    throws Exception {
+    public void testBroadcast_oneConfiguredMigratorAppWithNullReceiver_implicitBroadcastSent()
+            throws Exception {
         ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
+        when(mUserContextPackageManager.getPackageInfo(
+                        anyString(), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(new PackageInfo());
+        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<ResolveInfo> resolveInfoList =
+                createResolveInfoList(
+                        true, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
+
+        mMigrationBroadcast.sendInvocationBroadcast();
+
+        verifyImplicitBroadcastInvocation(times(1));
+        verifyExplicitBroadcastInvocation(never());
+    }
+
+    /**
+     * Tests case where there is exactly one migration aware app, which is the configured app that
+     * is installed on the currently active user, but does not have any broadcast receivers handling
+     * the required intent.
+     */
+    @Test
+    public void testBroadcast_oneConfiguredMigratorAppWithoutReceiver_implicitBroadcastSent()
+            throws Exception {
+        ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(packageInfoArray);
+        setResolveActivityResult(new ResolveInfo());
+        when(mUserContextPackageManager.getPackageInfo(
+                        anyString(), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(new PackageInfo());
+        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<android.content.pm.ResolveInfo> resolveInfoList =
+                new ArrayList<android.content.pm.ResolveInfo>();
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
+
+        mMigrationBroadcast.sendInvocationBroadcast();
+
+        verifyImplicitBroadcastInvocation(times(1));
+        verifyExplicitBroadcastInvocation(never());
+    }
+
+    /**
+     * Tests case where there is exactly one migration aware app, which is the configured app that
+     * is installed on the currently active user, but has multiple broadcast receivers handling the
+     * required intent.
+     */
+    @Test
+    public void testBroadcast_oneConfiguredMigratorAppWithMultipleReceivers_implicitBroadcastSent()
+            throws Exception {
+        ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(packageInfoArray);
+        setResolveActivityResult(new ResolveInfo());
+        when(mUserContextPackageManager.getPackageInfo(
+                        anyString(), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(new PackageInfo());
+        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<ResolveInfo> resolveInfoList =
+                createResolveInfoList(
+                        true,
+                        MOCK_CONFIGURED_PACKAGE,
+                        MOCK_QUERIED_BROADCAST_RECEIVER_ONE,
+                        MOCK_QUERIED_BROADCAST_RECEIVER_TWO);
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
+
+        mMigrationBroadcast.sendInvocationBroadcast();
+
+        verifyImplicitBroadcastInvocation(times(1));
+        verifyExplicitBroadcastInvocation(never());
+    }
+
+    /**
+     * Tests case where there is exactly one migration aware app, which is the configured app that
+     * is installed on the given user, however the user is not currently active.
+     */
+    @Test
+    public void testBroadcast_oneConfiguredMigratorAppUserNotRunning_noBroadcastSent()
+            throws Exception {
+        ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(packageInfoArray);
+        setResolveActivityResult(new ResolveInfo());
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
@@ -148,75 +247,184 @@ public class MigrationBroadcastSendingTest {
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
-        verifyInvocations(never());
+        verifyExplicitBroadcastInvocation(never());
+        verifyImplicitBroadcastInvocation(never());
     }
 
+    /**
+     * Tests case where there is exactly one migration aware app, which is the configured app, but
+     * it is not installed on the given user.
+     */
     @Test
-    public void
-            testSendInvocationBroadcast_oneMigrationAwareConfiguredAppNotInstalledOnUser_noBroadcastSent()
-                    throws Exception {
+    public void testBroadcast_oneConfiguredMigratorAppNotInstalledOnUser_noBroadcastSent()
+            throws Exception {
         ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenThrow(PackageManager.NameNotFoundException.class);
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
-        verifyInvocations(never());
+        verifyExplicitBroadcastInvocation(never());
+        verifyImplicitBroadcastInvocation(never());
     }
 
+    /** Tests case where there is exactly one migration aware, but it is not the configured app. */
     @Test(expected = Exception.class)
-    public void testSendInvocationBroadcast_oneMigrationAwareNotConfiguredApp_exceptionThrown()
-            throws Exception {
+    public void testBroadcast_oneMigratorNotConfiguredApp_exceptionThrown() throws Exception {
         ArrayList<PackageInfo> packageInfoArray =
                 createPackageInfoArray(MOCK_UNCONFIGURED_PACKAGE_ONE);
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
 
         try {
             mMigrationBroadcast.sendInvocationBroadcast();
-            fail("Expected Exception");
         } finally {
-            verifyInvocations(never());
+            verifyExplicitBroadcastInvocation(never());
+            verifyImplicitBroadcastInvocation(never());
         }
     }
 
+    /**
+     * Tests case where there are multiple migration aware apps, including the configured app which
+     * is installed on the currently active user and has exactly one broadcast receiver handling the
+     * required intent.
+     */
     @Test
-    public void
-            testSendInvocationBroadcast_multipleAppsIncludingConfiguredAppInstalledUserRunning_broadcastSentToConfiguredApp()
-                    throws Exception {
+    public void testBroadcast_multipleAppsIncludingConfiguredAppOneReceiver_explicitBroadcastSent()
+            throws Exception {
         ArrayList<PackageInfo> packageInfoArray =
                 createPackageInfoArray(MOCK_CONFIGURED_PACKAGE, MOCK_UNCONFIGURED_PACKAGE_ONE);
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
         when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<ResolveInfo> resolveInfoList =
+                createResolveInfoList(
+                        false, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
-        verifyInvocations(times(1));
+        verifyExplicitBroadcastInvocation(times(1));
+        verifyImplicitBroadcastInvocation(never());
     }
 
+    /**
+     * Tests case where there are multiple migration aware apps, including the configured app which
+     * is installed on the currently active user but there are no broadcast receivers handling the
+     * required intent.
+     */
     @Test
     public void
-            testSendInvocationBroadcast_multipleAppsIncludingConfiguredAppInstalledUserNotRunning_noBroadcastSent()
+            testBroadcast_multipleAppsIncludingConfiguredAppOneNullReceiver_implicitBroadcastSent()
                     throws Exception {
         ArrayList<PackageInfo> packageInfoArray =
                 createPackageInfoArray(MOCK_CONFIGURED_PACKAGE, MOCK_UNCONFIGURED_PACKAGE_ONE);
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
+        when(mUserContextPackageManager.getPackageInfo(
+                        anyString(), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(new PackageInfo());
+        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<ResolveInfo> resolveInfoList =
+                createResolveInfoList(
+                        true, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
+
+        mMigrationBroadcast.sendInvocationBroadcast();
+
+        verifyImplicitBroadcastInvocation(times(1));
+        verifyExplicitBroadcastInvocation(never());
+    }
+
+    /**
+     * Tests case where there are multiple migration aware apps, including the configured app which
+     * is installed on the currently active user but does not have broadcast receivers handling the
+     * required intent.
+     */
+    @Test
+    public void
+            testBroadcast_multipleAppsIncludingConfiguredAppWithoutReceiver_implicitBroadcastSent()
+                    throws Exception {
+        ArrayList<PackageInfo> packageInfoArray =
+                createPackageInfoArray(MOCK_CONFIGURED_PACKAGE, MOCK_UNCONFIGURED_PACKAGE_ONE);
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(packageInfoArray);
+        setResolveActivityResult(new ResolveInfo());
+        when(mUserContextPackageManager.getPackageInfo(
+                        anyString(), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(new PackageInfo());
+        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<android.content.pm.ResolveInfo> resolveInfoList =
+                new ArrayList<android.content.pm.ResolveInfo>();
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
+
+        mMigrationBroadcast.sendInvocationBroadcast();
+
+        verifyImplicitBroadcastInvocation(times(1));
+        verifyExplicitBroadcastInvocation(never());
+    }
+
+    /**
+     * Tests case where there are multiple migration aware apps, including the configured app which
+     * is installed on the currently active user but has multiple broadcast receivers handling the
+     * required intent.
+     */
+    @Test
+    public void
+            testBroadcast_multipleAppIncludingConfiguredAppMultipleReceivers_implicitBroadcastSent()
+                    throws Exception {
+        ArrayList<PackageInfo> packageInfoArray =
+                createPackageInfoArray(MOCK_CONFIGURED_PACKAGE, MOCK_UNCONFIGURED_PACKAGE_ONE);
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(packageInfoArray);
+        setResolveActivityResult(new ResolveInfo());
+        when(mUserContextPackageManager.getPackageInfo(
+                        anyString(), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(new PackageInfo());
+        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        List<ResolveInfo> resolveInfoList =
+                createResolveInfoList(
+                        true,
+                        MOCK_CONFIGURED_PACKAGE,
+                        MOCK_QUERIED_BROADCAST_RECEIVER_ONE,
+                        MOCK_QUERIED_BROADCAST_RECEIVER_TWO);
+        setQueryBroadcastReceiversAsUserResult(resolveInfoList);
+
+        mMigrationBroadcast.sendInvocationBroadcast();
+
+        verifyImplicitBroadcastInvocation(times(1));
+        verifyExplicitBroadcastInvocation(never());
+    }
+
+    /**
+     * Tests case where there are multiple migration aware apps, including the configured app which
+     * is installed on the given user, however the user is not currently active.
+     */
+    @Test
+    public void testBroadcast_multipleAppsIncludingConfiguredAppUserNotRunning_noBroadcastSent()
+            throws Exception {
+        ArrayList<PackageInfo> packageInfoArray =
+                createPackageInfoArray(MOCK_CONFIGURED_PACKAGE, MOCK_UNCONFIGURED_PACKAGE_ONE);
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(packageInfoArray);
+        setResolveActivityResult(new ResolveInfo());
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
@@ -224,30 +432,39 @@ public class MigrationBroadcastSendingTest {
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
-        verifyInvocations(never());
+        verifyExplicitBroadcastInvocation(never());
+        verifyImplicitBroadcastInvocation(never());
     }
 
+    /**
+     * Tests case where there are multiple migration aware apps, including the configured app but it
+     * is not installed on the given user.
+     */
     @Test
-    public void
-            testSendInvocationBroadcast_multipleAppsIncludingConfiguredAppNotInstalledOnUser_noBroadcastSent()
-                    throws Exception {
+    public void testBroadcast_multipleAppsIncludingConfiguredAppNotInstalledOnUser_noBroadcastSent()
+            throws Exception {
         ArrayList<PackageInfo> packageInfoArray =
                 createPackageInfoArray(MOCK_CONFIGURED_PACKAGE, MOCK_UNCONFIGURED_PACKAGE_ONE);
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenThrow(PackageManager.NameNotFoundException.class);
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
-        verifyInvocations(never());
+        verifyExplicitBroadcastInvocation(never());
+        verifyImplicitBroadcastInvocation(never());
     }
 
+    /**
+     * Tests case where there are multiple migration aware apps but the configured app is not one of
+     * them.
+     */
     @Test(expected = Exception.class)
-    public void testSendInvocationBroadcast_multipleAppsExcludingConfiguredApp_exceptionThrown()
+    public void testBroadcast_multipleAppsExcludingConfiguredApp_exceptionThrown()
             throws Exception {
         ArrayList<PackageInfo> packageInfoArray =
                 createPackageInfoArray(
@@ -255,13 +472,13 @@ public class MigrationBroadcastSendingTest {
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        getResolveActivityResult(new ResolveInfo());
+        setResolveActivityResult(new ResolveInfo());
 
         try {
             mMigrationBroadcast.sendInvocationBroadcast();
-            fail("Expected Exception");
         } finally {
-            verifyInvocations(never());
+            verifyExplicitBroadcastInvocation(never());
+            verifyImplicitBroadcastInvocation(never());
         }
     }
 
@@ -275,7 +492,22 @@ public class MigrationBroadcastSendingTest {
         return packageInfoArray;
     }
 
-    private void getResolveActivityResult(ResolveInfo result) {
+    private List<ResolveInfo> createResolveInfoList(
+            boolean nullActivityInfo, String packageName, String... broadcastReceivers) {
+        List<ResolveInfo> resolveInfoArray = new ArrayList<ResolveInfo>();
+        for (String broadcastReceiver : broadcastReceivers) {
+            ResolveInfo resolveInfo = new ResolveInfo();
+            if (!nullActivityInfo) {
+                resolveInfo.activityInfo = new ActivityInfo();
+                resolveInfo.activityInfo.packageName = packageName;
+                resolveInfo.activityInfo.name = packageName + broadcastReceiver;
+            }
+            resolveInfoArray.add(resolveInfo);
+        }
+        return resolveInfoArray;
+    }
+
+    private void setResolveActivityResult(ResolveInfo result) {
         when(mPackageManager.resolveActivity(
                         argThat(
                                 intent ->
@@ -285,7 +517,20 @@ public class MigrationBroadcastSendingTest {
                 .thenReturn(result);
     }
 
-    private void verifyInvocations(VerificationMode verificationMode) {
+    private void setQueryBroadcastReceiversAsUserResult(List<ResolveInfo> result) {
+        when(mPackageManager.queryBroadcastReceiversAsUser(
+                        argThat(
+                                intent ->
+                                        (HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY
+                                                .equals(intent.getAction()))),
+                        argThat(flag -> (flag.getValue() == PackageManager.MATCH_ALL)),
+                        eq(mUser)))
+                .thenReturn(result);
+    }
+
+    private void verifyExplicitBroadcastInvocation(VerificationMode verificationMode) {
+        String mockedClassName = MOCK_CONFIGURED_PACKAGE + MOCK_QUERIED_BROADCAST_RECEIVER_ONE;
+
         verify(mContext, verificationMode)
                 .sendBroadcastAsUser(
                         argThat(
@@ -293,7 +538,25 @@ public class MigrationBroadcastSendingTest {
                                         (HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY
                                                         .equals(intent.getAction())
                                                 && (MOCK_CONFIGURED_PACKAGE.equals(
-                                                        intent.getPackage())))),
+                                                        intent.getPackage()))
+                                                && (intent.getComponent() != null)
+                                                && (MOCK_CONFIGURED_PACKAGE.equals(
+                                                        intent.getComponent().getPackageName()))
+                                                && (mockedClassName.equals(
+                                                        intent.getComponent().getClassName())))),
+                        eq(mUser));
+    }
+
+    private void verifyImplicitBroadcastInvocation(VerificationMode verificationMode) {
+        verify(mContext, verificationMode)
+                .sendBroadcastAsUser(
+                        argThat(
+                                intent ->
+                                        (HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY
+                                                        .equals(intent.getAction())
+                                                && (MOCK_CONFIGURED_PACKAGE.equals(
+                                                        intent.getPackage()))
+                                                && (intent.getComponent() == null))),
                         eq(mUser));
     }
 }

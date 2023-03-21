@@ -54,6 +54,76 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RA
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__RATE_LIMIT_FOREGROUND_24_HRS_BW_4000_TO_5000;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__RATE_LIMIT_FOREGROUND_24_HRS_BW_5000_TO_6000;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__RATE_LIMIT_FOREGROUND_24_HRS_UNDER_2000;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_BODY_TEMPERATURE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_METABOLIC_RATE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BLOOD_GLUCOSE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BLOOD_PRESSURE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BODY_FAT;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BODY_TEMPERATURE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BONE_MASS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CERVICAL_MUCUS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLING_PEDALING_CADENCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_UNKNOWN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DISTANCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ELEVATION_GAINED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__EXERCISE_SESSION;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__FLOORS_CLIMBED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HEART_RATE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HEIGHT;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HYDRATION;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__LEAN_BODY_MASS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__MENSTRUATION_FLOW;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__NUTRITION;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__OVULATION_TEST;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__OXYGEN_SATURATION;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__POWER;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__RESPIRATORY_RATE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__RESTING_HEART_RATE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SEXUAL_ACTIVITY;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SPEED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS_CADENCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__TOTAL_CALORIES_BURNED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__VO2_MAX;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WEIGHT;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WHEELCHAIR_PUSHES;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_FAT;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_TEMPERATURE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEIGHT;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_POWER;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SEXUAL_ACTIVITY;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES;
 import static android.health.connect.ratelimiter.RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_15M_BACKGROUND;
 import static android.health.connect.ratelimiter.RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_15M_FOREGROUND;
 import static android.health.connect.ratelimiter.RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_24H_BACKGROUND;
@@ -66,11 +136,18 @@ import static android.health.connect.ratelimiter.RateLimiter.QuotaBucket.QUOTA_B
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.HealthFitnessStatsLog;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.ratelimiter.RateLimiter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 /**
@@ -87,6 +164,10 @@ public class HealthConnectServiceLogger {
     private final boolean mHoldsDataManagementPermission;
     private final int mRateLimit;
     private final int mNumberOfRecords;
+    private final int[] mRecordTypes;
+    private final String mPackageName;
+    private static final int MAX_NUMBER_OF_LOGGED_DATA_TYPES = 6;
+    private static final int RECORD_TYPE_NOT_ASSIGNED_DEFAULT_VALUE = -1;
 
     /**
      * HealthConnectService ApiMethods supported by logging.
@@ -273,6 +354,8 @@ public class HealthConnectServiceLogger {
         private int mRateLimit;
         private int mNumberOfRecords;
         private final boolean mHoldsDataManagementPermission;
+        private int[] mRecordTypes;
+        private String mPackageName;
 
         public Builder(boolean holdsDataManagementPermission, @ApiMethods.ApiMethod int apiMethod) {
             mStartTime = System.currentTimeMillis();
@@ -282,6 +365,9 @@ public class HealthConnectServiceLogger {
             mHoldsDataManagementPermission = holdsDataManagementPermission;
             mRateLimit = RateLimitingRanges.NOT_USED;
             mNumberOfRecords = 0;
+            mRecordTypes = new int[MAX_NUMBER_OF_LOGGED_DATA_TYPES];
+            Arrays.fill(mRecordTypes, RECORD_TYPE_NOT_ASSIGNED_DEFAULT_VALUE);
+            mPackageName = "UNKNOWN";
         }
 
         /** Set the API was called successfully. */
@@ -323,6 +409,72 @@ public class HealthConnectServiceLogger {
             return this;
         }
 
+        /**
+         * Set the types of records.
+         *
+         * @param recordInternals List of records.
+         */
+        public Builder setDataTypesFromRecordInternals(
+                @NonNull List<RecordInternal<?>> recordInternals) {
+            Objects.requireNonNull(recordInternals);
+            Map<Integer, Integer> recordTypeToNumberOfRecords = new HashMap<>();
+            for (RecordInternal<?> recordInternal : recordInternals) {
+                int recordType = getDataTypeEnumFromRecordType(recordInternal.getRecordType());
+                int numberOfRecords = recordTypeToNumberOfRecords.getOrDefault(recordType, 0);
+                numberOfRecords++;
+                recordTypeToNumberOfRecords.put(recordType, numberOfRecords);
+            }
+            List<Entry<Integer, Integer>> recordTypeSortedByNumberOfRecords =
+                    new ArrayList<>(recordTypeToNumberOfRecords.entrySet());
+            recordTypeSortedByNumberOfRecords.sort(Entry.comparingByValue());
+            for (int i = 0;
+                    i
+                            < Math.min(
+                                    recordTypeSortedByNumberOfRecords.size(),
+                                    MAX_NUMBER_OF_LOGGED_DATA_TYPES);
+                    i++) {
+                mRecordTypes[i] = recordTypeSortedByNumberOfRecords.get(i).getKey();
+            }
+            return this;
+        }
+
+        /**
+         * Set the types of records.
+         *
+         * @param recordTypesList List of record types.
+         */
+        public Builder setDataTypesFromRecordTypes(@NonNull List<Integer> recordTypesList) {
+            if (recordTypesList == null || recordTypesList.size() == 0) {
+                return this;
+            }
+            HashSet<Integer> recordTypes = new HashSet<>();
+            for (Integer recordType : recordTypesList) {
+                recordTypes.add(getDataTypeEnumFromRecordType(recordType));
+            }
+
+            int index = 0;
+            for (int recordType : recordTypes) {
+                mRecordTypes[index++] = recordType;
+                if (index == MAX_NUMBER_OF_LOGGED_DATA_TYPES) {
+                    break;
+                }
+            }
+            return this;
+        }
+
+        /**
+         * Set the types of records.
+         *
+         * @param packageName Package name of the caller.
+         */
+        public Builder setPackageName(@NonNull String packageName) {
+            if (packageName == null || packageName.isBlank()) {
+                return this;
+            }
+            mPackageName = packageName;
+            return this;
+        }
+
         /** Returns an object of {@link HealthConnectServiceLogger}. */
         public HealthConnectServiceLogger build() {
             mDuration = System.currentTimeMillis() - mStartTime;
@@ -355,6 +507,80 @@ public class HealthConnectServiceLogger {
             }
             return RateLimitingRanges.NOT_DEFINED;
         }
+
+        private static int getDataTypeEnumFromRecordType(int recordType) {
+            switch (recordType) {
+                case RECORD_TYPE_STEPS:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS;
+                case RECORD_TYPE_HEART_RATE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HEART_RATE;
+                case RECORD_TYPE_BASAL_METABOLIC_RATE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_METABOLIC_RATE;
+                case RECORD_TYPE_CYCLING_PEDALING_CADENCE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLING_PEDALING_CADENCE;
+                case RECORD_TYPE_POWER:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__POWER;
+                case RECORD_TYPE_SPEED:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SPEED;
+                case RECORD_TYPE_STEPS_CADENCE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS_CADENCE;
+                case RECORD_TYPE_DISTANCE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DISTANCE;
+                case RECORD_TYPE_WHEELCHAIR_PUSHES:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WHEELCHAIR_PUSHES;
+                case RECORD_TYPE_TOTAL_CALORIES_BURNED:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__TOTAL_CALORIES_BURNED;
+                case RECORD_TYPE_FLOORS_CLIMBED:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__FLOORS_CLIMBED;
+                case RECORD_TYPE_ELEVATION_GAINED:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ELEVATION_GAINED;
+                case RECORD_TYPE_ACTIVE_CALORIES_BURNED:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED;
+                case RECORD_TYPE_HYDRATION:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HYDRATION;
+                case RECORD_TYPE_NUTRITION:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__NUTRITION;
+                case RECORD_TYPE_RESPIRATORY_RATE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__RESPIRATORY_RATE;
+                case RECORD_TYPE_BONE_MASS:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BONE_MASS;
+                case RECORD_TYPE_RESTING_HEART_RATE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__RESTING_HEART_RATE;
+                case RECORD_TYPE_BODY_FAT:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BODY_FAT;
+                case RECORD_TYPE_VO2_MAX:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__VO2_MAX;
+                case RECORD_TYPE_CERVICAL_MUCUS:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CERVICAL_MUCUS;
+                case RECORD_TYPE_BASAL_BODY_TEMPERATURE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_BODY_TEMPERATURE;
+                case RECORD_TYPE_MENSTRUATION_FLOW:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__MENSTRUATION_FLOW;
+                case RECORD_TYPE_OXYGEN_SATURATION:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__OXYGEN_SATURATION;
+                case RECORD_TYPE_BLOOD_PRESSURE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BLOOD_PRESSURE;
+                case RECORD_TYPE_HEIGHT:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HEIGHT;
+                case RECORD_TYPE_BLOOD_GLUCOSE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BLOOD_GLUCOSE;
+                case RECORD_TYPE_WEIGHT:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WEIGHT;
+                case RECORD_TYPE_LEAN_BODY_MASS:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__LEAN_BODY_MASS;
+                case RECORD_TYPE_SEXUAL_ACTIVITY:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SEXUAL_ACTIVITY;
+                case RECORD_TYPE_BODY_TEMPERATURE:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BODY_TEMPERATURE;
+                case RECORD_TYPE_OVULATION_TEST:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__OVULATION_TEST;
+                case RECORD_TYPE_EXERCISE_SESSION:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__EXERCISE_SESSION;
+                case RECORD_TYPE_UNKNOWN:
+                default:
+                    return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_UNKNOWN;
+            }
+        }
     }
 
     private HealthConnectServiceLogger(@NonNull HealthConnectServiceLogger.Builder builder) {
@@ -367,6 +593,8 @@ public class HealthConnectServiceLogger {
         mHoldsDataManagementPermission = builder.mHoldsDataManagementPermission;
         mRateLimit = builder.mRateLimit;
         mNumberOfRecords = builder.mNumberOfRecords;
+        mRecordTypes = builder.mRecordTypes;
+        mPackageName = builder.mPackageName;
     }
 
     /** Log to statsd. */
@@ -384,5 +612,28 @@ public class HealthConnectServiceLogger {
                 mDuration,
                 mNumberOfRecords,
                 mRateLimit);
+
+        // For private logging, max 6 data types per request are being logged
+        // rest will be ignored
+        HealthFitnessStatsLog.write(
+                HEALTH_CONNECT_API_INVOKED,
+                mHealthDataServiceApiMethod,
+                mHealthDataServiceApiStatus,
+                mErrorCode,
+                mDuration,
+                mPackageName,
+                getRecordTypeEnumToLog(mRecordTypes, 0),
+                getRecordTypeEnumToLog(mRecordTypes, 1),
+                getRecordTypeEnumToLog(mRecordTypes, 2),
+                getRecordTypeEnumToLog(mRecordTypes, 3),
+                getRecordTypeEnumToLog(mRecordTypes, 4),
+                getRecordTypeEnumToLog(mRecordTypes, 5));
+    }
+
+    private int getRecordTypeEnumToLog(int[] recordTypes, int index) {
+        if (recordTypes[index] == RECORD_TYPE_NOT_ASSIGNED_DEFAULT_VALUE) {
+            return HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
+        }
+        return recordTypes[index];
     }
 }

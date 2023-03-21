@@ -16,6 +16,8 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -23,6 +25,7 @@ import android.annotation.Nullable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A physical device (such as phone, watch, scale, or chest strap) which captured associated health
@@ -88,7 +91,8 @@ public final class Device {
      * @param model An optional client supplied model of the device
      * @param type An optional client supplied type of the device
      */
-    private Device(String manufacturer, String model, int type) {
+    private Device(String manufacturer, String model, @DeviceType int type) {
+        validateIntDefValue(type, Device.VALID_TYPES, DeviceType.class.getSimpleName());
         mManufacturer = manufacturer;
         mModel = model;
         mType = type;
@@ -145,6 +149,24 @@ public final class Device {
     public int hashCode() {
         return Objects.hash(this.getManufacturer(), this.getModel(), this.getType());
     }
+
+    /**
+     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
+     * type.
+     *
+     * @hide
+     */
+    public static final Set<Integer> VALID_TYPES =
+            Set.of(
+                    DEVICE_TYPE_UNKNOWN,
+                    DEVICE_TYPE_WATCH,
+                    DEVICE_TYPE_PHONE,
+                    DEVICE_TYPE_SCALE,
+                    DEVICE_TYPE_RING,
+                    DEVICE_TYPE_HEAD_MOUNTED,
+                    DEVICE_TYPE_FITNESS_BAND,
+                    DEVICE_TYPE_CHEST_STRAP,
+                    DEVICE_TYPE_SMART_DISPLAY);
 
     /** @hide */
     @IntDef({

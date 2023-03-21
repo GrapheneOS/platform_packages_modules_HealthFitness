@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.connect.internal.datatypes.SexualActivityRecordInternal;
@@ -24,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Captures an occurrence of sexual activity. Each record is a single occurrence. ProtectionUsed
@@ -49,6 +52,10 @@ public final class SexualActivityRecord extends InstantRecord {
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
+        validateIntDefValue(
+                protectionUsed,
+                SexualActivityProtectionUsed.VALID_TYPES,
+                SexualActivityProtectionUsed.class.getSimpleName());
         mProtectionUsed = protectionUsed;
     }
 
@@ -65,6 +72,18 @@ public final class SexualActivityRecord extends InstantRecord {
         public static final int PROTECTION_USED_UNKNOWN = 0;
         public static final int PROTECTION_USED_PROTECTED = 1;
         public static final int PROTECTION_USED_UNPROTECTED = 2;
+
+        /**
+         * Valid set of values for this IntDef. Update this set when add new type or deprecate
+         * existing type.
+         *
+         * @hide
+         */
+        public static final Set<Integer> VALID_TYPES =
+                Set.of(
+                        PROTECTION_USED_UNKNOWN,
+                        PROTECTION_USED_PROTECTED,
+                        PROTECTION_USED_UNPROTECTED);
 
         SexualActivityProtectionUsed() {}
 

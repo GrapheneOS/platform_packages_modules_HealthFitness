@@ -16,6 +16,8 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -24,6 +26,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 /** Set of shared metadata fields for {@link Record} */
 public final class Metadata {
@@ -91,7 +94,8 @@ public final class Metadata {
             Instant lastModifiedTime,
             String clientRecordId,
             long clientRecordVersion,
-            int recordingMethod) {
+            @RecordingMethod int recordingMethod) {
+        validateIntDefValue(recordingMethod, VALID_TYPES, RecordingMethod.class.getSimpleName());
         mDevice = device;
         mDataOrigin = dataOrigin;
         mId = id;
@@ -203,6 +207,19 @@ public final class Metadata {
                 getLastModifiedTime(),
                 getRecordingMethod());
     }
+
+    /**
+     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
+     * type.
+     *
+     * @hide
+     */
+    public static final Set<Integer> VALID_TYPES =
+            Set.of(
+                    RECORDING_METHOD_UNKNOWN,
+                    RECORDING_METHOD_ACTIVELY_RECORDED,
+                    RECORDING_METHOD_AUTOMATICALLY_RECORDED,
+                    RECORDING_METHOD_MANUAL_ENTRY);
 
     /**
      * List of possible Recording method for the {@link Record}.

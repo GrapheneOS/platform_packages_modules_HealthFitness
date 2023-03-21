@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.NonNull;
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations;
 import android.health.connect.datatypes.units.Temperature;
@@ -54,6 +56,10 @@ public final class BodyTemperatureRecord extends InstantRecord {
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(temperature);
+        validateIntDefValue(
+                measurementLocation,
+                BodyTemperatureMeasurementLocation.VALID_TYPES,
+                BodyTemperatureMeasurementLocation.class.getSimpleName());
         ValidationUtils.requireInRange(temperature.getInCelsius(), 0.0, 100, "temperature");
         mMeasurementLocation = measurementLocation;
         mTemperature = temperature;
