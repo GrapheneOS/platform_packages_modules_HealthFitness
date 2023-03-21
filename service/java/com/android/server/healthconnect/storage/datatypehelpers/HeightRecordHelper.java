@@ -31,6 +31,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.HeightRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +44,8 @@ import java.util.List;
  */
 @HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEIGHT)
 public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordInternal> {
-    private static final String HEIGHT_RECORD_TABLE_NAME = "height_record_table";
+
+    @VisibleForTesting public static final String HEIGHT_RECORD_TABLE_NAME = "height_record_table";
     private static final String HEIGHT_COLUMN_NAME = "height";
 
     @Override
