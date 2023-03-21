@@ -5,6 +5,7 @@ import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -32,10 +33,12 @@ constructor(
                     }
                 val packages =
                     recordTypeInfoMap.values
-                        .firstOrNull { it.permissionCategory == permissionType.category }
-                        ?.contributingPackages
-                        .orEmpty()
-
+                        .filter {
+                            fromHealthPermissionCategory(it.permissionCategory) == permissionType &&
+                                it.contributingPackages.isNotEmpty()
+                        }
+                        .map { it.contributingPackages }
+                        .flatten()
                 packages
                     .map { appInfoReader.getAppMetadata(it.packageName) }
                     .sortedBy { it.appName }
