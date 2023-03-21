@@ -17,8 +17,8 @@
 package android.healthconnect.cts.testhelper;
 
 import static android.healthconnect.cts.lib.TestUtils.APP_PKG_NAME_USED_IN_DATA_ORIGIN;
+import static android.healthconnect.cts.lib.TestUtils.CLIENT_ID;
 import static android.healthconnect.cts.lib.TestUtils.DELETE_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME;
 import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
 import static android.healthconnect.cts.lib.TestUtils.QUERY_TYPE;
@@ -29,6 +29,7 @@ import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.UPDATE_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.getTestRecords;
+import static android.healthconnect.cts.lib.TestUtils.insertRecords;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordsAndGetIds;
 import static android.healthconnect.cts.lib.TestUtils.readRecords;
 import static android.healthconnect.cts.lib.TestUtils.updateRecords;
@@ -61,6 +62,20 @@ public class HealthConnectTestHelper extends Activity {
         try {
             switch (queryType) {
                 case INSERT_RECORD_QUERY:
+                    if (bundle.containsKey(APP_PKG_NAME_USED_IN_DATA_ORIGIN)) {
+                        returnIntent =
+                                insertRecordsWithDifferentPkgName(
+                                        queryType,
+                                        bundle.getString(APP_PKG_NAME_USED_IN_DATA_ORIGIN),
+                                        context);
+                        break;
+                    }
+                    if (bundle.containsKey(CLIENT_ID)) {
+                        returnIntent =
+                                insertRecordsWithGivenClientId(
+                                        queryType, bundle.getDouble(CLIENT_ID), context);
+                        break;
+                    }
                     returnIntent = insertRecord(queryType, context);
                     break;
                 case DELETE_RECORDS_QUERY:
@@ -77,13 +92,6 @@ public class HealthConnectTestHelper extends Activity {
                                     queryType,
                                     (List<TestUtils.RecordTypeAndRecordIds>)
                                             bundle.getSerializable(RECORD_IDS),
-                                    context);
-                    break;
-                case INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME:
-                    returnIntent =
-                            insertRecordsWithDifferentPkgName(
-                                    queryType,
-                                    bundle.getString(APP_PKG_NAME_USED_IN_DATA_ORIGIN),
                                     context);
                     break;
                 case READ_RECORDS_QUERY:
@@ -209,8 +217,7 @@ public class HealthConnectTestHelper extends Activity {
      * Method to insert records with different package name in dataOrigin of the record and add the
      * details in the intent
      *
-     * @param queryType - specifies the action, here it should be
-     *     INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME
+     * @param queryType - specifies the action, here it should be INSERT_RECORDS_QUERY
      * @param pkgNameUsedInDataOrigin - package name to be added in the dataOrigin of the records
      * @param context - application context
      * @return Intent to send back to the main app which is running the tests
@@ -259,6 +266,31 @@ public class HealthConnectTestHelper extends Activity {
         }
 
         intent.putExtra(READ_RECORDS_SIZE, recordsSize);
+
+        return intent;
+    }
+
+    /**
+     * Method to insert records with given clientId in their dataOrigin and put SUCCESS as true if
+     * insertion is successfule or SUCCESS as false if insertion throws an exception
+     *
+     * @param queryType - specifies the action, here it should be INSERT_RECORDS_QUERY
+     * @param clientId - clientId to be specified in the dataOrigin of the records to be inserted
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent insertRecordsWithGivenClientId(
+            String queryType, double clientId, Context context) {
+        final Intent intent = new Intent(queryType);
+
+        List<Record> records = getTestRecords(context.getPackageName(), clientId);
+
+        try {
+            insertRecords(records, context);
+            intent.putExtra(SUCCESS, true);
+        } catch (Exception e) {
+            intent.putExtra(SUCCESS, false);
+        }
 
         return intent;
     }

@@ -23,6 +23,7 @@ import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordWithAnotherAppPackageName;
+import static android.healthconnect.cts.lib.TestUtils.insertRecordWithGivenClientId;
 import static android.healthconnect.cts.lib.TestUtils.readRecords;
 import static android.healthconnect.cts.lib.TestUtils.readRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
@@ -212,5 +213,15 @@ public class HealthConnectDeviceTest {
         } catch (HealthConnectException e) {
             assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         }
+    }
+
+    @Test
+    public void testTwoAppsCanUseSameClientRecordIdsToInsert() throws Exception {
+        final double clientId = Math.random();
+        Bundle bundle = insertRecordWithGivenClientId(APP_A_WITH_READ_WRITE_PERMS, clientId);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        bundle = insertRecordWithGivenClientId(APP_B_WITH_READ_WRITE_PERMS, clientId);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
     }
 }

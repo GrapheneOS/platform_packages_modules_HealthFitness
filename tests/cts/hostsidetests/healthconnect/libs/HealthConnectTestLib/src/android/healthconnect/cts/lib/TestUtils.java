@@ -71,23 +71,17 @@ public class TestUtils {
             "android.healthconnect.cts.pkg.dataToBeUpdated";
     public static final String APP_PKG_NAME_USED_IN_DATA_ORIGIN =
             "android.healthconnect.cts.pkg.usedInDataOrigin";
-    public static final String INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME =
-            "android.healthconnect.cts.insertRecord.withAnotherPkgName";
     public static final String INSERT_RECORD_QUERY = "android.healthconnect.cts.insertRecord";
     public static final String READ_RECORDS_QUERY = "android.healthconnect.cts.readRecords";
     public static final String READ_RECORDS_SIZE = "android.healthconnect.cts.readRecordsNumber";
     public static final String READ_RECORD_CLASS_NAME =
             "android.healthconnect.cts.readRecordsClass";
     public static final String SUCCESS = "android.healthconnect.cts.success";
-
+    public static final String CLIENT_ID = "android.healthconnect.cts.clientId";
     public static final String RECORD_IDS = "android.healthconnect.cts.records";
-
     public static final String DELETE_RECORDS_QUERY = "android.healthconnect.cts.deleteRecords";
-
     public static final String UPDATE_RECORDS_QUERY = "android.healthconnect.cts.updateRecords";
-
     public static final String INTENT_EXCEPTION = "android.healthconnect.cts.exception";
-
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
 
     public static class RecordTypeAndRecordIds implements Serializable {
@@ -138,7 +132,7 @@ public class TestUtils {
     public static Bundle insertRecordWithAnotherAppPackageName(
             TestApp testAppToInsertData, TestApp testAppPkgNameUsed) throws Exception {
         Bundle bundle = new Bundle();
-        bundle.putString(QUERY_TYPE, INSERT_RECORDS_QUERY_WITH_ANOTHER_APP_PKG_NAME);
+        bundle.putString(QUERY_TYPE, INSERT_RECORD_QUERY);
         bundle.putString(APP_PKG_NAME_USED_IN_DATA_ORIGIN, testAppPkgNameUsed.getPackageName());
 
         return getFromTestApp(testAppToInsertData, bundle);
@@ -149,6 +143,15 @@ public class TestUtils {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, READ_RECORDS_QUERY);
         bundle.putStringArrayList(READ_RECORD_CLASS_NAME, recordClassesToRead);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle insertRecordWithGivenClientId(TestApp testApp, double clientId)
+            throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, INSERT_RECORD_QUERY);
+        bundle.putDouble(CLIENT_ID, clientId);
 
         return getFromTestApp(testApp, bundle);
     }
@@ -276,13 +279,21 @@ public class TestUtils {
     }
 
     public static List<Record> getTestRecords(String packageName) {
+        double clientId = Math.random();
         return Arrays.asList(
-                getStepsRecord(packageName),
-                getHeartRateRecord(packageName),
-                getBasalMetabolicRateRecord(packageName));
+                getStepsRecord(packageName, clientId),
+                getHeartRateRecord(packageName, clientId),
+                getBasalMetabolicRateRecord(packageName, clientId));
     }
 
-    public static StepsRecord getStepsRecord(String packageName) {
+    public static List<Record> getTestRecords(String packageName, Double clientId) {
+        return Arrays.asList(
+                getStepsRecord(packageName, clientId),
+                getHeartRateRecord(packageName, clientId),
+                getBasalMetabolicRateRecord(packageName, clientId));
+    }
+
+    public static StepsRecord getStepsRecord(String packageName, double clientId) {
         Device device =
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(packageName).build();
@@ -290,7 +301,7 @@ public class TestUtils {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("SR" + Math.random())
+                                .setClientRecordId("SR" + clientId)
                                 .build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
@@ -298,7 +309,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static HeartRateRecord getHeartRateRecord(String packageName) {
+    public static HeartRateRecord getHeartRateRecord(String packageName, double clientId) {
         HeartRateRecord.HeartRateSample heartRateSample =
                 new HeartRateRecord.HeartRateSample(72, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
@@ -312,7 +323,7 @@ public class TestUtils {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("HR" + Math.random())
+                                .setClientRecordId("HR" + clientId)
                                 .build(),
                         Instant.now(),
                         Instant.now().plusMillis(500),
@@ -320,7 +331,8 @@ public class TestUtils {
                 .build();
     }
 
-    public static BasalMetabolicRateRecord getBasalMetabolicRateRecord(String packageName) {
+    public static BasalMetabolicRateRecord getBasalMetabolicRateRecord(
+            String packageName, double clientId) {
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
@@ -332,7 +344,7 @@ public class TestUtils {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("BMR" + Math.random())
+                                .setClientRecordId("BMR" + clientId)
                                 .build(),
                         Instant.now(),
                         Power.fromWatts(100.0))
