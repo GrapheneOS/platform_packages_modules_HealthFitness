@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +44,8 @@ import java.util.List;
  */
 @HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
 public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInternal> {
-    private static final String STEPS_TABLE_NAME = "steps_record_table";
+
+    @VisibleForTesting public static final String STEPS_TABLE_NAME = "steps_record_table";
     private static final String COUNT_COLUMN_NAME = "count";
 
     @Override
