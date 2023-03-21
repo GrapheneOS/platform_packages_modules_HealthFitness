@@ -81,7 +81,7 @@ public class MigrationBroadcastSendingTest {
         when(mContext.createContextAsUser(eq(mUser), eq(0))).thenReturn(mUserContext);
         when(mUserContext.getPackageManager()).thenReturn(mUserContextPackageManager);
 
-        when(mContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
+        when(mUserContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
 
         mMigrationBroadcast = new MigrationBroadcast(mContext, mUser);
     }
@@ -116,8 +116,8 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there is exactly one migration aware app, which is the configured app that
-     * is installed on the currently active user, and has exactly one broadcast receiver handling
-     * the required intent.
+     * is installed on the foreground user, and has exactly one broadcast receiver handling the
+     * required intent.
      */
     @Test
     public void testBroadcast_oneConfiguredMigratorAppWithNonNullReceiver_explicitBroadcastSent()
@@ -130,7 +130,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<ResolveInfo> resolveInfoList =
                 createResolveInfoList(
                         false, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
@@ -144,8 +144,8 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there is exactly one migration aware app, which is the configured app that
-     * is installed on the currently active user, but does not have any broadcast receivers handling
-     * the required intent.
+     * is installed on the foreground user, but does not have any broadcast receivers handling the
+     * required intent.
      */
     @Test
     public void testBroadcast_oneConfiguredMigratorAppWithNullReceiver_implicitBroadcastSent()
@@ -158,7 +158,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<ResolveInfo> resolveInfoList =
                 createResolveInfoList(
                         true, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
@@ -172,8 +172,8 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there is exactly one migration aware app, which is the configured app that
-     * is installed on the currently active user, but does not have any broadcast receivers handling
-     * the required intent.
+     * is installed on the foreground user, but does not have any broadcast receivers handling the
+     * required intent.
      */
     @Test
     public void testBroadcast_oneConfiguredMigratorAppWithoutReceiver_implicitBroadcastSent()
@@ -186,7 +186,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<android.content.pm.ResolveInfo> resolveInfoList =
                 new ArrayList<android.content.pm.ResolveInfo>();
         setQueryBroadcastReceiversAsUserResult(resolveInfoList);
@@ -199,7 +199,7 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there is exactly one migration aware app, which is the configured app that
-     * is installed on the currently active user, but has multiple broadcast receivers handling the
+     * is installed on the foreground user, but has multiple broadcast receivers handling the
      * required intent.
      */
     @Test
@@ -213,7 +213,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<ResolveInfo> resolveInfoList =
                 createResolveInfoList(
                         true,
@@ -230,10 +230,10 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there is exactly one migration aware app, which is the configured app that
-     * is installed on the given user, however the user is not currently active.
+     * is installed on the given user, but is not the foreground user.
      */
     @Test
-    public void testBroadcast_oneConfiguredMigratorAppUserNotRunning_noBroadcastSent()
+    public void testBroadcast_oneConfiguredMigratorAppUserNotForeground_noBroadcastSent()
             throws Exception {
         ArrayList<PackageInfo> packageInfoArray = createPackageInfoArray(MOCK_CONFIGURED_PACKAGE);
         when(mPackageManager.getPackagesHoldingPermissions(
@@ -243,7 +243,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(false);
+        when(mUserManager.isUserForeground()).thenReturn(false);
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
@@ -293,7 +293,7 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there are multiple migration aware apps, including the configured app which
-     * is installed on the currently active user and has exactly one broadcast receiver handling the
+     * is installed on the foreground user and has exactly one broadcast receiver handling the
      * required intent.
      */
     @Test
@@ -308,7 +308,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<ResolveInfo> resolveInfoList =
                 createResolveInfoList(
                         false, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
@@ -322,7 +322,7 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there are multiple migration aware apps, including the configured app which
-     * is installed on the currently active user but there are no broadcast receivers handling the
+     * is installed on the foreground user but there are no broadcast receivers handling the
      * required intent.
      */
     @Test
@@ -338,7 +338,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<ResolveInfo> resolveInfoList =
                 createResolveInfoList(
                         true, MOCK_CONFIGURED_PACKAGE, MOCK_QUERIED_BROADCAST_RECEIVER_ONE);
@@ -352,7 +352,7 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there are multiple migration aware apps, including the configured app which
-     * is installed on the currently active user but does not have broadcast receivers handling the
+     * is installed on the foreground user but does not have broadcast receivers handling the
      * required intent.
      */
     @Test
@@ -368,7 +368,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<android.content.pm.ResolveInfo> resolveInfoList =
                 new ArrayList<android.content.pm.ResolveInfo>();
         setQueryBroadcastReceiversAsUserResult(resolveInfoList);
@@ -381,7 +381,7 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there are multiple migration aware apps, including the configured app which
-     * is installed on the currently active user but has multiple broadcast receivers handling the
+     * is installed on the foreground user but has multiple broadcast receivers handling the
      * required intent.
      */
     @Test
@@ -397,7 +397,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(true);
+        when(mUserManager.isUserForeground()).thenReturn(true);
         List<ResolveInfo> resolveInfoList =
                 createResolveInfoList(
                         true,
@@ -414,10 +414,10 @@ public class MigrationBroadcastSendingTest {
 
     /**
      * Tests case where there are multiple migration aware apps, including the configured app which
-     * is installed on the given user, however the user is not currently active.
+     * is installed on the given user, but is not the foreground user.
      */
     @Test
-    public void testBroadcast_multipleAppsIncludingConfiguredAppUserNotRunning_noBroadcastSent()
+    public void testBroadcast_multipleAppsIncludingConfiguredAppUserNotForeground_noBroadcastSent()
             throws Exception {
         ArrayList<PackageInfo> packageInfoArray =
                 createPackageInfoArray(MOCK_CONFIGURED_PACKAGE, MOCK_UNCONFIGURED_PACKAGE_ONE);
@@ -428,7 +428,7 @@ public class MigrationBroadcastSendingTest {
         when(mUserContextPackageManager.getPackageInfo(
                         anyString(), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(new PackageInfo());
-        when(mUserManager.isUserRunning(eq(mUser))).thenReturn(false);
+        when(mUserManager.isUserForeground()).thenReturn(false);
 
         mMigrationBroadcast.sendInvocationBroadcast();
 
