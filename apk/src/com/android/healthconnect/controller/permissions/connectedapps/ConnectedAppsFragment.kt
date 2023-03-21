@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
-import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.MenuItem
@@ -45,6 +44,7 @@ import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPrefer
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.ExternalActivityLauncher.openSendFeedbackActivity
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.DisconnectAllAppsDialogElement
@@ -339,8 +339,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.sendFeedbackIcon)
             it.summary = resources.getString(R.string.send_feedback_description)
             it.setOnPreferenceClickListener {
-                val intent = Intent(Intent.ACTION_BUG_REPORT)
-                requireActivity().startActivity(intent)
+                openSendFeedbackActivity(requireActivity())
                 true
             }
         }
