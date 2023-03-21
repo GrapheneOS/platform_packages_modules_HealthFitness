@@ -19,13 +19,16 @@ package com.android.healthconnect.controller.tests.onboarding
 import android.content.ComponentName
 import android.content.Intent
 import androidx.lifecycle.Lifecycle
-import androidx.test.core.app.ActivityScenario.launchActivityForResult
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.MainActivity
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -43,72 +46,52 @@ class OnboardingScreenTest {
         hiltRule.inject()
     }
 
-    private fun startOnboardingActivity() {
+    private fun startOnboardingActivity(): ActivityScenario<OnboardingActivity> {
         val startOnboardingActivityIntent =
             Intent.makeMainActivity(
                     ComponentName(
-                        InstrumentationRegistry.getInstrumentation().getContext(),
+                        ApplicationProvider.getApplicationContext(),
                         OnboardingActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        InstrumentationRegistry.getInstrumentation()
-            .getContext()
-            .startActivity(startOnboardingActivityIntent)
+        return ActivityScenario.launchActivityForResult(startOnboardingActivityIntent)
     }
 
     @Test
     fun onboardingScreen_isDisplayedCorrectly() {
         startOnboardingActivity()
 
-        Espresso.onView(ViewMatchers.withText("Get Started with Health\u00A0Connect"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(
-                ViewMatchers.withText(
+        onView(withText("Get Started with Health\u00A0Connect")).check(matches(isDisplayed()))
+        onView(
+                withText(
                     "Health\u00A0Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.onboarding_image))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.share_icon))
-            .perform(ViewActions.scrollTo())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Share data with your apps"))
-            .perform(ViewActions.scrollTo())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(
-                ViewMatchers.withText(
-                    "Choose the data each app can read or write to Health\u00A0Connect"))
-            .perform(ViewActions.scrollTo())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.manage_icon))
-            .perform(ViewActions.scrollTo())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Manage your settings and privacy"))
-            .perform(ViewActions.scrollTo())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(
-                ViewMatchers.withText("Change app permissions and manage your data at any time"))
-            .perform(ViewActions.scrollTo())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Get started"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Go back"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.onboarding_image)).check(matches(isDisplayed()))
+        onView(withId(R.id.share_icon)).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Share data with your apps"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Choose the data each app can read or write to Health\u00A0Connect"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.manage_icon)).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Manage your settings and privacy"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Change app permissions and manage your data at any time"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Get started")).check(matches(isDisplayed()))
+        onView(withText("Go back")).check(matches(isDisplayed()))
     }
 
     @Test
     fun onboardingScreen_goBackButton_isClickable() {
-        val startOnboardingActivityIntent =
-            Intent.makeMainActivity(
-                    ComponentName(
-                        InstrumentationRegistry.getInstrumentation().getContext(),
-                        MainActivity::class.java))
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        val scenario = launchActivityForResult<MainActivity>(startOnboardingActivityIntent)
-        startOnboardingActivity()
-
-        Espresso.onView(ViewMatchers.withId(R.id.go_back_button)).perform(ViewActions.click())
+        val scenario = startOnboardingActivity()
+        onIdle()
+        onView(withId(R.id.go_back_button)).perform(ViewActions.click())
+        Thread.sleep(4_000) // Need to wait for Activity to close before checking state
         assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 
@@ -116,6 +99,6 @@ class OnboardingScreenTest {
     fun onboardingScreen_getStartedButton_isClickable() {
         startOnboardingActivity()
 
-        Espresso.onView(ViewMatchers.withId(R.id.get_started_button)).perform(ViewActions.click())
+        onView(withId(R.id.get_started_button)).perform(ViewActions.click())
     }
 }

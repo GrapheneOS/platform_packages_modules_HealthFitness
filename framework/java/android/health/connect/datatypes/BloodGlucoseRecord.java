@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.health.connect.datatypes.units.BloodGlucose;
@@ -26,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Captures the concentration of glucose in the blood. Each record represents a single instantaneous
@@ -61,6 +64,13 @@ public final class BloodGlucoseRecord extends InstantRecord {
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(level);
         ValidationUtils.requireInRange(level.getInMillimolesPerLiter(), 0.0, 50.0, "level");
+        validateIntDefValue(
+                specimenSource, SpecimenSource.VALID_TYPES, SpecimenSource.class.getSimpleName());
+        validateIntDefValue(
+                relationToMeal,
+                RelationToMealType.VALID_TYPES,
+                RelationToMealType.class.getSimpleName());
+        validateIntDefValue(mealType, MealType.VALID_TYPES, MealType.class.getSimpleName());
         mSpecimenSource = specimenSource;
         mLevel = level;
         mRelationToMeal = relationToMeal;
@@ -117,6 +127,20 @@ public final class BloodGlucoseRecord extends InstantRecord {
         /** Reading was taken after an unspecified meal. */
         public static final int RELATION_TO_MEAL_AFTER_MEAL = 4;
 
+        /**
+         * Valid set of values for this IntDef. Update this set when add new type or deprecate
+         * existing type.
+         *
+         * @hide
+         */
+        public static final Set<Integer> VALID_TYPES =
+                Set.of(
+                        RELATION_TO_MEAL_UNKNOWN,
+                        RELATION_TO_MEAL_GENERAL,
+                        RELATION_TO_MEAL_FASTING,
+                        RELATION_TO_MEAL_BEFORE_MEAL,
+                        RELATION_TO_MEAL_AFTER_MEAL);
+
         private RelationToMealType() {}
 
         /** @hide */
@@ -147,6 +171,22 @@ public final class BloodGlucoseRecord extends InstantRecord {
         public static final int SPECIMEN_SOURCE_TEARS = 5;
         /** Glucose was measured from whole blood. */
         public static final int SPECIMEN_SOURCE_WHOLE_BLOOD = 6;
+
+        /**
+         * Valid set of values for this IntDef. Update this set when add new type or deprecate
+         * existing type.
+         *
+         * @hide
+         */
+        public static final Set<Integer> VALID_TYPES =
+                Set.of(
+                        SPECIMEN_SOURCE_UNKNOWN,
+                        SPECIMEN_SOURCE_INTERSTITIAL_FLUID,
+                        SPECIMEN_SOURCE_CAPILLARY_BLOOD,
+                        SPECIMEN_SOURCE_PLASMA,
+                        SPECIMEN_SOURCE_SERUM,
+                        SPECIMEN_SOURCE_TEARS,
+                        SPECIMEN_SOURCE_WHOLE_BLOOD);
 
         private SpecimenSource() {}
 

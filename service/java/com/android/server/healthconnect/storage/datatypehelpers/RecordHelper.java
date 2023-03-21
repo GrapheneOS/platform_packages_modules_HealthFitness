@@ -263,6 +263,28 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                                 request, packageName, startDateAccess, extraPermsState));
     }
 
+    /**
+     * Logs metrics specific to a record type's insertion/update.
+     *
+     * @param recordInternals List of records being inserted/updated
+     * @param packageName Caller package name
+     */
+    public void logUpsertMetrics(
+            @NonNull List<RecordInternal<?>> recordInternals, @NonNull String packageName) {
+        // Do nothing, implement in record specific helpers
+    }
+
+    /**
+     * Logs metrics specific to a record type's read.
+     *
+     * @param recordInternals List of records being read
+     * @param packageName Caller package name
+     */
+    public void logReadMetrics(
+            @NonNull List<RecordInternal<?>> recordInternals, @NonNull String packageName) {
+        // Do nothing, implement in record specific helpers
+    }
+
     /** Returns ReadTableRequest for {@code uuids} */
     public ReadTableRequest getReadTableRequest(List<String> uuids, long startDateAccess) {
         return new ReadTableRequest(getMainTableName())
@@ -645,8 +667,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         db.execSQL(
                 new CreateIndexRequest(
                                 tableName,
-                                /*indexName=*/ "ux_" + tableName + "_dedupe_hash",
-                                /*isUnique=*/ true,
+                                /* indexName= */ "ux_" + tableName + "_dedupe_hash",
+                                /* isUnique= */ true,
                                 List.of(DEDUPE_HASH_COLUMN_NAME))
                         .getCommand());
     }
