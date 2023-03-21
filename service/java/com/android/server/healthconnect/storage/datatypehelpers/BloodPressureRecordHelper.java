@@ -27,6 +27,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +40,10 @@ import java.util.List;
 @HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE)
 public final class BloodPressureRecordHelper
         extends InstantRecordHelper<BloodPressureRecordInternal> {
-    private static final String BLOOD_PRESSURE_RECORD_TABLE_NAME = "blood_pressure_record_table";
+
+    @VisibleForTesting
+    public static final String BLOOD_PRESSURE_RECORD_TABLE_NAME = "blood_pressure_record_table";
+
     private static final String MEASUREMENT_LOCATION_COLUMN_NAME = "measurement_location";
     private static final String SYSTOLIC_COLUMN_NAME = "systolic";
     private static final String DIASTOLIC_COLUMN_NAME = "diastolic";

@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,8 +43,9 @@ import java.util.List;
 @HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
 public class SpeedRecordHelper
         extends SeriesRecordHelper<SpeedRecordInternal, SpeedRecordInternal.SpeedRecordSample> {
+
+    @VisibleForTesting public static final String TABLE_NAME = "SpeedRecordTable";
     public static final int NUM_LOCAL_COLUMNS = 1;
-    private static final String TABLE_NAME = "SpeedRecordTable";
     private static final String SERIES_TABLE_NAME = "speed_record_table";
     private static final String SPEED_COLUMN_NAME = "speed";
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
