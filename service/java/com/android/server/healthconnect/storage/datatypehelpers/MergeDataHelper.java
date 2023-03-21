@@ -111,7 +111,7 @@ public final class MergeDataHelper {
         mCursor = cursor;
         // In priority list, the first element has the highest priority. To make it easier to
         // understand and code, reverse the list and use index as data points' priorities
-        mReversedPriorityList = List.copyOf(priorityList);
+        mReversedPriorityList = new ArrayList<>(priorityList);
         Collections.reverse(mReversedPriorityList);
         mColumnNameToMerge = columnNameToMerge;
         mValueColumnType = valueColumnType;
