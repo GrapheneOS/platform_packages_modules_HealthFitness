@@ -3,6 +3,7 @@ package android.healthconnect.cts.ui
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.test.core.app.ApplicationProvider
+import com.android.compatibility.common.util.SystemUtil.runShellCommandOrThrow
 import org.junit.Assume
 import org.junit.Before
 
@@ -13,6 +14,12 @@ open class HealthConnectBaseTest {
     @Before
     fun setUpClass() {
         Assume.assumeTrue(isHardwareSupported())
+        // Collapse notifications
+        runShellCommandOrThrow("cmd statusbar collapse")
+
+        // Wake up the device
+        runShellCommandOrThrow("input keyevent KEYCODE_WAKEUP")
+        runShellCommandOrThrow("input keyevent 82")
     }
 
     private fun isHardwareSupported(): Boolean {
