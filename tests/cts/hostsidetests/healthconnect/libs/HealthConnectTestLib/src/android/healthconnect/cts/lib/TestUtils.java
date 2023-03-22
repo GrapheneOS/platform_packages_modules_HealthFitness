@@ -32,6 +32,10 @@ import android.health.connect.InsertRecordsResponse;
 import android.health.connect.ReadRecordsRequest;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
@@ -74,8 +78,13 @@ public class TestUtils {
     public static final String INSERT_RECORD_QUERY = "android.healthconnect.cts.insertRecord";
     public static final String READ_RECORDS_QUERY = "android.healthconnect.cts.readRecords";
     public static final String READ_RECORDS_SIZE = "android.healthconnect.cts.readRecordsNumber";
+    public static final String READ_USING_DATA_ORIGIN_FILTERS =
+            "android.healthconnect.cts.readUsingDataOriginFilters";
     public static final String READ_RECORD_CLASS_NAME =
             "android.healthconnect.cts.readRecordsClass";
+    public static final String READ_CHANGE_LOGS_QUERY = "android.healthconnect.cts.readChangeLogs";
+    public static final String CHANGE_LOGS_RESPONSE =
+            "android.healthconnect.cts.changeLogsResponse";
     public static final String SUCCESS = "android.healthconnect.cts.success";
     public static final String CLIENT_ID = "android.healthconnect.cts.clientId";
     public static final String RECORD_IDS = "android.healthconnect.cts.records";
@@ -152,6 +161,24 @@ public class TestUtils {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, INSERT_RECORD_QUERY);
         bundle.putDouble(CLIENT_ID, clientId);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle readRecordsUsingDataOriginFiltersAs(
+            TestApp testApp, ArrayList<String> recordClassesToRead) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, READ_RECORDS_QUERY);
+        bundle.putStringArrayList(READ_RECORD_CLASS_NAME, recordClassesToRead);
+        bundle.putBoolean(READ_USING_DATA_ORIGIN_FILTERS, true);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle readChangeLogsUsingDataOriginFiltersAs(TestApp testApp) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, READ_CHANGE_LOGS_QUERY);
+        bundle.putBoolean(READ_USING_DATA_ORIGIN_FILTERS, true);
 
         return getFromTestApp(testApp, bundle);
     }
@@ -470,6 +497,70 @@ public class TestUtils {
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
+        return response.get();
+    }
+
+    public static ChangeLogTokenResponse getChangeLogToken(
+            ChangeLogTokenRequest request, Context context) throws InterruptedException {
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<ChangeLogTokenResponse> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        service.getChangeLogToken(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ChangeLogTokenResponse result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                        exceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
+        return response.get();
+    }
+
+    public static ChangeLogsResponse getChangeLogs(
+            ChangeLogsRequest changeLogsRequest, Context context) throws InterruptedException {
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        service.getChangeLogs(
+                changeLogsRequest,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ChangeLogsResponse result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+
         return response.get();
     }
 

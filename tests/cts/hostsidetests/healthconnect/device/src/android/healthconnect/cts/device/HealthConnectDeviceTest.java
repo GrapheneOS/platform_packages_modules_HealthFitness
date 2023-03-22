@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts.device;
 
+import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOGS_RESPONSE;
 import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
 import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
@@ -24,14 +25,18 @@ import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordWithAnotherAppPackageName;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordWithGivenClientId;
+import static android.healthconnect.cts.lib.TestUtils.readChangeLogsUsingDataOriginFiltersAs;
 import static android.healthconnect.cts.lib.TestUtils.readRecords;
 import static android.healthconnect.cts.lib.TestUtils.readRecordsAs;
+import static android.healthconnect.cts.lib.TestUtils.readRecordsUsingDataOriginFiltersAs;
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
@@ -46,7 +51,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectDeviceTest {
@@ -223,5 +230,81 @@ public class HealthConnectDeviceTest {
 
         bundle = insertRecordWithGivenClientId(APP_B_WITH_READ_WRITE_PERMS, clientId);
         assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+    }
+
+    @Test
+    public void testAppCanReadRecordsUsingDataOriginFilters() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        int noOfRecordsInsertedByAppA = 0;
+        Set<String> recordClassesToReadSet = new HashSet<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            noOfRecordsInsertedByAppA += recordTypeAndRecordIds.getRecordIds().size();
+            recordClassesToReadSet.add(recordTypeAndRecordIds.getRecordType());
+        }
+
+        bundle = insertRecordAs(APP_B_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            recordClassesToReadSet.add(recordTypeAndRecordIds.getRecordType());
+        }
+
+        ArrayList<String> recordClassesToRead = new ArrayList<>();
+        for (String recordClass : recordClassesToReadSet) {
+            recordClassesToRead.add(recordClass);
+        }
+        bundle =
+                readRecordsUsingDataOriginFiltersAs(
+                        APP_A_WITH_READ_WRITE_PERMS, recordClassesToRead);
+        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isEqualTo(noOfRecordsInsertedByAppA);
+    }
+
+    @Test
+    public void testAppCanReadChangeLogsUsingDataOriginFilters() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        List<String> listOfRecordIdsInsertedByAppA = new ArrayList<>();
+
+        int noOfRecordsInsertedByAppA = 0;
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            noOfRecordsInsertedByAppA += recordTypeAndRecordIds.getRecordIds().size();
+            listOfRecordIdsInsertedByAppA.addAll(recordTypeAndRecordIds.getRecordIds());
+        }
+
+        updateRecordsAs(APP_A_WITH_READ_WRITE_PERMS, listOfRecordIdsAndClass);
+
+        bundle = insertRecordAs(APP_B_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        deleteRecordsAs(APP_B_WITH_READ_WRITE_PERMS, listOfRecordIdsAndClass);
+
+        bundle = readChangeLogsUsingDataOriginFiltersAs(APP_A_WITH_READ_WRITE_PERMS);
+
+        ChangeLogsResponse response = bundle.getParcelable(CHANGE_LOGS_RESPONSE);
+
+        assertThat(response.getUpsertedRecords().size()).isEqualTo(2 * noOfRecordsInsertedByAppA);
+        assertThat(
+                        response.getUpsertedRecords().stream()
+                                .map(Record::getMetadata)
+                                .map(Metadata::getId)
+                                .toList())
+                .containsExactlyElementsIn(listOfRecordIdsInsertedByAppA);
+
+        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
     }
 }

@@ -17,17 +17,22 @@
 package android.healthconnect.cts.testhelper;
 
 import static android.healthconnect.cts.lib.TestUtils.APP_PKG_NAME_USED_IN_DATA_ORIGIN;
+import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOGS_RESPONSE;
 import static android.healthconnect.cts.lib.TestUtils.CLIENT_ID;
 import static android.healthconnect.cts.lib.TestUtils.DELETE_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
 import static android.healthconnect.cts.lib.TestUtils.QUERY_TYPE;
+import static android.healthconnect.cts.lib.TestUtils.READ_CHANGE_LOGS_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
 import static android.healthconnect.cts.lib.TestUtils.READ_RECORD_CLASS_NAME;
+import static android.healthconnect.cts.lib.TestUtils.READ_USING_DATA_ORIGIN_FILTERS;
 import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.UPDATE_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.TestUtils.getChangeLogToken;
+import static android.healthconnect.cts.lib.TestUtils.getChangeLogs;
 import static android.healthconnect.cts.lib.TestUtils.getTestRecords;
 import static android.healthconnect.cts.lib.TestUtils.insertRecords;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordsAndGetIds;
@@ -40,6 +45,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.TestUtils;
@@ -95,11 +104,22 @@ public class HealthConnectTestHelper extends Activity {
                                     context);
                     break;
                 case READ_RECORDS_QUERY:
+                    if (bundle.containsKey(READ_USING_DATA_ORIGIN_FILTERS)) {
+                        returnIntent =
+                                readRecordsUsingDataOriginFilters(
+                                        queryType,
+                                        bundle.getStringArrayList(READ_RECORD_CLASS_NAME),
+                                        context);
+                        break;
+                    }
                     returnIntent =
                             readRecordsAs(
                                     queryType,
                                     bundle.getStringArrayList(READ_RECORD_CLASS_NAME),
                                     context);
+                    break;
+                case READ_CHANGE_LOGS_QUERY:
+                    returnIntent = readChangeLogsUsingDataOriginFilters(queryType, context);
                     break;
                 default:
                     throw new IllegalStateException(
@@ -291,6 +311,77 @@ public class HealthConnectTestHelper extends Activity {
         } catch (Exception e) {
             intent.putExtra(SUCCESS, false);
         }
+
+        return intent;
+    }
+
+    /**
+     * Method to read records using data origin filters and add number of records read to the intent
+     *
+     * @param queryType - specifies the action, here it should be READ_RECORDS_QUERY
+     * @param recordClassesToRead - List of Record Class names for the records to be read
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent readRecordsUsingDataOriginFilters(
+            String queryType, ArrayList<String> recordClassesToRead, Context context) {
+        final Intent intent = new Intent(queryType);
+
+        int recordsSize = 0;
+        try {
+            for (String recordClass : recordClassesToRead) {
+                List<? extends Record> recordsRead =
+                        readRecords(
+                                new ReadRecordsRequestUsingFilters.Builder<>(
+                                                (Class<? extends Record>)
+                                                        Class.forName(recordClass))
+                                        .addDataOrigins(
+                                                new DataOrigin.Builder()
+                                                        .setPackageName(context.getPackageName())
+                                                        .build())
+                                        .build(),
+                                context);
+                recordsSize += recordsRead.size();
+            }
+        } catch (Exception e) {
+            intent.putExtra(READ_RECORDS_SIZE, 0);
+            intent.putExtra(INTENT_EXCEPTION, e);
+        }
+
+        intent.putExtra(READ_RECORDS_SIZE, recordsSize);
+
+        return intent;
+    }
+
+    /**
+     * Method to insert records and then read changeLogs using dataOriginFilters and add the details
+     * in the intent
+     *
+     * @param queryType - specifies the action, here it should be
+     *     READ_CHANGE_LOGS_USING_DATA_ORIGIN_FILTERS_QUERY
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     * @throws Exception
+     */
+    private Intent readChangeLogsUsingDataOriginFilters(String queryType, Context context)
+            throws Exception {
+        final Intent intent = new Intent(queryType);
+
+        ChangeLogTokenResponse tokenResponse =
+                getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        context);
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+
+        ChangeLogsResponse response = getChangeLogs(changeLogsRequest, context);
+
+        intent.putExtra(CHANGE_LOGS_RESPONSE, response);
 
         return intent;
     }
