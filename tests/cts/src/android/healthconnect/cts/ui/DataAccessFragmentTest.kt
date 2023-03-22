@@ -16,17 +16,15 @@
 package android.healthconnect.cts.ui
 
 import android.health.connect.TimeInstantRangeFilter
-import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.TestUtils.verifyDeleteRecords
+import android.healthconnect.cts.ui.testing.ActivityLauncher.launchDataActivity
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
 import android.healthconnect.cts.ui.testing.UiTestUtils.navigateBackToHomeScreen
-import android.healthconnect.cts.ui.testing.UiTestUtils.navigateUp
 import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
-import android.healthconnect.cts.ui.testing.UiTestUtils.waitNotDisplayed
 import androidx.test.uiautomator.By
 import java.time.Duration
 import java.time.Instant
@@ -39,17 +37,17 @@ class DataAccessFragmentTest : HealthConnectBaseTest() {
     @Test
     fun dataAccess_navigateToDataAccess() {
         insertRecords(listOf(stepsRecordFromTestApp()))
-        context.launchMainActivity {
-            clickOnText("Data and access")
+        context.launchDataActivity {
             clickOnText("Activity")
-            clickOnText("Steps")
+
+            waitDisplayed(By.text("Steps"))
         }
     }
 
     // TODO(b/265789268): Add inactive apps test.
 
     @Test
-    fun dataAccess_deleteCategoryData() {
+    fun dataAccess_deleteCategoryData_showsDeleteDataRanges() {
         insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(Duration.ofDays(20)))))
         context.launchMainActivity {
             clickOnText("Data and access")
@@ -57,26 +55,9 @@ class DataAccessFragmentTest : HealthConnectBaseTest() {
             clickOnText("Steps")
 
             clickOnText("Delete this data")
-            clickOnText("Delete last 7 days")
-            clickOnText("Next")
-            clickOnText("Delete")
-            clickOnText("Done")
-
-            navigateUp()
-            navigateUp()
-            waitDisplayed(By.text("Activity"))
-            clickOnText("Activity")
-            clickOnText("Steps")
-
-            clickOnText("Delete this data")
-            clickOnText("Delete last 30 days")
-            clickOnText("Next")
-            clickOnText("Delete")
-            clickOnText("Done")
-
-            navigateBackToHomeScreen()
-            clickOnText("Data and access")
-            waitNotDisplayed(By.text("Activity"))
+            waitDisplayed(By.text("Delete last 7 days"))
+            waitDisplayed(By.text("Delete last 30 days"))
+            waitDisplayed(By.text("Delete all data"))
         }
     }
 
