@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"डेटा को ऑटोमैटिकली मिटाएं"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# महीने के बाद}one{# महीने के बाद}other{# महीनों के बाद}}"</string>
     <string name="range_never" msgid="4429478261788361233">"कभी नहीं"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"इन सेटिंग में बदलाव करने पर, Health Connect आपकी नई सेटिंग के हिसाब से डेटा दिखाने के लिए, मौजूदा डेटा को मिटा देता है"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{क्या आपको # महीने के बाद, डेटा को ऑटोमैटिकली मिटाना है?}one{क्या आपको # महीने के बाद, डेटा को ऑटोमैटिकली मिटाना है?}other{क्या आपको # महीने के बाद, डेटा को ऑटोमैटिकली मिटाना है?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}one{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}other{Health Connect नए डेटा को # महीने के बाद ऑटोमैटिकली मिटा देगा. इसे सेट करने पर, # महीने से पुराना डेटा भी मिट जाएगा.}}"</string>

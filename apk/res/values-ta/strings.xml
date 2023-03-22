@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"தரவைத் தானாக நீக்கு"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# மாதத்திற்குப் பிறகு}other{# மாதங்களுக்குப் பிறகு}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ஒருபோதும் இல்லை"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"இந்த அமைப்புகளை நீங்கள் மாற்றினால் உங்களின் புதிய விருப்பங்களைச் செயல்படுத்தும் பொருட்டு ஏற்கெனவே உள்ள தரவை Health Connect நீக்கும்"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# மாதத்திற்குப் பிறகு தரவைத் தானாக நீக்க வேண்டுமா?}other{# மாதங்களுக்குப் பிறகு தரவைத் தானாக நீக்க வேண்டுமா?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{புதிய தரவை # மாதத்திற்குப் பிறகு Health Connect தானாகவே நீக்கும். இதை அமைப்பதன் மூலம் ஏற்கெனவே உள்ள # மாதத்திற்கு முந்தைய தரவையும் நீக்கும்.}other{புதிய தரவை # மாதங்களுக்குப் பிறகு Health Connect தானாகவே நீக்கும். இதை அமைப்பதன் மூலம் ஏற்கெனவே உள்ள # மாதங்களுக்கு முந்தைய தரவையும் நீக்கும்.}}"</string>

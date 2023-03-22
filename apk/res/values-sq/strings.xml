@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Fshirja automatike e të dhënave"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Pas # muaji}other{Pas # muajsh}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Asnjëherë"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Kur i ndryshon këto cilësime, Health Connect fshin të dhënat ekzistuese për të pasqyruar preferencat e tua të reja"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Të fshihen automatikisht të dhënat pas # muaji?}other{Të fshihen automatikisht të dhënat pas # muajsh?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect do t\'i fshijë automatikisht të dhënat e reja pas # muaji. Caktimi i kësaj do të fshijë gjithashtu të dhënat ekzistuese më të vjetra se # muaj.}other{Health Connect do t\'i fshijë automatikisht të dhënat e reja pas # muajsh. Caktimi i kësaj do të fshijë gjithashtu të dhënat ekzistuese më të vjetra se # muaj.}}"</string>

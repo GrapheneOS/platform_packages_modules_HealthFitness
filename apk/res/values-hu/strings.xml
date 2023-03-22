@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Adatok automatikus törlése"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# hónap elteltével}other{# hónap elteltével}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Soha"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Amikor módosítja ezeket a beállításokat, a Health Connect törli a meglévő adatokat az új beállításainak megfelelően."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Automatikusan törli a(z) # hónapnál régebbi adatokat?}other{Automatikusan törli a(z) # hónapnál régebbi adatokat?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{A Health Connect automatikusan törölni fogja az új adatokat # hónap elteltével. Ennek a beállításnak a választásával a(z) # hónapnál régebbi, meglévő adatokat is törli.}other{A Health Connect automatikusan törölni fogja az új adatokat # hónap elteltével. Ennek a beállításnak a választásával a(z) # hónapnál régebbi, meglévő adatokat is törli.}}"</string>

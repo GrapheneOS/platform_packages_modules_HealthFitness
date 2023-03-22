@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Futa data kiotomatiki"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Baada ya mwezi #}other{Baada ya miezi #}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Isifute kamwe"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Unapobadilisha mipangilio hii, Health Connect hufuta data iliyopo ili kuonyesha mapendeleo yako mapya"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Ungependa kufuta data kiotomatiki baada ya mwezi #?}other{Ungependa kufuta data kiotomatiki baada ya miezi #?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect itafuta data mpya kiotomatiki baada ya mwezi #. Kuweka mipangilio hii pia kutafuta data iliyopo ya zaidi ya mwezi #.}other{Health Connect itafuta data mpya kiotomatiki baada ya miezi #. Kuweka mipangilio hii pia kutafuta data iliyopo ya zaidi ya miezi #.}}"</string>

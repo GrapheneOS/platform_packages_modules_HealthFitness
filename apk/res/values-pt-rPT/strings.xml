@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Apagar os dados automaticamente"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Após # mês}other{Após # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Quando altera estas definições, a Saúde Connect apaga os dados existentes para refletir as suas novas preferências"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Apagar automaticamente os dados após # mês?}other{Apagar automaticamente os dados após # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{A Saúde Connect vai apagar automaticamente os dados após # mês. Ao definir esta opção, também apaga os dados existentes com mais de # mês.}other{A Saúde Connect vai apagar automaticamente os dados após # meses. Ao definir esta opção, também apaga os dados existentes com mais de # meses.}}"</string>

@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Andmete automaatne kustutamine"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# kuu möödudes}other{# kuu möödudes}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Mitte kunagi"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Kui muudate neid seadeid, siis kustutab Health Connect teie olemasolevad andmed, et kajastada teie uusi eelistusi."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Kas kustutada automaatselt # kuu möödudes?}other{Kas kustutada automaatselt # kuu möödudes?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect kustutab uued andmed automaatselt # kuu möödudes. Selle seadistamisel kustutatakse ka olemasolevad andmed, mis on vanemad kui # kuu.}other{Health Connect kustutab uued andmed automaatselt # kuu möödudes. Selle seadistamisel kustutatakse ka olemasolevad andmed, mis on vanemad kui # kuud.}}"</string>

@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatické odstraňovanie údajov"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Po # mesiaci}few{Po # mesiacoch}many{Po # mesiaca}other{Po # mesiacoch}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nikdy"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Keď zmeníte tieto nastavenia, Dáta o zdraví odstránia existujúce údaje, aby zohľadnili nové predvoľby"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Chcete automaticky odstraňovať údaje po # mesiaci?}few{Chcete automaticky odstraňovať údaje po # mesiacoch?}many{Chcete automaticky odstraňovať údaje po # mesiaca?}other{Chcete automaticky odstraňovať údaje po # mesiacoch?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Dáta o zdraví budú automaticky odstraňovať nové údaje po # mesiaci. Ak nastavíte túto možnosť, budú sa odstraňovať aj existujúce údaje staršie ako # mesiac.}few{Dáta o zdraví budú automaticky odstraňovať nové údaje po # mesiacoch. Ak nastavíte túto možnosť, budú sa odstraňovať aj existujúce údaje staršie ako # mesiace.}many{Dáta o zdraví budú automaticky odstraňovať nové údaje po # mesiaca. Ak nastavíte túto možnosť, budú sa odstraňovať aj existujúce údaje staršie ako # mesiaca.}other{Dáta o zdraví budú automaticky odstraňovať nové údaje po # mesiacoch. Ak nastavíte túto možnosť, budú sa odstraňovať aj existujúce údaje staršie ako # mesiacov.}}"</string>

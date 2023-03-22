@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatyczne usuwanie danych"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Po # miesiącu}few{Po # miesiącach}many{Po # miesiącach}other{Po # miesiąca}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nigdy"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Kiedy zmienisz te ustawienia, Health Connect usunie dotychczasowe dane zgodnie z nowymi preferencjami"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Automatycznie usuwać dane po # miesiącu?}few{Automatycznie usuwać dane po # miesiącach?}many{Automatycznie usuwać dane po # miesiącach?}other{Automatycznie usuwać dane po # miesiąca?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect będzie usuwać nowe dane po # miesiącu. Włączenie tej opcji sprawi, że dane starsze niż # miesiąc również zostaną usunięte.}few{Health Connect będzie usuwać nowe dane po # miesiącach. Włączenie tej opcji sprawi, że dane starsze niż # miesiące również zostaną usunięte.}many{Health Connect będzie usuwać nowe dane po # miesiącach. Włączenie tej opcji sprawi, że dane starsze niż # miesiące również zostaną usunięte.}other{Health Connect będzie usuwać nowe dane po # miesiąca. Włączenie tej opcji sprawi, że dane starsze niż # miesiąca również zostaną usunięte.}}"</string>

@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Elimina i dati automaticamente"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Dopo # mese}other{Dopo # mesi}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Mai"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Quando modifichi queste impostazioni, Connessione Salute elimina i dati esistenti per riflettere le tue nuove preferenze"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vuoi eliminare automaticamente i dati dopo # mese?}other{Vuoi eliminare automaticamente i dati dopo # mesi?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Connessione Salute eliminerà automaticamente i nuovi dati dopo # mese. Con questa impostazione verranno eliminati anche i dati che risalgono a più di # mese fa.}other{Connessione Salute eliminerà automaticamente i nuovi dati dopo # mesi. Con questa impostazione verranno eliminati anche i dati che risalgono a più di # mesi fa.}}"</string>

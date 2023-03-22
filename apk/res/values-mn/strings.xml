@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Өгөгдлийг автоматаар устгах"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# сарын дараа}other{# сарын дараа}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Огт үгүй"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Таныг эдгээр тохиргоог өөрчилсөн үед Health Connect таны шинэ сонголтыг тусгахын тулд одоо байгаа өгөгдлийг устгана"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Өгөгдлийг # сарын дараа автоматаар устгах уу?}other{Өгөгдлийг # сарын дараа автоматаар устгах уу?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect шинэ өгөгдлийг # сарын дараа автоматаар устгана. Үүнийг тохируулснаар # сараас дээш хугацаатай хадгалсан одоо байгаа өгөгдлийг мөн устгана.}other{Health Connect шинэ өгөгдлийг # сарын дараа автоматаар устгана. Үүнийг тохируулснаар # сараас дээш хугацаатай хадгалсан одоо байгаа өгөгдлийг мөн устгана.}}"</string>

@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Automātiska datu dzēšana"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Pēc # mēneša}zero{Pēc # mēnešiem}one{Pēc # mēneša}other{Pēc # mēnešiem}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nekad"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Ja maināt šos iestatījumus, esošie dati platformā Health Connect tiek dzēsti atbilstoši jūsu jaunajām preferencēm"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vai vēlaties automātiski dzēst datus pēc # mēneša?}zero{Vai vēlaties automātiski dzēst datus pēc # mēnešiem?}one{Vai vēlaties automātiski dzēst datus pēc # mēneša?}other{Vai vēlaties automātiski dzēst datus pēc # mēnešiem?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēneša. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnesi.}zero{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēnešiem. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnešiem.}one{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēneša. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnesi.}other{Platformā Health Connect jauni dati tiks automātiski izdzēsti pēc # mēnešiem. Atlasot šo iestatījumu, tiks izdzēsti arī esošie dati, kas vecāki par # mēnešiem.}}"</string>

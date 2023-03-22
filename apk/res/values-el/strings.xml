@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Αυτόματη διαγραφή δεδομένων"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Μετά από # μήνα}other{Μετά από # μήνες}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Ποτέ"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Όταν αλλάζετε αυτές τις ρυθμίσεις, το Health Connect διαγράφει τα υπάρχοντα δεδομένα ώστε να αντικατοπτρίζουν τις νέες προτιμήσεις σας."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Αυτόματη διαγραφή δεδομένων μετά από # μήνα;}other{Αυτόματη διαγραφή δεδομένων μετά από # μήνες;}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Το Health Connect θα διαγράφει τα νέα δεδομένα μετά από # μήνα. Ο ορισμός αυτής της ρύθμισης θα διαγράψει επίσης τα υπάρχοντα δεδομένα που είναι παλαιότερα του # μήνα.}other{Το Health Connect θα διαγράφει τα νέα δεδομένα μετά από # μήνες. Ο ορισμός αυτής της ρύθμισης θα διαγράψει επίσης τα υπάρχοντα δεδομένα που είναι παλαιότερα των # μηνών.}}"</string>

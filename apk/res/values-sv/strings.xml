@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Radera data automatiskt"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Efter # månad}other{Efter # månader}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Aldrig"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"När du ändrar dessa inställningar raderas befintlig data i Health Connect för att överensstämma med dina nya inställningar"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vill du radera data automatiskt efter # månad?}other{Vill du radera data automatiskt efter # månader?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect raderar automatiskt ny data efter # månad. Med den här inställningen raderas även befintlig data som är äldre än # månad.}other{Health Connect raderar automatiskt ny data efter # månader. Med den här inställningen raderas även befintlig data som är äldre än # månader.}}"</string>

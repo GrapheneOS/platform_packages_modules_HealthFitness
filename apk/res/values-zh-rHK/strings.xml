@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"自動刪除資料"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 個月後}other{# 個月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"變更這些設定後，Health Connect 會根據新的偏好設定刪除現有資料"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{要在 # 個月後自動刪除資料嗎？}other{要在 # 個月後自動刪除資料嗎？}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect 將於 # 個月後自動刪除新資料。選用此設定後，系統亦會刪除 # 個月前的現有資料。}other{Health Connect 將於 # 個月後自動刪除新資料。選用此設定後，系統亦會刪除 # 個月前的現有資料。}}"</string>

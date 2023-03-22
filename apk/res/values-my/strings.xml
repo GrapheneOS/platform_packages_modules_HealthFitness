@@ -682,6 +682,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ဒေတာ အလိုအလျောက်ဖျက်ရန်"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# လ နောက်ပိုင်း}other{# လ နောက်ပိုင်း}}"</string>
     <string name="range_never" msgid="4429478261788361233">"မည်သည့်အခါမှ"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"ဤဆက်တင်များပြောင်းပါက Health Connect သည် သင်၏သတ်မှတ်ချက်အသစ်များအရ လက်ရှိဒေတာကို ဖျက်သည်"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}other{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect သည် ဒေတာအသစ်ကို # လ အကြာတွင် အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}other{Health Connect သည် ဒေတာအသစ်ကို # လ အကြာတွင် အလိုအလျောက်ဖျက်မည်။ ဤသို့သတ်မှတ်ခြင်းက # လအထက် လက်ရှိဒေတာကိုလည်း ဖျက်မည်။}}"</string>

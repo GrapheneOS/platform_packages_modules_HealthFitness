@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatsko brisanje podataka"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Nakon # mjeseca}one{Nakon # mjeseca}few{Nakon # mjeseca}other{Nakon # mjeseci}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nikad"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Kad promijenite ove postavke, Health Connect briše postojeće podatke u skladu s vašim novim preferencijama"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Automatski izbrisati podatke nakon # mjeseca?}one{Automatski izbrisati podatke nakon # mjeseca?}few{Automatski izbrisati podatke nakon # mjeseca?}other{Automatski izbrisati podatke nakon # mjeseci?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect automatski će izbrisati nove podatke nakon # mjeseca. Ta postavka također će izbrisati postojeće podatke starije od # mjeseca.}one{Health Connect automatski će izbrisati nove podatke nakon # mjeseca. Ta postavka također će izbrisati postojeće podatke starije od # mjeseca.}few{Health Connect automatski će izbrisati nove podatke nakon # mjeseca. Ta postavka također će izbrisati postojeće podatke starije od # mjeseca.}other{Health Connect automatski će izbrisati nove podatke nakon # mjeseci. Ta postavka također će izbrisati postojeće podatke starije od # mjeseci.}}"</string>

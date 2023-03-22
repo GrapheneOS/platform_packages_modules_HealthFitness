@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatisk sletting av data"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Etter # måned}other{Etter # måneder}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Aldri"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Når du endrer disse innstillingene, sletter Health Connect eksisterende data for å gjenspeile de nye innstillingene."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vil du slette data automatisk etter # måned?}other{Vil du slette data automatisk etter # måneder?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect sletter nye data automatisk etter # måned. Denne innstillingen sletter også eksisterende data som er eldre enn # måned.}other{Health Connect sletter nye data automatisk etter # måneder. Denne innstillingen sletter også eksisterende data som er eldre enn # måneder.}}"</string>
