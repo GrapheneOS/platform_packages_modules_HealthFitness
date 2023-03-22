@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,6 +39,10 @@ constructor(
     private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
     @IoDispatcher val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
+
+    companion object {
+        private const val TAG = "ConnectedAppsViewModel"
+    }
 
     private val _connectedApps = MutableLiveData<List<ConnectedAppMetadata>>()
     val connectedApps: LiveData<List<ConnectedAppMetadata>>
@@ -65,15 +70,21 @@ constructor(
         }
     }
 
-    fun disconnectAllApps(apps: List<ConnectedAppMetadata>) {
-        viewModelScope.launch(ioDispatcher) {
-            _disconnectAllState.postValue(DisconnectAllState.Loading)
-            apps.forEach { app ->
-                revokeAllHealthPermissionsUseCase.invoke(app.appMetadata.packageName)
+    fun disconnectAllApps(apps: List<ConnectedAppMetadata>): Boolean {
+        try {
+            viewModelScope.launch(ioDispatcher) {
+                _disconnectAllState.postValue(DisconnectAllState.Loading)
+                apps.forEach { app ->
+                    revokeAllHealthPermissionsUseCase.invoke(app.appMetadata.packageName)
+                }
+                loadConnectedApps()
+                _disconnectAllState.postValue(DisconnectAllState.Updated)
             }
-            loadConnectedApps()
-            _disconnectAllState.postValue(DisconnectAllState.Updated)
+            return true
+        } catch (ex: Exception) {
+            Log.e(TAG, "Failed to update permissions!", ex)
         }
+        return false
     }
 
     sealed class DisconnectAllState {

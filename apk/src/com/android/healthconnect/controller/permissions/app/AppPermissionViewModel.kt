@@ -32,6 +32,7 @@
 package com.android.healthconnect.controller.permissions.app
 
 import android.health.connect.TimeInstantRangeFilter
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -66,6 +67,10 @@ constructor(
     private val loadAccessDateUseCase: LoadAccessDateUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
+
+    companion object {
+        private const val TAG = "AppPermissionViewModel"
+    }
 
     private val _appPermissions = MutableLiveData<List<HealthPermission>>(emptyList())
     val appPermissions: LiveData<List<HealthPermission>>
@@ -113,36 +118,58 @@ constructor(
         return loadAccessDateUseCase.invoke(packageName)
     }
 
-    fun updatePermission(packageName: String, healthPermission: HealthPermission, grant: Boolean) {
+    fun updatePermission(
+        packageName: String,
+        healthPermission: HealthPermission,
+        grant: Boolean
+    ): Boolean {
         val grantedPermissions = _grantedPermissions.value.orEmpty().toMutableSet()
-        if (grant) {
-            grantPermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
-            grantedPermissions.add(healthPermission)
-            _grantedPermissions.postValue(grantedPermissions)
-        } else {
-            grantedPermissions.remove(healthPermission)
-            _grantedPermissions.postValue(grantedPermissions)
-            revokePermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
+        try {
+            if (grant) {
+                grantPermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
+                grantedPermissions.add(healthPermission)
+                _grantedPermissions.postValue(grantedPermissions)
+            } else {
+                grantedPermissions.remove(healthPermission)
+                _grantedPermissions.postValue(grantedPermissions)
+                revokePermissionsStatusUseCase.invoke(packageName, healthPermission.toString())
+            }
+            return true
+        } catch (ex: Exception) {
+            Log.e(TAG, "Failed to update permissions!", ex)
         }
+        return false
     }
 
-    fun grantAllPermissions(packageName: String) {
-        _appPermissions.value?.forEach {
-            grantPermissionsStatusUseCase.invoke(packageName, it.toString())
+    fun grantAllPermissions(packageName: String): Boolean {
+        try {
+            _appPermissions.value?.forEach {
+                grantPermissionsStatusUseCase.invoke(packageName, it.toString())
+            }
+            val grantedPermissions = _grantedPermissions.value.orEmpty().toMutableSet()
+            grantedPermissions.addAll(_appPermissions.value.orEmpty())
+            _grantedPermissions.postValue(grantedPermissions)
+            return true
+        } catch (ex: Exception) {
+            Log.e(TAG, "Failed to update permissions!", ex)
         }
-        val grantedPermissions = _grantedPermissions.value.orEmpty().toMutableSet()
-        grantedPermissions.addAll(_appPermissions.value.orEmpty())
-        _grantedPermissions.postValue(grantedPermissions)
+        return false
     }
 
-    fun revokeAllPermissions(packageName: String) {
-        viewModelScope.launch(ioDispatcher) {
-            _revokeAllPermissionsState.postValue(RevokeAllState.Loading)
-            revokeAllHealthPermissionsUseCase.invoke(packageName)
-            loadForPackage(packageName)
-            _revokeAllPermissionsState.postValue(RevokeAllState.Updated)
-            _grantedPermissions.postValue(emptySet())
+    fun revokeAllPermissions(packageName: String): Boolean {
+        try {
+            viewModelScope.launch(ioDispatcher) {
+                _revokeAllPermissionsState.postValue(RevokeAllState.Loading)
+                revokeAllHealthPermissionsUseCase.invoke(packageName)
+                loadForPackage(packageName)
+                _revokeAllPermissionsState.postValue(RevokeAllState.Updated)
+                _grantedPermissions.postValue(emptySet())
+            }
+            return true
+        } catch (ex: Exception) {
+            Log.e(TAG, "Failed to update permissions!", ex)
         }
+        return false
     }
 
     fun deleteAppData(packageName: String, appName: String) {

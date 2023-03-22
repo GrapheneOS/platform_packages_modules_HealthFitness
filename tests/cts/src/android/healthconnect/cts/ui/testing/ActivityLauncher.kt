@@ -34,6 +34,17 @@ object ActivityLauncher {
         }
     }
 
+    fun Context.launchDataActivity(block: () -> Unit) {
+        val intent =
+            Intent("android.health.connect.action.MANAGE_HEALTH_DATA")
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        executeBlockAndExit(block) {
+            startActivity(intent)
+            skipOnboardingIfAppears()
+        }
+    }
+
     private fun executeBlockAndExit(block: () -> Unit, launchActivity: () -> Unit) {
         val uiDevice = getUiDevice()
         uiDevice.waitForIdle()

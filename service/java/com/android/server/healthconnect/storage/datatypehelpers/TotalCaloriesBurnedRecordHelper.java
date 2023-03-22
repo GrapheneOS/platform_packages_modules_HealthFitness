@@ -29,6 +29,7 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.com.android.server.healthconnect.storage.datatypehelpers.DeriveTotalCaloriesBurnedHelper;
@@ -48,8 +49,11 @@ import java.util.List;
 @HelperFor(recordIdentifier = RECORD_TYPE_TOTAL_CALORIES_BURNED)
 public final class TotalCaloriesBurnedRecordHelper
         extends IntervalRecordHelper<TotalCaloriesBurnedRecordInternal> {
-    private static final String TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME =
+
+    @VisibleForTesting
+    public static final String TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME =
             "total_calories_burned_record_table";
+
     private static final String ENERGY_COLUMN_NAME = "energy";
 
     @Override
