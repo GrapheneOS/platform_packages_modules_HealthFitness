@@ -21,6 +21,7 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMP
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 
+import static com.android.server.healthconnect.HealthConnectDailyJobs.HC_DAILY_JOB;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
 import static com.android.server.healthconnect.migration.MigrationConstants.ALLOWED_STATE_TIMEOUT_KEY;
@@ -30,12 +31,14 @@ import static com.android.server.healthconnect.migration.MigrationConstants.EXEC
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_STATE_TIMEOUT_PERIOD;
 import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_STATE_TIMEOUT_PERIOD;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETION_JOB_RUN_INTERVAL;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_RUN_INTERVAL;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_CHANGE_NAMESPACE;
 import static com.android.server.healthconnect.migration.MigrationConstants.NON_IDLE_STATE_TIMEOUT_PERIOD;
 
 import android.annotation.NonNull;
 import android.app.job.JobInfo;
-import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
@@ -45,8 +48,8 @@ import com.android.server.healthconnect.HealthConnectDailyService;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A state-change jobs scheduler and executor. Schedules migration completion job to run daily, and
@@ -55,49 +58,52 @@ import java.util.concurrent.TimeUnit;
  * @hide
  */
 public final class MigrationStateChangeJob {
-    private static final long MIGRATION_COMPLETION_JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(1);
-    private static final long MIGRATION_PAUSE_JOB_RUN_INTERVAL = TimeUnit.HOURS.toMillis(4);
-    private static final int MIGRATION_COMPLETION_JOB_ID =
-            MigrationStateChangeJob.class.hashCode() + 1;
-    private static final int MIGRATION_PAUSE_JOB_ID = MigrationStateChangeJob.class.hashCode() + 2;
+    static final int MIN_JOB_ID = MigrationStateChangeJob.class.hashCode();
 
     public static void scheduleMigrationCompletionJob(Context context, int userId) {
-        if (ENABLE_STATE_CHANGE_JOBS) {
-            ComponentName componentName =
-                    new ComponentName(context, HealthConnectDailyService.class);
-            final PersistableBundle extras = new PersistableBundle();
-            extras.putInt(EXTRA_USER_ID, userId);
-            extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_COMPLETE_JOB_NAME);
-            JobInfo.Builder builder =
-                    new JobInfo.Builder(MIGRATION_COMPLETION_JOB_ID + userId, componentName);
-            builder.setPeriodic(MIGRATION_COMPLETION_JOB_RUN_INTERVAL);
-            builder.setPersisted(true);
-
-            HealthConnectDailyService.schedule(
-                    context.getSystemService(JobScheduler.class), userId, builder.build());
+        if (!ENABLE_STATE_CHANGE_JOBS) {
+            return;
         }
+        ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
+        final PersistableBundle extras = new PersistableBundle();
+        extras.putInt(EXTRA_USER_ID, userId);
+        extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_COMPLETE_JOB_NAME);
+        JobInfo.Builder builder =
+                new JobInfo.Builder(MIN_JOB_ID + userId, componentName)
+                        .setPeriodic(MIGRATION_COMPLETION_JOB_RUN_INTERVAL)
+                        .setExtras(extras);
+
+        HealthConnectDailyService.schedule(
+                Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                        .forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE),
+                userId,
+                builder.build());
     }
 
     public static void scheduleMigrationPauseJob(Context context, int userId) {
-        if (ENABLE_STATE_CHANGE_JOBS) {
-            ComponentName componentName =
-                    new ComponentName(context, HealthConnectDailyService.class);
-            final PersistableBundle extras = new PersistableBundle();
-            extras.putInt(EXTRA_USER_ID, userId);
-            extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_PAUSE_JOB_NAME);
-            JobInfo.Builder builder =
-                    new JobInfo.Builder(MIGRATION_PAUSE_JOB_ID + userId, componentName);
-            builder.setPeriodic(MIGRATION_PAUSE_JOB_RUN_INTERVAL);
-            builder.setPersisted(true);
-
-            HealthConnectDailyService.schedule(
-                    context.getSystemService(JobScheduler.class), userId, builder.build());
+        if (!ENABLE_STATE_CHANGE_JOBS) {
+            return;
         }
+        ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
+        final PersistableBundle extras = new PersistableBundle();
+        extras.putInt(EXTRA_USER_ID, userId);
+        extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_PAUSE_JOB_NAME);
+        JobInfo.Builder builder =
+                new JobInfo.Builder(MIN_JOB_ID + userId, componentName)
+                        .setPeriodic(MIGRATION_PAUSE_JOB_RUN_INTERVAL)
+                        .setExtras(extras);
+        HealthConnectDailyService.schedule(
+                Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                        .forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE),
+                userId,
+                builder.build());
     }
 
     /** Execute migration completion job */
-    public static void executeMigrationCompletionJob(
-            @NonNull Context context, JobParameters params) {
+    public static void executeMigrationCompletionJob(@NonNull Context context) {
+        if (!ENABLE_STATE_CHANGE_JOBS) {
+            return;
+        }
         if (MigrationStateManager.getInitialisedInstance().getMigrationState()
                 == MIGRATION_STATE_COMPLETE) {
             return;
@@ -143,7 +149,10 @@ public final class MigrationStateChangeJob {
     }
 
     /** Execute migration pausing job. */
-    public static void executeMigrationPauseJob(@NonNull Context context, JobParameters params) {
+    public static void executeMigrationPauseJob(@NonNull Context context) {
+        if (!ENABLE_STATE_CHANGE_JOBS) {
+            return;
+        }
         if (MigrationStateManager.getInitialisedInstance().getMigrationState()
                 != MIGRATION_STATE_IN_PROGRESS) {
             return;
@@ -168,30 +177,40 @@ public final class MigrationStateChangeJob {
         }
     }
 
-    public static JobInfo getPendingJob(@NonNull Context context, int userId, String jobName) {
+    public static boolean existsAStateChangeJob(@NonNull Context context, String jobName) {
+        JobScheduler jobScheduler =
+                Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                        .forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE);
+        List<JobInfo> allJobs = jobScheduler.getAllPendingJobs();
+        for (JobInfo job : allJobs) {
+            if (job.getExtras().getString(EXTRA_JOB_NAME_KEY).equals(jobName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Cancels old migration jobs that are persisted and were never canceled. */
+    static void cleanupOldPersistentMigrationJobs(@NonNull Context context) {
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         Objects.requireNonNull(jobScheduler);
-        if (jobName.equals(MIGRATION_PAUSE_JOB_NAME)) {
-            return jobScheduler.getPendingJob(MIGRATION_PAUSE_JOB_ID + userId);
-        } else {
-            return jobScheduler.getPendingJob(MIGRATION_COMPLETION_JOB_ID + userId);
+
+        List<JobInfo> allJobs = jobScheduler.getAllPendingJobs();
+        for (JobInfo job : allJobs) {
+            if (job.isPersisted()
+                    && job.getService()
+                            .equals(new ComponentName(context, HealthConnectDailyService.class))
+                    && !Objects.equals(
+                            job.getExtras().getString(EXTRA_JOB_NAME_KEY), HC_DAILY_JOB)) {
+                jobScheduler.cancel(job.getId());
+            }
         }
     }
 
-    public static void cancelPendingJob(@NonNull Context context, int userId, String jobName) {
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        Objects.requireNonNull(jobScheduler);
-        if (jobName.equals(MIGRATION_COMPLETE_JOB_NAME)) {
-            jobScheduler.cancel(MIGRATION_COMPLETION_JOB_ID + userId);
-        } else if (jobName.equals(MIGRATION_PAUSE_JOB_NAME)) {
-            jobScheduler.cancel(MIGRATION_PAUSE_JOB_ID + userId);
-        }
-    }
-
-    static void cancelAllPendingJobs(@NonNull Context context, int userId) {
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        Objects.requireNonNull(jobScheduler);
-        jobScheduler.cancel(MIGRATION_COMPLETION_JOB_ID + userId);
-        jobScheduler.cancel(MIGRATION_PAUSE_JOB_ID + userId);
+    public static void cancelAllJobs(@NonNull Context context) {
+        JobScheduler jobScheduler =
+                Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                        .forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE);
+        jobScheduler.getAllPendingJobs().forEach(jobInfo -> jobScheduler.cancel(jobInfo.getId()));
     }
 }
