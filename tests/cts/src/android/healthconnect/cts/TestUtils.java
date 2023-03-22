@@ -305,7 +305,8 @@ public class TestUtils {
 
     public static ExerciseRoute.Location buildLocationTimePoint() {
         return new ExerciseRoute.Location.Builder(
-                        Instant.ofEpochMilli((long) (1e10 + Math.random() * 50)),
+                        Instant.ofEpochMilli(
+                                (long) (SESSION_START_TIME.toEpochMilli() + Math.random() * 50)),
                         Math.random() * 50,
                         Math.random() * 50)
                 .build();

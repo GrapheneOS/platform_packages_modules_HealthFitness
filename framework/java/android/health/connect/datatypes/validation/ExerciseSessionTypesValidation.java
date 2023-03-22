@@ -102,11 +102,13 @@ import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESS
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_WEIGHTLIFTING;
 import static android.health.connect.datatypes.ExerciseSessionType.isKnownSessionType;
 
+import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -266,6 +268,27 @@ public final class ExerciseSessionTypesValidation {
                     throw new IllegalArgumentException(
                             "Invalid exercise segment type for given exercise session type");
                 }
+            }
+        }
+    }
+
+    /**
+     * Validates that all {@link ExerciseRoute} locations timestamps are within session start and
+     * end time interval.
+     *
+     * @hide
+     */
+    public static void validateExerciseRouteTimestamps(
+            Instant sessionStartTime, Instant sessionEndTime, ExerciseRoute route) {
+        if (route == null) {
+            return;
+        }
+
+        for (ExerciseRoute.Location location : route.getRouteLocations()) {
+            if (location.getTime().isAfter(sessionEndTime)
+                    || location.getTime().isBefore(sessionStartTime)) {
+                throw new IllegalArgumentException(
+                        "Exercise route timestamp must be within session interval");
             }
         }
     }

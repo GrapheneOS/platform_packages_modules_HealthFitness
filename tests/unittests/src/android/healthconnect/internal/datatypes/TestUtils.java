@@ -40,7 +40,7 @@ public class TestUtils {
 
     public static ExerciseRouteInternal.LocationInternal buildInternalLocationAllFields() {
         return new ExerciseRouteInternal.LocationInternal()
-                .setTime((long) 1e10)
+                .setTime(START_TIME + 2)
                 .setLatitude(60.321)
                 .setLongitude(59.123)
                 .setVerticalAccuracy(1.2)
@@ -50,7 +50,7 @@ public class TestUtils {
 
     public static ExerciseRouteInternal.LocationInternal buildInternalLocation() {
         return new ExerciseRouteInternal.LocationInternal()
-                .setTime((long) 1e10)
+                .setTime(START_TIME + 1)
                 .setLatitude(60.321)
                 .setLongitude(59.123);
     }

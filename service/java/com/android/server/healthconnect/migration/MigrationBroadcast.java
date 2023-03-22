@@ -114,9 +114,11 @@ public class MigrationBroadcast {
             Slog.d(TAG, "Checking if migration aware package is installed on user");
         }
 
-        if (isPackageInstalled(migrationAwarePackage, mUser)) {
-            if (Objects.requireNonNull(mContext.getSystemService(UserManager.class))
-                    .isUserRunning(mUser)) {
+        Context userContext = mContext.createContextAsUser(mUser, 0);
+        if (isPackageInstalled(migrationAwarePackage, userContext)) {
+            UserManager userManager =
+                    Objects.requireNonNull(userContext.getSystemService(UserManager.class));
+            if (userManager.isUserForeground()) {
                 Intent intent =
                         new Intent(HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY)
                                 .setPackage(migrationAwarePackage);
@@ -136,10 +138,9 @@ public class MigrationBroadcast {
     }
 
     /** Checks if the package is installed on the given user. */
-    private boolean isPackageInstalled(String packageName, UserHandle user) {
+    private boolean isPackageInstalled(String packageName, Context userContext) {
         try {
-            PackageManager packageManager =
-                    mContext.createContextAsUser(user, 0).getPackageManager();
+            PackageManager packageManager = userContext.getPackageManager();
             packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
             return true;
         } catch (PackageManager.NameNotFoundException e) {

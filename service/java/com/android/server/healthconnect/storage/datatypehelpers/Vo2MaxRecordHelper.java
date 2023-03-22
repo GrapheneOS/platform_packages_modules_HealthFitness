@@ -27,6 +27,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +39,10 @@ import java.util.List;
  */
 @HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_VO2_MAX)
 public final class Vo2MaxRecordHelper extends InstantRecordHelper<Vo2MaxRecordInternal> {
-    private static final String VO2_MAX_RECORD_TABLE_NAME = "vo2_max_record_table";
+
+    @VisibleForTesting
+    public static final String VO2_MAX_RECORD_TABLE_NAME = "vo2_max_record_table";
+
     private static final String MEASUREMENT_METHOD_COLUMN_NAME = "measurement_method";
     private static final String VO2_MILLILITERS_PER_MINUTE_KILOGRAM_COLUMN_NAME =
             "vo2_milliliters_per_minute_kilogram";

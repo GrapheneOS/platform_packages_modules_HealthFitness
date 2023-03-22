@@ -152,6 +152,40 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSessionBuilds_routeTimestampAfterSessionEnd_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        new Metadata.Builder().build(),
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .setRoute(
+                        new ExerciseRoute(
+                                List.of(
+                                        new ExerciseRoute.Location.Builder(
+                                                        SESSION_END_TIME.plusMillis(1), 10.0, 10.0)
+                                                .build())))
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExerciseSessionBuilds_routeTimestampBeforeSessionStart_throwsException() {
+        new ExerciseSessionRecord.Builder(
+                        new Metadata.Builder().build(),
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .setRoute(
+                        new ExerciseRoute(
+                                List.of(
+                                        new ExerciseRoute.Location.Builder(
+                                                        SESSION_START_TIME.minusMillis(1),
+                                                        10.0,
+                                                        10.0)
+                                                .build())))
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testExerciseSessionBuilds_sessionTypeDoesntMatchSegment_throwsException() {
         buildRecordWithOneSegment(
                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING_STATIONARY,
@@ -547,7 +581,6 @@ public class ExerciseSessionRecordTest {
                         startTime,
                         endTime,
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
-                .setRoute(TestUtils.buildExerciseRoute())
                 .setEndZoneOffset(ZoneOffset.MAX)
                 .setStartZoneOffset(ZoneOffset.MIN)
                 .setNotes("notes")
@@ -586,7 +619,6 @@ public class ExerciseSessionRecordTest {
                         .build();
         return new ExerciseSessionRecord.Builder(
                         metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 2)
-                .setRoute(TestUtils.buildExerciseRoute())
                 .setEndZoneOffset(ZoneOffset.MAX)
                 .setStartZoneOffset(ZoneOffset.MIN)
                 .setNotes("notes")
