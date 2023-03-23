@@ -15,6 +15,7 @@
  */
 package android.healthconnect.cts.ui
 
+import android.app.DatePickerDialog
 import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.StepsRecord
@@ -77,6 +78,20 @@ class DataEntriesFragmentTest : HealthConnectBaseTest() {
             clickOnText("Delete")
             clickOnText("Done")
             waitDisplayed(By.text("No data"))
+        }
+    }
+
+    @Test
+    fun dataEntries_changeDate_updatesSelectedDate() {
+        insertRecords(listOf(distanceRecordFromTestApp()))
+        context.launchDataActivity {
+            clickOnText("Activity")
+            clickOnText("Distance")
+            clickOnText("See all entries")
+
+            clickOnContentDescription("Selected day")
+            clickOnText("1")
+            clickOnText("OK")
         }
     }
 
