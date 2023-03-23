@@ -57,11 +57,7 @@ public class RecordsParcel implements Parcelable {
     }
 
     private RecordsParcel(@NonNull Parcel in) {
-        int parcelType = in.readInt();
-        if (parcelType == ParcelUtils.USING_SHARED_MEMORY) {
-            in = ParcelUtils.getParcelForSharedMemory(in);
-        }
-
+        in = ParcelUtils.getParcelForSharedMemoryIfRequired(in);
         int size = in.readInt();
         mRecordInternals = new ArrayList<>(size);
         long remainingParcelSize = in.dataSize();

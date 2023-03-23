@@ -94,7 +94,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
-import android.health.connect.migration.MigrationEntity;
+import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaCategory;
@@ -1383,13 +1383,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void writeMigrationData(
             @NonNull String packageName,
-            List<MigrationEntity> entities,
+            MigrationEntityParcel parcel,
             IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
         UserHandle callingUserHandle = getCallingUserHandle();
 
-        // TODO(b/266553246): Validate write migration data after state cleanup is implemented
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
@@ -1405,7 +1404,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
                         mMigrationStateManager.validateWriteMigrationData();
-                        getDataMigrationManager(callingUserHandle).apply(entities);
+                        getDataMigrationManager(callingUserHandle)
+                                .apply(parcel.getMigrationEntities());
                         callback.onSuccess();
                     } catch (DataMigrationManager.EntityWriteException e) {
                         Slog.e(TAG, "Exception: ", e);
