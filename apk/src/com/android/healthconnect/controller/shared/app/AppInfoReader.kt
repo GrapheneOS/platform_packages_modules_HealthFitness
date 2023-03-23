@@ -75,7 +75,7 @@ constructor(
         }
     }
 
-    private fun isAppInstalled(packageName: String): Boolean {
+    fun isAppInstalled(packageName: String): Boolean {
         return try {
             getPackageInfo(packageName).enabled
         } catch (e: PackageManager.NameNotFoundException) {
