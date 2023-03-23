@@ -172,6 +172,7 @@ public class HealthConnectManagerService extends SystemService {
         Slog.d(TAG, "switchToSetupForUser: " + user);
         mTransactionManager.onUserUnlocked(
                 new HealthConnectUserContext(mContext, mCurrentForegroundUser));
+        mHealthConnectService.onUserSwitching(mCurrentForegroundUser);
         mMigrationBroadcastScheduler.setUserId(mCurrentForegroundUser.getIdentifier());
 
         HealthConnectThreadScheduler.scheduleInternalTask(

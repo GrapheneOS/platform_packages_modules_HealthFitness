@@ -197,4 +197,14 @@ class ConnectedAppsFragmentTest {
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Inactive apps")).check(doesNotExist())
     }
+
+    @Test
+    fun withNoApps_showsEmptyState() {
+        whenever(viewModel.connectedApps).then { MutableLiveData(emptyList<ConnectedAppMetadata>()) }
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText("Send feedback")).check(matches(isDisplayed()))
+        onView(withText("See all compatible apps")).check(matches(isDisplayed()))
+        onView(withText("Check for updates")).check(matches(isDisplayed()))
+    }
 }

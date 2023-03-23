@@ -100,6 +100,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             throw new IllegalArgumentException("HasRoute must be true if the route is not null");
         }
         mRoute = route;
+        ExerciseSessionTypesValidation.validateExerciseRouteTimestamps(startTime, endTime, route);
         mHasRoute = hasRoute;
         mSegments =
                 Collections.unmodifiableList(
