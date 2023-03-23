@@ -33,7 +33,10 @@
  */
 package com.android.healthconnect.controller.permissions.shared
 
+import android.content.Context
+import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import android.util.Log
 import androidx.core.os.bundleOf
@@ -41,6 +44,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
+import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,6 +67,24 @@ class SettingsActivity : Hilt_SettingsActivity() {
 
     override fun onStart() {
         super.onStart()
+        /** Displaying onboarding screen if user is opening Health Connect app for the first time */
+        val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+        val previouslyOpened =
+            sharedPreference.getBoolean(getString(R.string.previously_opened), false)
+        if (!previouslyOpened) {
+            val onboardingIntent = Intent(this, OnboardingActivity::class.java)
+            onboardingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val intentAfterOnboarding =
+                Intent(HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS)
+            if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
+                intentAfterOnboarding.putExtra(
+                    EXTRA_PACKAGE_NAME, intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
+            }
+            onboardingIntent.putExtra(Intent.EXTRA_INTENT, intentAfterOnboarding)
+            startActivity(onboardingIntent)
+            finish()
+        }
+
         val navController = findNavController(R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener(DestinationChangedListener(this))
         if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
