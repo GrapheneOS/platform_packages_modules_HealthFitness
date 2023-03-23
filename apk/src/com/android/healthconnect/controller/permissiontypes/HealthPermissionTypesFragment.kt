@@ -22,8 +22,8 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
@@ -74,7 +74,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
 
     @HealthDataCategoryInt private var category: Int = 0
 
-    private val viewModel: HealthPermissionTypesViewModel by viewModels()
+    private val viewModel: HealthPermissionTypesViewModel by activityViewModels()
 
     private val mPermissionTypesHeader: AppHeaderPreference? by lazy {
         preferenceScreen.findPreference(PERMISSION_TYPES_HEADER)
@@ -186,8 +186,9 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
                     it.key = APP_PRIORITY_BUTTON
                     it.order = 4
                     it.setOnPreferenceClickListener {
-                        PriorityListDialogFragment(
-                                priorityList, getString(category.lowercaseTitle()))
+                        viewModel.setEditedPriorityList(priorityList)
+                        viewModel.setCategoryLabel(getString(category.lowercaseTitle()))
+                        PriorityListDialogFragment()
                             .show(childFragmentManager, PriorityListDialogFragment.TAG)
                         true
                     }
