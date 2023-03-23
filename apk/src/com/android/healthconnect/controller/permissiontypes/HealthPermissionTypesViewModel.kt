@@ -54,6 +54,8 @@ constructor(
     private val _priorityList = MutableLiveData<PriorityListState>()
     private val _appsWithData = MutableLiveData<AppsWithDataFragmentState>()
     private val _selectedAppFilter = MutableLiveData("All apps")
+    private val _editedPriorityList = MutableLiveData<List<AppMetadata>>()
+    private val _categoryLabel = MutableLiveData<String>()
 
     /** Provides a list of [HealthPermissionType]s displayed in [HealthPermissionTypesFragment]. */
     val permissionTypesData: LiveData<PermissionTypesState>
@@ -74,8 +76,28 @@ constructor(
     val selectedAppFilter: LiveData<String>
         get() = _selectedAppFilter
 
+    /**
+     * Provides a reordered version of [priorityList] that is shown on the priority dialog but is
+     * not saved yet by the user.
+     *
+     * If it is empty then the original [priorityList] should be shown on the dialog.
+     */
+    val editedPriorityList: LiveData<List<AppMetadata>>
+        get() = _editedPriorityList
+
+    val categoryLabel: LiveData<String>
+        get() = _categoryLabel
+
     fun setAppFilter(selectedAppFilter: String) {
         _selectedAppFilter.postValue(selectedAppFilter)
+    }
+
+    fun setEditedPriorityList(newList: List<AppMetadata>) {
+        _editedPriorityList.postValue(newList)
+    }
+
+    fun setCategoryLabel(label: String) {
+        _categoryLabel.postValue(label)
     }
 
     fun loadData(category: @HealthDataCategoryInt Int) {
