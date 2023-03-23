@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatsko brisanje podataka"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Posle # meseca}one{Posle # meseca}few{Posle # meseca}other{Posle # meseci}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nikad"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Kada promenite ova podešavanja, Povezivanje zdravlja briše postojeće podatke u skladu sa novim podešavanjima"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Želite da automatski izbrišete podatke posle # meseca?}one{Želite da automatski izbrišete podatke posle # meseca?}few{Želite da automatski izbrišete podatke posle # meseca?}other{Želite da automatski izbrišete podatke posle # meseci?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Povezivanje zdravlja će automatski izbrisati nove podatke posle # meseca. Ovo podešavanje će izbrisati i postojeće podatke starije od # meseca.}one{Povezivanje zdravlja će automatski izbrisati nove podatke posle # meseca. Ovo podešavanje će izbrisati i postojeće podatke starije od # meseca.}few{Povezivanje zdravlja će automatski izbrisati nove podatke posle # meseca. Ovo podešavanje će izbrisati i postojeće podatke starije od # meseca.}other{Povezivanje zdravlja će automatski izbrisati nove podatke posle # meseci. Ovo podešavanje će izbrisati i postojeće podatke starije od # meseci.}}"</string>

@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Ezabatu datuak automatikoki"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# hilabete igaro ostean}other{# hilabete igaro ostean}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Inoiz ez"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Ezarpenak aldatzen dituzunean, Health Connect-ek lehendik dauden datuak ezabatuko ditu hobespen berriak islatzeko"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Datuak automatikoki ezabatu nahi dituzu # hilabete igaro ondoren?}other{Datuak automatikoki ezabatu nahi dituzu # hilabete igaro ondoren?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect-ek automatikoki ezabatuko ditu datu berriak # hilabete igaro ondoren. Ezarpena erabiltzen bada, # hilabete baino zaharragoak diren datuak ere ezabatuko dira.}other{Health Connect-ek automatikoki ezabatuko ditu datu berriak # hilabete igaro ondoren. Ezarpena erabiltzen bada, # hilabete baino zaharragoak diren datuak ere ezabatuko dira.}}"</string>

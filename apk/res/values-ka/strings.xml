@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"მონაცემების ავტომატური წაᲨლა"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# თვის შემდეგ}other{# თვის Შემდეგ}}"</string>
     <string name="range_never" msgid="4429478261788361233">"არასოდეს"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"როდესაც თქვენ შეცვლით ამ პარამეტრებს, Health Connect წაშლის არსებულ მონაცემებს თქვენი ახალი პრეფერენციების ასახვისთვის"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{გსურთ მონაცემების ავტომატური წაᲨლა # თვის Შემდეგ?}other{გსურთ მონაცემების ავტომატური წაᲨლა # თვის Შემდეგ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect ავტომატურად წაᲨლის ახალ მონაცემებს # თვის Შემდეგ ამის დაყენება ასევე წაშლის # თვეზე მეტი ხნის არსებულ მონაცემებს}other{Health Connect ავტომატურად წაᲨლის ახალ მონაცემებს # თვის Შემდეგ ამის დაყენება ასევე წაშლის # თვეზე მეტი ხნის არსებულ მონაცემებს}}"</string>

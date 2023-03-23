@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Supprimer automatiquement les données"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Au bout de # mois}one{Au bout de # mois}other{Au bout de # mois}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Jamais"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Lorsque vous modifiez ces paramètres, Santé Connect supprime les données existantes pour tenir compte de vos nouvelles préférences"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Supprimer automatiquement les données au bout de # mois ?}one{Supprimer automatiquement les données au bout de # mois ?}other{Supprimer automatiquement les données au bout de # mois ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Santé Connect supprimera automatiquement les nouvelles données au bout de # mois. Avec ce paramètre, les données existantes datant de plus de # mois seront aussi supprimées.}one{Santé Connect supprimera automatiquement les nouvelles données au bout de # mois. Avec ce paramètre, les données existantes datant de plus de # mois seront aussi supprimées.}other{Santé Connect supprimera automatiquement les nouvelles données au bout de # mois. Avec ce paramètre, les données existantes datant de plus de # mois seront aussi supprimées.}}"</string>

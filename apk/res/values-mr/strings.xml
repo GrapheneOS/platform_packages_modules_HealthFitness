@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"डेटा ऑटो-डिलीट करा"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# महिन्यानंतर}other{# महिन्यांनंतर}}"</string>
     <string name="range_never" msgid="4429478261788361233">"कधीही नाही"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"तुम्ही ही सेटिंग्ज बदलता, तेव्हा Health Connect तुमची नवीन प्राधान्ये प्रतिबिंबित करण्यासाठी सध्याचा डेटा हटवते"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# महिन्यानंतर डेटा ऑटो-डिलीट करायचा का?}other{# महिन्यांनंतर डेटा ऑटो-डिलीट करायचा का?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect # महिन्यानंतर नवीन डेटा ऑटो-डिलीट करेल. हे सेट केल्याने सध्याचा # महिन्यापेक्षा जुना डेटादेखील हटवला जाईल.}other{Health Connect # महिन्यांनंतर नवीन डेटा ऑटो-डिलीट करेल. हे सेट केल्याने सध्याचा # महिन्यांपेक्षा जुना डेटादेखील हटवला जाईल.}}"</string>

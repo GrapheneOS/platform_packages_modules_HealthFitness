@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Exclusão automática de dados"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Depois de # mês}one{Depois de # mês}other{Depois de # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Quando você muda essas configurações, o app Conexão Saúde exclui os dados para refletir suas novas preferências"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Excluir os dados automaticamente depois de # mês?}one{Excluir os dados automaticamente depois de # mês?}other{Excluir os dados automaticamente depois de # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{O app Conexão Saúde vai excluir dados novos automaticamente depois de # mês. Definir essa opção também vai excluir os dados atuais com mais de # mês.}one{O app Conexão Saúde vai excluir dados novos automaticamente depois de # mês. Definir essa opção também vai excluir os dados atuais com mais de # mês.}other{O app Conexão Saúde vai excluir dados novos automaticamente depois de # meses. Definir essa opção também vai excluir os dados atuais com mais de # meses.}}"</string>

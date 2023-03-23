@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Dades de supressió automàtica"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# mes després}other{# mesos després}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Mai"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si canvies aquesta configuració, Salut connectada suprimirà les dades existents per reflectir les preferències noves"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vols suprimir automàticament les dades passat # mes?}other{Vols suprimir automàticament les dades passats # mesos?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Salut connectada suprimirà automàticament les dades noves passat # mes. Amb aquesta configuració, també se suprimiran les dades existents anteriors a # mes.}other{Salut connectada suprimirà automàticament les dades noves passats # mesos. Amb aquesta configuració, també se suprimiran les dades existents anteriors a # mesos.}}"</string>

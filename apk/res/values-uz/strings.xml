@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Maʼlumotlarning avtomatik oʻchirilishi"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# oydan keyin}other{# oydan keyin}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Hech qachon"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Bu sozlama oʻzgartirilganda Health Connect mavjud maʼlumotlaringizni yangi sozlamalar asosida oʻchiradi"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Maʼlumotlar # oydan keyin avtomatik oʻchirilsinmi?}other{Maʼlumotlar # oydan keyin avtomatik oʻchirilsinmi?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect maʼlumotlarni # oydan keyin avtomatik oʻchiradi. Sozlama oʻzgartirilganda # oydan beri saqlangan maʼlumotlar ham oʻchib ketadi.}other{Health Connect maʼlumotlarni # oydan keyin avtomatik oʻchiradi. Sozlama oʻzgartirilganda # oydan beri saqlangan maʼlumotlar ham oʻchib ketadi.}}"</string>

@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ລຶບຂໍ້ມູນອັດຕະໂນມັດ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{ຫຼັງຈາກ # ເດືອນ}other{ຫຼັງຈາກ # ເດືອນ}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ບໍ່"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"ເມື່ອທ່ານປ່ຽນການຕັ້ງຄ່າເຫຼົ່ານີ້, Health Connect ຈະລຶບຂໍ້ມູນທີ່ມີຢູ່ເພື່ອສະແດງການຕັ້ງຄ່າໃໝ່ຂອງທ່ານ"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{ລຶບຂໍ້ມູນອັດຕະໂນມັດຫຼັງຈາກ # ເດືອນບໍ?}other{ລຶບຂໍ້ມູນອັດຕະໂນມັດຫຼັງຈາກ # ເດືອນບໍ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect ຈະລຶບຂໍ້ມູນໃໝ່ໂດຍອັດຕະໂນມັດຫຼັງຈາກ # ເດືອນ. ການຕັ້ງຄ່ານີ້ຈະລຶບຂໍ້ມູນທີ່ເກົ່າກວ່າ # ເດືອນອອກນຳ.}other{Health Connect ຈະລຶບຂໍ້ມູນໃໝ່ໂດຍອັດຕະໂນມັດຫຼັງຈາກ # ເດືອນ. ການຕັ້ງຄ່ານີ້ຈະລຶບຂໍ້ມູນທີ່ເກົ່າກວ່າ # ເດືອນອອກນຳ.}}"</string>

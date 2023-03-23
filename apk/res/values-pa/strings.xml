@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ਡਾਟੇ ਨੂੰ ਸਵੈਚਲਿਤ-ਮਿਟਾਓ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# ਮਹੀਨੇ ਬਾਅਦ}one{# ਮਹੀਨੇ ਬਾਅਦ}other{# ਮਹੀਨਿਆਂ ਬਾਅਦ}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ਕਦੇ ਵੀ ਨਹੀਂ"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"ਜਦੋਂ ਤੁਸੀਂ ਇਨ੍ਹਾਂ ਸੈਟਿੰਗਾਂ ਨੂੰ ਬਦਲਦੇ ਹੋ, ਤਾਂ Health Connect ਤੁਹਾਡੀਆਂ ਨਵੀਆਂ ਤਰਜੀਹਾਂ ਨੂੰ ਦਿਖਾਉਣ ਲਈ ਮੌਜੂਦਾ ਡਾਟੇ ਨੂੰ ਮਿਟਾ ਦਿੰਦੀ ਹੈ"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{ਕੀ # ਮਹੀਨੇ ਬਾਅਦ ਡਾਟਾ ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣਾ ਹੈ?}one{ਕੀ # ਮਹੀਨੇ ਬਾਅਦ ਡਾਟਾ ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣਾ ਹੈ?}other{ਕੀ # ਮਹੀਨਿਆਂ ਬਾਅਦ ਡਾਟਾ ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣਾ ਹੈ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect ਨਵੇਂ ਡਾਟੇ ਨੂੰ # ਮਹੀਨੇ ਬਾਅਦ ਸਵੈਚਲਿਤ-ਮਿਟਾ ਦੇਵੇਗੀ। ਇਸਨੂੰ ਸੈੱਟ ਕਰਨ ਨਾਲ # ਮਹੀਨੇ ਤੋਂ ਜ਼ਿਆਦਾ ਪੁਰਾਣਾ ਮੌਜੂਦਾ ਡਾਟਾ ਵੀ ਮਿਟ ਜਾਵੇਗਾ।}one{Health Connect ਨਵੇਂ ਡਾਟੇ ਨੂੰ # ਮਹੀਨੇ ਬਾਅਦ ਸਵੈਚਲਿਤ-ਮਿਟਾ ਦੇਵੇਗੀ। ਇਸਨੂੰ ਸੈੱਟ ਕਰਨ ਨਾਲ # ਮਹੀਨੇ ਤੋਂ ਜ਼ਿਆਦਾ ਪੁਰਾਣਾ ਮੌਜੂਦਾ ਡਾਟਾ ਵੀ ਮਿਟ ਜਾਵੇਗਾ।}other{Health Connect ਨਵੇਂ ਡਾਟੇ ਨੂੰ # ਮਹੀਨਿਆਂ ਬਾਅਦ ਸਵੈਚਲਿਤ-ਮਿਟਾ ਦੇਵੇਗੀ। ਇਸਨੂੰ ਸੈੱਟ ਕਰਨ ਨਾਲ # ਮਹੀਨਿਆਂ ਤੋਂ ਜ਼ਿਆਦਾ ਪੁਰਾਣਾ ਮੌਜੂਦਾ ਡਾਟਾ ਵੀ ਮਿਟ ਜਾਵੇਗਾ।}}"</string>

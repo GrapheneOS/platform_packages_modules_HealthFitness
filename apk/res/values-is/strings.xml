@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Eyða gögnum sjálfvirkt"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Eftir # mánuð}one{Eftir # mánuð}other{Eftir # mánuði}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Aldrei"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Þegar þú breytir þessum stillingum mun Heilsutenging eyða fyrirliggjandi gögnum í samræmi við nýjar kjörstillingar"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Eyða gögnum sjálfvirkt eftir # mánuð?}one{Eyða gögnum sjálfvirkt eftir # mánuð?}other{Eyða gögnum sjálfvirkt eftir # mánuði?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Heilsutenging mun eyða nýjum gögnum sjálfvirkt eftir # mánuð. Með þessari stillingu verður fyrirliggjandi gögnum sem eru eldri en # mánaðar einnig eytt.}one{Heilsutenging mun eyða nýjum gögnum sjálfvirkt eftir # mánuð. Með þessari stillingu verður fyrirliggjandi gögnum sem eru eldri en # mánaðar einnig eytt.}other{Heilsutenging mun eyða nýjum gögnum sjálfvirkt eftir # mánuði. Með þessari stillingu verður fyrirliggjandi gögnum sem eru eldri en # mánaða einnig eytt.}}"</string>

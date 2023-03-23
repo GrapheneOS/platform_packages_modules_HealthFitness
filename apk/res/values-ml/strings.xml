@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ഡാറ്റ സ്വയമേവ ഇല്ലാതാക്കുക"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# മാസത്തിന് ശേഷം}other{# മാസത്തിന് ശേഷം}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ഒരിക്കലും വേണ്ട"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"നിങ്ങൾ ഈ ക്രമീകരണം മാറ്റുമ്പോൾ, പുതിയ മുൻഗണനകൾ പ്രതിഫലിപ്പിക്കുന്ന വിധത്തിൽ നിലവിലുള്ള ഡാറ്റ Health Connect ഇല്ലാതാക്കുന്നു"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# മാസത്തിന് ശേഷം ഡാറ്റ സ്വയമേവ ഇല്ലാതാക്കണോ?}other{# മാസത്തിന് ശേഷം ഡാറ്റ സ്വയമേവ ഇല്ലാതാക്കണോ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{പുതിയ ഡാറ്റ # മാസത്തിന് ശേഷം Health Connect സ്വയമേവ ഇല്ലാതാക്കും. ഇത് സജ്ജീകരിക്കുന്നത് നിലവിലുള്ള # മാസത്തിൽ കൂടുതൽ പഴക്കമുള്ള ഡാറ്റയേയും ഇല്ലാതാക്കും.}other{പുതിയ ഡാറ്റ # മാസത്തിന് ശേഷം Health Connect സ്വയമേവ ഇല്ലാതാക്കും. ഇത് സജ്ജീകരിക്കുന്നത് നിലവിലുള്ള # മാസത്തിൽ കൂടുതൽ പഴക്കമുള്ള ഡാറ്റയേയും ഇല്ലാതാക്കും.}}"</string>

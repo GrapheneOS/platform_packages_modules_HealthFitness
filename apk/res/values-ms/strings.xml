@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Autopadam data"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Selepas # bulan}other{Selepas # bulan}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Tidak sekali-kali"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Apabila anda mengubah tetapan ini, Health Connect memadamkan data sedia ada untuk memaparkan pilihan baharu anda"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Autopadam data selepas # bulan?}other{Autopadam data selepas # bulan?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect akan mengautopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}other{Health Connect akan mengautopadam data baharu selepas # bulan. Penetapan ini juga akan memadamkan data sedia ada yang melebihi # bulan.}}"</string>

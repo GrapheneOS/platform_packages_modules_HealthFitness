@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Eliminación automática de datos"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Después de # mes}other{Después de # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si cambias estos ajustes, Salud conectada eliminará los datos existentes para reflejar tus nuevas preferencias"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{¿Eliminar automáticamente los datos después de # mes?}other{¿Eliminar automáticamente los datos después de # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Salud conectada eliminará automáticamente los datos nuevos después de # mes. También se eliminarán los datos almacenados de hace más de # mes.}other{Salud conectada eliminará automáticamente los datos nuevos después de # meses. También se eliminarán los datos almacenados de hace más de # meses.}}"</string>

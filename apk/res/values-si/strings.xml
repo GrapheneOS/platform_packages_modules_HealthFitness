@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"දත්ත ස්වයං-මැකීම"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# මාසයකට පසු}one{මාස #කට පසු}other{මාස #කට පසු}}"</string>
     <string name="range_never" msgid="4429478261788361233">"කවදාවත් නෑ"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"ඔබ මෙම සැකසීම් වෙනස් කරන විට, Health Connect ඔබේ නව මනාප පිළිබිඹු කිරීමට පවතින දත්ත මකා දමයි"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# මාසයකට පසු දත්ත ස්වයංව මකන්න ද?}one{මාස #කට පසු දත්ත ස්වයංව මකන්න ද?}other{මාස #කට පසු දත්ත ස්වයංව මකන්න ද?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect # මාසයකට පසු නව දත්ත ස්වයංක්‍රීයව මැකෙයි. මෙය සැකසීම # මාසයකට වඩා පැරණි පවතින දත්ත ද මකයි.}one{Health Connect මාස #කට පසු නව දත්ත ස්වයංක්‍රීයව මැකෙයි. මෙය සැකස මාස #කට වඩා පැරණි පවතින දත්ත ද මකයි.}other{Health Connect මාස #කට පසු නව දත්ත ස්වයංක්‍රීයව මැකෙයි. මෙය සැකස මාස #කට වඩා පැරණි පවතින දත්ත ද මකයි.}}"</string>
