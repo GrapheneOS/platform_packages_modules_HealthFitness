@@ -110,7 +110,7 @@ public class SessionDatatypeDisabledFeatureTest {
         assertThat(readRecords).isEmpty();
     }
 
-    private void setSessionDatatypesFeatureEnabledFlag(boolean flag) {
+    private void setSessionDatatypesFeatureEnabledFlag(boolean flag) throws InterruptedException {
         mUiAutomation.adoptShellPermissionIdentity(WRITE_DEVICE_CONFIG);
         DeviceConfig.setProperty(
                 DeviceConfig.NAMESPACE_HEALTH_FITNESS,
@@ -118,5 +118,6 @@ public class SessionDatatypeDisabledFeatureTest {
                 flag ? "true" : "false",
                 false);
         mUiAutomation.dropShellPermissionIdentity();
+        Thread.sleep(100);
     }
 }
