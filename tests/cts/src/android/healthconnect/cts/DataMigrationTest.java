@@ -539,6 +539,9 @@ public class DataMigrationTest {
                     TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
                             .isEqualTo(MIGRATION_STATE_ALLOWED);
+                    TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(MIGRATION_STATE_ALLOWED);
                     TestUtils.startMigration();
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
                             .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
