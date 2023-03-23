@@ -73,7 +73,8 @@ public final class MigrationStateChangeJob {
             builder.setPeriodic(MIGRATION_COMPLETION_JOB_RUN_INTERVAL);
             builder.setPersisted(true);
 
-            HealthConnectDailyService.schedule(context, userId, builder.build());
+            HealthConnectDailyService.schedule(
+                context.getSystemService(JobScheduler.class), userId, builder.build());
         }
     }
 
@@ -89,7 +90,8 @@ public final class MigrationStateChangeJob {
             builder.setPeriodic(MIGRATION_PAUSE_JOB_RUN_INTERVAL);
             builder.setPersisted(true);
 
-            HealthConnectDailyService.schedule(context, userId, builder.build());
+            HealthConnectDailyService.schedule(
+                context.getSystemService(JobScheduler.class), userId, builder.build());
         }
     }
 

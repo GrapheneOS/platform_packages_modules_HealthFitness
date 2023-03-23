@@ -28,7 +28,6 @@ import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
-import android.content.Context;
 import android.health.connect.Constants;
 import android.util.Slog;
 
@@ -42,15 +41,68 @@ import java.util.Objects;
  * @hide
  */
 public class HealthConnectDailyService extends JobService {
-    private static final String TAG = "HealthConnectDailyService";
     public static final String EXTRA_USER_ID = "user_id";
     public static final String EXTRA_JOB_NAME_KEY = "job_name";
-    @UserIdInt private static int sCurrentUserId;
+    private static final String TAG = "HealthConnectDailyService";
+    @UserIdInt private static volatile int sCurrentUserId;
+
+    /**
+     * Called everytime when the operation corresponding to this service is to be performed,
+     *
+     * <p>Please handle exceptions for each task within the task. Do not crash the job as it might
+     * result in failure of other tasks being triggered from the job.
+     */
+    @Override
+    public boolean onStartJob(@NonNull JobParameters params) {
+        int userId = params.getExtras().getInt(EXTRA_USER_ID, /* defaultValue= */ DEFAULT_INT);
+        if (userId == DEFAULT_INT || userId != sCurrentUserId) {
+            // This job is no longer valid, the service for this user should have been stopped.
+            // Just ignore this request in case we still got the request.
+            return false;
+        }
+
+        // This service executes each incoming job on a Handler running on the application's
+        // main thread. This means that we must offload the execution logic to background executor.
+        switch (params.getExtras().getString(EXTRA_JOB_NAME_KEY)) {
+            case HC_DAILY_JOB -> {
+                HealthConnectThreadScheduler.scheduleInternalTask(
+                        () -> {
+                            HealthConnectDailyJobs.execute(getApplicationContext(), params);
+                            jobFinished(params, false);
+                        });
+                return true;
+            }
+            case MIGRATION_COMPLETE_JOB_NAME -> {
+                HealthConnectThreadScheduler.scheduleInternalTask(
+                        () -> {
+                            MigrationStateChangeJob.executeMigrationCompletionJob(
+                                    getApplicationContext(), params);
+                            jobFinished(params, false);
+                        });
+                return true;
+            }
+            case MIGRATION_PAUSE_JOB_NAME -> {
+                HealthConnectThreadScheduler.scheduleInternalTask(
+                        () -> {
+                            MigrationStateChangeJob.executeMigrationPauseJob(
+                                    getApplicationContext(), params);
+                            jobFinished(params, false);
+                        });
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Called when job needs to be stopped. Don't do anything here and let the job be killed. */
+    @Override
+    public boolean onStopJob(@NonNull JobParameters params) {
+        return false;
+    }
 
     /** Start periodically scheduling this service for {@code userId}. */
     public static void schedule(
-            @NonNull Context context, @UserIdInt int userId, @NonNull JobInfo jobInfo) {
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+            @NonNull JobScheduler jobScheduler, @UserIdInt int userId, @NonNull JobInfo jobInfo) {
         Objects.requireNonNull(jobScheduler);
         sCurrentUserId = userId;
 
@@ -66,64 +118,5 @@ public class HealthConnectDailyService extends JobService {
                     "Scheduled a job successfully: "
                             + jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY));
         }
-    }
-
-    /**
-     * Called everytime when the operation corresponding to this service is to be performed,
-     *
-     * <p>Please handle exceptions for each task within the task. Do not crash the job as it might
-     * result in failure of other tasks being triggered from the job.
-     */
-    @Override
-    public boolean onStartJob(@NonNull JobParameters params) {
-        int userId = params.getExtras().getInt(EXTRA_USER_ID, /* defaultValue= */ DEFAULT_INT);
-        if (userId == DEFAULT_INT || userId != sCurrentUserId) {
-            // This job is no longer valid, the service should have been stopped. Just ignore
-            // this request in case we still got the request.
-            return false;
-        }
-
-        // This service executes each incoming job on a Handler running on the application's
-        // main thread. This means that we must offload the execution logic to background executor.
-        switch (params.getExtras().getString(EXTRA_JOB_NAME_KEY)) {
-            case HC_DAILY_JOB:
-                {
-                    HealthConnectThreadScheduler.scheduleInternalTask(
-                            () -> {
-                                HealthConnectDailyJobs.execute(getApplicationContext(), params);
-                                jobFinished(params, false);
-                            });
-                    return true;
-                }
-
-            case MIGRATION_COMPLETE_JOB_NAME:
-                {
-                    HealthConnectThreadScheduler.scheduleInternalTask(
-                            () -> {
-                                MigrationStateChangeJob.executeMigrationCompletionJob(
-                                        getApplicationContext(), params);
-                                jobFinished(params, false);
-                            });
-                    return true;
-                }
-
-            case MIGRATION_PAUSE_JOB_NAME:
-                {
-                    HealthConnectThreadScheduler.scheduleInternalTask(
-                            () -> {
-                                MigrationStateChangeJob.executeMigrationPauseJob(
-                                        getApplicationContext(), params);
-                                jobFinished(params, false);
-                            });
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    /** Called when job needs to be stopped. Don't do anything here and let the job be killed. */
-    @Override
-    public boolean onStopJob(@NonNull JobParameters params) {
-        return false;
     }
 }

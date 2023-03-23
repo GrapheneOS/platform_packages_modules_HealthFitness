@@ -39,9 +39,10 @@ import java.util.concurrent.TimeUnit;
 
 /** @hide */
 public class HealthConnectDailyJobs {
+    public static final String HC_DAILY_JOB = "hc_daily_job";
     private static final int MIN_JOB_ID = HealthConnectDailyJobs.class.hashCode();
     private static final long JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(1);
-    public static final String HC_DAILY_JOB = "hc_daily_job";
+    private static final String HEALTH_CONNECT_NAMESPACE = "HEALTH_CONNECT_DAILY_JOB";
 
     public static void schedule(@NonNull Context context, @UserIdInt int userId) {
         ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
@@ -55,18 +56,22 @@ public class HealthConnectDailyJobs {
                         .setRequiresDeviceIdle(true)
                         .setPeriodic(JOB_RUN_INTERVAL, JOB_RUN_INTERVAL / 2);
 
-        HealthConnectDailyService.schedule(context, userId, builder.build());
+        HealthConnectDailyService.schedule(
+                Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                        .forNamespace(HEALTH_CONNECT_NAMESPACE),
+                userId,
+                builder.build());
+    }
+
+    public static void cancelAllJobs(Context context) {
+        Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                .forNamespace(HEALTH_CONNECT_NAMESPACE)
+                .cancelAll();
     }
 
     public static void execute(@NonNull Context context, JobParameters params) {
         int userId = params.getExtras().getInt(EXTRA_USER_ID, /* defaultValue= */ DEFAULT_INT);
         AutoDeleteService.startAutoDelete();
         DailyLoggingService.logDailyMetrics(context, UserHandle.getUserHandleForUid(userId));
-    }
-
-    /** Stop periodically scheduling this service for this {@code userId} */
-    public static void stop(@NonNull Context context, @NonNull @UserIdInt int userId) {
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        Objects.requireNonNull(jobScheduler).cancel(MIN_JOB_ID + userId);
     }
 }
