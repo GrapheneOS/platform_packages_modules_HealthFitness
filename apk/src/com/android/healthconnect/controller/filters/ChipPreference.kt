@@ -47,17 +47,14 @@ constructor(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        if (chipGroup == null) {
-            // onBindViewHolder is called multiple times so just add the filters once
-            chipGroup = holder.findViewById(R.id.chip_group) as RadioGroup
+        chipGroup = holder.findViewById(R.id.chip_group) as RadioGroup
 
-            chipGroup?.removeAllViews()
+        chipGroup?.removeAllViews()
 
-            addAllAppsFilterChip(chipGroup!!)
+        addAllAppsFilterChip(chipGroup!!)
 
-            for (appMetadata in appMetadataList) {
-                addFilterChip(appMetadata, chipGroup!!)
-            }
+        for (appMetadata in appMetadataList) {
+            addFilterChip(appMetadata, chipGroup!!)
         }
     }
 }
