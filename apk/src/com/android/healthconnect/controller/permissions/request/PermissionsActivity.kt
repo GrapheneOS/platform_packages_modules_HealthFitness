@@ -51,6 +51,7 @@ import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,6 +92,10 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         if (!intent.hasExtra(EXTRA_PACKAGE_NAME)) {
             Log.e(TAG, "Invalid Intent Extras, finishing")
             finish()
+        }
+
+        if (maybeRedirectIntoTwoPaneSettings(this)) {
+            return
         }
 
         val rationalIntentDeclared =
