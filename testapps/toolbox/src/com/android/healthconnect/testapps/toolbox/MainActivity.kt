@@ -15,6 +15,7 @@ package com.android.healthconnect.testapps.toolbox
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 
 /** Entry point activity for Health Connect Toolbox. */
 class MainActivity : AppCompatActivity() {
@@ -23,5 +24,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setTitle(R.string.app_label)
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (!navController.popBackStack()) {
+            finish()
+        }
+    }
+
+    override fun onNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (!navController.popBackStack()) {
+            finish()
+        }
+        return true
     }
 }
