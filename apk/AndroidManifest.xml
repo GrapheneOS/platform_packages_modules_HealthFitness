@@ -27,7 +27,7 @@
 
     <application
         android:name=".HealthConnectApplication"
-        android:icon="@drawable/health_connect_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_label"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthConnect">
