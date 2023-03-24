@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Tự động xoá dữ liệu"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Sau # tháng}other{Sau # tháng}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Không bao giờ"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Khi bạn thay đổi những chế độ cài đặt này, Health Connect sẽ xoá dữ liệu hiện có để phản ánh các lựa chọn ưu tiên mới của bạn"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Tự động xoá dữ liệu sau # tháng?}other{Tự động xoá dữ liệu sau # tháng?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect sẽ tự động xoá dữ liệu mới sau # tháng. Chế độ cài đặt này cũng sẽ xoá dữ liệu hiện có đã lưu hơn # tháng.}other{Health Connect sẽ tự động xoá dữ liệu mới sau # tháng. Chế độ cài đặt này cũng sẽ xoá dữ liệu hiện có đã lưu hơn # tháng.}}"</string>

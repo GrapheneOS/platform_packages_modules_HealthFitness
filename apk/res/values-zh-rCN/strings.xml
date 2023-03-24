@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"自动删除数据"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 个月后}other{# 个月后}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"如果您更改这些设置，Health Connect 即会删除现有数据以体现您的新偏好设置"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{在 # 个月后自动删除数据？}other{在 # 个月后自动删除数据？}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect 会在 # 个月后自动删除新数据。这样设置也会删除存储时长已超过 # 个月的现有数据。}other{Health Connect 会在 # 个月后自动删除新数据。这样设置也会删除存储时长已超过 # 个月的现有数据。}}"</string>

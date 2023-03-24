@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Колдонмодогу нерселер автоматтык түрдө качан өчөт:"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# айдан кийин}other{# айдан кийин}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Эч качан"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Бул параметрди өзгөртсөңүз, жаңы параметрлерди чагылдыруу үчүн Health Connect учурдагы нерселерди өчүрөт"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Колдонмодогу нерселер # айдан кийин автоматтык түрдө өчсүнбү?}other{Колдонмодогу нерселер # айдан кийин автоматтык түрдө өчсүнбү?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect жаңы нерселерди # айдан кийин автоматтык түрдө жок кылат. Бул параметр тандалса, # айдан ашуун сакталган нерселер да өчүрүлөт.}other{Health Connect жаңы нерселерди # айдан кийин автоматтык түрдө жок кылат. Бул параметр тандалса, # айдан ашуун сакталган нерселер да өчүрүлөт.}}"</string>

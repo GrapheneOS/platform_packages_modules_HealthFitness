@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ลบข้อมูลอัตโนมัติ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{หลังผ่านไป # เดือน}other{หลังผ่านไป # เดือน}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ไม่เลย"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"เมื่อเปลี่ยนการตั้งค่าเหล่านี้ Health Connect จะลบข้อมูลที่มีอยู่เพื่อแสดงค่ากำหนดใหม่ของคุณ"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{ลบข้อมูลอัตโนมัติหลังผ่านไป # เดือนใช่ไหม}other{ลบข้อมูลอัตโนมัติหลังผ่านไป # เดือนใช่ไหม}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect จะลบข้อมูลใหม่อัตโนมัติหลังผ่านไป # เดือน การตั้งค่านี้จะลบข้อมูลที่มีอยู่นานเกินกว่า # เดือนด้วย}other{Health Connect จะลบข้อมูลใหม่อัตโนมัติหลังผ่านไป # เดือน การตั้งค่านี้จะลบข้อมูลที่มีอยู่นานเกินกว่า # เดือนด้วย}}"</string>

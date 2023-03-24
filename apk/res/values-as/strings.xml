@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ডেটা স্বয়ংক্ৰিয়ভাৱে মচা"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# মাহৰ পাছত}one{# মাহৰ পাছত}other{# মাহৰ পাছত}}"</string>
     <string name="range_never" msgid="4429478261788361233">"কেতিয়াও নহয়"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"আপুনি এই ছেটিংসমূহ সলনি কৰিলে Health Connectএ আপোনাৰ নতুন অগ্ৰাধিকাৰসমূহ প্ৰতিফলিত কৰিবলৈ ইতিমধ্যে থকা ডেটা মচে"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# মাহৰ পাছত ডেটা স্বয়ংক্ৰিয়ভাৱে মচিবনে?}one{# মাহৰ পাছত ডেটা স্বয়ংক্ৰিয়ভাৱে মচিবনে?}other{# মাহৰ পাছত ডেটা স্বয়ংক্ৰিয়ভাৱে মচিবনে?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{# মাহৰ পাছত Health Connectএ নতুন ডেটা স্বয়ংক্ৰিয়ভাৱে মচিব। এইটো ছেট কৰিলে ইতিমধ্যে থকা # মাহতকৈ পুৰণি ডেটাও মচা যাব।}one{# মাহৰ পাছত Health Connectএ নতুন ডেটা স্বয়ংক্ৰিয়ভাৱে মচিব। এইটো ছেট কৰিলে ইতিমধ্যে থকা # মাহতকৈ পুৰণি ডেটাও মচা যাব।}other{# মাহৰ পাছত Health Connectএ নতুন ডেটা স্বয়ংক্ৰিয়ভাৱে মচিব। এইটো ছেট কৰিলে ইতিমধ্যে থকা # মাহতকৈ পুৰণি ডেটাও মচা যাব।}}"</string>

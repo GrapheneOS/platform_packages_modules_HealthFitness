@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Автоматично изтриване на данните"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{След # месец}other{След # месеца}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Никога"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Когато промените тези настройки, Health Connect ще изтрие част от съществуващите данни, така че да бъдат отразени новите ви предпочитания"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Данните да се изтриват ли автоматично след # месец?}other{Данните да се изтриват ли автоматично след # месеца?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect ще изтрива автоматично новите данни след # месец. Ако зададете тази опция, ще се изтрият и съществуващите данни, които са по-стари от # месец.}other{Health Connect ще изтрива автоматично новите данни след # месеца. Ако зададете тази опция, ще се изтрият и съществуващите данни, които са по-стари от # месеца.}}"</string>

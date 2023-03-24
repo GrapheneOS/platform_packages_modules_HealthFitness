@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ডেটা অটোমেটিক মুছে দিন"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# মাস পরে}one{# মাস পরে}other{# মাস পরে}}"</string>
     <string name="range_never" msgid="4429478261788361233">"কখনওই নয়"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"আপনি এইসব সেটিংস পরিবর্তন করলে, Health Connect আপনার নতুন পছন্দ প্রতিফলিত করতে আগে থেকে রয়েছে এমন ডেটা মুছে দেয়"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# মাস পরে ডেটা অটোমেটিক মুছে দিতে চান?}one{# মাস পরে ডেটা অটোমেটিক মুছে দিতে চান?}other{# মাস পরে ডেটা অটোমেটিক মুছে দিতে চান?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{# মাস পরে Health Connect নতুন ডেটা অটোমেটিক মুছে দেবে। এছাড়া, এটি সেট করা হলে বর্তমানে থাকা # মাসের চেয়ে পুরনো ডেটা অটোমেটিক মুছে যাবে।}one{# মাস পরে Health Connect নতুন ডেটা অটোমেটিক মুছে দেবে। এছাড়া, এটি সেট করা হলে বর্তমানে থাকা # মাসের চেয়ে পুরনো ডেটা অটোমেটিক মুছে যাবে।}other{# মাস পরে Health Connect নতুন ডেটা অটোমেটিক মুছে দেবে। এছাড়া, এটি সেট করা হলে বর্তমানে থাকা # মাসের চেয়ে পুরনো ডেটা অটোমেটিক মুছে যাবে।}}"</string>

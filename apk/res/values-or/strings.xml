@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ଡାଟାକୁ ଅଟୋ-ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# ମାସ ପରେ}other{# ମାସ ପରେ}}"</string>
     <string name="range_never" msgid="4429478261788361233">"କେବେ ବି ନୁହେଁ"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"ଯେତେବେଳେ ଆପଣ ଏହି ସେଟିଂସକୁ ପରିବର୍ତ୍ତନ କରନ୍ତି, ଆପଣଙ୍କ ନୂଆ ପସନ୍ଦଗୁଡ଼ିକୁ ପ୍ରତିଫଳିତ କରିବା ପାଇଁ Health Connect ପୂର୍ବରୁ ଥିବା ଡାଟାକୁ ଡିଲିଟ କରେ"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# ମାସ ପରେ ଡାଟାକୁ ଅଟୋ-ଡିଲିଟ କରିବେ?}other{# ମାସ ପରେ ଡାଟାକୁ ଅଟୋ-ଡିଲିଟ କରିବେ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{# ମାସ ପରେ Health Connect ନୂଆ ଡାଟାକୁ ଅଟୋ-ଡିଲିଟ କରିବ। ଏହାକୁ ସେଟିଂ କରିବା ଫଳରେ ଏହା ପୂର୍ବରୁ ଥିବା # ମାସରୁ ପୁରୁଣା ଡାଟାକୁ ମଧ୍ୟ ଡିଲିଟ କରିବ।}other{# ମାସ ପରେ Health Connect ନୂଆ ଡାଟାକୁ ଅଟୋ-ଡିଲିଟ କରିବ। ଏହାକୁ ସେଟିଂ କରିବା ଫଳରେ ଏହା ପୂର୍ବରୁ ଥିବା # ମାସରୁ ପୁରୁଣା ଡାଟାକୁ ମଧ୍ୟ ଡିଲିଟ କରିବ।}}"</string>

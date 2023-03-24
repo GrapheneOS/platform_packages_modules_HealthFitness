@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"데이터 자동 삭제"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{#개월 후}other{#개월 후}}"</string>
     <string name="range_never" msgid="4429478261788361233">"사용 안함"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"설정을 변경하면 헬스 커넥트가 새로운 환경설정을 반영하여 기존 데이터를 삭제합니다."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{#개월 후 데이터를 자동 삭제하시겠습니까?}other{#개월 후 데이터를 자동 삭제하시겠습니까?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{#개월이 지나면 헬스 커넥트에서 새로운 데이터를 자동으로 삭제합니다. 이렇게 설정하면 #개월이 넘은 기존 데이터도 삭제됩니다.}other{#개월이 지나면 헬스 커넥트에서 새로운 데이터를 자동으로 삭제합니다. 이렇게 설정하면 #개월이 넘은 기존 데이터도 삭제됩니다.}}"</string>

@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"حذف خودکار داده‌ها"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{بعداز # ماه}one{بعداز # ماه}other{بعداز # ماه}}"</string>
     <string name="range_never" msgid="4429478261788361233">"هرگز"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"وقتی این تنظیمات را تغییر می‌دهید، Health Connect داده‌های موجود را برای بازتاب اولویت‌های جدید حذف می‌کند"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{داده‌ها بعداز # ماه به‌طور خودکار حذف شود؟}one{داده‌ها بعداز # ماه به‌طور خودکار حذف شود؟}other{داده‌ها بعداز # ماه به‌طور خودکار حذف شود؟}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{‫Health Connect داده‌های جدید را بعداز # ماه حذف خواهد کرد. با این تنظیم، داده‌های موجود قدیمی‌تر از # ماه هم حذف خواهد شد.}one{‫Health Connect داده‌های جدید را بعداز # ماه حذف خواهد کرد. با این تنظیم، داده‌های موجود قدیمی‌تر از # ماه هم حذف خواهد شد.}other{‫Health Connect داده‌های جدید را بعداز # ماه حذف خواهد کرد. با این تنظیم، داده‌های موجود قدیمی‌تر از # ماه هم حذف خواهد شد.}}"</string>

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.FragmentActivity
-import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.OnboardingElement
@@ -39,9 +38,13 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
             val editor = sharedPreference.edit()
             editor.putBoolean(getString(R.string.previously_opened), true)
             editor.apply()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            val nextIntentToOpen: Intent? = getIntentExtra()
+            nextIntentToOpen?.let { startActivity(getIntentExtra()) }
             finish()
         }
+    }
+
+    private fun getIntentExtra(): Intent? {
+        return intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
     }
 }

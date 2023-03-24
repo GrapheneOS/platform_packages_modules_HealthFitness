@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Verileri otomatik olarak sil"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# ay sonra}other{# ay sonra}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Hiçbir zaman"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Bu ayarları değiştirdiğinizde Health Connect mevcut verilerinizi silerek yeni tercihlerinizi uygular"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Veriler # ay sonra otomatik olarak silinsin mi?}other{Veriler # ay sonra otomatik olarak silinsin mi?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect yeni verileri # ay sonra otomatik olarak siler. Bunu ayarladığınızda # aydan daha eski mevcut veriler de silinir.}other{Health Connect yeni verileri # ay sonra otomatik olarak siler. Bunu ayarladığınızda # aydan daha eski mevcut veriler de silinir.}}"</string>

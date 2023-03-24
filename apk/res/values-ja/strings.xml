@@ -678,6 +678,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"データの自動削除"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# か月後}other{# か月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"なし"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"これらの設定を変更すると、ヘルスコネクトから既存のデータが削除され、新しい設定が反映されます"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# か月後にデータを自動削除しますか？}other{# か月後にデータを自動削除しますか？}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{今後のデータは # か月後にヘルスコネクトから自動削除されます。保存期間が # か月を超える既存のデータも削除されます。}other{今後のデータは # か月後にヘルスコネクトから自動削除されます。保存期間が # か月を超える既存のデータも削除されます。}}"</string>
