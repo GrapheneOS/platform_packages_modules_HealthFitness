@@ -16,8 +16,6 @@
 
 package android.healthconnect.cts;
 
-import static android.Manifest.permission.WRITE_DEVICE_CONFIG;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
@@ -30,6 +28,8 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.provider.DeviceConfig;
 
 import androidx.test.platform.app.InstrumentationRegistry;
+
+import com.android.modules.utils.build.SdkLevel;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -111,7 +111,13 @@ public class SessionDatatypeDisabledFeatureTest {
     }
 
     private void setSessionDatatypesFeatureEnabledFlag(boolean flag) throws InterruptedException {
-        mUiAutomation.adoptShellPermissionIdentity(WRITE_DEVICE_CONFIG);
+        if (SdkLevel.isAtLeastU()) {
+            mUiAutomation.adoptShellPermissionIdentity(
+                    "android.permission.ALLOWLISTED_WRITE_DEVICE_CONFIG");
+        } else {
+            mUiAutomation.adoptShellPermissionIdentity("android.permission.WRITE_DEVICE_CONFIG");
+        }
+
         DeviceConfig.setProperty(
                 DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                 "session_types_enable",
