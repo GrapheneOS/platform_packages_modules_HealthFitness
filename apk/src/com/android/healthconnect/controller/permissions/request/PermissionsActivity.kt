@@ -125,6 +125,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
         cancelButton.setOnClickListener {
             logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+            viewModel.updatePermissions(false)
             handleResults(viewModel.request(getPackageNameExtra()))
         }
     }
