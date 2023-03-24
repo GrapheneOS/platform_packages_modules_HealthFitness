@@ -41,7 +41,7 @@ public class ExerciseRouteDisabledFeatureTest {
             InstrumentationRegistry.getInstrumentation().getUiAutomation();
 
     @After
-    public void tearDown() {
+    public void tearDown() throws InterruptedException {
         setExerciseRouteFeatureEnabledFlag(true);
     }
 
@@ -76,7 +76,7 @@ public class ExerciseRouteDisabledFeatureTest {
         assertThat(readRecord.getRoute()).isNull();
     }
 
-    private void setExerciseRouteFeatureEnabledFlag(boolean flag) {
+    private void setExerciseRouteFeatureEnabledFlag(boolean flag) throws InterruptedException {
         mUiAutomation.adoptShellPermissionIdentity(WRITE_DEVICE_CONFIG);
         DeviceConfig.setProperty(
                 DeviceConfig.NAMESPACE_HEALTH_FITNESS,
@@ -84,5 +84,6 @@ public class ExerciseRouteDisabledFeatureTest {
                 flag ? "true" : "false",
                 false);
         mUiAutomation.dropShellPermissionIdentity();
+        Thread.sleep(100);
     }
 }
