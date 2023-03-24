@@ -74,7 +74,7 @@ public final class MigrationStateChangeJob {
             builder.setPersisted(true);
 
             HealthConnectDailyService.schedule(
-                context.getSystemService(JobScheduler.class), userId, builder.build());
+                    context.getSystemService(JobScheduler.class), userId, builder.build());
         }
     }
 
@@ -91,7 +91,7 @@ public final class MigrationStateChangeJob {
             builder.setPersisted(true);
 
             HealthConnectDailyService.schedule(
-                context.getSystemService(JobScheduler.class), userId, builder.build());
+                    context.getSystemService(JobScheduler.class), userId, builder.build());
         }
     }
 
@@ -150,7 +150,6 @@ public final class MigrationStateChangeJob {
         }
         PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
         String currentStateStartTime = preferenceHelper.getPreference(CURRENT_STATE_START_TIME_KEY);
-
         // This is a fallback but should never happen.
         if (Objects.isNull(currentStateStartTime)) {
             preferenceHelper.insertOrReplacePreference(
