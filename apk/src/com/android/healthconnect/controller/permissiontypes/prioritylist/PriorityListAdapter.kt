@@ -26,11 +26,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
 import com.android.healthconnect.controller.shared.app.AppMetadata
 
 /** RecyclerView adapter that holds the list of the priority list. */
-class PriorityListAdapter(appMetadataList: List<AppMetadata>) :
-    RecyclerView.Adapter<PriorityListAdapter.PriorityListItemViewHolder?>() {
+class PriorityListAdapter(
+    appMetadataList: List<AppMetadata>,
+    private val viewModel: HealthPermissionTypesViewModel
+) : RecyclerView.Adapter<PriorityListAdapter.PriorityListItemViewHolder?>() {
 
     private var listener: ItemTouchHelper? = null
     private var appMetadataList = appMetadataList.toMutableList()
@@ -58,6 +61,7 @@ class PriorityListAdapter(appMetadataList: List<AppMetadata>) :
         appMetadataList.add(
             if (toPosition > fromPosition + 1) toPosition - 1 else toPosition, movedAppInfo)
         notifyItemMoved(fromPosition, toPosition)
+        viewModel.setEditedPriorityList(appMetadataList)
         return true
     }
 

@@ -83,7 +83,8 @@ constructor(
 
         val clusters = clusterEntries(accessLogs, maxNumEntries, timeSource)
         clusters.forEach {
-            if (inactiveApps.contains(it.metadata.packageName)) {
+            if (inactiveApps.contains(it.metadata.packageName) ||
+                !appInfoReader.isAppInstalled(it.metadata.packageName)) {
                 it.isInactive = true
             }
         }
