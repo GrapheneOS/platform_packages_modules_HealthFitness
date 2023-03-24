@@ -26,9 +26,7 @@ import android.healthconnect.cts.ui.testing.ActivityLauncher.launchDataActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
 import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
-import android.healthconnect.cts.ui.testing.UiTestUtils.waitNotDisplayed
 import androidx.test.uiautomator.By
-import java.time.Duration.ofDays
 import java.time.Instant
 import org.junit.After
 import org.junit.BeforeClass
@@ -93,54 +91,55 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
         }
     }
 
-    //TODO(b/274920669) Fix flaky tests
-//    @Test
-//    fun categoriesFragment_deleteAllData() {
-//        val records: List<Record> = listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(100))))
-//        insertRecords(records)
-//
-//        context.launchDataActivity {
-//            waitDisplayed(By.text("Activity"))
-//
-//            clickOnText("Delete all data")
-//            clickOnText("Delete all data")
-//            clickOnText("Next")
-//            clickOnText("Delete")
-//            clickOnText("Done")
-//        }
-//
-//        context.launchDataActivity { waitNotDisplayed(By.text("Activity")) }
-//    }
-//
-//    @Test
-//    fun categoriesFragment_withDataOlderThanRange_deletesAllDataInRange_showsCategory() {
-//        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
-//
-//        context.launchDataActivity {
-//            waitDisplayed(By.text("Activity"))
-//
-//            clickOnText("Delete all data")
-//            clickOnText("Delete last 7 days")
-//            clickOnText("Next")
-//            clickOnText("Delete")
-//            clickOnText("Done")
-//
-//            waitDisplayed(By.text("Activity"))
-//        }
-//    }
-//
-//    @Test
-//    fun categoriesFragment_withNoDataBeforeRange_deletesAllDataInRange_removesCategory() {
-//        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
-//
-//        context.launchDataActivity {
-//            clickOnText("Delete all data")
-//            clickOnText("Delete last 30 days")
-//            clickOnText("Next")
-//            clickOnText("Delete")
-//            clickOnText("Done")
-//
-//            waitNotDisplayed(By.text("Activity"))
-//        }
-//    }
+    // TODO(b/274920669) Fix flaky tests
+    //    @Test
+    //    fun categoriesFragment_deleteAllData() {
+    //        val records: List<Record> =
+    // listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(100))))
+    //        insertRecords(records)
+    //
+    //        context.launchDataActivity {
+    //            waitDisplayed(By.text("Activity"))
+    //
+    //            clickOnText("Delete all data")
+    //            clickOnText("Delete all data")
+    //            clickOnText("Next")
+    //            clickOnText("Delete")
+    //            clickOnText("Done")
+    //        }
+    //
+    //        context.launchDataActivity { waitNotDisplayed(By.text("Activity")) }
+    //    }
+    //
+    //    @Test
+    //    fun categoriesFragment_withDataOlderThanRange_deletesAllDataInRange_showsCategory() {
+    //        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
+    //
+    //        context.launchDataActivity {
+    //            waitDisplayed(By.text("Activity"))
+    //
+    //            clickOnText("Delete all data")
+    //            clickOnText("Delete last 7 days")
+    //            clickOnText("Next")
+    //            clickOnText("Delete")
+    //            clickOnText("Done")
+    //
+    //            waitDisplayed(By.text("Activity"))
+    //        }
+    //    }
+    //
+    //    @Test
+    //    fun categoriesFragment_withNoDataBeforeRange_deletesAllDataInRange_removesCategory() {
+    //        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
+    //
+    //        context.launchDataActivity {
+    //            clickOnText("Delete all data")
+    //            clickOnText("Delete last 30 days")
+    //            clickOnText("Next")
+    //            clickOnText("Delete")
+    //            clickOnText("Done")
+    //
+    //            waitNotDisplayed(By.text("Activity"))
+    //        }
+    //    }
 }

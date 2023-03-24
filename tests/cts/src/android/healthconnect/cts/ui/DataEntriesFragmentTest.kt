@@ -15,7 +15,6 @@
  */
 package android.healthconnect.cts.ui
 
-import android.app.DatePickerDialog
 import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.StepsRecord
