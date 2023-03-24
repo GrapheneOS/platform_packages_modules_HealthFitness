@@ -232,7 +232,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                 // TODO (b/270859815) might need to navigate to appAccess instead
                 findNavController()
                     .navigate(
-                        R.id.action_healthDataAccessFragment_to_manageAppPermissions,
+                        R.id.action_healthDataAccessFragment_to_appAccess,
                         bundleOf(EXTRA_PACKAGE_NAME to appMetadata.packageName))
                 true
             }
