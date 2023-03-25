@@ -51,6 +51,7 @@ import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,6 +94,10 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             finish()
         }
 
+        if (maybeRedirectIntoTwoPaneSettings(this)) {
+            return
+        }
+
         val rationalIntentDeclared =
             healthPermissionReader.isRationalIntentDeclared(getPackageNameExtra())
         if (!rationalIntentDeclared) {
@@ -125,6 +130,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
         cancelButton.setOnClickListener {
             logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+            viewModel.updatePermissions(false)
             handleResults(viewModel.request(getPackageNameExtra()))
         }
     }
