@@ -114,6 +114,11 @@ class PermissionsActivityTest {
                     TEST_APP_NAME,
                     context.getDrawable(R.drawable.health_connect_logo)))
         }
+        val sharedPreference =
+            context.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.putBoolean("Previously Opened", true)
+        editor.apply()
     }
 
     @Test

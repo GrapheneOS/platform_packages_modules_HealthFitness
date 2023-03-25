@@ -16,6 +16,7 @@
 package android.healthconnect.cts.ui
 
 import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.StepsRecord
 import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.TestUtils.verifyDeleteRecords
@@ -50,6 +51,12 @@ class PermissionTypesFragmentTest : HealthConnectBaseTest() {
         fun teardown() {
             verifyDeleteRecords(
                 StepsRecord::class.java,
+                TimeInstantRangeFilter.Builder()
+                    .setStartTime(Instant.EPOCH)
+                    .setEndTime(Instant.now())
+                    .build())
+            verifyDeleteRecords(
+                DistanceRecord::class.java,
                 TimeInstantRangeFilter.Builder()
                     .setStartTime(Instant.EPOCH)
                     .setEndTime(Instant.now())
