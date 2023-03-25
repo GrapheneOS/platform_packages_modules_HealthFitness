@@ -109,7 +109,11 @@ public class GetApplicationInfoTest {
 
         try {
             Context context = ApplicationProvider.getApplicationContext();
+            CountDownLatch latch = new CountDownLatch(1);
             TestUtils.insertRecords(TestUtils.getTestRecords());
+            // Wait for some time, as app info table will be  updated in the background so might
+            // take some additional time.
+            latch.await(1, TimeUnit.SECONDS);
 
             List<AppInfo> result = TestUtils.getApplicationInfo();
             assertThat(result).hasSize(1);

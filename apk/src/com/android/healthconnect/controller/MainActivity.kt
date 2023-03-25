@@ -40,9 +40,11 @@ class MainActivity : Hilt_MainActivity() {
         val previouslyOpened =
             sharedPreference.getBoolean(getString(R.string.previously_opened), false)
         if (!previouslyOpened) {
-            val intent = Intent(this, OnboardingActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
+            val onboardingIntent = Intent(this, OnboardingActivity::class.java)
+            onboardingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val intentAfterOnboarding = Intent(this, MainActivity::class.java)
+            onboardingIntent.putExtra(Intent.EXTRA_INTENT, intentAfterOnboarding)
+            startActivity(onboardingIntent)
             finish()
         }
     }

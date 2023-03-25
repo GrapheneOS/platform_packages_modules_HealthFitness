@@ -39,6 +39,7 @@ import android.os.PersistableBundle;
 import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
+import com.android.internal.annotations.VisibleForTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -174,7 +175,8 @@ public final class MigrationBroadcastScheduler {
     }
 
     /** Returns the interval between each migration broadcast job for the given migration state. */
-    private static long getRequiredInterval(int migrationState) {
+    @VisibleForTesting
+    public static long getRequiredInterval(int migrationState) {
         switch (migrationState) {
             case MIGRATION_STATE_IDLE:
                 return calculateRequiredInterval(

@@ -30,6 +30,9 @@ import static com.android.server.healthconnect.migration.MigrationConstants.HC_R
 import static com.android.server.healthconnect.migration.MigrationConstants.MAX_START_MIGRATION_CALLS_ALLOWED;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STARTS_COUNT_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_PREFERENCE_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.NON_IDLE_STATE_TIMEOUT_PERIOD;
 import static com.android.server.healthconnect.migration.MigrationUtils.filterIntent;
 import static com.android.server.healthconnect.migration.MigrationUtils.filterPermissions;
@@ -74,11 +77,7 @@ public final class MigrationStateManager {
     private static MigrationStateManager sMigrationStateManager;
 
     private static final Object sInstanceLock = new Object();
-    private static final String MIGRATION_STATE_PREFERENCE_KEY = "migration_state";
-    private static final String MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY =
-            "min_data_migration_sdk_extension_version";
     private static final String TAG = "MigrationStateManager";
-    private static final String MIGRATION_STARTS_COUNT_KEY = "migration_starts_count";
 
     @GuardedBy("mLock")
     private final Set<StateChangedListener> mStateChangedListeners = new CopyOnWriteArraySet<>();
@@ -191,7 +190,9 @@ public final class MigrationStateManager {
     private void updateMigrationStateGuarded(
             @NonNull Context context, @HealthConnectDataState.DataMigrationState int state) {
         if (state == getMigrationState()) {
-            Slog.e(TAG, "The new state same as the current state.");
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "The new state same as the current state.");
+            }
             return;
         }
 
@@ -211,17 +212,22 @@ public final class MigrationStateManager {
                 updateMigrationStartsCount();
                 return;
             case MIGRATION_STATE_ALLOWED:
-                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
-                if (hasAllowedStateTimedOut()) {
+                if (hasAllowedStateTimedOut()
+                        || getStartMigrationCount() >= MAX_START_MIGRATION_CALLS_ALLOWED) {
                     updateMigrationState(context, MIGRATION_STATE_COMPLETE);
                     return;
                 }
+                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
                 updateMigrationStatePreference(context, MIGRATION_STATE_ALLOWED);
                 MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
                 return;
             case MIGRATION_STATE_COMPLETE:
                 updateMigrationStatePreference(context, MIGRATION_STATE_COMPLETE);
                 MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
+                return;
+            default:
+                throw new IllegalArgumentException(
+                        "Cannot updated migration state. Unknown state: " + state);
         }
     }
 
@@ -257,25 +263,6 @@ public final class MigrationStateManager {
     @GuardedBy("mLock")
     private void validateStartMigrationGuarded() throws IllegalMigrationStateException {
         throwIfMigrationIsComplete();
-        if (getMigrationState() == MIGRATION_STATE_IN_PROGRESS) {
-            return;
-        }
-
-        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
-        int migrationStartsCount =
-                Integer.parseInt(
-                        Optional.ofNullable(
-                                        preferenceHelper.getPreference(MIGRATION_STARTS_COUNT_KEY))
-                                .orElse("0"));
-
-        if (migrationStartsCount > MAX_START_MIGRATION_CALLS_ALLOWED) {
-            throw new IllegalMigrationStateException(
-                    "Caller has exceeded the number of startMigration calls allowed. Migration "
-                            + "is marked Complete now.");
-        }
-
-        preferenceHelper.insertOrReplacePreference(
-                MIGRATION_STARTS_COUNT_KEY, String.valueOf(migrationStartsCount));
     }
 
     /**
@@ -363,6 +350,9 @@ public final class MigrationStateManager {
         }
 
         if (getMigrationState() != MIGRATION_STATE_COMPLETE) {
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "Migrator package uninstalled. Marking migration complete.");
+            }
             updateMigrationState(context, MIGRATION_STATE_COMPLETE);
         }
     }
@@ -629,7 +619,8 @@ public final class MigrationStateManager {
     private static boolean hasMatchingSignatures(
             List<String> stringSignatures, String[] migrationKnownSignerCertificates) {
         return !Collections.disjoint(
-                stringSignatures, Arrays.stream(migrationKnownSignerCertificates).toList());
+                stringSignatures.stream().map(String::toLowerCase).toList(),
+                Arrays.stream(migrationKnownSignerCertificates).map(String::toLowerCase).toList());
     }
 
     private static String[] getMigrationKnownSignerCertificates(Context context) {
@@ -647,6 +638,14 @@ public final class MigrationStateManager {
 
     private int getUdcSdkExtensionVersion() {
         return SdkExtensions.getExtensionVersion(Build.VERSION_CODES.UPSIDE_DOWN_CAKE);
+    }
+
+    private int getStartMigrationCount() {
+        return Integer.parseInt(
+                Optional.ofNullable(
+                                PreferenceHelper.getInstance()
+                                        .getPreference(MIGRATION_STARTS_COUNT_KEY))
+                        .orElse("0"));
     }
 
     /**
