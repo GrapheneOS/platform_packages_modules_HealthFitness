@@ -17,8 +17,10 @@ package com.android.healthconnect.controller.route
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.health.connect.HealthConnectManager.ACTION_REQUEST_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
 import android.os.Bundle
@@ -32,6 +34,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
+import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel.SessionWithAttribution
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.map.MapView
@@ -59,6 +62,27 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /** Displaying onboarding screen if user is opening Health Connect app for the first time */
+        val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+        val previouslyOpened =
+            sharedPreference.getBoolean(getString(R.string.previously_opened), false)
+        if (!previouslyOpened) {
+            val onboardingIntent = Intent(this, OnboardingActivity::class.java)
+            onboardingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val intentAfterOnboarding = Intent(ACTION_REQUEST_EXERCISE_ROUTE)
+            if (intent.hasExtra(EXTRA_SESSION_ID)) {
+                intentAfterOnboarding.putExtra(
+                    EXTRA_SESSION_ID, intent.getStringExtra(EXTRA_SESSION_ID)!!)
+            }
+            if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
+                intentAfterOnboarding.putExtra(
+                    EXTRA_PACKAGE_NAME, intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
+            }
+            onboardingIntent.putExtra(Intent.EXTRA_INTENT, intentAfterOnboarding)
+            startActivity(onboardingIntent)
+            finish()
+        }
 
         if (!featureUtils.isExerciseRouteEnabled()) {
             Log.e(TAG, "Exercise routes not available, finishing.")
