@@ -93,7 +93,6 @@ class GeneralUtils {
             val fields: List<Field> =
                 obj.java.declaredFields.filter { field ->
                     Modifier.isStatic(field.modifiers) &&
-                        field.isAccessible &&
                         field.type == Int::class.java
                 }
             for (field in fields) {
