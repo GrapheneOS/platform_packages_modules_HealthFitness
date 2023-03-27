@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts;
+package android.healthconnect.cts.testhelper;
 
 import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
