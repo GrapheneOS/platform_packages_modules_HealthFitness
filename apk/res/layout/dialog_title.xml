@@ -38,6 +38,6 @@
         android:maxLines="4"
         android:singleLine="false"
         android:textAlignment="?attr/alertDialogTitleTextAlignment"
-        style="@style/TextAppearance.PreferenceTitle.SettingsLib" />
+        android:textAppearance="?attr/textAppearanceHeadline4" />
 
 </LinearLayout>

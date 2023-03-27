@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/spacing_large"
         android:layout_marginEnd="@dimen/spacing_large"
-        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginStart="@dimen/spacing_normal"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
