@@ -29,4 +29,15 @@
         <option name="package" value="com.android.health.connect.backuprestore.tests" />
         <option name="runner" value="androidx.test.runner.AndroidJUnitRunner" />
     </test>
+
+    <option
+        name="config-descriptor:metadata"
+        key="mainline-param"
+        value="com.google.android.healthfitness.apex"/>
+
+    <object type="module_controller"
+            class="com.android.tradefed.testtype.suite.module.MainlineTestModuleController">
+        <option name="mainline-module-package-name" value="com.google.android.healthfitness"/>
+    </object>
+
 </configuration>
