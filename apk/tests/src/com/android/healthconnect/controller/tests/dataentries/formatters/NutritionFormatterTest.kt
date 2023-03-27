@@ -96,7 +96,7 @@ class NutritionFormatterTest {
     @Test
     fun formatValue_cal_formatsEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
-        val record = getBuilder().setEnergy(fromCalories(295.0)).build()
+        val record = getBuilder().setEnergy(fromCalories(295000.0)).build()
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("Energy: 295 Cal")
     }
@@ -104,7 +104,7 @@ class NutritionFormatterTest {
     @Test
     fun formatA11yValue_cal_formatsMass() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
-        val record = getBuilder().setEnergy(fromCalories(295.0)).build()
+        val record = getBuilder().setEnergy(fromCalories(295000.0)).build()
 
         assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("Energy: 295 calories")
     }
@@ -118,8 +118,8 @@ class NutritionFormatterTest {
                 .setBiotin(fromGrams(4.0))
                 .setCaffeine(fromGrams(12.0))
                 .setCalcium(fromGrams(5.0))
-                .setEnergyFromFat(fromCalories(30.0))
-                .setEnergy(fromCalories(30.0))
+                .setEnergyFromFat(fromCalories(30000.0))
+                .setEnergy(fromCalories(30000.0))
                 .setChloride(fromGrams(11.0))
                 .setCholesterol(fromGrams(20.0))
                 .setChromium(fromGrams(10.0))
