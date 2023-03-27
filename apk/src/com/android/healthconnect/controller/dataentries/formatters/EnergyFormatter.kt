@@ -63,7 +63,7 @@ object EnergyFormatter {
     ): String {
         val value =
             when (energyUnit) {
-                CALORIE -> energy.inCalories
+                CALORIE -> energy.inCalories / 1000.0
                 KILOJOULE -> convertToJoules(energy.inCalories) / 1000.0
             }
         return format(context.getString(res), mapOf("count" to value.roundToInt()))
