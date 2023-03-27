@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.dataaccess
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
@@ -35,6 +36,8 @@ import com.android.healthconnect.controller.permissions.connectedapps.HealthAppP
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
@@ -42,6 +45,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.logging.DataAccessElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,6 +54,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
 
     companion object {
+        private const val DATA_ACCESS_HEADER = "data_access_header"
         private const val PERMISSION_TYPE_DESCRIPTION = "permission_type_description"
         private const val CAN_READ_SECTION = "can_read"
         private const val CAN_WRITE_SECTION = "can_write"
@@ -65,6 +70,10 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
     private val viewModel: HealthDataAccessViewModel by viewModels()
 
     private lateinit var permissionType: HealthPermissionType
+
+    private val mDataAccessHeader: AppHeaderPreference? by lazy {
+        preferenceScreen.findPreference(DATA_ACCESS_HEADER)
+    }
 
     private val mPermissionTypeDescription: TopIntroPreference? by lazy {
         preferenceScreen.findPreference(PERMISSION_TYPE_DESCRIPTION)
@@ -152,6 +161,10 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mDataAccessHeader?.icon =
+            ResourcesCompat.getDrawable(
+                resources, fromHealthPermissionType(permissionType).icon(), requireContext().theme)
+        mDataAccessHeader?.title = getString(fromPermissionType(permissionType).uppercaseLabel)
         viewModel.loadAppMetaDataMap(permissionType)
         viewModel.appMetadataMap.observe(viewLifecycleOwner) { state ->
             when (state) {
