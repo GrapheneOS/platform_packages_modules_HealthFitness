@@ -38,7 +38,7 @@
         android:layout_marginHorizontal="@dimen/spacing_normal"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
+        android:textAppearance="?attr/textAppearanceSubheader" />
 
     <FrameLayout
         android:id="@+id/drag_icon"
@@ -53,7 +53,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:minHeight="@dimen/icon_size"
             android:minWidth="@dimen/icon_size"
-            android:background="@drawable/quantum_gm_ic_drag_handle_vd_theme_24"
+            android:background="?attr/priorityItemDragIcon"
             android:importantForAccessibility="no" />
     </FrameLayout>
 </LinearLayout>

@@ -22,6 +22,6 @@
         android:id="@+id/dialog_custom_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="start"
         style="?attr/textAppearanceSummary" />
 </LinearLayout>
