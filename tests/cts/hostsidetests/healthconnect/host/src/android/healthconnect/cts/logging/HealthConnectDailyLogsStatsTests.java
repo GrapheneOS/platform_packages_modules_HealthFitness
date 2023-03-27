@@ -85,10 +85,13 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         HealthConnectStorageStats atom =
                 data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectStorageStats);
         assertThat(atom.getDatabaseSize()).isGreaterThan(0);
-        assertThat(atom.getInstantDataCount()).isGreaterThan(0);
-        assertThat(atom.getIntervalDataCount()).isGreaterThan(0);
-        assertThat(atom.getSeriesDataCount()).isGreaterThan(0);
-        assertThat(atom.getChangelogCount()).isGreaterThan(0);
+        assertThat(atom.getInstantDataCount()).isEqualTo(1);
+        assertThat(atom.getIntervalDataCount()).isEqualTo(1);
+        assertThat(atom.getSeriesDataCount()).isEqualTo(1);
+        assertThat(atom.getChangelogCount()).isGreaterThan(2);
+        // To clear the data once the database stats have been verified
+        DeviceUtils.runDeviceTests(
+                getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", "deleteAllRecordsAddedForTest");
     }
 
     private ExtensionRegistry uploadAtomConfigAndTriggerTest(String testName, int atomFieldNumber)
@@ -97,7 +100,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(), DeviceUtils.STATSD_ATOM_TEST_PKG, new int[] {atomFieldNumber});
 
         if (testName != null) {
-            DeviceUtils.runDeviceTests(getDevice(), TEST_APP_PKG_NAME, ".LoggingTests", testName);
+            DeviceUtils.runDeviceTests(getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", testName);
         }
 
         ExtensionRegistry registry = ExtensionRegistry.newInstance();
