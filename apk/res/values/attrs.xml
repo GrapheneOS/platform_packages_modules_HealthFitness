@@ -52,6 +52,8 @@
     <attr name="nextDayIcon" format="reference"/>
     <attr name="previousDayIcon" format="reference"/>
 
+    <attr name="healthConnectIcon" format="reference"/>
+
     <!-- Dialogs -->
     <attr name="deleteSettingsIcon" format="reference" />
     <attr name="successIcon" format="reference" />
@@ -59,6 +61,14 @@
     <attr name="disconnectAllIcon" format="reference" />
     <attr name="disconnectIcon" format="reference" />
     <attr name="deniedAppsBannerIcon" format="reference" />
+    <attr name="priorityItemDragIcon" format="reference" />
+
+    <!-- Request permissions-->
+    <attr name="chooseDataIcon" format="reference" />
+    <attr name="accessHistoryIcon" format="reference" />
+    <attr name="privacyPolicyIcon" format="reference" />
+    <attr name="manageSettingsIcon" format="reference"/>
+    <attr name="syncIcon" format="reference"/>
     <!--  endregion -->
 
     <!-- Gravity for dialogs. Uses Android gravity values defined at
@@ -69,17 +79,23 @@
     <attr name="alertDialogTitleIconVisibility" format="reference" />
 
     <!-- Text Appearance -->
-    <attr name="textAppearancePageTitle" format="reference" />
-    <attr name="textAppearanceTitle" format="reference" />
-    <attr name="textAppearanceTitleSecondary" format="reference" />
-    <attr name="textAppearanceSectionTitle" format="reference" />
+    <!-- Google Sans Text -->
+    <!-- Preference summary OG, 400/14/20/0.25-->
     <attr name="textAppearanceSummary" format="reference" />
+    <attr name="textAppearanceSummaryLarge" format="reference"/>
+    <attr name="textAppearanceLabel" format="reference"/>
+    <attr name="textAppearanceLabelCompact" format="reference"/>
+
+    <!-- Google Sans   -->
+    <attr name="textAppearanceHeadline6" format="reference"/>
+    <!-- Preference title OG 400/20/24-->
     <attr name="textAppearanceItem" format="reference" />
-    <attr name="textAppearanceItemSummary" format="reference" />
-    <attr name="textAppearanceLabel" format="reference" />
-    <attr name="textAppearanceLabelLarge" format="reference" />
-    <attr name="textAppearanceOnboardingDescription" format="reference" />
-    <attr name="textAppearanceOnboardingHeader" format="reference" />
+    <attr name="textAppearanceHeadline4" format="reference" />
+    <attr name="textAppearanceHeadline3" format="reference" />
+    <attr name="textAppearanceHeadline2" format="reference" />
+    <attr name="textAppearanceLabelSmall" format="reference"/>
+    <attr name="textAppearanceSubheader" format="reference"/>
+    <attr name="textAppearanceRouteRequest" format="reference"/>
 
     <attr name="listItemPaddingTop" format="reference" />
     <attr name="listItemPaddingBottom" format="reference" />

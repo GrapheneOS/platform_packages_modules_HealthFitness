@@ -21,7 +21,7 @@
     android:paddingBottom="?attr/listItemPaddingBottom"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:minHeight="72dp"
+    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     tools:ignore="Overdraw">
 
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_marginEnd="@dimen/spacing_normal"
-        android:minWidth="60dp"
+        android:minWidth="@dimen/recent_access_date_min_width"
         android:orientation="vertical">
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
             android:gravity="center_vertical"
-            android:textAppearance="?attr/textAppearanceItemSummary"
+            android:textAppearance="?attr/textAppearanceSummary"
             android:textDirection="locale"
             android:visibility="gone" />
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
             android:gravity="center_vertical"
-            android:textAppearance="?attr/textAppearanceItemSummary"
+            android:textAppearance="?attr/textAppearanceSummary"
             android:textDirection="locale" />
 
     </LinearLayout>
@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textAppearance="?attr/textAppearanceItemSummary"
+            android:textAppearance="?attr/textAppearanceSummary"
             android:textDirection="locale"
             android:visibility="gone" />
 
@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textAppearance="?attr/textAppearanceItemSummary"
+            android:textAppearance="?attr/textAppearanceSummary"
             android:textDirection="locale"
             android:visibility="gone" />
     </LinearLayout>

@@ -15,7 +15,7 @@
 -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scroll_view"
-    android:visibility="visible"
+    android:paddingHorizontal="@dimen/spacing_large"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,20 +29,18 @@
             android:id="@+id/onboarding_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_onboarding_page_title"
-            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_page_title"
             android:text="@string/onboarding_title"
-            android:textAppearance="?attr/textAppearancePageTitle" />
+            android:textAppearance="?attr/textAppearanceHeadline2" />
 
         <TextView
             android:id="@+id/onboarding_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:layout_marginHorizontal="@dimen/spacing_large"
-            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:text="@string/onboarding_description"
-            android:textAppearance="?attr/textAppearanceSummary" />
+            android:textAppearance="?attr/textAppearanceSummaryLarge" />
 
         <ImageView
             android:id="@+id/onboarding_image"
@@ -51,21 +49,19 @@
             android:layout_gravity="center_horizontal"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_onboarding"
-            android:layoutDirection="ltr"
-            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:scaleType="centerInside" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_marginBottom="@dimen/spacing_normal">
 
             <ImageView
                 android:id="@+id/share_icon"
-                android:src="@drawable/ic_baseline_sync_24"
+                android:src="?attr/syncIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_normal"
@@ -82,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:textAppearance="?attr/textAppearanceOnboardingHeader" />
+                    android:textAppearance="?attr/textAppearanceSubheader" />
 
                 <TextView
                     android:id="@+id/share_description"
@@ -90,20 +86,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="3"
-                    android:textAppearance="?attr/textAppearanceOnboardingDescription" />
+                    android:textAppearance="?attr/textAppearanceSummaryLarge" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/manage_icon"
-                android:src="@drawable/manage_settings_icon"
+                android:src="?attr/manageSettingsIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_normal"
@@ -120,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:textAppearance="?attr/textAppearanceOnboardingHeader" />
+                    android:textAppearance="?attr/textAppearanceSubheader" />
 
                 <TextView
                     android:id="@+id/description"
@@ -128,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="3"
-                    android:textAppearance="?attr/textAppearanceOnboardingDescription" />
+                    android:textAppearance="?attr/textAppearanceSummaryLarge" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
