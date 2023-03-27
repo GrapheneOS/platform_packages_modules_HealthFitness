@@ -17,6 +17,21 @@ package {
 }
 
 android_test_helper_app {
+    name: "CtsHealthConnectTestApp",
+    defaults: ["cts_defaults"],
+    manifest: "HealthConnectTestHelper/CtsHealthConnectTestApp.xml",
+    platform_apis: true,
+    static_libs: [
+        "ctstestrunner-axt",
+        "cts-healthconnect-lib"
+    ],
+    sdk_version: "test_current",
+    min_sdk_version: "UpsideDownCake",
+    srcs: ["HealthConnectTestHelper/src/**/*.java"],
+    libs: ["junit"],
+}
+
+android_test_helper_app {
     name: "CtsHealthConnectTestAppAWithNormalReadWritePermission",
     manifest: "HealthConnectTestHelper/CtsHealthConnectTestAppAWithNormalReadWritePermission.xml",
     static_libs: ["cts-healthconnect-lib"],
@@ -86,5 +101,30 @@ android_test {
           ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
           ":CtsHealthConnectTestAppWithDataManagePermission",
           ":CtsHealthConnectTestAppWithNoPermission",
+    ]
+}
+
+java_test_host {
+    name: "CtsHealthConnectHostTestCases",
+    defaults: ["cts_defaults"],
+    srcs: [
+        "host/**/*.java",
+    ],
+    test_suites: [
+        "cts",
+        "general-tests",
+        "mts-healthfitness",
+    ],
+    libs: [
+        "compatibility-host-util",
+        "cts-tradefed",
+        "tradefed",
+        "truth-prebuilt",
+    ],
+    static_libs: [
+        "cts-statsd-atom-host-test-utils",
+    ],
+    data: [
+        ":CtsHealthConnectTestApp",
     ]
 }

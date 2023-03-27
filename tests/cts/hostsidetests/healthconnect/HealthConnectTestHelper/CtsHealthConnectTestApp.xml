@@ -16,26 +16,37 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.cts.testapp.readWritePerms.A"
+          package="android.healthconnect.cts.testhelper"
           android:versionCode="1"
           android:versionName="1.0">
 
     <uses-permission android:name="android.permission-group.HEALTH"/>
     <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA"/>
-    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+
+    <!--Do not request permissions for Height. Tests rely on Height Permission being not granted.-->
+    <uses-permission android:name="android.permission.health.WRITE_BLOOD_PRESSURE" />
     <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
-    <uses-permission android:name="android.permission.health.WRITE_BASAL_METABOLIC_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+
+    <!--Do not request permissions for Height. Tests rely on Height Permission being not granted.-->
+    <uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE" />
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
 
 
     <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission">
         <activity android:name="android.healthconnect.cts.testhelper.HealthConnectTestHelper"
                   android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
             </intent-filter>
         </activity>
-
     </application>
+
+    <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
+        android:targetPackage="android.healthconnect.cts.testhelper"
+        android:label="CTS tests of Health Connect">
+        <meta-data android:name="listener"
+            android:value="com.android.cts.runner.CtsTestRunListener"/>
+    </instrumentation>
 </manifest>

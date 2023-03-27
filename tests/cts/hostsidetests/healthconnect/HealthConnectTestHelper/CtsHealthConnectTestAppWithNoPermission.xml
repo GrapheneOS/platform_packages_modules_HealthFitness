@@ -21,7 +21,7 @@
           android:versionName="1.0">
 
     <application android:label="CtsHealthConnectTestAppWithNoPermission">
-        <activity android:name="android.healthconnect.cts.HealthConnectTestHelper"
+        <activity android:name="android.healthconnect.cts.testhelper.HealthConnectTestHelper"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
