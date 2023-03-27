@@ -105,6 +105,8 @@
             android:layout_height="@dimen/round_map_size"
             android:layout_gravity="center_vertical"
             android:gravity="center"
+            android:paddingTop="@dimen/spacing_small"
+            android:paddingBottom="@dimen/spacing_small"
             android:orientation="horizontal">
             <View
                 android:layout_width="1dp"
