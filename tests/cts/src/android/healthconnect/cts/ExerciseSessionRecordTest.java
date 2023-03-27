@@ -86,6 +86,13 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test
+    public void testBuildSession_noException() {
+        for (int i = 0; i < 200; i++) {
+            TestUtils.buildExerciseSession();
+        }
+    }
+
+    @Test
     public void testExerciseSession_buildEqualSessions_equalsReturnsTrue() {
         Metadata metadata = TestUtils.generateMetadata();
         ExerciseSessionRecord record =
@@ -162,7 +169,7 @@ public class ExerciseSessionRecordTest {
                         new ExerciseRoute(
                                 List.of(
                                         new ExerciseRoute.Location.Builder(
-                                                        SESSION_END_TIME.plusMillis(1), 10.0, 10.0)
+                                                        SESSION_END_TIME.plusSeconds(1), 10.0, 10.0)
                                                 .build())))
                 .build();
     }
@@ -178,7 +185,7 @@ public class ExerciseSessionRecordTest {
                         new ExerciseRoute(
                                 List.of(
                                         new ExerciseRoute.Location.Builder(
-                                                        SESSION_START_TIME.minusMillis(1),
+                                                        SESSION_START_TIME.minusSeconds(1),
                                                         10.0,
                                                         10.0)
                                                 .build())))
@@ -330,7 +337,7 @@ public class ExerciseSessionRecordTest {
     public void testReadByClientId_insertAndReadByDefaultFilter_filteredAll()
             throws InterruptedException {
         List<Record> records = List.of(TestUtils.buildExerciseSession(), buildSessionMinimal());
-        TestUtils.insertRecords(records);
+        assertThat(TestUtils.insertRecords(records)).hasSize(2);
 
         List<ExerciseSessionRecord> readRecords =
                 TestUtils.readRecords(
