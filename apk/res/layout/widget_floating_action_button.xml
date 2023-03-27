@@ -8,6 +8,6 @@
     android:text="@string/manage_permissions"
     android:layout_gravity="bottom|center"
     android:layout_margin="@dimen/spacing_large"
-    android:textAppearance="@style/TextAppearance.CategoryTitle.SettingsLib"
+    android:textAppearance="?attr/textAppearanceLabelCompact"
     android:backgroundTint="@color/filter_chip_selected_color"
     android:theme="@style/Theme.MaterialComponents.DayNight" />
