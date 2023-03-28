@@ -44,8 +44,6 @@ class DataAccessFragmentTest : HealthConnectBaseTest() {
         }
     }
 
-    // TODO(b/265789268): Add inactive apps test.
-
     @Test
     fun dataAccess_deleteCategoryData_showsDeleteDataRanges() {
         insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(Duration.ofDays(20)))))
