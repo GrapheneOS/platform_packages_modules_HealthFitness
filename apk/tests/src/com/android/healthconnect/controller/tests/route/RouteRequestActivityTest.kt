@@ -112,6 +112,12 @@ class RouteRequestActivityTest {
         context = getInstrumentation().context
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+
+        val sharedPreference =
+            context.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.putBoolean("Previously Opened", true)
+        editor.apply()
     }
 
     @Test
@@ -287,26 +293,31 @@ class RouteRequestActivityTest {
     @Test
     fun intentLaunchesPermissionsActivity_sessionWithNoTitle() {
         val startActivityIntent =
-                Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                        .putExtra(EXTRA_SESSION_ID, "sessionID")
-                        .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
+                .putExtra(EXTRA_SESSION_ID, "sessionID")
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         `when`(viewModel.exerciseSession).then {
-            MutableLiveData(SessionWithAttribution( ExerciseSessionRecord.Builder(
-                    getMetaData(),
-                    START,
-                    START.plusMillis(123456),
-                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
-                    .setRoute(
+            MutableLiveData(
+                SessionWithAttribution(
+                    ExerciseSessionRecord.Builder(
+                            getMetaData(),
+                            START,
+                            START.plusMillis(123456),
+                            ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                        .setRoute(
                             ExerciseRoute(
-                                    listOf(
-                                            ExerciseRoute.Location.Builder(START.plusSeconds(12), 52.26019, 21.02268)
-                                                    .build(),
-                                            ExerciseRoute.Location.Builder(START.plusSeconds(40), 52.26000, 21.02360)
-                                                    .build())))
-                    .build(), TEST_APP))
+                                listOf(
+                                    ExerciseRoute.Location.Builder(
+                                            START.plusSeconds(12), 52.26019, 21.02268)
+                                        .build(),
+                                    ExerciseRoute.Location.Builder(
+                                            START.plusSeconds(40), 52.26000, 21.02360)
+                                        .build())))
+                        .build(),
+                    TEST_APP))
         }
 
         launchActivityForResult<RouteRequestActivity>(startActivityIntent)
@@ -315,16 +326,16 @@ class RouteRequestActivityTest {
         onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(
                 withText(
-                        "Allow Health Connect test app 2 to access this exercise route in Health Connect?"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+                    "Allow Health Connect test app 2 to access this exercise route in Health Connect?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         onView(withText("This app will be able to read your past location in the route"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         onView(withText("Running")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("February 13, 2009 • Health Connect test app"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         onView(withId(R.id.map_view)).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 
@@ -344,7 +355,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<LinearLayout>(R.id.more_info).callOnClick()
+            activity.dialog.findViewById<LinearLayout>(R.id.more_info)?.callOnClick()
         }
 
         onView(withText("Exercise routes include location information"))
@@ -378,7 +389,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<Button>(R.id.route_dont_allow_button).callOnClick()
+            activity.dialog.findViewById<Button>(R.id.route_dont_allow_button)?.callOnClick()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
@@ -402,7 +413,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<Button>(R.id.route_allow_button).callOnClick()
+            activity.dialog.findViewById<Button>(R.id.route_allow_button)?.callOnClick()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/priority_dialog_title"
-            android:textAppearance="?attr/textAppearanceTitle" />
+            android:textAppearance="?attr/textAppearanceHeadline4" />
 
         <TextView
             android:id="@+id/priority_list_message"
@@ -45,6 +45,6 @@
             android:id="@+id/priority_list_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"></androidx.recyclerview.widget.RecyclerView>
+            android:scrollbars="vertical" />
     </LinearLayout>
 </ScrollView>

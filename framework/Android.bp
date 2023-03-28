@@ -37,6 +37,8 @@ java_library {
         ":statslog-healthfitness-java-gen",
     ],
     libs: [
+        // needed for restricted atoms
+        "androidx.annotation_annotation",
         // To add StatsLog as a dependency of the generated file.
         "framework-statsd.stubs.module_lib",
     ],

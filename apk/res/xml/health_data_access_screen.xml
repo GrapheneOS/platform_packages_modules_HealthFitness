@@ -16,6 +16,8 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="data_access_screen">
+    <com.android.settingslib.widget.AppHeaderPreference
+        android:key="data_access_header"/>
     <com.android.settingslib.widget.TopIntroPreference
         android:key="permission_type_description"/>
     <PreferenceCategory

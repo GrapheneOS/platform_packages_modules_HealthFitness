@@ -26,11 +26,15 @@ import android.health.connect.HealthPermissions.WRITE_HEART_RATE
 import android.health.connect.HealthPermissions.WRITE_STEPS
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.*
 import com.android.healthconnect.controller.R
@@ -42,7 +46,6 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
-import com.android.healthconnect.controller.tests.utils.WaitForViewAction
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.settingslib.widget.MainSwitchPreference
 import com.google.common.truth.Truth.assertThat
@@ -93,11 +96,19 @@ class PermissionsFragmentTest {
         }
         launchFragment<PermissionsFragment>(bundleOf())
 
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))))
+        Espresso.onIdle()
         onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
-            .perform(scrollTo())
             .check(matches(isDisplayed()))
+
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))))
+        Espresso.onIdle()
         onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
-            .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 
@@ -113,8 +124,17 @@ class PermissionsFragmentTest {
         }
         launchFragment<PermissionsFragment>(bundleOf())
 
-        onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Heart rate")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Steps"))))
+        Espresso.onIdle()
+        onView(withText("Steps")).check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Heart rate"))))
+        Espresso.onIdle()
+        onView(withText("Heart rate")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -129,8 +149,17 @@ class PermissionsFragmentTest {
         }
         launchFragment<PermissionsFragment>(bundleOf())
 
-        onView(withText("Distance")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Distance"))))
+        Espresso.onIdle()
+        onView(withText("Distance")).check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Exercise"))))
+        Espresso.onIdle()
+        onView(withText("Exercise")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -144,8 +173,11 @@ class PermissionsFragmentTest {
             MutableLiveData(permissions)
         }
         launchFragment<PermissionsFragment>(bundleOf())
-        onView(isRoot()).perform(WaitForViewAction.waitForView(withText("Distance")))
-        onView(withText("Distance")).perform(scrollTo()).perform(click())
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Distance"))))
+        Espresso.onIdle()
+        onView(withText("Distance")).perform(click())
 
         verify(viewModel).updatePermission(any(HealthPermission::class.java), eq(true))
     }

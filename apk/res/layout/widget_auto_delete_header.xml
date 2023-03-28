@@ -22,14 +22,14 @@
     android:paddingVertical="@dimen/spacing_small">
 
     <TextView
-        style="@style/TextAppearance.PreferenceSummary.SettingsLib"
+        android:textAppearance="?attr/textAppearanceSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/auto_delete_header" />
 
     <TextView
         android:id="@+id/link"
-        style="@style/TextAppearance.PreferenceSummary.SettingsLib"
+        android:textAppearance="?attr/textAppearanceSummary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/button_size"

@@ -29,13 +29,13 @@
 
         <TextView
             android:id="@+id/item_data_entry_header"
-            style="@style/TextAppearance.PreferenceSummary.SettingsLib"
+            style="?attr/textAppearanceSummary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/item_data_entry_title"
-            style="@style/TextAppearance.PreferenceTitle.SettingsLib"
+            style="?attr/textAppearanceItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

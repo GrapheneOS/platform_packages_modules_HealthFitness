@@ -27,7 +27,7 @@ android_test {
         "src/**/*.java",
     ],
     test_suites: [
-        "mts-healthconnect",
+        "mts-healthfitness",
         "general-tests"
     ],
     defaults: ["mts-target-sdk-version-current"],

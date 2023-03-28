@@ -24,7 +24,7 @@
 
 
     <application android:label="CtsHealthConnectTestAppWithDataManagePermission">
-        <activity android:name="android.healthconnect.cts.HealthConnectTestHelper"
+        <activity android:name="android.healthconnect.cts.testhelper.HealthConnectTestHelper"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
