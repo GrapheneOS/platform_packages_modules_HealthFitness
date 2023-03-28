@@ -1005,7 +1005,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         Trace.traceBegin(TRACE_TAG_DELETE_SUBTASKS, TAG_INSERT.concat("PostDeleteTasks"));
         if (recordTypeIdsToDelete != null && !recordTypeIdsToDelete.isEmpty()) {
             AppInfoHelper.getInstance()
-                    .updateAppInfoRecordTypesUsedOnDelete(new HashSet<>(recordTypeIdsToDelete));
+                    .syncAppInfoRecordTypesUsed(new HashSet<>(recordTypeIdsToDelete));
             ActivityDateHelper.getInstance().reSyncByRecordTypeIds(recordTypeIdsToDelete);
         }
         Trace.traceEnd(TRACE_TAG_DELETE_SUBTASKS);
@@ -1367,6 +1367,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mMigrationStateManager.validateFinishMigration();
                         mMigrationStateManager.updateMigrationState(
                                 mContext, MIGRATION_STATE_COMPLETE);
+                        AppInfoHelper.getInstance().syncAppInfoRecordTypesUsed();
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
