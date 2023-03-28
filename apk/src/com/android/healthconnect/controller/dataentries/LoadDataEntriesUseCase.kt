@@ -80,7 +80,7 @@ constructor(
                         filter, Runnable::run, continuation.asOutcomeReceiver())
                 }
                 .records
-                .sortedBy { record -> getStartTime(record) }
+                .sortedByDescending { record -> getStartTime(record) }
         return records.mapNotNull { record -> getFormatterRecord(record) }
     }
 
