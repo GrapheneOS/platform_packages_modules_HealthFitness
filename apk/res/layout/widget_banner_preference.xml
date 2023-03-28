@@ -22,7 +22,7 @@
         android:id="@+id/banner_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceTitle"
+        android:textAppearance="?attr/textAppearanceItem"
         android:paddingVertical="@dimen/spacing_small"/>
 
     <TextView

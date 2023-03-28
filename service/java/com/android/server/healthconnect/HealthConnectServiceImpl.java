@@ -86,6 +86,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.changelog.ChangeLogsResponse.DeletedLog;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
@@ -297,9 +298,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        throwExceptionIfDataSyncInProgress();
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
-
+                        builder.setNumberOfRecords(recordInternals.size());
+                        throwExceptionIfDataSyncInProgress();
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -324,7 +325,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
                         builder.setDataTypesFromRecordInternals(recordInternals)
-                                .setNumberOfRecords(recordInternals.size())
                                 .setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
@@ -398,6 +398,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
+                        builder.setNumberOfRecords(request.getAggregateIds().length);
                         throwExceptionIfDataSyncInProgress();
                         List<Integer> recordTypesToTest = new ArrayList<>();
                         for (int aggregateId : request.getAggregateIds()) {
@@ -427,8 +428,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 attributionSource.getPackageName(), request)
                                         .getAggregateDataResponseParcel());
                         finishDataDeliveryRead(recordTypesToTest, attributionSource);
-                        builder.setNumberOfRecords(request.getAggregateIds().length)
-                                .setDataTypesFromRecordTypes(recordTypesToTest)
+                        builder.setDataTypesFromRecordTypes(recordTypesToTest)
                                 .setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
@@ -534,6 +534,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     startDateAccess,
                                                     enforceSelfRead.get(),
                                                     extraReadPermsToGrantState));
+                            builder.setNumberOfRecords(readRecordsResponse.first.size());
                             long pageToken =
                                     request.getRecordIdFiltersParcel() == null
                                             ? readRecordsResponse.second
@@ -578,7 +579,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             }
                             finishDataDeliveryRead(request.getRecordType(), attributionSource);
                             builder.setDataTypesFromRecordInternals(readRecordsResponse.first)
-                                    .setNumberOfRecords(readRecordsResponse.first.size())
                                     .setHealthDataServiceApiStatusSuccess();
                         } catch (TypeNotPresentException exception) {
                             // All the requested package names are not present, so simply
@@ -653,9 +653,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mContext,
                 () -> {
                     try {
-                        throwExceptionIfDataSyncInProgress();
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
-
+                        builder.setNumberOfRecords(recordInternals.size());
+                        throwExceptionIfDataSyncInProgress();
                         mDataPermissionEnforcer.enforceRecordsWritePermissions(
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -672,7 +672,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
                         builder.setDataTypesFromRecordInternals(recordInternals)
-                                .setNumberOfRecords(recordInternals.size())
                                 .setHealthDataServiceApiStatusSuccess();
                     } catch (SecurityException securityException) {
                         builder.setHealthDataServiceApiStatusError(
@@ -820,18 +819,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 ChangeLogsHelper.getRecordTypeToInsertedUuids(
                                                         changeLogsResponse.getChangeLogsMap()),
                                                 startDateAccess));
+                        List<DeletedLog> deletedLogs =
+                                ChangeLogsHelper.getDeletedLogs(
+                                        changeLogsResponse.getChangeLogsMap());
 
                         callback.onResult(
                                 new ChangeLogsResponse(
                                         new RecordsParcel(recordInternals),
-                                        ChangeLogsHelper.getDeletedLogs(
-                                                changeLogsResponse.getChangeLogsMap()),
+                                        deletedLogs,
                                         changeLogsResponse.getNextPageToken(),
                                         changeLogsResponse.hasMorePages()));
                         finishDataDeliveryRead(
                                 changeLogsTokenRequest.getRecordTypes(), attributionSource);
                         builder.setHealthDataServiceApiStatusSuccess()
-                                .setNumberOfRecords(recordInternals.size())
+                                .setNumberOfRecords(recordInternals.size() + deletedLogs.size())
                                 .setDataTypesFromRecordInternals(recordInternals);
                     } catch (IllegalArgumentException illegalArgumentException) {
                         builder.setHealthDataServiceApiStatusError(

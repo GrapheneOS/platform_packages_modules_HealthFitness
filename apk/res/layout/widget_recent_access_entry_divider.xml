@@ -17,6 +17,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="?attr/recentAccessTimelineDividerHeight"
     android:layout_height="?attr/recentAccessTimelineDividerHeight"
-    android:layout_marginStart="104dp"
+    android:layout_marginStart="@dimen/timeline_divider_margin_start"
     android:background="?attr/recentAccessTimelineDividerDrawable"
     tools:ignore="Overdraw" />

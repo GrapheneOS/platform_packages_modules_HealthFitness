@@ -16,27 +16,31 @@
 package com.android.healthconnect.controller.route
 
 import android.app.Activity
-import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.health.connect.HealthConnectManager.ACTION_REQUEST_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
+import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel.SessionWithAttribution
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.map.MapView
 import com.android.healthconnect.controller.utils.FeatureUtils
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
@@ -59,6 +63,27 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /** Displaying onboarding screen if user is opening Health Connect app for the first time */
+        val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+        val previouslyOpened =
+            sharedPreference.getBoolean(getString(R.string.previously_opened), false)
+        if (!previouslyOpened) {
+            val onboardingIntent = Intent(this, OnboardingActivity::class.java)
+            onboardingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val intentAfterOnboarding = Intent(ACTION_REQUEST_EXERCISE_ROUTE)
+            if (intent.hasExtra(EXTRA_SESSION_ID)) {
+                intentAfterOnboarding.putExtra(
+                    EXTRA_SESSION_ID, intent.getStringExtra(EXTRA_SESSION_ID)!!)
+            }
+            if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
+                intentAfterOnboarding.putExtra(
+                    EXTRA_PACKAGE_NAME, intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
+            }
+            onboardingIntent.putExtra(Intent.EXTRA_INTENT, intentAfterOnboarding)
+            startActivity(onboardingIntent)
+            finish()
+        }
 
         if (!featureUtils.isExerciseRouteEnabled()) {
             Log.e(TAG, "Exercise routes not available, finishing.")
@@ -106,17 +131,15 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             else session.title
         val view = layoutInflater.inflate(R.layout.route_request_dialog, null)
 
+        val title: String
+
         runBlocking {
             val requester =
                 appInfoReader.getAppMetadata(intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
-            val title =
+            title =
                 applicationContext.getString(R.string.request_route_header_title, requester.appName)
-            view.findViewById<TextView>(R.id.dialog_title).text = title
         }
 
-        view
-            .findViewById<ImageView>(R.id.dialog_icon)
-            .setImageDrawable(getDrawable(R.drawable.health_connect_icon))
         view.findViewById<MapView>(R.id.map_view).setRoute(session.route!!)
         view.findViewById<TextView>(R.id.session_title).text = sessionTitle
         view.findViewById<TextView>(R.id.date_app).text = sessionDetails
@@ -141,22 +164,32 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             setResult(Activity.RESULT_OK, result)
             finish()
         }
-        dialog = AlertDialog.Builder(this).setView(view).setCancelable(false).create()
+        dialog =
+            AlertDialogBuilder(this)
+                .setIcon(R.attr.healthConnectIcon)
+                .setTitle(title)
+                .setView(view)
+                .setCancelable(false)
+                .create()
         dialog.show()
     }
 
     private fun setupInfoDialog() {
         val view = layoutInflater.inflate(R.layout.route_sharing_info_dialog, null)
-        view.findViewById<TextView>(R.id.dialog_title).text =
-            applicationContext.getString(R.string.request_route_info_header_title)
-        view
-            .findViewById<ImageView>(R.id.dialog_icon)
-            .setImageDrawable(getDrawable(R.drawable.quantum_gm_ic_privacy_tip_vd_theme_24))
         infoDialog =
-            AlertDialog.Builder(this)
-                .setNegativeButton(R.string.back_button) { _, _ -> dialog.show() }
+            AlertDialogBuilder(this)
+                .setIcon(R.attr.privacyPolicyIcon)
+                .setTitle(getString(R.string.request_route_info_header_title))
+                .setNegativeButton(R.string.back_button, ErrorPageElement.UNKNOWN_ELEMENT) { _, _ ->
+                    dialog.show()
+                }
                 .setView(view)
                 .setCancelable(false)
                 .create()
+    }
+
+    override fun onPause() {
+        dialog.dismiss()
+        super.onPause()
     }
 }
