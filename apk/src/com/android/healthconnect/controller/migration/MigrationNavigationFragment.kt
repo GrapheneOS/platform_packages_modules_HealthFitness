@@ -37,7 +37,6 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
             // TODO (b/273745755) Expose real UI states
             HealthConnectDataState.MIGRATION_STATE_IDLE -> {
                 // do nothing
-                showMigrationPausedFragment()
             }
             HealthConnectDataState.MIGRATION_STATE_ALLOWED -> {
                 // start migration

@@ -61,10 +61,10 @@ class MainActivity : Hilt_MainActivity() {
             finish()
         }
 
-        // TODO (b/271377785) uncomment for migration flows
-        //        migrationViewModel.migrationState.observe(this) {
-        //            migrationState -> maybeNavigateToMigration(migrationState)
-        //        }
+        //         TODO (b/271377785) uncomment for migration flows
+//        migrationViewModel.migrationState.observe(this) { migrationState ->
+//            maybeNavigateToMigration(migrationState)
+//        }
     }
 
     override fun onStart() {

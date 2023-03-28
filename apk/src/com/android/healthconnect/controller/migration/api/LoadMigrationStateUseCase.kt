@@ -45,7 +45,7 @@ constructor(
 
             // TODO (b/273745755) Expose real UI states
             // state.dataMigrationState
-            HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED
+            HealthConnectDataState.MIGRATION_STATE_IDLE
         }
     }
 }

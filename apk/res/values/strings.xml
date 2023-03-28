@@ -969,6 +969,8 @@
 
     <string name="module_update_needed_seen" description="Label used as key to track if user has seen the Module Update Needed migration screen" translatable="false">Module Update Seen</string>
     <string name="app_update_needed_seen" description="Label used as key to track if user has seen the App Update Needed migration screen" translatable="false">App Update Seen</string>
+    <string name="whats_new_dialog_seen" description="Label used as key to track if user has seen the What's new migration dialog" translatable="false">Whats New Seen</string>
+    <string name="migration_not_complete_dialog_seen" description="Label used as key to track if user has seen the Migration not complete dialog" translatable="false">Migration Not Complete Seen</string>
 
     <!-- region In progress -->
     <string name="migration_in_progress_screen_title" description="Title of screen shown when migration is in progress">Integration in progress</string>
@@ -1025,21 +1027,21 @@
 
     <!-- region App update needed banner -->
     <string name="app_update_needed_banner_title" description="Title of banner prompting the user to update an app which is not currently working on this Android version.">App update needed</string>
-    <string name="app_update_needed_banner_description_single" description="Description of banner prompting the user to update an app which is not currently working on this Android version."> &#8220;<xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g>&#8221; needs to be up-to-date in order to keep working with Health&#160;Connect</string>
+    <string name="app_update_needed_banner_description_single" description="Description of banner prompting the user to update an app which is not currently working on this Android version."><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> needs to be up-to-date in order to keep working with Health&#160;Connect</string>
     <string name="app_update_needed_banner_description_multiple" description="Description of banner prompting the user to update an app which is not currently working on this Android version."> Some apps need to be up-to-date in order to keep working with Health&#160;Connect</string>
     <string name="app_update_needed_banner_button" description="Button of banner prompting the user to update an app which is not currently working on this Android version.">Check for updates</string>
     <!--  endregion -->
 
     <!-- region Migration pending permissions dialog -->
     <string name="migration_pending_permissions_dialog_title" description="Title of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect integration</string>
-    <string name="migration_pending_permissions_dialog_content" description="Content of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect is ready to be integrated with your Android system. If you give &#8220;<xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g>&#8221; access now, some features may not work until integration is complete.</string>
+    <string name="migration_pending_permissions_dialog_content" description="Content of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect is ready to be integrated with your Android system. If you give <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> access now, some features may not work until integration is complete.</string>
     <string name="migration_pending_permissions_dialog_button_continue" description="Button of dialog shown to the user when migration is pending and an app is requesting permissions.">Continue</string>
     <!--  endregion -->
 
     <!-- region Migration in progress permissions dialog -->
     <string name="migration_in_progress_permissions_dialog_title" description="Title of dialog shown to the user when migration is in progress and an app is requesting permissions.">Health&#160;Connect integration in progress</string>
-    <string name="migration_in_progress_permissions_dialog_content" description="Content of dialog shown to the user when migration is in progress and an app is requesting permissions.">Health&#160;Connect is being integrated with the Android system. You’ll get a notification when the process is complete and you can use &#8220;<xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g>&#8221; with Health&#160;Connect.</string>
-    <string name="migration_in_progress_permissions_dialog_button_continue" description="Button of dialog shown to the user when migration is in progress and an app is requesting permissions.">Got it</string>
+    <string name="migration_in_progress_permissions_dialog_content" description="Content of dialog shown to the user when migration is in progress and an app is requesting permissions.">Health&#160;Connect is being integrated with the Android system.\n\nYou’ll get a notification when the process is complete and you can use <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> with Health&#160;Connect.</string>
+    <string name="migration_in_progress_permissions_dialog_button_got_it" description="Button of dialog shown to the user when migration is in progress and an app is requesting permissions.">Got it</string>
     <!--  endregion -->
 
     <!-- region Migration did not complete dialog -->

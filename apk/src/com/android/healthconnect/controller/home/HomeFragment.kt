@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.home
 
+import android.content.Context
 import android.content.Intent
 import android.health.HealthFitnessStatsLog.*
 import android.health.connect.HealthConnectDataState
@@ -104,32 +105,6 @@ class HomeFragment : Hilt_HomeFragment() {
         migrationBanner = getMigrationBanner()
     }
 
-    private fun showWhatsNewDialog() {
-        AlertDialogBuilder(this)
-            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-            .setTitle(R.string.migration_whats_new_dialog_title)
-            .setMessage(R.string.migration_whats_new_dialog_content)
-            .setNegativeButton(
-                R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT)
-            .create()
-            .show()
-    }
-
-    private fun showHealthConnectIntegrationPendingDialog() {
-        AlertDialogBuilder(this)
-            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-            .setTitle(R.string.migration_pending_permissions_dialog_title)
-            .setMessage(R.string.migration_pending_permissions_dialog_content)
-            .setNegativeButton(android.R.string.cancel, ErrorPageElement.UNKNOWN_ELEMENT) { _, _
-                -> // TODO if this is pressed twice, should count as permissions not granted
-            }
-            .setPositiveButton(
-                R.string.migration_pending_permissions_dialog_button_continue,
-                ErrorPageElement.UNKNOWN_ELEMENT)
-            .create()
-            .show()
-    }
-
     override fun onResume() {
         super.onResume()
         recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
@@ -175,11 +150,12 @@ class HomeFragment : Hilt_HomeFragment() {
 
         when (migrationState) {
             HealthConnectDataState.MIGRATION_STATE_IDLE -> {
-                // show nothing, maybe clear banners
+                // show nothing
             }
             HealthConnectDataState.MIGRATION_STATE_ALLOWED -> {
-                // start migration
-                // TODO (b/) for new states show error dialog
+                // show error dialog
+                // TODO (b/275853443) Uncomment when CTS fixed
+                // maybeShowMigrationNotCompleteDialog()
             }
             HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS -> {
                 // should not be on this screen
@@ -193,8 +169,61 @@ class HomeFragment : Hilt_HomeFragment() {
                 preferenceScreen.addPreference(migrationBanner)
             }
             HealthConnectDataState.MIGRATION_STATE_COMPLETE -> {
-                showWhatsNewDialog()
+                // TODO (b/275853443) Uncomment when CTS fixed
+                // maybeShowWhatsNewDialog()
             }
+        }
+    }
+
+    private fun maybeShowMigrationNotCompleteDialog() {
+        val sharedPreference =
+                requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+        val dialogSeen =
+                sharedPreference.getBoolean(getString(R.string.migration_not_complete_dialog_seen), false)
+
+        if (!dialogSeen) {
+            AlertDialogBuilder(this)
+                    .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+                    .setTitle(R.string.migration_not_complete_dialog_title)
+                    .setMessage(R.string.migration_not_complete_dialog_content)
+                    .setCancelable(false)
+                    .setNegativeButton(
+                            R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT) {
+                        _,
+                        _ ->
+                        sharedPreference.edit().apply {
+                            putBoolean(getString(R.string.migration_not_complete_dialog_seen), true)
+                            apply()
+                        }
+                    }
+                    .create()
+                    .show()
+        }
+    }
+
+    private fun maybeShowWhatsNewDialog() {
+        val sharedPreference =
+                requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+        val dialogSeen =
+                sharedPreference.getBoolean(getString(R.string.whats_new_dialog_seen), false)
+
+        if (!dialogSeen) {
+            AlertDialogBuilder(this)
+                    .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+                    .setTitle(R.string.migration_whats_new_dialog_title)
+                    .setMessage(R.string.migration_whats_new_dialog_content)
+                    .setCancelable(false)
+                    .setNegativeButton(
+                            R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT) {
+                        _,
+                        _ ->
+                        sharedPreference.edit().apply {
+                            putBoolean(getString(R.string.whats_new_dialog_seen), true)
+                            apply()
+                        }
+                    }
+                    .create()
+                    .show()
         }
     }
 

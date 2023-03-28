@@ -147,7 +147,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         }
     }
 
-    private fun handleResults(results: Map<HealthPermission, PermissionState>) {
+    fun handleResults(results: Map<HealthPermission, PermissionState>) {
         val grants =
             results.values
                 .map { permissionSelection ->
