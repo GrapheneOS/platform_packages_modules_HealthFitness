@@ -84,7 +84,7 @@ constructor(
                 }
                 .records
                 .filter { menstruationPeriodRecord ->
-                    menstruationPeriodRecord.startTime.isBefore(startDate) &&
+                    menstruationPeriodRecord.startTime.isBefore(end) &&
                         menstruationPeriodRecord.endTime.isAfter(startDate)
                 }
 
