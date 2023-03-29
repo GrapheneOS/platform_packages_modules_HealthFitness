@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ne pourra plus consulter ni modifier les données dans Santé Connect.\n\nCela n\'affecte pas les autres autorisations de cette appli, comme l\'accès à la position, à l\'appareil photo ou au micro."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Supprimer également les données <xliff:g id="APP_NAME">%1$s</xliff:g> de Santé Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Jour suivant"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Jour précédent"</string>
     <string name="default_error" msgid="7966868260616403475">"Un problème est survenu. Veuillez réessayer."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Les applis ayant cette autorisation peuvent lire et modifier vos données de forme physique."</string>
@@ -335,7 +337,8 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Suppression des données Santé Connect…"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Suppression des données Santé Connect…"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Suppression des données…"</string>
-    <string name="data_point_action_content_description" msgid="5594307313451433706">"Options de l\'entrée de données"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"Supprimer l\'entrée"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 watt}one{# watt}other{# watts}}"</string>
@@ -677,6 +680,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Supprimer automatiquement les données"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Au bout de # mois}one{Au bout de # mois}other{Au bout de # mois}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Jamais"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Lorsque vous modifiez ces paramètres, Santé Connect supprime les données existantes pour tenir compte de vos nouvelles préférences"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Supprimer automatiquement les données au bout de # mois ?}one{Supprimer automatiquement les données au bout de # mois ?}other{Supprimer automatiquement les données au bout de # mois ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Santé Connect supprimera automatiquement les nouvelles données au bout de # mois. Avec ce paramètre, les données existantes datant de plus de # mois seront aussi supprimées.}one{Santé Connect supprimera automatiquement les nouvelles données au bout de # mois. Avec ce paramètre, les données existantes datant de plus de # mois seront aussi supprimées.}other{Santé Connect supprimera automatiquement les nouvelles données au bout de # mois. Avec ce paramètre, les données existantes datant de plus de # mois seront aussi supprimées.}}"</string>
@@ -703,5 +708,17 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à ce parcours sportif dans Santé Connect ?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Cette appli pourra consulter vos positions précédentes sur le parcours"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"Chargement…"</string>
 </resources>
