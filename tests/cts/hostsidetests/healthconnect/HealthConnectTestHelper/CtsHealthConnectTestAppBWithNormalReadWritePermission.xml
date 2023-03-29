@@ -22,6 +22,9 @@
 
     <uses-permission android:name="android.permission-group.HEALTH"/>
     <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA"/>
+    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_BASAL_METABOLIC_RATE"/>
 
 
     <application android:label="CtsHealthConnectTestAppBWithNormalReadWritePermission">
