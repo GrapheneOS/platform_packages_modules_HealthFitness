@@ -1307,7 +1307,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
-                        if (mBackupRestore.isRestoreInProgress(
+                        if (mBackupRestore.isRestoreMergingInProgress(
                                 mContext.getUser().getIdentifier())) {
                             throw new MigrationException(
                                     "Cannot start data migration. Backup and restore in"
@@ -1603,7 +1603,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private boolean isDataSyncInProgress() {
         return mMigrationStateManager.isMigrationInProgress()
-                || mBackupRestore.isRestoreInProgress(mContext.getUser().getIdentifier());
+                || mBackupRestore.isRestoreMergingInProgress(mContext.getUser().getIdentifier());
     }
 
     @VisibleForTesting
