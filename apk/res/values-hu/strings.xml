@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"A(z) <xliff:g id="APP_NAME">%1$s</xliff:g> a továbbiakban nem olvashatja vagy írhatja a Health Connect szolgáltatásban tárolt adatokat.\n\nEz nem befolyásolja azokat az egyéb (például a helyadatokhoz, a kamerához vagy a mikrofonhoz tartozó) engedélyeket, amelyekkel ez az alkalmazás esetleg rendelkezik."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"A(z) <xliff:g id="APP_NAME">%1$s</xliff:g> adatai is törlődjenek a Health Connectből"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Következő nap"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Előző nap"</string>
     <string name="default_error" msgid="7966868260616403475">"Hiba történt. Próbálja újra."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Az ezzel az engedéllyel rendelkező alkalmazások olvashatják és írhatják az Ön egészségügyi adatait."</string>

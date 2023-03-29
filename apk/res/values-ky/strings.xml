@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги бир дагы нерсени окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, жайгашкан жер, камера же микрофонго кедергисин тийгизбейт."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect\'тен алынган <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосундагы нерселер да өчүрүлсүн"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Кийинки күн"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Мурунку күн"</string>
     <string name="default_error" msgid="7966868260616403475">"Бир жерден ката кетти. Кайталап көрүңүз."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Мындай уруксаты бар колдонмолор ден соолугуңуз тууралуу маалыматты окуп жана жаза алышат."</string>

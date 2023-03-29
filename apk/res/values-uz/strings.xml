@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"Endi <xliff:g id="APP_NAME">%1$s</xliff:g> ilovasi Health Connect xizmatidagi axborotlarni oʻqishi yoki yozishi imkonsiz.\n\nBu ushbu ilova oladigan joylashuv, kamera yoki mikrofon kabi boshqa ruxsatlarga taʼsir qilmaydi."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect ilovasidan <xliff:g id="APP_NAME">%1$s</xliff:g> maʼlumotlarini oʻchirish"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Keyingi kun"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Avvalgi kun"</string>
     <string name="default_error" msgid="7966868260616403475">"Nimadir xato ketdi. Qayta urining."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Bu ruxsatga ega ilovalar salomatlik maʼlumotlaringizni oʻqishi va yozishi mumkin."</string>

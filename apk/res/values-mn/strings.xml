@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> цаашид Health Connect-н аливаа өгөгдлийг унших эсвэл бичих боломжгүй болно.\n\nЭнэ нь байршил, камер эсвэл микрофон зэрэг уг аппын бусад зөвшөөрөлд нөлөөлөхгүй."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Мөн <xliff:g id="APP_NAME">%1$s</xliff:g>-н өгөгдлийг Health Connect-с устгана"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Дараах өдөр"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Өмнөх өдөр"</string>
     <string name="default_error" msgid="7966868260616403475">"Алдаа гарлаа. Дахин оролдоно уу."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Уг зөвшөөрөлтэй аппууд таны эрүүл мэндийн өгөгдлийг уншиж, бичих боломжтой."</string>

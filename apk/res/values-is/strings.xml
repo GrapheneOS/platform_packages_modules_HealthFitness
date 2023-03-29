@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> mun ekki lengur geta lesið eða skrifað nein gögn frá Heilsutengingu.\n\nÞetta hefur ekki áhrif á aðrar heimildir sem forritið kann að hafa, eins og fyrir staðsetningu, myndavél eða hljóðnema."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Eyða einnig gögnum frá <xliff:g id="APP_NAME">%1$s</xliff:g> úr Heilsutengingu"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Næsti dagur"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Fyrri dagur"</string>
     <string name="default_error" msgid="7966868260616403475">"Eitthvað fór úrskeiðis. Reyndu aftur."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Forrit með þessa heimild geta lesið og skrifað heilsugögn."</string>

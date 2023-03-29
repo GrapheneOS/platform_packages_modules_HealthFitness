@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‏‏‎‎‎‎‏‏‏‎‎‏‏‎‏‎‎‏‎‏‎‏‎‏‎‏‏‎‏‎‏‏‎‎‎‎‏‏‎‏‎‎‎‏‏‎‎‎‏‏‎‏‎‏‎‏‎‏‏‎‏‎‎‏‎‎‏‏‎<xliff:g id="APP_NAME">%1$s</xliff:g>‎‏‎‎‏‏‏‎ will no longer be able to read or write any data from Health Connect.‎‏‎‎‏‏‎\n‎‏‎‎‏‏‏‎‎‏‎‎‏‏‎\n‎‏‎‎‏‏‏‎This doesn\'t affect other permissions this app may have, like location, camera, or microphone.‎‏‎‎‏‎"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‏‏‎‎‎‎‎‎‎‎‎‎‎‎‎‏‎‎‏‎‎‏‎‏‎‎‎‏‎‏‏‎‏‏‎‏‏‎‎‏‎‏‏‎‏‏‏‏‎‎‏‏‏‎‎‏‏‎‏‏‏‎Also delete ‎‏‎‎‏‏‎<xliff:g id="APP_NAME">%1$s</xliff:g>‎‏‎‎‏‏‏‎ data from Health Connect‎‏‎‎‏‎"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‏‏‎‏‎‏‏‎‏‏‏‎‏‏‎‏‏‏‏‏‏‏‏‏‎‏‏‎‏‏‏‏‏‎‎‏‎‏‏‏‎‏‎‏‏‏‎‎‏‏‎‏‎‎‎‎‏‏‎‏‏‎Next day‎‏‎‎‏‎"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‎‎‏‎‎‏‏‏‏‏‏‎‎‎‎‎‎‏‏‎‏‎‏‎‎‏‏‎‎‏‎‏‎‏‏‎‎‎‏‎‏‎‎‎‏‎‎‎‏‏‎‏‏‏‎‏‎‏‏‎‎‎‎Previous day‎‏‎‎‏‎"</string>
     <string name="default_error" msgid="7966868260616403475">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‎‏‏‏‎‏‎‎‏‎‎‎‎‎‎‎‎‎‎‎‎‎‏‏‏‏‎‎‏‎‎‎‎‎‏‏‎‎‏‎‏‏‏‏‏‏‏‏‏‏‎‏‎‎‎‎‏‎‎‏‏‎Something went wrong. Please try again.‎‏‎‎‏‎"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‎‎‏‎‎‏‏‏‏‎‏‏‎‎‏‏‎‎‎‎‎‏‏‏‎‏‎‎‏‎‎‎‎‏‏‎‏‏‎‏‏‏‎‎‏‎‏‎‏‏‎‏‎‎‏‎‏‏‏‏‏‎‎Apps with this permission can read and write your health data.‎‏‎‎‏‎"</string>

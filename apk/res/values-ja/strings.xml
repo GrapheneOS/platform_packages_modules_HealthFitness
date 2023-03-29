@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> はヘルスコネクトのデータの読み取り、書き込みを行えなくなります。\n\nこの設定は、位置情報、カメラ、マイクなど、このアプリのその他の権限には影響しません。"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"ヘルスコネクトから <xliff:g id="APP_NAME">%1$s</xliff:g> のデータも削除する"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"翌日"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"前日"</string>
     <string name="default_error" msgid="7966868260616403475">"エラーが発生しました。もう一度お試しください。"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"この権限があるアプリは健康に関するデータの読み取り / 書き込みを行えます。"</string>
