@@ -56,9 +56,7 @@ import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
-import com.android.tools.r8.keepanno.annotations.KeepOption;
-import com.android.tools.r8.keepanno.annotations.KeepTarget;
-import com.android.tools.r8.keepanno.annotations.UsesReflection;
+
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
@@ -95,19 +93,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private static final int TRACE_TAG_RECORD_HELPER = TAG_RECORD_HELPER.hashCode();
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
-    @UsesReflection(
-            description =
-                    "Subclasses of RecordHelper must retain their HelperFor annotation. See"
-                            + " b/255377941",
-            value = {
-                @KeepTarget(
-                        extendsClassConstant = RecordHelper.class,
-                        disallow = {KeepOption.ANNOTATION_REMOVAL})
-            })
-    RecordHelper() {
-        HelperFor annotation = this.getClass().getAnnotation(HelperFor.class);
-        Objects.requireNonNull(annotation);
-        mRecordIdentifier = annotation.recordIdentifier();
+    RecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
+        mRecordIdentifier = recordIdentifier;
     }
 
     public DeleteTableRequest getDeleteRequestForAutoDelete(int recordAutoDeletePeriodInDays) {

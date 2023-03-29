@@ -42,11 +42,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS)
 public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInternal> {
 
     @VisibleForTesting public static final String STEPS_TABLE_NAME = "steps_record_table";
     private static final String COUNT_COLUMN_NAME = "count";
+
+    public StepsRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_STEPS);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

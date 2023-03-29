@@ -32,11 +32,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING)
 public final class IntermenstrualBleedingRecordHelper
         extends InstantRecordHelper<IntermenstrualBleedingRecordInternal> {
     private static final String INTERMENSTRUAL_BLEEDING_RECORD_TABLE_NAME =
             "intermenstrual_bleeding_record_table";
+
+    public IntermenstrualBleedingRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING);
+    }
 
     @Override
     @NonNull

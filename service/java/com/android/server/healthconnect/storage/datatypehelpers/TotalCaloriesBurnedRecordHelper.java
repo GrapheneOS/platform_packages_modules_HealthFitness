@@ -26,6 +26,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
@@ -46,7 +47,6 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RECORD_TYPE_TOTAL_CALORIES_BURNED)
 public final class TotalCaloriesBurnedRecordHelper
         extends IntervalRecordHelper<TotalCaloriesBurnedRecordInternal> {
 
@@ -55,6 +55,10 @@ public final class TotalCaloriesBurnedRecordHelper
             "total_calories_burned_record_table";
 
     private static final String ENERGY_COLUMN_NAME = "energy";
+
+    public TotalCaloriesBurnedRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

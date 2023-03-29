@@ -70,7 +70,6 @@ import java.util.UUID;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION)
 public final class ExerciseSessionRecordHelper
         extends IntervalRecordHelper<ExerciseSessionRecordInternal> {
     private static final String TAG = "ExerciseSessionRecordHelper";
@@ -83,6 +82,10 @@ public final class ExerciseSessionRecordHelper
     private static final String EXERCISE_TYPE_COLUMN_NAME = "exercise_type";
     private static final String TITLE_COLUMN_NAME = "title";
     private static final String HAS_ROUTE_COLUMN_NAME = "has_route";
+
+    public ExerciseSessionRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION);
+    }
 
     /** Returns the table name to be created corresponding to this helper */
     @Override

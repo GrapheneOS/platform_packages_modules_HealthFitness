@@ -40,12 +40,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED)
 public final class ElevationGainedRecordHelper
         extends IntervalRecordHelper<ElevationGainedRecordInternal> {
     private static final String ELEVATION_GAINED_RECORD_TABLE_NAME =
             "elevation_gained_record_table";
     private static final String ELEVATION_COLUMN_NAME = "elevation";
+
+    public ElevationGainedRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(
