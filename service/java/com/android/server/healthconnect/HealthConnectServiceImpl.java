@@ -1481,10 +1481,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new ArrayMap<>(origPfdsByFileName.size());
         Map<String, ParcelFileDescriptor> pfdsByFileName =
                 new ArrayMap<>(origPfdsByFileName.size());
-        for (var entry : origPfdsByFileName.entrySet()) {
+        for (Entry<String, ParcelFileDescriptor> entry : origPfdsByFileName.entrySet()) {
             try {
                 pfdsByFileName.put(entry.getKey(), entry.getValue().dup());
             } catch (IOException e) {
+                Slog.e(TAG, "IOException: ", e);
                 exceptionsByFileName.put(
                         entry.getKey(),
                         new HealthConnectException(

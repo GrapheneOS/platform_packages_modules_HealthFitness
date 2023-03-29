@@ -26,6 +26,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.lang.annotation.ElementType;
@@ -44,30 +45,35 @@ public class UpsertTableRequest {
     public static final int TYPE_BLOB = 1;
     private final String mTable;
     private final ContentValues mContentValues;
-    private final String mPrimaryIdColumnName;
+    private final List<Pair<String, Integer>> mUniqueColumns;
     private List<UpsertTableRequest> mChildTableRequests = Collections.emptyList();
     private String mParentCol;
     private long mRowId = INVALID_ROW_ID;
     private WhereClauses mWhereClausesForUpdate;
     private IRequiresUpdate mRequiresUpdate = new IRequiresUpdate() {};
-    private List<Pair<String, Integer>> mUniqueColumns = Collections.emptyList();
-    private String mRemovedUuid;
     private Integer mRecordType;
+    private RecordInternal<?> mRecordInternal;
     private RecordHelper<?> mRecordHelper;
+
     public UpsertTableRequest(@NonNull String table, @NonNull ContentValues contentValues) {
-        this(table, contentValues, RecordHelper.PRIMARY_COLUMN_NAME);
+        this(table, contentValues, Collections.emptyList());
     }
 
     public UpsertTableRequest(
             @NonNull String table,
             @NonNull ContentValues contentValues,
-            @Nullable String primaryIdColumnName) {
+            @NonNull List<Pair<String, Integer>> uniqueColumns) {
         Objects.requireNonNull(table);
         Objects.requireNonNull(contentValues);
+        Objects.requireNonNull(uniqueColumns);
 
         mTable = table;
         mContentValues = contentValues;
-        mPrimaryIdColumnName = primaryIdColumnName;
+        mUniqueColumns = uniqueColumns;
+    }
+
+    public int getUniqueColumnsCount() {
+        return mUniqueColumns.size();
     }
 
     @NonNull
@@ -126,7 +132,6 @@ public class UpsertTableRequest {
     @NonNull
     public WhereClauses getUpdateWhereClauses() {
         if (mWhereClausesForUpdate == null) {
-            Objects.requireNonNull(mContentValues.get(mPrimaryIdColumnName));
             return getReadWhereClauses();
         }
 
@@ -141,33 +146,26 @@ public class UpsertTableRequest {
     }
 
     public ReadTableRequest getReadRequest() {
-        Objects.requireNonNull(mPrimaryIdColumnName);
-
         return new ReadTableRequest(getTable()).setWhereClause(getReadWhereClauses());
     }
 
     public ReadTableRequest getReadRequestUsingUpdateClause() {
-        Objects.requireNonNull(mPrimaryIdColumnName);
-
         return new ReadTableRequest(getTable()).setWhereClause(getUpdateWhereClauses());
     }
 
     @NonNull
     private WhereClauses getReadWhereClauses() {
-        WhereClauses readWhereClause =
-                new WhereClauses()
-                        .addWhereEqualsClause(
-                                mPrimaryIdColumnName,
-                                mContentValues.getAsString(mPrimaryIdColumnName))
-                        .setUseOr(true);
+        WhereClauses readWhereClause = new WhereClauses().setUseOr(true);
 
         for (Pair<String, Integer> uniqueColumn : mUniqueColumns) {
             switch (uniqueColumn.second) {
-                case TYPE_BLOB -> readWhereClause.addWhereEqualsClause(
-                        uniqueColumn.first, mContentValues.getAsByteArray(uniqueColumn.first));
+                 case TYPE_BLOB -> readWhereClause.addWhereEqualsClause(
+                        uniqueColumn.first, StorageUtils.getHexString(
+                                mContentValues.getAsByteArray(uniqueColumn.first)));
+                 case TYPE_STRING -> readWhereClause.addWhereEqualsClause(
+                         uniqueColumn.first, mContentValues.getAsString(uniqueColumn.first));
                 default -> throw new UnsupportedOperationException(
                         "Unable to find type: " + uniqueColumn.second);
-
             }
         }
 
@@ -180,23 +178,6 @@ public class UpsertTableRequest {
 
     public String getRowIdColName() {
         return RecordHelper.PRIMARY_COLUMN_NAME;
-    }
-
-    public UpsertTableRequest setUniqueColumns(@NonNull List<Pair<String, Integer>> uniqueColumns) {
-        Objects.requireNonNull(uniqueColumns);
-
-        mUniqueColumns = uniqueColumns;
-
-        return this;
-    }
-
-    @Nullable
-    public String getRemovedUuid() {
-        return mRemovedUuid;
-    }
-
-    public void onUUIDRemoved(String removedUUID) {
-        mRemovedUuid = removedUUID;
     }
 
     @RecordTypeIdentifier.RecordType
@@ -219,6 +200,14 @@ public class UpsertTableRequest {
     @NonNull
     public List<String> getAllChildTables() {
         return mRecordHelper == null ? Collections.emptyList() : mRecordHelper.getAllChildTables();
+    }
+
+    public RecordInternal<?> getRecordInternal() {
+        return mRecordInternal;
+    }
+
+    public void setRecordInternal(RecordInternal<?> recordInternal) {
+        mRecordInternal = recordInternal;
     }
 
     @Target(ElementType.TYPE_USE)

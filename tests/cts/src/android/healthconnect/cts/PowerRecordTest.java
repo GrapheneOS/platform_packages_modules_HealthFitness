@@ -59,6 +59,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -89,7 +90,9 @@ public class PowerRecordTest {
     @Test
     public void testReadPowerRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<PowerRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(PowerRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(PowerRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         List<PowerRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
@@ -389,10 +392,10 @@ public class PowerRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -525,6 +528,32 @@ public class PowerRecordTest {
         new PowerRecord.PowerRecordSample(Power.fromWatts(100001.0), Instant.now().plusMillis(100));
     }
 
+    PowerRecord getPowerRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+
+        PowerRecord.PowerRecordSample powerRecordSample =
+                new PowerRecord.PowerRecordSample(
+                        Power.fromWatts(8.0), Instant.now().plusMillis(100));
+
+        return new PowerRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        Instant.now().plusMillis(2000),
+                        List.of(powerRecordSample, powerRecordSample))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static PowerRecord getBasePowerRecord() {
         PowerRecord.PowerRecordSample powerRecord =
                 new PowerRecord.PowerRecordSample(
@@ -585,32 +614,6 @@ public class PowerRecordTest {
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         powerRecords)
-                .build();
-    }
-
-    PowerRecord getPowerRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-
-        PowerRecord.PowerRecordSample powerRecordSample =
-                new PowerRecord.PowerRecordSample(
-                        Power.fromWatts(8.0), Instant.now().plusMillis(100));
-
-        return new PowerRecord.Builder(
-                        metadataWithId,
-                        Instant.now(),
-                        Instant.now().plusMillis(2000),
-                        List.of(powerRecordSample, powerRecordSample))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }

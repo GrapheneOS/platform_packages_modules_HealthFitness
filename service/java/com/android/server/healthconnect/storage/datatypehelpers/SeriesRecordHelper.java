@@ -60,7 +60,7 @@ abstract class SeriesRecordHelper<
                     ContentValues contentValues = new ContentValues();
                     populateSampleTo(contentValues, (U) sample);
                     requests.add(
-                            new UpsertTableRequest(getSeriesDataTableName(), contentValues, null)
+                            new UpsertTableRequest(getSeriesDataTableName(), contentValues)
                                     .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME));
                 }));
 

@@ -110,10 +110,6 @@ public final class TransactionManager {
         try {
             for (UpsertTableRequest upsertRequest : request.getUpsertRequests()) {
                 insertOrReplaceRecord(db, upsertRequest);
-                if (upsertRequest.getRemovedUuid() != null) {
-                    request.onUuidRemoved(
-                            upsertRequest.getRemovedUuid(), upsertRequest.getRecordType());
-                }
             }
             for (UpsertTableRequest insertRequestsForChangeLog :
                     request.getInsertRequestsForChangeLogs()) {
@@ -198,7 +194,7 @@ public final class TransactionManager {
                             numberOfUuidsToDelete++;
                             if (deleteTableRequest.requiresPackageCheck()) {
                                 request.enforcePackageCheck(
-                                        StorageUtils.getCursorString(
+                                        StorageUtils.getCursorUUID(
                                                 cursor, deleteTableRequest.getIdColumnName()),
                                         StorageUtils.getCursorLong(
                                                 cursor, deleteTableRequest.getPackageColumnName()));
@@ -207,7 +203,7 @@ public final class TransactionManager {
                                     deleteTableRequest.getRecordType(),
                                     StorageUtils.getCursorLong(
                                             cursor, deleteTableRequest.getPackageColumnName()),
-                                    StorageUtils.getCursorString(
+                                    StorageUtils.getCursorUUID(
                                             cursor, deleteTableRequest.getIdColumnName()));
                         }
                         deleteTableRequest.setNumberOfUuidsToDelete(numberOfUuidsToDelete);
@@ -655,6 +651,11 @@ public final class TransactionManager {
     private long insertOrReplaceRecord(
             @NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
         try {
+            if (request.getUniqueColumnsCount() == 0) {
+                throw new RuntimeException(
+                        "insertOrReplaceRecord should only be called with unique columns set");
+            }
+
             long rowId =
                     db.insertWithOnConflict(
                             request.getTable(),

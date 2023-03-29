@@ -54,6 +54,18 @@ public final class Metadata {
      * <p>For e.g. Nutrition or weight data entered by the user.
      */
     public static final int RECORDING_METHOD_MANUAL_ENTRY = 3;
+    /**
+     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
+     * type.
+     *
+     * @hide
+     */
+    public static final Set<Integer> VALID_TYPES =
+            Set.of(
+                    RECORDING_METHOD_UNKNOWN,
+                    RECORDING_METHOD_ACTIVELY_RECORDED,
+                    RECORDING_METHOD_AUTOMATICALLY_RECORDED,
+                    RECORDING_METHOD_MANUAL_ENTRY);
 
     private final Device mDevice;
     private final DataOrigin mDataOrigin;
@@ -207,19 +219,6 @@ public final class Metadata {
                 getLastModifiedTime(),
                 getRecordingMethod());
     }
-
-    /**
-     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
-     * type.
-     *
-     * @hide
-     */
-    public static final Set<Integer> VALID_TYPES =
-            Set.of(
-                    RECORDING_METHOD_UNKNOWN,
-                    RECORDING_METHOD_ACTIVELY_RECORDED,
-                    RECORDING_METHOD_AUTOMATICALLY_RECORDED,
-                    RECORDING_METHOD_MANUAL_ENTRY);
 
     /**
      * List of possible Recording method for the {@link Record}.

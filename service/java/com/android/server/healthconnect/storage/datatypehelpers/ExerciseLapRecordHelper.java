@@ -66,8 +66,7 @@ public class ExerciseLapRecordHelper {
                     ContentValues contentValues = new ContentValues();
                     populateLapTo(contentValues, sample);
                     requests.add(
-                            new UpsertTableRequest(
-                                            EXERCISE_LAPS_RECORD_TABLE_NAME, contentValues, null)
+                            new UpsertTableRequest(EXERCISE_LAPS_RECORD_TABLE_NAME, contentValues)
                                     .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME));
                 }));
         return requests;

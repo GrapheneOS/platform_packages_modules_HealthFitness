@@ -92,6 +92,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -170,6 +171,15 @@ public class HealthConnectManagerTest {
         assertThat(isHealthPermission(context, HealthPermissions.MANAGE_HEALTH_PERMISSIONS))
                 .isFalse();
         assertThat(isHealthPermission(context, CAMERA)).isFalse();
+    }
+
+    @Test
+    public void testRandomIdWithInsert() throws Exception {
+        // Insert a sample record of each data type.
+        List<Record> insertRecords =
+                TestUtils.insertRecords(Collections.singletonList(TestUtils.getStepsRecord("abc")));
+        assertThat(insertRecords.get(0).getMetadata().getId()).isNotNull();
+        assertThat(insertRecords.get(0).getMetadata().getId()).isNotEqualTo("abc");
     }
 
     /**
@@ -281,7 +291,7 @@ public class HealthConnectManagerTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         // perform the update operation.
@@ -1773,11 +1783,11 @@ public class HealthConnectManagerTest {
         heightRecordsRead =
                 TestUtils.readRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(HeightRecord.class).build());
-        assertThat(heightRecordsRead.size()).isEqualTo(1);
+        assertThat(heightRecordsRead.size()).isEqualTo(2);
         bodyFatRecordsRead =
                 TestUtils.readRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(BodyFatRecord.class).build());
-        assertThat(bodyFatRecordsRead.size()).isEqualTo(2);
+        assertThat(bodyFatRecordsRead.size()).isEqualTo(1);
 
         TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
         deleteAllStagedRemoteData();

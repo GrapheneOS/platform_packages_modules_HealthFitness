@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static android.health.connect.Constants.DEBUG;
 import static android.health.connect.Constants.DEFAULT_LONG;
 
+import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
@@ -53,7 +54,6 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -82,10 +82,15 @@ import java.util.stream.Collectors;
  * @hide
  */
 public final class AppInfoHelper {
+    public static final String TABLE_NAME = "application_info_table";
+    public static final String APPLICATION_COLUMN_NAME = "app_name";
+    public static final String PACKAGE_COLUMN_NAME = "package_name";
+    public static final List<Pair<String, Integer>> UNIQUE_COLUMN_INFO =
+            Collections.singletonList(new Pair<>(PACKAGE_COLUMN_NAME, TYPE_STRING));
+    public static final String APP_ICON_COLUMN_NAME = "app_icon";
     private static final String TAG = "HealthConnectAppInfoHelper";
     private static final String RECORD_TYPES_USED_COLUMN_NAME = "record_types_used";
     private static final int COMPRESS_FACTOR = 100;
-    private static final int DB_VERSION_WITH_RECORD_TYPES_USED_COLUMN = 7;
     private static volatile AppInfoHelper sAppInfoHelper;
 
     /**
@@ -101,11 +106,6 @@ public final class AppInfoHelper {
      * <p>TO HAVE THREAD SAFETY DON'T USE THESE VARIABLES DIRECTLY, INSTEAD USE ITS GETTER
      */
     private volatile ConcurrentHashMap<String, AppInfoInternal> mAppInfoMap;
-
-    public static final String TABLE_NAME = "application_info_table";
-    public static final String APPLICATION_COLUMN_NAME = "app_name";
-    public static final String PACKAGE_COLUMN_NAME = "package_name";
-    public static final String APP_ICON_COLUMN_NAME = "app_icon";
 
     private AppInfoHelper() {}
 
@@ -214,23 +214,7 @@ public final class AppInfoHelper {
      * Called when a db update happens to make any required changes in appInfoHelper respecting
      * version upgrade.
      */
-    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion) {
-        if (oldVersion < DB_VERSION_WITH_RECORD_TYPES_USED_COLUMN) {
-            addRecordTypesUsedColumnName(db);
-        }
-    }
-
-    private void addRecordTypesUsedColumnName(@NonNull SQLiteDatabase db) {
-        try {
-            db.execSQL(
-                    new AlterTableRequest(
-                                    TABLE_NAME,
-                                    List.of(new Pair<>(RECORD_TYPES_USED_COLUMN_NAME, TEXT_NULL)))
-                            .getAlterTableAddColumnsCommand());
-        } catch (Exception e) {
-            // do nothing as
-        }
-    }
+    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
 
     /**
      * @return id of {@code packageName} or {@link Constants#DEFAULT_LONG} if the id is not found
@@ -525,7 +509,7 @@ public final class AppInfoHelper {
                 PACKAGE_COLUMN_NAME, appInfo.getPackageName());
         UpsertTableRequest upsertRequestForAppInfoUpdate =
                 new UpsertTableRequest(
-                        TABLE_NAME, getContentValues(packageName, appInfo), PACKAGE_COLUMN_NAME);
+                        TABLE_NAME, getContentValues(packageName, appInfo), UNIQUE_COLUMN_INFO);
         TransactionManager.getInitialisedInstance().update(upsertRequestForAppInfoUpdate);
 
         // update locally stored maps to keep data in sync.
@@ -607,7 +591,7 @@ public final class AppInfoHelper {
                                 new UpsertTableRequest(
                                         TABLE_NAME,
                                         getContentValues(packageName, appInfo),
-                                        PACKAGE_COLUMN_NAME));
+                                        UNIQUE_COLUMN_INFO));
         appInfo.setId(rowId);
         getAppInfoMap().put(packageName, appInfo);
         getIdPackageNameMap().put(appInfo.getId(), packageName);
@@ -622,7 +606,7 @@ public final class AppInfoHelper {
                 new UpsertTableRequest(
                         TABLE_NAME,
                         getContentValues(packageName, appInfoInternal),
-                        PACKAGE_COLUMN_NAME);
+                        UNIQUE_COLUMN_INFO);
 
         TransactionManager.getInitialisedInstance().updateTable(upsertTableRequest);
         getAppInfoMap().put(packageName, appInfoInternal);

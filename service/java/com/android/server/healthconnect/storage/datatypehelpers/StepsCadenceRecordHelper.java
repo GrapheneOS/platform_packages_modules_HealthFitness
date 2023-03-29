@@ -20,7 +20,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -32,6 +32,7 @@ import android.util.Pair;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Helper class for StepsCadenceRecord.
@@ -71,14 +72,14 @@ public class StepsCadenceRecordHelper
             @NonNull Cursor seriesTableCursor, StepsCadenceRecordInternal record) {
         HashSet<StepsCadenceRecordInternal.StepsCadenceRecordSample> stepsCadenceRecordSampleSet =
                 new HashSet<>();
-        String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
+        UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
             stepsCadenceRecordSampleSet.add(
                     new StepsCadenceRecordInternal.StepsCadenceRecordSample(
                             getCursorDouble(seriesTableCursor, RATE_COLUMN_NAME),
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
-                && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
+                && uuid.equals(getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();

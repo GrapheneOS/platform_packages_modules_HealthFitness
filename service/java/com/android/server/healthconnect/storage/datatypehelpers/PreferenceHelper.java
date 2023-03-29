@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 
@@ -23,6 +24,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -32,6 +34,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +46,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @hide
  */
 public final class PreferenceHelper {
-    private static final String TAG = "PreferenceHelper";
     private static final String TABLE_NAME = "preference_table";
     private static final String KEY_COLUMN_NAME = "key";
+    public static final List<Pair<String, Integer>> UNIQUE_COLUMN_INFO =
+            Collections.singletonList(new Pair<>(KEY_COLUMN_NAME, TYPE_STRING));
     private static final String VALUE_COLUMN_NAME = "value";
     private static volatile PreferenceHelper sPreferenceHelper;
     private volatile ConcurrentHashMap<String, String> mPreferences;
@@ -57,7 +61,7 @@ public final class PreferenceHelper {
         TransactionManager.getInitialisedInstance()
                 .insertOrReplace(
                         new UpsertTableRequest(
-                                TABLE_NAME, getContentValues(key, value), KEY_COLUMN_NAME));
+                                TABLE_NAME, getContentValues(key, value), UNIQUE_COLUMN_INFO));
         getPreferences().put(key, value);
     }
 
@@ -71,7 +75,7 @@ public final class PreferenceHelper {
                                 new UpsertTableRequest(
                                         TABLE_NAME,
                                         getContentValues(key, value),
-                                        KEY_COLUMN_NAME)));
+                                        UNIQUE_COLUMN_INFO)));
         TransactionManager.getInitialisedInstance().insertOrReplaceAll(requests);
         getPreferences().putAll(keyValues);
     }
@@ -134,6 +138,8 @@ public final class PreferenceHelper {
 
         return columnInfo;
     }
+
+    public void onUpgrade(int oldVersion, int newVersion, SQLiteDatabase db) {}
 
     public static synchronized PreferenceHelper getInstance() {
         if (sPreferenceHelper == null) {

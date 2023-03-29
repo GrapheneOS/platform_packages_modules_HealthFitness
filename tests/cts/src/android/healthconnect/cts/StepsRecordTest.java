@@ -62,6 +62,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -95,7 +96,9 @@ public class StepsRecordTest {
     @Test
     public void testReadStepsRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         assertThat(request.getRecordType()).isEqualTo(StepsRecord.class);
         assertThat(request.getRecordIdFilters()).isNotNull();
         List<StepsRecord> result = TestUtils.readRecords(request);
@@ -844,10 +847,10 @@ public class StepsRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {

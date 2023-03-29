@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Refines a request from what the user sent to a format that makes the most sense for the
@@ -58,7 +59,7 @@ public class ReadTransactionRequest {
     }
 
     public ReadTransactionRequest(
-            Map<Integer, List<String>> recordTypeToUuids, long startDateAccess) {
+            Map<Integer, List<UUID>> recordTypeToUuids, long startDateAccess) {
         mReadTableRequests = new ArrayList<>();
         recordTypeToUuids.forEach(
                 (recordType, uuids) ->

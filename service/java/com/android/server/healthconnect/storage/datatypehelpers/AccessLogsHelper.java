@@ -29,6 +29,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -147,6 +148,8 @@ public final class AccessLogsHelper {
 
         return columnInfo;
     }
+
+    public void onUpgrade(int oldVersion, int newVersion, SQLiteDatabase db) {}
 
     public static synchronized AccessLogsHelper getInstance() {
         if (sAccessLogsHelper == null) {

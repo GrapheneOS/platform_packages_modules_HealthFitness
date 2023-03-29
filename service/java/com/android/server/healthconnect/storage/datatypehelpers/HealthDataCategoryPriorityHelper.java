@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -57,6 +58,8 @@ import java.util.stream.Collectors;
 public class HealthDataCategoryPriorityHelper {
     private static final String TABLE_NAME = "health_data_category_priority_table";
     private static final String HEALTH_DATA_CATEGORY_COLUMN_NAME = "health_data_category";
+    public static final List<Pair<String, Integer>> UNIQUE_COLUMN_INFO =
+            Collections.singletonList(new Pair<>(HEALTH_DATA_CATEGORY_COLUMN_NAME, TYPE_STRING));
     private static final String APP_ID_PRIORITY_ORDER_COLUMN_NAME = "app_id_priority_order";
     private static final String TAG = "HealthConnectPrioHelper";
     private static final String DEFAULT_APP_RESOURCE_NAME =
@@ -72,7 +75,7 @@ public class HealthDataCategoryPriorityHelper {
     private HealthDataCategoryPriorityHelper() {}
 
     // Called on DB update.
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
+    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {
         // empty by default
     }
 
@@ -112,7 +115,7 @@ public class HealthDataCategoryPriorityHelper {
                 new UpsertTableRequest(
                         TABLE_NAME,
                         getContentValuesFor(dataCategory, newPriorityOrder),
-                        HEALTH_DATA_CATEGORY_COLUMN_NAME),
+                        UNIQUE_COLUMN_INFO),
                 dataCategory,
                 newPriorityOrder);
     }
@@ -152,7 +155,7 @@ public class HealthDataCategoryPriorityHelper {
                 new UpsertTableRequest(
                         TABLE_NAME,
                         getContentValuesFor(dataCategory, newPriorityList),
-                        HEALTH_DATA_CATEGORY_COLUMN_NAME),
+                        UNIQUE_COLUMN_INFO),
                 dataCategory,
                 newPriorityList);
     }
@@ -194,7 +197,7 @@ public class HealthDataCategoryPriorityHelper {
                 new UpsertTableRequest(
                         TABLE_NAME,
                         getContentValuesFor(dataCategory, newPriorityOrder),
-                        HEALTH_DATA_CATEGORY_COLUMN_NAME),
+                        UNIQUE_COLUMN_INFO),
                 dataCategory,
                 newPriorityOrder);
     }
