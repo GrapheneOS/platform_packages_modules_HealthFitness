@@ -141,8 +141,6 @@ public final class HealthConnectDataState implements Parcelable {
      *
      * @hide
      */
-    // TODO(b/266720885): update javadoc on how the module checks if an app that can potentially
-    // perform Migration once available.
     @SystemApi public static final int MIGRATION_STATE_IDLE = 0;
 
     /**
@@ -158,8 +156,6 @@ public final class HealthConnectDataState implements Parcelable {
      *
      * @hide
      */
-    // TODO(b/266720885): update javadoc on how the module checks if an app can perform Migration
-    // once available.
     @SystemApi public static final int MIGRATION_STATE_APP_UPGRADE_REQUIRED = 1;
 
     /**
@@ -175,7 +171,6 @@ public final class HealthConnectDataState implements Parcelable {
      *
      * @hide
      */
-    // TODO(b/266720885): update javadoc on how to set the minVersion when it's available.
     @SystemApi public static final int MIGRATION_STATE_MODULE_UPGRADE_REQUIRED = 2;
 
     /**
@@ -198,7 +193,6 @@ public final class HealthConnectDataState implements Parcelable {
      *
      * @hide
      */
-    // TODO(b/266720885): update javadoc on how to check if APIs are blocked once it's available.
     @SystemApi public static final int MIGRATION_STATE_IN_PROGRESS = 3;
 
     /**
