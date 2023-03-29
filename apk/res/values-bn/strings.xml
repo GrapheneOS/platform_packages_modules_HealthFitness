@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connect-এর কোনও ডেটা দেখতে বা এডিট করতে পারবে না।\n\nএই অ্যাপের জন্য অন্য কোনও কিছুতে অনুমতি (যেমন, লোকেশন, ক্যামেরা বা মাইক্রোফোন) থাকলে তাতে কোনও প্রভাব পড়বে না।"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"এছাড়া, <xliff:g id="APP_NAME">%1$s</xliff:g>-এর ডেটাও Health Connect থেকে মুছে দিন"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"পরের দিন"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"আগের দিন"</string>
     <string name="default_error" msgid="7966868260616403475">"কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"এই অনুমতি থাকা অ্যাপ আপনার স্বাস্থ্য সংক্রান্ত ডেটা দেখতে ও এডিট করতে পারবে।"</string>
@@ -335,7 +337,8 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Health Connect-এ থাকা ডেটা মুছে ফেলা"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Health Connect-এ থাকা ডেটা মুছে ফেলা"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"ডেটা মুছে ফেলা"</string>
-    <string name="data_point_action_content_description" msgid="5594307313451433706">"ডেটা এন্ট্রির বিকল্প"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"এন্ট্রি মুছুন"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{১ ওয়াট}one{# ওয়াট}other{# ওয়াট}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{১ ওয়াট}one{# ওয়াট}other{# ওয়াট}}"</string>
@@ -677,6 +680,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"ডেটা অটোমেটিক মুছে দিন"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# মাস পরে}one{# মাস পরে}other{# মাস পরে}}"</string>
     <string name="range_never" msgid="4429478261788361233">"কখনওই নয়"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"আপনি এইসব সেটিংস পরিবর্তন করলে, Health Connect আপনার নতুন পছন্দ প্রতিফলিত করতে আগে থেকে রয়েছে এমন ডেটা মুছে দেয়"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# মাস পরে ডেটা অটোমেটিক মুছে দিতে চান?}one{# মাস পরে ডেটা অটোমেটিক মুছে দিতে চান?}other{# মাস পরে ডেটা অটোমেটিক মুছে দিতে চান?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{# মাস পরে Health Connect নতুন ডেটা অটোমেটিক মুছে দেবে। এছাড়া, এটি সেট করা হলে বর্তমানে থাকা # মাসের চেয়ে পুরনো ডেটা অটোমেটিক মুছে যাবে।}one{# মাস পরে Health Connect নতুন ডেটা অটোমেটিক মুছে দেবে। এছাড়া, এটি সেট করা হলে বর্তমানে থাকা # মাসের চেয়ে পুরনো ডেটা অটোমেটিক মুছে যাবে।}other{# মাস পরে Health Connect নতুন ডেটা অটোমেটিক মুছে দেবে। এছাড়া, এটি সেট করা হলে বর্তমানে থাকা # মাসের চেয়ে পুরনো ডেটা অটোমেটিক মুছে যাবে।}}"</string>
@@ -703,5 +708,17 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"Health Connect-এ এই ব্যায়াম সম্পর্কিত রুটিন অ্যাক্সেস করার ক্ষেত্রে <xliff:g id="APP_NAME">%1$s</xliff:g>-কে অনুমতি দেবেন?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"রুটে আপনার আগের লোকেশন এই অ্যাপ দেখতে পারবে"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"লোড হচ্ছে…"</string>
 </resources>
