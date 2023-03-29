@@ -265,7 +265,8 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
                 DeviceUtils.STATSD_ATOM_TEST_PKG,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_API_CALLED_FIELD_NUMBER});
 
-        DeviceUtils.runDeviceTests(getDevice(), TEST_APP_PKG_NAME, ".LoggingTests", testName);
+        DeviceUtils.runDeviceTests(
+                getDevice(), TEST_APP_PKG_NAME, ".HealthConnectServiceLogsTests", testName);
         ExtensionRegistry registry = ExtensionRegistry.newInstance();
         ApiExtensionAtoms.registerAllExtensions(registry);
 

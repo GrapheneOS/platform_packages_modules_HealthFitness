@@ -33,7 +33,7 @@
     <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
 
 
-    <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission">
+    <application android:label="CtsHealthConnectTestApp">
         <activity android:name="android.healthconnect.cts.testhelper.HealthConnectTestHelper"
                   android:exported="true">
             <intent-filter>

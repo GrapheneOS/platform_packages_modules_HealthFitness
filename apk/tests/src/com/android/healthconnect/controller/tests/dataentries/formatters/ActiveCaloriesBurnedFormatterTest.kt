@@ -53,7 +53,7 @@ class ActiveCaloriesBurnedFormatterTest {
     @Test
     fun formatValue_calories_returnsFormattedEnergy() = runBlocking {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
-        val record = getActiveCaloriesBurnedRecord(calories = 3.0)
+        val record = getActiveCaloriesBurnedRecord(calories = 3000.0)
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("3 Cal")
     }
@@ -71,7 +71,7 @@ class ActiveCaloriesBurnedFormatterTest {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
         val record = getActiveCaloriesBurnedRecord(calories = 13000.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("13,000 calories")
+        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("13 calories")
     }
 
     @Test
