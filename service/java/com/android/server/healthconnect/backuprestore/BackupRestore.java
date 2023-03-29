@@ -57,6 +57,7 @@ import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -124,6 +125,7 @@ public final class BackupRestore {
     private static final String TAG = "HealthConnectBackupRestore";
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
     private final FirstGrantTimeManager mFirstGrantTimeManager;
+    private final MigrationStateManager mMigrationStateManager;
 
     private final Context mStagedDbContext;
     private final Context mContext;
@@ -135,8 +137,12 @@ public final class BackupRestore {
 
     private boolean mActivelyStagingRemoteData = false;
 
-    public BackupRestore(FirstGrantTimeManager firstGrantTimeManager, @NonNull Context context) {
+    public BackupRestore(
+            FirstGrantTimeManager firstGrantTimeManager,
+            MigrationStateManager migrationStateManager,
+            @NonNull Context context) {
         mFirstGrantTimeManager = firstGrantTimeManager;
+        mMigrationStateManager = migrationStateManager;
         mStagedDbContext = new StagedDatabaseContext(context);
         mContext = context;
     }
@@ -499,7 +505,12 @@ public final class BackupRestore {
             return;
         }
 
-        // TODO(b/266398937): check if data sync in progress once available.
+        // TODO(b/271078264): Retry after appropriate time.
+        if (mMigrationStateManager.isMigrationInProgress()) {
+            return;
+        }
+
+        setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS, userId, false);
         mergeDatabase(userId);
         setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, userId, false);
     }
