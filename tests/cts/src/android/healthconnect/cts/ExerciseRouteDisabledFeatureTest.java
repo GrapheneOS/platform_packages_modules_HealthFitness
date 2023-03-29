@@ -79,7 +79,7 @@ public class ExerciseRouteDisabledFeatureTest {
     private void setExerciseRouteFeatureEnabledFlag(boolean flag) throws InterruptedException {
         if (SdkLevel.isAtLeastU()) {
             mUiAutomation.adoptShellPermissionIdentity(
-                    "android.permission.ALLOWLISTED_WRITE_DEVICE_CONFIG");
+                    "android.permission.WRITE_ALLOWLISTED_DEVICE_CONFIG");
         } else {
             mUiAutomation.adoptShellPermissionIdentity("android.permission.WRITE_DEVICE_CONFIG");
         }
