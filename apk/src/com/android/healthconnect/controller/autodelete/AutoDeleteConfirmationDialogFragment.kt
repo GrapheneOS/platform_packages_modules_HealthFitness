@@ -46,7 +46,7 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
         check(viewModel.newAutoDeleteRange.value != AutoDeleteRange.AUTO_DELETE_RANGE_NEVER) {
             "ConfirmationDialog not supported for AUTO_DELETE_RANGE_NEVER."
         }
-        val alertDialog = AlertDialogBuilder(this).setIcon(R.attr.deleteSettingsIcon)
+        val alertDialog = AlertDialogBuilder(this).setIcon(R.attr.deletionSettingsIcon)
 
         viewModel.newAutoDeleteRange.value?.let {
             alertDialog

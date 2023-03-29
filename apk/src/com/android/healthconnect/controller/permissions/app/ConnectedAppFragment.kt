@@ -265,7 +265,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                     HealthSwitchPreference(requireContext()).also {
                         val healthCategory =
                             fromHealthPermissionType(permission.healthPermissionType)
-                        it.setIcon(healthCategory.icon())
+                        it.icon = healthCategory.icon(requireContext())
                         it.setTitle(
                             fromPermissionType(permission.healthPermissionType).uppercaseLabel)
                         it.logNameActive = AppAccessElement.PERMISSION_SWITCH_ACTIVE
