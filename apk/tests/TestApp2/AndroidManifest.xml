@@ -20,6 +20,8 @@
     <!-- Health-related permissions. -->
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
+        <uses-permission android:name="android.permission-group.HEALTH"/>
+    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA"/>
 
     <application
         android:label="Health Connect test app 2">
