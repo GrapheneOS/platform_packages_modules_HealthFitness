@@ -25,6 +25,7 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODU
 
 import static com.android.server.healthconnect.migration.MigrationConstants.ALLOWED_STATE_TIMEOUT_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.HC_PACKAGE_NAME_CONFIG_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.HC_RELEASE_CERT_CONFIG_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MAX_START_MIGRATION_CALLS_ALLOWED;
@@ -39,7 +40,6 @@ import static com.android.server.healthconnect.migration.MigrationUtils.filterPe
 
 import android.annotation.NonNull;
 import android.annotation.UserIdInt;
-import android.app.job.JobInfo;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -47,7 +47,6 @@ import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectDataState;
-import android.os.Binder;
 import android.os.Build;
 import android.os.ext.SdkExtensions;
 import android.util.Slog;
@@ -108,7 +107,7 @@ public final class MigrationStateManager {
     /** Re-initialize this class instance with the new user */
     public void onUserSwitching(@NonNull Context context, @UserIdInt int userId) {
         synchronized (mLock) {
-            MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
+            MigrationStateChangeJob.cancelAllJobs(context);
             mUserId = userId;
         }
     }
@@ -173,6 +172,8 @@ public final class MigrationStateManager {
 
     public void switchToSetupForUser(@NonNull Context context) {
         synchronized (mLock) {
+            cleanupOldPersistentMigrationJobsIfNeeded(context);
+            MigrationStateChangeJob.cancelAllJobs(context);
             reconcilePackageChangesWithStates(context);
             reconcileStateChangeJob(context);
         }
@@ -199,14 +200,12 @@ public final class MigrationStateManager {
         switch (state) {
             case MIGRATION_STATE_APP_UPGRADE_REQUIRED:
             case MIGRATION_STATE_MODULE_UPGRADE_REQUIRED:
-                MigrationStateChangeJob.cancelPendingJob(
-                        context, mUserId, MIGRATION_COMPLETE_JOB_NAME);
+                MigrationStateChangeJob.cancelAllJobs(context);
                 updateMigrationStatePreference(context, state);
                 MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
                 return;
             case MIGRATION_STATE_IN_PROGRESS:
-                MigrationStateChangeJob.cancelPendingJob(
-                        context, mUserId, MIGRATION_COMPLETE_JOB_NAME);
+                MigrationStateChangeJob.cancelAllJobs(context);
                 updateMigrationStatePreference(context, MIGRATION_STATE_IN_PROGRESS);
                 MigrationStateChangeJob.scheduleMigrationPauseJob(context, mUserId);
                 updateMigrationStartsCount();
@@ -217,13 +216,13 @@ public final class MigrationStateManager {
                     updateMigrationState(context, MIGRATION_STATE_COMPLETE);
                     return;
                 }
-                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
+                MigrationStateChangeJob.cancelAllJobs(context);
                 updateMigrationStatePreference(context, MIGRATION_STATE_ALLOWED);
                 MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
                 return;
             case MIGRATION_STATE_COMPLETE:
                 updateMigrationStatePreference(context, MIGRATION_STATE_COMPLETE);
-                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
+                MigrationStateChangeJob.cancelAllJobs(context);
                 return;
             default:
                 throw new IllegalArgumentException(
@@ -447,31 +446,24 @@ public final class MigrationStateManager {
             case MIGRATION_STATE_IDLE:
             case MIGRATION_STATE_APP_UPGRADE_REQUIRED:
             case MIGRATION_STATE_ALLOWED:
-                rescheduleCompleteJobIfNoneFound(context);
+                if (!MigrationStateChangeJob.existsAStateChangeJob(
+                        context, MIGRATION_COMPLETE_JOB_NAME)) {
+                    MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
+                }
                 return;
             case MIGRATION_STATE_MODULE_UPGRADE_REQUIRED:
                 handleIsUpgradeStillRequired(context);
                 return;
 
             case MIGRATION_STATE_IN_PROGRESS:
-                handleInProgressState(context);
+                if (!MigrationStateChangeJob.existsAStateChangeJob(
+                        context, MIGRATION_PAUSE_JOB_NAME)) {
+                    MigrationStateChangeJob.scheduleMigrationPauseJob(context, mUserId);
+                }
                 return;
 
             case MIGRATION_STATE_COMPLETE:
-                MigrationStateChangeJob.cancelAllPendingJobs(context, mUserId);
-        }
-    }
-
-    /**
-     * Handles migration state change jobs if migration state is {@link MIGRATION_STATE_IN_PROGRESS}
-     * on user unlock
-     */
-    private void handleInProgressState(@NonNull Context context) {
-        JobInfo jobInfo =
-                MigrationStateChangeJob.getPendingJob(
-                        context, Binder.getCallingUid(), MIGRATION_PAUSE_JOB_NAME);
-        if (Objects.isNull(jobInfo)) {
-            MigrationStateChangeJob.scheduleMigrationPauseJob(context, mUserId);
+                MigrationStateChangeJob.cancelAllJobs(context);
         }
     }
 
@@ -487,17 +479,9 @@ public final class MigrationStateManager {
                                 .getPreference(MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY))
                 <= getUdcSdkExtensionVersion()) {
             updateMigrationState(context, MIGRATION_STATE_ALLOWED);
-        } else {
-            rescheduleCompleteJobIfNoneFound(context);
+            return;
         }
-    }
-
-    private void rescheduleCompleteJobIfNoneFound(@NonNull Context context) {
-        JobInfo jobInfo =
-                MigrationStateChangeJob.getPendingJob(
-                        context, Binder.getCallingUid(), MIGRATION_COMPLETE_JOB_NAME);
-
-        if (Objects.isNull(jobInfo)) {
+        if (!MigrationStateChangeJob.existsAStateChangeJob(context, MIGRATION_COMPLETE_JOB_NAME)) {
             MigrationStateChangeJob.scheduleMigrationCompletionJob(context, mUserId);
         }
     }
@@ -646,6 +630,17 @@ public final class MigrationStateManager {
                                 PreferenceHelper.getInstance()
                                         .getPreference(MIGRATION_STARTS_COUNT_KEY))
                         .orElse("0"));
+    }
+
+    private void cleanupOldPersistentMigrationJobsIfNeeded(@NonNull Context context) {
+        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
+
+        if (!Boolean.parseBoolean(
+                preferenceHelper.getPreference(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY))) {
+            MigrationStateChangeJob.cleanupOldPersistentMigrationJobs(context);
+            preferenceHelper.insertOrReplacePreference(
+                    HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY, String.valueOf(true));
+        }
     }
 
     /**
