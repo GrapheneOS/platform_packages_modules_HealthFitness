@@ -386,7 +386,7 @@
     <string name="manage_your_settings_description" description="Content description for how the user can change app permissions and manage data">Change app permissions and manage your data at any time</string>
     <string name="onboarding_go_back_button_text" description="Content description for button to exit from onboarding page">Go back</string>
     <string name="onboarding_get_started_button_text" description="Content description for button to get started with Health Connect app">Get started</string>
-    <string name="previously_opened" description="Label used as key to track if user has opened Health Connected previously" translatable="false">Previously Opened</string>
+    <string name="previously_opened" description="Label used as key to track if user has opened Health Connect previously" translatable="false">Previously Opened</string>
     <!--endregion-->
 
     <!-- region Deletion -->
@@ -664,8 +664,13 @@
     <string name="hour_minute_duration_accessibility" translation_description="Hour and minute time duration representation used by accessibility, 'space' between minute and second should be deleted or replaced according to each language to translate [CHAR LIMIT=NONE]">
   <xliff:g example="2 hours" id="hours">%1$s</xliff:g> <xliff:g example="2 minutes" id="minutes">%2$s</xliff:g>
   </string>
-    <string translation_description="Hour and minute time duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]" name="hour_duration_accessibility">{count, plural, =1 {1 hour} other {# hours}}</string>
+    <string translation_description="Hour time duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]" name="hour_duration_accessibility">{count, plural, =1 {1 hour} other {# hours}}</string>
     <string translation_description="minute duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]" name="minute_duration_accessibility">{count, plural, =1 {1 minute} other {# minutes}}</string>
+
+
+    <string translation_description="Days duration representation [CHAR LIMIT=8]" name="day_duration"><xliff:g id="days" example="2 days">%1$s</xliff:g></string>
+    <string translation_description="Days and hours time duration representation [CHAR LIMIT=8]" name="day_hour_duration"><xliff:g id="days" example="2 days">%1$s</xliff:g> and <xliff:g id="hours" example="3 hours">%2$s</xliff:g></string>
+    <string translation_description="Days duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]" name="day_duration_accessibility">{count, plural, =1 {1 day} other {# days}}</string>
     <!-- endregion -->
 
     <!--  region vo2 max-->
@@ -959,4 +964,105 @@
     <!-- region Loading -->
     <string name="loading" description="Label shown when loading data. [CHAR_LIMIT=40]">Loading&#8230;</string>
     <!--  endregion -->
+
+    <!-- region Migration -->
+
+    <string name="module_update_needed_seen" description="Label used as key to track if user has seen the Module Update Needed migration screen" translatable="false">Module Update Seen</string>
+    <string name="app_update_needed_seen" description="Label used as key to track if user has seen the App Update Needed migration screen" translatable="false">App Update Seen</string>
+    <string name="whats_new_dialog_seen" description="Label used as key to track if user has seen the What's new migration dialog" translatable="false">Whats New Seen</string>
+    <string name="migration_not_complete_dialog_seen" description="Label used as key to track if user has seen the Migration not complete dialog" translatable="false">Migration Not Complete Seen</string>
+
+    <!-- region In progress -->
+    <string name="migration_in_progress_screen_title" description="Title of screen shown when migration is in progress">Integration in progress</string>
+    <string name="migration_in_progress_screen_integration_details" description="Detail information shown when migration is in progress">Health&#160;Connect is being integrated with the Android system.\n\nIt may take some time while your data and permissions are being transferred.</string>
+    <string name="migration_in_progress_screen_integration_dont_close" description="Instruction to not close application shown when migration is in progress">Don’t close the app until you get a notification that the process is complete.</string>
+    <string name="migration_in_progress_notification_title" description="Title of notification sent when migration is in progress">Health&#160;Connect integration in progress</string>
+    <!--  endregion -->
+
+    <!-- region Update needed common -->
+    <string name="migration_update_needed_screen_title" description="Title of screen shown when migration is pending and an update is needed.">Update needed</string>
+    <string name="migration_update_needed_screen_details" description="Detail information shown when migration is pending and an update is needed.">Health&#160;Connect is being integrated with the Android system so you can access it directly from your settings.</string>
+    <string name="update_button" description="Text of a button prompting the user to update an app or their phone system [CHAR_LIMIT=40]">Update</string>
+    <string name="migration_update_needed_notification_content" description="Content of notification sent when migration is pending and an app or module update is needed.">Start this update so that Health&#160;Connect can continue integrating with your system settings</string>
+    <string name="migration_update_needed_notification_action" description="Action of notification sent when migration is pending and an app or module update is needed.">Update now</string>
+    <!--  endregion -->
+
+    <!-- region Module Update needed -->
+    <string name="migration_module_update_needed_notification_title" description="Title of notification sent when migration is pending and an app or module update is needed.">System update needed</string>
+    <string name="migration_module_update_needed_action" description="Action information shown when migration is pending and a system update is needed.">Before continuing, update your phone system.</string>
+    <string name="migration_module_update_needed_restart" description="Detail information shown when migration is pending and one update is needed.">If you’ve already updated your phone system, try restarting your phone to continue the integration</string>
+
+    <!--  endregion -->
+    <!-- region App Update needed -->
+    <string name="migration_app_update_needed_notification_title" description="Title of notification sent when migration is pending and an app or module update is needed.">Health&#160;Connect update needed</string>
+    <string name="migration_app_update_needed_action" description="Action information shown when migration is pending and an app update is needed.">Before continuing, update the Health&#160;Connect app to the latest version.</string>
+    <!--  endregion -->
+
+    <!-- region More space needed -->
+    <string name="migration_more_space_needed_screen_title" description="Title of screen shown when migration is pending and more space is needed.">More space needed</string>
+<!--    TODO (b/275685595) use string resource for storage space -->
+    <string name="migration_more_space_needed_screen_details" description="Detail information shown when migration is pending and more space is needed.">Health&#160;Connect needs <xliff:g example="500MB" id="space_needed">%1$s</xliff:g> of storage space on your phone in order for the integration to continue.\n\nClear some space on your phone and then try again.</string>
+    <string name="try_again_button" description="Text of a button prompting the user to try looking at the space again [CHAR_LIMIT=40]">Try again</string>
+    <string name="free_up_space_button" description="Text of a button leading the user to their system storage so they can free up space. [CHAR_LIMIT=40]">Free up space</string>
+    <string name="migration_more_space_needed_notification_title" description="Title of notification sent when migration is pending and more space is needed.">More space needed</string>
+    <string name="migration_more_space_needed_notification_content" description="Content of notification sent when migration is pending and more space is needed.">Health&#160;Connect needs <xliff:g example="500MB" id="space_needed">%1$s</xliff:g> of storage space on your phone to continue integrating.</string>
+    <!--  endregion -->
+
+    <!-- region Migration paused -->
+    <string name="migration_paused_screen_title" description="Title of screen shown when migration has been paused.">Integration paused</string>
+    <string name="migration_paused_screen_details" description="Detail information shown when migration has been paused.">The Health&#160;Connect app closed while it was being integrated with the Android system.\n\nClick resume to reopen the app and continue transferring your data and permissions.</string>
+    <string name="migration_paused_screen_details_timeout" description="Detail information about migration timeout shown when migration has been paused.">In order to keep your Health&#160;Connect data, complete this within <xliff:g example="1 day" id="time_needed">%1$s</xliff:g></string>
+    <string name="resume_button" description="Text of a button prompting the user resume migration [CHAR_LIMIT=40]">Resume</string>
+    <string name="migration_paused_notification_title" description="Title of notification sent when migration has been paused.">Health&#160;Connect integration paused</string>
+    <!--  endregion -->
+
+    <!-- region Resume migration banner -->
+    <string name="resume_migration_banner_title" description="Title of banner prompting the user to resume actions needed for migration">Resume integration</string>
+    <string name="resume_migration_banner_description" description="Description of banner prompting the user to resume actions needed for migration">Tap to continue integrating Health&#160;Connect with the Android system. In order to keep your data, complete this within <xliff:g example="1 day" id="time_needed">%1$s</xliff:g></string>
+    <string name="resume_migration_banner_description_fallback" description="Fallback description of banner prompting the user to resume actions needed for migration">Tap to continue integrating Health&#160;Connect with the Android system.</string>
+    <string name="resume_migration_banner_button" description="Button of banner prompting the user to resume actions needed for migration">Continue</string>
+    <string name="resume_migration_notification_title" description="Title of notification prompting the user to resume actions needed for migration">Resume Health&#160;Connect integration</string>
+    <string name="resume_migration_notification_content" description="Content of notification prompting the user to resume actions needed for migration">In order to keep your data, complete this within <xliff:g example="1 day" id="time_needed">%1$s</xliff:g></string>
+    <!--  endregion -->
+
+    <!-- region App update needed banner -->
+    <string name="app_update_needed_banner_title" description="Title of banner prompting the user to update an app which is not currently working on this Android version.">App update needed</string>
+    <string name="app_update_needed_banner_description_single" description="Description of banner prompting the user to update an app which is not currently working on this Android version."><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> needs to be up-to-date in order to keep working with Health&#160;Connect</string>
+    <string name="app_update_needed_banner_description_multiple" description="Description of banner prompting the user to update an app which is not currently working on this Android version."> Some apps need to be up-to-date in order to keep working with Health&#160;Connect</string>
+    <string name="app_update_needed_banner_button" description="Button of banner prompting the user to update an app which is not currently working on this Android version.">Check for updates</string>
+    <!--  endregion -->
+
+    <!-- region Migration pending permissions dialog -->
+    <string name="migration_pending_permissions_dialog_title" description="Title of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect integration</string>
+    <string name="migration_pending_permissions_dialog_content" description="Content of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect is ready to be integrated with your Android system. If you give <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> access now, some features may not work until integration is complete.</string>
+    <string name="migration_pending_permissions_dialog_button_continue" description="Button of dialog shown to the user when migration is pending and an app is requesting permissions.">Continue</string>
+    <!--  endregion -->
+
+    <!-- region Migration in progress permissions dialog -->
+    <string name="migration_in_progress_permissions_dialog_title" description="Title of dialog shown to the user when migration is in progress and an app is requesting permissions.">Health&#160;Connect integration in progress</string>
+    <string name="migration_in_progress_permissions_dialog_content" description="Content of dialog shown to the user when migration is in progress and an app is requesting permissions.">Health&#160;Connect is being integrated with the Android system.\n\nYou’ll get a notification when the process is complete and you can use <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> with Health&#160;Connect.</string>
+    <string name="migration_in_progress_permissions_dialog_button_got_it" description="Button of dialog shown to the user when migration is in progress and an app is requesting permissions.">Got it</string>
+    <!--  endregion -->
+
+    <!-- region Migration did not complete dialog -->
+    <string name="migration_not_complete_dialog_title" description="Title of dialog shown to the user when migration did not complete due to an error.">Health&#160;Connect integration didn’t complete</string>
+    <string name="migration_not_complete_dialog_content" description="Content of dialog shown to the user when migration did not complete due to an error.">You’ll get a notification when it becomes available again.</string>
+    <string name="migration_not_complete_dialog_button" description="Button of dialog shown to the user when migration did not complete due to an error.">Got it</string>
+    <string name="migration_not_complete_notification_title" description="Title of notification shown to the user when migration did not complete due to an error.">Health&#160;Connect integration didn’t complete</string>
+    <string name="migration_not_complete_notification_action" description="Action of notification shown to the user when migration did not complete due to an error.">Read more</string>
+    <!--  endregion -->
+
+    <!-- region Migration complete -->
+    <string name="migration_complete_notification_title" description="Title of notification shown to the user when migration is complete">Health&#160;Connect integration complete</string>
+    <string name="migration_complete_notification_action" description="Action of notification shown to the user when migration is complete">Open</string>
+    <!--  endregion -->
+
+    <!-- region What's new dialog -->
+    <string name="migration_whats_new_dialog_title" description="Title of dialog shown to the user after migration is done, informing them how to access the Health Connect module.">What’s new</string>
+    <string name="migration_whats_new_dialog_content" description="Content of dialog shown to the user after migration is done, informing them how to access the Health Connect module.">You can now access Health&#160;Connect directly from your settings. Uninstall the Health&#160;Connect app any time.</string>
+    <string name="migration_whats_new_dialog_button" description="Button of dialog shown to the user after migration is done, informing them how to access the Health Connect module.">Got it</string>
+    <!--  endregion -->
+
+    <!--  endregion -->
+
 </resources>

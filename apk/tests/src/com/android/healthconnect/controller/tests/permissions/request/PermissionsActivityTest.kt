@@ -41,6 +41,7 @@ import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.health.connect.HealthConnectDataState
 import android.health.connect.HealthPermissions.READ_HEART_RATE
 import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_DISTANCE
@@ -62,6 +63,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.permissions.data.PermissionState
@@ -83,6 +85,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.anyString
+import java.time.Duration
 
 @HiltAndroidTest
 class PermissionsActivityTest {
@@ -91,6 +94,8 @@ class PermissionsActivityTest {
 
     @BindValue
     val viewModel: RequestPermissionViewModel = Mockito.mock(RequestPermissionViewModel::class.java)
+    @BindValue
+    val migrationViewModel: MigrationViewModel = Mockito.mock(MigrationViewModel::class.java)
 
     private lateinit var context: Context
 
@@ -114,6 +119,8 @@ class PermissionsActivityTest {
                     TEST_APP_NAME,
                     context.getDrawable(R.drawable.health_connect_logo)))
         }
+        whenever(migrationViewModel.migrationTimeout).then {MutableLiveData(Duration.ZERO)}
+        whenever(migrationViewModel.migrationState).then { MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)}
         val sharedPreference =
             context.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
