@@ -99,8 +99,6 @@ android_test {
         "src/android/healthconnect/cts/ui/*.kt",
         "src/android/healthconnect/cts/ui/testing/*.kt",
         "src/android/healthconnect/cts/TestUtils.java",
-        "src/com/android/cts/install/lib/*.java",
-        "hostsidetests/healthconnect/libs/HealthConnectTestLib/src/android/healthconnect/cts/lib/TestUtils.java"
     ],
     // Tag this module as a cts test artifact
     test_suites: [
@@ -115,7 +113,6 @@ android_test {
         "ctstestrunner-axt",
         "cts-wm-util",
         "testng",
-         "cts-install-lib"
     ],
     min_sdk_version: "UpsideDownCake",
     sdk_version: "module_current",
@@ -124,7 +121,5 @@ android_test {
     data: [
             ":HealthFitnessCtsTestApp",
             ":HealthFitnessCtsTestApp2",
-            ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
-            ":CtsHealthConnectTestAppBWithNormalReadWritePermission"
         ],
 }
