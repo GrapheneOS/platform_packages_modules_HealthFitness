@@ -16,12 +16,9 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLongList;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -32,12 +29,14 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.util.Pair;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
+import com.android.server.healthconnect.storage.request.DropTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.StorageUtils;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.LocalDate;
@@ -45,10 +44,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -59,21 +56,13 @@ import java.util.stream.Collectors;
  */
 public final class ActivityDateHelper {
     private static final String TABLE_NAME = "activity_date_table";
-    private static final String DATE_COLUMN_NAME = "date";
+    private static final String EPOCH_DAYS_COLUMN_NAME = "epoch_days";
     private static final String RECORD_TYPE_ID_COLUMN_NAME = "record_type_id";
-
+    private static final int DB_VERSION_RENAME_LOCAL_DATE_COLUMN = 8;
+    private static final int DB_SYNC_DELAY = 10;
     private static volatile ActivityDateHelper sActivityDateHelper;
 
     private ActivityDateHelper() {}
-
-    /** Returns an instance of this class */
-    public static synchronized ActivityDateHelper getInstance() {
-        if (sActivityDateHelper == null) {
-            sActivityDateHelper = new ActivityDateHelper();
-        }
-
-        return sActivityDateHelper;
-    }
 
     /**
      * Returns a requests representing the tables that should be created corresponding to this
@@ -81,12 +70,18 @@ public final class ActivityDateHelper {
      */
     @NonNull
     public CreateTableRequest getCreateTableRequest() {
-        return new CreateTableRequest(TABLE_NAME, getColumnInfo());
+        return new CreateTableRequest(TABLE_NAME, getColumnInfo())
+                .addUniqueConstraints(List.of(EPOCH_DAYS_COLUMN_NAME, RECORD_TYPE_ID_COLUMN_NAME));
     }
 
     /** Called on DB update. */
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
-        // empty by default
+    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion) {
+        if (oldVersion < DB_VERSION_RENAME_LOCAL_DATE_COLUMN) {
+            db.execSQL(new DropTableRequest(TABLE_NAME).getDropTableCommand());
+            db.execSQL(getCreateTableRequest().getCreateCommand());
+
+            HealthConnectThreadScheduler.scheduleInternalTask(this::reSyncForAllRecords);
+        }
     }
 
     /** Deletes all entries from the database and clears the cache. */
@@ -100,16 +95,20 @@ public final class ActivityDateHelper {
         Objects.requireNonNull(recordInternals);
 
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        HashMap<Integer, Set<Long>> recordIdToDistinctDatesMap =
-                getRecordIdToDistinctDatesMap(recordInternals);
+
         List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
-        recordIdToDistinctDatesMap.forEach(
-                (recordTypeId, dates) ->
+        recordInternals.forEach(
+                (recordInternal) ->
                         upsertTableRequests.add(
                                 new UpsertTableRequest(
-                                        TABLE_NAME, getContentValues(recordTypeId, dates))));
+                                        TABLE_NAME,
+                                        getContentValues(
+                                                recordInternal.getRecordType(),
+                                                ChronoUnit.DAYS.between(
+                                                        LocalDate.EPOCH,
+                                                        recordInternal.getLocalDate())))));
 
-        transactionManager.insertOrReplaceAll(upsertTableRequests);
+        transactionManager.insertOrIgnoreOnConflict(upsertTableRequests);
     }
 
     /** Returns a list of all dates with database writes for the given record types */
@@ -118,46 +117,95 @@ public final class ActivityDateHelper {
         RecordMapper recordMapper = RecordMapper.getInstance();
         List<Integer> recordTypeIds =
                 recordTypes.stream().map(recordMapper::getRecordType).collect(Collectors.toList());
-        Set<Long> distinctDates =
-                readDates(
-                                new ReadTableRequest(TABLE_NAME)
-                                        .setWhereClause(
-                                                new WhereClauses()
-                                                        .addWhereInIntsClause(
-                                                                RECORD_TYPE_ID_COLUMN_NAME,
-                                                                recordTypeIds)))
-                        .values()
-                        .stream()
-                        .flatMap(List::stream)
-                        .collect(Collectors.toSet());
-        return distinctDates.stream().map(LocalDate::ofEpochDay).collect(Collectors.toList());
+
+        return readDates(
+                new ReadTableRequest(TABLE_NAME)
+                        .setWhereClause(
+                                new WhereClauses()
+                                        .addWhereInIntsClause(
+                                                RECORD_TYPE_ID_COLUMN_NAME, recordTypeIds))
+                        .setColumnNames(List.of(EPOCH_DAYS_COLUMN_NAME))
+                        .setDistinctClause(true));
     }
 
-    /** Returns record id to dates map from a Cursor object */
-    @NonNull
-    public HashMap<Integer, List<Long>> getRecordIdToDatesMap(@NonNull Cursor cursor) {
-        HashMap<Integer, List<Long>> localDates = new HashMap<>();
+    public void reSyncForAllRecords() {
+        List<Integer> recordTypeIds =
+                RecordMapper.getInstance().getRecordIdToExternalRecordClassMap().keySet().stream()
+                        .toList();
 
-        while (cursor.moveToNext()) {
-            int recordTypeId = getCursorInt(cursor, RECORD_TYPE_ID_COLUMN_NAME);
-            List<Long> dates = getCursorLongList(cursor, DATE_COLUMN_NAME, DELIMITER);
-            localDates.put(recordTypeId, dates);
-        }
-        return localDates;
+        reSyncByRecordTypeIds(recordTypeIds);
+    }
+
+    public void reSyncByRecordTypeIds(List<Integer> recordTypeIds) {
+        List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
+        final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
+
+        DeleteTableRequest deleteTableRequest =
+                new DeleteTableRequest(TABLE_NAME)
+                        .setIds(
+                                RECORD_TYPE_ID_COLUMN_NAME,
+                                recordTypeIds.stream().map(String::valueOf).toList());
+
+        // Fetch updated dates from respective record table and update the activity dates cache.
+        HashMap<Integer, List<Long>> recordTypeIdToEpochDays =
+                fetchUpdatedDates(recordTypeIds, transactionManager);
+
+        recordTypeIdToEpochDays.forEach(
+                (recordTypeId, epochDays) ->
+                        epochDays.forEach(
+                                (epochDay) ->
+                                        upsertTableRequests.add(
+                                                new UpsertTableRequest(
+                                                        TABLE_NAME,
+                                                        getContentValues(
+                                                                recordTypeId, epochDay)))));
+
+        transactionManager.runAsTransaction(
+                db -> {
+                    db.execSQL(deleteTableRequest.getDeleteCommand());
+                    upsertTableRequests.forEach(
+                            upsertTableRequest ->
+                                    transactionManager.insertOrIgnore(db, upsertTableRequest));
+                });
     }
 
     @NonNull
     List<Pair<String, String>> getColumnInfo() {
         return Arrays.asList(
                 new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT),
-                new Pair<>(DATE_COLUMN_NAME, INTEGER_NOT_NULL),
-                new Pair<>(RECORD_TYPE_ID_COLUMN_NAME, INTEGER_NOT_NULL_UNIQUE));
+                new Pair<>(EPOCH_DAYS_COLUMN_NAME, INTEGER_NOT_NULL),
+                new Pair<>(RECORD_TYPE_ID_COLUMN_NAME, INTEGER_NOT_NULL));
+    }
+
+    private HashMap<Integer, List<Long>> fetchUpdatedDates(
+            List<Integer> recordTypeIds, TransactionManager transactionManager) {
+
+        ReadTableRequest request;
+        RecordHelper<?> recordHelper;
+        HashMap<Integer, List<Long>> recordTypeIdToEpochDays = new HashMap<>();
+        for (int recordTypeId : recordTypeIds) {
+            recordHelper = RecordHelperProvider.getInstance().getRecordHelper(recordTypeId);
+            request =
+                    new ReadTableRequest(recordHelper.getMainTableName())
+                            .setColumnNames(List.of(recordHelper.getPeriodGroupByColumnName()))
+                            .setDistinctClause(true);
+            try (Cursor cursor = transactionManager.read(request)) {
+                List<Long> distinctDates = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    long epochDay =
+                            getCursorLong(cursor, recordHelper.getPeriodGroupByColumnName());
+                    distinctDates.add(epochDay);
+                }
+                recordTypeIdToEpochDays.put(recordTypeId, distinctDates);
+            }
+        }
+        return recordTypeIdToEpochDays;
     }
 
     @NonNull
-    private ContentValues getContentValues(int recordTypeId, @NonNull Set<Long> dates) {
+    private ContentValues getContentValues(int recordTypeId, long epochDays) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DATE_COLUMN_NAME, StorageUtils.flattenLongList(dates.stream().toList()));
+        contentValues.put(EPOCH_DAYS_COLUMN_NAME, epochDays);
         contentValues.put(RECORD_TYPE_ID_COLUMN_NAME, recordTypeId);
 
         return contentValues;
@@ -169,34 +217,24 @@ public final class ActivityDateHelper {
      * @param request a read request.
      * @return Cursor from table based on ids.
      */
-    private HashMap<Integer, List<Long>> readDates(@NonNull ReadTableRequest request) {
+    private List<LocalDate> readDates(@NonNull ReadTableRequest request) {
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         try (Cursor cursor = transactionManager.read(request)) {
-            return getRecordIdToDatesMap(cursor);
+            List<LocalDate> dates = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                long epochDay = getCursorLong(cursor, EPOCH_DAYS_COLUMN_NAME);
+                dates.add(LocalDate.ofEpochDay(epochDay));
+            }
+            return dates;
         }
     }
 
-    /** Returns a map of updated recordId to date map with comparison to the database */
-    @NonNull
-    private HashMap<Integer, Set<Long>> getRecordIdToDistinctDatesMap(
-            @NonNull List<RecordInternal<?>> recordInternals) {
-        HashMap<Integer, List<Long>> existingDates = readDates(new ReadTableRequest(TABLE_NAME));
-        HashMap<Integer, Set<Long>> recordIdToDates = new HashMap<>();
-
-        for (RecordInternal<?> recordInternal : recordInternals) {
-            Set<Long> dates =
-                    recordIdToDates.getOrDefault(recordInternal.getRecordType(), new HashSet<>());
-
-            dates.add(
-                    ChronoUnit.DAYS.between(
-                            LocalDate.ofEpochDay(0), recordInternal.getLocalDate()));
-
-            if (existingDates.containsKey(recordInternal.getRecordType())) {
-                dates.addAll(existingDates.remove(recordInternal.getRecordType()));
-            }
-
-            recordIdToDates.put(recordInternal.getRecordType(), dates);
+    /** Returns an instance of this class */
+    public static synchronized ActivityDateHelper getInstance() {
+        if (sActivityDateHelper == null) {
+            sActivityDateHelper = new ActivityDateHelper();
         }
-        return recordIdToDates;
+
+        return sActivityDateHelper;
     }
 }
