@@ -87,7 +87,7 @@ class HealthDataAllCategoriesFragment : Hilt_HealthDataAllCategoriesFragment() {
                 val newPreference =
                     HealthPreference(requireContext()).also {
                         it.setTitle(categoryInfo.category.uppercaseTitle())
-                        it.setIcon(categoryInfo.category.icon())
+                        it.icon = categoryInfo.category.icon(requireContext())
                         it.logName = CategoriesElement.CATEGORY_BUTTON
                         if (!categoryInfo.hasData) {
                             it.setSummary(R.string.no_data)

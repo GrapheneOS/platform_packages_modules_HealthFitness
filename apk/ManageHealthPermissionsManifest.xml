@@ -25,7 +25,7 @@
     <!-- TODO(b/249531235): Modify permission labels once finalized. -->
     <permission-group android:name="android.permission-group.HEALTH"
                       android:priority="100"
-                      android:icon="@drawable/health_connect_icon"
+                      android:icon="@drawable/ic_health_connect"
                       android:label="@string/permgrouplab_health"
                       android:description="@string/permgroupdesc_health"/>
 
