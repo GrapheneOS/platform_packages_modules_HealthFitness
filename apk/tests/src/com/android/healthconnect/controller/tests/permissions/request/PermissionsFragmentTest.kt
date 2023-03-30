@@ -17,6 +17,7 @@
  */
 package com.android.healthconnect.controller.tests.permissions.request
 
+import android.health.connect.HealthConnectDataState
 import android.health.connect.HealthPermissions.READ_DISTANCE
 import android.health.connect.HealthPermissions.READ_HEART_RATE
 import android.health.connect.HealthPermissions.READ_STEPS
@@ -38,6 +39,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.*
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.permissions.request.PermissionsFragment
@@ -59,6 +61,7 @@ import org.junit.Test
 import org.mockito.Matchers.eq
 import org.mockito.Mockito
 import org.mockito.Mockito.*
+import java.time.Duration
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -68,6 +71,8 @@ class PermissionsFragmentTest {
 
     @BindValue
     val viewModel: RequestPermissionViewModel = mock(RequestPermissionViewModel::class.java)
+    @BindValue
+    val migrationViewModel: MigrationViewModel = mock(MigrationViewModel::class.java)
 
     @Before
     fun setup() {
@@ -82,6 +87,9 @@ class PermissionsFragmentTest {
         }
         `when`(viewModel.allPermissionsGranted).then { MutableLiveData(false) }
         `when`(viewModel.grantedPermissions).then { MutableLiveData(emptySet<HealthPermission>()) }
+        `when`(migrationViewModel.migrationState).then { MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)}
+        `when`(migrationViewModel.migrationTimeout).then { MutableLiveData(Duration.ZERO)}
+
     }
 
     @Test

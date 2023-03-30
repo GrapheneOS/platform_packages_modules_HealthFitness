@@ -69,6 +69,9 @@
         <item name="accessHistoryIcon">@drawable/quantum_gm_ic_history_vd_theme_24</item>
         <item name="privacyPolicyIcon">@drawable/quantum_gm_ic_privacy_tip_vd_theme_24</item>
         <item name="healthConnectIcon">@drawable/health_connect_icon</item>
+        <!--  Migration -->
+        <item name="moreSpaceNeededIcon">@drawable/quantum_gm_ic_storage_vd_theme_24</item>
+        <item name="updateNeededIcon">@drawable/ic_system_security_update</item>
         <!--  endregion -->
 
         <!-- region Text styles -->
@@ -85,6 +88,7 @@
         <item name="textAppearanceHeadline2">@style/TextAppearance.HealthConnect.Headline2</item>
         <item name="textAppearanceLabelSmall">@style/TextAppearance.HealthConnect.Label.Small</item>
         <item name="textAppearanceSubheader">@style/TextAppearance.HealthConnect.Subheader</item>
+        <item name="textAppearanceSubheader2">@style/TextAppearance.HealthConnect.Subheader2</item>
         <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest</item>
         <!--  end region-->
 
