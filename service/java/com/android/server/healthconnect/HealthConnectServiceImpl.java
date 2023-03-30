@@ -293,6 +293,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, INSERT_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        verifyPackageNameFromUid(
+                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -393,6 +395,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_AGGREGATED_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        verifyPackageNameFromUid(
+                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -482,6 +486,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        verifyPackageNameFromUid(
+                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -649,6 +655,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, UPDATE_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        verifyPackageNameFromUid(
+                uid, attributionSource.getUid(), attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -725,6 +733,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN)
                         .setPackageName(attributionSource.getPackageName());
+        verifyPackageNameFromUid(
+                uid, attributionSource.getUid(), attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
@@ -783,6 +793,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
                         .setPackageName(attributionSource.getPackageName());
+        verifyPackageNameFromUid(
+                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -894,6 +906,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        verifyPackageNameFromUid(
+                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -1293,7 +1307,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
-                        if (mBackupRestore.isRestoreInProgress(
+                        if (mBackupRestore.isRestoreMergingInProgress(
                                 mContext.getUser().getIdentifier())) {
                             throw new MigrationException(
                                     "Cannot start data migration. Backup and restore in"
@@ -1589,7 +1603,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private boolean isDataSyncInProgress() {
         return mMigrationStateManager.isMigrationInProgress()
-                || mBackupRestore.isRestoreInProgress(mContext.getUser().getIdentifier());
+                || mBackupRestore.isRestoreMergingInProgress(mContext.getUser().getIdentifier());
     }
 
     @VisibleForTesting
@@ -1729,6 +1743,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             }
         } catch (Exception exception) {
             // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
+        }
+    }
+
+    private void verifyPackageNameFromUid(
+            int binderUid, int attributionSourceUid, String packageName) {
+        enforceBinderUidIsSameAsAttributionSourceUid(binderUid, attributionSourceUid);
+        enforceCallingPackageBelongsToUid(packageName, binderUid);
+    }
+
+    private void enforceBinderUidIsSameAsAttributionSourceUid(
+            int binderUid, int attributionSourceUid) {
+        if (binderUid != attributionSourceUid) {
+            throw new IllegalStateException(" Binder Uid must be equal to Attribution Source Uid.");
         }
     }
 
