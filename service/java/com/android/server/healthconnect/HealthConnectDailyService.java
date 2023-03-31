@@ -95,6 +95,11 @@ public class HealthConnectDailyService extends JobService {
                         });
                 return true;
             }
+            default -> {
+                if (Constants.DEBUG) {
+                    Slog.d(TAG, "Job name " + jobName + " is not supported.");
+                }
+            }
         }
         return false;
     }

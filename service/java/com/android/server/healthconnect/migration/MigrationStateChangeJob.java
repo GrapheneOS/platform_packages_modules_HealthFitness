@@ -177,13 +177,13 @@ public final class MigrationStateChangeJob {
         }
     }
 
-    public static boolean existsAStateChangeJob(@NonNull Context context, String jobName) {
+    public static boolean existsAStateChangeJob(@NonNull Context context, @NonNull String jobName) {
         JobScheduler jobScheduler =
                 Objects.requireNonNull(context.getSystemService(JobScheduler.class))
                         .forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE);
         List<JobInfo> allJobs = jobScheduler.getAllPendingJobs();
         for (JobInfo job : allJobs) {
-            if (job.getExtras().getString(EXTRA_JOB_NAME_KEY).equals(jobName)) {
+            if (jobName.equals(job.getExtras().getString(EXTRA_JOB_NAME_KEY))) {
                 return true;
             }
         }
@@ -191,6 +191,7 @@ public final class MigrationStateChangeJob {
     }
 
     /** Cancels old migration jobs that are persisted and were never canceled. */
+    // TODO(b/276415134): Code clean-up
     static void cleanupOldPersistentMigrationJobs(@NonNull Context context) {
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         Objects.requireNonNull(jobScheduler);
