@@ -685,6 +685,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 recordInternals, attributionSource.getPackageName());
                         builder.setDataTypesFromRecordInternals(recordInternals)
                                 .setHealthDataServiceApiStatusSuccess();
+                        // update activity dates table
+                        HealthConnectThreadScheduler.scheduleInternalTask(
+                                () -> {
+                                    ActivityDateHelper.getInstance()
+                                            .reSyncByRecordTypeIds(
+                                                    recordInternals.stream()
+                                                            .map(RecordInternal::getRecordType)
+                                                            .toList());
+                                });
                     } catch (SecurityException securityException) {
                         builder.setHealthDataServiceApiStatusError(
                                 HealthConnectException.ERROR_SECURITY);
@@ -996,6 +1005,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         if (recordTypeIdsToDelete != null && !recordTypeIdsToDelete.isEmpty()) {
             AppInfoHelper.getInstance()
                     .updateAppInfoRecordTypesUsedOnDelete(new HashSet<>(recordTypeIdsToDelete));
+            ActivityDateHelper.getInstance().reSyncByRecordTypeIds(recordTypeIdsToDelete);
         }
         Trace.traceEnd(TRACE_TAG_DELETE_SUBTASKS);
     }

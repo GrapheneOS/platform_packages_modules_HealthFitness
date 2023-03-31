@@ -41,11 +41,13 @@ public final class CreateTableRequest {
     public static final String FOREIGN_KEY_COMMAND = " FOREIGN KEY (";
     private static final String CREATE_INDEX_COMMAND = "CREATE INDEX  idx_";
     private static final String CREATE_TABLE_COMMAND = "CREATE TABLE IF NOT EXISTS ";
+    private static final String UNIQUE_COMMAND = "UNIQUE ( ";
     private final String mTableName;
     private final List<Pair<String, String>> mColumnInfo;
     private final List<String> mColumnsToIndex = new ArrayList<>();
 
-    private List<ForeignKey> mForeignKeys;
+    private List<ForeignKey> mForeignKeys = new ArrayList<>();
+    private List<List<String>> mUniqueColumns = new ArrayList<>();
     private List<CreateTableRequest> mChildTableRequests = Collections.emptyList();
 
     public CreateTableRequest(String tableName, List<Pair<String, String>> columnInfo) {
@@ -102,13 +104,30 @@ public final class CreateTableRequest {
             }
         }
 
+        if (!mUniqueColumns.isEmpty()) {
+            mUniqueColumns.forEach(
+                    columns -> {
+                        builder.append(UNIQUE_COMMAND);
+                        for (String column : columns) {
+                            builder.append(column).append(", ");
+                        }
+                        builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
+                        builder.append("), ");
+                    });
+        }
         builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
+
         builder.append(")");
         if (Constants.DEBUG) {
             Slog.d(TAG, "Create table: " + builder);
         }
 
         return builder.toString();
+    }
+
+    public CreateTableRequest addUniqueConstraints(List<String> columnNames) {
+        mUniqueColumns.add(columnNames);
+        return this;
     }
 
     @NonNull
