@@ -33,7 +33,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.shared.HEALTH_DATA_CATEGORIES
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
-import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.google.common.truth.Truth.assertThat
