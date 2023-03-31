@@ -23,6 +23,7 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 
+import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MAX_START_MIGRATION_CALLS_ALLOWED;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
@@ -40,6 +41,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -142,7 +144,7 @@ public class MigrationStateManagerTest {
         configureMigrationUnAwarePackage();
         mMigrationStateManager.onPackageInstalledOrChanged(mContext, MOCK_CONFIGURED_PACKAGE);
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
-        verifyCancelJobByName(MIGRATION_COMPLETE_JOB_NAME);
+        verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -333,11 +335,11 @@ public class MigrationStateManagerTest {
         setMigrationState(MIGRATION_STATE_IDLE);
         // Configure migration aware package available
         configureMigrationAwarePackage();
-        ExtendedMockito.doReturn(mJobInfo)
+        ExtendedMockito.doReturn(true)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyStateChange(MIGRATION_STATE_ALLOWED);
         verifyCancelAllJobs();
@@ -352,14 +354,14 @@ public class MigrationStateManagerTest {
         setMigrationState(MIGRATION_STATE_IDLE);
         // Configure migration unaware package available
         configureMigrationUnAwarePackage();
-        ExtendedMockito.doReturn(mJobInfo)
+        ExtendedMockito.doReturn(true)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
-        verifyCancelJobByName(MIGRATION_COMPLETE_JOB_NAME);
+        verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -370,7 +372,8 @@ public class MigrationStateManagerTest {
         // Configure no migrator package available
         configureNoMigratorPackage();
         mMigrationStateManager.switchToSetupForUser(mContext);
-        verifyNoJobCancelled();
+        verifyCancelAllJobs();
+        verifyScheduleMigrationCompletionJob();
     }
 
     /**
@@ -424,7 +427,7 @@ public class MigrationStateManagerTest {
                                         + 1));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoStateChange();
-        verifyNoJobCancelled();
+        verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -470,11 +473,11 @@ public class MigrationStateManagerTest {
             testReconcilePackageChangesWithStates_fromAppUpgradeRequiredState_migratorPackage() {
         setMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         configureMigrationAwarePackage();
-        ExtendedMockito.doReturn(mJobInfo)
+        ExtendedMockito.doReturn(true)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyStateChange(MIGRATION_STATE_ALLOWED);
         verifyCancelAllJobs();
@@ -508,7 +511,8 @@ public class MigrationStateManagerTest {
         configureMigrationAwarePackage();
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoStateChange();
-        verifyNoJobCancelled();
+        verifyCancelAllJobs();
+        verifyScheduleMigrationPauseJob();
     }
 
     /**
@@ -522,6 +526,8 @@ public class MigrationStateManagerTest {
         configureMigrationAwarePackage();
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoStateChange();
+        verifyCancelAllJobs();
+        verifyNoJobScheduled();
     }
 
     @Test
@@ -542,8 +548,7 @@ public class MigrationStateManagerTest {
                 .thenReturn(String.valueOf(MAX_START_MIGRATION_CALLS_ALLOWED));
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_ALLOWED);
         verifyStateChange(MIGRATION_STATE_COMPLETE);
-        ExtendedMockito.verify(
-                () -> MigrationStateChangeJob.cancelAllPendingJobs(eq(mContext), anyInt()));
+        ExtendedMockito.verify(() -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)));
     }
 
     @Test
@@ -565,7 +570,7 @@ public class MigrationStateManagerTest {
     public void testUpdateState_toInProgress_shouldSchedulePauseJob() {
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_IN_PROGRESS);
         verifyStateChange(MIGRATION_STATE_IN_PROGRESS);
-        verifyCancelJobByName(MIGRATION_COMPLETE_JOB_NAME);
+        verifyCancelAllJobs();
         verifyScheduleMigrationPauseJob();
     }
 
@@ -587,7 +592,7 @@ public class MigrationStateManagerTest {
     public void testUpdateState_toAppUpgradeRequired_shouldScheduleCompletionJob() {
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
-        verifyCancelJobByName(MIGRATION_COMPLETE_JOB_NAME);
+        verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -600,7 +605,7 @@ public class MigrationStateManagerTest {
         mMigrationStateManager.updateMigrationState(
                 mContext, MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
         verifyStateChange(MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
-        verifyCancelJobByName(MIGRATION_COMPLETE_JOB_NAME);
+        verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -621,11 +626,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromIdleState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_IDLE);
-        ExtendedMockito.doReturn(null)
+        ExtendedMockito.doReturn(false)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyScheduleMigrationCompletionJob();
     }
@@ -637,11 +642,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromIdleState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_IDLE);
-        ExtendedMockito.doReturn(mJobInfo)
+        ExtendedMockito.doReturn(true)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoJobScheduled();
     }
@@ -652,11 +657,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAppUpgradeRequiredState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
-        ExtendedMockito.doReturn(null)
+        ExtendedMockito.doReturn(false)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyScheduleMigrationCompletionJob();
     }
@@ -668,11 +673,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAppUpgradeRequiredState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
-        ExtendedMockito.doReturn(mJobInfo)
+        ExtendedMockito.doReturn(true)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoJobScheduled();
     }
@@ -683,11 +688,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAllowedState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_ALLOWED);
-        ExtendedMockito.doReturn(null)
+        ExtendedMockito.doReturn(false)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyScheduleMigrationCompletionJob();
     }
@@ -699,11 +704,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAllowedState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_ALLOWED);
-        ExtendedMockito.doReturn(mJobInfo)
+        ExtendedMockito.doReturn(true)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_COMPLETE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoJobScheduled();
     }
@@ -712,11 +717,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromInProgressState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
-        ExtendedMockito.doReturn(null)
+        ExtendedMockito.doReturn(false)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_PAUSE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_PAUSE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyScheduleMigrationPauseJob();
     }
@@ -727,11 +732,11 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromInProgressState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
-        ExtendedMockito.doReturn(mJobInfo)
+        ExtendedMockito.doReturn(true)
                 .when(
                         () ->
-                                MigrationStateChangeJob.getPendingJob(
-                                        eq(mContext), anyInt(), eq(MIGRATION_PAUSE_JOB_NAME)));
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_PAUSE_JOB_NAME)));
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoJobScheduled();
     }
@@ -746,6 +751,30 @@ public class MigrationStateManagerTest {
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoJobScheduled();
         verifyCancelAllJobs();
+    }
+
+    @Test
+    public void testCancelOldMigrationJobs_haveNotCanceled() {
+        when(mPreferenceHelper.getPreference(eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY)))
+                .thenReturn(null);
+        mMigrationStateManager.switchToSetupForUser(mContext);
+        ExtendedMockito.verify(
+                () -> MigrationStateChangeJob.cleanupOldPersistentMigrationJobs(eq(mContext)));
+        verify(mPreferenceHelper)
+                .insertOrReplacePreference(
+                        eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY), eq(String.valueOf(true)));
+    }
+
+    @Test
+    public void testCancelOldMigrationJobs_haveAlreadyCanceled() {
+        when(mPreferenceHelper.getPreference(eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY)))
+                .thenReturn(String.valueOf(true));
+        mMigrationStateManager.switchToSetupForUser(mContext);
+        ExtendedMockito.verify(
+                () -> MigrationStateChangeJob.cleanupOldPersistentMigrationJobs(eq(mContext)),
+                never());
+        verify(mPreferenceHelper, never())
+                .insertOrReplacePreference(eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY), any());
     }
 
     private void setMigrationState(int state) {
@@ -804,14 +833,7 @@ public class MigrationStateManagerTest {
 
     private void verifyCancelAllJobs() {
         ExtendedMockito.verify(
-                () -> MigrationStateChangeJob.cancelAllPendingJobs(eq(mContext), anyInt()));
-    }
-
-    private void verifyCancelJobByName(String jobName) {
-        ExtendedMockito.verify(
-                () ->
-                        MigrationStateChangeJob.cancelPendingJob(
-                                eq(mContext), anyInt(), eq(jobName)));
+                () -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)), atLeastOnce());
     }
 
     private void verifyScheduleMigrationCompletionJob() {
@@ -838,12 +860,7 @@ public class MigrationStateManagerTest {
     }
 
     private void verifyNoJobCancelled() {
-        ExtendedMockito.verify(
-                () -> MigrationStateChangeJob.cancelPendingJob(eq(mContext), anyInt(), anyString()),
-                never());
-        ExtendedMockito.verify(
-                () -> MigrationStateChangeJob.cancelAllPendingJobs(eq(mContext), anyInt()),
-                never());
+        ExtendedMockito.verify(() -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)), never());
     }
 
     private ArrayList<PackageInfo> createPackageInfoArray(String... packageNames) {

@@ -39,7 +39,8 @@ public class MigrationConstants {
     static final Duration NON_IDLE_STATE_TIMEOUT_PERIOD = Duration.ofDays(15);
     static final Duration IN_PROGRESS_STATE_TIMEOUT_PERIOD = Duration.ofHours(12);
     static final long EXECUTION_TIME_BUFFER = TimeUnit.MINUTES.toMillis(30);
-
+    static final long MIGRATION_COMPLETION_JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(1);
+    static final long MIGRATION_PAUSE_JOB_RUN_INTERVAL = TimeUnit.HOURS.toMillis(4);
     static final int INTERVAL_DEFAULT = 0;
 
     static final String HC_RELEASE_CERT_CONFIG_NAME =
@@ -54,5 +55,7 @@ public class MigrationConstants {
     static final String MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY =
             "min_data_migration_sdk_extension_version";
     static final String MIGRATION_STARTS_COUNT_KEY = "migration_starts_count";
-    static final boolean ENABLE_STATE_CHANGE_JOBS = false;
+    static final String HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY = "have_canceled_old_migration_jobs";
+    static final String MIGRATION_STATE_CHANGE_NAMESPACE = MigrationStateChangeJob.class.toString();
+    static final boolean ENABLE_STATE_CHANGE_JOBS = true;
 }
