@@ -249,7 +249,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
     ): Preference {
         return HealthSwitchPreference(requireContext()).also {
             val healthCategory = fromHealthPermissionType(permission.healthPermissionType)
-            it.setIcon(healthCategory.icon())
+            it.icon = healthCategory.icon(requireContext())
             it.setDefaultValue(defaultValue)
             it.setTitle(fromPermissionType(permission.healthPermissionType).uppercaseLabel)
             it.logNameActive = PermissionsElement.PERMISSION_SWITCH

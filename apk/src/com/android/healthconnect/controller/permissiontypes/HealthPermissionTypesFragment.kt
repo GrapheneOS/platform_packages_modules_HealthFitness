@@ -20,7 +20,6 @@ import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
@@ -122,8 +121,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mPermissionTypesHeader?.icon =
-            ResourcesCompat.getDrawable(resources, category.icon(), requireContext().theme)
+        mPermissionTypesHeader?.icon = category.icon(requireContext())
         mPermissionTypesHeader?.title = getString(category.uppercaseTitle())
         viewModel.loadData(category)
         viewModel.loadAppsWithData(category)
