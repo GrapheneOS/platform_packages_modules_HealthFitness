@@ -15,7 +15,7 @@
 -->
 <resources>
 
-    <!-- region typography -->
+    <!-- REGION TYPOGRAPHY -->
     <!-- Preference summary large 400/16/24-->
     <style name="TextAppearance.HealthConnect.SummaryLarge" parent="@style/TextAppearance.PreferenceSummary.SettingsLib">
         <item name="android:textFontWeight">400</item>
@@ -82,15 +82,22 @@
         <item name="android:letterSpacing">0.01</item>
     </style>
 
+    <style name="TextAppearance.HealthConnect.Subheader2" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineHeight">20sp</item>
+        <item name="android:letterSpacing">0.025</item>
+    </style>
+
     <style name="TextAppearance.HealthConnect.RouteRequest" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
         <item name="android:textFontWeight">500</item>
         <item name="android:textSize">12sp</item>
         <item name="android:lineHeight">15sp</item>
     </style>
 
-    <!-- endregion -->
+    <!-- END REGION -->
 
-    <!-- region buttons -->
+    <!-- REGION BUTTONS -->
     <style name="Widget.HealthConnect.DialogButton.Full" parent="@style/Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_background_filled</item>
         <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
@@ -162,9 +169,9 @@
         <item name="android:background">@drawable/grant_permissions_buttons_bottom</item>
     </style>
 
-    <!-- endregion -->
+    <!-- END REGION -->
 
-    <!-- region dialog -->
+    <!-- REGION DIALOG -->
     <style name="Theme.HealthConnect.Dialog.Alert" parent="@style/Theme.AlertDialog.SettingsLib">
         <item name="textAllCaps">false</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.HealthConnect.DialogButton.Full
@@ -182,7 +189,7 @@
         <!-- TODO (b/274319654): Do not set minHeight manually -->
         <item name="android:minHeight">@dimen/spacing_page_title</item>
     </style>
-    <!-- endregion -->
+    <!-- END REGION -->
 
     <style name="Widget.HealthConnect.CheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textAppearance">?attr/textAppearanceSummary</item>

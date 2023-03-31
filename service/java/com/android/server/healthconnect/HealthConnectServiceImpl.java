@@ -293,6 +293,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, INSERT_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        enforceIsForegroundUser(getCallingUserHandle());
         verifyPackageNameFromUid(
                 uid, attributionSource.getUid(), attributionSource.getPackageName());
 
@@ -395,6 +396,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_AGGREGATED_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        enforceIsForegroundUser(getCallingUserHandle());
         verifyPackageNameFromUid(
                 uid, attributionSource.getUid(), attributionSource.getPackageName());
 
@@ -486,6 +488,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        enforceIsForegroundUser(getCallingUserHandle());
         verifyPackageNameFromUid(
                 uid, attributionSource.getUid(), attributionSource.getPackageName());
 
@@ -655,6 +658,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, UPDATE_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        enforceIsForegroundUser(getCallingUserHandle());
         verifyPackageNameFromUid(
                 uid, attributionSource.getUid(), attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
@@ -681,6 +685,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 recordInternals, attributionSource.getPackageName());
                         builder.setDataTypesFromRecordInternals(recordInternals)
                                 .setHealthDataServiceApiStatusSuccess();
+                        // update activity dates table
+                        HealthConnectThreadScheduler.scheduleInternalTask(
+                                () -> {
+                                    ActivityDateHelper.getInstance()
+                                            .reSyncByRecordTypeIds(
+                                                    recordInternals.stream()
+                                                            .map(RecordInternal::getRecordType)
+                                                            .toList());
+                                });
                     } catch (SecurityException securityException) {
                         builder.setHealthDataServiceApiStatusError(
                                 HealthConnectException.ERROR_SECURITY);
@@ -733,6 +746,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN)
                         .setPackageName(attributionSource.getPackageName());
+        enforceIsForegroundUser(getCallingUserHandle());
         verifyPackageNameFromUid(
                 uid, attributionSource.getUid(), attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
@@ -793,6 +807,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
                         .setPackageName(attributionSource.getPackageName());
+        enforceIsForegroundUser(getCallingUserHandle());
         verifyPackageNameFromUid(
                 uid, attributionSource.getUid(), attributionSource.getPackageName());
 
@@ -990,6 +1005,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         if (recordTypeIdsToDelete != null && !recordTypeIdsToDelete.isEmpty()) {
             AppInfoHelper.getInstance()
                     .updateAppInfoRecordTypesUsedOnDelete(new HashSet<>(recordTypeIdsToDelete));
+            ActivityDateHelper.getInstance().reSyncByRecordTypeIds(recordTypeIdsToDelete);
         }
         Trace.traceEnd(TRACE_TAG_DELETE_SUBTASKS);
     }
@@ -1598,6 +1614,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     rateLimiterException.getRateLimiterQuotaLimit());
             throw new HealthConnectException(
                     rateLimiterException.getErrorCode(), rateLimiterException.getMessage());
+        }
+    }
+
+    private void enforceIsForegroundUser(UserHandle callingUserHandle) {
+        if (!callingUserHandle.equals(mCurrentForegroundUser)) {
+            throw new IllegalStateException(
+                    "Calling user is not the current foreground user. HC request must be called"
+                            + " from the current foreground user.");
         }
     }
 

@@ -15,8 +15,9 @@
  */
 package com.android.healthconnect.controller.shared
 
+import android.content.Context
+import android.graphics.drawable.Drawable
 import android.health.connect.HealthDataCategory
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -26,6 +27,7 @@ import com.android.healthconnect.controller.shared.CategoriesMappers.CYCLE_TRACK
 import com.android.healthconnect.controller.shared.CategoriesMappers.NUTRITION_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.SLEEP_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.VITALS_PERMISSION_GROUPS
+import com.android.healthconnect.controller.utils.AttributeResolver
 
 object HealthDataCategoryExtensions {
     fun @receiver:HealthDataCategoryInt Int.healthPermissionTypes(): List<HealthPermissionType> {
@@ -66,17 +68,18 @@ object HealthDataCategoryExtensions {
         }
     }
 
-    @DrawableRes
-    fun @receiver:HealthDataCategoryInt Int.icon(): Int {
-        return when (this) {
-            HealthDataCategory.ACTIVITY -> R.drawable.quantum_gm_ic_directions_run_vd_theme_24
-            HealthDataCategory.BODY_MEASUREMENTS -> R.drawable.quantum_gm_ic_straighten_vd_theme_24
-            HealthDataCategory.CYCLE_TRACKING -> R.drawable.ic_cycle_tracking
-            HealthDataCategory.NUTRITION -> R.drawable.quantum_gm_ic_grocery_vd_theme_24
-            HealthDataCategory.SLEEP -> R.drawable.ic_sleep
-            HealthDataCategory.VITALS -> R.drawable.ic_vitals
-            else -> throw IllegalArgumentException("Category $this is not supported.")
-        }
+    fun @receiver:HealthDataCategoryInt Int.icon(context: Context): Drawable? {
+        val attrRes: Int =
+            when (this) {
+                HealthDataCategory.ACTIVITY -> R.attr.activityCategoryIcon
+                HealthDataCategory.BODY_MEASUREMENTS -> R.attr.bodyMeasurementsCategoryIcon
+                HealthDataCategory.CYCLE_TRACKING -> R.attr.cycleTrackingCategoryIcon
+                HealthDataCategory.NUTRITION -> R.attr.nutritionCategoryIcon
+                HealthDataCategory.SLEEP -> R.attr.sleepCategoryIcon
+                HealthDataCategory.VITALS -> R.attr.vitalsCategoryIcon
+                else -> throw IllegalArgumentException("Category $this is not supported.")
+            }
+        return AttributeResolver.getDrawable(context, attrRes)
     }
 
     @HealthDataCategoryInt

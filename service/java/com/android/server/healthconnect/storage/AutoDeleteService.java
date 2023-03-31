@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
@@ -57,14 +58,15 @@ public class AutoDeleteService {
     /** Starts the Auto Deletion process. */
     public static void startAutoDelete() {
         try {
-            // Only do transactional operations here - as this job might get cancelled for
-            // several reasons, such as: User switch, low battery etc.
+            // Only do transactional operations here - as this job might get cancelled for several
+            // reasons, such as: User switch, low battery etc.
             deleteStaleRecordEntries();
             deleteStaleChangeLogEntries();
             deleteStaleAccessLogEntries();
-            // updates the recordTypesUsed by packages if required after the deletion of
-            // records.
+            // Update the recordTypesUsed by packages if required after the deletion of records.
             AppInfoHelper.getInstance().updateAppInfoRecordTypesUsedOnDelete(null);
+            // Re-sync activity dates table
+            ActivityDateHelper.getInstance().reSyncForAllRecords();
         } catch (Exception e) {
             Slog.e(TAG, "Auto delete run failed", e);
             // Don't rethrow as that will crash system_server

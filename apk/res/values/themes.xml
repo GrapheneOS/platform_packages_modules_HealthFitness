@@ -16,68 +16,83 @@
 <resources>
 
     <style name="Base.Theme.HealthConnect" parent="@style/Theme.SubSettingsBase">
-        <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
-        <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
-        <item name="alertDialogTheme">@style/Theme.HealthConnect.Dialog.Alert</item>
-        <!-- region Icons -->
+        <!-- REGION ICONS -->
+        <item name="healthConnectIcon">@drawable/ic_health_connect</item>
+
         <!-- Home page -->
-        <item name="appPermissionsIcon">@drawable/quantum_gm_ic_link_vd_theme_24</item>
-        <item name="dataAndAccessIcon">@drawable/ic_health_data</item>
-        <item name="seeAllIcon">@drawable/quantum_gm_ic_keyboard_arrow_right_vd_theme_24</item>
+        <item name="appPermissionsIcon">@drawable/ic_app_permissions</item>
+        <item name="dataAndAccessIcon">@drawable/ic_data_and_access</item>
+        <item name="seeAllIcon">@drawable/ic_right_arrow</item>
+        <item name="recentAccessTimelineDividerDrawable">@drawable/ic_timeline_divider</item>
 
         <!-- App permissions page-->
-        <item name="removeAccessForAllAppsIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
-        <item name="helpAndFeedbackIcon">@drawable/quantum_gm_ic_support_vd_theme_24</item>
-        <item name="checkForUpdatesIcon">@drawable/check_for_update_icon</item>
-        <item name="seeAllCompatibleAppsIcon">@drawable/see_all_compatible_apps_icon</item>
-        <item name="sendFeedbackIcon">@drawable/send_feedback_icon</item>
-        <item name="searchIcon">@drawable/ic_find_in_page_24px</item>
+        <item name="removeAccessForAllAppsIcon">@drawable/ic_remove_access_for_all_apps</item>
+        <item name="helpAndFeedbackIcon">@drawable/ic_help_and_feedback</item>
+        <item name="checkForUpdatesIcon">@drawable/ic_check_for_updates</item>
+        <item name="seeAllCompatibleAppsIcon">@drawable/ic_see_all_compatible_apps</item>
+        <item name="sendFeedbackIcon">@drawable/ic_send_feedback</item>
+        <item name="searchIcon">@drawable/ic_find_in_page</item>
 
         <!-- Categories page -->
-        <item name="autoDeleteIcon">@drawable/quantum_gm_ic_auto_delete_vd_theme_24</item>
-        <item name="autoDeleteOffIcon">@drawable/auto_delete_off</item>
-        <item name="deleteIcon">@drawable/quantum_gm_ic_delete_vd_theme_24</item>
-        <item name="exportDataIcon">@drawable/quantum_gm_ic_file_download_vd_theme_24</item>
+        <item name="autoDeleteIcon">@drawable/ic_auto_delete</item>
+        <item name="autoDeleteOffIcon">@drawable/ic_auto_delete_off</item>
+        <item name="deleteIcon">@drawable/ic_delete</item>
+        <item name="exportDataIcon">@drawable/ic_export_data</item>
+        <item name="activityCategoryIcon">@drawable/ic_category_activity</item>
+        <item name="bodyMeasurementsCategoryIcon">@drawable/ic_category_body_measurements</item>
+        <item name="cycleTrackingCategoryIcon">@drawable/ic_category_cycle_tracking</item>
+        <item name="nutritionCategoryIcon">@drawable/ic_category_nutrition</item>
+        <item name="sleepCategoryIcon">@drawable/ic_category_sleep</item>
+        <item name="vitalsCategoryIcon">@drawable/ic_category_vitals</item>
 
         <!-- Permission types page -->
-        <item name="appPriorityIcon">@drawable/quantum_gm_ic_view_list_vd_theme_24</item>
+        <item name="appPriorityIcon">@drawable/ic_view_list</item>
 
         <!-- Data access page -->
-        <item name="seeAllEntriesIcon">@drawable/quantum_gm_ic_view_list_vd_theme_24</item>
+        <item name="seeAllEntriesIcon">@drawable/ic_view_list</item>
 
         <!-- Data entries page -->
-        <item name="nextDayIcon">@drawable/quantum_gm_ic_keyboard_arrow_right_vd_theme_24</item>
-        <item name="previousDayIcon">@drawable/quantum_gm_ic_keyboard_arrow_left_vd_theme_24</item>
+        <item name="nextDayIcon">@drawable/ic_right_arrow</item>
+        <item name="previousDayIcon">@drawable/ic_left_arrow</item>
 
-        <!-- Deletion dialog -->
-        <item name="deleteSettingsIcon">@drawable/ic_deletion_settings</item>
-        <item name="successIcon">@drawable/quantum_gm_ic_check_circle_vd_theme_24</item>
-        <item name="failureIcon">@drawable/quantum_ic_cancel_vd_theme_24</item>
-        <item name="disconnectAllIcon">@drawable/quantum_gm_ic_block_vd_theme_24</item>
-        <item name="disconnectIcon">@drawable/quantum_gm_ic_link_off_vd_theme_24</item>
-        <item name="deniedAppsBannerIcon">@drawable/quantum_gm_ic_error_outline_vd_theme_24</item>
-        <item name="dialogGravity">@integer/dialog_gravity</item>
+        <!-- Dialogs -->
+        <item name="deletionSettingsIcon">@drawable/ic_deletion_settings</item>
+        <item name="successIcon">@drawable/ic_success</item>
+        <item name="failureIcon">@drawable/ic_failure</item>
+        <item name="disconnectAllIcon">@drawable/ic_remove_access_for_all_apps</item>
+        <item name="disconnectIcon">@drawable/ic_disconnect</item>
+        <item name="deniedAppsBannerIcon">@drawable/ic_denied_apps_banner</item>
         <item name="dialogPreferredPadding">@dimen/spacing_large</item>
-        <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
-        <item name="alertDialogTitleTextAlignment">@integer/alignment_center</item>
-        <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>
-        <item name="priorityItemDragIcon">@drawable/quantum_gm_ic_drag_handle_vd_theme_24</item>
-        <item name="manageSettingsIcon">@drawable/manage_settings_icon</item>
-        <item name="syncIcon">@drawable/ic_baseline_sync_24</item>
-        <!--  Request permissions -->
-        <item name="chooseDataIcon">@drawable/quantum_gm_ic_tune_vd_theme_24</item>
-        <item name="accessHistoryIcon">@drawable/quantum_gm_ic_history_vd_theme_24</item>
-        <item name="privacyPolicyIcon">@drawable/quantum_gm_ic_privacy_tip_vd_theme_24</item>
-        <item name="healthConnectIcon">@drawable/health_connect_icon</item>
-        <!--  endregion -->
+        <item name="priorityItemDragIcon">@drawable/ic_item_drag</item>
+        <item name="manageSettingsIcon">@drawable/ic_manage_settings</item>
+        <item name="syncIcon">@drawable/ic_sync</item>
+        <item name="checkIcon">@drawable/ic_check</item>
 
-        <!-- region Text styles -->
-        <!-- Google Sans Text -->
+        <!-- Request permissions -->
+        <item name="chooseDataIcon">@drawable/ic_choose_data</item>
+        <item name="accessHistoryIcon">@drawable/ic_access_history</item>
+        <item name="privacyPolicyIcon">@drawable/ic_privacy_policy</item>
+
+        <!--  Migration -->
+        <item name="moreSpaceNeededIcon">@drawable/ic_storage</item>
+        <item name="updateNeededIcon">@drawable/ic_system_security_update</item>
+
+        <!-- END REGION -->
+
+        <!-- REGION DIALOG GRAVITY -->
+        <!-- Gravity for dialogs -->
+        <item name="dialogGravity">@integer/dialog_gravity</item>
+        <item name="alertDialogTitleGravity">@integer/dialog_title_gravity</item>
+        <item name="alertDialogTitleTextAlignment">@integer/dialog_title_text_alignment</item>
+        <item name="alertDialogTitleIconVisibility">@integer/dialog_title_icon_visibility</item>
+        <!-- END REGION -->
+
+        <!-- REGION STYLES -->
+        <!-- Typography-->
         <item name="textAppearanceSummary">@style/TextAppearance.PreferenceSummary.SettingsLib</item>
         <item name="textAppearanceSummaryLarge">@style/TextAppearance.HealthConnect.SummaryLarge</item>
         <item name="textAppearanceLabel">@style/TextAppearance.HealthConnect.Label</item>
         <item name="textAppearanceLabelCompact">@style/TextAppearance.HealthConnect.Label.Compact</item>
-        <!-- Google Sans   -->
         <item name="textAppearanceHeadline6">@style/TextAppearance.HealthConnect.Headline6</item>
         <item name="textAppearanceItem">@style/TextAppearance.PreferenceTitle.SettingsLib</item>
         <item name="textAppearanceHeadline4">@style/TextAppearance.HealthConnect.Headline4</item>
@@ -85,24 +100,37 @@
         <item name="textAppearanceHeadline2">@style/TextAppearance.HealthConnect.Headline2</item>
         <item name="textAppearanceLabelSmall">@style/TextAppearance.HealthConnect.Label.Small</item>
         <item name="textAppearanceSubheader">@style/TextAppearance.HealthConnect.Subheader</item>
+        <item name="textAppearanceSubheader2">@style/TextAppearance.HealthConnect.Subheader2</item>
         <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest</item>
-        <!--  end region-->
 
-        <item name="outlinedButton">@style/Widget.HealthConnect.Button</item>
+        <!-- Buttons -->
+        <item name="dialogButtonFull">@style/Widget.HealthConnect.DialogButton.Full</item>
+        <item name="dialogButtonOutline">@style/Widget.HealthConnect.DialogButton.Outline</item>
+        <item name="baseButton">@style/Widget.HealthConnect.Button</item>
+        <item name="buttonBorderLess">@style/Widget.HealthConnect.Button.Borderless</item>
+        <item name="permissionGrantButtonList">@style/PermissionGrantButtonListMaterial3</item>
+        <item name="permissionGrantButtonTop">@style/PermissionGrantButtonTop</item>
+        <item name="permissionGrantButtonButton">@style/PermissionGrantButtonBottom</item>
+
+        <!-- Dialogs -->
+        <item name="alertDialogTheme">@style/Theme.HealthConnect.Dialog.Alert</item>
+        <item name="dialogButtonBar">@style/Widget.HealthConnect.Dialog.ButtonBar</item>
+
         <item name="android:checkboxStyle">@style/Widget.HealthConnect.CheckBox</item>
         <item name="chipStyle">@style/Widget.HealthConnect.RadioButton.Chip</item>
-        <item name="checkIcon">@drawable/quantum_gm_ic_check_vd_theme_24</item>
+        <item name="spinnerStyle">@style/Widget.HealthConnect.CalendarSpinner</item>
+        <!-- END REGION -->
 
-        <!--    Dimensions -->
+        <!-- REGION DIMENSIONS -->
+        <item name="android:listPreferredItemPaddingStart">@dimen/spacing_large</item>
+        <item name="android:listPreferredItemPaddingEnd">@dimen/spacing_large</item>
         <item name="listItemPaddingTop">@dimen/spacing_small</item>
         <item name="listItemPaddingBottom">@dimen/spacing_small</item>
         <item name="largeListItemPaddingTop">@dimen/spacing_normal</item>
         <item name="largeListItemPaddingBottom">@dimen/spacing_normal</item>
         <item name="listItemMinHeight">@dimen/list_item_min_height</item>
         <item name="recentAccessTimelineDividerHeight">@dimen/timeline_divider_height</item>
-        <item name="recentAccessTimelineDividerDrawable">@drawable/timeline_divider</item>
-
-        <item name="spinnerStyle">@style/Widget.HealthConnect.CalendarSpinner</item>
+        <!-- END REGION -->
     </style>
 
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />

@@ -41,6 +41,7 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.INACTIVE
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
+import com.android.healthconnect.controller.shared.preference.BannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
@@ -342,6 +343,23 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 openSendFeedbackActivity(requireActivity())
                 true
             }
+        }
+    }
+
+    // TODO (b/275602235) Use this banner to indicate one or more apps need updating to work with
+    // Android U
+    private fun getAppUpdateNeededBanner(): BannerPreference {
+        return BannerPreference(requireContext()).also { banner ->
+            banner.setButton(resources.getString(R.string.app_update_needed_banner_button))
+            banner.title = resources.getString(R.string.app_update_needed_banner_title)
+            banner.summary =
+                resources.getString(R.string.app_update_needed_banner_description_multiple)
+            banner.setIcon(R.drawable.ic_apps_outage)
+            banner.setButtonOnClickListener {
+                // TODO (b/275602235) navigate to play store
+            }
+            banner.setIsDismissable(true)
+            banner.setDismissAction { preferenceScreen.removePreference(banner) }
         }
     }
 

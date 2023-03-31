@@ -55,15 +55,20 @@ public class HealthConnectDailyService extends JobService {
     @Override
     public boolean onStartJob(@NonNull JobParameters params) {
         int userId = params.getExtras().getInt(EXTRA_USER_ID, /* defaultValue= */ DEFAULT_INT);
+        String jobName = params.getExtras().getString(EXTRA_JOB_NAME_KEY);
         if (userId == DEFAULT_INT || userId != sCurrentUserId) {
             // This job is no longer valid, the service for this user should have been stopped.
             // Just ignore this request in case we still got the request.
             return false;
         }
 
+        if (Objects.isNull(jobName)) {
+            return false;
+        }
+
         // This service executes each incoming job on a Handler running on the application's
         // main thread. This means that we must offload the execution logic to background executor.
-        switch (params.getExtras().getString(EXTRA_JOB_NAME_KEY)) {
+        switch (jobName) {
             case HC_DAILY_JOB -> {
                 HealthConnectThreadScheduler.scheduleInternalTask(
                         () -> {
@@ -76,7 +81,7 @@ public class HealthConnectDailyService extends JobService {
                 HealthConnectThreadScheduler.scheduleInternalTask(
                         () -> {
                             MigrationStateChangeJob.executeMigrationCompletionJob(
-                                    getApplicationContext(), params);
+                                    getApplicationContext());
                             jobFinished(params, false);
                         });
                 return true;
@@ -85,7 +90,7 @@ public class HealthConnectDailyService extends JobService {
                 HealthConnectThreadScheduler.scheduleInternalTask(
                         () -> {
                             MigrationStateChangeJob.executeMigrationPauseJob(
-                                    getApplicationContext(), params);
+                                    getApplicationContext());
                             jobFinished(params, false);
                         });
                 return true;
