@@ -15,7 +15,8 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health&#160;Connect</string>
-
+    <!-- Title shown for Health Connect [CHAR LIMIT=50] -->
+    <string name="health_connect_summary" description="Health connect summary, which describes what user can do when they click Health Connect">Manage app access to health data</string>
     <!-- region Home screen -->
     <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
     <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Manage the health and fitness data on your phone, and control which apps can access it</string>
