@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിന് ഇനി Health Connect-ൽ നിന്നുള്ള ഒരു ഡാറ്റയും വായിക്കാനോ എഴുതാനോ കഴിയില്ല.\n\nലൊക്കേഷനോ ക്യാമറയോ മൈക്രോഫോണോ പോലെ ഈ ആപ്പിന് ഉണ്ടായിരിക്കാനിടയുള്ള മറ്റ് അനുമതികളെ ഇത് ബാധിക്കില്ല."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect-ൽ നിന്നുള്ള <xliff:g id="APP_NAME">%1$s</xliff:g> ഡാറ്റയും ഇല്ലാതാക്കുക"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"അടുത്ത ദിവസം"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"മുമ്പത്തെ ദിവസം"</string>
     <string name="default_error" msgid="7966868260616403475">"എന്തോ കുഴപ്പമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"ഈ അനുമതിയുള്ള ആപ്പുകൾക്ക് നിങ്ങളുടെ ആരോഗ്യ ഡാറ്റ റീഡ് ചെയ്യാനും റൈറ്റ് ചെയ്യാനുമാകും."</string>

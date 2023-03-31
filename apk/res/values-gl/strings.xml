@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> deixará de poder ler e escribir datos de Saúde conectada.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Eliminar tamén os datos de <xliff:g id="APP_NAME">%1$s</xliff:g> almacenados en Saúde conectada"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Día seguinte"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Día anterior"</string>
     <string name="default_error" msgid="7966868260616403475">"Produciuse un erro. Téntao de novo."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"As aplicacións que contan con este permiso poden ler e escribir datos sobre a túa saúde."</string>

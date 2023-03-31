@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> यापुढे Health Connect वरून कोणताही डेटा रीड किंवा राइट करू शकणार नाही.\n\nयामुळे या अ‍ॅपच्या स्थान, कॅमेरा किंवा मायक्रोफोन यांसारख्या इतर परवानग्यांवर परिणाम होत नाही."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect मधून <xliff:g id="APP_NAME">%1$s</xliff:g> शी संबंधित डेटादेखील हटवा"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"पुढील दिवस"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"मागील दिवस"</string>
     <string name="default_error" msgid="7966868260616403475">"काहीतरी चूक झाली. कृपया पुन्हा प्रयत्न करा."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"परवानगी असलेली अ‍ॅप्स तुमच्या आरोग्याशी संबंधित डेटा रीड अँड राइट करू शकतात."</string>

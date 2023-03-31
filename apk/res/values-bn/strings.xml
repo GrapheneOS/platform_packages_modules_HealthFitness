@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connect-এর কোনও ডেটা দেখতে বা এডিট করতে পারবে না।\n\nএই অ্যাপের জন্য অন্য কোনও কিছুতে অনুমতি (যেমন, লোকেশন, ক্যামেরা বা মাইক্রোফোন) থাকলে তাতে কোনও প্রভাব পড়বে না।"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"এছাড়া, <xliff:g id="APP_NAME">%1$s</xliff:g>-এর ডেটাও Health Connect থেকে মুছে দিন"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"পরের দিন"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"আগের দিন"</string>
     <string name="default_error" msgid="7966868260616403475">"কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"এই অনুমতি থাকা অ্যাপ আপনার স্বাস্থ্য সংক্রান্ত ডেটা দেখতে ও এডিট করতে পারবে।"</string>

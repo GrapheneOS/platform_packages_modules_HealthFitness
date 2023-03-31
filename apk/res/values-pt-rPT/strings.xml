@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> vai deixar de poder ler ou escrever dados da Saúde Connect.\n\nIsto não afeta outras autorizações que esta app possa ter, como a localização, a câmara ou o microfone."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Apagar também os dados da app <xliff:g id="APP_NAME">%1$s</xliff:g> da Saúde Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Dia seguinte"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Dia anterior"</string>
     <string name="default_error" msgid="7966868260616403475">"Algo correu mal. Tente novamente."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"As apps com esta autorização podem ler e escrever os seus dados de saúde."</string>

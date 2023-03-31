@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> sẽ không thể đọc hoặc ghi bất kỳ dữ liệu nào từ Health Connect nữa.\n\nĐiều này không ảnh hưởng đến các quyền khác mà ứng dụng này có thể có, như vị trí, máy ảnh hoặc micrô."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Đồng thời xoá dữ liệu của <xliff:g id="APP_NAME">%1$s</xliff:g> khỏi Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Ngày tiếp theo"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Ngày hôm trước"</string>
     <string name="default_error" msgid="7966868260616403475">"Đã xảy ra lỗi. Vui lòng thử lại."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Các ứng dụng có quyền này có thể đọc và ghi dữ liệu sức khoẻ của bạn."</string>

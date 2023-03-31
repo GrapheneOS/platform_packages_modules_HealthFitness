@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ei voi enää lukea tai kirjoittaa mitään Health Connectin dataa.\n\nTämä ei vaikuta sovelluksen muihin lupiin, kuten sijainti-, kamera- tai mikrofonilupaan."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Poista Health Connectista myös tämä data: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Seuraava päivä"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Edellinen päivä"</string>
     <string name="default_error" msgid="7966868260616403475">"Jotain meni pieleen. Yritä uudelleen."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Sovellukset, joilla on tämä lupa, voivat lukea ja kirjoittaa terveysdataa."</string>
