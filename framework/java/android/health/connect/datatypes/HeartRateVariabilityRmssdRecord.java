@@ -45,7 +45,7 @@ public final class HeartRateVariabilityRmssdRecord extends InstantRecord {
             double heartRateVariabilityMillis) {
         super(metadata, time, zoneOffset);
         ValidationUtils.requireInRange(
-                heartRateVariabilityMillis, 0.0, 1.0, "heartRateVariabilityMillis");
+                heartRateVariabilityMillis, 1.0, 200.0, "heartRateVariabilityMillis");
         mHeartRateVariabilityMillis = heartRateVariabilityMillis;
     }
 
