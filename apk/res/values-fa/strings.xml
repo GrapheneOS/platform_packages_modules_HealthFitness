@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"‫«<xliff:g id="APP_NAME">%1$s</xliff:g>» دیگر نمی‌تواند هیچ‌کدام از داده‌های Health Connect را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً مکان، دوربین، یا میکروفون) اثر نمی‌گذارد."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"داده‌های <xliff:g id="APP_NAME">%1$s</xliff:g> نیز از Health Connect حذف شود"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"روز بعد"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"روز قبل"</string>
     <string name="default_error" msgid="7966868260616403475">"مشکلی پیش آمد. لطفاً دوباره امتحان کنید."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"برنامه‌هایی که این اجازه را دارند می‌توانند داده‌های سلامت شما را بخوانند و بنویسند."</string>
@@ -335,7 +337,8 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"درحال حذف داده‌های Health Connect"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"درحال حذف داده‌های Health Connect"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"حذف داده"</string>
-    <string name="data_point_action_content_description" msgid="5594307313451433706">"گزینه‌های ورودی داده"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"حذف ورودی"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{یک وات}one{# وات}other{# وات}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{یک وات}one{# وات}other{# وات}}"</string>
@@ -677,6 +680,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"حذف خودکار داده‌ها"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{بعداز # ماه}one{بعداز # ماه}other{بعداز # ماه}}"</string>
     <string name="range_never" msgid="4429478261788361233">"هرگز"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"وقتی این تنظیمات را تغییر می‌دهید، Health Connect داده‌های موجود را برای بازتاب اولویت‌های جدید حذف می‌کند"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{داده‌ها بعداز # ماه به‌طور خودکار حذف شود؟}one{داده‌ها بعداز # ماه به‌طور خودکار حذف شود؟}other{داده‌ها بعداز # ماه به‌طور خودکار حذف شود؟}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{‫Health Connect داده‌های جدید را بعداز # ماه حذف خواهد کرد. با این تنظیم، داده‌های موجود قدیمی‌تر از # ماه هم حذف خواهد شد.}one{‫Health Connect داده‌های جدید را بعداز # ماه حذف خواهد کرد. با این تنظیم، داده‌های موجود قدیمی‌تر از # ماه هم حذف خواهد شد.}other{‫Health Connect داده‌های جدید را بعداز # ماه حذف خواهد کرد. با این تنظیم، داده‌های موجود قدیمی‌تر از # ماه هم حذف خواهد شد.}}"</string>
@@ -703,5 +708,17 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجاز می‌دهید به مسیر این تمرین در Health Connect دسترسی داشته باشد؟"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"این برنامه می‌تواند مکان قبلی شما را در مسیر بخواند"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> - <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"درحال بار کردن…"</string>
 </resources>
