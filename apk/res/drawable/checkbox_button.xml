@@ -15,6 +15,6 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/quantum_gm_ic_check_circle_filled_vd_theme_24" android:state_checked="true" />
-    <item android:drawable="@drawable/quantum_gm_ic_radio_button_unchecked_vd_theme_24" />
+    <item android:drawable="@drawable/ic_checkbox_checked" android:state_checked="true" />
+    <item android:drawable="@drawable/ic_checkbox_unchecked" />
 </selector>

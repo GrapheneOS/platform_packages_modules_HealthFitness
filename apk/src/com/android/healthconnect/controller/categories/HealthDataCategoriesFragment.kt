@@ -186,7 +186,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                 val newCategoryPreference =
                     HealthPreference(requireContext()).also {
                         it.setTitle(categoryState.category.uppercaseTitle())
-                        it.setIcon(categoryState.category.icon())
+                        it.icon = categoryState.category.icon(requireContext())
                         it.logName = CategoriesElement.CATEGORY_BUTTON
                         it.setOnPreferenceClickListener {
                             findNavController()

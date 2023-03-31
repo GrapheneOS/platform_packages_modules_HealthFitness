@@ -29,7 +29,7 @@
         android:background="@null"
         android:contentDescription="@string/navigation_previous_day"
         android:padding="@dimen/spacing_normal"
-        android:src="@drawable/quantum_gm_ic_keyboard_arrow_left_vd_theme_24"
+        android:src="@drawable/ic_left_arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +41,7 @@
         android:background="@null"
         android:contentDescription="@string/navigation_next_day"
         android:padding="@dimen/spacing_normal"
-        android:src="@drawable/quantum_gm_ic_keyboard_arrow_right_vd_theme_24"
+        android:src="@drawable/ic_right_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
