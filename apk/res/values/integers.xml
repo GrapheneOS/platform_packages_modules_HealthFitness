@@ -29,5 +29,5 @@
     <integer name="dialog_gravity">@integer/gravity_center</integer>
     <integer name="dialog_title_gravity">@integer/gravity_center</integer>
     <integer name="dialog_title_text_alignment">@integer/alignment_center</integer>
-    <integer name="dialog_title_icon_visibility">@integer/visibility_visible</integer>
+    <integer name="dialog_title_icon_visibility">@integer/visibility_gone</integer>
 </resources>

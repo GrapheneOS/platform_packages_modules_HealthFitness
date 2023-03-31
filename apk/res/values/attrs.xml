@@ -69,6 +69,11 @@
     <attr name="privacyPolicyIcon" format="reference" />
     <attr name="manageSettingsIcon" format="reference"/>
     <attr name="syncIcon" format="reference"/>
+
+    <!-- Migration -->
+    <attr name="moreSpaceNeededIcon" format="reference"/>
+    <attr name="updateNeededIcon" format="reference"/>
+
     <!--  endregion -->
 
     <!-- Gravity for dialogs. Uses Android gravity values defined at
@@ -95,6 +100,7 @@
     <attr name="textAppearanceHeadline2" format="reference" />
     <attr name="textAppearanceLabelSmall" format="reference"/>
     <attr name="textAppearanceSubheader" format="reference"/>
+    <attr name="textAppearanceSubheader2" format="reference"/>
     <attr name="textAppearanceRouteRequest" format="reference"/>
 
     <attr name="listItemPaddingTop" format="reference" />

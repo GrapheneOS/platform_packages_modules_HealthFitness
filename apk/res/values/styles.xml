@@ -82,6 +82,13 @@
         <item name="android:letterSpacing">0.01</item>
     </style>
 
+    <style name="TextAppearance.HealthConnect.Subheader2" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineHeight">20sp</item>
+        <item name="android:letterSpacing">0.025</item>
+    </style>
+
     <style name="TextAppearance.HealthConnect.RouteRequest" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
         <item name="android:textFontWeight">500</item>
         <item name="android:textSize">12sp</item>
