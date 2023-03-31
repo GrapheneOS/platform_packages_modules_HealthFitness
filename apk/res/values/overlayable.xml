@@ -18,6 +18,8 @@
     <overlayable name="HealthConnectStyles">
         <policy type="product|system|vendor|odm|oem">
             <!-- REGION ICONS -->
+            <item type="drawable" name="ic_health_connect"/>
+
             <!-- Home page -->
             <item type="drawable" name="ic_app_permissions"/>
             <item type="drawable" name="ic_data_and_access"/>
@@ -44,12 +46,6 @@
             <!-- Permission types page -->
             <item type="drawable" name="ic_view_list"/>
             <item type="drawable" name="ic_check"/>
-
-            <!-- Data entries page -->
-            <item type="drawable" name="ic_right_arrow"/>
-            <item type="drawable" name="ic_left_arrow"/>
-
-            <item type="drawable" name="ic_health_connect"/>
 
             <!-- Dialogs -->
             <item type="drawable" name="ic_deletion_settings"/>
