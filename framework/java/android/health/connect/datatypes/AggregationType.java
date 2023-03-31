@@ -187,6 +187,7 @@ public final class AggregationType<T> {
         int RESTING_HEART_RATE_RECORD_BPM_AVG = 65;
         int SLEEP_SESSION_DURATION_TOTAL = 66;
         int EXERCISE_SESSION_DURATION_TOTAL = 67;
+        int NUTRITION_RECORD_TRANS_FAT_TOTAL = 74;
 
         /**
          * Valid set of values for this IntDef. Update this set when add new type or deprecate
@@ -241,6 +242,7 @@ public final class AggregationType<T> {
                         NUTRITION_RECORD_THIAMIN_TOTAL,
                         NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL,
                         NUTRITION_RECORD_TOTAL_FAT_TOTAL,
+                        NUTRITION_RECORD_TRANS_FAT_TOTAL,
                         NUTRITION_RECORD_UNSATURATED_FAT_TOTAL,
                         NUTRITION_RECORD_VITAMIN_A_TOTAL,
                         NUTRITION_RECORD_VITAMIN_B12_TOTAL,
@@ -334,7 +336,8 @@ public final class AggregationType<T> {
             HEART_RATE_RECORD_MEASUREMENTS_COUNT,
             RESTING_HEART_RATE_RECORD_BPM_AVG,
             SLEEP_SESSION_DURATION_TOTAL,
-            EXERCISE_SESSION_DURATION_TOTAL
+            EXERCISE_SESSION_DURATION_TOTAL,
+            NUTRITION_RECORD_TRANS_FAT_TOTAL
         })
         @Retention(RetentionPolicy.SOURCE)
         @interface Id {}

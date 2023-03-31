@@ -48,6 +48,7 @@ import static android.health.connect.datatypes.NutritionRecord.SUGAR_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.THIAMIN_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.TOTAL_FAT_TOTAL;
+import static android.health.connect.datatypes.NutritionRecord.TRANS_FAT_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.UNSATURATED_FAT_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.VITAMIN_A_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.VITAMIN_B12_TOTAL;
@@ -134,6 +135,7 @@ public class NutritionRecordTest {
                     SUGAR_TOTAL,
                     THIAMIN_TOTAL,
                     TOTAL_CARBOHYDRATE_TOTAL,
+                    TRANS_FAT_TOTAL,
                     TOTAL_FAT_TOTAL,
                     UNSATURATED_FAT_TOTAL,
                     VITAMIN_A_TOTAL,
@@ -449,6 +451,7 @@ public class NutritionRecordTest {
                                 .addAggregationType(THIAMIN_TOTAL)
                                 .addAggregationType(TOTAL_CARBOHYDRATE_TOTAL)
                                 .addAggregationType(TOTAL_FAT_TOTAL)
+                                .addAggregationType(TRANS_FAT_TOTAL)
                                 .addAggregationType(UNSATURATED_FAT_TOTAL)
                                 .addAggregationType(VITAMIN_A_TOTAL)
                                 .addAggregationType(VITAMIN_B12_TOTAL)
@@ -500,6 +503,7 @@ public class NutritionRecordTest {
                                 .addAggregationType(TOTAL_CARBOHYDRATE_TOTAL)
                                 .addAggregationType(TOTAL_FAT_TOTAL)
                                 .addAggregationType(UNSATURATED_FAT_TOTAL)
+                                .addAggregationType(TRANS_FAT_TOTAL)
                                 .addAggregationType(VITAMIN_A_TOTAL)
                                 .addAggregationType(VITAMIN_B12_TOTAL)
                                 .addAggregationType(VITAMIN_B6_TOTAL)
