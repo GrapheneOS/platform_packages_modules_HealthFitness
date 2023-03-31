@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.dataaccess
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
@@ -161,9 +160,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mDataAccessHeader?.icon =
-            ResourcesCompat.getDrawable(
-                resources, fromHealthPermissionType(permissionType).icon(), requireContext().theme)
+        mDataAccessHeader?.icon = fromHealthPermissionType(permissionType).icon(requireContext())
         mDataAccessHeader?.title = getString(fromPermissionType(permissionType).uppercaseLabel)
         viewModel.loadAppMetaDataMap(permissionType)
         viewModel.appMetadataMap.observe(viewLifecycleOwner) { state ->
