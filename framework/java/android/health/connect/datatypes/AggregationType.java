@@ -188,6 +188,9 @@ public final class AggregationType<T> {
         int SLEEP_SESSION_DURATION_TOTAL = 66;
         int EXERCISE_SESSION_DURATION_TOTAL = 67;
         int NUTRITION_RECORD_TRANS_FAT_TOTAL = 74;
+        int CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG = 75;
+        int CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN = 76;
+        int CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX = 77;
 
         /**
          * Valid set of values for this IntDef. Update this set when add new type or deprecate
@@ -210,6 +213,9 @@ public final class AggregationType<T> {
                         POWER_RECORD_POWER_AVG,
                         HYDRATION_RECORD_VOLUME_TOTAL,
                         FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
+                        CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG,
+                        CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN,
+                        CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX,
                         NUTRITION_RECORD_BIOTIN_TOTAL,
                         NUTRITION_RECORD_CAFFEINE_TOTAL,
                         NUTRITION_RECORD_CALCIUM_TOTAL,
@@ -337,7 +343,10 @@ public final class AggregationType<T> {
             RESTING_HEART_RATE_RECORD_BPM_AVG,
             SLEEP_SESSION_DURATION_TOTAL,
             EXERCISE_SESSION_DURATION_TOTAL,
-            NUTRITION_RECORD_TRANS_FAT_TOTAL
+            NUTRITION_RECORD_TRANS_FAT_TOTAL,
+            CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG,
+            CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN,
+            CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX
         })
         @Retention(RetentionPolicy.SOURCE)
         @interface Id {}

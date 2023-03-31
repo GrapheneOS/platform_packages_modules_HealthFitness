@@ -477,6 +477,9 @@ package android.health.connect.datatypes {
 
   public final class CyclingPedalingCadenceRecord extends android.health.connect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> getSamples();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Double> RPM_AVG;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Double> RPM_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Double> RPM_MIN;
   }
 
   public static final class CyclingPedalingCadenceRecord.Builder {

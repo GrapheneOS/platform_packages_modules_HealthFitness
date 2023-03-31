@@ -18,6 +18,9 @@ package android.health.connect.internal.datatypes.utils;
 
 import static android.health.connect.datatypes.ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL;
 import static android.health.connect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
+import static android.health.connect.datatypes.CyclingPedalingCadenceRecord.RPM_AVG;
+import static android.health.connect.datatypes.CyclingPedalingCadenceRecord.RPM_MAX;
+import static android.health.connect.datatypes.CyclingPedalingCadenceRecord.RPM_MIN;
 import static android.health.connect.datatypes.DistanceRecord.DISTANCE_TOTAL;
 import static android.health.connect.datatypes.ElevationGainedRecord.ELEVATION_GAINED_TOTAL;
 import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DURATION_TOTAL;
@@ -129,7 +132,8 @@ public final class AggregationTypeIdMapper {
                         HEART_MEASUREMENTS_COUNT,
                         SLEEP_DURATION_TOTAL,
                         EXERCISE_DURATION_TOTAL));
-        addDoubleIdsToAggregateResultMap(Arrays.asList(FLOORS_CLIMBED_TOTAL));
+        addDoubleIdsToAggregateResultMap(
+                Arrays.asList(FLOORS_CLIMBED_TOTAL, RPM_AVG, RPM_MAX, RPM_MIN));
         addPowerIdsToAggregateResultMap(Arrays.asList(POWER_MIN, POWER_MAX, POWER_AVG));
         addEnergyIdsToAggregateResultMap(
                 Arrays.asList(
