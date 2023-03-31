@@ -45,7 +45,7 @@ public class MigrationConstants {
 
     static final String HC_RELEASE_CERT_CONFIG_NAME =
             "android:array/config_healthConnectMigrationKnownSigners";
-    static final String HC_PACKAGE_NAME_CONFIG_NAME =
+    public static final String HC_PACKAGE_NAME_CONFIG_NAME =
             "android:string/config_healthConnectMigratorPackageName";
     public static final String MIGRATION_COMPLETE_JOB_NAME = "migration_completion_job";
     public static final String MIGRATION_PAUSE_JOB_NAME = "migration_pause_job";
