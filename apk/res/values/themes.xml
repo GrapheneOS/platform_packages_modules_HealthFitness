@@ -51,10 +51,6 @@
         <!-- Data access page -->
         <item name="seeAllEntriesIcon">@drawable/ic_view_list</item>
 
-        <!-- Data entries page -->
-        <item name="nextDayIcon">@drawable/ic_right_arrow</item>
-        <item name="previousDayIcon">@drawable/ic_left_arrow</item>
-
         <!-- Dialogs -->
         <item name="deletionSettingsIcon">@drawable/ic_deletion_settings</item>
         <item name="successIcon">@drawable/ic_success</item>
