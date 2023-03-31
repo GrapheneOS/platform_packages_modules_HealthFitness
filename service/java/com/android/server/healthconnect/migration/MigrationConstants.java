@@ -36,9 +36,11 @@ public class MigrationConstants {
     // TODO(b/270562874) Refactor the timeouts to be server-side configurable.
     static final Duration IDLE_STATE_TIMEOUT_PERIOD = Duration.ofDays(30);
     static final Duration NON_IDLE_STATE_TIMEOUT_PERIOD = Duration.ofDays(15);
+
     static final Duration IN_PROGRESS_STATE_TIMEOUT_PERIOD = Duration.ofHours(12);
     static final long EXECUTION_TIME_BUFFER = TimeUnit.MINUTES.toMillis(30);
     static final long MIGRATION_COMPLETION_JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(1);
+
     static final long MIGRATION_PAUSE_JOB_RUN_INTERVAL = TimeUnit.HOURS.toMillis(4);
     static final int INTERVAL_DEFAULT = 0;
 
@@ -57,4 +59,7 @@ public class MigrationConstants {
     static final String HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY = "have_canceled_old_migration_jobs";
     static final String MIGRATION_STATE_CHANGE_NAMESPACE = MigrationStateChangeJob.class.toString();
     static final boolean ENABLE_STATE_CHANGE_JOBS = true;
+
+    public static final String IN_PROGRESS_TIMEOUT_REACHED_KEY = "in_progress_timeout_reached_key";
+    public static final String IDLE_TIMEOUT_REACHED_KEY = "idle_timeout_reached_key";
 }

@@ -143,8 +143,9 @@ public final class MigrationStateChangeJob {
         }
 
         if (Instant.now().isAfter(executionTime)) {
+            // TODO (b/278728774) fix race condition
             MigrationStateManager.getInitialisedInstance()
-                    .updateMigrationState(context, MIGRATION_STATE_COMPLETE);
+                    .updateMigrationState(context, MIGRATION_STATE_COMPLETE, true);
         }
     }
 
@@ -172,8 +173,10 @@ public final class MigrationStateChangeJob {
                         .minusMillis(EXECUTION_TIME_BUFFER);
 
         if (Instant.now().isAfter(executionTime)) {
+            // If we move to ALLOWED from IN_PROGRESS, then we have reached the IN_PROGRESS_TIMEOUT
             MigrationStateManager.getInitialisedInstance()
-                    .updateMigrationState(context, MIGRATION_STATE_ALLOWED);
+                    .updateMigrationState(
+                            context, MIGRATION_STATE_ALLOWED, /* timeoutReached= */ true);
         }
     }
 

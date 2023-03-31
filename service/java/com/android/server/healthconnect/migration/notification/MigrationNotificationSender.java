@@ -74,6 +74,12 @@ public final class MigrationNotificationSender {
         }
     }
 
+    /** Cancels all Health Connect notifications. */
+    public void clearNotifications(@NonNull UserHandle userHandle) {
+        NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
+        cancelFromSystem(notificationManager);
+    }
+
     /** Returns a {@link NotificationManager} which will send notifications to the given user. */
     @Nullable
     private NotificationManager getNotificationManagerForUser(@NonNull UserHandle userHandle) {
@@ -89,6 +95,18 @@ public final class MigrationNotificationSender {
         try {
             // We use the same (tag, id)
             notificationManager.notify(NOTIFICATION_TAG, FIXED_NOTIFICATION_ID, notification);
+        } catch (Throwable e) {
+            Log.w(TAG, "Unable to send system notification", e);
+        } finally {
+            Binder.restoreCallingIdentity(callingId);
+        }
+    }
+
+    private void cancelFromSystem(@Nullable NotificationManager notificationManager) {
+        final long callingId = Binder.clearCallingIdentity();
+        try {
+            // We use the same (tag, id)
+            notificationManager.cancel(NOTIFICATION_TAG, FIXED_NOTIFICATION_ID);
         } catch (Throwable e) {
             Log.w(TAG, "Unable to send system notification", e);
         } finally {
