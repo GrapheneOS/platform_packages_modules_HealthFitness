@@ -132,6 +132,24 @@ public final class TransactionManager {
     }
 
     /**
+     * Inserts or ignore on conflicts all the {@link UpsertTableRequest} into the HealthConnect
+     * database.
+     *
+     * @param upsertTableRequests a list of insert table requests.
+     */
+    public void insertOrIgnoreOnConflict(@NonNull List<UpsertTableRequest> upsertTableRequests) {
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            upsertTableRequests.forEach(
+                    (upsertTableRequest) -> insertOrIgnore(db, upsertTableRequest));
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /**
      * Deletes all the {@link RecordInternal} in {@code request} into the HealthConnect database.
      *
      * <p>NOTE: Please don't add logic to explicitly delete child table entries here as they should

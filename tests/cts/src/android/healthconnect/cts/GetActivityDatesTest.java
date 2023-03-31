@@ -18,14 +18,18 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.content.Context;
+import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.InstantRecord;
 import android.health.connect.datatypes.IntervalRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
-import android.health.connect.datatypes.units.Power;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
@@ -35,7 +39,6 @@ import org.junit.runner.RunWith;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,19 +80,114 @@ public class GetActivityDatesTest {
                         records.stream().map(this::getRecordDate).collect(Collectors.toSet()));
     }
 
+    @Test
+    public void testGetActivityDates_onUpdate() throws InterruptedException {
+        List<Record> records = getTestRecords();
+        TestUtils.insertRecords(records);
+        // Wait for some time, as activity dates are updated in the background so might take some
+        // additional time.
+        Thread.sleep(500);
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isGreaterThan(1);
+        assertThat(activityDates)
+                .containsExactlyElementsIn(
+                        records.stream().map(this::getRecordDate).collect(Collectors.toSet()));
+        List<Record> updatedRecords = getTestRecords();
+
+        for (int itr = 0; itr < updatedRecords.size(); itr++) {
+            updatedRecords.set(
+                    itr,
+                    new StepsRecord.Builder(
+                                    new Metadata.Builder()
+                                            .setId(records.get(itr).getMetadata().getId())
+                                            .setDataOrigin(
+                                                    records.get(itr).getMetadata().getDataOrigin())
+                                            .build(),
+                                    Instant.now().minusSeconds(5000 + itr * 2L),
+                                    Instant.now().minusSeconds(itr * 2L),
+                                    20)
+                            .build());
+        }
+
+        TestUtils.updateRecords(updatedRecords);
+        Thread.sleep(500);
+
+        List<LocalDate> updatedActivityDates =
+                TestUtils.getActivityDates(
+                        updatedRecords.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(updatedActivityDates)
+                .containsExactlyElementsIn(
+                        updatedRecords.stream()
+                                .map(this::getRecordDate)
+                                .collect(Collectors.toSet()));
+        assertThat(updatedActivityDates).containsNoneIn(activityDates);
+    }
+
+    @Test
+    public void testGetActivityDates_onDelete() throws InterruptedException {
+        List<Record> records = getTestRecords();
+        TestUtils.insertRecords(records);
+        // Wait for some time, as activity dates are updated in the background so might take some
+        // additional time.
+        Thread.sleep(500);
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isGreaterThan(1);
+        assertThat(activityDates)
+                .containsExactlyElementsIn(
+                        records.stream().map(this::getRecordDate).collect(Collectors.toSet()));
+
+        TimeInstantRangeFilter timeRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.now().minusSeconds(1200000))
+                        .setEndTime(Instant.now().minusSeconds(700000))
+                        .build();
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+
+        Thread.sleep(500);
+
+        List<LocalDate> updatedActivityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(updatedActivityDates.size()).isLessThan(activityDates.size());
+    }
+
+    /** Returns test records with different start times */
     private List<Record> getTestRecords() {
+        Context context = ApplicationProvider.getApplicationContext();
+        Metadata.Builder metadata =
+                new Metadata.Builder()
+                        .setDevice(
+                                new Device.Builder()
+                                        .setManufacturer("google")
+                                        .setModel("Pixel")
+                                        .setType(1)
+                                        .build())
+                        .setDataOrigin(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build());
+
         return new ArrayList<>(
                 Arrays.asList(
                         new StepsRecord.Builder(
-                                        new Metadata.Builder().build(),
-                                        Instant.now(),
-                                        Instant.now().plusMillis(1000),
+                                        metadata.setId(String.valueOf(Math.random())).build(),
+                                        Instant.now().minusSeconds(2000000),
+                                        Instant.now().minusSeconds(1900000),
                                         10)
                                 .build(),
-                        new BasalMetabolicRateRecord.Builder(
-                                        new Metadata.Builder().build(),
-                                        Instant.now().minus(3, ChronoUnit.DAYS),
-                                        Power.fromWatts(100.0))
+                        new StepsRecord.Builder(
+                                        metadata.setId(String.valueOf(Math.random())).build(),
+                                        Instant.now().minusSeconds(1000000),
+                                        Instant.now().minusSeconds(900000),
+                                        10)
                                 .build()));
     }
 
