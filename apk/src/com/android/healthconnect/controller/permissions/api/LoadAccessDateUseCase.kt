@@ -13,7 +13,6 @@
  */
 package com.android.healthconnect.controller.permissions.api
 
-import android.health.connect.HealthConnectManager
 import android.util.Log
 import java.time.Instant
 import javax.inject.Inject
@@ -22,7 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class LoadAccessDateUseCase
 @Inject
-constructor(private val healthConnectManager: HealthConnectManager) {
+constructor(private val healthPermissionManager: HealthPermissionManager) {
 
     companion object {
         private const val TAG = "LoadAccessDate"
@@ -31,7 +30,7 @@ constructor(private val healthConnectManager: HealthConnectManager) {
     operator fun invoke(packageName: String?): Instant? {
         packageName?.let {
             return try {
-                healthConnectManager.getHealthDataHistoricalAccessStartDate(it)
+                healthPermissionManager.loadStartAccessDate(it)
             } catch (ex: Exception) {
                 Log.e(TAG, "GetGrantedHealthPermissionsUseCase.invoke", ex)
                 null

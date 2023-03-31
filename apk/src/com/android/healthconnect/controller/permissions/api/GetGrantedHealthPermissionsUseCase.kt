@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.permissions.api
 
-import android.health.connect.HealthConnectManager
 import android.util.Log
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,13 +23,13 @@ import javax.inject.Singleton
 @Singleton
 class GetGrantedHealthPermissionsUseCase
 @Inject
-constructor(private val healthConnectManager: HealthConnectManager) {
+constructor(private val healthPermissionManager: HealthPermissionManager) {
     companion object {
         private const val TAG = "GetGrantedHealthPermiss"
     }
     operator fun invoke(packageName: String): List<String> {
         return try {
-            healthConnectManager.getGrantedHealthPermissions(packageName)
+            healthPermissionManager.getGrantedHealthPermissions(packageName)
         } catch (ex: Exception) {
             Log.e(TAG, "GetGrantedHealthPermissionsUseCase.invoke", ex)
             emptyList()
