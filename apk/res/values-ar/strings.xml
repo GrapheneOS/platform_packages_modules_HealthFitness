@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"لن يتمكَّن تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بعد ذلك من قراءة أو كتابة أي بيانات من تطبيق Health Connect.\n\nلا يؤثر هذا الإجراء في الأذونات الأخرى التي قد يمتلكها هذا التطبيق، مثلاً الموقع الجغرافي أو الكاميرا أو الميكروفون."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"حذف بيانات تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" أيضًا من Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"اليوم التالي"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"اليوم السابق"</string>
     <string name="default_error" msgid="7966868260616403475">"حدث خطأ. يُرجى إعادة المحاولة."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"تتمكن التطبيقات التي لديها هذا الإذن من قراءة بياناتك الصحية وكتابتها."</string>
@@ -335,7 +337,8 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"جارٍ حذف بيانات Health Connect"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"جارٍ حذف بيانات Health Connect"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"حذف البيانات"</string>
-    <string name="data_point_action_content_description" msgid="5594307313451433706">"خيارات إدخال البيانات"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"حذف إدخال"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 واط}zero{# واط}two{# واط}few{# واط}many{# واط}other{# واط}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 واط}zero{# واط}two{# واط}few{# واط}many{# واط}other{# واط}}"</string>
@@ -677,6 +680,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"الحذف التلقائي للبيانات"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{بعد شهر واحد}zero{بعد # شهر}two{بعد شهرَين}few{بعد # شهور}many{بعد # شهرًا}other{بعد # شهر}}"</string>
     <string name="range_never" msgid="4429478261788361233">"أبدًا"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"عند تغيير هذه الإعدادات، يحذف تطبيق Health Connect البيانات الحالية لإظهار الإعدادات المفضّلة الجديدة."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{هل تريد حذف البيانات تلقائيًا بعد شهر واحد؟}zero{هل تريد حذف البيانات تلقائيًا بعد # شهر؟}two{هل تريد حذف البيانات تلقائيًا بعد # شهرَين؟}few{هل تريد حذف البيانات تلقائيًا بعد # شهور؟}many{هل تريد حذف البيانات تلقائيًا بعد # شهرًا؟}other{هل تريد حذف البيانات تلقائيًا بعد # شهر؟}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد شهر واحد. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من شهر واحد.}zero{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهر. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهر.}two{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد شهرَين. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من شهرَين.}few{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهور. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهور.}many{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهرًا. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهرًا.}other{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهر. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهر.}}"</string>
@@ -703,5 +708,17 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"هل تريد السماح لتطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بالوصول إلى مسار التمرين الرياضي في Health Connect؟"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"سيتمكّن هذا التطبيق من قراءة موقعك الجغرافي السابق في المسار."</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"جارٍ التحميل…"</string>
 </resources>

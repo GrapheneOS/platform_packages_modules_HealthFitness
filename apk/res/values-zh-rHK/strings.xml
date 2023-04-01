@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」將無法在 Health Connect 中讀取或寫入任何資料。\n\n這不會影響這個應用程式可能擁有的其他權限，例如位置、相機或麥克風的存取權。"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"同時從 Health Connect 刪除「<xliff:g id="APP_NAME">%1$s</xliff:g>」的資料"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"下一天"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"上一天"</string>
     <string name="default_error" msgid="7966868260616403475">"發生錯誤，請再試一次。"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"擁有此權限的應用程式可讀取和寫入您的健康資料。"</string>
@@ -335,7 +337,8 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"正在刪除 Health Connect 資料"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"正在刪除 Health Connect 資料"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"資料刪除"</string>
-    <string name="data_point_action_content_description" msgid="5594307313451433706">"資料項目選項"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"刪除項目"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
@@ -677,6 +680,8 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"自動刪除資料"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 個月後}other{# 個月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"變更這些設定後，Health Connect 會根據新的偏好設定刪除現有資料"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{要在 # 個月後自動刪除資料嗎？}other{要在 # 個月後自動刪除資料嗎？}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect 將於 # 個月後自動刪除新資料。選用此設定後，系統亦會刪除 # 個月前的現有資料。}other{Health Connect 將於 # 個月後自動刪除新資料。選用此設定後，系統亦會刪除 # 個月前的現有資料。}}"</string>
@@ -703,5 +708,17 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取 Health Connect 中的這條運動路線嗎？"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"此應用程式可以讀取您過去在此路線上的位置"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"正在載入…"</string>
 </resources>
