@@ -54,6 +54,8 @@ public class DeleteTableRequest {
     private List<String> mIds;
     private boolean mEnforcePackageCheck;
     private int mNumberOfUuidsToDelete;
+    private WhereClauses mCustomWhereClauses;
+    private long mLessThanOrEqualValue;
 
     public DeleteTableRequest(
             @NonNull String tableName, @RecordTypeIdentifier.RecordType int recordType) {
@@ -164,7 +166,8 @@ public class DeleteTableRequest {
     }
 
     public String getWhereCommand() {
-        WhereClauses whereClauses = new WhereClauses();
+        WhereClauses whereClauses =
+                Objects.isNull(mCustomWhereClauses) ? new WhereClauses() : mCustomWhereClauses;
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
         whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
         whereClauses.addWhereInClause(mIdColumnName, mIds);
@@ -217,5 +220,11 @@ public class DeleteTableRequest {
             return mNumberOfUuidsToDelete;
         }
         return mIds.size();
+    }
+
+    /** Set custom where clauses for the delete command. */
+    public DeleteTableRequest setCustomWhereClauses(@NonNull WhereClauses whereClauses) {
+        mCustomWhereClauses = whereClauses;
+        return this;
     }
 }

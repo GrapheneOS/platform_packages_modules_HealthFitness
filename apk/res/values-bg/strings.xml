@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> вече няма да може да чете, нито да записва данни от Health Connect.\n\nТова няма да засегне другите разрешения, с които приложението може да разполага, като например за достъп до местоположението, камерата или микрофона."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Изтриване от Health Connect и на данните от <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Следващият ден"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Предишният ден"</string>
     <string name="default_error" msgid="7966868260616403475">"Нещо се обърка. Моля, опитайте отново."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Приложенията с това разрешение могат да четат здравните ви данни и да записват такива."</string>

@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.home
 
 import android.content.Context
+import android.health.connect.HealthConnectDataState
 import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +27,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.home.HomeFragment
 import com.android.healthconnect.controller.home.HomeFragmentViewModel
+import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
@@ -41,6 +43,7 @@ import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
@@ -63,6 +66,9 @@ class HomeFragmentTest {
     @BindValue
     val recentAccessViewModel: RecentAccessViewModel =
         Mockito.mock(RecentAccessViewModel::class.java)
+
+    @BindValue
+    val migrationViewModel: MigrationViewModel = Mockito.mock(MigrationViewModel::class.java)
 
     @Before
     fun setup() {
@@ -94,6 +100,10 @@ class HomeFragmentTest {
         whenever(homeFragmentViewModel.connectedApps).then {
             MutableLiveData(listOf<ConnectedAppMetadata>())
         }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)
+        }
+        whenever(migrationViewModel.migrationTimeout).then { MutableLiveData(Duration.ZERO) }
         launchFragment<HomeFragment>(Bundle())
 
         onView(
@@ -121,6 +131,10 @@ class HomeFragmentTest {
                     ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
                     ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.ALLOWED)))
         }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)
+        }
+        whenever(migrationViewModel.migrationTimeout).then { MutableLiveData(Duration.ZERO) }
         launchFragment<HomeFragment>(Bundle())
 
         onView(
@@ -144,6 +158,10 @@ class HomeFragmentTest {
         whenever(homeFragmentViewModel.connectedApps).then {
             MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)))
         }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)
+        }
+        whenever(migrationViewModel.migrationTimeout).then { MutableLiveData(Duration.ZERO) }
         launchFragment<HomeFragment>(Bundle())
 
         onView(
@@ -166,6 +184,10 @@ class HomeFragmentTest {
                     ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
                     ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)))
         }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)
+        }
+        whenever(migrationViewModel.migrationTimeout).then { MutableLiveData(Duration.ZERO) }
         launchFragment<HomeFragment>(Bundle())
 
         onView(

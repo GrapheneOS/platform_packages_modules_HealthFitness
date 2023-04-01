@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"अनुमतियां हटाने के बाद, <xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी.\n\nऐसा करने से, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect से <xliff:g id="APP_NAME">%1$s</xliff:g> का डेटा भी मिटाएं"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"अगला दिन"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"पिछला दिन"</string>
     <string name="default_error" msgid="7966868260616403475">"कोई गड़बड़ी हुई. कृपया फिर से कोशिश करें."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"जिन ऐप्लिकेशन के पास यह अनुमति है वे आपके स्वास्थ्य की जानकारी से जुड़ा डेटा पढ़ सकते हैं और उसे सेव कर सकते हैं."</string>

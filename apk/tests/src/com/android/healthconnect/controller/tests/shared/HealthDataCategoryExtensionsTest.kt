@@ -33,7 +33,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.shared.HEALTH_DATA_CATEGORIES
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
-import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.google.common.truth.Truth.assertThat
@@ -98,24 +97,6 @@ class HealthDataCategoryExtensionsTest {
     fun lowercaseTitles_categoryNotSupported_throws() {
         assertThrows("Category 100 is not supported", IllegalArgumentException::class.java) {
             100.lowercaseTitle()
-        }
-    }
-
-    @Test
-    fun icons() {
-        assertThat(ACTIVITY.icon()).isEqualTo(R.drawable.quantum_gm_ic_directions_run_vd_theme_24)
-        assertThat(BODY_MEASUREMENTS.icon())
-            .isEqualTo(R.drawable.quantum_gm_ic_straighten_vd_theme_24)
-        assertThat(CYCLE_TRACKING.icon()).isEqualTo(R.drawable.ic_cycle_tracking)
-        assertThat(NUTRITION.icon()).isEqualTo(R.drawable.quantum_gm_ic_grocery_vd_theme_24)
-        assertThat(SLEEP.icon()).isEqualTo(R.drawable.ic_sleep)
-        assertThat(VITALS.icon()).isEqualTo(R.drawable.ic_vitals)
-    }
-
-    @Test
-    fun icons_categoryNotSupported_throws() {
-        assertThrows("Category 100 is not supported", IllegalArgumentException::class.java) {
-            100.icon()
         }
     }
 

@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"Lietotne <xliff:g id="APP_NAME">%1$s</xliff:g> vairs nevarēs lasīt un rakstīt no platformas Health Connect iegūtos datus.\n\nTādējādi netiek ietekmētas citas atļaujas, kas lietotnei var būt piešķirtas, piemēram, atrašanās vietas, kameras vai mikrofona atļaujas."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Dzēst arī lietotnes <xliff:g id="APP_NAME">%1$s</xliff:g> datus no platformas Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Nākamā diena"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Iepriekšējā diena"</string>
     <string name="default_error" msgid="7966868260616403475">"Radās kļūda. Lūdzu, mēģiniet vēlreiz."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Lietotnes, kurām ir šī atļauja, var lasīt un rakstīt jūsu veselības rādītāju datus."</string>

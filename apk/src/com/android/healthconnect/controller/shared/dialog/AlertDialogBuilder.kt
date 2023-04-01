@@ -20,6 +20,7 @@ import android.content.DialogInterface
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.AttrRes
@@ -49,6 +50,10 @@ class AlertDialogBuilder(private val context: Context) {
 
     constructor(activity: FragmentActivity) : this(activity as Context)
 
+    private var iconView: ImageView? = null
+    private var positiveButton: Button? = null
+    private var negativeButton: Button? = null
+
     private var positiveButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
     private var negativeButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
     private var elementName: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
@@ -77,10 +82,11 @@ class AlertDialogBuilder(private val context: Context) {
     }
 
     fun setIcon(@AttrRes iconId: Int): AlertDialogBuilder {
-        val iconView: ImageView = customTitleLayout.findViewById(R.id.dialog_icon)
+        iconView = customTitleLayout.findViewById(R.id.dialog_icon)
         val iconDrawable = AttributeResolver.getNullableDrawable(context, iconId)
         iconDrawable?.let {
-            iconView.setImageDrawable(it)
+            iconView?.setImageDrawable(it)
+            iconView?.visibility = View.VISIBLE
             alertDialogBuilder.setCustomTitle(customTitleLayout)
         }
 

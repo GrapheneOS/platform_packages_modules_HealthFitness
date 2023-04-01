@@ -14,13 +14,16 @@
   limitations under the License.
 -->
 <resources>
-    <!-- region Icons -->
+    <!-- REGION ICONS -->
+    <attr name="healthConnectIcon" format="reference"/>
+
     <!-- Home page -->
     <attr name="appPermissionsIcon" format="reference"/>
     <attr name="dataAndAccessIcon" format="reference"/>
     <attr name="seeAllIcon" format="reference"/>
+    <attr name="recentAccessTimelineDividerDrawable" format="reference" />
 
-    <!-- App permissions page-->
+    <!-- App permissions page -->
     <attr name="removeAccessForAllAppsIcon" format="reference"/>
     <attr name="helpAndFeedbackIcon" format="reference"/>
     <attr name="checkForUpdatesIcon" format="reference"/>
@@ -33,13 +36,12 @@
     <attr name="autoDeleteOffIcon" format="reference"/>
     <attr name="deleteIcon" format="reference" />
     <attr name="exportDataIcon" format="reference" />
-<!--     TODO (b/270850335) -->
-<!--    <attr name="activityCategoryIcon" format="reference"/>-->
-<!--    <attr name="bodyMeasurementsCategoryIcon" format="reference"/>-->
-<!--    <attr name="cycleTrackingCategoryIcon" format="reference"/>-->
-<!--    <attr name="nutritionCategoryIcon" format="reference"/>-->
-<!--    <attr name="sleepCategoryIcon" format="reference"/>-->
-<!--    <attr name="vitalsCategoryIcon" format="reference"/>-->
+    <attr name="activityCategoryIcon" format="reference"/>
+    <attr name="bodyMeasurementsCategoryIcon" format="reference"/>
+    <attr name="cycleTrackingCategoryIcon" format="reference"/>
+    <attr name="nutritionCategoryIcon" format="reference"/>
+    <attr name="sleepCategoryIcon" format="reference"/>
+    <attr name="vitalsCategoryIcon" format="reference"/>
 
     <!-- Permission types page -->
     <attr name="appPriorityIcon" format="reference"/>
@@ -52,10 +54,8 @@
     <attr name="nextDayIcon" format="reference"/>
     <attr name="previousDayIcon" format="reference"/>
 
-    <attr name="healthConnectIcon" format="reference"/>
-
     <!-- Dialogs -->
-    <attr name="deleteSettingsIcon" format="reference" />
+    <attr name="deletionSettingsIcon" format="reference" />
     <attr name="successIcon" format="reference" />
     <attr name="failureIcon" format="reference" />
     <attr name="disconnectAllIcon" format="reference" />
@@ -63,50 +63,70 @@
     <attr name="deniedAppsBannerIcon" format="reference" />
     <attr name="priorityItemDragIcon" format="reference" />
 
-    <!-- Request permissions-->
+    <!-- Request permissions -->
     <attr name="chooseDataIcon" format="reference" />
     <attr name="accessHistoryIcon" format="reference" />
     <attr name="privacyPolicyIcon" format="reference" />
     <attr name="manageSettingsIcon" format="reference"/>
     <attr name="syncIcon" format="reference"/>
-    <!--  endregion -->
 
-    <!-- Gravity for dialogs. Uses Android gravity values defined at
+    <!-- Migration -->
+    <attr name="moreSpaceNeededIcon" format="reference"/>
+    <attr name="updateNeededIcon" format="reference"/>
+
+    <!-- END REGION -->
+
+    <!-- REGION DIALOG GRAVITY -->
+    <!-- Uses Android gravity values defined at
        https://developer.android.com/reference/android/view/Gravity#constants_1 -->
     <attr name="dialogGravity" format="integer" />
     <attr name="alertDialogTitleGravity" format="reference" />
     <attr name="alertDialogTitleTextAlignment" format="reference" />
     <attr name="alertDialogTitleIconVisibility" format="reference" />
+    <!-- END REGION -->
 
-    <!-- Text Appearance -->
-    <!-- Google Sans Text -->
-    <!-- Preference summary OG, 400/14/20/0.25-->
+    <!-- REGION STYLES -->
+    <!-- Typography   -->
     <attr name="textAppearanceSummary" format="reference" />
     <attr name="textAppearanceSummaryLarge" format="reference"/>
     <attr name="textAppearanceLabel" format="reference"/>
     <attr name="textAppearanceLabelCompact" format="reference"/>
-
-    <!-- Google Sans   -->
     <attr name="textAppearanceHeadline6" format="reference"/>
-    <!-- Preference title OG 400/20/24-->
     <attr name="textAppearanceItem" format="reference" />
     <attr name="textAppearanceHeadline4" format="reference" />
     <attr name="textAppearanceHeadline3" format="reference" />
     <attr name="textAppearanceHeadline2" format="reference" />
     <attr name="textAppearanceLabelSmall" format="reference"/>
     <attr name="textAppearanceSubheader" format="reference"/>
+    <attr name="textAppearanceSubheader2" format="reference"/>
     <attr name="textAppearanceRouteRequest" format="reference"/>
 
+    <!-- Buttons -->
+    <attr name="dialogButtonFull"> format="reference"</attr>
+    <attr name="dialogButtonOutline"> format="reference"</attr>
+    <attr name="baseButton"> format="reference"</attr>
+    <attr name="buttonBorderLess"> format="reference"</attr>
+    <attr name="permissionGrantButtonList"> format="reference"</attr>
+    <attr name="permissionGrantButtonTop"> format="reference"</attr>
+    <attr name="permissionGrantButtonButton"> format="reference"</attr>
+
+    <!-- Dialogs -->
+    <attr name="alertDialogTheme"> format="reference"</attr>
+    <attr name="dialogButtonBar"> format="reference"</attr>
+
+    <attr name="outlinedButton" format="reference" />
+    <attr name="chipStyle" format="reference" />
+    <attr name="spinnerStyle" format="reference" />
+
+    <!-- END REGION -->
+
+    <!-- REGION DIMENSIONS -->
     <attr name="listItemPaddingTop" format="reference" />
     <attr name="listItemPaddingBottom" format="reference" />
     <attr name="largeListItemPaddingTop" format="reference" />
     <attr name="largeListItemPaddingBottom" format="reference" />
     <attr name="listItemMinHeight" format="reference" />
     <attr name="recentAccessTimelineDividerHeight" format="reference" />
-    <attr name="recentAccessTimelineDividerDrawable" format="reference" />
+    <!-- END REGION -->
 
-    <attr name="outlinedButton" format="reference" />
-
-    <attr name="chipStyle" format="reference" />
-    <attr name="spinnerStyle" format="reference" />
 </resources>

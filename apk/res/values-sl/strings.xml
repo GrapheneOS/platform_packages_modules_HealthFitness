@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za lokacijo, fotoaparat ali mikrofon."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Iz storitve Health Connect izbriši tudi podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Naslednji dan"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Prejšnji dan"</string>
     <string name="default_error" msgid="7966868260616403475">"Prišlo je do napake. Poskusite znova."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Aplikacije s tem dovoljenjem lahko berejo in zapisujejo vaše podatke o zdravju."</string>

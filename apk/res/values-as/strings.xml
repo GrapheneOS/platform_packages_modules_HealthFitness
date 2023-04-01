@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ Health Connectৰ কোনো ডেটা আৰু পঢ়িব অথবা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা অৱস্থান, কেমেৰা অথবা মাইক্ৰ’ফ’নৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connectৰ পৰা <xliff:g id="APP_NAME">%1$s</xliff:g>ৰ ডেটাও মচক"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"পৰৱৰ্তী দিন"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"পূৰ্বৱৰ্তী দিন"</string>
     <string name="default_error" msgid="7966868260616403475">"কিবা ভুল হ’ল। অনুগ্ৰহ কৰি আকৌ চেষ্টা কৰক।"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"এই অনুমতিটো লাভ কৰা এপে আপোনাৰ স্বাস্থ্য সম্পৰ্কীয় ডেটা পঢ়িব আৰু লিখিব পাৰে।"</string>

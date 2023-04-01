@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យពី Health Connect បានទៀតទេ។\n\nការធ្វើបែបនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាទីតាំង កាមេរ៉ា ឬមីក្រូហ្វូនទេ។"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"លុបទិន្នន័យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចេញពី Health Connect ផងដែរ"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"ថ្ងៃ​បន្ទាប់"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"ថ្ងៃ​មុន"</string>
     <string name="default_error" msgid="7966868260616403475">"មានអ្វីមួយខុសប្រក្រតី។ សូមព្យាយាមម្ដងទៀត។"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"កម្មវិធីដែលមានការអនុញ្ញាតនេះអាចអាន និងសរសេរទិន្នន័យសុខភាពរបស់អ្នកបាន។"</string>

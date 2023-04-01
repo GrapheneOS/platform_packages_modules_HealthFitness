@@ -46,7 +46,14 @@
         <action
             android:id="@+id/action_homeFragment_to_connectedAppsFragment"
             app:destination="@id/connectedAppsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_migrationActivity"
+            app:destination="@id/migrationActivity" />
     </fragment>
+
+    <activity
+        android:id="@+id/migrationActivity"
+        android:name="com.android.healthconnect.controller.migration.MigrationActivity"/>
 
     <activity
         android:id="@+id/data_activity"

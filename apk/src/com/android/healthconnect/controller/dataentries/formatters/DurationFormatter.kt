@@ -70,4 +70,27 @@ object DurationFormatter {
         } else minuteString
         // Shows as: N minute(s)
     }
+
+    /**
+     * Formats the given duration in the format 'X days' or 'Y hours'.
+     *
+     * <p> Returns only the hour component for durations less than one day. Returns only the day
+     * component for durations with days.
+     */
+    fun formatDurationDaysOrHours(context: Context, duration: Duration): String {
+        val days = duration.toDays()
+        val hours = duration.toHours() % 24
+        val dayString: String =
+            MessageFormat.format(
+                context.getString(R.string.day_duration_accessibility), mapOf("count" to days))
+        val hourString: String =
+            MessageFormat.format(
+                context.getString(R.string.hour_duration_accessibility), mapOf("count" to hours))
+
+        return if (days > 0) { // Shows as: X day(s)
+            dayString
+        } else {
+            hourString // Shows as: Y hour(s)
+        }
+    }
 }

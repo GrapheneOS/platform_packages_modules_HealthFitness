@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> už nebude môcť čítať údaje z Dát o zdraví ani ich do nich zapisovať.\n\nNeovplyvní to ďalšie povolenia, ktoré táto aplikácia môže mať, ako je poloha, kamera alebo mikrofón."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Odstrániť z Dát o zdraví aj údaje aplikácie <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Nasledujúci deň"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Predchádzajúci deň"</string>
     <string name="default_error" msgid="7966868260616403475">"Niečo sa pokazilo. Skúste to znova."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"Aplikácie s týmto povolením môžu čítať a zapisovať údaje o zdraví."</string>

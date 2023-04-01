@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ले अब उप्रान्त Health Connect मा भएको कुनै पनि डेटा रिड वा राइट गर्न सक्ने छैन।\n\nयसले गर्दा यो एपलाई दिइएका लोकेसन, क्यामेरा वा माइक्रोफोनलगायतका कुरा प्रयोग गर्ने अनुमति बदलिने छैन।"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect बाट <xliff:g id="APP_NAME">%1$s</xliff:g> को डेटा पनि मेटाइयोस्"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"अर्को दिन"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"अघिल्लो दिन"</string>
     <string name="default_error" msgid="7966868260616403475">"केही चिज गडबड भयो। कृपया फेरि प्रयास गर्नुहोस्।"</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"यो अनुमति दिइएका एपहरूले तपाईंको स्वास्थ्यसम्बन्धी डेटा रिड गर्न तथा राइट गर्न सक्छन्।"</string>

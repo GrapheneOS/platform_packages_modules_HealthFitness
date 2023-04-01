@@ -247,6 +247,8 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> හට තවදුරටත් Health Connect වෙතින් දත්ත කිසිවක් කියවීමට හෝ ලිවීමට නොහැකි වනු ඇත.\n\nස්ථානය, කැමරාව, හෝ මයික්‍රෆෝනය වැනි, මෙම යෙදුමට තිබිය හැකි වෙනත් අවසරවලට මෙය බලපාන්නේ නැත."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect වෙතින් <xliff:g id="APP_NAME">%1$s</xliff:g> දත්ත ද මකන්න"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"ඊළඟ දිනය"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"පෙර දිනය"</string>
     <string name="default_error" msgid="7966868260616403475">"යමක් වැරදිණි. නැවත උත්සාහ කරන්න."</string>
     <string name="health_permission_header_description" msgid="715159548992861374">"මෙම අවසරය ඇති යෙදුම්වල ඔබේ සෞඛ්‍ය දත්ත කියවීමටත් ලිවීමටත් හැකිය."</string>

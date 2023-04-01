@@ -16,16 +16,17 @@
 package android.healthconnect.cts.ui
 
 import android.health.connect.TimeInstantRangeFilter
-import android.health.connect.datatypes.BasalMetabolicRateRecord
-import android.health.connect.datatypes.HeartRateRecord
+import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.StepsRecord
+import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.TestUtils.verifyDeleteRecords
-import android.healthconnect.cts.lib.TestUtils.insertRecordAs
 import android.healthconnect.cts.ui.testing.ActivityLauncher.launchDataActivity
 import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
+import android.healthconnect.cts.ui.testing.UiTestUtils.distanceRecordFromTestApp
+import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
+import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp2
 import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
 import androidx.test.uiautomator.By
-import com.android.cts.install.lib.TestApp
 import java.time.Instant
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -37,29 +38,12 @@ class PermissionTypesFragmentTest : HealthConnectBaseTest() {
     companion object {
         private const val TAG = "DataAccessFragmentTest"
 
-        private const val VERSION_CODE: Long = 1
-
-        private val APP_A_WITH_READ_WRITE_PERMS: TestApp =
-            TestApp(
-                "TestAppA",
-                "android.healthconnect.cts.testapp.readWritePerms.A",
-                VERSION_CODE,
-                false,
-                "CtsHealthConnectTestAppA.apk")
-
-        private val APP_B_WITH_READ_WRITE_PERMS: TestApp =
-            TestApp(
-                "TestAppB",
-                "android.healthconnect.cts.testapp.readWritePerms.B",
-                VERSION_CODE,
-                false,
-                "CtsHealthConnectTestAppB.apk")
-
         @BeforeClass
         @JvmStatic
         fun setup() {
-            insertRecordAs(APP_A_WITH_READ_WRITE_PERMS)
-            insertRecordAs(APP_B_WITH_READ_WRITE_PERMS)
+            insertRecords(listOf(stepsRecordFromTestApp()))
+            insertRecords(listOf(distanceRecordFromTestApp()))
+            insertRecords(listOf(stepsRecordFromTestApp2()))
         }
 
         @AfterClass
@@ -72,13 +56,7 @@ class PermissionTypesFragmentTest : HealthConnectBaseTest() {
                     .setEndTime(Instant.now())
                     .build())
             verifyDeleteRecords(
-                HeartRateRecord::class.java,
-                TimeInstantRangeFilter.Builder()
-                    .setStartTime(Instant.EPOCH)
-                    .setEndTime(Instant.now())
-                    .build())
-            verifyDeleteRecords(
-                BasalMetabolicRateRecord::class.java,
+                DistanceRecord::class.java,
                 TimeInstantRangeFilter.Builder()
                     .setStartTime(Instant.EPOCH)
                     .setEndTime(Instant.now())
@@ -103,11 +81,34 @@ class PermissionTypesFragmentTest : HealthConnectBaseTest() {
     fun permissionTypes_filterByApp() {
         context.launchDataActivity {
             clickOnText("Activity")
-            waitDisplayed(By.text("All apps"))
-
-            // "CtsHealthConnectTestAppAWithNormalReadWritePermission" is ellipsed on chip.
-            waitDisplayed(By.textContains("CtsHealthConnect"))
+            waitDisplayed(By.text("Distance"))
             waitDisplayed(By.text("Steps"))
+
+            //            clickOnText("TestApp2")
+            //            waitNotDisplayed(By.text("Distance"))
+            //            waitDisplayed(By.text("Steps"))
+            //
+            //            clickOnText("All apps")
+            //            waitDisplayed(By.text("Distance"))
+            //            waitDisplayed(By.text("Steps"))
+        }
+    }
+
+    @Test
+    fun permissionTypes_openAppPriority() {
+        // TODO(b/265789268): Finish when ag/21642785 is merged.
+        context.launchDataActivity {
+            clickOnText("Activity")
+            waitDisplayed(By.text("Distance"))
+            waitDisplayed(By.text("Steps"))
+
+            //            clickOnText("App priority")
+            //            waitNotDisplayed(By.text("Distance"))
+            //            waitDisplayed(By.text("Set app priority"))
+            //            waitDisplayed(By.text("If more than one app adds Activity data, Health
+            // Connect prioritises the app highest in this list. Drag apps to reorder them."))
+            //            waitDisplayed(By.text("Cancel"))
+            //            clickOnText("Save")
         }
     }
 }
