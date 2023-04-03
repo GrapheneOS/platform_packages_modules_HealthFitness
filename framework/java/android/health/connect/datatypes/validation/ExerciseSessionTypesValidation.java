@@ -18,7 +18,10 @@ package android.health.connect.datatypes.validation;
 
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BACK_EXTENSION;
+import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BALL_SLAM;
+import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BARBELL_SHOULDER_PRESS;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BENCH_PRESS;
+import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BENCH_SIT_UP;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BIKING;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BIKING_STATIONARY;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE;
@@ -76,7 +79,10 @@ import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGM
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_OTHER;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SWIMMING_POOL;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_UNKNOWN;
+import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_UPPER_TWIST;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_WALKING;
+import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING;
+import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_WHEELCHAIR;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_YOGA;
 import static android.health.connect.datatypes.ExerciseSegmentType.isKnownSegmentType;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING;
@@ -87,6 +93,7 @@ import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESS
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_EXERCISE_CLASS;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_GYMNASTICS;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING;
+import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_HIKING;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_PILATES;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_ROWING_MACHINE;
@@ -100,6 +107,8 @@ import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESS
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_UNKNOWN;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_WALKING;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_WEIGHTLIFTING;
+import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_WHEELCHAIR;
+import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_YOGA;
 import static android.health.connect.datatypes.ExerciseSessionType.isKnownSessionType;
 
 import android.health.connect.datatypes.ExerciseRoute;
@@ -142,17 +151,28 @@ public final class ExerciseSessionTypesValidation {
             Set.of(
                     EXERCISE_SEGMENT_TYPE_ARM_CURL,
                     EXERCISE_SEGMENT_TYPE_BACK_EXTENSION,
+                    EXERCISE_SEGMENT_TYPE_BALL_SLAM,
+                    EXERCISE_SEGMENT_TYPE_BARBELL_SHOULDER_PRESS,
                     EXERCISE_SEGMENT_TYPE_BENCH_PRESS,
+                    EXERCISE_SEGMENT_TYPE_BENCH_SIT_UP,
                     EXERCISE_SEGMENT_TYPE_BURPEE,
                     EXERCISE_SEGMENT_TYPE_CRUNCH,
                     EXERCISE_SEGMENT_TYPE_DEADLIFT,
                     EXERCISE_SEGMENT_TYPE_DOUBLE_ARM_TRICEPS_EXTENSION,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_LEFT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_RIGHT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_FRONT_RAISE,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_LATERAL_RAISE,
                     EXERCISE_SEGMENT_TYPE_DUMBBELL_ROW,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_LEFT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_RIGHT_ARM,
+                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_TWO_ARM,
+                    EXERCISE_SEGMENT_TYPE_FORWARD_TWIST,
                     EXERCISE_SEGMENT_TYPE_FRONT_RAISE,
                     EXERCISE_SEGMENT_TYPE_HIP_THRUST,
                     EXERCISE_SEGMENT_TYPE_HULA_HOOP,
-                    EXERCISE_SEGMENT_TYPE_JUMP_ROPE,
                     EXERCISE_SEGMENT_TYPE_JUMPING_JACK,
+                    EXERCISE_SEGMENT_TYPE_JUMP_ROPE,
                     EXERCISE_SEGMENT_TYPE_KETTLEBELL_SWING,
                     EXERCISE_SEGMENT_TYPE_LATERAL_RAISE,
                     EXERCISE_SEGMENT_TYPE_LAT_PULL_DOWN,
@@ -169,14 +189,8 @@ public final class ExerciseSessionTypesValidation {
                     EXERCISE_SEGMENT_TYPE_SINGLE_ARM_TRICEPS_EXTENSION,
                     EXERCISE_SEGMENT_TYPE_SIT_UP,
                     EXERCISE_SEGMENT_TYPE_SQUAT,
-                    EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_LEFT_ARM,
-                    EXERCISE_SEGMENT_TYPE_DUMBBELL_CURL_RIGHT_ARM,
-                    EXERCISE_SEGMENT_TYPE_DUMBBELL_FRONT_RAISE,
-                    EXERCISE_SEGMENT_TYPE_DUMBBELL_LATERAL_RAISE,
-                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_LEFT_ARM,
-                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_RIGHT_ARM,
-                    EXERCISE_SEGMENT_TYPE_DUMBBELL_TRICEPS_EXTENSION_TWO_ARM,
-                    EXERCISE_SEGMENT_TYPE_FORWARD_TWIST);
+                    EXERCISE_SEGMENT_TYPE_UPPER_TWIST,
+                    EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING);
 
     private static final Set<Integer> SWIMMING =
             Set.of(
@@ -192,12 +206,16 @@ public final class ExerciseSessionTypesValidation {
     static {
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_BIKING, Set.of(EXERCISE_SEGMENT_TYPE_BIKING));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_BIKING_STATIONARY,
                 Set.of(EXERCISE_SEGMENT_TYPE_BIKING_STATIONARY));
+
         SESSION_TO_SEGMENT_MAPPING.put(EXERCISE_SESSION_TYPE_CALISTHENICS, EXERCISES);
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_ELLIPTICAL, Set.of(EXERCISE_SEGMENT_TYPE_ELLIPTICAL));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_EXERCISE_CLASS,
                 Set.of(
@@ -206,23 +224,32 @@ public final class ExerciseSessionTypesValidation {
                         EXERCISE_SEGMENT_TYPE_PILATES,
                         EXERCISE_SEGMENT_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING));
         SESSION_TO_SEGMENT_MAPPING.put(EXERCISE_SESSION_TYPE_GYMNASTICS, EXERCISES);
+
         SESSION_TO_SEGMENT_MAPPING.put(
-                EXERCISE_SESSION_TYPE_WALKING, Set.of(EXERCISE_SEGMENT_TYPE_WALKING));
+                EXERCISE_SESSION_TYPE_HIKING,
+                Set.of(EXERCISE_SEGMENT_TYPE_WALKING, EXERCISE_SEGMENT_TYPE_WHEELCHAIR));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_PILATES, Set.of(EXERCISE_SEGMENT_TYPE_PILATES));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_ROWING_MACHINE, Set.of(EXERCISE_SEGMENT_TYPE_ROWING_MACHINE));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_RUNNING,
                 Set.of(EXERCISE_SEGMENT_TYPE_RUNNING, EXERCISE_SEGMENT_TYPE_WALKING));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_RUNNING_TREADMILL,
                 Set.of(EXERCISE_SEGMENT_TYPE_RUNNING_TREADMILL));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_STAIR_CLIMBING, Set.of(EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING));
+
         SESSION_TO_SEGMENT_MAPPING.put(
                 EXERCISE_SESSION_TYPE_STAIR_CLIMBING_MACHINE,
                 Set.of(EXERCISE_SEGMENT_TYPE_STAIR_CLIMBING_MACHINE));
+
         SESSION_TO_SEGMENT_MAPPING.put(EXERCISE_SESSION_TYPE_STRENGTH_TRAINING, EXERCISES);
 
         Set<Integer> openSwimming = new ArraySet<>(SWIMMING);
@@ -232,7 +259,17 @@ public final class ExerciseSessionTypesValidation {
         Set<Integer> poolSwimming = new ArraySet<>(SWIMMING);
         poolSwimming.add(EXERCISE_SEGMENT_TYPE_SWIMMING_POOL);
         SESSION_TO_SEGMENT_MAPPING.put(EXERCISE_SESSION_TYPE_SWIMMING_POOL, poolSwimming);
+
+        SESSION_TO_SEGMENT_MAPPING.put(
+                EXERCISE_SESSION_TYPE_WALKING, Set.of(EXERCISE_SEGMENT_TYPE_WALKING));
+
         SESSION_TO_SEGMENT_MAPPING.put(EXERCISE_SESSION_TYPE_WEIGHTLIFTING, EXERCISES);
+
+        SESSION_TO_SEGMENT_MAPPING.put(
+                EXERCISE_SESSION_TYPE_WHEELCHAIR, Set.of(EXERCISE_SEGMENT_TYPE_WHEELCHAIR));
+
+        SESSION_TO_SEGMENT_MAPPING.put(
+                EXERCISE_SESSION_TYPE_YOGA, Set.of(EXERCISE_SEGMENT_TYPE_YOGA));
     }
 
     /**
