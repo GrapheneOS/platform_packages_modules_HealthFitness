@@ -18,6 +18,7 @@
 
 package com.android.healthconnect.controller.permissions.request
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,7 +28,6 @@ import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPerm
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -45,6 +45,10 @@ constructor(
     private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
     private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase
 ) : ViewModel() {
+
+    companion object {
+        private const val TAG = "RequestPermissionViewMo"
+    }
 
     private val _appMetaData = MutableLiveData<AppMetadata>()
     val appMetadata: LiveData<AppMetadata>
@@ -97,7 +101,14 @@ constructor(
         val filteredPermissions =
             permissions
                 .filter { permissionString -> !grantedPermissions.contains(permissionString) }
-                .map { permissionString -> HealthPermission.fromPermissionString(permissionString) }
+                .mapNotNull { permissionString ->
+                    try {
+                        HealthPermission.fromPermissionString(permissionString)
+                    } catch (exception: IllegalArgumentException) {
+                        Log.e(TAG, "Unrecognized health exception!", exception)
+                        null
+                    }
+                }
 
         _permissionsList.postValue(filteredPermissions)
     }

@@ -16,9 +16,9 @@
 package com.android.healthconnect.controller.tests.permissions.api
 
 import android.content.Context
-import android.health.connect.HealthConnectManager
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEIGHT
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
@@ -30,20 +30,20 @@ import org.mockito.Mockito.verify
 class GrantHealthPermissionUseCaseTest {
     private lateinit var context: Context
     private lateinit var useCase: GrantHealthPermissionUseCase
-    private val healthConnectManager: HealthConnectManager =
-        Mockito.mock(HealthConnectManager::class.java)
+    private val healthPermissionManager: HealthPermissionManager =
+        Mockito.mock(HealthPermissionManager::class.java)
 
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        useCase = GrantHealthPermissionUseCase(healthConnectManager)
+        useCase = GrantHealthPermissionUseCase(healthPermissionManager)
     }
 
     @Test
     fun invoke_callsHealthPermissionManager() {
         useCase.invoke("TEST_APP", HealthPermission(HEIGHT, WRITE).toString())
 
-        verify(healthConnectManager)
+        verify(healthPermissionManager)
             .grantHealthPermission("TEST_APP", "android.permission.health.WRITE_HEIGHT")
     }
 }

@@ -16,9 +16,9 @@
 package com.android.healthconnect.controller.tests.permissions.api
 
 import android.content.Context
-import android.health.connect.HealthConnectManager
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -28,18 +28,19 @@ class GetGrantedHealthPermissionsUseCaseTest {
 
     private lateinit var context: Context
     private lateinit var useCase: GetGrantedHealthPermissionsUseCase
-    private val healthConnectManager: HealthConnectManager = mock(HealthConnectManager::class.java)
+    private val healthPermissionManager: HealthPermissionManager =
+        mock(HealthPermissionManager::class.java)
 
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        useCase = GetGrantedHealthPermissionsUseCase(healthConnectManager)
+        useCase = GetGrantedHealthPermissionsUseCase(healthPermissionManager)
     }
 
     @Test
     fun invoke_callsHealthPermissionManager() {
         useCase.invoke("TEST_APP")
 
-        verify(healthConnectManager).getGrantedHealthPermissions("TEST_APP")
+        verify(healthPermissionManager).getGrantedHealthPermissions("TEST_APP")
     }
 }
