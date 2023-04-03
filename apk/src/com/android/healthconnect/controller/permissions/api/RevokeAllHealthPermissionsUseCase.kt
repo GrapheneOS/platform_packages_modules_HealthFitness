@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.permissions.api
 
-import android.health.connect.HealthConnectManager
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,8 +22,8 @@ import javax.inject.Singleton
 @Singleton
 class RevokeAllHealthPermissionsUseCase
 @Inject
-constructor(private val healthConnectManager: HealthConnectManager) {
-    operator fun invoke(packageName: String, reason: String? = null) {
-        healthConnectManager.revokeAllHealthPermissions(packageName, reason)
+constructor(private val healthPermissionManager: HealthPermissionManager) {
+    operator fun invoke(packageName: String) {
+        healthPermissionManager.revokeAllHealthPermissions(packageName)
     }
 }

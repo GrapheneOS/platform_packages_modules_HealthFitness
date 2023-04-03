@@ -16,7 +16,6 @@
 
 package com.android.healthconnect.controller.dataaccess
 
-import com.android.healthconnect.controller.LoadPermissionTypeContributorAppsUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
