@@ -21,6 +21,7 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.deletion.api.DeleteAppDataUseCase
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.google.common.truth.Truth
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -33,7 +34,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
-import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
@@ -43,23 +44,23 @@ class DeleteAppDataUseCaseTest {
 
     private lateinit var useCase: DeleteAppDataUseCase
 
-    var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    var dataManager: HealthConnectManager = mock(HealthConnectManager::class.java)
+    var permissionManager: HealthPermissionManager = mock(HealthPermissionManager::class.java)
 
     @Captor lateinit var filtersCaptor: ArgumentCaptor<DeleteUsingFiltersRequest>
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        val revokePermissionsUseCase = RevokeAllHealthPermissionsUseCase(manager)
-        useCase = DeleteAppDataUseCase(manager, revokePermissionsUseCase, Dispatchers.Main)
+        val revokePermissionsUseCase = RevokeAllHealthPermissionsUseCase(permissionManager)
+        useCase = DeleteAppDataUseCase(dataManager, revokePermissionsUseCase, Dispatchers.Main)
     }
 
     @Test
     fun invoke_deleteCategoryData_callsHealthManager() = runTest {
-        Mockito.doAnswer(prepareAnswer())
-            .`when`(manager)
-            .deleteRecords(
-                Mockito.any(DeleteUsingFiltersRequest::class.java), Mockito.any(), Mockito.any())
+        doAnswer(prepareAnswer())
+            .`when`(dataManager)
+            .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
 
         val startTime = Instant.now().minusSeconds(10)
         val endTime = Instant.now()
@@ -71,8 +72,7 @@ class DeleteAppDataUseCaseTest {
             deleteAppData,
             TimeInstantRangeFilter.Builder().setStartTime(startTime).setEndTime(endTime).build())
 
-        Mockito.verify(manager, Mockito.times(1))
-            .deleteRecords(filtersCaptor.capture(), Mockito.any(), Mockito.any())
+        verify(dataManager, times(1)).deleteRecords(filtersCaptor.capture(), any(), any())
         Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
             .isEqualTo(startTime)
         Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
