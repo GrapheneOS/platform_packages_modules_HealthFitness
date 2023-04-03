@@ -52,18 +52,12 @@ public final class PreferenceHelper {
 
     private PreferenceHelper() {}
 
-    public static synchronized PreferenceHelper getInstance() {
-        if (sPreferenceHelper == null) {
-            sPreferenceHelper = new PreferenceHelper();
-        }
-
-        return sPreferenceHelper;
-    }
-
     /** Note: Overrides existing preference (if it exists) with the new value */
     public synchronized void insertOrReplacePreference(String key, String value) {
         TransactionManager.getInitialisedInstance()
-                .insertOrReplace(new UpsertTableRequest(TABLE_NAME, getContentValues(key, value)));
+                .insertOrReplace(
+                        new UpsertTableRequest(
+                                TABLE_NAME, getContentValues(key, value), KEY_COLUMN_NAME));
         getPreferences().put(key, value);
     }
 
@@ -74,7 +68,10 @@ public final class PreferenceHelper {
         keyValues.forEach(
                 (key, value) ->
                         requests.add(
-                                new UpsertTableRequest(TABLE_NAME, getContentValues(key, value))));
+                                new UpsertTableRequest(
+                                        TABLE_NAME,
+                                        getContentValues(key, value),
+                                        KEY_COLUMN_NAME)));
         TransactionManager.getInitialisedInstance().insertOrReplaceAll(requests);
         getPreferences().putAll(keyValues);
     }
@@ -136,5 +133,13 @@ public final class PreferenceHelper {
         columnInfo.add(new Pair<>(VALUE_COLUMN_NAME, TEXT_NULL));
 
         return columnInfo;
+    }
+
+    public static synchronized PreferenceHelper getInstance() {
+        if (sPreferenceHelper == null) {
+            sPreferenceHelper = new PreferenceHelper();
+        }
+
+        return sPreferenceHelper;
     }
 }

@@ -24,7 +24,8 @@ import java.util.stream.Collectors;
 
 /** @hide */
 public final class WhereClauses {
-    final List<String> mClauses = new ArrayList<>();
+    private final List<String> mClauses = new ArrayList<>();
+    private boolean mUseOr = false;
 
     public WhereClauses addWhereBetweenClause(String columnName, long start, long end) {
         mClauses.add(columnName + " BETWEEN " + start + " AND " + end);
@@ -69,6 +70,22 @@ public final class WhereClauses {
         }
 
         mClauses.add(columnName + " = '" + value + "'");
+
+        return this;
+    }
+
+    // Creates a hex string corresponding to {@code value}. For example, {01, 02, 11} would become
+    // x'01020B'
+    public WhereClauses addWhereEqualsClause(String columnName, byte[] value) {
+        if (columnName == null || value == null || columnName.isEmpty()) {
+            return this;
+        }
+
+        final StringBuilder builder = new StringBuilder();
+        for (byte b : value) {
+            builder.append(String.format("%02x", b));
+        }
+        mClauses.add(columnName + " = x'" + builder + "'");
 
         return this;
     }
@@ -140,6 +157,16 @@ public final class WhereClauses {
             return "";
         }
 
-        return (withWhereKeyword ? " WHERE " : "") + String.join(" AND ", mClauses);
+        return (withWhereKeyword ? " WHERE " : "") + String.join(getJoinClause(), mClauses);
+    }
+
+    private String getJoinClause() {
+        return mUseOr ? " OR " : " AND ";
+    }
+
+    public WhereClauses setUseOr(boolean useOr) {
+        mUseOr = useOr;
+
+        return this;
     }
 }

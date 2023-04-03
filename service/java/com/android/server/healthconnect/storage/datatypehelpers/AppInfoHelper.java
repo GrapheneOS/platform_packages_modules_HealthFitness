@@ -109,46 +109,6 @@ public final class AppInfoHelper {
 
     private AppInfoHelper() {}
 
-    public static synchronized AppInfoHelper getInstance() {
-        if (sAppInfoHelper == null) {
-            sAppInfoHelper = new AppInfoHelper();
-        }
-
-        return sAppInfoHelper;
-    }
-
-    @Nullable
-    private static byte[] encodeBitmap(@Nullable Bitmap bitmap) {
-        if (bitmap == null) {
-            return null;
-        }
-
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
-            return stream.toByteArray();
-        } catch (IOException exception) {
-            throw new IllegalArgumentException(exception);
-        }
-    }
-
-    @Nullable
-    private static Bitmap decodeBitmap(@Nullable byte[] bytes) {
-        return bytes != null ? BitmapFactory.decodeByteArray(bytes, 0, bytes.length) : null;
-    }
-
-    @NonNull
-    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
-        final Bitmap bmp =
-                Bitmap.createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bmp);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bmp;
-    }
-
     /** Deletes all entries from the database and clears the cache. */
     public synchronized void clearData(TransactionManager transactionManager) {
         transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
@@ -564,8 +524,8 @@ public final class AppInfoHelper {
         whereClauseForAppInfoTableUpdate.addWhereEqualsClause(
                 PACKAGE_COLUMN_NAME, appInfo.getPackageName());
         UpsertTableRequest upsertRequestForAppInfoUpdate =
-                new UpsertTableRequest(TABLE_NAME, getContentValues(packageName, appInfo));
-        upsertRequestForAppInfoUpdate.setWhereClauses(whereClauseForAppInfoTableUpdate);
+                new UpsertTableRequest(
+                        TABLE_NAME, getContentValues(packageName, appInfo), PACKAGE_COLUMN_NAME);
         TransactionManager.getInitialisedInstance().update(upsertRequestForAppInfoUpdate);
 
         // update locally stored maps to keep data in sync.
@@ -645,7 +605,9 @@ public final class AppInfoHelper {
                 TransactionManager.getInitialisedInstance()
                         .insert(
                                 new UpsertTableRequest(
-                                        TABLE_NAME, getContentValues(packageName, appInfo)));
+                                        TABLE_NAME,
+                                        getContentValues(packageName, appInfo),
+                                        PACKAGE_COLUMN_NAME));
         appInfo.setId(rowId);
         getAppInfoMap().put(packageName, appInfo);
         getIdPackageNameMap().put(appInfo.getId(), packageName);
@@ -657,9 +619,10 @@ public final class AppInfoHelper {
         }
 
         UpsertTableRequest upsertTableRequest =
-                new UpsertTableRequest(TABLE_NAME, getContentValues(packageName, appInfoInternal));
-        upsertTableRequest.setWhereClauses(
-                new WhereClauses().addWhereEqualsClause(PACKAGE_COLUMN_NAME, packageName));
+                new UpsertTableRequest(
+                        TABLE_NAME,
+                        getContentValues(packageName, appInfoInternal),
+                        PACKAGE_COLUMN_NAME);
 
         TransactionManager.getInitialisedInstance().updateTable(upsertTableRequest);
         getAppInfoMap().put(packageName, appInfoInternal);
@@ -703,5 +666,45 @@ public final class AppInfoHelper {
         columnInfo.add(new Pair<>(RECORD_TYPES_USED_COLUMN_NAME, TEXT_NULL));
 
         return columnInfo;
+    }
+
+    public static synchronized AppInfoHelper getInstance() {
+        if (sAppInfoHelper == null) {
+            sAppInfoHelper = new AppInfoHelper();
+        }
+
+        return sAppInfoHelper;
+    }
+
+    @Nullable
+    private static byte[] encodeBitmap(@Nullable Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
+            return stream.toByteArray();
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(exception);
+        }
+    }
+
+    @Nullable
+    private static Bitmap decodeBitmap(@Nullable byte[] bytes) {
+        return bytes != null ? BitmapFactory.decodeByteArray(bytes, 0, bytes.length) : null;
+    }
+
+    @NonNull
+    private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp =
+                Bitmap.createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
     }
 }

@@ -233,16 +233,77 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         Trace.traceBegin(
                 TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetUpsertTableRequest"));
         UpsertTableRequest upsertTableRequest =
-                new UpsertTableRequest(getMainTableName(), getContentValues((T) recordInternal))
-                        .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
+                new UpsertTableRequest(
+                                getMainTableName(),
+                                getContentValues((T) recordInternal),
+                                UUID_COLUMN_NAME)
+                        .setUniqueColumns(
+                                Collections.singletonList(
+                                        new Pair<>(
+                                                DEDUPE_HASH_COLUMN_NAME,
+                                                UpsertTableRequest.TYPE_BLOB)))
+                        .setRequiresUpdateClause(
+                                new UpsertTableRequest.IRequiresUpdate() {
+                                    @Override
+                                    public boolean requiresUpdate(
+                                            Cursor cursor,
+                                            ContentValues contentValues,
+                                            UpsertTableRequest request) {
+                                        final String newUUID =
+                                                contentValues.getAsString(UUID_COLUMN_NAME);
+                                        final String oldUUID =
+                                                StorageUtils.getCursorString(
+                                                        cursor, UUID_COLUMN_NAME);
+
+                                        if (!Objects.equals(newUUID, oldUUID)) {
+                                            request.onUUIDRemoved(oldUUID);
+                                            // This means there was a duplication conflict, we want
+                                            // to update in this case.
+                                            // NOTE: It is possible that the new request has client
+                                            // record ID set and that was used to derive its uuid,
+                                            // to avoid such cases we want to use simply the new
+                                            // uuid.
+                                            return true;
+                                        }
+
+                                        long clientRecordVersion =
+                                                StorageUtils.getCursorLong(
+                                                        cursor, CLIENT_RECORD_VERSION_COLUMN_NAME);
+                                        long newClientRecordVersion =
+                                                contentValues.getAsLong(
+                                                        CLIENT_RECORD_VERSION_COLUMN_NAME);
+
+                                        return newClientRecordVersion >= clientRecordVersion;
+                                    }
+                                })
+                        .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
+                        .setHelper(this);
         Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
         return upsertTableRequest;
+    }
+
+    @NonNull
+    public List<String> getAllChildTables() {
+        List<String> childTables = new ArrayList<>();
+        for (CreateTableRequest childTableCreateRequest : getChildTableCreateRequests()) {
+            populateWithTablesNames(childTableCreateRequest, childTables);
+        }
+
+        return childTables;
+    }
+
+    private void populateWithTablesNames(
+            CreateTableRequest childTableCreateRequest, List<String> childTables) {
+        childTables.add(childTableCreateRequest.getTableName());
+        for (CreateTableRequest childTableRequest :
+                childTableCreateRequest.getChildTableRequests()) {
+            populateWithTablesNames(childTableRequest, childTables);
+        }
     }
 
     /**
      * Returns ReadSingleTableRequest for {@code request} and package name {@code packageName}
      *
-     * @return
      */
     public ReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request,
@@ -683,8 +744,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     static class AggregateParams {
         private final String mTableName;
-        private List<String> mColumnNames;
         private final String mTimeColumnName;
+        private List<String> mColumnNames;
         private SqlJoin mJoin;
         private Class<?> mAggregateDataType;
 

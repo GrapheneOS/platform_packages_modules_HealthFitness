@@ -63,14 +63,6 @@ public final class AccessLogsHelper {
 
     private AccessLogsHelper() {}
 
-    public static synchronized AccessLogsHelper getInstance() {
-        if (sAccessLogsHelper == null) {
-            sAccessLogsHelper = new AccessLogsHelper();
-        }
-
-        return sAccessLogsHelper;
-    }
-
     @NonNull
     public CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo());
@@ -110,6 +102,14 @@ public final class AccessLogsHelper {
             String packageName,
             @RecordTypeIdentifier.RecordType List<Integer> recordTypeList,
             @OperationType.OperationTypes int operationType) {
+        UpsertTableRequest request =
+                getUpsertTableRequest(packageName, recordTypeList, operationType);
+        TransactionManager.getInitialisedInstance().insert(request);
+    }
+
+    @NonNull
+    public UpsertTableRequest getUpsertTableRequest(
+            String packageName, List<Integer> recordTypeList, int operationType) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(
                 RECORD_TYPE_COLUMN_NAME,
@@ -119,8 +119,7 @@ public final class AccessLogsHelper {
         contentValues.put(ACCESS_TIME_COLUMN_NAME, Instant.now().toEpochMilli());
         contentValues.put(OPERATION_TYPE_COLUMN_NAME, operationType);
 
-        UpsertTableRequest request = new UpsertTableRequest(TABLE_NAME, contentValues);
-        TransactionManager.getInitialisedInstance().insert(request);
+        return new UpsertTableRequest(TABLE_NAME, contentValues);
     }
 
     /**
@@ -147,5 +146,13 @@ public final class AccessLogsHelper {
         columnInfo.add(new Pair<>(OPERATION_TYPE_COLUMN_NAME, INTEGER_NOT_NULL));
 
         return columnInfo;
+    }
+
+    public static synchronized AccessLogsHelper getInstance() {
+        if (sAccessLogsHelper == null) {
+            sAccessLogsHelper = new AccessLogsHelper();
+        }
+
+        return sAccessLogsHelper;
     }
 }

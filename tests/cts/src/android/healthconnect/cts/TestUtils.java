@@ -204,7 +204,6 @@ public class TestUtils {
 
                     @Override
                     public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
                         exceptionAtomicReference.set(exception);
                         latch.countDown();
                     }
@@ -1104,24 +1103,6 @@ public class TestUtils {
                 .build();
     }
 
-    static final class RecordAndIdentifier {
-        private final int id;
-        private final Record recordClass;
-
-        public RecordAndIdentifier(int id, Record recordClass) {
-            this.id = id;
-            this.recordClass = recordClass;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public Record getRecordClass() {
-            return recordClass;
-        }
-    }
-
     static void populateAndResetExpectedResponseMap(
             HashMap<Class<? extends Record>, RecordTypeInfoTestResponse> expectedResponseMap) {
         expectedResponseMap.put(
@@ -1292,6 +1273,24 @@ public class TestUtils {
                 BasalMetabolicRateRecord.class,
                 new RecordTypeInfoTestResponse(
                         BODY_MEASUREMENTS, BASAL_METABOLIC_RATE, new ArrayList<>()));
+    }
+
+    static final class RecordAndIdentifier {
+        private final int id;
+        private final Record recordClass;
+
+        public RecordAndIdentifier(int id, Record recordClass) {
+            this.id = id;
+            this.recordClass = recordClass;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public Record getRecordClass() {
+            return recordClass;
+        }
     }
 
     static class RecordTypeInfoTestResponse {

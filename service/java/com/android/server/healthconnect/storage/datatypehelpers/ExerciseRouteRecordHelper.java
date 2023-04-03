@@ -77,7 +77,9 @@ class ExerciseRouteRecordHelper {
                             populateRouteLocationTo(contentValues, sample);
                             requests.add(
                                     new UpsertTableRequest(
-                                                    EXERCISE_ROUTE_RECORD_TABLE_NAME, contentValues)
+                                                    EXERCISE_ROUTE_RECORD_TABLE_NAME,
+                                                    contentValues,
+                                                    null)
                                             .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME));
                         }));
         return requests;

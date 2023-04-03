@@ -74,42 +74,6 @@ public final class ChangeLogsHelper {
 
     private ChangeLogsHelper() {}
 
-    public static synchronized ChangeLogsHelper getInstance() {
-        if (sChangeLogsHelper == null) {
-            sChangeLogsHelper = new ChangeLogsHelper();
-        }
-
-        return sChangeLogsHelper;
-    }
-
-    @NonNull
-    public static List<DeletedLog> getDeletedLogs(Map<Integer, ChangeLogs> operationToChangeLogs) {
-        ChangeLogs logs = operationToChangeLogs.get(DELETE);
-
-        if (!Objects.isNull(logs)) {
-            List<String> ids = logs.getUUIds();
-            long timeStamp = logs.getChangeLogTimeStamp();
-            List<DeletedLog> deletedLogs = new ArrayList<>(ids.size());
-            for (String id : ids) {
-                deletedLogs.add(new DeletedLog(id, timeStamp));
-            }
-            return deletedLogs;
-        }
-        return new ArrayList<>();
-    }
-
-    @NonNull
-    public static Map<Integer, List<String>> getRecordTypeToInsertedUuids(
-            Map<Integer, ChangeLogs> operationToChangeLogs) {
-        ChangeLogs logs = operationToChangeLogs.getOrDefault(UPSERT, null);
-
-        if (!Objects.isNull(logs)) {
-            return logs.getRecordTypeToUUIDMap();
-        }
-
-        return new ArrayMap<>(0);
-    }
-
     public DeleteTableRequest getDeleteRequestForAutoDelete() {
         return new DeleteTableRequest(TABLE_NAME)
                 .setTimeFilter(
@@ -215,38 +179,43 @@ public final class ChangeLogsHelper {
         return columnInfo;
     }
 
-    public static final class ChangeLogs {
-        /** A helper class to create a pair of recordType and appId */
-        private static final class RecordTypeAndAppIdPair {
-            private final int mRecordType;
-            private final long mAppId;
-
-            private RecordTypeAndAppIdPair(int recordType, long appId) {
-                mRecordType = recordType;
-                mAppId = appId;
-            }
-
-            public int getRecordType() {
-                return mRecordType;
-            }
-
-            public long getAppId() {
-                return mAppId;
-            }
-
-            public boolean equals(Object obj) {
-                if (this == obj) return true;
-                if (obj == null || obj.getClass() != this.getClass()) return false;
-                RecordTypeAndAppIdPair recordTypeAndAppIdPair = (RecordTypeAndAppIdPair) obj;
-                return (recordTypeAndAppIdPair.mRecordType == this.mRecordType
-                        && recordTypeAndAppIdPair.mAppId == this.mAppId);
-            }
-
-            public int hashCode() {
-                return Objects.hash(this.mRecordType, this.mAppId);
-            }
+    public static synchronized ChangeLogsHelper getInstance() {
+        if (sChangeLogsHelper == null) {
+            sChangeLogsHelper = new ChangeLogsHelper();
         }
 
+        return sChangeLogsHelper;
+    }
+
+    @NonNull
+    public static List<DeletedLog> getDeletedLogs(Map<Integer, ChangeLogs> operationToChangeLogs) {
+        ChangeLogs logs = operationToChangeLogs.get(DELETE);
+
+        if (!Objects.isNull(logs)) {
+            List<String> ids = logs.getUUIds();
+            long timeStamp = logs.getChangeLogTimeStamp();
+            List<DeletedLog> deletedLogs = new ArrayList<>(ids.size());
+            for (String id : ids) {
+                deletedLogs.add(new DeletedLog(id, timeStamp));
+            }
+            return deletedLogs;
+        }
+        return new ArrayList<>();
+    }
+
+    @NonNull
+    public static Map<Integer, List<String>> getRecordTypeToInsertedUuids(
+            Map<Integer, ChangeLogs> operationToChangeLogs) {
+        ChangeLogs logs = operationToChangeLogs.getOrDefault(UPSERT, null);
+
+        if (!Objects.isNull(logs)) {
+            return logs.getRecordTypeToUUIDMap();
+        }
+
+        return new ArrayMap<>(0);
+    }
+
+    public static final class ChangeLogs {
         private final Map<RecordTypeAndAppIdPair, List<String>> mRecordTypeAndAppIdToUUIDMap =
                 new ArrayMap<>();
         @OperationType.OperationTypes private final int mOperationType;
@@ -269,7 +238,6 @@ public final class ChangeLogsHelper {
             mPackageName = packageName;
             mChangeLogTimeStamp = timeStamp;
         }
-
         /**
          * Creates a change logs object used to add a new change log for {@code operationType}
          * logged at time {@code timeStamp }
@@ -352,6 +320,37 @@ public final class ChangeLogsHelper {
             mRecordTypeAndAppIdToUUIDMap.putIfAbsent(recordTypeAndAppIdPair, new ArrayList<>());
             mRecordTypeAndAppIdToUUIDMap.get(recordTypeAndAppIdPair).addAll(uuids);
             return this;
+        }
+
+        /** A helper class to create a pair of recordType and appId */
+        private static final class RecordTypeAndAppIdPair {
+            private final int mRecordType;
+            private final long mAppId;
+
+            private RecordTypeAndAppIdPair(int recordType, long appId) {
+                mRecordType = recordType;
+                mAppId = appId;
+            }
+
+            public int getRecordType() {
+                return mRecordType;
+            }
+
+            public long getAppId() {
+                return mAppId;
+            }
+
+            public boolean equals(Object obj) {
+                if (this == obj) return true;
+                if (obj == null || obj.getClass() != this.getClass()) return false;
+                RecordTypeAndAppIdPair recordTypeAndAppIdPair = (RecordTypeAndAppIdPair) obj;
+                return (recordTypeAndAppIdPair.mRecordType == this.mRecordType
+                        && recordTypeAndAppIdPair.mAppId == this.mAppId);
+            }
+
+            public int hashCode() {
+                return Objects.hash(this.mRecordType, this.mAppId);
+            }
         }
     }
 

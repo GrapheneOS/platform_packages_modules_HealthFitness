@@ -104,28 +104,6 @@ public class HealthConnectManagerTest {
     private static final String TAG = "HealthConnectManagerTest";
     private static final String APP_PACKAGE_NAME = "android.healthconnect.cts";
 
-    private static Device getWatchDevice() {
-        return new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
-    }
-
-    private static Device getPhoneDevice() {
-        return new Device.Builder()
-                .setManufacturer("google")
-                .setModel("Pixel4a")
-                .setType(2)
-                .build();
-    }
-
-    private static DataOrigin getDataOrigin() {
-        return getDataOrigin(/*packageName=*/ "");
-    }
-
-    private static DataOrigin getDataOrigin(String packageName) {
-        return new DataOrigin.Builder()
-                .setPackageName(packageName.isEmpty() ? APP_PACKAGE_NAME : packageName)
-                .build();
-    }
-
     @Before
     public void before() throws InterruptedException {
         deleteAllRecords();
@@ -1872,14 +1850,6 @@ public class HealthConnectManagerTest {
         }
     }
 
-    private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
-        File file = new File(dir, fileName);
-        FileWriter fileWriter = new FileWriter(file);
-        fileWriter.write("Contents of file " + fileName);
-        fileWriter.close();
-        return file;
-    }
-
     private void verifyRecordTypeResponse(
             Map<Class<? extends Record>, RecordTypeInfoResponse> responses,
             HashMap<Class<? extends Record>, TestUtils.RecordTypeInfoTestResponse>
@@ -2036,5 +2006,35 @@ public class HealthConnectManagerTest {
         return new NutritionRecord.Builder(testMetadataBuilder.build(), startTime, endTime)
                 .setProtein(protein)
                 .build();
+    }
+
+    private static Device getWatchDevice() {
+        return new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
+    }
+
+    private static Device getPhoneDevice() {
+        return new Device.Builder()
+                .setManufacturer("google")
+                .setModel("Pixel4a")
+                .setType(2)
+                .build();
+    }
+
+    private static DataOrigin getDataOrigin() {
+        return getDataOrigin(/*packageName=*/ "");
+    }
+
+    private static DataOrigin getDataOrigin(String packageName) {
+        return new DataOrigin.Builder()
+                .setPackageName(packageName.isEmpty() ? APP_PACKAGE_NAME : packageName)
+                .build();
+    }
+
+    private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
+        File file = new File(dir, fileName);
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write("Contents of file " + fileName);
+        fileWriter.close();
+        return file;
     }
 }

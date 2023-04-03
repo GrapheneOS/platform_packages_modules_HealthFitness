@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage.request;
 
+import static android.health.connect.Constants.DELETE;
 import static android.health.connect.Constants.UPSERT;
 
 import android.annotation.NonNull;
@@ -54,10 +55,13 @@ import java.util.Set;
  */
 public class UpsertTransactionRequest {
     private static final String TAG = "HealthConnectUTR";
-    @NonNull private final List<UpsertTableRequest> mInsertRequests = new ArrayList<>();
+    @NonNull private final List<UpsertTableRequest> mUpsertRequests = new ArrayList<>();
     @NonNull private final List<String> mUUIDsInOrder = new ArrayList<>();
+    @NonNull private final String mPackageName;
+    private ChangeLogsHelper.ChangeLogs mInsertChangeLogs;
+    private ChangeLogsHelper.ChangeLogs mDeleteChangeLogs;
+    private final List<UpsertTableRequest> mAccessLogs = new ArrayList<>();
     @RecordTypeIdentifier.RecordType Set<Integer> mRecordTypes = new ArraySet<>();
-
     public UpsertTransactionRequest(
             @Nullable String packageName,
             @NonNull List<RecordInternal<?>> recordInternals,
@@ -80,8 +84,10 @@ public class UpsertTransactionRequest {
         long currentTime = Instant.now().toEpochMilli();
         ChangeLogsHelper.ChangeLogs changeLogs = null;
         if (!skipPackageNameAndLogs) {
-            changeLogs = new ChangeLogsHelper.ChangeLogs(UPSERT, packageName, currentTime);
+            mInsertChangeLogs = new ChangeLogsHelper.ChangeLogs(UPSERT, mPackageName, currentTime);
+            mDeleteChangeLogs = new ChangeLogsHelper.ChangeLogs(DELETE, mPackageName, currentTime);
         }
+        mPackageName = packageName;
 
         for (RecordInternal<?> recordInternal : recordInternals) {
             if (!skipPackageNameAndLogs) {
@@ -104,34 +110,51 @@ public class UpsertTransactionRequest {
                 StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
             }
             if (!skipPackageNameAndLogs) {
-                changeLogs.addUUID(
+                mInsertChangeLogs.addUUID(
                         recordInternal.getRecordType(),
                         recordInternal.getAppInfoId(),
                         recordInternal.getUuid());
             }
             recordInternal.setLastModifiedTime(currentTime);
-            addRequest(recordInternal);
+            addRequest(recordInternal, isInsertRequest);
         }
 
-        // Add commands to update the change log table with all the upserts
-        if (!skipPackageNameAndLogs && !mRecordTypes.isEmpty()) {
-            mInsertRequests.addAll(changeLogs.getUpsertTableRequests());
-            AccessLogsHelper.getInstance()
-                    .addAccessLog(packageName, new ArrayList<>(mRecordTypes), UPSERT);
+        if (!mRecordTypes.isEmpty()) {
+            mAccessLogs.add(
+                    AccessLogsHelper.getInstance()
+                            .getUpsertTableRequest(
+                                    packageName, new ArrayList<>(mRecordTypes), UPSERT));
+            // Add commands to update the change log table with all the upserts
+            if (!skipPackageNameAndLogs && !mRecordTypes.isEmpty()) {
+                mUpsertRequests.addAll(changeLogs.getUpsertTableRequests());
+                AccessLogsHelper.getInstance()
+                        .addAccessLog(packageName, new ArrayList<>(mRecordTypes), UPSERT);
+            }
+            if (Constants.DEBUG) {
+                Slog.d(
+                        TAG,
+                        "Upserting transaction for "
+                                + packageName
+                                + " with size "
+                                + recordInternals.size());
+            }
         }
-        if (Constants.DEBUG) {
-            Slog.d(
-                    TAG,
-                    "Upserting transaction for "
-                            + packageName
-                            + " with size "
-                            + recordInternals.size());
-        }
+    }
+
+    public List<UpsertTableRequest> getAccessLogs() {
+        return mAccessLogs;
+    }
+
+    @NonNull
+    public List<UpsertTableRequest> getInsertRequestsForChangeLogs() {
+        List<UpsertTableRequest> result = mInsertChangeLogs.getUpsertTableRequests();
+        result.addAll(mDeleteChangeLogs.getUpsertTableRequests());
+        return result;
     }
 
     @NonNull
     public List<UpsertTableRequest> getUpsertRequests() {
-        return mInsertRequests;
+        return mUpsertRequests;
     }
 
     @NonNull
@@ -149,13 +172,21 @@ public class UpsertTransactionRequest {
         return whereClauseForUpdateRequest;
     }
 
-    private void addRequest(@NonNull RecordInternal<?> recordInternal) {
+    private void addRequest(@NonNull RecordInternal<?> recordInternal, boolean isInsertRequest) {
         RecordHelper<?> recordHelper =
                 RecordHelperProvider.getInstance().getRecordHelper(recordInternal.getRecordType());
         Objects.requireNonNull(recordHelper);
 
         UpsertTableRequest request = recordHelper.getUpsertTableRequest(recordInternal);
-        request.setWhereClauses(generateWhereClausesForUpdate(recordInternal));
-        mInsertRequests.add(request);
+        request.setRecordType(recordHelper.getRecordIdentifier());
+        if (!isInsertRequest) {
+            request.setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
+        }
+        mUpsertRequests.add(request);
+    }
+
+    public void onUuidRemoved(String removedUuid, @RecordTypeIdentifier.RecordType int recordType) {
+        mDeleteChangeLogs.addUUID(
+                recordType, AppInfoHelper.getInstance().getAppInfoId(mPackageName), removedUuid);
     }
 }

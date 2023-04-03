@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.Constants.PARENT_KEY;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 
 import android.annotation.NonNull;
@@ -36,7 +38,7 @@ import java.util.List;
 abstract class SeriesRecordHelper<
                 T extends SeriesRecordInternal<?, ?>, U extends SeriesRecordInternal.Sample>
         extends IntervalRecordHelper<T> {
-    protected static final String PARENT_KEY_COLUMN_NAME = "parent_key";
+    protected static final String PARENT_KEY_COLUMN_NAME = PARENT_KEY;
 
     @Override
     final List<CreateTableRequest> getChildTableCreateRequests() {
@@ -58,7 +60,7 @@ abstract class SeriesRecordHelper<
                     ContentValues contentValues = new ContentValues();
                     populateSampleTo(contentValues, (U) sample);
                     requests.add(
-                            new UpsertTableRequest(getSeriesDataTableName(), contentValues)
+                            new UpsertTableRequest(getSeriesDataTableName(), contentValues, null)
                                     .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME));
                 }));
 

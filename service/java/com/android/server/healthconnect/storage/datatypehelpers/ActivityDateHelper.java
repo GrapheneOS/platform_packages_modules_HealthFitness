@@ -106,7 +106,8 @@ public final class ActivityDateHelper {
                                                 recordInternal.getRecordType(),
                                                 ChronoUnit.DAYS.between(
                                                         LocalDate.EPOCH,
-                                                        recordInternal.getLocalDate())))));
+                                                        recordInternal.getLocalDate())),
+                                        RECORD_TYPE_ID_COLUMN_NAME)));
 
         transactionManager.insertOrIgnoreOnConflict(upsertTableRequests);
     }

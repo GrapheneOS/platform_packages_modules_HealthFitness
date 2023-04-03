@@ -71,15 +71,6 @@ public class HealthDataCategoryPriorityHelper {
 
     private HealthDataCategoryPriorityHelper() {}
 
-    @NonNull
-    public static synchronized HealthDataCategoryPriorityHelper getInstance() {
-        if (sHealthDataCategoryPriorityHelper == null) {
-            sHealthDataCategoryPriorityHelper = new HealthDataCategoryPriorityHelper();
-        }
-
-        return sHealthDataCategoryPriorityHelper;
-    }
-
     // Called on DB update.
     public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
         // empty by default
@@ -119,7 +110,9 @@ public class HealthDataCategoryPriorityHelper {
         }
         safelyUpdateDBAndUpdateCache(
                 new UpsertTableRequest(
-                        TABLE_NAME, getContentValuesFor(dataCategory, newPriorityOrder)),
+                        TABLE_NAME,
+                        getContentValuesFor(dataCategory, newPriorityOrder),
+                        HEALTH_DATA_CATEGORY_COLUMN_NAME),
                 dataCategory,
                 newPriorityOrder);
     }
@@ -157,7 +150,9 @@ public class HealthDataCategoryPriorityHelper {
 
         safelyUpdateDBAndUpdateCache(
                 new UpsertTableRequest(
-                        TABLE_NAME, getContentValuesFor(dataCategory, newPriorityList)),
+                        TABLE_NAME,
+                        getContentValuesFor(dataCategory, newPriorityList),
+                        HEALTH_DATA_CATEGORY_COLUMN_NAME),
                 dataCategory,
                 newPriorityList);
     }
@@ -197,7 +192,9 @@ public class HealthDataCategoryPriorityHelper {
 
         safelyUpdateDBAndUpdateCache(
                 new UpsertTableRequest(
-                        TABLE_NAME, getContentValuesFor(dataCategory, newPriorityOrder)),
+                        TABLE_NAME,
+                        getContentValuesFor(dataCategory, newPriorityOrder),
+                        HEALTH_DATA_CATEGORY_COLUMN_NAME),
                 dataCategory,
                 newPriorityOrder);
     }
@@ -298,5 +295,14 @@ public class HealthDataCategoryPriorityHelper {
         columnInfo.add(new Pair<>(APP_ID_PRIORITY_ORDER_COLUMN_NAME, TEXT_NOT_NULL));
 
         return columnInfo;
+    }
+
+    @NonNull
+    public static synchronized HealthDataCategoryPriorityHelper getInstance() {
+        if (sHealthDataCategoryPriorityHelper == null) {
+            sHealthDataCategoryPriorityHelper = new HealthDataCategoryPriorityHelper();
+        }
+
+        return sHealthDataCategoryPriorityHelper;
     }
 }

@@ -51,20 +51,6 @@ public final class MigrationEntityHelper {
 
     private MigrationEntityHelper() {}
 
-    /** Returns a shared instance of {@link MigrationEntityHelper}. */
-    @NonNull
-    public static MigrationEntityHelper getInstance() {
-        if (sInstance == null) {
-            synchronized (sGetInstanceLock) {
-                if (sInstance == null) {
-                    sInstance = new MigrationEntityHelper();
-                }
-            }
-        }
-
-        return sInstance;
-    }
-
     /** Clears all data related to this helper. */
     public void clearData(@NonNull TransactionManager transactionManager) {
         transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
@@ -95,6 +81,20 @@ public final class MigrationEntityHelper {
     public UpsertTableRequest getInsertRequest(@NonNull String entityId) {
         final ContentValues values = new ContentValues();
         values.put(COLUMN_ENTITY_ID, entityId);
-        return new UpsertTableRequest(TABLE_NAME, values);
+        return new UpsertTableRequest(TABLE_NAME, values, COLUMN_ENTITY_ID);
+    }
+
+    /** Returns a shared instance of {@link MigrationEntityHelper}. */
+    @NonNull
+    public static MigrationEntityHelper getInstance() {
+        if (sInstance == null) {
+            synchronized (sGetInstanceLock) {
+                if (sInstance == null) {
+                    sInstance = new MigrationEntityHelper();
+                }
+            }
+        }
+
+        return sInstance;
     }
 }

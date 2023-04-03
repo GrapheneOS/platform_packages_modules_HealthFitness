@@ -71,7 +71,7 @@ public class ExerciseSegmentRecordHelper {
                     populateSegmentTo(contentValues, sample);
                     requests.add(
                             new UpsertTableRequest(
-                                            EXERCISE_SEGMENT_RECORD_TABLE_NAME, contentValues)
+                                            EXERCISE_SEGMENT_RECORD_TABLE_NAME, contentValues, null)
                                     .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME));
                 }));
         return requests;

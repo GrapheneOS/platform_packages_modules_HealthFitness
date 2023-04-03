@@ -60,27 +60,12 @@ public final class PriorityMigrationHelper {
     private static final int DB_VERSION_TABLE_CREATED = 5;
 
     private static final Object sPriorityMigrationHelperLock = new Object();
-    private Map<Integer, List<Long>> mPreMigrationPriorityCache;
-
     private static volatile PriorityMigrationHelper sPriorityMigrationHelper;
 
     private final Object mPriorityMigrationHelperInstanceLock = new Object();
+    private Map<Integer, List<Long>> mPreMigrationPriorityCache;
 
     private PriorityMigrationHelper() {}
-
-    /** Creates(if it was not already created) and returns instance of PriorityMigrationHelper. */
-    @NonNull
-    public static PriorityMigrationHelper getInstance() {
-        if (sPriorityMigrationHelper == null) {
-            synchronized (sPriorityMigrationHelperLock) {
-                if (sPriorityMigrationHelper == null) {
-                    sPriorityMigrationHelper = new PriorityMigrationHelper();
-                }
-            }
-        }
-
-        return sPriorityMigrationHelper;
-    }
 
     /**
      * Populate the pre-migration priority table by copying entries from priority table at the start
@@ -171,7 +156,8 @@ public final class PriorityMigrationHelper {
                             UpsertTableRequest request =
                                     new UpsertTableRequest(
                                             PRE_MIGRATION_TABLE_NAME,
-                                            getContentValuesFor(category, priority));
+                                            getContentValuesFor(category, priority),
+                                            CATEGORY_COLUMN_NAME);
                             transactionManager.insert(request);
                         }
                     });
@@ -212,5 +198,19 @@ public final class PriorityMigrationHelper {
         contentValues.put(PRIORITY_ORDER_COLUMN_NAME, StorageUtils.flattenLongList(priorityList));
 
         return contentValues;
+    }
+
+    /** Creates(if it was not already created) and returns instance of PriorityMigrationHelper. */
+    @NonNull
+    public static PriorityMigrationHelper getInstance() {
+        if (sPriorityMigrationHelper == null) {
+            synchronized (sPriorityMigrationHelperLock) {
+                if (sPriorityMigrationHelper == null) {
+                    sPriorityMigrationHelper = new PriorityMigrationHelper();
+                }
+            }
+        }
+
+        return sPriorityMigrationHelper;
     }
 }

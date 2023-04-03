@@ -16,12 +16,22 @@
 
 package com.android.server.healthconnect.storage.request;
 
+import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.util.Pair;
 
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -29,18 +39,35 @@ import java.util.Objects;
 /** @hide */
 public class UpsertTableRequest {
     public static final int INVALID_ROW_ID = -1;
-    private static final String TAG = "HealthConnectUpsert";
 
+    public static final int TYPE_STRING = 0;
+    public static final int TYPE_BLOB = 1;
     private final String mTable;
     private final ContentValues mContentValues;
+    private final String mPrimaryIdColumnName;
     private List<UpsertTableRequest> mChildTableRequests = Collections.emptyList();
     private String mParentCol;
     private long mRowId = INVALID_ROW_ID;
-    private WhereClauses mWhereClausesForUpdate = new WhereClauses();
-
+    private WhereClauses mWhereClausesForUpdate;
+    private IRequiresUpdate mRequiresUpdate = new IRequiresUpdate() {};
+    private List<Pair<String, Integer>> mUniqueColumns = Collections.emptyList();
+    private String mRemovedUuid;
+    private Integer mRecordType;
+    private RecordHelper<?> mRecordHelper;
     public UpsertTableRequest(@NonNull String table, @NonNull ContentValues contentValues) {
+        this(table, contentValues, RecordHelper.PRIMARY_COLUMN_NAME);
+    }
+
+    public UpsertTableRequest(
+            @NonNull String table,
+            @NonNull ContentValues contentValues,
+            @Nullable String primaryIdColumnName) {
+        Objects.requireNonNull(table);
+        Objects.requireNonNull(contentValues);
+
         mTable = table;
         mContentValues = contentValues;
+        mPrimaryIdColumnName = primaryIdColumnName;
     }
 
     @NonNull
@@ -56,6 +83,14 @@ public class UpsertTableRequest {
     @NonNull
     public UpsertTableRequest setParentColumnForChildTables(@Nullable String parentCol) {
         mParentCol = parentCol;
+        return this;
+    }
+
+    @NonNull
+    public UpsertTableRequest setRequiresUpdateClause(@NonNull IRequiresUpdate requiresUpdate) {
+        Objects.requireNonNull(requiresUpdate);
+
+        mRequiresUpdate = requiresUpdate;
         return this;
     }
 
@@ -89,13 +124,112 @@ public class UpsertTableRequest {
     }
 
     @NonNull
-    public WhereClauses getWhereClauses() {
+    public WhereClauses getUpdateWhereClauses() {
+        if (mWhereClausesForUpdate == null) {
+            Objects.requireNonNull(mContentValues.get(mPrimaryIdColumnName));
+            return getReadWhereClauses();
+        }
+
         return mWhereClausesForUpdate;
     }
 
-    public void setWhereClauses(WhereClauses whereClauses) {
+    public UpsertTableRequest setUpdateWhereClauses(WhereClauses whereClauses) {
         Objects.requireNonNull(whereClauses);
 
         mWhereClausesForUpdate = whereClauses;
+        return this;
+    }
+
+    public ReadTableRequest getReadRequest() {
+        Objects.requireNonNull(mPrimaryIdColumnName);
+
+        return new ReadTableRequest(getTable()).setWhereClause(getReadWhereClauses());
+    }
+
+    public ReadTableRequest getReadRequestUsingUpdateClause() {
+        Objects.requireNonNull(mPrimaryIdColumnName);
+
+        return new ReadTableRequest(getTable()).setWhereClause(getUpdateWhereClauses());
+    }
+
+    @NonNull
+    private WhereClauses getReadWhereClauses() {
+        WhereClauses readWhereClause =
+                new WhereClauses()
+                        .addWhereEqualsClause(
+                                mPrimaryIdColumnName,
+                                mContentValues.getAsString(mPrimaryIdColumnName))
+                        .setUseOr(true);
+
+        for (Pair<String, Integer> uniqueColumn : mUniqueColumns) {
+            switch (uniqueColumn.second) {
+                case TYPE_BLOB -> readWhereClause.addWhereEqualsClause(
+                        uniqueColumn.first, mContentValues.getAsByteArray(uniqueColumn.first));
+                default -> throw new UnsupportedOperationException(
+                        "Unable to find type: " + uniqueColumn.second);
+
+            }
+        }
+
+        return readWhereClause;
+    }
+
+    public boolean requiresUpdate(Cursor cursor, UpsertTableRequest request) {
+        return mRequiresUpdate.requiresUpdate(cursor, getContentValues(), request);
+    }
+
+    public String getRowIdColName() {
+        return RecordHelper.PRIMARY_COLUMN_NAME;
+    }
+
+    public UpsertTableRequest setUniqueColumns(@NonNull List<Pair<String, Integer>> uniqueColumns) {
+        Objects.requireNonNull(uniqueColumns);
+
+        mUniqueColumns = uniqueColumns;
+
+        return this;
+    }
+
+    @Nullable
+    public String getRemovedUuid() {
+        return mRemovedUuid;
+    }
+
+    public void onUUIDRemoved(String removedUUID) {
+        mRemovedUuid = removedUUID;
+    }
+
+    @RecordTypeIdentifier.RecordType
+    public int getRecordType() {
+        Objects.requireNonNull(mRecordType);
+        return mRecordType;
+    }
+
+    public void setRecordType(@RecordTypeIdentifier.RecordType int recordIdentifier) {
+        mRecordType = recordIdentifier;
+    }
+
+    public <T extends RecordInternal<?>> UpsertTableRequest setHelper(
+            RecordHelper<?> recordHelper) {
+        mRecordHelper = recordHelper;
+
+        return this;
+    }
+
+    @NonNull
+    public List<String> getAllChildTables() {
+        return mRecordHelper == null ? Collections.emptyList() : mRecordHelper.getAllChildTables();
+    }
+
+    @Target(ElementType.TYPE_USE)
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({TYPE_STRING, TYPE_BLOB})
+    public @interface ColumnType {}
+
+    public interface IRequiresUpdate {
+        default boolean requiresUpdate(
+                Cursor cursor, ContentValues contentValues, UpsertTableRequest request) {
+            return true;
+        }
     }
 }

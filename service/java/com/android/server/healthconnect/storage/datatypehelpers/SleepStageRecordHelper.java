@@ -85,7 +85,8 @@ public final class SleepStageRecordHelper {
                     ContentValues contentValues = new ContentValues();
                     populateStageTo(contentValues, sample);
                     requests.add(
-                            new UpsertTableRequest(SLEEP_STAGES_RECORD_TABLE_NAME, contentValues)
+                            new UpsertTableRequest(
+                                            SLEEP_STAGES_RECORD_TABLE_NAME, contentValues, null)
                                     .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME));
                 }));
         return requests;
