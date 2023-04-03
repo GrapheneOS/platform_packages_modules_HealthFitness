@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.tests.permissions.api
 
 import android.content.Context
-import android.health.connect.HealthConnectManager
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import org.junit.Before
 import org.junit.Test
@@ -28,18 +28,19 @@ class RevokeAllHealthPermissionsUseCaseTest {
 
     private lateinit var context: Context
     private lateinit var useCase: RevokeAllHealthPermissionsUseCase
-    private val healthConnectManager: HealthConnectManager = mock(HealthConnectManager::class.java)
+    private val healthPermissionManager: HealthPermissionManager =
+        mock(HealthPermissionManager::class.java)
 
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        useCase = RevokeAllHealthPermissionsUseCase(healthConnectManager)
+        useCase = RevokeAllHealthPermissionsUseCase(healthPermissionManager)
     }
 
     @Test
     fun invoke_callsHealthPermissionManager() {
-        useCase.invoke("TEST_APP", "reason")
+        useCase.invoke("TEST_APP")
 
-        verify(healthConnectManager).revokeAllHealthPermissions("TEST_APP", "reason")
+        verify(healthPermissionManager).revokeAllHealthPermissions("TEST_APP")
     }
 }

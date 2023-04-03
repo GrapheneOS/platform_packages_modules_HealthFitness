@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.tests.permissions.api
 
 import android.content.Context
-import android.health.connect.HealthConnectManager
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -30,22 +30,22 @@ import org.mockito.Mockito.verify
 class RevokeHealthPermissionUseCaseTest {
     private lateinit var context: Context
     private lateinit var useCase: RevokeHealthPermissionUseCase
-    private val healthConnectManager: HealthConnectManager = mock(HealthConnectManager::class.java)
+    private val healthPermissionManager: HealthPermissionManager =
+        mock(HealthPermissionManager::class.java)
 
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        useCase = RevokeHealthPermissionUseCase(healthConnectManager)
+        useCase = RevokeHealthPermissionUseCase(healthPermissionManager)
     }
 
     @Test
     fun invoke_callsHealthPermissionManager() {
         useCase.invoke(
             "TEST_APP",
-            HealthPermission(HealthPermissionType.HEIGHT, PermissionsAccessType.WRITE).toString(),
-            "reason")
+            HealthPermission(HealthPermissionType.HEIGHT, PermissionsAccessType.WRITE).toString())
 
-        verify(healthConnectManager)
-            .revokeHealthPermission("TEST_APP", "android.permission.health.WRITE_HEIGHT", "reason")
+        verify(healthPermissionManager)
+            .revokeHealthPermission("TEST_APP", "android.permission.health.WRITE_HEIGHT")
     }
 }
