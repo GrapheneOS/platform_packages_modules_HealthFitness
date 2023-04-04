@@ -22,12 +22,16 @@ import android.os.Parcel;
 import android.os.SharedMemory;
 import android.system.ErrnoException;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.nio.ByteBuffer;
 
 /** @hide */
 public final class ParcelUtils {
-    public static final int USING_SHARED_MEMORY = 0;
-    public static final int USING_PARCEL = 1;
+    @VisibleForTesting public static final int USING_SHARED_MEMORY = 0;
+    @VisibleForTesting public static final int USING_PARCEL = 1;
+
+    @VisibleForTesting
     public static final int IPC_PARCEL_LIMIT = IBinder.getSuggestedMaxIpcSizeBytes() / 2;
 
     public interface IPutToParcelRunnable {
@@ -35,18 +39,22 @@ public final class ParcelUtils {
     }
 
     @NonNull
-    public static Parcel getParcelForSharedMemory(Parcel in) {
-        try (SharedMemory memory = SharedMemory.CREATOR.createFromParcel(in)) {
-            Parcel dataParcel = Parcel.obtain();
-            ByteBuffer buffer = memory.mapReadOnly();
-            byte[] payload = new byte[buffer.limit()];
-            buffer.get(payload);
-            dataParcel.unmarshall(payload, 0, payload.length);
-            dataParcel.setDataPosition(0);
-            return dataParcel;
-        } catch (ErrnoException e) {
-            throw new RuntimeException(e);
+    public static Parcel getParcelForSharedMemoryIfRequired(Parcel in) {
+        int parcelType = in.readInt();
+        if (parcelType == USING_SHARED_MEMORY) {
+            try (SharedMemory memory = SharedMemory.CREATOR.createFromParcel(in)) {
+                Parcel dataParcel = Parcel.obtain();
+                ByteBuffer buffer = memory.mapReadOnly();
+                byte[] payload = new byte[buffer.limit()];
+                buffer.get(payload);
+                dataParcel.unmarshall(payload, 0, payload.length);
+                dataParcel.setDataPosition(0);
+                return dataParcel;
+            } catch (ErrnoException e) {
+                throw new RuntimeException(e);
+            }
         }
+        return in;
     }
 
     public static SharedMemory getSharedMemoryForParcel(Parcel dataParcel, int dataParcelSize) {
@@ -71,13 +79,13 @@ public final class ParcelUtils {
         final Parcel dataParcel = Parcel.obtain();
         parcelRunnable.writeToParcel(dataParcel);
         final int dataParcelSize = dataParcel.dataSize();
-        if (dataParcelSize > ParcelUtils.IPC_PARCEL_LIMIT) {
+        if (dataParcelSize > IPC_PARCEL_LIMIT) {
             SharedMemory sharedMemory =
                     ParcelUtils.getSharedMemoryForParcel(dataParcel, dataParcelSize);
-            dest.writeInt(ParcelUtils.USING_SHARED_MEMORY);
+            dest.writeInt(USING_SHARED_MEMORY);
             sharedMemory.writeToParcel(dest, flags);
         } else {
-            dest.writeInt(ParcelUtils.USING_PARCEL);
+            dest.writeInt(USING_PARCEL);
             parcelRunnable.writeToParcel(dest);
         }
     }
