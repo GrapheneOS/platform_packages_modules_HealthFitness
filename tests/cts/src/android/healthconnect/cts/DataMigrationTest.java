@@ -109,6 +109,9 @@ public class DataMigrationTest {
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
 
+    // DEFAULT_PAGE_SIZE should hold the same value as Constants#DEFAULT_PAGE_SIZE
+    private static final int DEFAULT_PAGE_SIZE = 1000;
+
     @Rule public final Expect mExpect = Expect.create();
 
     private final Executor mOutcomeExecutor = Executors.newSingleThreadExecutor();
@@ -183,7 +186,7 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateHeight_heightSaved() {
+    public void migrateHeightUsingParcel_heightSaved() {
         final String entityId = "height";
 
         migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, fromMeters(3D)).build());
@@ -193,6 +196,39 @@ public class DataMigrationTest {
         mExpect.that(record).isNotNull();
         mExpect.that(record.getHeight().getInMeters()).isEqualTo(3D);
         mExpect.that(record.getTime()).isEqualTo(mEndTime);
+    }
+
+    @Test
+    public void migrateHeightUsingSharedMemory_heightSaved() {
+        final String entityId = "height";
+        int recordsToAdd = DEFAULT_PAGE_SIZE;
+
+        List<MigrationEntity> inputMigrationEntityList = new ArrayList<>();
+        for (int i = 0; i < recordsToAdd; i++) {
+            String recordEntityId = entityId + i;
+            HeightRecord heightRecord =
+                    new HeightRecord.Builder(getMetadata(recordEntityId), mEndTime, fromMeters(3D))
+                            .build();
+            MigrationEntity heightMigrationEntity = getRecordEntity(heightRecord, recordEntityId);
+            inputMigrationEntityList.add(heightMigrationEntity);
+        }
+
+        migrate(inputMigrationEntityList.toArray(MigrationEntity[]::new));
+        finishMigration();
+
+        final List<HeightRecord> outputRecords = getRecords(HeightRecord.class);
+
+        mExpect.that(recordsToAdd).isEqualTo(outputRecords.size());
+
+        for (int i = 0; i < recordsToAdd; i++) {
+            RecordMigrationPayload inputRecordMigrationPayload =
+                    (RecordMigrationPayload) inputMigrationEntityList.get(i).getPayload();
+            HeightRecord inputHeightRecord = (HeightRecord) inputRecordMigrationPayload.getRecord();
+
+            HeightRecord outputHeightRecord = outputRecords.get(i);
+
+            mExpect.that(inputHeightRecord.getHeight()).isEqualTo(outputHeightRecord.getHeight());
+        }
     }
 
     @Test

@@ -16,6 +16,7 @@ import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.IMigrationCallback;
+import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -214,7 +215,7 @@ interface IHealthConnectService {
      */
     void writeMigrationData(
         String packageName,
-        in List<MigrationEntity> entities,
+        in MigrationEntityParcel parcel,
         in IMigrationCallback callback);
 
     /**

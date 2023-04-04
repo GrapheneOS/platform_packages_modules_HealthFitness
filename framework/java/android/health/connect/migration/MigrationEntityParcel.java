@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.health.connect.accesslog;
+package android.health.connect.migration;
 
 import android.annotation.NonNull;
 import android.health.connect.internal.ParcelUtils;
@@ -26,33 +26,35 @@ import java.util.List;
 import java.util.Objects;
 
 /** @hide */
-public final class AccessLogsResponseParcel implements Parcelable {
+public final class MigrationEntityParcel implements Parcelable {
     @NonNull
-    public static final Creator<AccessLogsResponseParcel> CREATOR =
+    public static final Creator<MigrationEntityParcel> CREATOR =
             new Creator<>() {
                 @Override
-                public AccessLogsResponseParcel createFromParcel(Parcel in) {
-                    return new AccessLogsResponseParcel(in);
+                public MigrationEntityParcel createFromParcel(Parcel in) {
+                    return new MigrationEntityParcel(in);
                 }
 
                 @Override
-                public AccessLogsResponseParcel[] newArray(int size) {
-                    return new AccessLogsResponseParcel[size];
+                public MigrationEntityParcel[] newArray(int size) {
+                    return new MigrationEntityParcel[size];
                 }
             };
 
-    private final List<AccessLog> mAccessLogsList;
+    private final List<MigrationEntity> mMigrationEntityList;
 
-    private AccessLogsResponseParcel(@NonNull Parcel in) {
+    private MigrationEntityParcel(@NonNull Parcel in) {
         in = ParcelUtils.getParcelForSharedMemoryIfRequired(in);
-        mAccessLogsList = new ArrayList<>();
-        in.readParcelableList(mAccessLogsList, AccessLog.class.getClassLoader(), AccessLog.class);
+        mMigrationEntityList = new ArrayList<>();
+        in.readParcelableList(
+                mMigrationEntityList,
+                MigrationEntity.class.getClassLoader(),
+                MigrationEntity.class);
     }
 
-    public AccessLogsResponseParcel(@NonNull List<AccessLog> accessLogs) {
-        Objects.requireNonNull(accessLogs);
-
-        mAccessLogsList = accessLogs;
+    public MigrationEntityParcel(@NonNull List<MigrationEntity> migrationEntities) {
+        Objects.requireNonNull(migrationEntities);
+        mMigrationEntityList = migrationEntities;
     }
 
     @Override
@@ -62,15 +64,15 @@ public final class AccessLogsResponseParcel implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        ParcelUtils.putToRequiredMemory(dest, flags, this::writeToAccessLogParcel);
+        ParcelUtils.putToRequiredMemory(dest, flags, this::writeToMigrationEntityParcel);
     }
 
-    private void writeToAccessLogParcel(@NonNull Parcel dest) {
-        dest.writeParcelableList(mAccessLogsList, 0);
+    private void writeToMigrationEntityParcel(@NonNull Parcel dest) {
+        dest.writeParcelableList(mMigrationEntityList, 0);
     }
 
     @NonNull
-    public List<AccessLog> getAccessLogs() {
-        return mAccessLogsList;
+    public List<MigrationEntity> getMigrationEntities() {
+        return mMigrationEntityList;
     }
 }
