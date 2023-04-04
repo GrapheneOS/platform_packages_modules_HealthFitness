@@ -1,4 +1,4 @@
-package com.android.healthconnect.controller
+package com.android.healthconnect.controller.dataaccess
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.RecordTypeInfoResponse

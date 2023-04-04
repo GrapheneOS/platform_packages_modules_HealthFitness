@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.permissions.api
 
-import android.health.connect.HealthConnectManager
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,8 +22,8 @@ import javax.inject.Singleton
 @Singleton
 class GrantHealthPermissionUseCase
 @Inject
-constructor(private val healthConnectManager: HealthConnectManager) {
+constructor(private val healthPermissionManager: HealthPermissionManager) {
     operator fun invoke(packageName: String, permission: String) {
-        healthConnectManager.grantHealthPermission(packageName, permission)
+        healthPermissionManager.grantHealthPermission(packageName, permission)
     }
 }
