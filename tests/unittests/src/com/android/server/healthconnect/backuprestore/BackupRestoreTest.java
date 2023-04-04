@@ -27,6 +27,7 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.Backu
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_TIMEOUT_KEY;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_RETRY_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_TIMEOUT_CANCELLED_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_TIMEOUT_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_ERROR_KEY;
@@ -35,6 +36,7 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_STAGING_TIMEOUT_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_MERGING_DONE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING;
 
@@ -410,6 +412,25 @@ public class BackupRestoreTest {
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_MERGING_TIMEOUT_KEY);
+    }
+
+    @Test
+    public void testScheduleAllTimeoutJobs_stagingDone_schedulesRetryMergingJob() {
+        when(mPreferenceHelper.getPreference(eq(DATA_RESTORE_STATE_KEY)))
+                .thenReturn(String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
+        when(mPreferenceHelper.getPreference(eq(DATA_MERGING_TIMEOUT_KEY)))
+                .thenReturn(String.valueOf(Instant.now().toEpochMilli()));
+
+        mBackupRestore.scheduleAllPendingJobs();
+        ExtendedMockito.verify(
+                () ->
+                        BackupRestore.BackupRestoreJobService.schedule(
+                                eq(mServiceContext),
+                                mJobInfoArgumentCaptor.capture(),
+                                eq(mBackupRestore)));
+        JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
+        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
+                .isEqualTo(DATA_MERGING_RETRY_KEY);
     }
 
     @Test
