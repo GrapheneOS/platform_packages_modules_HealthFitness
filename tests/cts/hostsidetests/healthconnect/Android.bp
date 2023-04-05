@@ -67,6 +67,15 @@ android_test_helper_app {
     srcs: ["HealthConnectTestHelper/src/**/*.java"],
 }
 
+android_test_helper_app {
+    name: "CtsHealthConnectTestAppWithWritePermissionsOnly",
+    manifest: "HealthConnectTestHelper/CtsHealthConnectTestAppWithWritePermissionsOnly.xml",
+    static_libs: ["cts-healthconnect-lib"],
+    sdk_version: "test_current",
+    min_sdk_version: "UpsideDownCake",
+    srcs: ["HealthConnectTestHelper/src/**/*.java"],
+}
+
 android_test {
     name: "CtsHealthConnectHostSideDeviceTestCases",
     manifest: "device/AndroidManifest.xml",
@@ -101,6 +110,7 @@ android_test {
           ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
           ":CtsHealthConnectTestAppWithDataManagePermission",
           ":CtsHealthConnectTestAppWithNoPermission",
+          ":CtsHealthConnectTestAppWithWritePermissionsOnly",
     ]
 }
 

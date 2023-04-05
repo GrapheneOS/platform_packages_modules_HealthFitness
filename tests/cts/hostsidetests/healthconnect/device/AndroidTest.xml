@@ -27,6 +27,7 @@
         <option name="test-file-name" value="CtsHealthConnectTestAppBWithNormalReadWritePermission.apk" />
         <option name="test-file-name" value="CtsHealthConnectTestAppWithDataManagePermission.apk" />
         <option name="test-file-name" value="CtsHealthConnectTestAppWithNoPermission.apk" />
+        <option name="test-file-name" value="CtsHealthConnectTestAppWithWritePermissionsOnly.apk" />
     </target_preparer>
 
     <option
