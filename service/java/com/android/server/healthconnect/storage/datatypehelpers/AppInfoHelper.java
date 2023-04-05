@@ -83,10 +83,6 @@ import java.util.stream.Collectors;
  */
 public final class AppInfoHelper {
     private static final String TAG = "HealthConnectAppInfoHelper";
-    private static final String TABLE_NAME = "application_info_table";
-    private static final String APPLICATION_COLUMN_NAME = "app_name";
-    private static final String PACKAGE_COLUMN_NAME = "package_name";
-    private static final String APP_ICON_COLUMN_NAME = "app_icon";
     private static final String RECORD_TYPES_USED_COLUMN_NAME = "record_types_used";
     private static final int COMPRESS_FACTOR = 100;
     private static final int DB_VERSION_WITH_RECORD_TYPES_USED_COLUMN = 7;
@@ -105,6 +101,11 @@ public final class AppInfoHelper {
      * <p>TO HAVE THREAD SAFETY DON'T USE THESE VARIABLES DIRECTLY, INSTEAD USE ITS GETTER
      */
     private volatile ConcurrentHashMap<String, AppInfoInternal> mAppInfoMap;
+
+    public static final String TABLE_NAME = "application_info_table";
+    public static final String APPLICATION_COLUMN_NAME = "app_name";
+    public static final String PACKAGE_COLUMN_NAME = "package_name";
+    public static final String APP_ICON_COLUMN_NAME = "app_icon";
 
     private AppInfoHelper() {}
 
@@ -168,10 +169,6 @@ public final class AppInfoHelper {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo());
     }
 
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
     /** Populates record with appInfoId */
     public void populateAppInfoId(
             @NonNull RecordInternal<?> record, @NonNull Context context, boolean requireAllFields) {
@@ -198,24 +195,33 @@ public final class AppInfoHelper {
     }
 
     /**
-     * Updates the application info of the specified {@code packageName} with the specified {@code
-     * name} and {@code icon}, only if the corresponding application is not currently installed.
+     * Inserts or replaces (based on the passed param onlyUpdate) the application info of the
+     * specified {@code packageName} with the specified {@code name} and {@code icon}, only if the
+     * corresponding application is not currently installed.
+     *
+     * <p>If onlyUpdate is true then only replace the exiting AppInfo; no new insertion. If
+     * onlyUpdate is false then only insert a new AppInfo entry; no replacement.
      */
-    public void updateAppInfoIfNotInstalled(
+    public void addOrUpdateAppInfoIfNotInstalled(
             @NonNull Context context,
             @NonNull String packageName,
             @Nullable String name,
-            @Nullable byte[] icon) {
-        if (!isAppInstalled(context, packageName) && containsAppInfo(packageName)) {
+            @Nullable byte[] icon,
+            boolean onlyUpdate) {
+        if (!isAppInstalled(context, packageName)) {
             // using pre-existing value of recordTypesUsed.
-            updateIfPresent(
-                    packageName,
+            var recordTypesUsed =
+                    containsAppInfo(packageName)
+                            ? mAppInfoMap.get(packageName).getRecordTypesUsed()
+                            : null;
+            AppInfoInternal appInfoInternal =
                     new AppInfoInternal(
-                            DEFAULT_LONG,
-                            packageName,
-                            name,
-                            decodeBitmap(icon),
-                            mAppInfoMap.get(packageName).getRecordTypesUsed()));
+                            DEFAULT_LONG, packageName, name, decodeBitmap(icon), recordTypesUsed);
+            if (onlyUpdate) {
+                updateIfPresent(packageName, appInfoInternal);
+            } else {
+                insertIfNotPresent(packageName, appInfoInternal);
+            }
         }
     }
 
@@ -233,8 +239,14 @@ public final class AppInfoHelper {
      *
      * @param appInfoId rowId from {@code application_info_table }
      * @param record The record to be populated with package name
+     * @param idPackageNameMap the map from which to get the package name
      */
-    public void populateRecordWithValue(long appInfoId, @NonNull RecordInternal<?> record) {
+    public void populateRecordWithValue(
+            long appInfoId, @NonNull RecordInternal<?> record, Map<Long, String> idPackageNameMap) {
+        if (idPackageNameMap != null) {
+            record.setPackageName(idPackageNameMap.get(appInfoId));
+            return;
+        }
         record.setPackageName(getIdPackageNameMap().get(appInfoId));
     }
 
