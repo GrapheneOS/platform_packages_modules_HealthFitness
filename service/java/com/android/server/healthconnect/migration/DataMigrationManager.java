@@ -187,8 +187,12 @@ public final class DataMigrationManager {
 
     @GuardedBy("sLock")
     private void migrateAppInfo(@NonNull AppInfoMigrationPayload payload) {
-        mAppInfoHelper.updateAppInfoIfNotInstalled(
-                mUserContext, payload.getPackageName(), payload.getAppName(), payload.getAppIcon());
+        mAppInfoHelper.addOrUpdateAppInfoIfNotInstalled(
+                mUserContext,
+                payload.getPackageName(),
+                payload.getAppName(),
+                payload.getAppIcon(),
+                true /* onlyReplace */);
     }
 
     @Nullable

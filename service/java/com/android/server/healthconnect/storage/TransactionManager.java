@@ -559,6 +559,10 @@ public final class TransactionManager {
                         null);
     }
 
+    public int getDatabaseVersion() {
+        return getReadableDb().getVersion();
+    }
+
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
         // perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.
