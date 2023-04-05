@@ -298,8 +298,7 @@ public final class MigrationStateManager {
     public void validateSetMinSdkVersion() throws IllegalMigrationStateException {
         synchronized (mLock) {
             throwIfMigrationIsComplete();
-            if (getMigrationState() == MIGRATION_STATE_IN_PROGRESS
-                    && getMigrationState() == MIGRATION_STATE_ALLOWED) {
+            if (getMigrationState() == MIGRATION_STATE_IN_PROGRESS) {
                 throw new IllegalMigrationStateException(
                         "Cannot set the sdk extension version. Migration already in progress.");
             }
