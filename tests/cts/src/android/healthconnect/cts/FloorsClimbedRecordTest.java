@@ -85,6 +85,13 @@ public class FloorsClimbedRecordTest {
     }
 
     @Test
+    public void testCreateFloorsClimbedRecord_sameStartEndTime() {
+        Instant startTime = Instant.now();
+        new FloorsClimbedRecord.Builder(new Metadata.Builder().build(), startTime, startTime, 10)
+                .build();
+    }
+
+    @Test
     public void testReadFloorsClimbedRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<FloorsClimbedRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(FloorsClimbedRecord.class)
