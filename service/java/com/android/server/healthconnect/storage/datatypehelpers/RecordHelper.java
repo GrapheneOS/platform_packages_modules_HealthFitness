@@ -221,7 +221,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         Collections.singletonList(DEVICE_INFO_ID_COLUMN_NAME),
                         Collections.singletonList(PRIMARY_COLUMN_NAME))
                 .addForeignKey(
-                        AppInfoHelper.getInstance().getTableName(),
+                        AppInfoHelper.TABLE_NAME,
                         Collections.singletonList(APP_INFO_ID_COLUMN_NAME),
                         Collections.singletonList(PRIMARY_COLUMN_NAME))
                 .setChildTableRequests(getChildTableCreateRequests());
@@ -331,6 +331,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /** Returns List of Internal records from the cursor */
     @SuppressWarnings("unchecked")
     public List<RecordInternal<?>> getInternalRecords(Cursor cursor, int requestSize) {
+        return getInternalRecords(cursor, requestSize, null);
+    }
+
+    /** Returns List of Internal records from the cursor */
+    @SuppressWarnings("unchecked")
+    public List<RecordInternal<?>> getInternalRecords(
+            Cursor cursor, int requestSize, Map<Long, String> packageNamesByAppIds) {
         Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
 
@@ -358,7 +365,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
                 DeviceInfoHelper.getInstance().populateRecordWithValue(deviceInfoId, record);
                 long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
-                AppInfoHelper.getInstance().populateRecordWithValue(appInfoId, record);
+                AppInfoHelper.getInstance()
+                        .populateRecordWithValue(appInfoId, record, packageNamesByAppIds);
                 populateRecordValue(cursor, record);
 
                 prevStartTime = currentStartTime;
