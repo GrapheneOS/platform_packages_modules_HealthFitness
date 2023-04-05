@@ -110,15 +110,15 @@ class ExerciseSessionFormatterTest {
                     FormattedEntry.SessionHeader("Exercise segments"),
                     FormattedEntry.FormattedSessionDetail(
                         uuid = record.metadata.id,
-                        header = "7:06 AM - 7:14 AM",
-                        headerA11y = "from 7:06 AM to 7:14 AM",
+                        header = "7:06 AM - 7:14 AM",
+                        headerA11y = "from 7:06 AM to 7:14 AM",
                         title = "Jumping jack: 2 reps",
                         titleA11y = "Jumping jack: 2 repetitions"),
                     FormattedEntry.SessionHeader("Laps"),
                     FormattedEntry.FormattedSessionDetail(
                         uuid = record.metadata.id,
-                        header = "7:06 AM - 7:14 AM",
-                        headerA11y = "from 7:06 AM to 7:14 AM",
+                        header = "7:06 AM - 7:14 AM",
+                        headerA11y = "from 7:06 AM to 7:14 AM",
                         title = "0.02 km",
                         titleA11y = "0.02 kilometers"),
                 ))
