@@ -55,6 +55,8 @@ class DataEntriesFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+
+        Mockito.`when`(viewModel.currentSelectedDate).thenReturn(MutableLiveData())
     }
 
     @Test
