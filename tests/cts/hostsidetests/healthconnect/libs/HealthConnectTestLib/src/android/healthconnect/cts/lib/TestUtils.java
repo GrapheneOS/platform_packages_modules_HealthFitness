@@ -18,6 +18,8 @@ package android.healthconnect.cts.lib;
 
 import static androidx.test.InstrumentationRegistry.getContext;
 
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.BroadcastReceiver;
@@ -27,6 +29,13 @@ import android.content.IntentFilter;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.InsertRecordsResponse;
+import android.health.connect.ReadRecordsRequest;
+import android.health.connect.ReadRecordsResponse;
+import android.health.connect.RecordIdFilter;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
@@ -39,13 +48,18 @@ import android.os.Bundle;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.android.cts.install.lib.TestApp;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -56,14 +70,116 @@ public class TestUtils {
     static final String TAG = "HealthConnectTest";
     public static final String QUERY_TYPE = "android.healthconnect.cts.queryType";
     public static final String INTENT_EXTRA_CALLING_PKG = "android.healthconnect.cts.calling_pkg";
+
+    public static final String APP_PKG_NAME_WHOSE_DATA_TO_BE_UPDATED =
+            "android.healthconnect.cts.pkg.dataToBeUpdated";
+    public static final String APP_PKG_NAME_USED_IN_DATA_ORIGIN =
+            "android.healthconnect.cts.pkg.usedInDataOrigin";
     public static final String INSERT_RECORD_QUERY = "android.healthconnect.cts.insertRecord";
-    public static final String INTENT_EXCEPTION = "android.healthconnect.cts.exception";
+    public static final String READ_RECORDS_QUERY = "android.healthconnect.cts.readRecords";
+    public static final String READ_RECORDS_SIZE = "android.healthconnect.cts.readRecordsNumber";
+    public static final String READ_USING_DATA_ORIGIN_FILTERS =
+            "android.healthconnect.cts.readUsingDataOriginFilters";
+    public static final String READ_RECORD_CLASS_NAME =
+            "android.healthconnect.cts.readRecordsClass";
+    public static final String READ_CHANGE_LOGS_QUERY = "android.healthconnect.cts.readChangeLogs";
+    public static final String CHANGE_LOGS_RESPONSE =
+            "android.healthconnect.cts.changeLogsResponse";
     public static final String SUCCESS = "android.healthconnect.cts.success";
+    public static final String CLIENT_ID = "android.healthconnect.cts.clientId";
+    public static final String RECORD_IDS = "android.healthconnect.cts.records";
+    public static final String DELETE_RECORDS_QUERY = "android.healthconnect.cts.deleteRecords";
+    public static final String UPDATE_RECORDS_QUERY = "android.healthconnect.cts.updateRecords";
+    public static final String INTENT_EXCEPTION = "android.healthconnect.cts.exception";
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
+
+    public static class RecordTypeAndRecordIds implements Serializable {
+        private String mRecordType;
+        private List<String> mRecordIds;
+
+        public RecordTypeAndRecordIds(String recordType, List<String> ids) {
+            mRecordType = recordType;
+            mRecordIds = ids;
+        }
+
+        public String getRecordType() {
+            return mRecordType;
+        }
+
+        public List<String> getRecordIds() {
+            return mRecordIds;
+        }
+    }
 
     public static Bundle insertRecordAs(TestApp testApp) throws Exception {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, INSERT_RECORD_QUERY);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle deleteRecordsAs(
+            TestApp testApp, List<RecordTypeAndRecordIds> listOfRecordIdsAndClass)
+            throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, DELETE_RECORDS_QUERY);
+        bundle.putSerializable(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle updateRecordsAs(
+            TestApp testAppToUpdateData, List<RecordTypeAndRecordIds> listOfRecordIdsAndClass)
+            throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, UPDATE_RECORDS_QUERY);
+        bundle.putSerializable(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
+
+        return getFromTestApp(testAppToUpdateData, bundle);
+    }
+
+    public static Bundle insertRecordWithAnotherAppPackageName(
+            TestApp testAppToInsertData, TestApp testAppPkgNameUsed) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, INSERT_RECORD_QUERY);
+        bundle.putString(APP_PKG_NAME_USED_IN_DATA_ORIGIN, testAppPkgNameUsed.getPackageName());
+
+        return getFromTestApp(testAppToInsertData, bundle);
+    }
+
+    public static Bundle readRecordsAs(TestApp testApp, ArrayList<String> recordClassesToRead)
+            throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, READ_RECORDS_QUERY);
+        bundle.putStringArrayList(READ_RECORD_CLASS_NAME, recordClassesToRead);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle insertRecordWithGivenClientId(TestApp testApp, double clientId)
+            throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, INSERT_RECORD_QUERY);
+        bundle.putDouble(CLIENT_ID, clientId);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle readRecordsUsingDataOriginFiltersAs(
+            TestApp testApp, ArrayList<String> recordClassesToRead) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, READ_RECORDS_QUERY);
+        bundle.putStringArrayList(READ_RECORD_CLASS_NAME, recordClassesToRead);
+        bundle.putBoolean(READ_USING_DATA_ORIGIN_FILTERS, true);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle readChangeLogsUsingDataOriginFiltersAs(TestApp testApp) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, READ_CHANGE_LOGS_QUERY);
+        bundle.putBoolean(READ_USING_DATA_ORIGIN_FILTERS, true);
+
         return getFromTestApp(testApp, bundle);
     }
 
@@ -113,6 +229,7 @@ public class TestUtils {
         intent.putExtra(INTENT_EXTRA_CALLING_PKG, getContext().getPackageName());
         intent.putExtras(bundleToCreateIntent);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.putExtras(bundleToCreateIntent);
         getContext().startActivity(intent);
         if (!latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             final String errorMessage =
@@ -131,6 +248,28 @@ public class TestUtils {
                 .get(0)
                 .getMetadata()
                 .getId();
+    }
+
+    public static List<RecordTypeAndRecordIds> insertRecordsAndGetIds(
+            List<Record> records, Context context) throws InterruptedException {
+        List<Record> insertedRecords = insertRecords(records, context);
+
+        Map<String, List<String>> recordTypeToRecordIdsMap = new HashMap<>();
+        for (Record record : insertedRecords) {
+            recordTypeToRecordIdsMap.putIfAbsent(record.getClass().getName(), new ArrayList<>());
+            recordTypeToRecordIdsMap
+                    .get(record.getClass().getName())
+                    .add(record.getMetadata().getId());
+        }
+
+        List<RecordTypeAndRecordIds> recordTypeAndRecordIdsList = new ArrayList<>();
+        for (String recordType : recordTypeToRecordIdsMap.keySet()) {
+            recordTypeAndRecordIdsList.add(
+                    new RecordTypeAndRecordIds(
+                            recordType, recordTypeToRecordIdsMap.get(recordType)));
+        }
+
+        return recordTypeAndRecordIdsList;
     }
 
     public static List<Record> insertRecords(List<Record> records, Context context)
@@ -167,13 +306,21 @@ public class TestUtils {
     }
 
     public static List<Record> getTestRecords(String packageName) {
+        double clientId = Math.random();
         return Arrays.asList(
-                getStepsRecord(packageName),
-                getHeartRateRecord(packageName),
-                getBasalMetabolicRateRecord(packageName));
+                getStepsRecord(packageName, clientId),
+                getHeartRateRecord(packageName, clientId),
+                getBasalMetabolicRateRecord(packageName, clientId));
     }
 
-    public static StepsRecord getStepsRecord(String packageName) {
+    public static List<Record> getTestRecords(String packageName, Double clientId) {
+        return Arrays.asList(
+                getStepsRecord(packageName, clientId),
+                getHeartRateRecord(packageName, clientId),
+                getBasalMetabolicRateRecord(packageName, clientId));
+    }
+
+    public static StepsRecord getStepsRecord(String packageName, double clientId) {
         Device device =
                 new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
         DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(packageName).build();
@@ -181,7 +328,7 @@ public class TestUtils {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("SR" + Math.random())
+                                .setClientRecordId("SR" + clientId)
                                 .build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
@@ -189,7 +336,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static HeartRateRecord getHeartRateRecord(String packageName) {
+    public static HeartRateRecord getHeartRateRecord(String packageName, double clientId) {
         HeartRateRecord.HeartRateSample heartRateSample =
                 new HeartRateRecord.HeartRateSample(72, Instant.now().plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>();
@@ -203,7 +350,7 @@ public class TestUtils {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("HR" + Math.random())
+                                .setClientRecordId("HR" + clientId)
                                 .build(),
                         Instant.now(),
                         Instant.now().plusMillis(500),
@@ -211,7 +358,8 @@ public class TestUtils {
                 .build();
     }
 
-    public static BasalMetabolicRateRecord getBasalMetabolicRateRecord(String packageName) {
+    public static BasalMetabolicRateRecord getBasalMetabolicRateRecord(
+            String packageName, double clientId) {
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
@@ -223,10 +371,207 @@ public class TestUtils {
                         new Metadata.Builder()
                                 .setDevice(device)
                                 .setDataOrigin(dataOrigin)
-                                .setClientRecordId("BMR" + Math.random())
+                                .setClientRecordId("BMR" + clientId)
                                 .build(),
                         Instant.now(),
                         Power.fromWatts(100.0))
                 .build();
+    }
+
+    public static void verifyDeleteRecords(List<RecordIdFilter> request, Context context)
+            throws InterruptedException {
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        assertThat(service).isNotNull();
+        service.deleteRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        exceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
+    }
+
+    public static <T extends Record> List<T> readRecords(
+            ReadRecordsRequest<T> request, Context context) throws InterruptedException {
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        assertThat(request.getRecordType()).isNotNull();
+        AtomicReference<List<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        service.readRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ReadRecordsResponse<T> result) {
+                        response.set(result.getRecords());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+        return response.get();
+    }
+
+    public static int updateRecords(List<Record> records, Context context)
+            throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        service.updateRecords(
+                records,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        exceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            return exceptionAtomicReference.get().getErrorCode();
+        }
+        return 0;
+    }
+
+    public static <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        CountDownLatch latch = new CountDownLatch(1);
+        assertThat(service).isNotNull();
+        assertThat(request.getRecordType()).isNotNull();
+        AtomicReference<List<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        service.readRecords(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ReadRecordsResponse<T> result) {
+                        response.set(result.getRecords());
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+        return response.get();
+    }
+
+    public static ChangeLogTokenResponse getChangeLogToken(
+            ChangeLogTokenRequest request, Context context) throws InterruptedException {
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<ChangeLogTokenResponse> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        service.getChangeLogToken(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ChangeLogTokenResponse result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        Log.e(TAG, exception.getMessage());
+                        exceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
+        return response.get();
+    }
+
+    public static ChangeLogsResponse getChangeLogs(
+            ChangeLogsRequest changeLogsRequest, Context context) throws InterruptedException {
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        service.getChangeLogs(
+                changeLogsRequest,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(ChangeLogsResponse result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        healthConnectExceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+
+        return response.get();
+    }
+
+    public static void deleteAllStagedRemoteData() {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        runWithShellPermissionIdentity(
+                () ->
+                        // TODO(b/241542162): Avoid reflection once TestApi can be called from CTS
+                        service.getClass().getMethod("deleteAllStagedRemoteData").invoke(service),
+                "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
     }
 }
