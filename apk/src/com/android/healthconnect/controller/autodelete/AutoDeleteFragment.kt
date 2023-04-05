@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.AUTO_DELETE_CANCELLED_EVENT
@@ -26,6 +27,7 @@ import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDia
 import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.AUTO_DELETE_SAVED_EVENT
 import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.NEW_AUTO_DELETE_RANGE_BUNDLE
 import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.OLD_AUTO_DELETE_RANGE_BUNDLE
+import com.android.healthconnect.controller.autodelete.AutoDeleteRangePickerPreference.Companion.AUTO_DELETE_RANGE_PICKER_PREFERENCE_KEY
 import com.android.healthconnect.controller.autodelete.AutoDeleteRangePickerPreference.Companion.SET_TO_NEVER_EVENT
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -72,11 +74,22 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
                     Toast.makeText(activity, R.string.default_error, Toast.LENGTH_LONG).show()
                 }
                 is AutoDeleteViewModel.AutoDeleteState.WithData -> {
-                    mAutoDeleteSection?.removeAll()
-                    val autoDeletePreference =
-                        AutoDeleteRangePickerPreference(
-                            requireContext(), childFragmentManager, state.autoDeleteRange, logger)
-                    mAutoDeleteSection?.addPreference(autoDeletePreference)
+                    if (mAutoDeleteSection?.findPreference<Preference>(
+                        AUTO_DELETE_RANGE_PICKER_PREFERENCE_KEY) == null) {
+                        val autoDeletePreference =
+                            AutoDeleteRangePickerPreference(
+                                requireContext(),
+                                childFragmentManager,
+                                state.autoDeleteRange,
+                                logger)
+                        mAutoDeleteSection?.addPreference(autoDeletePreference)
+                    } else {
+                        val autoDeletePreference =
+                            mAutoDeleteSection?.findPreference<Preference>(
+                                AUTO_DELETE_RANGE_PICKER_PREFERENCE_KEY)
+                                as AutoDeleteRangePickerPreference
+                        autoDeletePreference.updateAutoDeleteRange(state.autoDeleteRange)
+                    }
                 }
             }
         }
