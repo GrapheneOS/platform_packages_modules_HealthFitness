@@ -78,6 +78,7 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.InternalExternalRecordConverter;
 import android.health.connect.migration.MigrationEntity;
+import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.restore.StageRemoteDataException;
 import android.health.connect.restore.StageRemoteDataRequest;
@@ -1593,7 +1594,9 @@ public class HealthConnectManager {
 
         try {
             mService.writeMigrationData(
-                    mContext.getPackageName(), entities, wrapMigrationCallback(executor, callback));
+                    mContext.getPackageName(),
+                    new MigrationEntityParcel(entities),
+                    wrapMigrationCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
