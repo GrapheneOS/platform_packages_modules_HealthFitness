@@ -77,16 +77,20 @@ public final class ParcelUtils {
     public static void putToRequiredMemory(
             Parcel dest, int flags, IPutToParcelRunnable parcelRunnable) {
         final Parcel dataParcel = Parcel.obtain();
-        parcelRunnable.writeToParcel(dataParcel);
-        final int dataParcelSize = dataParcel.dataSize();
-        if (dataParcelSize > IPC_PARCEL_LIMIT) {
-            SharedMemory sharedMemory =
-                    ParcelUtils.getSharedMemoryForParcel(dataParcel, dataParcelSize);
-            dest.writeInt(USING_SHARED_MEMORY);
-            sharedMemory.writeToParcel(dest, flags);
-        } else {
-            dest.writeInt(USING_PARCEL);
-            parcelRunnable.writeToParcel(dest);
+        try {
+            parcelRunnable.writeToParcel(dataParcel);
+            final int dataParcelSize = dataParcel.dataSize();
+            if (dataParcelSize > IPC_PARCEL_LIMIT) {
+                SharedMemory sharedMemory =
+                        ParcelUtils.getSharedMemoryForParcel(dataParcel, dataParcelSize);
+                dest.writeInt(USING_SHARED_MEMORY);
+                sharedMemory.writeToParcel(dest, flags);
+            } else {
+                dest.writeInt(USING_PARCEL);
+                parcelRunnable.writeToParcel(dest);
+            }
+        } finally {
+            dataParcel.recycle();
         }
     }
 }
