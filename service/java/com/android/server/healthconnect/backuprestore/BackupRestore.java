@@ -16,8 +16,10 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
+import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_VERSION_DIFF;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_PENDING;
@@ -25,12 +27,23 @@ import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
 
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.database.Cursor;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager.DataDownloadState;
+import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.datatypes.Record;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataException;
 import android.health.connect.restore.StageRemoteDataRequest;
@@ -39,12 +52,22 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 import android.util.Log;
+import android.util.Pair;
 import android.util.Slog;
 
+import com.android.internal.annotations.GuardedBy;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
+import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
+import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.utils.FilesUtil;
 
 import java.io.File;
@@ -57,7 +80,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -99,10 +124,20 @@ public final class BackupRestore {
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
     private final FirstGrantTimeManager mFirstGrantTimeManager;
 
+    private final Context mStagedDbContext;
+    private final Context mContext;
+    private final Map<Long, String> mStagedPackageNamesByAppIds = new ArrayMap<>();
+    private final Object mMergingLock = new Object();
+
+    @GuardedBy("mMergingLock")
+    private HealthConnectDatabase mStagedDatabase;
+
     private boolean mActivelyStagingRemoteData = false;
 
-    public BackupRestore(FirstGrantTimeManager firstGrantTimeManager) {
+    public BackupRestore(FirstGrantTimeManager firstGrantTimeManager, @NonNull Context context) {
         mFirstGrantTimeManager = firstGrantTimeManager;
+        mStagedDbContext = new StagedDatabaseContext(context);
+        mContext = context;
     }
 
     /**
@@ -206,6 +241,10 @@ public final class BackupRestore {
                         TAG,
                         "Restore response could not be sent due to conflicting AIDL definitions",
                         e);
+            } finally {
+                // Now that the callback for the stageAllHealthConnectRemoteData API has been called
+                // we can start the merging process.
+                merge(userId);
             }
         }
     }
@@ -276,7 +315,12 @@ public final class BackupRestore {
 
     /** Deletes all the staged data and resets all the states. */
     public void deleteAndResetEverything(@NonNull UserHandle userHandle) {
-        FilesUtil.deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
+        // Don't delete anything while we are in the process of merging staged data.
+        synchronized (mMergingLock) {
+            mStagedDbContext.deleteDatabase(HealthConnectDatabase.getName());
+            mStagedDatabase = null;
+            FilesUtil.deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
+        }
         setDataDownloadState(
                 DATA_DOWNLOAD_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
         setInternalRestoreState(
@@ -444,8 +488,197 @@ public final class BackupRestore {
      * Get the dir for the user with all the staged data - either from the cloud restore or from the
      * d2d process.
      */
-    private File getStagedRemoteDataDirectoryForUser(int userId) {
+    private static File getStagedRemoteDataDirectoryForUser(int userId) {
         File hcDirectoryForUser = FilesUtil.getDataSystemCeHCDirectoryForUser(userId);
         return new File(hcDirectoryForUser, "remote_staged");
+    }
+
+    private void merge(int userId) {
+        if (getInternalRestoreState(userId) >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+            return;
+        }
+
+        // TODO(b/266398937): check if data sync in progress once available.
+        mergeDatabase(userId);
+        setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, userId, false);
+    }
+
+    private void mergeDatabase(int userId) {
+        synchronized (mMergingLock) {
+            if (!mStagedDbContext.getDatabasePath(HealthConnectDatabase.getName()).exists()) {
+                // no db was staged
+                return;
+            }
+
+            int currentDbVersion = TransactionManager.getInitialisedInstance().getDatabaseVersion();
+            int stagedDbVersion = getStagedDatabase().getReadableDatabase().getVersion();
+            if (currentDbVersion < stagedDbVersion) {
+                setDataRestoreError(RESTORE_ERROR_VERSION_DIFF, userId);
+                return;
+            }
+
+            // We never read from the staged db if the module version is behind the staged db
+            // version. So, we are guaranteed that the merging code will be able to read all the
+            // records from the db - as the upcoming code is guaranteed to understand the records
+            // present in the staged db.
+
+            // We are sure to migrate the db now, so prepare
+            prepInternalDataPerStagedDb();
+
+            // Go through each record type and migrate all records of that type.
+            var recordTypeMap = RecordMapper.getInstance().getRecordIdToExternalRecordClassMap();
+            for (var recordTypeMapEntry : recordTypeMap.entrySet()) {
+                mergeRecordsOfType(recordTypeMapEntry.getKey(), recordTypeMapEntry.getValue());
+            }
+        }
+    }
+
+    private <T extends Record> void mergeRecordsOfType(int recordType, Class<T> recordTypeClass) {
+        RecordHelper<?> recordHelper =
+                RecordHelperProvider.getInstance().getRecordHelper(recordType);
+        // Read all the records of the given type from the staged db and insert them into the
+        // existing healthconnect db.
+        long token = DEFAULT_LONG;
+        do {
+            var recordsToMergeAndToken = getRecordsToMerge(recordTypeClass, token, recordHelper);
+            if (recordsToMergeAndToken.first.isEmpty()) {
+                break;
+            }
+            // Using null package name for making insertion for two reasons:
+            // 1. we don't want to update the logs for this package.
+            // 2. we don't want to update the package name in the records as they already have the
+            //    correct package name.
+            UpsertTransactionRequest upsertTransactionRequest =
+                    new UpsertTransactionRequest(
+                            null /* packageName */,
+                            recordsToMergeAndToken.first,
+                            mContext,
+                            true /* isInsertRequest */,
+                            true /* skipPackageNameAndLogs */);
+            TransactionManager.getInitialisedInstance().insertAll(upsertTransactionRequest);
+
+            token = DEFAULT_LONG;
+            if (recordsToMergeAndToken.second != DEFAULT_LONG) {
+                token = recordsToMergeAndToken.second * 2;
+            }
+        } while (token != DEFAULT_LONG);
+
+        // Once all the records of this type have been merged we can delete the table.
+
+        // Passing -1 for startTime and endTime as we don't want to have time based filtering in the
+        // final query.
+        DeleteTableRequest deleteTableRequest =
+                recordHelper.getDeleteTableRequest(
+                        null, DEFAULT_LONG /* startTime */, DEFAULT_LONG /* endTime */);
+        getStagedDatabase().getWritableDatabase().execSQL(deleteTableRequest.getDeleteCommand());
+    }
+
+    private <T extends Record> Pair<List<RecordInternal<?>>, Long> getRecordsToMerge(
+            Class<T> recordTypeClass, long requestToken, RecordHelper<?> recordHelper) {
+        ReadRecordsRequestUsingFilters<T> readRecordsRequest =
+                new ReadRecordsRequestUsingFilters.Builder<>(recordTypeClass)
+                        .setAscending(true)
+                        .setPageSize(2000)
+                        .setPageToken(requestToken)
+                        .build();
+
+        Map<String, Boolean> extraReadPermsMapping = new ArrayMap<>();
+        List<String> extraReadPerms = recordHelper.getExtraReadPermissions();
+        for (var extraReadPerm : extraReadPerms) {
+            extraReadPermsMapping.put(extraReadPerm, true);
+        }
+
+        // Working with startDateAccess of -1 as we don't want to have time based filtering in the
+        // query.
+        ReadTransactionRequest readTransactionRequest =
+                new ReadTransactionRequest(
+                        null,
+                        readRecordsRequest.toReadRecordsRequestParcel(),
+                        DEFAULT_LONG /* startDateAccess */,
+                        false,
+                        extraReadPermsMapping);
+
+        List<RecordInternal<?>> recordInternalList;
+        long token = DEFAULT_LONG;
+        ReadTableRequest readTableRequest = readTransactionRequest.getReadRequests().get(0);
+        try (Cursor cursor = read(readTableRequest)) {
+            recordInternalList =
+                    recordHelper.getInternalRecords(
+                            cursor, readTableRequest.getPageSize(), mStagedPackageNamesByAppIds);
+            String startTimeColumnName = recordHelper.getStartTimeColumnName();
+
+            populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
+
+            // Get the token for the next read request.
+            if (cursor.moveToNext()) {
+                token = getCursorLong(cursor, startTimeColumnName);
+            }
+        }
+        return Pair.create(recordInternalList, token);
+    }
+
+    private Cursor read(ReadTableRequest request) {
+        synchronized (mMergingLock) {
+            return mStagedDatabase.getReadableDatabase().rawQuery(request.getReadCommand(), null);
+        }
+    }
+
+    private void populateInternalRecordsWithExtraData(
+            List<RecordInternal<?>> records, ReadTableRequest request) {
+        if (request.getExtraReadRequests() == null) {
+            return;
+        }
+        for (ReadTableRequest extraDataRequest : request.getExtraReadRequests()) {
+            Cursor cursorExtraData = read(extraDataRequest);
+            request.getRecordHelper()
+                    .updateInternalRecordsWithExtraFields(
+                            records, cursorExtraData, extraDataRequest.getTableName());
+        }
+    }
+
+    private void prepInternalDataPerStagedDb() {
+        try (Cursor cursor = read(new ReadTableRequest(AppInfoHelper.TABLE_NAME))) {
+            while (cursor.moveToNext()) {
+                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                String packageName = getCursorString(cursor, AppInfoHelper.PACKAGE_COLUMN_NAME);
+                String appName = getCursorString(cursor, AppInfoHelper.APPLICATION_COLUMN_NAME);
+                byte[] icon = getCursorBlob(cursor, AppInfoHelper.APP_ICON_COLUMN_NAME);
+                mStagedPackageNamesByAppIds.put(rowId, packageName);
+
+                // If this package is not installed on the target device and is not present in the
+                // health db, then fill the health db with the info from source db.
+                AppInfoHelper.getInstance()
+                        .addOrUpdateAppInfoIfNotInstalled(
+                                mContext, packageName, appName, icon, false /* onlyReplace */);
+            }
+        }
+    }
+
+    private HealthConnectDatabase getStagedDatabase() {
+        synchronized (mMergingLock) {
+            if (mStagedDatabase == null) {
+                mStagedDatabase = new HealthConnectDatabase(mStagedDbContext);
+            }
+            return mStagedDatabase;
+        }
+    }
+
+    /**
+     * {@link Context} for the staged health connect db.
+     *
+     * @hide
+     */
+    private static final class StagedDatabaseContext extends ContextWrapper {
+        StagedDatabaseContext(@NonNull Context context) {
+            super(context);
+            Objects.requireNonNull(context);
+        }
+
+        @Override
+        public File getDatabasePath(String name) {
+            File stagedDataDir = getStagedRemoteDataDirectoryForUser(0);
+            stagedDataDir.mkdirs();
+            return new File(stagedDataDir, name);
+        }
     }
 }

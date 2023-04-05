@@ -120,4 +120,8 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     public File getDatabasePath() {
         return mContext.getDatabasePath(DATABASE_NAME);
     }
+
+    public static String getName() {
+        return DATABASE_NAME;
+    }
 }
