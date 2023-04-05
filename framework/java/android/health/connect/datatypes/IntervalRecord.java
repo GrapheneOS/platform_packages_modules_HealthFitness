@@ -52,7 +52,7 @@ public abstract class IntervalRecord extends Record {
                             + " currentTime: "
                             + Instant.now());
         }
-        if (endTime.toEpochMilli() <= startTime.toEpochMilli()) {
+        if (endTime.toEpochMilli() < startTime.toEpochMilli()) {
             throw new IllegalArgumentException(
                     "end time in millis needs to be after start time in millis. startTime instant: "
                             + startTime
