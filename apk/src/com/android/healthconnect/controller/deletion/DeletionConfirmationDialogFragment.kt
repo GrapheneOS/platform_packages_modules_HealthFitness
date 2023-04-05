@@ -23,6 +23,7 @@ import androidx.fragment.app.setFragmentResult
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMATION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
+import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.logging.DeletionDialogConfirmationElement
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,17 +36,16 @@ import dagger.hilt.android.AndroidEntryPoint
 class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragment() {
 
     private val viewModel: DeletionViewModel by activityViewModels()
+    private val separator = " "
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val message = getString(R.string.confirming_question_message)
-
         val alertDialogBuilder =
             AlertDialogBuilder(this)
                 .setLogName(
                     DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_CONTAINER)
                 .setTitle(buildTitle())
                 .setIcon(R.attr.deleteIcon)
-                .setMessage(message)
+                .setMessage(buildMessage())
                 .setPositiveButton(
                     R.string.confirming_question_delete_button,
                     DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_DELETE_BUTTON) {
@@ -140,6 +140,21 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
                 throw UnsupportedOperationException("")
             }
         }
+    }
+
+    private fun buildMessage(): String {
+        val deletionParameters = viewModel.deletionParameters.value ?: DeletionParameters()
+        val deletionType = deletionParameters.deletionType
+        var message = getString(R.string.confirming_question_message)
+
+        if (deletionType is DeletionType.DeleteDataEntry &&
+            deletionType.dataType == DataType.MENSTRUATION_PERIOD) {
+            // TODO (b/276866643) retrieve min and max date of menstruation period
+            // message = getString(R.string.confirming_question_message_menstruation) + separator +
+            // message
+        }
+
+        return message
     }
 
     companion object {
