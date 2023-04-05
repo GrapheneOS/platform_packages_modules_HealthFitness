@@ -20,7 +20,6 @@ import android.content.Intent
 import android.health.HealthFitnessStatsLog.*
 import android.health.connect.HealthConnectDataState
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -177,18 +176,19 @@ class HomeFragment : Hilt_HomeFragment() {
 
     private fun maybeShowMigrationNotCompleteDialog() {
         val sharedPreference =
-                requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
         val dialogSeen =
-                sharedPreference.getBoolean(getString(R.string.migration_not_complete_dialog_seen), false)
+            sharedPreference.getBoolean(
+                getString(R.string.migration_not_complete_dialog_seen), false)
 
         if (!dialogSeen) {
             AlertDialogBuilder(this)
-                    .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-                    .setTitle(R.string.migration_not_complete_dialog_title)
-                    .setMessage(R.string.migration_not_complete_dialog_content)
-                    .setCancelable(false)
-                    .setNegativeButton(
-                            R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT) {
+                .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+                .setTitle(R.string.migration_not_complete_dialog_title)
+                .setMessage(R.string.migration_not_complete_dialog_content)
+                .setCancelable(false)
+                .setNegativeButton(
+                    R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT) {
                         _,
                         _ ->
                         sharedPreference.edit().apply {
@@ -196,25 +196,25 @@ class HomeFragment : Hilt_HomeFragment() {
                             apply()
                         }
                     }
-                    .create()
-                    .show()
+                .create()
+                .show()
         }
     }
 
     private fun maybeShowWhatsNewDialog() {
         val sharedPreference =
-                requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
         val dialogSeen =
-                sharedPreference.getBoolean(getString(R.string.whats_new_dialog_seen), false)
+            sharedPreference.getBoolean(getString(R.string.whats_new_dialog_seen), false)
 
         if (!dialogSeen) {
             AlertDialogBuilder(this)
-                    .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-                    .setTitle(R.string.migration_whats_new_dialog_title)
-                    .setMessage(R.string.migration_whats_new_dialog_content)
-                    .setCancelable(false)
-                    .setNegativeButton(
-                            R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT) {
+                .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+                .setTitle(R.string.migration_whats_new_dialog_title)
+                .setMessage(R.string.migration_whats_new_dialog_content)
+                .setCancelable(false)
+                .setNegativeButton(
+                    R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT) {
                         _,
                         _ ->
                         sharedPreference.edit().apply {
@@ -222,8 +222,8 @@ class HomeFragment : Hilt_HomeFragment() {
                             apply()
                         }
                     }
-                    .create()
-                    .show()
+                .create()
+                .show()
         }
     }
 
@@ -232,7 +232,6 @@ class HomeFragment : Hilt_HomeFragment() {
             it.setButton(resources.getString(R.string.resume_migration_banner_button))
             it.title = resources.getString(R.string.resume_migration_banner_title)
             it.key = MIGRATION_BANNER_PREFERENCE_KEY
-            Log.i("MIGRATION_UI", "bannerSummary in crate = $migrationBannerSummary")
             it.summary = migrationBannerSummary
             it.setIcon(R.drawable.ic_settings_alert)
             it.setButtonOnClickListener {

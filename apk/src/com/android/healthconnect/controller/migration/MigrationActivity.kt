@@ -16,7 +16,6 @@
 package com.android.healthconnect.controller.migration
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
@@ -28,7 +27,6 @@ class MigrationActivity : Hilt_MigrationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_migration)
-        Log.i("MIGRATION_UI", "MigrationActivity created")
     }
 
     override fun onBackPressed() {
