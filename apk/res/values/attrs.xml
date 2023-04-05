@@ -102,17 +102,17 @@
     <attr name="textAppearanceRouteRequest" format="reference"/>
 
     <!-- Buttons -->
-    <attr name="dialogButtonFull"> format="reference"</attr>
-    <attr name="dialogButtonOutline"> format="reference"</attr>
-    <attr name="baseButton"> format="reference"</attr>
-    <attr name="buttonBorderLess"> format="reference"</attr>
-    <attr name="permissionGrantButtonList"> format="reference"</attr>
-    <attr name="permissionGrantButtonTop"> format="reference"</attr>
-    <attr name="permissionGrantButtonButton"> format="reference"</attr>
+    <attr name="dialogButtonFull" format="reference"/>
+    <attr name="dialogButtonOutline" format="reference"/>
+    <attr name="baseButton" format="reference"/>
+    <attr name="buttonBorderLess" format="reference"/>
+    <attr name="permissionGrantButtonList" format="reference"/>
+    <attr name="permissionGrantButtonTop" format="reference"/>
+    <attr name="permissionGrantButtonButton" format="reference"/>
 
     <!-- Dialogs -->
-    <attr name="alertDialogTheme"> format="reference"</attr>
-    <attr name="dialogButtonBar"> format="reference"</attr>
+    <attr name="alertDialogTheme" format="reference"/>
+    <attr name="dialogButtonBar" format="reference"/>
 
     <attr name="outlinedButton" format="reference" />
     <attr name="chipStyle" format="reference" />
