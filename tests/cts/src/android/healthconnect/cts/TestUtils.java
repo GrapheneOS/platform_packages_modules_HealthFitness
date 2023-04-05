@@ -946,6 +946,8 @@ public class TestUtils {
         CountDownLatch latch = new CountDownLatch(1);
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
+        AtomicReference<MigrationException> migrationExceptionAtomicReference =
+                new AtomicReference<>();
         service.insertMinDataMigrationSdkExtensionVersion(
                 version,
                 Executors.newSingleThreadExecutor(),
@@ -958,10 +960,15 @@ public class TestUtils {
 
                     @Override
                     public void onError(MigrationException exception) {
+                        migrationExceptionAtomicReference.set(exception);
                         Log.e(TAG, exception.getMessage());
+                        latch.countDown();
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (migrationExceptionAtomicReference.get() != null) {
+            throw migrationExceptionAtomicReference.get();
+        }
     }
 
     public static void deleteAllStagedRemoteData() {
