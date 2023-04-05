@@ -41,7 +41,7 @@ import java.util.List;
 public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements IBuildReceiver {
 
     public static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper";
-    private static final int NUMBER_OF_RETRIES = 5;
+    private static final int NUMBER_OF_RETRIES = 10;
 
     private IBuildInfo mCtsBuild;
 
@@ -66,9 +66,13 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
     }
 
     public void testConnectedApps() throws Exception {
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                DeviceUtils.STATSD_ATOM_TEST_PKG,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
 
-        List<StatsLog.EventMetricData> data =
-                triggerDailyJob(uploadAtomConfigForUsageStatsAtom(null));
+        List<StatsLog.EventMetricData> data = getEventMetricDataList(null, NUMBER_OF_RETRIES);
+
         assertThat(data.size()).isAtLeast(1);
         HealthConnectUsageStats atom =
                 data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
@@ -78,9 +82,15 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
 
     public void testDatabaseStats() throws Exception {
 
+        // To clear the data before the test starts (as a safety measure)
+        DeviceUtils.runDeviceTests(
+                getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", "deleteAllRecordsAddedForTest");
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                DeviceUtils.STATSD_ATOM_TEST_PKG,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_STORAGE_STATS_FIELD_NUMBER});
         List<StatsLog.EventMetricData> data =
-                triggerDailyJob(
-                        uploadAtomConfigForStorageStatsAtom("testHealthConnectDatabaseStats"));
+                getEventMetricDataList("testHealthConnectDatabaseStats", NUMBER_OF_RETRIES);
         assertThat(data.size()).isAtLeast(1);
         HealthConnectStorageStats atom =
                 data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectStorageStats);
@@ -89,15 +99,27 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         assertThat(atom.getIntervalDataCount()).isEqualTo(1);
         assertThat(atom.getSeriesDataCount()).isEqualTo(1);
         assertThat(atom.getChangelogCount()).isGreaterThan(2);
+
         // To clear the data once the database stats have been verified
         DeviceUtils.runDeviceTests(
                 getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", "deleteAllRecordsAddedForTest");
     }
 
-    private ExtensionRegistry uploadAtomConfigAndTriggerTest(String testName, int atomFieldNumber)
+    private List<StatsLog.EventMetricData> getEventMetricDataList(String testName, int retryCount)
             throws Exception {
-        ConfigUtils.uploadConfigForPushedAtoms(
-                getDevice(), DeviceUtils.STATSD_ATOM_TEST_PKG, new int[] {atomFieldNumber});
+        if (retryCount == 0) {
+            throw new RuntimeException("Could not collect metrics.");
+        }
+
+        List<StatsLog.EventMetricData> data = triggerDailyJob(triggerTestInTestApp(testName));
+
+        if (data.size() == 0) {
+            return getEventMetricDataList(testName, retryCount - 1);
+        }
+        return data;
+    }
+
+    private ExtensionRegistry triggerTestInTestApp(String testName) throws Exception {
 
         if (testName != null) {
             DeviceUtils.runDeviceTests(getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", testName);
@@ -106,17 +128,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         ExtensionRegistry registry = ExtensionRegistry.newInstance();
         ApiExtensionAtoms.registerAllExtensions(registry);
         return registry;
-    }
-
-    private ExtensionRegistry uploadAtomConfigForUsageStatsAtom(String testName) throws Exception {
-        return uploadAtomConfigAndTriggerTest(
-                testName, ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER);
-    }
-
-    private ExtensionRegistry uploadAtomConfigForStorageStatsAtom(String testName)
-            throws Exception {
-        return uploadAtomConfigAndTriggerTest(
-                testName, ApiExtensionAtoms.HEALTH_CONNECT_STORAGE_STATS_FIELD_NUMBER);
     }
 
     private List<StatsLog.EventMetricData> triggerDailyJob(ExtensionRegistry registry)
