@@ -29,6 +29,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getIntegerAndConvertToBoolean;
 
 import android.annotation.NonNull;
@@ -52,6 +53,7 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
@@ -61,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Helper class for ExerciseSessionRecord.
@@ -90,7 +93,7 @@ public final class ExerciseSessionRecordHelper
     @Override
     void populateSpecificRecordValue(
             @NonNull Cursor cursor, @NonNull ExerciseSessionRecordInternal exerciseSessionRecord) {
-        String uuid = getCursorString(cursor, UUID_COLUMN_NAME);
+        UUID uuid = getCursorUUID(cursor, UUID_COLUMN_NAME);
         exerciseSessionRecord.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
         exerciseSessionRecord.setExerciseType(getCursorInt(cursor, EXERCISE_TYPE_COLUMN_NAME));
         exerciseSessionRecord.setTitle(getCursorString(cursor, TITLE_COLUMN_NAME));
@@ -105,7 +108,7 @@ public final class ExerciseSessionRecordHelper
             // Populate lap and segments from each row.
             ExerciseLapRecordHelper.populateLapIfRecorded(cursor, lapsSet);
             ExerciseSegmentRecordHelper.updateSetWithRecordedSegment(cursor, segmentsSet);
-        } while (cursor.moveToNext() && uuid.equals(getCursorString(cursor, UUID_COLUMN_NAME)));
+        } while (cursor.moveToNext() && uuid.equals(getCursorUUID(cursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         cursor.moveToPrevious();
@@ -247,12 +250,15 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids, long startDateAccess) {
+    List<ReadTableRequest> getExtraDataReadRequests(List<UUID> uuids, long startDateAccess) {
         if (!isExerciseRouteFeatureEnabled()) {
             return Collections.emptyList();
         }
 
-        WhereClauses whereClause = new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, uuids);
+        WhereClauses whereClause =
+                new WhereClauses()
+                        .addWhereInClauseWithoutQuotes(
+                                UUID_COLUMN_NAME, StorageUtils.getListOfHexString(uuids));
         whereClause.addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
         return List.of(getRouteReadRequest(whereClause));
     }

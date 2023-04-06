@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /** @hide */
 public final class DeleteTransactionRequest {
@@ -59,15 +60,15 @@ public final class DeleteTransactionRequest {
                 && !request.getRecordIdFiltersParcel().getRecordIdFilters().isEmpty()) {
             List<RecordIdFilter> recordIds =
                     request.getRecordIdFiltersParcel().getRecordIdFilters();
-            Set<String> uuidSet = new ArraySet<>();
-            Map<RecordHelper<?>, List<String>> recordTypeToUuids = new ArrayMap<>();
+            Set<UUID> uuidSet = new ArraySet<>();
+            Map<RecordHelper<?>, List<UUID>> recordTypeToUuids = new ArrayMap<>();
             for (RecordIdFilter recordId : recordIds) {
                 RecordHelper<?> recordHelper =
                         RecordHelperProvider.getInstance()
                                 .getRecordHelper(
                                         RecordMapper.getInstance()
                                                 .getRecordType(recordId.getRecordType()));
-                String uuid = StorageUtils.getUUIDFor(recordId, packageName);
+                UUID uuid = StorageUtils.getUUIDFor(recordId, packageName);
                 if (uuidSet.contains(uuid)) {
                     // id has been already been processed;
                     continue;
@@ -123,7 +124,7 @@ public final class DeleteTransactionRequest {
      * recordTypeAndAppIdToUUIDMap of changeLogs
      */
     public void onRecordFetched(
-            @RecordTypeIdentifier.RecordType int recordType, long appId, String uuid) {
+            @RecordTypeIdentifier.RecordType int recordType, long appId, UUID uuid) {
         mChangeLogs.addUUID(recordType, appId, uuid);
     }
 
@@ -132,7 +133,7 @@ public final class DeleteTransactionRequest {
         return mChangeLogs.getUpsertTableRequests();
     }
 
-    public void enforcePackageCheck(String uuid, long appInfoId) {
+    public void enforcePackageCheck(UUID uuid, long appInfoId) {
         if (mHasHealthDataManagementPermission) {
             // Skip this check if the caller has data management permission
             return;

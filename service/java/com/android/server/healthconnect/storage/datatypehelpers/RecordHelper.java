@@ -22,15 +22,15 @@ import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.request.ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_UNIQUE_NON_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_UNIQUE_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getDedupeByteBuffer;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.supportsPriority;
 
@@ -48,8 +48,6 @@ import android.os.Trace;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
-import com.android.server.healthconnect.storage.request.AlterTableRequest;
-import com.android.server.healthconnect.storage.request.CreateIndexRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -71,6 +69,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -88,10 +87,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
     private static final String RECORDING_METHOD_COLUMN_NAME = "recording_method";
     private static final String DEDUPE_HASH_COLUMN_NAME = "dedupe_hash";
+    private static final List<Pair<String, Integer>> UNIQUE_COLUMNS_INFO =
+            List.of(
+                    new Pair<>(DEDUPE_HASH_COLUMN_NAME, UpsertTableRequest.TYPE_BLOB),
+                    new Pair<>(UUID_COLUMN_NAME, UpsertTableRequest.TYPE_BLOB));
     private static final String TAG_RECORD_HELPER = "HealthConnectRecordHelper";
     private static final int TRACE_TAG_RECORD_HELPER = TAG_RECORD_HELPER.hashCode();
-    private static final int DB_VERSION_ADD_RECORDING_METHOD_COLUMN = 4;
-    private static final int DB_VERSION_ADD_DEDUPE_HASH_COLUMN = 6;
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
 
     @UsesReflection(
@@ -129,13 +130,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * or tables.
      */
     public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < DB_VERSION_ADD_RECORDING_METHOD_COLUMN) {
-            addRecordingMethodColumn(db);
-        }
-
-        if (oldVersion < DB_VERSION_ADD_DEDUPE_HASH_COLUMN) {
-            addDedupeHashColumn(db);
-        }
+        // empty
     }
 
     /**
@@ -233,16 +228,74 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         Trace.traceBegin(
                 TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetUpsertTableRequest"));
         UpsertTableRequest upsertTableRequest =
-                new UpsertTableRequest(getMainTableName(), getContentValues((T) recordInternal))
-                        .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal));
+                new UpsertTableRequest(
+                                getMainTableName(),
+                                getContentValues((T) recordInternal),
+                                UNIQUE_COLUMNS_INFO)
+                        .setRequiresUpdateClause(
+                                new UpsertTableRequest.IRequiresUpdate() {
+                                    @Override
+                                    public boolean requiresUpdate(
+                                            Cursor cursor,
+                                            ContentValues contentValues,
+                                            UpsertTableRequest request) {
+                                        final UUID newUUID =
+                                                StorageUtils.convertBytesToUUID(
+                                                        contentValues.getAsByteArray(
+                                                                UUID_COLUMN_NAME));
+                                        final UUID oldUUID =
+                                                StorageUtils.getCursorUUID(
+                                                        cursor, UUID_COLUMN_NAME);
+
+                                        if (!Objects.equals(newUUID, oldUUID)) {
+                                            // Use old UUID in case of conflicts on de-dupe.
+                                            contentValues.put(
+                                                    UUID_COLUMN_NAME,
+                                                    StorageUtils.convertUUIDToBytes(oldUUID));
+                                            request.getRecordInternal().setUuid(oldUUID);
+                                            // This means there was a duplication conflict, we want
+                                            // to update in this case.
+                                            return true;
+                                        }
+
+                                        long clientRecordVersion =
+                                                StorageUtils.getCursorLong(
+                                                        cursor, CLIENT_RECORD_VERSION_COLUMN_NAME);
+                                        long newClientRecordVersion =
+                                                contentValues.getAsLong(
+                                                        CLIENT_RECORD_VERSION_COLUMN_NAME);
+
+                                        return newClientRecordVersion >= clientRecordVersion;
+                                    }
+                                })
+                        .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
+                        .setHelper(this);
         Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
         return upsertTableRequest;
+    }
+
+    @NonNull
+    public List<String> getAllChildTables() {
+        List<String> childTables = new ArrayList<>();
+        for (CreateTableRequest childTableCreateRequest : getChildTableCreateRequests()) {
+            populateWithTablesNames(childTableCreateRequest, childTables);
+        }
+
+        return childTables;
+    }
+
+    private void populateWithTablesNames(
+            CreateTableRequest childTableCreateRequest, List<String> childTables) {
+        childTables.add(childTableCreateRequest.getTableName());
+        for (CreateTableRequest childTableRequest :
+                childTableCreateRequest.getChildTableRequests()) {
+            populateWithTablesNames(childTableRequest, childTables);
+        }
     }
 
     /**
      * Returns ReadSingleTableRequest for {@code request} and package name {@code packageName}
      *
-     * @return
      */
     public ReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request,
@@ -286,12 +339,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Returns ReadTableRequest for {@code uuids} */
-    public ReadTableRequest getReadTableRequest(List<String> uuids, long startDateAccess) {
+    public ReadTableRequest getReadTableRequest(List<UUID> uuids, long startDateAccess) {
         return new ReadTableRequest(getMainTableName())
                 .setJoinClause(getJoinForReadRequest())
                 .setWhereClause(
                         new WhereClauses()
-                                .addWhereInClause(UUID_COLUMN_NAME, uuids)
+                                .addWhereInClauseWithoutQuotes(
+                                        UUID_COLUMN_NAME, StorageUtils.getListOfHexString(uuids))
                                 .addWhereLaterThanTimeClause(
                                         getStartTimeColumnName(), startDateAccess))
                 .setRecordHelper(this)
@@ -314,7 +368,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * Returns list if ReadSingleTableRequest for {@code uuids} to populate extra data. Called in
      * change logs read requests.
      */
-    List<ReadTableRequest> getExtraDataReadRequests(List<String> uuids, long startDateAccess) {
+    List<ReadTableRequest> getExtraDataReadRequests(List<UUID> uuids, long startDateAccess) {
         return Collections.emptyList();
     }
 
@@ -355,7 +409,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                                         .get(getRecordIdentifier())
                                         .getConstructor()
                                         .newInstance();
-                record.setUuid(getCursorString(cursor, UUID_COLUMN_NAME));
+                record.setUuid(getCursorUUID(cursor, UUID_COLUMN_NAME));
                 record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
                 record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
                 record.setClientRecordVersion(
@@ -459,9 +513,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setRequiresUuId(UUID_COLUMN_NAME);
     }
 
-    public DeleteTableRequest getDeleteTableRequest(List<String> ids) {
+    public DeleteTableRequest getDeleteTableRequest(List<UUID> ids) {
         return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setIds(UUID_COLUMN_NAME, ids)
+                .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexString(ids))
                 .setRequiresUuId(UUID_COLUMN_NAME)
                 .setEnforcePackageCheck(APP_INFO_ID_COLUMN_NAME, UUID_COLUMN_NAME);
     }
@@ -570,13 +624,16 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
 
         // Since for now we don't support mixing IDs and filters, we need to look for IDs now
-        List<String> ids =
+        List<UUID> ids =
                 request.getRecordIdFiltersParcel().getRecordIdFilters().stream()
                         .map(
                                 (recordIdFilter) ->
                                         StorageUtils.getUUIDFor(recordIdFilter, packageName))
                         .collect(Collectors.toList());
-        WhereClauses whereClauses = new WhereClauses().addWhereInClause(UUID_COLUMN_NAME, ids);
+        WhereClauses whereClauses =
+                new WhereClauses()
+                        .addWhereInClauseWithoutQuotes(
+                                UUID_COLUMN_NAME, StorageUtils.getListOfHexString(ids));
 
         if (enforceSelfRead) {
             long id = AppInfoHelper.getInstance().getAppInfoId(packageName);
@@ -605,7 +662,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private ContentValues getContentValues(@NonNull T recordInternal) {
         ContentValues recordContentValues = new ContentValues();
 
-        recordContentValues.put(UUID_COLUMN_NAME, recordInternal.getUuid());
+        recordContentValues.put(
+                UUID_COLUMN_NAME, StorageUtils.convertUUIDToBytes(recordInternal.getUuid()));
         recordContentValues.put(
                 LAST_MODIFIED_TIME_COLUMN_NAME, recordInternal.getLastModifiedTime());
         recordContentValues.put(CLIENT_RECORD_ID_COLUMN_NAME, recordInternal.getClientRecordId());
@@ -633,7 +691,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     private List<Pair<String, String>> getColumnInfo() {
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT));
-        columnInfo.add(new Pair<>(UUID_COLUMN_NAME, TEXT_NOT_NULL_UNIQUE));
+        columnInfo.add(new Pair<>(UUID_COLUMN_NAME, BLOB_UNIQUE_NON_NULL));
         columnInfo.add(new Pair<>(LAST_MODIFIED_TIME_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(CLIENT_RECORD_ID_COLUMN_NAME, TEXT_NULL));
         columnInfo.add(new Pair<>(CLIENT_RECORD_VERSION_COLUMN_NAME, TEXT_NULL));
@@ -657,34 +715,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Collections.emptyList();
     }
 
-    /** Alters the table to add new recording method column */
-    private void addRecordingMethodColumn(SQLiteDatabase db) {
-        List<Pair<String, String>> columnInfo = new ArrayList<>();
-        columnInfo.add(new Pair<>(RECORDING_METHOD_COLUMN_NAME, INTEGER));
-        AlterTableRequest alterTableRequest = new AlterTableRequest(getMainTableName(), columnInfo);
-        db.execSQL(alterTableRequest.getAlterTableAddColumnsCommand());
-    }
-
-    private void addDedupeHashColumn(@NonNull SQLiteDatabase db) {
-        final String tableName = getMainTableName();
-
-        db.execSQL(
-                new AlterTableRequest(tableName, List.of(new Pair<>(DEDUPE_HASH_COLUMN_NAME, BLOB)))
-                        .getAlterTableAddColumnsCommand());
-
-        db.execSQL(
-                new CreateIndexRequest(
-                                tableName,
-                                /* indexName= */ "ux_" + tableName + "_dedupe_hash",
-                                /* isUnique= */ true,
-                                List.of(DEDUPE_HASH_COLUMN_NAME))
-                        .getCommand());
-    }
-
     static class AggregateParams {
         private final String mTableName;
-        private List<String> mColumnNames;
         private final String mTimeColumnName;
+        private List<String> mColumnNames;
         private SqlJoin mJoin;
         private Class<?> mAggregateDataType;
 

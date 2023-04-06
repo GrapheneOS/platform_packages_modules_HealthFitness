@@ -62,6 +62,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -95,7 +96,9 @@ public class StepsRecordTest {
     @Test
     public void testReadStepsRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         assertThat(request.getRecordType()).isEqualTo(StepsRecord.class);
         assertThat(request.getRecordIdFilters()).isNotNull();
         List<StepsRecord> result = TestUtils.readRecords(request);
@@ -594,6 +597,29 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testInsertWithClientVersion() throws InterruptedException {
+        List<Record> records = List.of(getStepsRecordWithClientVersion(10, 1, "testId"));
+        final String id = TestUtils.insertRecords(records).get(0).getMetadata().getId();
+        ReadRecordsRequestUsingIds<StepsRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                        .addClientRecordId("testId")
+                        .build();
+        StepsRecord stepsRecord = TestUtils.readRecords(request).get(0);
+        assertThat(stepsRecord.getCount()).isEqualTo(10);
+        records = List.of(getStepsRecordWithClientVersion(20, 2, "testId"));
+        TestUtils.insertRecords(records);
+
+        stepsRecord = TestUtils.readRecords(request).get(0);
+        assertThat(stepsRecord.getMetadata().getId()).isEqualTo(id);
+        assertThat(stepsRecord.getCount()).isEqualTo(20);
+        records = List.of(getStepsRecordWithClientVersion(30, 1, "testId"));
+        TestUtils.insertRecords(records);
+        stepsRecord = TestUtils.readRecords(request).get(0);
+        assertThat(stepsRecord.getMetadata().getId()).isEqualTo(id);
+        assertThat(stepsRecord.getCount()).isEqualTo(20);
+    }
+
+    @Test
     public void testStepsCountAggregation_groupBy_Period() throws Exception {
         Instant start = Instant.now().minus(10, ChronoUnit.DAYS);
         Instant end = start.plus(10, ChronoUnit.DAYS);
@@ -821,10 +847,10 @@ public class StepsRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -943,6 +969,24 @@ public class StepsRecordTest {
                 .build();
     }
 
+    StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new StepsRecord.Builder(
+                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     static StepsRecord getBaseStepsRecord() {
         return new StepsRecord.Builder(
                         new Metadata.Builder().build(),
@@ -989,30 +1033,23 @@ public class StepsRecordTest {
                 .build();
     }
 
+    static StepsRecord getStepsRecordWithClientVersion(
+            int steps, int version, String clientRecordId) {
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setClientRecordId(clientRecordId);
+        testMetadataBuilder.setClientRecordVersion(version);
+        Metadata testMetaData = testMetadataBuilder.build();
+        return new StepsRecord.Builder(
+                        testMetaData, Instant.now(), Instant.now().plusMillis(1000), steps)
+                .build();
+    }
+
     static StepsRecord getStepsRecord_minusDays(int days) {
         return new StepsRecord.Builder(
                         new Metadata.Builder().build(),
                         Instant.now().minus(days, ChronoUnit.DAYS),
                         Instant.now().minus(days, ChronoUnit.DAYS).plusMillis(1000),
                         10)
-                .build();
-    }
-
-    StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new StepsRecord.Builder(
-                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }
