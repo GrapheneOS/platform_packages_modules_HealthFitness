@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.dataentries.formatters
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
@@ -60,7 +61,7 @@ class HealthDataEntryFormatterTest {
         runBlocking {
             assertThat(formatter.format(heartRateRecord))
                 .isEqualTo(
-                    FormattedDataEntry(
+                    HeartRateEntry(
                         uuid = "test_id",
                         header = "7:06 AM - 7:06 AM • Health Connect test app",
                         headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
