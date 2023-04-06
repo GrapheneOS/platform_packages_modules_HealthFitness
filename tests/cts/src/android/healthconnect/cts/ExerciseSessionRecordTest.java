@@ -57,9 +57,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class ExerciseSessionRecordTest {
+
+    /** Constructs a new object. */
+    public ExerciseSessionRecordTest() {
+        super();
+    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -449,10 +455,10 @@ public class ExerciseSessionRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -465,11 +471,6 @@ public class ExerciseSessionRecordTest {
 
         // assert the inserted data has not been modified by reading the data.
         readAndAssertEquals(insertedRecords);
-    }
-
-    /** Constructs a new object. */
-    public ExerciseSessionRecordTest() {
-        super();
     }
 
     @Test
@@ -582,36 +583,6 @@ public class ExerciseSessionRecordTest {
         assertThat(result).containsExactlyElementsIn(recordsExercises);
     }
 
-    private static ExerciseSessionRecord buildSession(Instant startTime, Instant endTime) {
-        return new ExerciseSessionRecord.Builder(
-                        TestUtils.generateMetadata(),
-                        startTime,
-                        endTime,
-                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
-                .setEndZoneOffset(ZoneOffset.MAX)
-                .setStartZoneOffset(ZoneOffset.MIN)
-                .setNotes("notes")
-                .setTitle("title")
-                .build();
-    }
-
-    private static ExerciseSessionRecord buildSessionMinimal() {
-        return new ExerciseSessionRecord.Builder(
-                        new Metadata.Builder()
-                                .setDataOrigin(
-                                        new DataOrigin.Builder()
-                                                .setPackageName("android.healthconnect.cts")
-                                                .build())
-                                .setId("ExerciseSession" + Math.random())
-                                .setClientRecordId("ExerciseSessionClient" + Math.random())
-                                .setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED)
-                                .build(),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
-                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
-                .build();
-    }
-
     private ExerciseSessionRecord getExerciseSessionRecord_update(
             Record record, String id, String clientRecordId) {
         Metadata metadata = record.getMetadata();
@@ -639,5 +610,35 @@ public class ExerciseSessionRecordTest {
                         new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
                                 .build());
         assertRecordsAreEqual(records, readRecords);
+    }
+
+    private static ExerciseSessionRecord buildSession(Instant startTime, Instant endTime) {
+        return new ExerciseSessionRecord.Builder(
+                        TestUtils.generateMetadata(),
+                        startTime,
+                        endTime,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .setEndZoneOffset(ZoneOffset.MAX)
+                .setStartZoneOffset(ZoneOffset.MIN)
+                .setNotes("notes")
+                .setTitle("title")
+                .build();
+    }
+
+    private static ExerciseSessionRecord buildSessionMinimal() {
+        return new ExerciseSessionRecord.Builder(
+                        new Metadata.Builder()
+                                .setDataOrigin(
+                                        new DataOrigin.Builder()
+                                                .setPackageName("android.healthconnect.cts")
+                                                .build())
+                                .setId(UUID.randomUUID().toString())
+                                .setClientRecordId("ExerciseSessionClient" + Math.random())
+                                .setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED)
+                                .build(),
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .build();
     }
 }

@@ -40,6 +40,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class MigrationEntityParcelTest {
@@ -126,6 +127,7 @@ public class MigrationEntityParcelTest {
     private static Metadata getMetadata(String clientRecordId, String packageName) {
         return new Metadata.Builder()
                 .setClientRecordId(clientRecordId)
+                .setId(UUID.randomUUID().toString())
                 .setDataOrigin(new DataOrigin.Builder().setPackageName(packageName).build())
                 .setDevice(new Device.Builder().setManufacturer("Device").setModel("Model").build())
                 .build();

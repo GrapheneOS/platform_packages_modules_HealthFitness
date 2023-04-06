@@ -53,6 +53,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class WheelchairPushesRecordTest {
@@ -88,7 +89,7 @@ public class WheelchairPushesRecordTest {
     public void testReadWheelchairPushesRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<WheelchairPushesRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(WheelchairPushesRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<WheelchairPushesRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -328,10 +329,10 @@ public class WheelchairPushesRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -458,6 +459,35 @@ public class WheelchairPushesRecordTest {
         assertThat(result).containsExactlyElementsIn(insertedRecords);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateWheelchairPushesRecord_invalidValue() {
+        new WheelchairPushesRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        1000001)
+                .build();
+    }
+
+    WheelchairPushesRecord getWheelchairPushesRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new WheelchairPushesRecord.Builder(
+                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 12)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     static WheelchairPushesRecord getCompleteWheelchairPushesRecord() {
 
         Device device =
@@ -482,16 +512,6 @@ public class WheelchairPushesRecordTest {
                 .build();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateWheelchairPushesRecord_invalidValue() {
-        new WheelchairPushesRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000),
-                        1000001)
-                .build();
-    }
-
     static WheelchairPushesRecord getBaseWheelchairPushesRecord() {
         return new WheelchairPushesRecord.Builder(
                         new Metadata.Builder().build(),
@@ -505,25 +525,6 @@ public class WheelchairPushesRecordTest {
         Instant startTime = Instant.now().minus(days, ChronoUnit.DAYS);
         return new WheelchairPushesRecord.Builder(
                         new Metadata.Builder().build(), startTime, startTime.plusMillis(1000), 10)
-                .build();
-    }
-
-    WheelchairPushesRecord getWheelchairPushesRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new WheelchairPushesRecord.Builder(
-                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 12)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }

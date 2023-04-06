@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -83,7 +84,7 @@ public class StepsCadenceRecordTest {
     public void testReadStepsCadenceRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<StepsCadenceRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(StepsCadenceRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<StepsCadenceRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -363,10 +364,10 @@ public class StepsCadenceRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -504,6 +505,83 @@ public class StepsCadenceRecordTest {
         new StepsCadenceRecord.StepsCadenceRecordSample(10001.0, Instant.now().plusMillis(100));
     }
 
+    @Test
+    public void testInsertWithClientVersion() throws InterruptedException {
+        List<Record> records = List.of(getStepsCadenceRecordWithClientVersion(10, 1, "testId"));
+        final String id = TestUtils.insertRecords(records).get(0).getMetadata().getId();
+        ReadRecordsRequestUsingIds<StepsCadenceRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsCadenceRecord.class)
+                        .addClientRecordId("testId")
+                        .build();
+        StepsCadenceRecord stepsRecord = TestUtils.readRecords(request).get(0);
+        int sampleSize = ((StepsCadenceRecord) records.get(0)).getSamples().size();
+        assertThat(stepsRecord.getSamples()).hasSize(sampleSize);
+        assertThat(stepsRecord.getSamples().get(0).getRate()).isEqualTo(10);
+
+        records = List.of(getStepsCadenceRecordWithClientVersion(20, 2, "testId"));
+        TestUtils.insertRecords(records);
+
+        stepsRecord = TestUtils.readRecords(request).get(0);
+        assertThat(stepsRecord.getMetadata().getId()).isEqualTo(id);
+        assertThat(stepsRecord.getSamples()).hasSize(sampleSize);
+        assertThat(stepsRecord.getSamples().get(0).getRate()).isEqualTo(20);
+
+        records = List.of(getStepsCadenceRecordWithClientVersion(30, 1, "testId"));
+        TestUtils.insertRecords(records);
+        stepsRecord = TestUtils.readRecords(request).get(0);
+        assertThat(stepsRecord.getMetadata().getId()).isEqualTo(id);
+        assertThat(stepsRecord.getSamples()).hasSize(sampleSize);
+        assertThat(stepsRecord.getSamples().get(0).getRate()).isEqualTo(20);
+    }
+
+    StepsCadenceRecord getStepsCadenceRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+
+        StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecordSample =
+                new StepsCadenceRecord.StepsCadenceRecordSample(8.0, Instant.now().plusMillis(100));
+
+        return new StepsCadenceRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        Instant.now().plusMillis(2000),
+                        List.of(stepsCadenceRecordSample, stepsCadenceRecordSample))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    static StepsCadenceRecord getStepsCadenceRecordWithClientVersion(
+            int rate, int version, String clientRecordId) {
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setClientRecordId(clientRecordId);
+        testMetadataBuilder.setClientRecordVersion(version);
+        Metadata testMetaData = testMetadataBuilder.build();
+        StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
+                new StepsCadenceRecord.StepsCadenceRecordSample(
+                        rate, Instant.now().plusMillis(100));
+        ArrayList<StepsCadenceRecord.StepsCadenceRecordSample> stepsCadenceRecords =
+                new ArrayList<>();
+        stepsCadenceRecords.add(stepsCadenceRecord);
+        stepsCadenceRecords.add(stepsCadenceRecord);
+
+        return new StepsCadenceRecord.Builder(
+                        testMetaData,
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        stepsCadenceRecords)
+                .build();
+    }
+
     private static StepsCadenceRecord getBaseStepsCadenceRecord() {
         StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
                 new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now().plusMillis(100));
@@ -545,32 +623,6 @@ public class StepsCadenceRecordTest {
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         stepsCadenceRecords)
-                .build();
-    }
-
-    StepsCadenceRecord getStepsCadenceRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-
-        StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecordSample =
-                new StepsCadenceRecord.StepsCadenceRecordSample(8.0, Instant.now().plusMillis(100));
-
-        return new StepsCadenceRecord.Builder(
-                        metadataWithId,
-                        Instant.now(),
-                        Instant.now().plusMillis(2000),
-                        List.of(stepsCadenceRecordSample, stepsCadenceRecordSample))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }

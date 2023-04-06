@@ -18,6 +18,8 @@ package com.android.server.healthconnect.storage;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
+import static android.health.connect.Constants.PARENT_KEY;
+import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
@@ -27,9 +29,11 @@ import android.annotation.NonNull;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.health.connect.Constants;
+import android.health.connect.HealthConnectException;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.UserHandle;
 import android.util.Pair;
@@ -76,22 +80,6 @@ public final class TransactionManager {
         mUserHandleToDatabaseMap.put(context.getCurrentUserHandle(), mHealthConnectDatabase);
     }
 
-    @NonNull
-    public static TransactionManager getInstance(@NonNull HealthConnectUserContext context) {
-        if (sTransactionManager == null) {
-            sTransactionManager = new TransactionManager(context);
-        }
-
-        return sTransactionManager;
-    }
-
-    @NonNull
-    public static TransactionManager getInitialisedInstance() {
-        Objects.requireNonNull(sTransactionManager);
-
-        return sTransactionManager;
-    }
-
     public void onUserUnlocked(@NonNull HealthConnectUserContext healthConnectUserContext) {
         if (!mUserHandleToDatabaseMap.containsKey(
                 healthConnectUserContext.getCurrentUserHandle())) {
@@ -117,8 +105,40 @@ public final class TransactionManager {
             Slog.d(TAG, "Inserting " + request.getUpsertRequests().size() + " requests.");
         }
 
-        insertAll(request.getUpsertRequests(), this::insertOrReplaceRecord);
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            for (UpsertTableRequest upsertRequest : request.getUpsertRequests()) {
+                insertOrReplaceRecord(db, upsertRequest);
+            }
+            for (UpsertTableRequest insertRequestsForChangeLog :
+                    request.getInsertRequestsForChangeLogs()) {
+                insertRecord(db, insertRequestsForChangeLog);
+            }
+
+            for (UpsertTableRequest insertRequestsForAccessLogs : request.getAccessLogs()) {
+                insertRecord(db, insertRequestsForAccessLogs);
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
         return request.getUUIdsInOrder();
+    }
+
+    public void insertAll(@NonNull List<UpsertTableRequest> requests) throws SQLiteException {
+        final SQLiteDatabase db = getWritableDb();
+        db.beginTransaction();
+        try {
+            for (UpsertTableRequest request : requests) {
+                insertOrIgnore(db, request);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     /**
@@ -128,7 +148,7 @@ public final class TransactionManager {
      */
     public void insertOrReplaceAll(@NonNull List<UpsertTableRequest> upsertTableRequests)
             throws SQLiteException {
-        insertAll(upsertTableRequests, this::insertOrReplace);
+        insertAll(upsertTableRequests, this::insertOrReplaceRecord);
     }
 
     /**
@@ -174,7 +194,7 @@ public final class TransactionManager {
                             numberOfUuidsToDelete++;
                             if (deleteTableRequest.requiresPackageCheck()) {
                                 request.enforcePackageCheck(
-                                        StorageUtils.getCursorString(
+                                        StorageUtils.getCursorUUID(
                                                 cursor, deleteTableRequest.getIdColumnName()),
                                         StorageUtils.getCursorLong(
                                                 cursor, deleteTableRequest.getPackageColumnName()));
@@ -183,7 +203,7 @@ public final class TransactionManager {
                                     deleteTableRequest.getRecordType(),
                                     StorageUtils.getCursorLong(
                                             cursor, deleteTableRequest.getPackageColumnName()),
-                                    StorageUtils.getCursorString(
+                                    StorageUtils.getCursorUUID(
                                             cursor, deleteTableRequest.getIdColumnName()));
                         }
                         deleteTableRequest.setNumberOfUuidsToDelete(numberOfUuidsToDelete);
@@ -333,8 +353,8 @@ public final class TransactionManager {
      * insert a record out of a transaction and if you are trying to insert a record before or after
      * opening up a transaction please rethink if you really want to use this function.
      *
-     * <p>NOTE: INSERt+WITH_CONFLICT_REPLACE only works on unique columns, else in case of conflict
-     * it leads to abort of the transaction.
+     * <p>NOTE: INSERT + WITH_CONFLICT_REPLACE only works on unique columns, else in case of
+     * conflict it leads to abort of the transaction.
      *
      * @param request an insert request.
      * @return rowId of the inserted or updated record.
@@ -397,8 +417,16 @@ public final class TransactionManager {
         final SQLiteDatabase db = getWritableDb();
         db.beginTransaction();
         try {
-            request.getUpsertRequests()
-                    .forEach((upsertTableRequest) -> updateRecord(db, upsertTableRequest));
+            for (UpsertTableRequest upsertRequest : request.getUpsertRequests()) {
+                updateRecord(db, upsertRequest);
+            }
+            for (UpsertTableRequest insertRequestsForChangeLog :
+                    request.getInsertRequestsForChangeLogs()) {
+                insertRecord(db, insertRequestsForChangeLog);
+            }
+            for (UpsertTableRequest insertRequestsForAccessLogs : request.getAccessLogs()) {
+                insertRecord(db, insertRequestsForAccessLogs);
+            }
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -555,7 +583,7 @@ public final class TransactionManager {
                 .update(
                         upsertTableRequest.getTable(),
                         upsertTableRequest.getContentValues(),
-                        upsertTableRequest.getWhereClauses().get(false),
+                        upsertTableRequest.getUpdateWhereClauses().get(false),
                         null);
     }
 
@@ -564,49 +592,36 @@ public final class TransactionManager {
     }
 
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
-        // perform an update operation where UUID and packageName (mapped by appInfoId) is same
+        // Perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.
-
-        if (request.getChildTableRequests().isEmpty()) {
-            long numberOfRowsUpdated =
-                    db.update(
-                            request.getTable(),
-                            request.getContentValues(),
-                            request.getWhereClauses().get(/* withWhereKeyword */ false),
-                            /* WHERE args */ null);
-
-            // throw an exception if the no row was updated, i.e. the uuid with corresponding
-            // app_id_info for this request is not found in the table.
-            if (numberOfRowsUpdated == 0) {
-                throw new IllegalArgumentException(
-                        "No record found for the following input : "
-                                + new StorageUtils.RecordIdentifierData(
-                                        request.getContentValues()));
-            }
-            return;
-        }
-
-        // If the current request has connecting child tables that needs to be updated too in
-        // that case the entire record will be first deleted and re-inserted.
-
-        // delete the record corresponding to the provided uuid and packageName. This will
-        // delete child table contents in cascade.
-        int numberOfRowsDeleted =
-                db.delete(
+        long numberOfRowsUpdated =
+                db.update(
                         request.getTable(),
-                        request.getWhereClauses().get(/* withWhereKeyword */ false),
-                        /* where args */ null);
+                        request.getContentValues(),
+                        request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
+                        /* WHERE args */ null);
 
-        // throw an exception if the no row was deleted, i.e. the uuid for this request is not
-        // found in the table.
-        if (numberOfRowsDeleted == 0) {
+        // throw an exception if the no row was updated, i.e. the uuid with corresponding
+        // app_id_info for this request is not found in the table.
+        if (numberOfRowsUpdated == 0) {
             throw new IllegalArgumentException(
                     "No record found for the following input : "
                             + new StorageUtils.RecordIdentifierData(request.getContentValues()));
-        } else {
-            // If the record was deleted successfully then re-insert the record with the
-            // updated contents.
-            insertRecord(db, request);
+        }
+
+        if (request.getChildTableRequests().isEmpty()) {
+            return;
+        }
+
+        try (Cursor cursor =
+                db.rawQuery(request.getReadRequestUsingUpdateClause().getReadCommand(), null)) {
+            if (!cursor.moveToFirst()) {
+                throw new HealthConnectException(
+                        ERROR_INTERNAL, "Expected to read an entry for update, but none found");
+            }
+            final long rowId = StorageUtils.getCursorLong(cursor, request.getRowIdColName());
+            deleteChildTableRequest(request, rowId, db);
+            insertChildTableRequest(request, rowId, db);
         }
     }
 
@@ -627,26 +642,97 @@ public final class TransactionManager {
         }
     }
 
-    /** Assumes that caller will be closing {@code db} */
+    /**
+     * Assumes that caller will be closing {@code db}. Returns -1 in case the update was triggered
+     * and reading the row_id was not supported on the table.
+     *
+     * <p>Note: This function updates rather than the traditional delete + insert in SQLite
+     */
     private long insertOrReplaceRecord(
             @NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
-        long rowId =
-                db.insertWithOnConflict(
-                        request.getTable(),
-                        null,
-                        request.getContentValues(),
-                        SQLiteDatabase.CONFLICT_REPLACE);
-        request.getChildTableRequests()
-                .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+        try {
+            if (request.getUniqueColumnsCount() == 0) {
+                throw new RuntimeException(
+                        "insertOrReplaceRecord should only be called with unique columns set");
+            }
 
-        return rowId;
+            long rowId =
+                    db.insertWithOnConflict(
+                            request.getTable(),
+                            null,
+                            request.getContentValues(),
+                            SQLiteDatabase.CONFLICT_FAIL);
+            request.getChildTableRequests()
+                    .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+            return rowId;
+        } catch (SQLiteConstraintException e) {
+            try (Cursor cursor = db.rawQuery(request.getReadRequest().getReadCommand(), null)) {
+                if (!cursor.moveToFirst()) {
+                    throw new HealthConnectException(
+                            ERROR_INTERNAL, "Conflict found, but couldn't read the entry.");
+                }
+
+                if (!request.requiresUpdate(cursor, request)) {
+                    return -1;
+                }
+
+                db.update(
+                        request.getTable(),
+                        request.getContentValues(),
+                        request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
+                        /* WHERE args */ null);
+                if (cursor.getColumnIndex(request.getRowIdColName()) == -1) {
+                    // The table is not explicitly using row_ids hence returning -1 here is ok, as
+                    // the rowid is of no use to this table.
+                    // NOTE: Such tables in HC don't support child tables either as child tables
+                    // inherently require row_ids to have support parent key.
+                    return -1;
+                }
+                final long rowId = StorageUtils.getCursorLong(cursor, request.getRowIdColName());
+                deleteChildTableRequest(request, rowId, db);
+                insertChildTableRequest(request, rowId, db);
+
+                return rowId;
+            }
+        }
     }
 
-    private void insertOrReplace(@NonNull SQLiteDatabase db, @NonNull UpsertTableRequest request) {
-        db.replace(request.getTable(), null, request.getContentValues());
+    private void deleteChildTableRequest(
+            UpsertTableRequest request, long rowId, SQLiteDatabase db) {
+        for (String childTable : request.getAllChildTables()) {
+            DeleteTableRequest deleteTableRequest =
+                    new DeleteTableRequest(childTable).setId(PARENT_KEY, String.valueOf(rowId));
+            db.execSQL(deleteTableRequest.getDeleteCommand());
+        }
+    }
+
+    private void insertChildTableRequest(
+            UpsertTableRequest request, long rowId, SQLiteDatabase db) {
+        for (UpsertTableRequest childTableRequest : request.getChildTableRequests()) {
+            db.insertOrThrow(
+                    childTableRequest.withParentKey(rowId).getTable(),
+                    null,
+                    childTableRequest.getContentValues());
+        }
     }
 
     public interface TransactionRunnable<E extends Throwable> {
         void run(SQLiteDatabase db) throws E;
+    }
+
+    @NonNull
+    public static TransactionManager getInstance(@NonNull HealthConnectUserContext context) {
+        if (sTransactionManager == null) {
+            sTransactionManager = new TransactionManager(context);
+        }
+
+        return sTransactionManager;
+    }
+
+    @NonNull
+    public static TransactionManager getInitialisedInstance() {
+        Objects.requireNonNull(sTransactionManager);
+
+        return sTransactionManager;
     }
 }

@@ -37,4 +37,5 @@ public final class Constants {
     public static final int UPSERT = 0;
     public static final int DELETE = 1;
     public static final int READ = 2;
+    public static final String PARENT_KEY = "parent_key";
 }

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -86,7 +87,7 @@ public class SexualActivityRecordTest {
     public void testReadSexualActivityRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<SexualActivityRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(SexualActivityRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<SexualActivityRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -324,11 +325,6 @@ public class SexualActivityRecordTest {
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
-    private static SexualActivityRecord getBaseSexualActivityRecord() {
-        return new SexualActivityRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
-                .build();
-    }
-
     @Test
     public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully()
             throws InterruptedException {
@@ -388,10 +384,10 @@ public class SexualActivityRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -491,6 +487,28 @@ public class SexualActivityRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
+    SexualActivityRecord getSexualActivityRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new SexualActivityRecord.Builder(metadataWithId, Instant.now(), 2)
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    private static SexualActivityRecord getBaseSexualActivityRecord() {
+        return new SexualActivityRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1)
+                .build();
+    }
+
     private static SexualActivityRecord getCompleteSexualActivityRecord() {
         Device device =
                 new Device.Builder()
@@ -506,23 +524,6 @@ public class SexualActivityRecordTest {
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new SexualActivityRecord.Builder(testMetadataBuilder.build(), Instant.now(), 1)
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    SexualActivityRecord getSexualActivityRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new SexualActivityRecord.Builder(metadataWithId, Instant.now(), 2)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
