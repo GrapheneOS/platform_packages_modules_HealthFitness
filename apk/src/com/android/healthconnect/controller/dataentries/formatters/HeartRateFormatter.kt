@@ -20,8 +20,11 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,7 +32,24 @@ import javax.inject.Singleton
 /** Formatter for printing HeartRate data. */
 @Singleton
 class HeartRateFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<HeartRateRecord>(context) {
+    EntryFormatter<HeartRateRecord>(context), SessionDetailsFormatter<HeartRateRecord> {
+
+    private val timeFormatter = LocalDateTimeFormatter(context)
+
+    override suspend fun formatRecord(
+        record: HeartRateRecord,
+        header: String,
+        headerA11y: String,
+        unitPreferences: UnitPreferences
+    ): FormattedEntry {
+        return FormattedEntry.HeartRateEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record))
+    }
 
     override suspend fun formatValue(
         record: HeartRateRecord,
@@ -58,6 +78,29 @@ class HeartRateFormatter @Inject constructor(@ApplicationContext private val con
                 formatSampleValue(R.string.heart_rate_long_value, heartRate)
             }
         }
+    }
+
+    override suspend fun formatRecordDetails(record: HeartRateRecord): List<FormattedEntry> {
+        val samples =
+            record.samples.sortedBy { it.time }.map { formatSample(record.metadata.id, it) }
+        return buildList {
+            if (samples.isNotEmpty()) {
+                addAll(samples)
+            }
+        }
+    }
+
+    private fun formatSample(
+        id: String,
+        sample: HeartRateRecord.HeartRateSample
+    ): FormattedEntry.FormattedSessionDetail {
+        return FormattedEntry.FormattedSessionDetail(
+            uuid = id,
+            header = timeFormatter.formatTime(sample.time),
+            headerA11y = timeFormatter.formatTime(sample.time),
+            title = formatSampleValue(R.string.heart_rate_long_value, sample.beatsPerMinute),
+            titleA11y = formatSampleValue(R.string.heart_rate_long_value, sample.beatsPerMinute),
+        )
     }
 
     private fun formatSampleValue(@StringRes res: Int, heartRate: Long): String {
