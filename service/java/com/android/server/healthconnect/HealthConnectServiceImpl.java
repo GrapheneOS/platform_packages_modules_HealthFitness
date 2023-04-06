@@ -103,6 +103,7 @@ import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Binder;
 import android.os.ParcelFileDescriptor;
+import android.os.Process;
 import android.os.RemoteException;
 import android.os.Trace;
 import android.os.UserHandle;
@@ -293,14 +294,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, INSERT_DATA)
                         .setPackageName(attributionSource.getPackageName());
-        enforceIsForegroundUser(getCallingUserHandle());
-        verifyPackageNameFromUid(
-                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        verifyPackageNameFromUid(uid, attributionSource);
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                         builder.setNumberOfRecords(recordInternals.size());
                         throwExceptionIfDataSyncInProgress();
@@ -396,14 +396,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_AGGREGATED_DATA)
                         .setPackageName(attributionSource.getPackageName());
-        enforceIsForegroundUser(getCallingUserHandle());
-        verifyPackageNameFromUid(
-                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        verifyPackageNameFromUid(uid, attributionSource);
                         builder.setNumberOfRecords(request.getAggregateIds().length);
                         throwExceptionIfDataSyncInProgress();
                         List<Integer> recordTypesToTest = new ArrayList<>();
@@ -488,14 +487,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA)
                         .setPackageName(attributionSource.getPackageName());
-        enforceIsForegroundUser(getCallingUserHandle());
-        verifyPackageNameFromUid(
-                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        verifyPackageNameFromUid(uid, attributionSource);
                         throwExceptionIfDataSyncInProgress();
                         AtomicBoolean enforceSelfRead = new AtomicBoolean();
                         if (!holdsDataManagementPermission) {
@@ -658,13 +656,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, UPDATE_DATA)
                         .setPackageName(attributionSource.getPackageName());
-        enforceIsForegroundUser(getCallingUserHandle());
-        verifyPackageNameFromUid(
-                uid, attributionSource.getUid(), attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        verifyPackageNameFromUid(uid, attributionSource);
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                         builder.setNumberOfRecords(recordInternals.size());
                         throwExceptionIfDataSyncInProgress();
@@ -746,13 +743,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN)
                         .setPackageName(attributionSource.getPackageName());
-        enforceIsForegroundUser(getCallingUserHandle());
-        verifyPackageNameFromUid(
-                uid, attributionSource.getUid(), attributionSource.getPackageName());
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        verifyPackageNameFromUid(uid, attributionSource);
                         throwExceptionIfDataSyncInProgress();
                         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                                 request.getRecordTypesList(), attributionSource);
@@ -807,14 +803,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
                         .setPackageName(attributionSource.getPackageName());
-        enforceIsForegroundUser(getCallingUserHandle());
-        verifyPackageNameFromUid(
-                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        verifyPackageNameFromUid(uid, attributionSource);
                         throwExceptionIfDataSyncInProgress();
                         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                                 ChangeLogsRequestHelper.getRequest(
@@ -921,14 +916,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA)
                         .setPackageName(attributionSource.getPackageName());
-        enforceIsForegroundUser(getCallingUserHandle());
-        verifyPackageNameFromUid(
-                uid, attributionSource.getUid(), attributionSource.getPackageName());
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        verifyPackageNameFromUid(uid, attributionSource);
                         throwExceptionIfDataSyncInProgress();
                         List<Integer> recordTypeIdsToDelete =
                                 (!request.getRecordTypeFilters().isEmpty())
@@ -1019,10 +1013,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IGetPriorityResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
-        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         List<DataOrigin> dataOriginInPriorityOrder =
@@ -1068,10 +1062,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IEmptyResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
-        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         HealthDataCategoryPriorityHelper.getInstance()
@@ -1105,10 +1099,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             int days, @NonNull UserHandle user, IEmptyResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
-        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         AutoDeleteService.setRecordRetentionPeriodInDays(days);
@@ -1163,10 +1157,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void getContributorApplicationsInfo(@NonNull IApplicationInfoResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
-        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         List<AppInfo> applicationInfos =
@@ -1199,10 +1193,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void queryAllRecordTypesInfo(@NonNull IRecordTypeInfoResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
-        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         callback.onResult(
@@ -1234,11 +1228,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void queryAccessLogs(@NonNull String packageName, IAccessLogsResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
-        enforceIsForegroundUser(getCallingUserHandle());
 
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         final List<AccessLog> accessLogsList =
@@ -1276,11 +1270,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             IActivityDatesResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
-        enforceIsForegroundUser(getCallingUserHandle());
 
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         List<LocalDate> localDates =
@@ -1546,12 +1540,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getHealthConnectDataState(
             @NonNull UserHandle userHandle, @NonNull IGetHealthConnectDataStateCallback callback) {
-        enforceIsForegroundUser(getCallingUserHandle());
         mDataPermissionEnforcer.enforceAnyOfPermissions(
                 MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
+                        enforceIsForegroundUser(getCallingUserHandle());
                         @HealthConnectDataState.DataRestoreError
                         int dataRestoreError =
                                 mBackupRestore.getDataRestoreError(userHandle.getIdentifier());
@@ -1657,6 +1651,49 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         }
     }
 
+    /**
+     * Verify various aspects of the calling user.
+     *
+     * @param callingUid Uid of the caller, usually retrieved from Binder for authenticity.
+     * @param callerAttributionSource The permission identity of the caller
+     */
+    private void verifyPackageNameFromUid(
+            int callingUid, @NonNull AttributionSource callerAttributionSource) {
+        // Check does the attribution source is one for the calling app.
+        callerAttributionSource.enforceCallingUid();
+        // Obtain the user where the client is running in.
+        UserHandle callingUserHandle = UserHandle.getUserHandleForUid(callingUid);
+        Context callingUserContext = mContext.createContextAsUser(callingUserHandle, 0);
+        String callingPackageName =
+                Objects.requireNonNull(callerAttributionSource.getPackageName());
+        verifyCallingPackage(callingUserContext, callingUid, callingPackageName);
+    }
+
+    /**
+     * Check that the caller's supposed package name matches the uid making the call.
+     *
+     * @throws SecurityException if the package name and uid don't match.
+     */
+    private void verifyCallingPackage(
+            @NonNull Context actualCallingUserContext,
+            int actualCallingUid,
+            @NonNull String claimedCallingPackage) {
+        int claimedCallingUid = getPackageUid(actualCallingUserContext, claimedCallingPackage);
+        if (claimedCallingUid != actualCallingUid) {
+            throwSecurityException(
+                    claimedCallingPackage + " does not belong to uid " + actualCallingUid);
+        }
+    }
+
+    /** Finds the UID of the {@code packageName} in the given {@code context}. */
+    private int getPackageUid(@NonNull Context context, @NonNull String packageName) {
+        try {
+            return context.getPackageManager().getPackageUid(packageName, /*flags=*/ 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return Process.INVALID_UID;
+        }
+    }
+
     private void enforceShowMigrationInfoIntent(String packageName, int callingUid) {
         enforceCallingPackageBelongsToUid(packageName, callingUid);
 
@@ -1758,12 +1795,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (Exception exception) {
             // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
         }
-    }
-
-    private void verifyPackageNameFromUid(
-            int binderUid, int attributionSourceUid, String packageName) {
-        enforceBinderUidIsSameAsAttributionSourceUid(binderUid, attributionSourceUid);
-        enforceCallingPackageBelongsToUid(packageName, binderUid);
     }
 
     private void enforceBinderUidIsSameAsAttributionSourceUid(
