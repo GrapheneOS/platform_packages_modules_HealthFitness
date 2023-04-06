@@ -123,7 +123,7 @@ public final class DataMigrationManager {
     private void migrateEntity(@NonNull SQLiteDatabase db, @NonNull MigrationEntity entity)
             throws EntityWriteException {
         try {
-            if (!insertEntityIdIfNotPresent(db, entity.getEntityId())) {
+            if (checkEntityForDuplicates(db, entity)) {
                 return;
             }
 
@@ -187,8 +187,12 @@ public final class DataMigrationManager {
 
     @GuardedBy("sLock")
     private void migrateAppInfo(@NonNull AppInfoMigrationPayload payload) {
-        mAppInfoHelper.updateAppInfoIfNotInstalled(
-                mUserContext, payload.getPackageName(), payload.getAppName(), payload.getAppIcon());
+        mAppInfoHelper.addOrUpdateAppInfoIfNotInstalled(
+                mUserContext,
+                payload.getPackageName(),
+                payload.getAppName(),
+                payload.getAppIcon(),
+                true /* onlyReplace */);
     }
 
     @Nullable
@@ -208,6 +212,28 @@ public final class DataMigrationManager {
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
+    }
+
+    /**
+     * Checks the provided entity for duplicates by {@code entityId}. Modifies {@link
+     * MigrationEntityHelper} table as a side effect.
+     *
+     * <p>Entities with the following payload types are exempt from deduplication checks (the result
+     * is always {@code false}): {@link RecordMigrationPayload}.
+     *
+     * @return {@code true} if the entity is duplicated and thus should be ignored, {@code false}
+     *     otherwise.
+     */
+    @GuardedBy("sLock")
+    private boolean checkEntityForDuplicates(
+            @NonNull SQLiteDatabase db, @NonNull MigrationEntity entity) {
+        final MigrationPayload payload = entity.getPayload();
+
+        if (payload instanceof RecordMigrationPayload) {
+            return false; // Do not deduplicate records by entityId
+        }
+
+        return !insertEntityIdIfNotPresent(db, entity.getEntityId());
     }
 
     /**

@@ -64,6 +64,7 @@ import android.os.ext.SdkExtensions;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import org.junit.After;
@@ -876,5 +877,29 @@ public class MigrationStateManagerTest {
 
     public static class MockListener {
         void onMigrationStateChanged(@HealthConnectDataState.DataMigrationState int state) {}
+    }
+
+    @Test
+    public void testValidateSetMinSdkVersion_stateAllowed_allowedToSetSdkVersion()
+            throws IllegalMigrationStateException {
+        when(mPreferenceHelper.getPreference(eq(MIGRATION_STATE_PREFERENCE_KEY)))
+                .thenReturn(Integer.toString(MIGRATION_STATE_ALLOWED));
+        mMigrationStateManager.validateSetMinSdkVersion();
+    }
+
+    @Test(expected = IllegalMigrationStateException.class)
+    public void testValidateSetMinSdkVersion_stateInProgress_notAllowedToSetSdkVersion()
+            throws IllegalMigrationStateException {
+        when(mPreferenceHelper.getPreference(eq(MIGRATION_STATE_PREFERENCE_KEY)))
+                .thenReturn(Integer.toString(MIGRATION_STATE_IN_PROGRESS));
+        mMigrationStateManager.validateSetMinSdkVersion();
+    }
+
+    @Test(expected = IllegalMigrationStateException.class)
+    public void testValidateSetMinSdkVersion_stateComplete_notAllowedToSetSdkVersion()
+            throws IllegalMigrationStateException {
+        when(mPreferenceHelper.getPreference(eq(MIGRATION_STATE_PREFERENCE_KEY)))
+                .thenReturn(Integer.toString(MIGRATION_STATE_COMPLETE));
+        mMigrationStateManager.validateSetMinSdkVersion();
     }
 }
