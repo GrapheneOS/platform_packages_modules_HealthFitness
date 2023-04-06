@@ -32,6 +32,7 @@ import android.os.Parcel;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Base class for all health connect datatype records.
@@ -40,7 +41,7 @@ import java.util.Objects;
  */
 public abstract class RecordInternal<T extends Record> {
     private final int mRecordIdentifier;
-    private String mUuid;
+    private UUID mUuid;
     private String mPackageName;
     private String mAppName;
     private long mLastModifiedTime = DEFAULT_LONG;
@@ -71,7 +72,10 @@ public abstract class RecordInternal<T extends Record> {
      * write
      */
     public final void populateUsing(@NonNull Parcel parcel) {
-        mUuid = parcel.readString();
+        String uuidString = parcel.readString();
+        if (uuidString != null && !uuidString.isEmpty()) {
+            mUuid = UUID.fromString(uuidString);
+        }
         mPackageName = parcel.readString();
         mAppName = parcel.readString();
         mLastModifiedTime = parcel.readLong();
@@ -91,7 +95,7 @@ public abstract class RecordInternal<T extends Record> {
      */
     @NonNull
     public final void writeToParcel(@NonNull Parcel parcel) {
-        parcel.writeString(mUuid);
+        parcel.writeString(mUuid == null ? "" : mUuid.toString());
         parcel.writeString(mPackageName);
         parcel.writeString(mAppName);
         parcel.writeLong(mLastModifiedTime);
@@ -106,13 +110,24 @@ public abstract class RecordInternal<T extends Record> {
     }
 
     @Nullable
-    public String getUuid() {
+    public UUID getUuid() {
         return mUuid;
     }
 
     @NonNull
-    public RecordInternal<T> setUuid(@Nullable String uuid) {
+    public RecordInternal<T> setUuid(@Nullable UUID uuid) {
         this.mUuid = uuid;
+        return this;
+    }
+
+    @NonNull
+    public RecordInternal<T> setUuid(@Nullable String uuid) {
+        if (uuid == null || uuid.isEmpty()) {
+            mUuid = null;
+            return this;
+        }
+
+        mUuid = UUID.fromString(uuid);
         return this;
     }
 
@@ -261,7 +276,7 @@ public abstract class RecordInternal<T extends Record> {
                 .setClientRecordId(getClientRecordId())
                 .setClientRecordVersion(getClientRecordVersion())
                 .setDataOrigin(new DataOrigin.Builder().setPackageName(getPackageName()).build())
-                .setId(getUuid())
+                .setId(getUuid() == null ? null : getUuid().toString())
                 .setLastModifiedTime(Instant.ofEpochMilli(getLastModifiedTime()))
                 .setRecordingMethod(getRecordingMethod())
                 .setDevice(

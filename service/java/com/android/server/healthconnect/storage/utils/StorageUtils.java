@@ -55,6 +55,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -81,10 +82,26 @@ public final class StorageUtils {
     public static final String DELIMITER = ",";
     public static final String BLOB = "BLOB";
     public static final String BLOB_UNIQUE_NULL = "BLOB UNIQUE";
+    public static final String BLOB_UNIQUE_NON_NULL = "BLOB NOT NULL UNIQUE";
+    public static final String BLOB_NON_NULL = "BLOB NOT NULL";
     public static final String SELECT_ALL = "SELECT * FROM ";
     public static final String LIMIT_SIZE = " LIMIT ";
     public static final int BOOLEAN_FALSE_VALUE = 0;
     public static final int BOOLEAN_TRUE_VALUE = 1;
+    public static final int UUID_BYTE_SIZE = 16;
+
+    @Retention(SOURCE)
+    @StringDef({
+        TEXT_NOT_NULL,
+        TEXT_NOT_NULL_UNIQUE,
+        TEXT_NULL,
+        INTEGER,
+        PRIMARY_AUTOINCREMENT,
+        PRIMARY,
+        BLOB,
+        BLOB_UNIQUE_NON_NULL
+    })
+    public @interface SQLiteType {}
 
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
         byte[] clientIDBlob;
@@ -95,13 +112,12 @@ public final class StorageUtils {
             clientIDBlob = recordInternal.getClientRecordId().getBytes();
         }
 
-        byte[] nameBasedUidBytes =
-                getUUIDByteBuffer(
+        final UUID uuid =
+                getUUID(
                         recordInternal.getAppInfoId(),
                         clientIDBlob,
                         recordInternal.getRecordType());
-
-        recordInternal.setUuid(UUID.nameUUIDFromBytes(nameBasedUidBytes).toString());
+        recordInternal.setUuid(uuid);
     }
 
     /** Updates the uuid using the clientRecordID if the clientRecordId is present. */
@@ -114,30 +130,26 @@ public final class StorageUtils {
             return;
         }
         clientIDBlob = recordInternal.getClientRecordId().getBytes();
-        byte[] nameBasedUidBytes =
-                getUUIDByteBuffer(
+        final UUID uuid =
+                getUUID(
                         recordInternal.getAppInfoId(),
                         clientIDBlob,
                         recordInternal.getRecordType());
-
-        recordInternal.setUuid(UUID.nameUUIDFromBytes(nameBasedUidBytes).toString());
+        recordInternal.setUuid(uuid);
     }
 
-    public static String getUUIDFor(RecordIdFilter recordIdFilter, String packageName) {
+    public static UUID getUUIDFor(RecordIdFilter recordIdFilter, String packageName) {
         byte[] clientIDBlob;
         if (recordIdFilter.getClientRecordId() == null
                 || recordIdFilter.getClientRecordId().isEmpty()) {
-            return recordIdFilter.getId();
+            return UUID.fromString(recordIdFilter.getId());
         }
         clientIDBlob = recordIdFilter.getClientRecordId().getBytes();
 
-        byte[] nameBasedUidBytes =
-                getUUIDByteBuffer(
-                        AppInfoHelper.getInstance().getAppInfoId(packageName),
-                        clientIDBlob,
-                        RecordMapper.getInstance().getRecordType(recordIdFilter.getRecordType()));
-
-        return UUID.nameUUIDFromBytes(nameBasedUidBytes).toString();
+        return getUUID(
+                AppInfoHelper.getInstance().getAppInfoId(packageName),
+                clientIDBlob,
+                RecordMapper.getInstance().getRecordType(recordIdFilter.getRecordType()));
     }
 
     public static void addPackageNameTo(
@@ -152,6 +164,10 @@ public final class StorageUtils {
 
     public static String getCursorString(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));
+    }
+
+    public static UUID getCursorUUID(Cursor cursor, String columnName) {
+        return convertBytesToUUID(cursor.getBlob(cursor.getColumnIndex(columnName)));
     }
 
     public static int getCursorInt(Cursor cursor, String columnName) {
@@ -289,59 +305,15 @@ public final class StorageUtils {
                 .array();
     }
 
-    private static byte[] getUUIDByteBuffer(long appId, byte[] clientIDBlob, int recordId) {
-        return ByteBuffer.allocate(Long.BYTES + Integer.BYTES + clientIDBlob.length)
-                .putLong(appId)
-                .putInt(recordId)
-                .put(clientIDBlob)
-                .array();
-    }
-
-    @Retention(SOURCE)
-    @StringDef({
-        TEXT_NOT_NULL,
-        TEXT_NOT_NULL_UNIQUE,
-        TEXT_NULL,
-        INTEGER,
-        PRIMARY_AUTOINCREMENT,
-        PRIMARY,
-        BLOB
-    })
-    public @interface SQLiteType {}
-
-    /** Extracts and holds data from {@link ContentValues}. */
-    public static class RecordIdentifierData {
-        private String mClientRecordId = "";
-        private String mUuid = "";
-        private final String mAppInfoId = "";
-
-        public RecordIdentifierData(ContentValues contentValues) {
-            mClientRecordId = contentValues.getAsString(CLIENT_RECORD_ID_COLUMN_NAME);
-            mUuid = contentValues.getAsString(UUID_COLUMN_NAME);
-        }
-
-        @Nullable
-        public String getClientRecordId() {
-            return mClientRecordId;
-        }
-
-        @Nullable
-        public String getUuid() {
-            return mUuid;
-        }
-
-        @Override
-        public String toString() {
-            final StringBuilder builder = new StringBuilder();
-            if (mClientRecordId != null && !mClientRecordId.isEmpty()) {
-                builder.append("clientRecordID : ").append(mClientRecordId).append(" , ");
-            }
-
-            if (mUuid != null && !mUuid.isEmpty()) {
-                builder.append("uuid : ").append(mUuid).append(" , ");
-            }
-            return builder.toString();
-        }
+    /** Returns a hex string that represents a UUID */
+    private static UUID getUUID(long appId, byte[] clientIDBlob, int recordId) {
+        byte[] bytes =
+                ByteBuffer.allocate(Long.BYTES + Integer.BYTES + clientIDBlob.length)
+                        .putLong(appId)
+                        .putInt(recordId)
+                        .put(clientIDBlob)
+                        .array();
+        return UUID.nameUUIDFromBytes(bytes);
     }
 
     /**
@@ -351,11 +323,9 @@ public final class StorageUtils {
     public static boolean supportsPriority(int recordType, int operationType) {
         if (recordType != RECORD_TYPE_EXERCISE_SESSION) {
             @HealthDataCategory.Type
-            Integer recordCategory =
+            int recordCategory =
                     RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType);
-            if (recordCategory == ACTIVITY && operationType == SUM) {
-                return true;
-            }
+            return recordCategory == ACTIVITY && operationType == SUM;
         }
         return false;
     }
@@ -369,10 +339,125 @@ public final class StorageUtils {
 
     /** Returns if derivation needs to be done to calculate aggregate */
     public static boolean isDerivedType(int recordType) {
-        if (recordType == RECORD_TYPE_BASAL_METABOLIC_RATE
-                || recordType == RECORD_TYPE_TOTAL_CALORIES_BURNED) {
-            return true;
+        return recordType == RECORD_TYPE_BASAL_METABOLIC_RATE
+                || recordType == RECORD_TYPE_TOTAL_CALORIES_BURNED;
+    }
+
+    public static UUID convertBytesToUUID(byte[] bytes) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        long high = byteBuffer.getLong();
+        long low = byteBuffer.getLong();
+        return new UUID(high, low);
+    }
+
+    public static byte[] convertUUIDToBytes(UUID uuid) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[16]);
+        byteBuffer.putLong(uuid.getMostSignificantBits());
+        byteBuffer.putLong(uuid.getLeastSignificantBits());
+        return byteBuffer.array();
+    }
+
+    public static String getHexString(byte[] value) {
+        if (value == null) {
+            return "";
         }
-        return false;
+
+        final StringBuilder builder = new StringBuilder("x'");
+        for (byte b : value) {
+            builder.append(String.format("%02x", b));
+        }
+        builder.append("'");
+
+        return builder.toString();
+    }
+
+    public static String getHexString(UUID uuid) {
+        return getHexString(convertUUIDToBytes(uuid));
+    }
+
+    public static List<String> getListOfHexString(List<UUID> uuids) {
+        List<String> hexStrings = new ArrayList<>();
+        for (UUID uuid : uuids) {
+            hexStrings.add(getHexString(convertUUIDToBytes(uuid)));
+        }
+
+        return hexStrings;
+    }
+
+    public static byte[] getSingleByteArray(List<UUID> uuids) {
+        byte[] allByteArray = new byte[UUID_BYTE_SIZE * uuids.size()];
+
+        ByteBuffer byteBuffer = ByteBuffer.wrap(allByteArray);
+        for (UUID uuid : uuids) {
+            byteBuffer.put(convertUUIDToBytes(uuid));
+        }
+
+        return byteBuffer.array();
+    }
+
+    public static List<UUID> getCursorUUIDList(Cursor cursor, String columnName) {
+        byte[] bytes = cursor.getBlob(cursor.getColumnIndex(columnName));
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+
+        List<UUID> uuidList = new ArrayList<>();
+        while (byteBuffer.hasRemaining()) {
+            long high = byteBuffer.getLong();
+            long low = byteBuffer.getLong();
+            uuidList.add(new UUID(high, low));
+        }
+
+        return uuidList;
+    }
+
+    /**
+     * Returns a quoted id if {@code id} is not quoted. Following examples show the expected return
+     * values,
+     *
+     * <p>getNormalisedId("id") -> "'id'"
+     *
+     * <p>getNormalisedId("'id'") -> "'id'"
+     *
+     * <p>getNormalisedId("x'id'") -> "x'id'"
+     */
+    public static String getNormalisedString(String id) {
+        if (!id.startsWith("'") && !id.startsWith("x'")) {
+            return "'" + id + "'";
+        }
+
+        return id;
+    }
+
+    /** Extracts and holds data from {@link ContentValues}. */
+    public static class RecordIdentifierData {
+        private final String mClientRecordId;
+        private final UUID mUuid;
+
+        public RecordIdentifierData(ContentValues contentValues) {
+            mClientRecordId = contentValues.getAsString(CLIENT_RECORD_ID_COLUMN_NAME);
+            mUuid = StorageUtils.convertBytesToUUID(contentValues.getAsByteArray(UUID_COLUMN_NAME));
+        }
+
+        @Nullable
+        public String getClientRecordId() {
+            return mClientRecordId;
+        }
+
+        @Nullable
+        public UUID getUuid() {
+            return mUuid;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder builder = new StringBuilder();
+            if (mClientRecordId != null && !mClientRecordId.isEmpty()) {
+                builder.append("clientRecordID : ").append(mClientRecordId).append(" , ");
+            }
+
+            if (mUuid != null) {
+                builder.append("uuid : ").append(mUuid).append(" , ");
+            }
+            return builder.toString();
+        }
     }
 }

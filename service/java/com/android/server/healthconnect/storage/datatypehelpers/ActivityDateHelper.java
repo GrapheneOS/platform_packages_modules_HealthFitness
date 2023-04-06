@@ -29,11 +29,9 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.util.Pair;
 
-import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
-import com.android.server.healthconnect.storage.request.DropTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
@@ -58,8 +56,6 @@ public final class ActivityDateHelper {
     private static final String TABLE_NAME = "activity_date_table";
     private static final String EPOCH_DAYS_COLUMN_NAME = "epoch_days";
     private static final String RECORD_TYPE_ID_COLUMN_NAME = "record_type_id";
-    private static final int DB_VERSION_RENAME_LOCAL_DATE_COLUMN = 8;
-    private static final int DB_SYNC_DELAY = 10;
     private static volatile ActivityDateHelper sActivityDateHelper;
 
     private ActivityDateHelper() {}
@@ -75,14 +71,7 @@ public final class ActivityDateHelper {
     }
 
     /** Called on DB update. */
-    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion) {
-        if (oldVersion < DB_VERSION_RENAME_LOCAL_DATE_COLUMN) {
-            db.execSQL(new DropTableRequest(TABLE_NAME).getDropTableCommand());
-            db.execSQL(getCreateTableRequest().getCreateCommand());
-
-            HealthConnectThreadScheduler.scheduleInternalTask(this::reSyncForAllRecords);
-        }
-    }
+    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
 
     /** Deletes all entries from the database and clears the cache. */
     public synchronized void clearData(TransactionManager transactionManager) {

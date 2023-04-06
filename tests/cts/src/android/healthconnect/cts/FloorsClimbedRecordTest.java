@@ -53,6 +53,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class FloorsClimbedRecordTest {
@@ -95,7 +96,7 @@ public class FloorsClimbedRecordTest {
     public void testReadFloorsClimbedRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<FloorsClimbedRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(FloorsClimbedRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<FloorsClimbedRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -326,10 +327,10 @@ public class FloorsClimbedRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -476,6 +477,25 @@ public class FloorsClimbedRecordTest {
                 .build();
     }
 
+    FloorsClimbedRecord getFloorsClimbedRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new FloorsClimbedRecord.Builder(
+                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     static FloorsClimbedRecord getBaseFloorsClimbedRecord(int days) {
         return new FloorsClimbedRecord.Builder(
                         new Metadata.Builder().build(),
@@ -503,25 +523,6 @@ public class FloorsClimbedRecordTest {
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         10)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    FloorsClimbedRecord getFloorsClimbedRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new FloorsClimbedRecord.Builder(
-                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
