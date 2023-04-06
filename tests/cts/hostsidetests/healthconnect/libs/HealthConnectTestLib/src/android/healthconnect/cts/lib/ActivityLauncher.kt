@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.cts.ui.testing
+package android.healthconnect.cts.lib
 
 import android.content.Context
 import android.content.Intent
-import android.healthconnect.cts.ui.testing.UiTestUtils.skipOnboardingIfAppears
+import android.healthconnect.cts.lib.UiTestUtils.skipOnboardingIfAppears
 import com.android.compatibility.common.util.UiAutomatorUtils2.getUiDevice
 
 /** A class that provides a way to launch the Health Connect [MainActivity] in tests. */

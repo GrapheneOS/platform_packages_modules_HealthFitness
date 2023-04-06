@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.cts.ui.testing
+package android.healthconnect.cts.lib
 
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
