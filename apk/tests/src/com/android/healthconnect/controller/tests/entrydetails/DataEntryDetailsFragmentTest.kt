@@ -41,6 +41,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel
@@ -48,6 +49,7 @@ import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewMod
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.EXERCISE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SLEEP
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.TestData.WARSAW_ROUTE
@@ -145,6 +147,18 @@ class DataEntryDetailsFragmentTest {
     }
 
     @Test
+    fun dataEntriesDetailsInit_withHeartRate_showsItem_showsDetails() {
+        val list = buildList { add(getFormattedHeartRate()) }
+        whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
+
+        launchFragment<DataEntryDetailsFragment>(
+            DataEntryDetailsFragment.createBundle(permissionType = HEART_RATE, entryId = "1"))
+
+        onView(withText("7:06 AM - 8:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
+        onView(withText("100 beats per minute")).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun dataEntriesDetailsInit_withRouteDetails_showsMapView() {
         val list = buildList { add(getFormattedExerciseSession(showSession = true)) }
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
@@ -211,5 +225,15 @@ class DataEntryDetailsFragmentTest {
                 } else {
                     null
                 })
+    }
+
+    private fun getFormattedHeartRate(): HeartRateEntry {
+        return HeartRateEntry(
+            uuid = "1",
+            header = "7:06 AM - 8:06 AM • TEST_APP_NAME",
+            headerA11y = "7:06 AM - 8:06 AM • TEST_APP_NAME",
+            title = "100 beats per minute",
+            titleA11y = "100 beats per minute",
+            dataType = DataType.HEART_RATE)
     }
 }

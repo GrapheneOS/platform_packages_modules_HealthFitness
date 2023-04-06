@@ -152,7 +152,7 @@ public class DataMigrationTest {
     }
 
     private static Metadata getMetadata() {
-        return getMetadata(/*clientRecordId=*/ null);
+        return getMetadata(/* clientRecordId= */ null);
     }
 
     private static byte[] getBitmapBytes(Bitmap bitmap) {
@@ -693,7 +693,7 @@ public class DataMigrationTest {
     }
 
     private void migrate(Record record) {
-        migrate(record, /*entityId=*/ record.getMetadata().getClientRecordId());
+        migrate(record, /* entityId= */ record.getMetadata().getClientRecordId());
     }
 
     private void migrate(Record record, String entityId) {
