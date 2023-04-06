@@ -35,7 +35,7 @@ import java.time.Duration.ofDays
 import java.time.Duration.ofHours
 import java.time.Duration.ofMinutes
 import java.time.Instant
-import java.time.temporal.ChronoUnit
+import java.time.ZoneId
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -63,7 +63,12 @@ constructor(
     }
 
     private suspend fun getMenstruationPeriodRecords(selectedDate: Instant): List<FormattedEntry> {
-        val startDate = selectedDate.truncatedTo(ChronoUnit.DAYS)
+        val startDate =
+            selectedDate
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
         val end = startDate.plus(ofHours(23)).plus(ofMinutes(59))
         val start = end.minus(SEARCH_RANGE)
 
@@ -92,7 +97,12 @@ constructor(
     }
 
     private suspend fun getMenstruationFlowRecords(selectedDate: Instant): List<FormattedEntry> {
-        val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
+        val start =
+            selectedDate
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
         val end = start.plus(ofHours(23)).plus(ofMinutes(59))
         val timeRange = TimeInstantRangeFilter.Builder().setStartTime(start).setEndTime(end).build()
         val filter =
