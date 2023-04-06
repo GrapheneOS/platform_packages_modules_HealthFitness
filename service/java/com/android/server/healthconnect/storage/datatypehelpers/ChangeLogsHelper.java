@@ -22,13 +22,11 @@ import static android.health.connect.Constants.UPSERT;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_NON_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorStringList;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -46,6 +44,7 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.Instant;
@@ -55,6 +54,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -74,42 +74,6 @@ public final class ChangeLogsHelper {
 
     private ChangeLogsHelper() {}
 
-    public static synchronized ChangeLogsHelper getInstance() {
-        if (sChangeLogsHelper == null) {
-            sChangeLogsHelper = new ChangeLogsHelper();
-        }
-
-        return sChangeLogsHelper;
-    }
-
-    @NonNull
-    public static List<DeletedLog> getDeletedLogs(Map<Integer, ChangeLogs> operationToChangeLogs) {
-        ChangeLogs logs = operationToChangeLogs.get(DELETE);
-
-        if (!Objects.isNull(logs)) {
-            List<String> ids = logs.getUUIds();
-            long timeStamp = logs.getChangeLogTimeStamp();
-            List<DeletedLog> deletedLogs = new ArrayList<>(ids.size());
-            for (String id : ids) {
-                deletedLogs.add(new DeletedLog(id, timeStamp));
-            }
-            return deletedLogs;
-        }
-        return new ArrayList<>();
-    }
-
-    @NonNull
-    public static Map<Integer, List<String>> getRecordTypeToInsertedUuids(
-            Map<Integer, ChangeLogs> operationToChangeLogs) {
-        ChangeLogs logs = operationToChangeLogs.getOrDefault(UPSERT, null);
-
-        if (!Objects.isNull(logs)) {
-            return logs.getRecordTypeToUUIDMap();
-        }
-
-        return new ArrayMap<>(0);
-    }
-
     public DeleteTableRequest getDeleteRequestForAutoDelete() {
         return new DeleteTableRequest(TABLE_NAME)
                 .setTimeFilter(
@@ -128,9 +92,7 @@ public final class ChangeLogsHelper {
     }
 
     // Called on DB update.
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
-        // empty by default
-    }
+    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
 
     /** Returns change logs post the time when {@code changeLogTokenRequest} was generated */
     public ChangeLogsResponse getChangeLogs(
@@ -193,7 +155,7 @@ public final class ChangeLogsHelper {
         int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
         @OperationType.OperationTypes
         int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
-        List<String> uuidList = getCursorStringList(cursor, UUIDS_COLUMN_NAME, DELIMITER);
+        List<UUID> uuidList = StorageUtils.getCursorUUIDList(cursor, UUIDS_COLUMN_NAME);
         long appId = getCursorLong(cursor, APP_ID_COLUMN_NAME);
         changeLogs.putIfAbsent(
                 operationType,
@@ -208,14 +170,163 @@ public final class ChangeLogsHelper {
         columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT));
         columnInfo.add(new Pair<>(RECORD_TYPE_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(APP_ID_COLUMN_NAME, INTEGER));
-        columnInfo.add(new Pair<>(UUIDS_COLUMN_NAME, TEXT_NOT_NULL));
+        columnInfo.add(new Pair<>(UUIDS_COLUMN_NAME, BLOB_NON_NULL));
         columnInfo.add(new Pair<>(OPERATION_TYPE_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(TIME_COLUMN_NAME, INTEGER));
 
         return columnInfo;
     }
 
+    public static synchronized ChangeLogsHelper getInstance() {
+        if (sChangeLogsHelper == null) {
+            sChangeLogsHelper = new ChangeLogsHelper();
+        }
+
+        return sChangeLogsHelper;
+    }
+
+    @NonNull
+    public static List<DeletedLog> getDeletedLogs(Map<Integer, ChangeLogs> operationToChangeLogs) {
+        ChangeLogs logs = operationToChangeLogs.get(DELETE);
+
+        if (!Objects.isNull(logs)) {
+            List<UUID> ids = logs.getUUIds();
+            long timeStamp = logs.getChangeLogTimeStamp();
+            List<DeletedLog> deletedLogs = new ArrayList<>(ids.size());
+            for (UUID id : ids) {
+                deletedLogs.add(new DeletedLog(id.toString(), timeStamp));
+            }
+
+            return deletedLogs;
+        }
+        return new ArrayList<>();
+    }
+
+    @NonNull
+    public static Map<Integer, List<UUID>> getRecordTypeToInsertedUuids(
+            Map<Integer, ChangeLogs> operationToChangeLogs) {
+        ChangeLogs logs = operationToChangeLogs.getOrDefault(UPSERT, null);
+
+        if (!Objects.isNull(logs)) {
+            return logs.getRecordTypeToUUIDMap();
+        }
+
+        return new ArrayMap<>(0);
+    }
+
     public static final class ChangeLogs {
+        private final Map<RecordTypeAndAppIdPair, List<UUID>> mRecordTypeAndAppIdToUUIDMap =
+                new ArrayMap<>();
+        @OperationType.OperationTypes private final int mOperationType;
+        private final String mPackageName;
+        private final long mChangeLogTimeStamp;
+        /**
+         * Creates a change logs object used to add a new change log for {@code operationType} for
+         * {@code packageName} logged at time {@code timeStamp }
+         *
+         * @param operationType Type of the operation for which change log is added whether insert
+         *     or delete.
+         * @param packageName Package name of the records for which change log is added.
+         * @param timeStamp Time when the change log is added.
+         */
+        public ChangeLogs(
+                @OperationType.OperationTypes int operationType,
+                @NonNull String packageName,
+                long timeStamp) {
+            mOperationType = operationType;
+            mPackageName = packageName;
+            mChangeLogTimeStamp = timeStamp;
+        }
+        /**
+         * Creates a change logs object used to add a new change log for {@code operationType}
+         * logged at time {@code timeStamp }
+         *
+         * @param operationType Type of the operation for which change log is added whether insert
+         *     or delete.
+         * @param timeStamp Time when the change log is added.
+         */
+        public ChangeLogs(@OperationType.OperationTypes int operationType, long timeStamp) {
+            mOperationType = operationType;
+            mChangeLogTimeStamp = timeStamp;
+            mPackageName = null;
+        }
+
+        public Map<Integer, List<UUID>> getRecordTypeToUUIDMap() {
+            Map<Integer, List<UUID>> recordTypeToUUIDMap = new ArrayMap<>();
+            mRecordTypeAndAppIdToUUIDMap.forEach(
+                    (recordTypeAndAppIdPair, uuids) -> {
+                        recordTypeToUUIDMap.putIfAbsent(
+                                recordTypeAndAppIdPair.getRecordType(), new ArrayList<>());
+                        Objects.requireNonNull(
+                                        recordTypeToUUIDMap.get(
+                                                recordTypeAndAppIdPair.getRecordType()))
+                                .addAll(uuids);
+                    });
+            return recordTypeToUUIDMap;
+        }
+
+        public List<UUID> getUUIds() {
+            return mRecordTypeAndAppIdToUUIDMap.values().stream()
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+        }
+
+        public long getChangeLogTimeStamp() {
+            return mChangeLogTimeStamp;
+        }
+
+        /** Function to add an uuid corresponding to given pair of @recordType and @appId */
+        public void addUUID(
+                @RecordTypeIdentifier.RecordType int recordType,
+                @NonNull long appId,
+                @NonNull UUID uuid) {
+            Objects.requireNonNull(uuid);
+
+            RecordTypeAndAppIdPair recordTypeAndAppIdPair =
+                    new RecordTypeAndAppIdPair(recordType, appId);
+            mRecordTypeAndAppIdToUUIDMap.putIfAbsent(recordTypeAndAppIdPair, new ArrayList<>());
+            mRecordTypeAndAppIdToUUIDMap.get(recordTypeAndAppIdPair).add(uuid);
+        }
+
+        /**
+         * @return List of {@link UpsertTableRequest} for change log table as per {@code
+         *     mRecordTypeAndAppIdPairToUUIDMap}
+         */
+        public List<UpsertTableRequest> getUpsertTableRequests() {
+            Objects.requireNonNull(mPackageName);
+
+            List<UpsertTableRequest> requests =
+                    new ArrayList<>(mRecordTypeAndAppIdToUUIDMap.size());
+            mRecordTypeAndAppIdToUUIDMap.forEach(
+                    (recordTypeAndAppIdPair, uuids) -> {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(
+                                RECORD_TYPE_COLUMN_NAME, recordTypeAndAppIdPair.getRecordType());
+                        contentValues.put(APP_ID_COLUMN_NAME, recordTypeAndAppIdPair.getAppId());
+                        contentValues.put(OPERATION_TYPE_COLUMN_NAME, mOperationType);
+                        contentValues.put(TIME_COLUMN_NAME, mChangeLogTimeStamp);
+                        contentValues.put(
+                                UUIDS_COLUMN_NAME, StorageUtils.getSingleByteArray(uuids));
+                        requests.add(new UpsertTableRequest(TABLE_NAME, contentValues));
+                    });
+            return requests;
+        }
+
+        public ChangeLogs addUUIDs(
+                @RecordTypeIdentifier.RecordType int recordType,
+                @NonNull long appId,
+                @NonNull List<UUID> uuids) {
+            RecordTypeAndAppIdPair recordTypeAndAppIdPair =
+                    new RecordTypeAndAppIdPair(recordType, appId);
+            mRecordTypeAndAppIdToUUIDMap.putIfAbsent(recordTypeAndAppIdPair, new ArrayList<>());
+            mRecordTypeAndAppIdToUUIDMap.get(recordTypeAndAppIdPair).addAll(uuids);
+            return this;
+        }
+
+        public void clear() {
+            mRecordTypeAndAppIdToUUIDMap.clear();
+        }
+
         /** A helper class to create a pair of recordType and appId */
         private static final class RecordTypeAndAppIdPair {
             private final int mRecordType;
@@ -245,113 +356,6 @@ public final class ChangeLogsHelper {
             public int hashCode() {
                 return Objects.hash(this.mRecordType, this.mAppId);
             }
-        }
-
-        private final Map<RecordTypeAndAppIdPair, List<String>> mRecordTypeAndAppIdToUUIDMap =
-                new ArrayMap<>();
-        @OperationType.OperationTypes private final int mOperationType;
-        private final String mPackageName;
-        private final long mChangeLogTimeStamp;
-        /**
-         * Creates a change logs object used to add a new change log for {@code operationType} for
-         * {@code packageName} logged at time {@code timeStamp }
-         *
-         * @param operationType Type of the operation for which change log is added whether insert
-         *     or delete.
-         * @param packageName Package name of the records for which change log is added.
-         * @param timeStamp Time when the change log is added.
-         */
-        public ChangeLogs(
-                @OperationType.OperationTypes int operationType,
-                @NonNull String packageName,
-                long timeStamp) {
-            mOperationType = operationType;
-            mPackageName = packageName;
-            mChangeLogTimeStamp = timeStamp;
-        }
-
-        /**
-         * Creates a change logs object used to add a new change log for {@code operationType}
-         * logged at time {@code timeStamp }
-         *
-         * @param operationType Type of the operation for which change log is added whether insert
-         *     or delete.
-         * @param timeStamp Time when the change log is added.
-         */
-        public ChangeLogs(@OperationType.OperationTypes int operationType, long timeStamp) {
-            mOperationType = operationType;
-            mChangeLogTimeStamp = timeStamp;
-            mPackageName = null;
-        }
-
-        public Map<Integer, List<String>> getRecordTypeToUUIDMap() {
-            Map<Integer, List<String>> recordTypeToUUIDMap = new ArrayMap<>();
-            mRecordTypeAndAppIdToUUIDMap.forEach(
-                    (recordTypeAndAppIdPair, uuids) -> {
-                        recordTypeToUUIDMap.putIfAbsent(
-                                recordTypeAndAppIdPair.getRecordType(), new ArrayList<>());
-                        recordTypeToUUIDMap
-                                .get(recordTypeAndAppIdPair.getRecordType())
-                                .addAll(uuids);
-                    });
-            return recordTypeToUUIDMap;
-        }
-
-        public List<String> getUUIds() {
-            return mRecordTypeAndAppIdToUUIDMap.values().stream()
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-        }
-
-        public long getChangeLogTimeStamp() {
-            return mChangeLogTimeStamp;
-        }
-
-        /** Function to add an uuid corresponding to given pair of @recordType and @appId */
-        public void addUUID(
-                @RecordTypeIdentifier.RecordType int recordType,
-                @NonNull long appId,
-                @NonNull String uuid) {
-            Objects.requireNonNull(uuid);
-
-            RecordTypeAndAppIdPair recordTypeAndAppIdPair =
-                    new RecordTypeAndAppIdPair(recordType, appId);
-            mRecordTypeAndAppIdToUUIDMap.putIfAbsent(recordTypeAndAppIdPair, new ArrayList<>());
-            mRecordTypeAndAppIdToUUIDMap.get(recordTypeAndAppIdPair).add(uuid);
-        }
-
-        /**
-         * @return List of {@link UpsertTableRequest} for change log table as per {@code
-         *     mRecordTypeAndAppIdPairToUUIDMap}
-         */
-        public List<UpsertTableRequest> getUpsertTableRequests() {
-            Objects.requireNonNull(mPackageName);
-
-            List<UpsertTableRequest> requests =
-                    new ArrayList<>(mRecordTypeAndAppIdToUUIDMap.size());
-            mRecordTypeAndAppIdToUUIDMap.forEach(
-                    (recordTypeAndAppIdPair, uuids) -> {
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(
-                                RECORD_TYPE_COLUMN_NAME, recordTypeAndAppIdPair.getRecordType());
-                        contentValues.put(APP_ID_COLUMN_NAME, recordTypeAndAppIdPair.getAppId());
-                        contentValues.put(OPERATION_TYPE_COLUMN_NAME, mOperationType);
-                        contentValues.put(TIME_COLUMN_NAME, mChangeLogTimeStamp);
-                        contentValues.put(UUIDS_COLUMN_NAME, String.join(DELIMITER, uuids));
-                        requests.add(new UpsertTableRequest(TABLE_NAME, contentValues));
-                    });
-            return requests;
-        }
-
-        public ChangeLogs addUUIDs(
-                @RecordTypeIdentifier.RecordType int recordType,
-                @NonNull long appId,
-                @NonNull List<String> uuids) {
-            RecordTypeAndAppIdPair recordTypeAndAppIdPair =
-                    new RecordTypeAndAppIdPair(recordType, appId);
-            mRecordTypeAndAppIdToUUIDMap.putIfAbsent(recordTypeAndAppIdPair, new ArrayList<>());
-            mRecordTypeAndAppIdToUUIDMap.get(recordTypeAndAppIdPair).addAll(uuids);
-            return this;
         }
     }
 

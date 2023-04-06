@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -84,7 +85,9 @@ public class Vo2MaxRecordTest {
     @Test
     public void testReadVo2MaxRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<Vo2MaxRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(Vo2MaxRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(Vo2MaxRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         List<Vo2MaxRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
@@ -367,10 +370,10 @@ public class Vo2MaxRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -466,6 +469,22 @@ public class Vo2MaxRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
+    Vo2MaxRecord getVo2MaxRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new Vo2MaxRecord.Builder(metadataWithId, Instant.now(), 2, 20.0)
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static Vo2MaxRecord getBaseVo2MaxRecord() {
         return new Vo2MaxRecord.Builder(new Metadata.Builder().build(), Instant.now(), 1, 10.0)
                 .build();
@@ -486,22 +505,6 @@ public class Vo2MaxRecordTest {
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new Vo2MaxRecord.Builder(testMetadataBuilder.build(), Instant.now(), 1, 10.0)
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    Vo2MaxRecord getVo2MaxRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new Vo2MaxRecord.Builder(metadataWithId, Instant.now(), 2, 20.0)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

@@ -24,7 +24,7 @@ import static android.health.connect.datatypes.AggregationType.AggregationTypeId
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Helper class for HeartRateRecord.
@@ -118,14 +119,14 @@ public class HeartRateRecordHelper
     @Override
     void populateSpecificValues(Cursor seriesTableCursor, HeartRateRecordInternal record) {
         HashSet<HeartRateRecordInternal.HeartRateSample> heartRateSamplesSet = new HashSet<>();
-        String uuid = getCursorString(seriesTableCursor, UUID_COLUMN_NAME);
+        UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
             heartRateSamplesSet.add(
                     new HeartRateRecordInternal.HeartRateSample(
                             getCursorInt(seriesTableCursor, BEATS_PER_MINUTE_COLUMN_NAME),
                             getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
         } while (seriesTableCursor.moveToNext()
-                && uuid.equals(getCursorString(seriesTableCursor, UUID_COLUMN_NAME)));
+                && uuid.equals(getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();

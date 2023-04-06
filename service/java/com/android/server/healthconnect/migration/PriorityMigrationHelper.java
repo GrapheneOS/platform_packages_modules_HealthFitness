@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.migration;
 
+import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;
@@ -28,7 +29,6 @@ import android.health.connect.HealthDataCategory;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
@@ -56,31 +56,16 @@ public final class PriorityMigrationHelper {
 
     @VisibleForTesting static final String CATEGORY_COLUMN_NAME = "category";
     @VisibleForTesting static final String PRIORITY_ORDER_COLUMN_NAME = "priority_order";
-
-    private static final int DB_VERSION_TABLE_CREATED = 5;
+    private static final List<Pair<String, Integer>> UNIQUE_COLUMN_INFO =
+            Collections.singletonList(new Pair<>(CATEGORY_COLUMN_NAME, TYPE_STRING));
 
     private static final Object sPriorityMigrationHelperLock = new Object();
-    private Map<Integer, List<Long>> mPreMigrationPriorityCache;
-
     private static volatile PriorityMigrationHelper sPriorityMigrationHelper;
 
     private final Object mPriorityMigrationHelperInstanceLock = new Object();
+    private Map<Integer, List<Long>> mPreMigrationPriorityCache;
 
     private PriorityMigrationHelper() {}
-
-    /** Creates(if it was not already created) and returns instance of PriorityMigrationHelper. */
-    @NonNull
-    public static PriorityMigrationHelper getInstance() {
-        if (sPriorityMigrationHelper == null) {
-            synchronized (sPriorityMigrationHelperLock) {
-                if (sPriorityMigrationHelper == null) {
-                    sPriorityMigrationHelper = new PriorityMigrationHelper();
-                }
-            }
-        }
-
-        return sPriorityMigrationHelper;
-    }
 
     /**
      * Populate the pre-migration priority table by copying entries from priority table at the start
@@ -146,14 +131,7 @@ public final class PriorityMigrationHelper {
     }
 
     /** Upgrades the database to the latest version. */
-    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion) {
-        if (oldVersion < DB_VERSION_TABLE_CREATED) {
-            HealthConnectDatabase.createTable(db, getCreateTableRequest());
-            return; // No more queries running after this, the table is already on latest schema
-        }
-
-        // Add more upgrades here
-    }
+    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
 
     /**
      * Populate the pre-migration priority table if table is newly created by copying entries from
@@ -165,16 +143,17 @@ public final class PriorityMigrationHelper {
                             .getHealthDataCategoryToAppIdPriorityMapImmutable();
 
             TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-            existingPriority.forEach(
-                    (category, priority) -> {
-                        if (!priority.isEmpty()) {
-                            UpsertTableRequest request =
-                                    new UpsertTableRequest(
-                                            PRE_MIGRATION_TABLE_NAME,
-                                            getContentValuesFor(category, priority));
-                            transactionManager.insert(request);
-                        }
-                    });
+        existingPriority.forEach(
+                (category, priority) -> {
+                    if (!priority.isEmpty()) {
+                        UpsertTableRequest request =
+                                new UpsertTableRequest(
+                                        PRE_MIGRATION_TABLE_NAME,
+                                        getContentValuesFor(category, priority),
+                                        UNIQUE_COLUMN_INFO);
+                        transactionManager.insert(request);
+                    }
+                });
         if (existingPriority.values().stream()
                 .filter(priority -> !priority.isEmpty())
                 .findAny()
@@ -187,7 +166,8 @@ public final class PriorityMigrationHelper {
             UpsertTableRequest request =
                     new UpsertTableRequest(
                             PRE_MIGRATION_TABLE_NAME,
-                            getContentValuesFor(HealthDataCategory.UNKNOWN, new ArrayList<>()));
+                            getContentValuesFor(HealthDataCategory.UNKNOWN, new ArrayList<>()),
+                            UNIQUE_COLUMN_INFO);
             transactionManager.insert(request);
         }
     }
@@ -212,5 +192,19 @@ public final class PriorityMigrationHelper {
         contentValues.put(PRIORITY_ORDER_COLUMN_NAME, StorageUtils.flattenLongList(priorityList));
 
         return contentValues;
+    }
+
+    /** Creates(if it was not already created) and returns instance of PriorityMigrationHelper. */
+    @NonNull
+    public static PriorityMigrationHelper getInstance() {
+        if (sPriorityMigrationHelper == null) {
+            synchronized (sPriorityMigrationHelperLock) {
+                if (sPriorityMigrationHelper == null) {
+                    sPriorityMigrationHelper = new PriorityMigrationHelper();
+                }
+            }
+        }
+
+        return sPriorityMigrationHelper;
     }
 }

@@ -59,6 +59,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -94,7 +95,9 @@ public class WeightRecordTest {
     @Test
     public void testReadWeightRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<WeightRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(WeightRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(WeightRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         List<WeightRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
@@ -384,10 +387,10 @@ public class WeightRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -516,6 +519,22 @@ public class WeightRecordTest {
                 .build();
     }
 
+    WeightRecord getWeightRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new WeightRecord.Builder(metadataWithId, Instant.now(), Mass.fromGrams(20.0))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static WeightRecord getBaseWeightRecord() {
         return new WeightRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(10.0))
@@ -546,22 +565,6 @@ public class WeightRecordTest {
 
         return new WeightRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    WeightRecord getWeightRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new WeightRecord.Builder(metadataWithId, Instant.now(), Mass.fromGrams(20.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
