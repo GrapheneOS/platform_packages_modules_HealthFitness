@@ -52,7 +52,9 @@ constructor(
             titleA11y = title,
             header = appName,
             headerA11y = appName,
-            dataType = DataType.MENSTRUATION_PERIOD)
+            dataType = DataType.MENSTRUATION_PERIOD,
+            startTime = record.startTime,
+            endTime = record.endTime)
     }
 
     private fun dayOfPeriod(record: MenstruationPeriodRecord, day: Instant): Int {

@@ -58,4 +58,10 @@ object DeletionConstants {
      * should be false.
      */
     const val SHOW_PICKER = "SHOW_PICKER"
+
+    /** The bundle key for start time. */
+    const val START_TIME = "START_TIME"
+
+    /** The bundle key for end time. */
+    const val END_TIME = "END_TIME"
 }

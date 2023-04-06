@@ -34,7 +34,10 @@ import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSess
 import com.android.healthconnect.controller.dataentries.HeartRateItemViewBinder
 import com.android.healthconnect.controller.dataentries.OnDeleteEntryListener
 import com.android.healthconnect.controller.dataentries.SleepSessionItemViewBinder
-import com.android.healthconnect.controller.deletion.DeletionConstants
+import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
+import com.android.healthconnect.controller.deletion.DeletionConstants.END_TIME
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_TIME
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
@@ -49,6 +52,7 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.setupMenu
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Instant
 import javax.inject.Inject
 
 @AndroidEntryPoint(Fragment::class)
@@ -73,8 +77,14 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
     private lateinit var detailsAdapter: RecyclerViewAdapter
     private val onDeleteEntryListener by lazy {
         object : OnDeleteEntryListener {
-            override fun onDeleteEntry(id: String, dataType: DataType, index: Int) {
-                deleteEntry(id, dataType, index)
+            override fun onDeleteEntry(
+                id: String,
+                dataType: DataType,
+                index: Int,
+                startTime: Instant?,
+                endTime: Instant?
+            ) {
+                deleteEntry(id, dataType, index, startTime, endTime)
             }
         }
     }
@@ -184,10 +194,23 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
         }
     }
 
-    private fun deleteEntry(uuid: String, dataType: DataType, index: Int) {
+    private fun deleteEntry(
+        uuid: String,
+        dataType: DataType,
+        index: Int,
+        startTime: Instant?,
+        endTime: Instant?
+    ) {
         val deletionType = DeletionType.DeleteDataEntry(uuid, dataType, index)
-        childFragmentManager.setFragmentResult(
-            DeletionConstants.START_DELETION_EVENT,
-            bundleOf(DeletionConstants.DELETION_TYPE to deletionType))
+
+        if (deletionType.dataType == DataType.MENSTRUATION_PERIOD) {
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT,
+                bundleOf(
+                    DELETION_TYPE to deletionType, START_TIME to startTime, END_TIME to endTime))
+        } else {
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+        }
     }
 }
