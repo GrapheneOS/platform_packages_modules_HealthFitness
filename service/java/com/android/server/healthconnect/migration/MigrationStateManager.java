@@ -377,7 +377,7 @@ public final class MigrationStateManager {
             HealthConnectThreadScheduler.scheduleInternalTask(
                     () -> {
                         try {
-                            mMigrationBroadcastScheduler.prescheduleNewJobs(context);
+                            mMigrationBroadcastScheduler.scheduleNewJobs(context);
                         } catch (Exception e) {
                             Slog.e(TAG, "Migration broadcast schedule failed", e);
                         }

@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 public class MigrationConstants {
     public static final String EXTRA_USER_ID = "userId";
 
-    static final int COUNT_MIGRATION_STATE_IDLE = 5;
     static final int COUNT_MIGRATION_STATE_IN_PROGRESS = 5;
     static final int COUNT_MIGRATION_STATE_ALLOWED = 5;
     static final int COUNT_DEFAULT = 0;
