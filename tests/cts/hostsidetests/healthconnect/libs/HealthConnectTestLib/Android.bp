@@ -18,7 +18,10 @@ package {
 
 java_library {
     name: "cts-healthconnect-lib",
-    srcs: ["src/**/*.java"],
+    srcs: [
+          "src/**/*.java",
+          "src/**/*.kt"
+    ],
     static_libs: [
                  "androidx.appcompat_appcompat",
                  "androidx.test.rules",

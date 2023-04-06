@@ -22,10 +22,10 @@ import android.health.connect.datatypes.StepsRecord
 import android.healthconnect.cts.TestUtils.insertRecords
 import android.healthconnect.cts.TestUtils.setAutoDeletePeriod
 import android.healthconnect.cts.TestUtils.verifyDeleteRecords
-import android.healthconnect.cts.ui.testing.ActivityLauncher.launchDataActivity
-import android.healthconnect.cts.ui.testing.UiTestUtils.clickOnText
-import android.healthconnect.cts.ui.testing.UiTestUtils.stepsRecordFromTestApp
-import android.healthconnect.cts.ui.testing.UiTestUtils.waitDisplayed
+import android.healthconnect.cts.lib.ActivityLauncher.launchDataActivity
+import android.healthconnect.cts.lib.UiTestUtils.clickOnText
+import android.healthconnect.cts.lib.UiTestUtils.stepsRecordFromTestApp
+import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import androidx.test.uiautomator.By
 import java.time.Instant
 import org.junit.After
