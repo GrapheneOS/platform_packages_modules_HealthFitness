@@ -179,7 +179,7 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
+                        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
                     } catch (Exception e) {
                         Slog.e(TAG, "Migration broadcast schedule failed", e);
                     }
