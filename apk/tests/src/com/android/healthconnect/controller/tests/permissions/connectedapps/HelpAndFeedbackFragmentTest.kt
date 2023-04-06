@@ -36,7 +36,7 @@ class HelpAndFeedbackFragmentTest {
 
         onView(
                 withText(
-                    "If you can’t see an installed app, it may not be compatible with Health\u00A0Connect yet"))
+                    "If you can't see an installed app, it may not be compatible with Health\u00A0Connect yet"))
             .check(matches(isDisplayed()))
         onView(withText("Things to try")).check(matches(isDisplayed()))
         onView(withText("Check for updates")).check(matches(isDisplayed()))
@@ -46,7 +46,7 @@ class HelpAndFeedbackFragmentTest {
         onView(withText("Send feedback")).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Tell us which health & fitness apps you’d like to work with Health\u00A0Connect"))
+                    "Tell us which health & fitness apps you'd like to work with Health\u00A0Connect"))
             .check(matches(isDisplayed()))
     }
 }

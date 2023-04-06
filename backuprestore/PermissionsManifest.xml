@@ -18,5 +18,5 @@
          Only this app can hold this permission. -->
     <permission
         android:name="android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature|privileged"/>
 </manifest>

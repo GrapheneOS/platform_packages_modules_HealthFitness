@@ -16,7 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="aandroid.healthconnect.cts.testapp.dataManagePerms"
+          package="android.healthconnect.cts.testapp.data.manage.permissions"
           android:versionCode="1"
           android:versionName="1.0">
 

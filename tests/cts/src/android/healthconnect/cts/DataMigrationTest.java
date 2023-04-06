@@ -277,20 +277,20 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateRecord_sameEntityId_ignored() {
+    public void migrateRecord_sameEntityId_notIgnored() {
         final String entityId = "height";
 
         final Length height1 = fromMeters(3D);
         migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height1).build(), entityId);
 
         final Length height2 = fromMeters(1D);
-        migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height2).build(), entityId);
+        migrate(new HeightRecord.Builder(getMetadata(), mStartTime, height2).build(), entityId);
 
         finishMigration();
 
         final List<HeightRecord> records = getRecords(HeightRecord.class);
         mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
-                .containsExactly(height1);
+                .containsExactly(height1, height2);
     }
 
     @Test
@@ -572,6 +572,9 @@ public class DataMigrationTest {
                 () -> {
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
                             .isEqualTo(MIGRATION_STATE_IDLE);
+                    TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(MIGRATION_STATE_ALLOWED);
                     TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
                     assertThat(TestUtils.getHealthConnectDataMigrationState())
                             .isEqualTo(MIGRATION_STATE_ALLOWED);

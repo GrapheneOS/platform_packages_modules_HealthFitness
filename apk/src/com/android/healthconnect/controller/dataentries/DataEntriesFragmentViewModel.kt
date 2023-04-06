@@ -49,9 +49,11 @@ constructor(
     private val _dataEntries = MutableLiveData<DataEntriesFragmentState>()
     val dataEntries: LiveData<DataEntriesFragmentState>
         get() = _dataEntries
+    val currentSelectedDate = MutableLiveData<Instant>()
 
     fun loadData(permissionType: HealthPermissionType, selectedDate: Instant) {
         _dataEntries.postValue(DataEntriesFragmentState.Loading)
+        currentSelectedDate.postValue(selectedDate)
         viewModelScope.launch {
             val list = ArrayList<FormattedEntry>()
             val entriesResults =

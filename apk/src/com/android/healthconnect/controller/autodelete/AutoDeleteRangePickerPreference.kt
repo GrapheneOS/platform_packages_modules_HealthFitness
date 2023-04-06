@@ -41,12 +41,17 @@ class AutoDeleteRangePickerPreference
 constructor(
     context: Context,
     private val childFragmentManager: FragmentManager,
-    private val autoDeleteRange: AutoDeleteRange,
+    private var autoDeleteRange: AutoDeleteRange,
     private val logger: HealthConnectLogger
 ) : Preference(context), RadioGroup.OnCheckedChangeListener {
 
     companion object {
         const val SET_TO_NEVER_EVENT = "SET_TO_NEVER_EVENT"
+        const val AUTO_DELETE_RANGE_PICKER_PREFERENCE_KEY = "auto_delete_range_picker"
+    }
+
+    init {
+        key = AUTO_DELETE_RANGE_PICKER_PREFERENCE_KEY
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {
@@ -138,5 +143,10 @@ constructor(
 
     override fun onCheckedChanged(radioGroup: RadioGroup, checkedId: Int) {
         setToNeverOrAskConfirmation(checkedId)
+    }
+
+    fun updateAutoDeleteRange(newAutoDeleteRange: AutoDeleteRange) {
+        autoDeleteRange = newAutoDeleteRange
+        notifyChanged()
     }
 }

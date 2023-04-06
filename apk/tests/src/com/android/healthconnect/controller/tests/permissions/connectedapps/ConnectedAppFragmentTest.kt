@@ -330,7 +330,7 @@ class ConnectedAppFragmentTest {
 
         onView(
                 withText(
-                    "$TEST_APP_NAME can access data added after October 20, 2022" +
+                    "$TEST_APP_NAME can read data added after October 20, 2022" +
                         "\n\n" +
                         "To manage other Android permissions this app can " +
                         "access, go to Settings > Apps" +

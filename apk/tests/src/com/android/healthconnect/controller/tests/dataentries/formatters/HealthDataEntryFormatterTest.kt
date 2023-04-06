@@ -62,8 +62,8 @@ class HealthDataEntryFormatterTest {
                 .isEqualTo(
                     FormattedDataEntry(
                         uuid = "test_id",
-                        header = "7:06 AM - 7:06 AM • Health Connect test app",
-                        headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
+                        header = "7:06 AM - 7:06 AM • Health Connect test app",
+                        headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
                         title = "80 bpm - 100 bpm",
                         titleA11y = "from 80 beats per minute to 100 beats per minute",
                         dataType = DataType.HEART_RATE))
@@ -78,8 +78,8 @@ class HealthDataEntryFormatterTest {
                 .isEqualTo(
                     FormattedDataEntry(
                         uuid = "test_id",
-                        header = "7:06 AM - 7:06 AM • Health Connect test app",
-                        headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
+                        header = "7:06 AM - 7:06 AM • Health Connect test app",
+                        headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
                         title = "12 steps",
                         titleA11y = "12 steps",
                         dataType = DataType.STEPS))
@@ -94,8 +94,8 @@ class HealthDataEntryFormatterTest {
             .isEqualTo(
                 FormattedDataEntry(
                     uuid = "test_id",
-                    header = "7:06 AM • Health Connect test app",
-                    headerA11y = "7:06 AM • Health Connect test app",
+                    header = "7:06 AM • Health Connect test app",
+                    headerA11y = "7:06 AM • Health Connect test app",
                     title = "1,548 Cal",
                     titleA11y = "1,548 calories",
                     dataType = DataType.BASAL_METABOLIC_RATE))

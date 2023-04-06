@@ -152,7 +152,7 @@ class ConnectedAppsFragmentTest {
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
-        onView(withText("You don’t currently have any compatible apps installed"))
+        onView(withText("You don't currently have any compatible apps installed"))
             .perform(ViewActions.scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Things to try")).perform(scrollTo()).check(matches(isDisplayed()))
@@ -169,7 +169,7 @@ class ConnectedAppsFragmentTest {
         onView(withText("Send feedback")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Tell us which health & fitness apps you’d like to work with Health\u00A0Connect"))
+                    "Tell us which health & fitness apps you'd like to work with Health\u00A0Connect"))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Allowed access")).check(doesNotExist())
@@ -200,7 +200,9 @@ class ConnectedAppsFragmentTest {
 
     @Test
     fun withNoApps_showsEmptyState() {
-        whenever(viewModel.connectedApps).then { MutableLiveData(emptyList<ConnectedAppMetadata>()) }
+        whenever(viewModel.connectedApps).then {
+            MutableLiveData(emptyList<ConnectedAppMetadata>())
+        }
         launchFragment<ConnectedAppsFragment>(Bundle())
 
         onView(withText("Send feedback")).check(matches(isDisplayed()))

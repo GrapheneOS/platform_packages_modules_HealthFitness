@@ -216,7 +216,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mMigrationStateManager = migrationStateManager;
         mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
-        mBackupRestore = new BackupRestore(mFirstGrantTimeManager);
+        mBackupRestore = new BackupRestore(mFirstGrantTimeManager, mContext);
 
         migrationCleaner.attachTo(migrationStateManager);
     }
@@ -921,6 +921,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA)
                         .setPackageName(attributionSource.getPackageName());
+        enforceIsForegroundUser(getCallingUserHandle());
         verifyPackageNameFromUid(
                 uid, attributionSource.getUid(), attributionSource.getPackageName());
 
@@ -1018,6 +1019,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IGetPriorityResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
@@ -1066,6 +1068,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull IEmptyResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
@@ -1102,6 +1105,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             int days, @NonNull UserHandle user, IEmptyResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
@@ -1132,7 +1136,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     public int getRecordRetentionPeriodInDays(@NonNull UserHandle user) {
-
+        enforceIsForegroundUser(getCallingUserHandle());
         throwExceptionIfDataSyncInProgress();
         try {
             mContext.enforceCallingPermission(MANAGE_HEALTH_DATA_PERMISSION, null);
@@ -1159,6 +1163,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void getContributorApplicationsInfo(@NonNull IApplicationInfoResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
@@ -1194,6 +1199,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void queryAllRecordTypesInfo(@NonNull IRecordTypeInfoResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        enforceIsForegroundUser(getCallingUserHandle());
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
@@ -1228,6 +1234,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void queryAccessLogs(@NonNull String packageName, IAccessLogsResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        enforceIsForegroundUser(getCallingUserHandle());
 
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
@@ -1269,6 +1276,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             IActivityDatesResponseCallback callback) {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        enforceIsForegroundUser(getCallingUserHandle());
 
         HealthConnectThreadScheduler.scheduleControllerTask(
                 () -> {
@@ -1308,16 +1316,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void startMigration(@NonNull String packageName, IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
-        UserHandle callingUserHandle = getCallingUserHandle();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        if (!callingUserHandle.equals(mCurrentForegroundUser)) {
-                            throw new IllegalStateException(
-                                    "Calling user is not the current foreground user. "
-                                            + "These APIs must be called from the current user.");
-                        }
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(
                                 MIGRATE_HEALTH_CONNECT_DATA,
                                 pid,
@@ -1350,16 +1353,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void finishMigration(@NonNull String packageName, IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
-        UserHandle callingUserHandle = getCallingUserHandle();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        if (!callingUserHandle.equals(mCurrentForegroundUser)) {
-                            throw new IllegalStateException(
-                                    "Calling user is not the current foreground user. "
-                                            + "These APIs must be called from the current user.");
-                        }
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(
                                 MIGRATE_HEALTH_CONNECT_DATA,
                                 pid,
@@ -1392,11 +1390,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        if (!callingUserHandle.equals(mCurrentForegroundUser)) {
-                            throw new IllegalStateException(
-                                    "Calling user is not the current foreground user. "
-                                            + "These APIs must be called from the current user.");
-                        }
+                        enforceIsForegroundUser(callingUserHandle);
                         mContext.enforcePermission(
                                 MIGRATE_HEALTH_CONNECT_DATA,
                                 pid,
@@ -1425,16 +1419,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull String packageName, int requiredSdkExtension, IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
-        UserHandle callingUserHandle = getCallingUserHandle();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        if (!callingUserHandle.equals(mCurrentForegroundUser)) {
-                            throw new IllegalStateException(
-                                    "Calling user is not the current foreground user. "
-                                            + "These APIs must be called from the current user.");
-                        }
+                        enforceIsForegroundUser(getCallingUserHandle());
                         mContext.enforcePermission(
                                 MIGRATE_HEALTH_CONNECT_DATA,
                                 pid,
@@ -1557,6 +1546,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getHealthConnectDataState(
             @NonNull UserHandle userHandle, @NonNull IGetHealthConnectDataStateCallback callback) {
+        enforceIsForegroundUser(getCallingUserHandle());
         mDataPermissionEnforcer.enforceAnyOfPermissions(
                 MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
         HealthConnectThreadScheduler.scheduleInternalTask(
