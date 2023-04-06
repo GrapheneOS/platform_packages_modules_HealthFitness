@@ -25,7 +25,9 @@ import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMAT
 import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.logging.DeletionDialogConfirmationElement
+import com.android.healthconnect.controller.utils.toInstant
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -37,6 +39,10 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
 
     private val viewModel: DeletionViewModel by activityViewModels()
     private val separator = " "
+
+    private val dateFormatter: LocalDateTimeFormatter by lazy {
+        LocalDateTimeFormatter(requireContext())
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val alertDialogBuilder =
@@ -149,9 +155,13 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
 
         if (deletionType is DeletionType.DeleteDataEntry &&
             deletionType.dataType == DataType.MENSTRUATION_PERIOD) {
-            // TODO (b/276866643) retrieve min and max date of menstruation period
-            // message = getString(R.string.confirming_question_message_menstruation) + separator +
-            // message
+            message =
+                getString(
+                    R.string.confirming_question_message_menstruation,
+                    dateFormatter.formatLongDate(deletionParameters.startTimeMs.toInstant()),
+                    dateFormatter.formatLongDate(deletionParameters.endTimeMs.toInstant())) +
+                    separator +
+                    message
         }
 
         return message

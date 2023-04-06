@@ -56,7 +56,8 @@ class EntryItemViewBinder(private val onDeleteEntryListener: OnDeleteEntryListen
 
         deleteButton.setOnClickListener {
             logger.logInteraction(DataEntriesElement.DATA_ENTRY_DELETE_BUTTON)
-            onDeleteEntryListener.onDeleteEntry(data.uuid, data.dataType, index)
+            onDeleteEntryListener.onDeleteEntry(
+                data.uuid, data.dataType, index, data.startTime, data.endTime)
         }
     }
 }
