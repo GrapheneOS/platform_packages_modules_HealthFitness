@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -91,7 +92,7 @@ public class CyclingPedalingCadenceRecordTest {
     public void testReadCyclingPedalingCadenceRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<CyclingPedalingCadenceRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(CyclingPedalingCadenceRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<CyclingPedalingCadenceRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -409,10 +410,10 @@ public class CyclingPedalingCadenceRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -550,6 +551,36 @@ public class CyclingPedalingCadenceRecordTest {
         assertThat(result.containsAll(insertedRecords)).isTrue();
     }
 
+    CyclingPedalingCadenceRecord getCyclingPedalingCadenceRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+
+        CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
+                cyclingPedalingCadenceRecordSample =
+                        new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
+                                8, Instant.now().plusMillis(100));
+
+        return new CyclingPedalingCadenceRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        Instant.now().plusMillis(2000),
+                        List.of(
+                                cyclingPedalingCadenceRecordSample,
+                                cyclingPedalingCadenceRecordSample))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static CyclingPedalingCadenceRecord getBaseCyclingPedalingCadenceRecord() {
         CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
                 cyclingPedalingCadenceRecord =
@@ -598,36 +629,6 @@ public class CyclingPedalingCadenceRecordTest {
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         cyclingPedalingCadenceRecords)
-                .build();
-    }
-
-    CyclingPedalingCadenceRecord getCyclingPedalingCadenceRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-
-        CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
-                cyclingPedalingCadenceRecordSample =
-                        new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
-                                8, Instant.now().plusMillis(100));
-
-        return new CyclingPedalingCadenceRecord.Builder(
-                        metadataWithId,
-                        Instant.now(),
-                        Instant.now().plusMillis(2000),
-                        List.of(
-                                cyclingPedalingCadenceRecordSample,
-                                cyclingPedalingCadenceRecordSample))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }

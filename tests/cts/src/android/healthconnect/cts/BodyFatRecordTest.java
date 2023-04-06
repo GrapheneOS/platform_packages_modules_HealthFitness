@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -85,7 +86,9 @@ public class BodyFatRecordTest {
     @Test
     public void testReadBodyFatRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<BodyFatRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(BodyFatRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(BodyFatRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         List<BodyFatRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
@@ -375,10 +378,10 @@ public class BodyFatRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -431,12 +434,6 @@ public class BodyFatRecordTest {
         readBodyFatRecordUsingIds(insertedRecords);
     }
 
-    private static BodyFatRecord getBaseBodyFatRecord() {
-        return new BodyFatRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(10.0))
-                .build();
-    }
-
     @Test
     public void testInsertAndDeleteRecord_changelogs() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -480,6 +477,28 @@ public class BodyFatRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
+    BodyFatRecord getBodyFatRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new BodyFatRecord.Builder(metadataWithId, Instant.now(), Percentage.fromValue(10.0))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    private static BodyFatRecord getBaseBodyFatRecord() {
+        return new BodyFatRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(10.0))
+                .build();
+    }
+
     private static BodyFatRecord getCompleteBodyFatRecord() {
         Device device =
                 new Device.Builder()
@@ -496,22 +515,6 @@ public class BodyFatRecordTest {
 
         return new BodyFatRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Percentage.fromValue(10.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    BodyFatRecord getBodyFatRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new BodyFatRecord.Builder(metadataWithId, Instant.now(), Percentage.fromValue(10.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

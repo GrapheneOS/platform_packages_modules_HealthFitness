@@ -98,6 +98,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class NutritionRecordTest {
@@ -173,7 +174,7 @@ public class NutritionRecordTest {
     public void testReadNutritionRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<NutritionRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(NutritionRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<NutritionRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -641,10 +642,10 @@ public class NutritionRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -742,78 +743,6 @@ public class NutritionRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
-    static NutritionRecord getBaseNutritionRecord() {
-        return new NutritionRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000))
-                .build();
-    }
-
-    static NutritionRecord getCompleteNutritionRecord() {
-        Device device =
-                new Device.Builder()
-                        .setManufacturer("google")
-                        .setModel("Pixel4a")
-                        .setType(2)
-                        .build();
-        DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
-        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        testMetadataBuilder.setClientRecordId("NTR" + Math.random());
-
-        return new NutritionRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Instant.now().plusMillis(1000))
-                .setUnsaturatedFat(Mass.fromGrams(0.1))
-                .setPotassium(Mass.fromGrams(0.1))
-                .setThiamin(Mass.fromGrams(0.1))
-                .setMealType(1)
-                .setTransFat(Mass.fromGrams(0.1))
-                .setManganese(Mass.fromGrams(0.1))
-                .setEnergyFromFat(Energy.fromCalories(0.1))
-                .setCaffeine(Mass.fromGrams(0.1))
-                .setDietaryFiber(Mass.fromGrams(0.1))
-                .setSelenium(Mass.fromGrams(0.1))
-                .setVitaminB6(Mass.fromGrams(0.1))
-                .setProtein(Mass.fromGrams(0.1))
-                .setChloride(Mass.fromGrams(0.1))
-                .setCholesterol(Mass.fromGrams(0.1))
-                .setCopper(Mass.fromGrams(0.1))
-                .setIodine(Mass.fromGrams(0.1))
-                .setVitaminB12(Mass.fromGrams(0.1))
-                .setZinc(Mass.fromGrams(0.1))
-                .setRiboflavin(Mass.fromGrams(0.1))
-                .setEnergy(Energy.fromCalories(0.1))
-                .setMolybdenum(Mass.fromGrams(0.1))
-                .setPhosphorus(Mass.fromGrams(0.1))
-                .setChromium(Mass.fromGrams(0.1))
-                .setTotalFat(Mass.fromGrams(0.1))
-                .setCalcium(Mass.fromGrams(0.1))
-                .setVitaminC(Mass.fromGrams(0.1))
-                .setVitaminE(Mass.fromGrams(0.1))
-                .setBiotin(Mass.fromGrams(0.1))
-                .setVitaminD(Mass.fromGrams(0.1))
-                .setNiacin(Mass.fromGrams(0.1))
-                .setMagnesium(Mass.fromGrams(0.1))
-                .setTotalCarbohydrate(Mass.fromGrams(0.1))
-                .setVitaminK(Mass.fromGrams(0.1))
-                .setPolyunsaturatedFat(Mass.fromGrams(0.1))
-                .setSaturatedFat(Mass.fromGrams(0.1))
-                .setSodium(Mass.fromGrams(0.1))
-                .setFolate(Mass.fromGrams(0.1))
-                .setMonounsaturatedFat(Mass.fromGrams(0.1))
-                .setPantothenicAcid(Mass.fromGrams(0.1))
-                .setMealName("Brunch")
-                .setIron(Mass.fromGrams(0.1))
-                .setVitaminA(Mass.fromGrams(0.1))
-                .setFolicAcid(Mass.fromGrams(0.1))
-                .setSugar(Mass.fromGrams(0.1))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     private void readNutritionRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<NutritionRecord> request =
@@ -894,6 +823,78 @@ public class NutritionRecordTest {
                 .setVitaminA(Mass.fromGrams(0.1))
                 .setFolicAcid(Mass.fromGrams(0.1))
                 .setSugar(Mass.fromGrams(0.2))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    static NutritionRecord getBaseNutritionRecord() {
+        return new NutritionRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000))
+                .build();
+    }
+
+    static NutritionRecord getCompleteNutritionRecord() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setClientRecordId("NTR" + Math.random());
+
+        return new NutritionRecord.Builder(
+                        testMetadataBuilder.build(), Instant.now(), Instant.now().plusMillis(1000))
+                .setUnsaturatedFat(Mass.fromGrams(0.1))
+                .setPotassium(Mass.fromGrams(0.1))
+                .setThiamin(Mass.fromGrams(0.1))
+                .setMealType(1)
+                .setTransFat(Mass.fromGrams(0.1))
+                .setManganese(Mass.fromGrams(0.1))
+                .setEnergyFromFat(Energy.fromCalories(0.1))
+                .setCaffeine(Mass.fromGrams(0.1))
+                .setDietaryFiber(Mass.fromGrams(0.1))
+                .setSelenium(Mass.fromGrams(0.1))
+                .setVitaminB6(Mass.fromGrams(0.1))
+                .setProtein(Mass.fromGrams(0.1))
+                .setChloride(Mass.fromGrams(0.1))
+                .setCholesterol(Mass.fromGrams(0.1))
+                .setCopper(Mass.fromGrams(0.1))
+                .setIodine(Mass.fromGrams(0.1))
+                .setVitaminB12(Mass.fromGrams(0.1))
+                .setZinc(Mass.fromGrams(0.1))
+                .setRiboflavin(Mass.fromGrams(0.1))
+                .setEnergy(Energy.fromCalories(0.1))
+                .setMolybdenum(Mass.fromGrams(0.1))
+                .setPhosphorus(Mass.fromGrams(0.1))
+                .setChromium(Mass.fromGrams(0.1))
+                .setTotalFat(Mass.fromGrams(0.1))
+                .setCalcium(Mass.fromGrams(0.1))
+                .setVitaminC(Mass.fromGrams(0.1))
+                .setVitaminE(Mass.fromGrams(0.1))
+                .setBiotin(Mass.fromGrams(0.1))
+                .setVitaminD(Mass.fromGrams(0.1))
+                .setNiacin(Mass.fromGrams(0.1))
+                .setMagnesium(Mass.fromGrams(0.1))
+                .setTotalCarbohydrate(Mass.fromGrams(0.1))
+                .setVitaminK(Mass.fromGrams(0.1))
+                .setPolyunsaturatedFat(Mass.fromGrams(0.1))
+                .setSaturatedFat(Mass.fromGrams(0.1))
+                .setSodium(Mass.fromGrams(0.1))
+                .setFolate(Mass.fromGrams(0.1))
+                .setMonounsaturatedFat(Mass.fromGrams(0.1))
+                .setPantothenicAcid(Mass.fromGrams(0.1))
+                .setMealName("Brunch")
+                .setIron(Mass.fromGrams(0.1))
+                .setVitaminA(Mass.fromGrams(0.1))
+                .setFolicAcid(Mass.fromGrams(0.1))
+                .setSugar(Mass.fromGrams(0.1))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

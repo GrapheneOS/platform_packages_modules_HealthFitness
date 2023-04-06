@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -87,7 +88,7 @@ public class BodyWaterMassRecordTest {
     public void testReadBodyWaterMassRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<BodyWaterMassRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(BodyWaterMassRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<BodyWaterMassRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -387,10 +388,10 @@ public class BodyWaterMassRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -525,6 +526,23 @@ public class BodyWaterMassRecordTest {
                 .build();
     }
 
+    BodyWaterMassRecord getBodyWaterMassRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new BodyWaterMassRecord.Builder(metadataWithId, Instant.now(), Mass.fromGrams(20.0))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     static BodyWaterMassRecord getBaseBodyWaterMassRecord() {
         return new BodyWaterMassRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Mass.fromGrams(100.0))
@@ -553,23 +571,6 @@ public class BodyWaterMassRecordTest {
 
         return new BodyWaterMassRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(100.0))
-                .build();
-    }
-
-    BodyWaterMassRecord getBodyWaterMassRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new BodyWaterMassRecord.Builder(metadataWithId, Instant.now(), Mass.fromGrams(20.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }

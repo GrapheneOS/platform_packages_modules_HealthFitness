@@ -52,6 +52,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class TotalCaloriesBurnedRecordTest {
@@ -88,7 +89,7 @@ public class TotalCaloriesBurnedRecordTest {
     public void testReadTotalCaloriesBurnedRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<TotalCaloriesBurnedRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(TotalCaloriesBurnedRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<TotalCaloriesBurnedRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -355,10 +356,10 @@ public class TotalCaloriesBurnedRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -485,6 +486,38 @@ public class TotalCaloriesBurnedRecordTest {
         assertThat(result).containsExactlyElementsIn(insertedRecords);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateTotalCaloriesBurnedRecord_invalidValue() {
+        new TotalCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        Energy.fromCalories(1000000001.0))
+                .build();
+    }
+
+    TotalCaloriesBurnedRecord getTotalCaloriesBurnedRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new TotalCaloriesBurnedRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        Instant.now().plusMillis(2000),
+                        Energy.fromCalories(20.0))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     static TotalCaloriesBurnedRecord getCompleteTotalCaloriesBurnedRecord() {
 
         Device device =
@@ -518,16 +551,6 @@ public class TotalCaloriesBurnedRecordTest {
                 .build();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateTotalCaloriesBurnedRecord_invalidValue() {
-        new TotalCaloriesBurnedRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000),
-                        Energy.fromCalories(1000000001.0))
-                .build();
-    }
-
     static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord(int days) {
         Instant startTime = Instant.now().minus(days, ChronoUnit.DAYS);
         return new TotalCaloriesBurnedRecord.Builder(
@@ -535,28 +558,6 @@ public class TotalCaloriesBurnedRecordTest {
                         startTime,
                         startTime.plusMillis(1000),
                         Energy.fromCalories(10.0))
-                .build();
-    }
-
-    TotalCaloriesBurnedRecord getTotalCaloriesBurnedRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new TotalCaloriesBurnedRecord.Builder(
-                        metadataWithId,
-                        Instant.now(),
-                        Instant.now().plusMillis(2000),
-                        Energy.fromCalories(20.0))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }

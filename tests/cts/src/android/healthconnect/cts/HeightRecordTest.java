@@ -59,6 +59,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -93,7 +94,9 @@ public class HeightRecordTest {
     @Test
     public void testReadHeightRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<HeightRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(HeightRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(HeightRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         List<HeightRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
@@ -409,10 +412,10 @@ public class HeightRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -508,16 +511,32 @@ public class HeightRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
-    private static HeightRecord getBaseHeightRecord() {
-        return new HeightRecord.Builder(
-                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(1.0))
-                .build();
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testCreateHeightRecord_invalidValue() {
         new HeightRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Length.fromMeters(3.1))
+                .build();
+    }
+
+    HeightRecord getHeightRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new HeightRecord.Builder(metadataWithId, Instant.now(), Length.fromMeters(2.0))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    private static HeightRecord getBaseHeightRecord() {
+        return new HeightRecord.Builder(
+                        new Metadata.Builder().build(), Instant.now(), Length.fromMeters(1.0))
                 .build();
     }
 
@@ -545,22 +564,6 @@ public class HeightRecordTest {
 
         return new HeightRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Length.fromMeters(1.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    HeightRecord getHeightRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new HeightRecord.Builder(metadataWithId, Instant.now(), Length.fromMeters(2.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

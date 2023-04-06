@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -87,7 +88,7 @@ public class BloodGlucoseRecordTest {
     public void testReadBloodGlucoseRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<BloodGlucoseRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(BloodGlucoseRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<BloodGlucoseRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -385,10 +386,10 @@ public class BloodGlucoseRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -511,6 +512,29 @@ public class BloodGlucoseRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
+    BloodGlucoseRecord getBloodGlucoseRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new BloodGlucoseRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        2,
+                        BloodGlucose.fromMillimolesPerLiter(20.0),
+                        2,
+                        2)
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static BloodGlucoseRecord getBaseBloodGlucoseRecord() {
         return new BloodGlucoseRecord.Builder(
                         new Metadata.Builder().build(),
@@ -543,29 +567,6 @@ public class BloodGlucoseRecordTest {
                         BloodGlucose.fromMillimolesPerLiter(10.0),
                         1,
                         1)
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    BloodGlucoseRecord getBloodGlucoseRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new BloodGlucoseRecord.Builder(
-                        metadataWithId,
-                        Instant.now(),
-                        2,
-                        BloodGlucose.fromMillimolesPerLiter(20.0),
-                        2,
-                        2)
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

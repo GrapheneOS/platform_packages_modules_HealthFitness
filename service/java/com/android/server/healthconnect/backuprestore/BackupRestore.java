@@ -104,34 +104,19 @@ public final class BackupRestore {
     public static final int INTERNAL_RESTORE_STATE_STAGING_DONE = 3;
     public static final int INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS = 4;
     public static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 5;
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-        INTERNAL_RESTORE_STATE_UNKNOWN,
-        INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
-        INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
-        INTERNAL_RESTORE_STATE_STAGING_DONE,
-        INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS,
-        INTERNAL_RESTORE_STATE_MERGING_DONE
-    })
-    public @interface InternalRestoreState {}
     // Key for storing the current data restore state on disk.
     public static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
     // Key for storing the error restoring HC data.
     public static final String DATA_RESTORE_ERROR_KEY = "data_restore_error_key";
-
     private static final String TAG = "HealthConnectBackupRestore";
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
     private final FirstGrantTimeManager mFirstGrantTimeManager;
-
     private final Context mStagedDbContext;
     private final Context mContext;
     private final Map<Long, String> mStagedPackageNamesByAppIds = new ArrayMap<>();
     private final Object mMergingLock = new Object();
-
     @GuardedBy("mMergingLock")
     private HealthConnectDatabase mStagedDatabase;
-
     private boolean mActivelyStagingRemoteData = false;
 
     public BackupRestore(FirstGrantTimeManager firstGrantTimeManager, @NonNull Context context) {
@@ -484,16 +469,8 @@ public final class BackupRestore {
                         DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
     }
 
-    /**
-     * Get the dir for the user with all the staged data - either from the cloud restore or from the
-     * d2d process.
-     */
-    private static File getStagedRemoteDataDirectoryForUser(int userId) {
-        File hcDirectoryForUser = FilesUtil.getDataSystemCeHCDirectoryForUser(userId);
-        return new File(hcDirectoryForUser, "remote_staged");
-    }
-
     private void merge(int userId) {
+        Log.e("TAG", "merge: " + userId);
         if (getInternalRestoreState(userId) >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
             return;
         }
@@ -505,6 +482,7 @@ public final class BackupRestore {
 
     private void mergeDatabase(int userId) {
         synchronized (mMergingLock) {
+            Log.e("TAG", "mergeDatabase: " + userId);
             if (!mStagedDbContext.getDatabasePath(HealthConnectDatabase.getName()).exists()) {
                 // no db was staged
                 return;
@@ -541,6 +519,12 @@ public final class BackupRestore {
         long token = DEFAULT_LONG;
         do {
             var recordsToMergeAndToken = getRecordsToMerge(recordTypeClass, token, recordHelper);
+            Log.e(
+                    "TAG",
+                    "mergeRecordsOfType: "
+                            + recordHelper.getClass().toString()
+                            + " "
+                            + recordsToMergeAndToken.first.size());
             if (recordsToMergeAndToken.first.isEmpty()) {
                 break;
             }
@@ -661,6 +645,26 @@ public final class BackupRestore {
             }
             return mStagedDatabase;
         }
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+        INTERNAL_RESTORE_STATE_UNKNOWN,
+        INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
+        INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
+        INTERNAL_RESTORE_STATE_STAGING_DONE,
+        INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS,
+        INTERNAL_RESTORE_STATE_MERGING_DONE
+    })
+    public @interface InternalRestoreState {}
+
+    /**
+     * Get the dir for the user with all the staged data - either from the cloud restore or from the
+     * d2d process.
+     */
+    private static File getStagedRemoteDataDirectoryForUser(int userId) {
+        File hcDirectoryForUser = FilesUtil.getDataSystemCeHCDirectoryForUser(userId);
+        return new File(hcDirectoryForUser, "remote_staged");
     }
 
     /**
