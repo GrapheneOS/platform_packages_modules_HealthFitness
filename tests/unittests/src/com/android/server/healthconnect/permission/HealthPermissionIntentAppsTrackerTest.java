@@ -44,7 +44,6 @@ public class HealthPermissionIntentAppsTrackerTest {
 
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
-
     @Mock private UserManager mUserManager;
     private HealthPermissionIntentAppsTracker mTracker;
 
