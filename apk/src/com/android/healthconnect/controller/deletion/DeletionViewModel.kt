@@ -83,6 +83,11 @@ constructor(
             _deletionParameters.value?.copy(endTimeMs = endTime.toEpochMilli())
     }
 
+    fun setStartTime(startTime: Instant) {
+        _deletionParameters.value =
+            _deletionParameters.value?.copy(startTimeMs = startTime.toEpochMilli())
+    }
+
     private var _categoriesReloadNeeded = MutableLiveData(false)
     private val _appPermissionReloadNeeded = MutableLiveData(false)
 
