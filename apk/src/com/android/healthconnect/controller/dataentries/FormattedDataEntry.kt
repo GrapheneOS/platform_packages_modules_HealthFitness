@@ -48,6 +48,16 @@ sealed class FormattedEntry(open val uuid: String) {
         val notes: String?,
         val route: ExerciseRoute? = null
     ) : FormattedEntry(uuid)
+
+    data class HeartRateEntry(
+        override val uuid: String,
+        val header: String,
+        val headerA11y: String,
+        val title: String,
+        val titleA11y: String,
+        val dataType: DataType
+    ) : FormattedEntry(uuid)
+
     data class SessionHeader(val header: String) : FormattedEntry(uuid = "")
 
     data class FormattedSessionDetail(
