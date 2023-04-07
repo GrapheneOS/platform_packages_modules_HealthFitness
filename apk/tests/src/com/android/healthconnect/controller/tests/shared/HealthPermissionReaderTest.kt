@@ -86,6 +86,10 @@ class HealthPermissionReaderTest {
                 override fun isExerciseRouteEnabled(): Boolean {
                     return true
                 }
+
+                override fun isEntryPointsEnabled(): Boolean {
+                    return true
+                }
             }
         private val disabledRouteFeature =
             object : FeatureUtils {
@@ -96,6 +100,10 @@ class HealthPermissionReaderTest {
                 override fun isExerciseRouteEnabled(): Boolean {
                     return false
                 }
+
+                override fun isEntryPointsEnabled(): Boolean {
+                    return true
+                }
             }
         private val enabledFeatures =
             object : FeatureUtils {
@@ -104,6 +112,9 @@ class HealthPermissionReaderTest {
                 }
 
                 override fun isExerciseRouteEnabled(): Boolean {
+                    return true
+                }
+                override fun isEntryPointsEnabled(): Boolean {
                     return true
                 }
             }
