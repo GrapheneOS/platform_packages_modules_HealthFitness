@@ -112,5 +112,6 @@ object FakeFeaturesUtilsModule {
         object : FeatureUtils {
             override fun isSessionTypesEnabled(): Boolean = true
             override fun isExerciseRouteEnabled(): Boolean = true
+            override fun isEntryPointsEnabled(): Boolean = true
         }
 }
