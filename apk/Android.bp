@@ -61,7 +61,7 @@ android_app_certificate {
 android_library {
     name: "HealthConnectLibrary",
     srcs: [":healthConnectController-sources"],
-    sdk_version: "module_current",
+    sdk_version: "system_current",
     min_sdk_version: "UpsideDownCake",
     libs: [
         "kotlin-annotations",
@@ -102,6 +102,7 @@ android_app {
     srcs: ["src/**/HealthConnectApplication.kt"],
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
+    privileged: true,
     rename_resources_package: false,
     updatable: true,
     additional_manifests: [
