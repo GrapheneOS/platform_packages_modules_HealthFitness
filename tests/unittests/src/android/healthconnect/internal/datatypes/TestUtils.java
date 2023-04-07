@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.time.Period;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class TestUtils {
 
@@ -77,7 +78,7 @@ public class TestUtils {
                         .setClientRecordId("client_id")
                         .setManufacturer("manufacturer")
                         .setClientRecordVersion(12)
-                        .setUuid("id")
+                        .setUuid(UUID.randomUUID())
                         .setPackageName("android.healthconnect.unittests")
                         .setModel("Pixel4a");
     }
@@ -96,7 +97,7 @@ public class TestUtils {
                         .setClientRecordId("client_id")
                         .setManufacturer("manufacturer")
                         .setClientRecordVersion(12)
-                        .setUuid("id")
+                        .setUuid(UUID.randomUUID())
                         .setPackageName("android.healthconnect.unittests")
                         .setModel("Pixel4a");
     }
@@ -126,7 +127,7 @@ public class TestUtils {
                         .setExerciseType(ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
                         .setStartTime((long) 1e9)
                         .setEndTime((long) 1e10)
-                        .setUuid("id")
+                        .setUuid(UUID.randomUUID())
                         .setPackageName("android.healthconnect.unittests");
     }
 
@@ -135,7 +136,7 @@ public class TestUtils {
                 new SleepSessionRecordInternal()
                         .setStartTime((long) 1e9)
                         .setEndTime((long) 1e10)
-                        .setUuid("id")
+                        .setUuid(UUID.randomUUID())
                         .setPackageName("android.healthconnect.unittests");
     }
 

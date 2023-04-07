@@ -17,11 +17,9 @@
 package com.android.server.healthconnect.migration;
 
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_ALLOWED;
-import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 
 import static com.android.server.healthconnect.migration.MigrationConstants.COUNT_MIGRATION_STATE_ALLOWED;
-import static com.android.server.healthconnect.migration.MigrationConstants.COUNT_MIGRATION_STATE_IDLE;
 import static com.android.server.healthconnect.migration.MigrationConstants.COUNT_MIGRATION_STATE_IN_PROGRESS;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -66,6 +64,9 @@ public class MigrationBroadcastSchedulingTest {
             new MigrationBroadcastScheduler(0);
 
     private MockitoSession mStaticMockSession;
+    private final long mMinPeriodMillis = JobInfo.getMinPeriodMillis();
+    private final long mIntervalGreaterThanMinPeriod = mMinPeriodMillis + 1000;
+    private final long mIntervalLessThanMinPeriod = mMinPeriodMillis - 1000;
 
     @Before
     public void setUp() {
@@ -75,6 +76,8 @@ public class MigrationBroadcastSchedulingTest {
                         .startMocking();
 
         MockitoAnnotations.initMocks(this);
+
+        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
     }
 
     @After
@@ -83,67 +86,289 @@ public class MigrationBroadcastSchedulingTest {
     }
 
     @Test
-    public void testPrescheduleNewJobs_migrationStateIdle_requiredCountJobsScheduled() {
-        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
-        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IDLE);
-        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
-        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
-
-        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
-
-        verifySchedulerInvocations(MIGRATION_STATE_IDLE, COUNT_MIGRATION_STATE_IDLE, times(1));
-    }
-
-    @Test
-    public void testPrescheduleNewJobs_migrationStateInProgress_requiredCountJobsScheduled() {
+    public void
+            testScheduling_migrationInProgressIntervalGreaterThanMinimum_periodicJobScheduled() {
         when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IN_PROGRESS);
-        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
-        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_IN_PROGRESS))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
 
-        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
 
-        verifySchedulerInvocations(
-                MIGRATION_STATE_IN_PROGRESS, COUNT_MIGRATION_STATE_IN_PROGRESS, times(1));
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
     }
 
     @Test
-    public void testPrescheduleNewJobs_migrationStateAllowed_requiredCountJobsScheduled() {
+    public void testScheduling_migrationInProgressIntervalEqualToMinimum_periodicJobScheduled() {
         when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
-        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
-        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
-        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IN_PROGRESS);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_IN_PROGRESS))
+                .thenReturn(mMinPeriodMillis);
 
-        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
 
-        verifySchedulerInvocations(
-                MIGRATION_STATE_ALLOWED, COUNT_MIGRATION_STATE_ALLOWED, times(1));
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
     }
 
     @Test
-    public void testPrescheduleNewJobs_methodReinvocation_allPreviouslyScheduledJobsCancelled() {
+    public void
+            testScheduling_migrationInProgressIntervalLessThanMinimum_requiredCountJobsScheduled() {
         when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
-        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
-        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IN_PROGRESS);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_IN_PROGRESS))
+                .thenReturn(mIntervalLessThanMinPeriod);
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
 
-        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
-        verifySchedulerInvocations(
-                MIGRATION_STATE_ALLOWED, COUNT_MIGRATION_STATE_ALLOWED, times(1));
-        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_IN_PROGRESS, mIntervalLessThanMinPeriod, times(1));
+    }
+
+    @Test
+    public void testScheduling_migrationAllowedIntervalGreaterThanMinimum_periodicJobScheduled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
+    }
+
+    @Test
+    public void testScheduling_requiredCountEqualToZeroIntervalGreaterThanMinimum_noJobScheduled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredCount(MIGRATION_STATE_ALLOWED)).thenReturn(0);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(0));
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalGreaterThanMinPeriod, times(0));
+    }
+
+    @Test
+    public void testScheduling_requiredCountEqualToZeroIntervalEqualToMinimum_noJobScheduled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredCount(MIGRATION_STATE_ALLOWED)).thenReturn(0);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mMinPeriodMillis);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(0));
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mMinPeriodMillis, times(0));
+    }
+
+    @Test
+    public void testScheduling_requiredCountEqualToZeroIntervalLessThanMinimum_noJobScheduled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredCount(MIGRATION_STATE_ALLOWED)).thenReturn(0);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalLessThanMinPeriod);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+
+        verifyPeriodicJobSchedulerInvocation(mIntervalLessThanMinPeriod, times(0));
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(0));
+    }
+
+    @Test
+    public void testScheduling_migrationAllowedIntervalEqualToMinimum_periodicJobScheduled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mMinPeriodMillis);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
+    }
+
+    @Test
+    public void
+            testScheduling_migrationAllowedIntervalLessThanMinimum_requiredCountJobsScheduled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalLessThanMinPeriod);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
+    }
+
+    @Test
+    public void
+            testReinvocation_origAndNewIntervalsGreaterThanMin_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(2));
+    }
+
+    @Test
+    public void
+            testReinvocation_origAndNewIntervalsEqualToMinimum_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mMinPeriodMillis);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(2));
+    }
+
+    @Test
+    public void
+            testReinvocation_origAndNewIntervalsLessThanMinimum_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalLessThanMinPeriod);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
         verify(mJobScheduler, times(COUNT_MIGRATION_STATE_ALLOWED)).cancel(anyInt());
-        verifySchedulerInvocations(
-                MIGRATION_STATE_ALLOWED, COUNT_MIGRATION_STATE_ALLOWED, times(2));
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(2));
     }
 
     @Test
-    public void testPrescheduleNewJobs_schedulingFails_noFurtherScheduling() throws Exception {
+    public void testReinvocation_origGreaterNewLessThanMinimum_previouslyScheduledJobsCancelled() {
         when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
-        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalLessThanMinPeriod);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
+    }
+
+    @Test
+    public void testReinvocation_origGreaterNewEqualToMinimum_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mMinPeriodMillis);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
+    }
+
+    @Test
+    public void
+            testReinvocation_origEqualToNewGreaterThanMinimum_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mMinPeriodMillis);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
+    }
+
+    @Test
+    public void testReinvocation_origEqualToNewLessThanMinimum_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mMinPeriodMillis);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalLessThanMinPeriod);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
+    }
+
+    @Test
+    public void testReinvocation_origLessNewGreaterThanMinimum_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalLessThanMinPeriod);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalGreaterThanMinPeriod);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(COUNT_MIGRATION_STATE_ALLOWED)).cancel(anyInt());
+        verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
+    }
+
+    @Test
+    public void testReinvocation_origLessNewEqualToMinimum_previouslyScheduledJobsCancelled() {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mIntervalLessThanMinPeriod);
+        when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
+
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verifyNonPeriodicJobSchedulerInvocation(
+                COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
+        when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
+                .thenReturn(mMinPeriodMillis);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(COUNT_MIGRATION_STATE_ALLOWED)).cancel(anyInt());
+        verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
+    }
+
+    @Test
+    public void testScheduling_schedulingFails_noFurtherScheduling() throws Exception {
+        when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_FAILURE);
 
-        mMigrationBroadcastScheduler.prescheduleNewJobs(mContext);
+        mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
 
         verify(mJobScheduler, atMost(1))
                 .schedule(
@@ -155,9 +380,22 @@ public class MigrationBroadcastSchedulingTest {
         verifyNoMoreInteractions(mJobScheduler);
     }
 
-    private void verifySchedulerInvocations(
-            int migrationState, int count, VerificationMode verificationMode) {
-        long requiredInterval = MigrationBroadcastScheduler.getRequiredInterval(migrationState);
+    private void verifyPeriodicJobSchedulerInvocation(
+            long interval, VerificationMode verificationMode) {
+        verify(mJobScheduler, verificationMode)
+                .schedule(
+                        argThat(
+                                jobInfo ->
+                                        (Objects.equals(
+                                                        jobInfo.getService().getClassName(),
+                                                        MigrationBroadcastJobService.class
+                                                                .getName()))
+                                                && jobInfo.isPeriodic()
+                                                && jobInfo.getIntervalMillis() == interval));
+    }
+
+    private void verifyNonPeriodicJobSchedulerInvocation(
+            int count, long requiredInterval, VerificationMode verificationMode) {
         for (int i = 0; i < count; i++) {
             long interval = requiredInterval * i;
             verify(mJobScheduler, verificationMode)
@@ -168,6 +406,7 @@ public class MigrationBroadcastSchedulingTest {
                                                             jobInfo.getService().getClassName(),
                                                             MigrationBroadcastJobService.class
                                                                     .getName()))
+                                                    && (!jobInfo.isPeriodic())
                                                     && (jobInfo.getMinLatencyMillis() == interval)
                                                     && (jobInfo.getMaxExecutionDelayMillis()
                                                             == interval)));

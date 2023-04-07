@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.dataentries
 
 import android.health.connect.datatypes.ExerciseRoute
 import com.android.healthconnect.controller.shared.DataType
+import java.time.Instant
 
 sealed class FormattedEntry(open val uuid: String) {
     data class FormattedDataEntry(
@@ -25,7 +26,9 @@ sealed class FormattedEntry(open val uuid: String) {
         val headerA11y: String,
         val title: String,
         val titleA11y: String,
-        val dataType: DataType
+        val dataType: DataType,
+        val startTime: Instant? = null,
+        val endTime: Instant? = null
     ) : FormattedEntry(uuid)
 
     data class SleepSessionEntry(
@@ -48,6 +51,16 @@ sealed class FormattedEntry(open val uuid: String) {
         val notes: String?,
         val route: ExerciseRoute? = null
     ) : FormattedEntry(uuid)
+
+    data class HeartRateEntry(
+        override val uuid: String,
+        val header: String,
+        val headerA11y: String,
+        val title: String,
+        val titleA11y: String,
+        val dataType: DataType
+    ) : FormattedEntry(uuid)
+
     data class SessionHeader(val header: String) : FormattedEntry(uuid = "")
 
     data class FormattedSessionDetail(

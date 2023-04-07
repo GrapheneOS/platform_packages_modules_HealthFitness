@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Helper class to aggregate Sleep and Exercise Sessions.
@@ -40,13 +41,10 @@ import java.util.List;
  */
 public class SessionDurationAggregationData extends AggregationRecordData {
     private static final String TAG = "HealthSessionPriorityAggregation";
-
+    private final String mExcludeIntervalStartTimeColumn;
+    private final String mExcludeIntervalEndTimeColumn;
     List<Long> mExcludeStarts;
     List<Long> mExcludeEnds;
-
-    private final String mExcludeIntervalStartTimeColumn;
-
-    private final String mExcludeIntervalEndTimeColumn;
 
     public SessionDurationAggregationData(
             String excludeIntervalStartTimeColumn, String excludeIntervalEndTimeColumn) {
@@ -63,7 +61,7 @@ public class SessionDurationAggregationData extends AggregationRecordData {
 
     @Override
     void populateSpecificAggregationData(Cursor cursor) {
-        String currentSessionUuid = readUuid(cursor);
+        UUID currentSessionUuid = readUuid(cursor);
         do {
             // Populate stages from each row.
             updateIntervalsToExclude(cursor);

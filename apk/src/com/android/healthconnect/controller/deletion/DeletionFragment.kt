@@ -24,13 +24,16 @@ import androidx.fragment.app.activityViewModels
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.deletion.DeletionConstants.CONFIRMATION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
+import com.android.healthconnect.controller.deletion.DeletionConstants.END_TIME
 import com.android.healthconnect.controller.deletion.DeletionConstants.GO_BACK_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_INACTIVE_APP_DELETION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_TIME
 import com.android.healthconnect.controller.deletion.DeletionConstants.TIME_RANGE_SELECTION_EVENT
 import com.android.healthconnect.controller.deletion.DeletionConstants.TRY_AGAIN_EVENT
 import com.android.healthconnect.controller.shared.dialog.ProgressDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Instant
 
 /**
  * Invisible fragment that handles every deletion flow with the deletion dialogs.
@@ -60,7 +63,13 @@ class DeletionFragment : Hilt_DeletionFragment() {
         // start deletion
         parentFragmentManager.setFragmentResultListener(START_DELETION_EVENT, this) { _, bundle ->
             val deletionType = bundle.getParcelable(DELETION_TYPE, DeletionType::class.java)
+            val startTime = bundle.getParcelable(START_TIME, Instant::class.java)
+            val endTime = bundle.getParcelable(END_TIME, Instant::class.java)
             viewModel.setDeletionType(deletionType!!)
+            if (startTime != null && endTime != null) {
+                viewModel.setStartTime(startTime)
+                viewModel.setEndTime(endTime)
+            }
             showFirstDialog(deletionType, false)
         }
 

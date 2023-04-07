@@ -62,13 +62,6 @@ public class DeviceInfoHelper {
     /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
     private volatile ConcurrentHashMap<DeviceInfo, Long> mDeviceInfoMap;
 
-    public static synchronized DeviceInfoHelper getInstance() {
-        if (sDeviceInfoHelper == null) {
-            sDeviceInfoHelper = new DeviceInfoHelper();
-        }
-        return sDeviceInfoHelper;
-    }
-
     /**
      * Returns a requests representing the tables that should be created corresponding to this
      * helper
@@ -111,7 +104,7 @@ public class DeviceInfoHelper {
     }
 
     // Called on DB update.
-    public void onUpgrade(int newVersion, @NonNull SQLiteDatabase db) {
+    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {
         // empty by default
     }
 
@@ -207,6 +200,13 @@ public class DeviceInfoHelper {
         columnInfo.add(new Pair<>(DEVICE_TYPE_COLUMN_NAME, INTEGER));
 
         return columnInfo;
+    }
+
+    public static synchronized DeviceInfoHelper getInstance() {
+        if (sDeviceInfoHelper == null) {
+            sDeviceInfoHelper = new DeviceInfoHelper();
+        }
+        return sDeviceInfoHelper;
     }
 
     private static final class DeviceInfo {

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -89,7 +90,7 @@ public class MenstruationPeriodRecordTest {
     public void testReadMenstruationPeriodRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<MenstruationPeriodRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(MenstruationPeriodRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<MenstruationPeriodRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -412,10 +413,10 @@ public class MenstruationPeriodRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -545,6 +546,25 @@ public class MenstruationPeriodRecordTest {
         assertThat(result).containsExactlyElementsIn(recordList);
     }
 
+    MenstruationPeriodRecord getMenstruationPeriodRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new MenstruationPeriodRecord.Builder(
+                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     static MenstruationPeriodRecord getBaseMenstruationPeriodRecord() {
         return new MenstruationPeriodRecord.Builder(
                         new Metadata.Builder().build(),
@@ -569,25 +589,6 @@ public class MenstruationPeriodRecordTest {
 
         return new MenstruationPeriodRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Instant.now().plusMillis(1000))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    MenstruationPeriodRecord getMenstruationPeriodRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new MenstruationPeriodRecord.Builder(
-                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();

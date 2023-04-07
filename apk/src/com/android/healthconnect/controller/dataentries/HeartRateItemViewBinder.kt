@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,18 +17,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.DataEntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-/** ViewBinder for FormattedDataEntry. */
-class EntryItemViewBinder(private val onDeleteEntryListener: OnDeleteEntryListener) :
-    ViewBinder<FormattedDataEntry, View> {
+/** ViewBinder for HeartRateEntry. */
+class HeartRateItemViewBinder(
+    private val showSecondAction: Boolean = true,
+    private val onItemClickedListener: OnClickEntryListener?,
+    private val onDeleteEntryClicked: OnDeleteEntryListener?,
+) : ViewBinder<HeartRateEntry, View> {
 
     private lateinit var logger: HealthConnectLogger
 
@@ -38,26 +44,33 @@ class EntryItemViewBinder(private val onDeleteEntryListener: OnDeleteEntryListen
             EntryPointAccessors.fromApplication(
                 context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
         logger = hiltEntryPoint.logger()
-        return LayoutInflater.from(parent.context).inflate(R.layout.item_data_entry, parent, false)
+        return LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_heart_rate_entry, parent, false)
     }
 
-    override fun bind(view: View, data: FormattedDataEntry, index: Int) {
+    override fun bind(view: View, data: HeartRateEntry, index: Int) {
+        val container = view.findViewById<RelativeLayout>(R.id.item_data_entry_container)
+        val divider = view.findViewById<LinearLayout>(R.id.item_data_entry_divider)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
         val deleteButton = view.findViewById<ImageButton>(R.id.item_data_entry_delete)
+
         logger.logImpression(DataEntriesElement.DATA_ENTRY_VIEW)
         logger.logImpression(DataEntriesElement.DATA_ENTRY_DELETE_BUTTON)
-
         title.text = data.title
         title.contentDescription = data.titleA11y
-
         header.text = data.header
         header.contentDescription = data.headerA11y
+        deleteButton.isVisible = showSecondAction
+        divider.isVisible = showSecondAction
 
         deleteButton.setOnClickListener {
             logger.logInteraction(DataEntriesElement.DATA_ENTRY_DELETE_BUTTON)
-            onDeleteEntryListener.onDeleteEntry(
-                data.uuid, data.dataType, index, data.startTime, data.endTime)
+            onDeleteEntryClicked?.onDeleteEntry(data.uuid, data.dataType, index)
+        }
+        container.setOnClickListener {
+            logger.logInteraction(DataEntriesElement.DATA_ENTRY_VIEW)
+            onItemClickedListener?.onItemClicked(data.uuid, index)
         }
     }
 }

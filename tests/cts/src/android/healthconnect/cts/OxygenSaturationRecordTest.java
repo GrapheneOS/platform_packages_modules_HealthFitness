@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -88,7 +89,7 @@ public class OxygenSaturationRecordTest {
     public void testReadOxygenSaturationRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<OxygenSaturationRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(OxygenSaturationRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<OxygenSaturationRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -400,10 +401,10 @@ public class OxygenSaturationRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -504,6 +505,24 @@ public class OxygenSaturationRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
+    OxygenSaturationRecord getOxygenSaturationRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new OxygenSaturationRecord.Builder(
+                        metadataWithId, Instant.now(), Percentage.fromValue(20.0))
+                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static OxygenSaturationRecord getBaseOxygenSaturationRecord() {
         return new OxygenSaturationRecord.Builder(
                         new Metadata.Builder().build(), Instant.now(), Percentage.fromValue(10.0))
@@ -526,24 +545,6 @@ public class OxygenSaturationRecordTest {
 
         return new OxygenSaturationRecord.Builder(
                         testMetadataBuilder.build(), Instant.now(), Percentage.fromValue(10.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
-    OxygenSaturationRecord getOxygenSaturationRecord_update(
-            Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new OxygenSaturationRecord.Builder(
-                        metadataWithId, Instant.now(), Percentage.fromValue(20.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

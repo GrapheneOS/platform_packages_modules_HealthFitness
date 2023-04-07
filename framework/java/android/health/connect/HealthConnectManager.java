@@ -304,64 +304,6 @@ public class HealthConnectManager {
     }
 
     /**
-     * Returns {@code true} if the given permission protects access to health connect data.
-     *
-     * @hide
-     */
-    @SystemApi
-    public static boolean isHealthPermission(
-            @NonNull Context context, @NonNull final String permission) {
-        if (!permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
-            return false;
-        }
-        return getHealthPermissions(context).contains(permission);
-    }
-
-    /**
-     * Returns an <b>immutable</b> set of health permissions defined within the module and belonging
-     * to {@link android.health.connect.HealthPermissions#HEALTH_PERMISSION_GROUP}.
-     *
-     * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
-     * than crashing the device. This means the health permissions infra will be inactive.
-     *
-     * @hide
-     */
-    @NonNull
-    @SystemApi
-    public static Set<String> getHealthPermissions(@NonNull Context context) {
-        if (sHealthPermissions != null) {
-            return sHealthPermissions;
-        }
-
-        PackageInfo packageInfo = null;
-        try {
-            final PackageManager pm = context.getApplicationContext().getPackageManager();
-            final PermissionGroupInfo permGroupInfo =
-                    pm.getPermissionGroupInfo(
-                            android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP,
-                            /* flags= */ 0);
-            packageInfo =
-                    pm.getPackageInfo(
-                            permGroupInfo.packageName,
-                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
-        } catch (PackageManager.NameNotFoundException ex) {
-            Log.e(TAG, "Health permission group or HC package not found", ex);
-            sHealthPermissions = Collections.emptySet();
-            return sHealthPermissions;
-        }
-
-        Set<String> permissions = new HashSet<>();
-        for (PermissionInfo perm : packageInfo.permissions) {
-            if (android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP.equals(
-                    perm.group)) {
-                permissions.add(perm.name);
-            }
-        }
-        sHealthPermissions = Collections.unmodifiableSet(permissions);
-        return sHealthPermissions;
-    }
-
-    /**
      * Grant a runtime permission to an application which the application does not already have. The
      * permission must have been requested by the application. If the application is not allowed to
      * hold the permission, a {@link java.lang.SecurityException} is thrown. If the package or
@@ -477,6 +419,9 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
+            // Unset any set ids for insert. This is to prevent random string ids from creating
+            // illegal argument exception.
+            records.forEach((record) -> record.getMetadata().setId(""));
             List<RecordInternal<?>> recordInternals =
                     records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
             mService.insertRecords(
@@ -1208,8 +1153,7 @@ public class HealthConnectManager {
             for (RecordInternal<?> recordInternal : recordInternals) {
                 if ((recordInternal.getClientRecordId() == null
                                 || recordInternal.getClientRecordId().isEmpty())
-                        && (recordInternal.getUuid() == null
-                                || recordInternal.getUuid().isEmpty())) {
+                        && recordInternal.getUuid() == null) {
                     throw new IllegalArgumentException(
                             "At least one of the records is missing both ClientRecordID"
                                     + " and UUID. RecordType of the input: "
@@ -1683,6 +1627,75 @@ public class HealthConnectManager {
         executor.execute(() -> callback.onError(exception.getHealthConnectException()));
     }
 
+    /** @hide */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+        DATA_DOWNLOAD_STATE_UNKNOWN,
+        DATA_DOWNLOAD_STARTED,
+        DATA_DOWNLOAD_RETRY,
+        DATA_DOWNLOAD_FAILED,
+        DATA_DOWNLOAD_COMPLETE
+    })
+    public @interface DataDownloadState {}
+
+    /**
+     * Returns {@code true} if the given permission protects access to health connect data.
+     *
+     * @hide
+     */
+    @SystemApi
+    public static boolean isHealthPermission(
+            @NonNull Context context, @NonNull final String permission) {
+        if (!permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
+            return false;
+        }
+        return getHealthPermissions(context).contains(permission);
+    }
+
+    /**
+     * Returns an <b>immutable</b> set of health permissions defined within the module and belonging
+     * to {@link android.health.connect.HealthPermissions#HEALTH_PERMISSION_GROUP}.
+     *
+     * <p><b>Note:</b> If we, for some reason, fail to retrieve these, we return an empty set rather
+     * than crashing the device. This means the health permissions infra will be inactive.
+     *
+     * @hide
+     */
+    @NonNull
+    @SystemApi
+    public static Set<String> getHealthPermissions(@NonNull Context context) {
+        if (sHealthPermissions != null) {
+            return sHealthPermissions;
+        }
+
+        PackageInfo packageInfo = null;
+        try {
+            final PackageManager pm = context.getApplicationContext().getPackageManager();
+            final PermissionGroupInfo permGroupInfo =
+                    pm.getPermissionGroupInfo(
+                            android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP,
+                            /* flags= */ 0);
+            packageInfo =
+                    pm.getPackageInfo(
+                            permGroupInfo.packageName,
+                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
+        } catch (PackageManager.NameNotFoundException ex) {
+            Log.e(TAG, "Health permission group or HC package not found", ex);
+            sHealthPermissions = Collections.emptySet();
+            return sHealthPermissions;
+        }
+
+        Set<String> permissions = new HashSet<>();
+        for (PermissionInfo perm : packageInfo.permissions) {
+            if (android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP.equals(
+                    perm.group)) {
+                permissions.add(perm.name);
+            }
+        }
+        sHealthPermissions = Collections.unmodifiableSet(permissions);
+        return sHealthPermissions;
+    }
+
     @NonNull
     private static IMigrationCallback wrapMigrationCallback(
             @NonNull @CallbackExecutor Executor executor,
@@ -1701,15 +1714,4 @@ public class HealthConnectManager {
             }
         };
     }
-
-    /** @hide */
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-        DATA_DOWNLOAD_STATE_UNKNOWN,
-        DATA_DOWNLOAD_STARTED,
-        DATA_DOWNLOAD_RETRY,
-        DATA_DOWNLOAD_FAILED,
-        DATA_DOWNLOAD_COMPLETE
-    })
-    public @interface DataDownloadState {}
 }

@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class SleepSessionRecordTest {
     private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e10);
@@ -347,10 +348,10 @@ public class SleepSessionRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -449,12 +450,6 @@ public class SleepSessionRecordTest {
                         testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
     }
 
-    public static SleepSessionRecord buildSleepSessionMinimal() {
-        return new SleepSessionRecord.Builder(
-                        TestUtils.generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
-                .build();
-    }
-
     private void assertRecordsAreEqual(List<Record> records, List<SleepSessionRecord> result) {
         ArrayList<SleepSessionRecord> recordsExercises = new ArrayList<>();
         for (Record record : records) {
@@ -505,5 +500,11 @@ public class SleepSessionRecordTest {
                         new ReadRecordsRequestUsingFilters.Builder<>(SleepSessionRecord.class)
                                 .build());
         assertRecordsAreEqual(records, readRecords);
+    }
+
+    public static SleepSessionRecord buildSleepSessionMinimal() {
+        return new SleepSessionRecord.Builder(
+                        TestUtils.generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
+                .build();
     }
 }
