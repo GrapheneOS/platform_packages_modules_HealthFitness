@@ -45,14 +45,16 @@ public final class CreateTableRequest {
     private final String mTableName;
     private final List<Pair<String, String>> mColumnInfo;
     private final List<String> mColumnsToIndex = new ArrayList<>();
-
+    private final List<List<String>> mUniqueColumns = new ArrayList<>();
     private List<ForeignKey> mForeignKeys = new ArrayList<>();
-    private List<List<String>> mUniqueColumns = new ArrayList<>();
     private List<CreateTableRequest> mChildTableRequests = Collections.emptyList();
-
     public CreateTableRequest(String tableName, List<Pair<String, String>> columnInfo) {
         mTableName = tableName;
         mColumnInfo = columnInfo;
+    }
+
+    public String getTableName() {
+        return mTableName;
     }
 
     @NonNull

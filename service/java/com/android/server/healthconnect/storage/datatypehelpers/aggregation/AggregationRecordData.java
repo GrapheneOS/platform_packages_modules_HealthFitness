@@ -28,6 +28,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 /**
  * Represents priority aggregation data.
@@ -40,13 +41,6 @@ public abstract class AggregationRecordData {
     private long mAppId;
     private long mLastModifiedTime;
     private ZoneOffset mStartTimeZoneOffset;
-
-    /** Calculates overlap between two intervals */
-    static long calculateIntervalOverlapDuration(
-            long intervalStart1, long intervalStart2, long intervalEnd1, long intervalEnd2) {
-        return Math.max(
-                Math.min(intervalEnd1, intervalEnd2) - Math.max(intervalStart1, intervalStart2), 0);
-    }
 
     long getStartTime() {
         return mRecordStartTime;
@@ -68,8 +62,8 @@ public abstract class AggregationRecordData {
         return mStartTimeZoneOffset;
     }
 
-    protected String readUuid(Cursor cursor) {
-        return StorageUtils.getCursorString(cursor, UUID_COLUMN_NAME);
+    protected UUID readUuid(Cursor cursor) {
+        return StorageUtils.getCursorUUID(cursor, UUID_COLUMN_NAME);
     }
 
     void populateAggregationData(Cursor cursor) {
@@ -114,5 +108,12 @@ public abstract class AggregationRecordData {
     @Override
     public String toString() {
         return "AggregData{startTime=" + mRecordStartTime + ", endTime=" + mRecordEndTime + "}";
+    }
+
+    /** Calculates overlap between two intervals */
+    static long calculateIntervalOverlapDuration(
+            long intervalStart1, long intervalStart2, long intervalEnd1, long intervalEnd2) {
+        return Math.max(
+                Math.min(intervalEnd1, intervalEnd2) - Math.max(intervalStart1, intervalStart2), 0);
     }
 }

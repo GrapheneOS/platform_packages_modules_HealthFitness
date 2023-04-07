@@ -64,6 +64,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -106,7 +107,7 @@ public class HeartRateRecordTest {
     public void testReadHeartRateRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<HeartRateRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(HeartRateRecord.class)
-                        .addId("abc")
+                        .addId(UUID.randomUUID().toString())
                         .build();
         List<HeartRateRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
@@ -817,10 +818,10 @@ public class HeartRateRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -934,6 +935,31 @@ public class HeartRateRecordTest {
         }
     }
 
+    HeartRateRecord getHeartRateRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+
+        HeartRateRecord.HeartRateSample heartRateRecordSample =
+                new HeartRateRecord.HeartRateSample(8, Instant.now().plusMillis(100));
+
+        return new HeartRateRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        Instant.now().plusMillis(2000),
+                        List.of(heartRateRecordSample, heartRateRecordSample))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static HeartRateRecord getBaseHeartRateRecord(long beatsPerMinute) {
         HeartRateRecord.HeartRateSample heartRateRecord =
                 new HeartRateRecord.HeartRateSample(beatsPerMinute, Instant.now().plusMillis(100));
@@ -975,31 +1001,6 @@ public class HeartRateRecordTest {
                         Instant.now(),
                         Instant.now().plusMillis(500),
                         heartRateRecords)
-                .build();
-    }
-
-    HeartRateRecord getHeartRateRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-
-        HeartRateRecord.HeartRateSample heartRateRecordSample =
-                new HeartRateRecord.HeartRateSample(8, Instant.now().plusMillis(100));
-
-        return new HeartRateRecord.Builder(
-                        metadataWithId,
-                        Instant.now(),
-                        Instant.now().plusMillis(2000),
-                        List.of(heartRateRecordSample, heartRateRecordSample))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }

@@ -38,10 +38,13 @@ import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewM
 import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
+import com.android.healthconnect.controller.deletion.DeletionConstants.END_TIME
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
+import com.android.healthconnect.controller.deletion.DeletionConstants.START_TIME
 import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionState
 import com.android.healthconnect.controller.deletion.DeletionType
@@ -91,8 +94,14 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     }
     private val onDeleteEntryListener by lazy {
         object : OnDeleteEntryListener {
-            override fun onDeleteEntry(id: String, dataType: DataType, index: Int) {
-                deleteEntry(id, dataType, index)
+            override fun onDeleteEntry(
+                id: String,
+                dataType: DataType,
+                index: Int,
+                startTime: Instant?,
+                endTime: Instant?
+            ) {
+                deleteEntry(id, dataType, index, startTime, endTime)
             }
         }
     }
@@ -105,6 +114,11 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
     }
     private val exerciseSessionItemViewBinder by lazy {
         ExerciseSessionItemViewBinder(
+            onDeleteEntryClicked = onDeleteEntryListener,
+            onItemClickedListener = onClickEntryListener)
+    }
+    private val heartRateItemViewBinder by lazy {
+        HeartRateItemViewBinder(
             onDeleteEntryClicked = onDeleteEntryListener,
             onItemClickedListener = onClickEntryListener)
     }
@@ -144,6 +158,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 .setViewBinder(FormattedDataEntry::class.java, entryViewBinder)
                 .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
                 .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
+                .setViewBinder(HeartRateEntry::class.java, heartRateItemViewBinder)
                 .setViewBinder(FormattedAggregation::class.java, aggregationViewBinder)
                 .build()
         entriesRecyclerView =
@@ -234,9 +249,23 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
         }
     }
 
-    private fun deleteEntry(uuid: String, dataType: DataType, index: Int) {
+    private fun deleteEntry(
+        uuid: String,
+        dataType: DataType,
+        index: Int,
+        startTime: Instant?,
+        endTime: Instant?
+    ) {
         val deletionType = DeletionType.DeleteDataEntry(uuid, dataType, index)
-        childFragmentManager.setFragmentResult(
-            START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+
+        if (deletionType.dataType == DataType.MENSTRUATION_PERIOD) {
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT,
+                bundleOf(
+                    DELETION_TYPE to deletionType, START_TIME to startTime, END_TIME to endTime))
+        } else {
+            childFragmentManager.setFragmentResult(
+                START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+        }
     }
 }

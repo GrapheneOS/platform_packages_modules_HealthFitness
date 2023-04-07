@@ -19,6 +19,7 @@ package com.android.server.healthconnect;
 import android.annotation.NonNull;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.util.Slog;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +46,7 @@ public final class HealthConnectThreadScheduler {
     private static final HealthConnectRoundRobinScheduler
             HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER =
                     new HealthConnectRoundRobinScheduler();
+    private static final String TAG = "HealthConnectScheduler";
 
     // Executor to run HC background tasks
     private static volatile ThreadPoolExecutor sBackgroundThreadExecutor =
@@ -125,7 +127,14 @@ public final class HealthConnectThreadScheduler {
 
     /** Schedules the task on the executor dedicated for performing internal tasks */
     public static void scheduleInternalTask(Runnable task) {
-        sInternalBackgroundExecutor.execute(task);
+        sInternalBackgroundExecutor.execute(
+                () -> {
+                    try {
+                        task.run();
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Internal task schedule failed", e);
+                    }
+                });
     }
 
     /** Schedules the task on the executor dedicated for performing controller tasks */

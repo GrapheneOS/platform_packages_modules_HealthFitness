@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
@@ -82,7 +83,9 @@ public class SpeedRecordTest {
     @Test
     public void testReadSpeedRecord_invalidIds() throws InterruptedException {
         ReadRecordsRequestUsingIds<SpeedRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(SpeedRecord.class).addId("abc").build();
+                new ReadRecordsRequestUsingIds.Builder<>(SpeedRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
         List<SpeedRecord> result = TestUtils.readRecords(request);
         assertThat(result.size()).isEqualTo(0);
     }
@@ -443,10 +446,10 @@ public class SpeedRecordTest {
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random()),
+                                    : UUID.randomUUID().toString(),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
-                                    : String.valueOf(Math.random())));
+                                    : UUID.randomUUID().toString()));
         }
 
         try {
@@ -499,6 +502,32 @@ public class SpeedRecordTest {
         readSpeedRecordUsingIds(insertedRecords);
     }
 
+    SpeedRecord getSpeedRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+
+        SpeedRecord.SpeedRecordSample speedRecordSample =
+                new SpeedRecord.SpeedRecordSample(
+                        Velocity.fromMetersPerSecond(8.0), Instant.now().plusMillis(100));
+
+        return new SpeedRecord.Builder(
+                        metadataWithId,
+                        Instant.now(),
+                        Instant.now().plusMillis(2000),
+                        List.of(speedRecordSample, speedRecordSample))
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
     private static SpeedRecord getBaseSpeedRecord() {
         SpeedRecord.SpeedRecordSample speedRecord =
                 new SpeedRecord.SpeedRecordSample(
@@ -543,32 +572,6 @@ public class SpeedRecordTest {
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         speedRecords)
-                .build();
-    }
-
-    SpeedRecord getSpeedRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-
-        SpeedRecord.SpeedRecordSample speedRecordSample =
-                new SpeedRecord.SpeedRecordSample(
-                        Velocity.fromMetersPerSecond(8.0), Instant.now().plusMillis(100));
-
-        return new SpeedRecord.Builder(
-                        metadataWithId,
-                        Instant.now(),
-                        Instant.now().plusMillis(2000),
-                        List.of(speedRecordSample, speedRecordSample))
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 }
