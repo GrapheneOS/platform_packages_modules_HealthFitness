@@ -163,23 +163,21 @@ public class PackageInfoUtils {
 
     @Nullable
     String getPackageNameFromUid(int uid) {
-        String[] packages =
-                mUsersPackageManager
-                        .get(UserHandle.getUserHandleForUid(uid))
-                        .getPackagesForUid(uid);
+        String[] packages = getPackageNamesForUid(uid);
         if (packages == null || packages.length != 1) {
             Log.w(TAG, "Can't get one package name for UID: " + uid);
             return null;
         }
-        try {
-            PackageInfo info =
-                    getPackageManagerAsUser(UserHandle.getUserHandleForUid(uid))
-                            .getPackageInfo(packages[0], PackageManager.PackageInfoFlags.of(0));
-            return info.packageName;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "Package " + packages[0] + " not found.");
-            return null;
-        }
+        return packages[0];
+    }
+
+    @Nullable
+    String[] getPackageNamesForUid(int uid) {
+        String[] packages =
+                mUsersPackageManager
+                        .get(UserHandle.getUserHandleForUid(uid))
+                        .getPackagesForUid(uid);
+        return packages;
     }
 
     @Nullable
