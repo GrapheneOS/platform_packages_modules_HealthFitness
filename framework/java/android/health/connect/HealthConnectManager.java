@@ -1668,7 +1668,7 @@ public class HealthConnectManager {
             return sHealthPermissions;
         }
 
-        PackageInfo packageInfo = null;
+        PackageInfo packageInfo;
         try {
             final PackageManager pm = context.getApplicationContext().getPackageManager();
             final PermissionGroupInfo permGroupInfo =
