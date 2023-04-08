@@ -276,9 +276,9 @@ public class HealthConnectTestHelper extends Activity {
                                 new ReadRecordsRequestUsingFilters.Builder<>(
                                                 (Class<? extends Record>)
                                                         Class.forName(recordClass))
-                                        .addDataOrigins(new DataOrigin.Builder().build())
                                         .build(),
                                 context);
+
                 recordsSize += recordsRead.size();
             }
         } catch (Exception e) {
