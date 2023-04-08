@@ -40,7 +40,6 @@ import java.util.UUID;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE)
 public class CyclingPedalingCadenceRecordHelper
         extends SeriesRecordHelper<
                 CyclingPedalingCadenceRecordInternal,
@@ -50,6 +49,10 @@ public class CyclingPedalingCadenceRecordHelper
     private static final String SERIES_TABLE_NAME = "cycling_pedaling_cadence_record_table";
     private static final String REVOLUTIONS_PER_MINUTE_COLUMN_NAME = "revolutions_per_minute";
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
+
+    public CyclingPedalingCadenceRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE);
+    }
 
     @Override
     String getMainTableName() {

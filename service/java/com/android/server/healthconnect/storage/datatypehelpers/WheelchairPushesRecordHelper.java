@@ -40,12 +40,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES)
 public final class WheelchairPushesRecordHelper
         extends IntervalRecordHelper<WheelchairPushesRecordInternal> {
     private static final String WHEELCHAIR_PUSHES_RECORD_TABLE_NAME =
             "wheelchair_pushes_record_table";
     private static final String COUNT_COLUMN_NAME = "count";
+
+    public WheelchairPushesRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(
