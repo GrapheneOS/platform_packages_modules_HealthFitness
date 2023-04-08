@@ -42,11 +42,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEIGHT)
 public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordInternal> {
 
     @VisibleForTesting public static final String HEIGHT_RECORD_TABLE_NAME = "height_record_table";
     private static final String HEIGHT_COLUMN_NAME = "height";
+
+    public HeightRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_HEIGHT);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

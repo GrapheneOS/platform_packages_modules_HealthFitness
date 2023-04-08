@@ -33,12 +33,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW)
 public final class MenstruationFlowRecordHelper
         extends InstantRecordHelper<MenstruationFlowRecordInternal> {
     private static final String MENSTRUATION_FLOW_RECORD_TABLE_NAME =
             "menstruation_flow_record_table";
     private static final String FLOW_COLUMN_NAME = "flow";
+
+    public MenstruationFlowRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW);
+    }
 
     @Override
     @NonNull

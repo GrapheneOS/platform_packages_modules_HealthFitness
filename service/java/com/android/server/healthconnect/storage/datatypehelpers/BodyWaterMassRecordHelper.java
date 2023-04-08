@@ -35,11 +35,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS)
 public final class BodyWaterMassRecordHelper
         extends InstantRecordHelper<BodyWaterMassRecordInternal> {
     private static final String BODY_WATER_MASS_RECORD_TABLE_NAME = "body_water_mass_record_table";
     private static final String BODY_WATER_MASS_RECORD_COLUMN_NAME = "body_water_mass";
+
+    public BodyWaterMassRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS);
+    }
 
     @Override
     @NonNull

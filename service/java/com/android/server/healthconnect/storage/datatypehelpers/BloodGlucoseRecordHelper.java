@@ -35,7 +35,6 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE)
 public final class BloodGlucoseRecordHelper
         extends InstantRecordHelper<BloodGlucoseRecordInternal> {
     private static final String BLOOD_GLUCOSE_RECORD_TABLE_NAME = "blood_glucose_record_table";
@@ -43,6 +42,10 @@ public final class BloodGlucoseRecordHelper
     private static final String LEVEL_COLUMN_NAME = "level";
     private static final String RELATION_TO_MEAL_COLUMN_NAME = "relation_to_meal";
     private static final String MEAL_TYPE_COLUMN_NAME = "meal_type";
+
+    public BloodGlucoseRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE);
+    }
 
     @Override
     @NonNull

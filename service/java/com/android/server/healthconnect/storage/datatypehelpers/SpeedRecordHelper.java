@@ -41,7 +41,6 @@ import java.util.UUID;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
 public class SpeedRecordHelper
         extends SeriesRecordHelper<SpeedRecordInternal, SpeedRecordInternal.SpeedRecordSample> {
 
@@ -50,6 +49,10 @@ public class SpeedRecordHelper
     private static final String SERIES_TABLE_NAME = "speed_record_table";
     private static final String SPEED_COLUMN_NAME = "speed";
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
+
+    public SpeedRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_SPEED);
+    }
 
     @Override
     String getMainTableName() {

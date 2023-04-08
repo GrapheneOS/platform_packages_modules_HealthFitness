@@ -33,10 +33,13 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BONE_MASS)
 public final class BoneMassRecordHelper extends InstantRecordHelper<BoneMassRecordInternal> {
     private static final String BONE_MASS_RECORD_TABLE_NAME = "bone_mass_record_table";
     private static final String MASS_COLUMN_NAME = "mass";
+
+    public BoneMassRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_BONE_MASS);
+    }
 
     @Override
     @NonNull
