@@ -23,7 +23,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.google.common.truth.Truth;
 
@@ -45,7 +45,10 @@ public class HealthConnectDatabaseTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         when(mContext.getDatabasePath(anyString()))
-                .thenReturn(InstrumentationRegistry.getContext().getDatabasePath("mock"));
+                .thenReturn(
+                        InstrumentationRegistry.getInstrumentation()
+                                .getContext()
+                                .getDatabasePath("mock"));
         mHealthConnectDatabase = new HealthConnectDatabase(mContext);
         mSQLiteDatabase = mHealthConnectDatabase.getWritableDatabase();
     }

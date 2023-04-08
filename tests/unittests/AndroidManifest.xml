@@ -27,10 +27,11 @@
 
     <!-- To get visibility of the app with health permissions definitions,
      required for testing defined permissions; for testing first grant time. -->
-    <uses-permission android:name="android.permission.health.READ_STEPS"/>
-
     <instrumentation
         android:name="androidx.test.runner.AndroidJUnitRunner"
-        android:targetPackage="com.android.healthconnect.unittests"
-        android:label="HealthConnect Unit Tests"/>
+        android:label="HealthConnect Unit Tests"
+        android:targetPackage="com.android.healthconnect.unittests"/>
+    <uses-permission android:name="android.permission.READ_DEVICE_CONFIG"/>
+
+    <uses-permission android:name="android.permission.health.READ_STEPS"/>
 </manifest>
