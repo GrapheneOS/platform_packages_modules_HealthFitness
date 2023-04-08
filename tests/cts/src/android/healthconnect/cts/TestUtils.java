@@ -728,6 +728,7 @@ public class TestUtils {
             throw exceptionAtomicReference.get();
         }
     }
+
     public static void verifyDeleteRecords(
             Class<? extends Record> recordType, TimeInstantRangeFilter timeRangeFilter)
             throws InterruptedException {
