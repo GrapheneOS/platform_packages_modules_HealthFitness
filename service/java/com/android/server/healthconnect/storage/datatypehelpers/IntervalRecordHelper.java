@@ -23,6 +23,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.IntervalRecordInternal;
 import android.util.Pair;
 
@@ -50,8 +51,8 @@ public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
     private static final String END_ZONE_OFFSET_COLUMN_NAME = "end_zone_offset";
     private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
 
-    IntervalRecordHelper() {
-        super();
+    IntervalRecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
+        super(recordIdentifier);
     }
 
     @Override

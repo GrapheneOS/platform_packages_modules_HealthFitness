@@ -40,12 +40,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED)
 public final class ActiveCaloriesBurnedRecordHelper
         extends IntervalRecordHelper<ActiveCaloriesBurnedRecordInternal> {
     public static final String ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME =
             "active_calories_burned_record_table";
     public static final String ENERGY_COLUMN_NAME = "energy";
+
+    public ActiveCaloriesBurnedRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

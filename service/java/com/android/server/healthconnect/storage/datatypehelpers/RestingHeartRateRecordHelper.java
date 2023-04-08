@@ -40,12 +40,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE)
 public final class RestingHeartRateRecordHelper
         extends InstantRecordHelper<RestingHeartRateRecordInternal> {
     private static final String RESTING_HEART_RATE_RECORD_TABLE_NAME =
             "resting_heart_rate_record_table";
     private static final String BEATS_PER_MINUTE_COLUMN_NAME = "beats_per_minute";
+
+    public RestingHeartRateRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_RESTING_HEART_RATE);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

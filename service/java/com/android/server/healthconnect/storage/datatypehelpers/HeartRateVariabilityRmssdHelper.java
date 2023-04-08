@@ -35,13 +35,16 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD)
 public final class HeartRateVariabilityRmssdHelper
         extends InstantRecordHelper<HeartRateVariabilityRmssdRecordInternal> {
     private static final String HEART_RATE_VARIABILITY_RMSSD_RECORD_TABLE_NAME =
             "heart_rate_variability_rmssd_record_table";
     private static final String HEART_RATE_VARIABILITY_RMSSD_RECORD_COLUMN_NAME =
             "heart_rate_variability_millis";
+
+    public HeartRateVariabilityRmssdHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD);
+    }
 
     @Override
     @NonNull

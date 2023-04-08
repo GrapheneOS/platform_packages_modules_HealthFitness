@@ -37,10 +37,13 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HYDRATION)
 public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationRecordInternal> {
     private static final String HYDRATION_RECORD_TABLE_NAME = "hydration_record_table";
     private static final String VOLUME_COLUMN_NAME = "volume";
+
+    public HydrationRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_HYDRATION);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

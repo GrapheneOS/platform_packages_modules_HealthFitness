@@ -30,11 +30,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD)
 public final class MenstruationPeriodRecordHelper
         extends IntervalRecordHelper<MenstruationPeriodRecordInternal> {
     private static final String MENSTRUATION_PERIOD_RECORD_TABLE_NAME =
             "menstruation_period_record_table";
+
+    public MenstruationPeriodRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD);
+    }
 
     @Override
     @NonNull

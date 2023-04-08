@@ -23,6 +23,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.InstantRecordInternal;
 import android.util.Pair;
 
@@ -45,6 +46,10 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     public static final String TIME_COLUMN_NAME = "time";
     private static final String ZONE_OFFSET_COLUMN_NAME = "zone_offset";
     private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
+
+    InstantRecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
+        super(recordIdentifier);
+    }
 
     @Override
     public final String getStartTimeColumnName() {
