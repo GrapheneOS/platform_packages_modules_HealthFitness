@@ -70,9 +70,6 @@ public class TestUtils {
     static final String TAG = "HealthConnectTest";
     public static final String QUERY_TYPE = "android.healthconnect.cts.queryType";
     public static final String INTENT_EXTRA_CALLING_PKG = "android.healthconnect.cts.calling_pkg";
-
-    public static final String APP_PKG_NAME_WHOSE_DATA_TO_BE_UPDATED =
-            "android.healthconnect.cts.pkg.dataToBeUpdated";
     public static final String APP_PKG_NAME_USED_IN_DATA_ORIGIN =
             "android.healthconnect.cts.pkg.usedInDataOrigin";
     public static final String INSERT_RECORD_QUERY = "android.healthconnect.cts.insertRecord";
@@ -438,12 +435,13 @@ public class TestUtils {
         return response.get();
     }
 
-    public static int updateRecords(List<Record> records, Context context)
+    public static void updateRecords(List<Record> records, Context context)
             throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
         AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+
         service.updateRecords(
                 records,
                 Executors.newSingleThreadExecutor(),
@@ -461,9 +459,8 @@ public class TestUtils {
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
         if (exceptionAtomicReference.get() != null) {
-            return exceptionAtomicReference.get().getErrorCode();
+            throw exceptionAtomicReference.get();
         }
-        return 0;
     }
 
     public static <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)
