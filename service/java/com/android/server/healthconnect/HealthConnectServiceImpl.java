@@ -372,8 +372,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 recordsParcel.getRecords().stream()
                         .map(RecordInternal::getRecordType)
                         .collect(Collectors.toSet());
-        // Update AppInfo table with the record types of records
-        // inserted in the request for the current package.
+        // Update AppInfo table with the record types of records inserted in the request for the
+        // current package.
         AppInfoHelper.getInstance()
                 .updateAppInfoRecordTypesUsedOnInsert(
                         recordsTypesInsertedSet, attributionSource.getPackageName());
@@ -1592,7 +1592,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             RateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground);
         } catch (RateLimiterException rateLimiterException) {
-            // Todo (b/271399704): Add logging for rate limiter.
             builder.setRateLimit(
                     rateLimiterException.getRateLimiterQuotaBucket(),
                     rateLimiterException.getRateLimiterQuotaLimit());
@@ -1800,7 +1799,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private void enforceBinderUidIsSameAsAttributionSourceUid(
             int binderUid, int attributionSourceUid) {
         if (binderUid != attributionSourceUid) {
-            throw new IllegalStateException(" Binder Uid must be equal to Attribution Source Uid.");
+            throw new SecurityException("Binder uid must be equal to attribution source uid.");
         }
     }
 

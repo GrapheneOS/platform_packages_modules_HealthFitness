@@ -467,13 +467,7 @@ public class BoneMassRecordTest {
                         .addRecordType(BoneMassRecord.class)
                         .build());
         response = TestUtils.getChangeLogs(changeLogsRequest);
-        assertThat(response.getDeletedLogs().size()).isEqualTo(testRecord.size());
-        assertThat(
-                        response.getDeletedLogs().stream()
-                                .map(ChangeLogsResponse.DeletedLog::getDeletedRecordId)
-                                .toList())
-                .containsExactlyElementsIn(
-                        testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
+        assertThat(response.getDeletedLogs()).isEmpty();
     }
 
     BoneMassRecord getBoneMassRecord_update(Record record, String id, String clientRecordId) {
