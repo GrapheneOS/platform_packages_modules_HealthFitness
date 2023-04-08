@@ -470,7 +470,6 @@ public final class BackupRestore {
     }
 
     private void merge(int userId) {
-        Log.e("TAG", "merge: " + userId);
         if (getInternalRestoreState(userId) >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
             return;
         }
@@ -482,7 +481,6 @@ public final class BackupRestore {
 
     private void mergeDatabase(int userId) {
         synchronized (mMergingLock) {
-            Log.e("TAG", "mergeDatabase: " + userId);
             if (!mStagedDbContext.getDatabasePath(HealthConnectDatabase.getName()).exists()) {
                 // no db was staged
                 return;
@@ -519,12 +517,6 @@ public final class BackupRestore {
         long token = DEFAULT_LONG;
         do {
             var recordsToMergeAndToken = getRecordsToMerge(recordTypeClass, token, recordHelper);
-            Log.e(
-                    "TAG",
-                    "mergeRecordsOfType: "
-                            + recordHelper.getClass().toString()
-                            + " "
-                            + recordsToMergeAndToken.first.size());
             if (recordsToMergeAndToken.first.isEmpty()) {
                 break;
             }

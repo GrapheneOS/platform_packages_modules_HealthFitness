@@ -662,8 +662,7 @@ public final class TransactionManager {
                             null,
                             request.getContentValues(),
                             SQLiteDatabase.CONFLICT_FAIL);
-            request.getChildTableRequests()
-                    .forEach(childRequest -> insertRecord(db, childRequest.withParentKey(rowId)));
+            insertChildTableRequest(request, rowId, db);
             return rowId;
         } catch (SQLiteConstraintException e) {
             try (Cursor cursor = db.rawQuery(request.getReadRequest().getReadCommand(), null)) {
@@ -672,29 +671,34 @@ public final class TransactionManager {
                             ERROR_INTERNAL, "Conflict found, but couldn't read the entry.");
                 }
 
-                if (!request.requiresUpdate(cursor, request)) {
-                    return -1;
-                }
-
-                db.update(
-                        request.getTable(),
-                        request.getContentValues(),
-                        request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
-                        /* WHERE args */ null);
-                if (cursor.getColumnIndex(request.getRowIdColName()) == -1) {
-                    // The table is not explicitly using row_ids hence returning -1 here is ok, as
-                    // the rowid is of no use to this table.
-                    // NOTE: Such tables in HC don't support child tables either as child tables
-                    // inherently require row_ids to have support parent key.
-                    return -1;
-                }
-                final long rowId = StorageUtils.getCursorLong(cursor, request.getRowIdColName());
-                deleteChildTableRequest(request, rowId, db);
-                insertChildTableRequest(request, rowId, db);
-
-                return rowId;
+                return updateEntriesIfRequired(db, request, cursor);
             }
         }
+    }
+
+    private long updateEntriesIfRequired(
+            SQLiteDatabase db, UpsertTableRequest request, Cursor cursor) {
+        if (!request.requiresUpdate(cursor, request)) {
+            return -1;
+        }
+
+        db.update(
+                request.getTable(),
+                request.getContentValues(),
+                request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
+                /* WHERE args */ null);
+        if (cursor.getColumnIndex(request.getRowIdColName()) == -1) {
+            // The table is not explicitly using row_ids hence returning -1 here is ok, as
+            // the rowid is of no use to this table.
+            // NOTE: Such tables in HC don't support child tables either as child tables
+            // inherently require row_ids to have support parent key.
+            return -1;
+        }
+        final long rowId = StorageUtils.getCursorLong(cursor, request.getRowIdColName());
+        deleteChildTableRequest(request, rowId, db);
+        insertChildTableRequest(request, rowId, db);
+
+        return rowId;
     }
 
     private void deleteChildTableRequest(
