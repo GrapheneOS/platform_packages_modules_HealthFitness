@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  */
 public class DeleteUsingFiltersRequestParcel implements Parcelable {
     public static final Creator<DeleteUsingFiltersRequestParcel> CREATOR =
-            new Creator<DeleteUsingFiltersRequestParcel>() {
+            new Creator<>() {
                 @Override
                 public DeleteUsingFiltersRequestParcel createFromParcel(Parcel in) {
                     return new DeleteUsingFiltersRequestParcel(in);
@@ -127,6 +127,11 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
 
     public long getEndTime() {
         return mEndTime;
+    }
+
+    public boolean usesIdFilters() {
+        return mRecordIdFiltersParcel.getRecordIdFilters() != null
+                && !mRecordIdFiltersParcel.getRecordIdFilters().isEmpty();
     }
 
     @Override
