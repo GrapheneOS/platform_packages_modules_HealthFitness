@@ -39,7 +39,6 @@ import java.util.UUID;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE)
 public class StepsCadenceRecordHelper
         extends SeriesRecordHelper<
                 StepsCadenceRecordInternal, StepsCadenceRecordInternal.StepsCadenceRecordSample> {
@@ -48,6 +47,10 @@ public class StepsCadenceRecordHelper
     private static final String SERIES_TABLE_NAME = "steps_cadence_record_table";
     private static final String RATE_COLUMN_NAME = "rate";
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
+
+    public StepsCadenceRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE);
+    }
 
     @Override
     String getMainTableName() {

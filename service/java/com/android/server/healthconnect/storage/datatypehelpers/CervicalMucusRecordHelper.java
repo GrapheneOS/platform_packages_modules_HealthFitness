@@ -33,12 +33,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS)
 public final class CervicalMucusRecordHelper
         extends InstantRecordHelper<CervicalMucusRecordInternal> {
     private static final String CERVICAL_MUCUS_RECORD_TABLE_NAME = "cervical_mucus_record_table";
     private static final String SENSATION_COLUMN_NAME = "sensation";
     private static final String APPEARANCE_COLUMN_NAME = "appearance";
+
+    public CervicalMucusRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS);
+    }
 
     @Override
     @NonNull

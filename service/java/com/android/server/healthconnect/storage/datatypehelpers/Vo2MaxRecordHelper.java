@@ -37,7 +37,6 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_VO2_MAX)
 public final class Vo2MaxRecordHelper extends InstantRecordHelper<Vo2MaxRecordInternal> {
 
     @VisibleForTesting
@@ -46,6 +45,10 @@ public final class Vo2MaxRecordHelper extends InstantRecordHelper<Vo2MaxRecordIn
     private static final String MEASUREMENT_METHOD_COLUMN_NAME = "measurement_method";
     private static final String VO2_MILLILITERS_PER_MINUTE_KILOGRAM_COLUMN_NAME =
             "vo2_milliliters_per_minute_kilogram";
+
+    public Vo2MaxRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_VO2_MAX);
+    }
 
     @Override
     @NonNull

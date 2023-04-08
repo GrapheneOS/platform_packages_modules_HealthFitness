@@ -33,10 +33,13 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BODY_FAT)
 public final class BodyFatRecordHelper extends InstantRecordHelper<BodyFatRecordInternal> {
     private static final String BODY_FAT_RECORD_TABLE_NAME = "body_fat_record_table";
     private static final String PERCENTAGE_COLUMN_NAME = "percentage";
+
+    public BodyFatRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_BODY_FAT);
+    }
 
     @Override
     @NonNull

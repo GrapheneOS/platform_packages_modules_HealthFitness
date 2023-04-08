@@ -40,11 +40,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED)
 public final class FloorsClimbedRecordHelper
         extends IntervalRecordHelper<FloorsClimbedRecordInternal> {
     private static final String FLOORS_CLIMBED_RECORD_TABLE_NAME = "floors_climbed_record_table";
     private static final String FLOORS_COLUMN_NAME = "floors";
+
+    public FloorsClimbedRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(
