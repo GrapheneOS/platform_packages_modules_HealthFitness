@@ -59,12 +59,14 @@
 
 
     <application android:label="CtsHealthConnectTestAppWithWritePermissionsOnly">
-        <activity android:name="android.healthconnect.cts.HealthConnectTestHelper"
+        <activity android:name="android.healthconnect.cts.testhelper.HealthConnectTestHelper"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
             </intent-filter>
         </activity>
 

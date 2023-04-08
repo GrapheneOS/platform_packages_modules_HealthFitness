@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.permission;
 
+import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_CURRENT;
+import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_STAGED;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.verify;
@@ -50,10 +53,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+// TODO(b/261432978): add test for sharedUser backup
 public class FirstGrantTimeUnitTest {
 
     private static final String SELF_PACKAGE_NAME = "com.android.healthconnect.unittests";
     private static final UserHandle CURRENT_USER = Process.myUserHandle();
+
+    private static final int DEFAULT_VERSION = 1;
 
     @Mock private HealthPermissionIntentAppsTracker mTracker;
 
@@ -68,7 +74,12 @@ public class FirstGrantTimeUnitTest {
     public void setUp() {
         Context context = InstrumentationRegistry.getContext();
         MockitoAnnotations.initMocks(this);
-        when(mDatastore.readForUser(CURRENT_USER)).thenReturn(new UserGrantTimeState(1));
+        when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_CURRENT))
+                .thenReturn(new UserGrantTimeState(DEFAULT_VERSION));
+        when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_STAGED))
+                .thenReturn(new UserGrantTimeState(DEFAULT_VERSION));
+        when(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(true);
 
         mUiAutomation.adoptShellPermissionIdentity(
                 "android.permission.OBSERVE_GRANT_REVOKE_PERMISSIONS");
@@ -90,20 +101,80 @@ public class FirstGrantTimeUnitTest {
 
     @Test
     public void testCurrentPackage_intentSupported_grantTimeIsNotNull() {
-        when(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
-                .thenReturn(true);
         assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isNotNull();
         assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isGreaterThan(Instant.now().minusSeconds((long) 1e3));
         assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isLessThan(Instant.now().plusSeconds((long) 1e3));
-        verify(mDatastore).writeForUser(ArgumentMatchers.any(), ArgumentMatchers.eq(CURRENT_USER));
-        verify(mDatastore).readForUser(CURRENT_USER);
+        verify(mDatastore)
+                .writeForUser(
+                        ArgumentMatchers.any(),
+                        ArgumentMatchers.eq(CURRENT_USER),
+                        ArgumentMatchers.eq(DATA_TYPE_CURRENT));
+        verify(mDatastore)
+                .readForUser(
+                        ArgumentMatchers.eq(CURRENT_USER), ArgumentMatchers.eq(DATA_TYPE_CURRENT));
+    }
+
+    @Test
+    public void testCurrentPackage_noGrantTimeBackupBecameAvailable_grantTimeEqualToStaged() {
+        assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
+                .isNotNull();
+        Instant backupTime = Instant.now().minusSeconds((long) 1e5);
+        UserGrantTimeState stagedState = setupGrantTimeState(null, backupTime);
+        mGrantTimeManager.applyAndStageBackupDataForUser(CURRENT_USER, stagedState);
+        assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
+                .isEqualTo(backupTime);
+    }
+
+    @Test
+    public void testCurrentPackage_noBackup_useRecordedTime() {
+        Instant stateTime = Instant.now().minusSeconds((long) 1e5);
+        UserGrantTimeState stagedState = setupGrantTimeState(stateTime, null);
+
+        assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
+                .isEqualTo(stateTime);
+        mGrantTimeManager.applyAndStageBackupDataForUser(CURRENT_USER, stagedState);
+        assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
+                .isEqualTo(stateTime);
+    }
+
+    @Test
+    public void testCurrentPackage_noBackup_grantTimeEqualToStaged() {
+        Instant backupTime = Instant.now().minusSeconds((long) 1e5);
+        Instant stateTime = backupTime.plusSeconds(10);
+        UserGrantTimeState stagedState = setupGrantTimeState(stateTime, backupTime);
+
+        mGrantTimeManager.applyAndStageBackupDataForUser(CURRENT_USER, stagedState);
+        assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
+                .isEqualTo(backupTime);
+    }
+
+    @Test
+    public void testCurrentPackage_backupDataLater_stagedDataSkipped() {
+        Instant stateTime = Instant.now().minusSeconds((long) 1e5);
+        UserGrantTimeState stagedState = setupGrantTimeState(stateTime, stateTime.plusSeconds(1));
+
+        mGrantTimeManager.applyAndStageBackupDataForUser(CURRENT_USER, stagedState);
+        assertThat(mGrantTimeManager.getFirstGrantTime(SELF_PACKAGE_NAME, CURRENT_USER))
+                .isEqualTo(stateTime);
+    }
+
+    @Test
+    public void testWriteStagedData_getStagedStateForCurrentPackage_returnsCorrectState() {
+        Instant stateTime = Instant.now().minusSeconds((long) 1e5);
+        setupGrantTimeState(stateTime, null);
+
+        UserGrantTimeState state = mGrantTimeManager.createBackupState(CURRENT_USER);
+        assertThat(state.getSharedUserGrantTimes()).isEmpty();
+        assertThat(state.getPackageGrantTimes().containsKey(SELF_PACKAGE_NAME)).isTrue();
+        assertThat(state.getPackageGrantTimes().get(SELF_PACKAGE_NAME)).isEqualTo(stateTime);
     }
 
     @Test(expected = HealthConnectException.class)
-    public <T extends Record> void testReadRecords_WithNoIntent() throws InterruptedException {
+    public <T extends Record> void testReadRecords_withNoIntent_throwsException()
+            throws InterruptedException {
         TimeInstantRangeFilter filter =
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(Instant.now())
@@ -114,6 +185,21 @@ public class FirstGrantTimeUnitTest {
                         .setTimeRangeFilter(filter)
                         .build();
         readRecords(request);
+    }
+
+    private UserGrantTimeState setupGrantTimeState(Instant currentTime, Instant stagedTime) {
+        if (currentTime != null) {
+            UserGrantTimeState state = new UserGrantTimeState(DEFAULT_VERSION);
+            state.setPackageGrantTime(SELF_PACKAGE_NAME, currentTime);
+            when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_CURRENT)).thenReturn(state);
+        }
+
+        UserGrantTimeState backupState = new UserGrantTimeState(DEFAULT_VERSION);
+        if (stagedTime != null) {
+            backupState.setPackageGrantTime(SELF_PACKAGE_NAME, stagedTime);
+        }
+        when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_STAGED)).thenReturn(backupState);
+        return backupState;
     }
 
     private static <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)

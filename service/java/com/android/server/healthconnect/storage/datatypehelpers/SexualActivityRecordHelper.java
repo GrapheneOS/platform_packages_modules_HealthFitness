@@ -33,11 +33,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SEXUAL_ACTIVITY)
 public final class SexualActivityRecordHelper
         extends InstantRecordHelper<SexualActivityRecordInternal> {
     private static final String SEXUAL_ACTIVITY_RECORD_TABLE_NAME = "sexual_activity_record_table";
     private static final String PROTECTION_USED_COLUMN_NAME = "protection_used";
+
+    public SexualActivityRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_SEXUAL_ACTIVITY);
+    }
 
     @Override
     @NonNull

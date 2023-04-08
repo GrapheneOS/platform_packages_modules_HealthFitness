@@ -424,13 +424,7 @@ public class WheelchairPushesRecordTest {
                         .addRecordType(WheelchairPushesRecord.class)
                         .build());
         response = TestUtils.getChangeLogs(changeLogsRequest);
-        assertThat(response.getDeletedLogs().size()).isEqualTo(testRecord.size());
-        assertThat(
-                        response.getDeletedLogs().stream()
-                                .map(ChangeLogsResponse.DeletedLog::getDeletedRecordId)
-                                .toList())
-                .containsExactlyElementsIn(
-                        testRecord.stream().map(Record::getMetadata).map(Metadata::getId).toList());
+        assertThat(response.getDeletedLogs()).isEmpty();
     }
 
     private void readWheelchairPushesRecordUsingClientId(List<Record> insertedRecord)

@@ -40,10 +40,13 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_DISTANCE)
 public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRecordInternal> {
     private static final String DISTANCE_RECORD_TABLE_NAME = "distance_record_table";
     private static final String DISTANCE_COLUMN_NAME = "distance";
+
+    public DistanceRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_DISTANCE);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(
