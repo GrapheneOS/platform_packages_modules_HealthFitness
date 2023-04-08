@@ -15,16 +15,48 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
+
+java_library {
+    name: "SafetyCenterTests",
+    srcs: [
+        "src/**/safetycenter/*.kt"
+    ],
+    sdk_version: "system_current",
+    min_sdk_version: "UpsideDownCake",
+    static_libs: [
+        "kotlin-stdlib",
+        "hilt_android",
+        "androidx.test.core",
+        "androidx.test.rules",
+        "androidx.test.espresso.contrib",
+        "androidx.test.ext.junit",
+        "androidx.test.ext.truth",
+        "androidx.test.rules",
+        "HealthConnectLibrary",
+        "hilt_android_testing",
+        "mockito-target-minus-junit4",
+    ],
+    libs: [
+        "android.test.mock.stubs",
+        "android.test.mock",
+    ]
+}
+
+
 android_test {
     name: "HealthConnectControllerUITests",
     srcs: [
         "src/**/*.java",
         "src/**/*.kt",
     ],
+    exclude_srcs: [
+        "src/**/safetycenter/*.kt"
+    ],
     defaults: ["modules-utils-testable-device-config-defaults"],
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
     static_libs: [
+        "SafetyCenterTests",
         "androidx.test.core",
         "androidx.test.rules",
         "HealthConnectLibrary",
