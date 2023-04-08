@@ -691,7 +691,13 @@ public final class HealthPermissions {
             populateHealthPermissionToHealthPermissionCategoryMap();
         }
 
-        return sHealthCategoryToWritePermissionMap.get(permissionCategory);
+        String healthWritePermission = sHealthCategoryToWritePermissionMap.get(permissionCategory);
+        Objects.requireNonNull(
+                healthWritePermission,
+                "Health write permission not found for "
+                        + "PermissionCategory : "
+                        + permissionCategory);
+        return healthWritePermission;
     }
 
     private static synchronized void populateHealthPermissionToHealthPermissionCategoryMap() {
