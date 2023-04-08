@@ -37,7 +37,6 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE)
 public final class BloodPressureRecordHelper
         extends InstantRecordHelper<BloodPressureRecordInternal> {
 
@@ -48,6 +47,10 @@ public final class BloodPressureRecordHelper
     private static final String SYSTOLIC_COLUMN_NAME = "systolic";
     private static final String DIASTOLIC_COLUMN_NAME = "diastolic";
     private static final String BODY_POSITION_COLUMN_NAME = "body_position";
+
+    public BloodPressureRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE);
+    }
 
     @Override
     @NonNull

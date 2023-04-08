@@ -48,7 +48,6 @@ import java.util.UUID;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_POWER)
 public class PowerRecordHelper
         extends SeriesRecordHelper<PowerRecordInternal, PowerRecordInternal.PowerRecordSample> {
     public static final int NUM_LOCAL_COLUMNS = 1;
@@ -56,6 +55,10 @@ public class PowerRecordHelper
     private static final String SERIES_TABLE_NAME = "power_record_table";
     private static final String POWER_COLUMN_NAME = "power";
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
+
+    public PowerRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_POWER);
+    }
 
     @Override
     public final AggregateResult<?> getAggregateResult(

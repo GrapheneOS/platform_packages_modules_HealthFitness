@@ -48,7 +48,6 @@ import java.util.UUID;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
 public class HeartRateRecordHelper
         extends SeriesRecordHelper<
                 HeartRateRecordInternal, HeartRateRecordInternal.HeartRateSample> {
@@ -58,6 +57,10 @@ public class HeartRateRecordHelper
     private static final String SERIES_TABLE_NAME = "heart_rate_record_series_table";
     private static final String BEATS_PER_MINUTE_COLUMN_NAME = "beats_per_minute";
     private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
+
+    public HeartRateRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
+    }
 
     @Override
     public final AggregateResult<?> getAggregateResult(

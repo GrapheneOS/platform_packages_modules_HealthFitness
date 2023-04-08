@@ -82,7 +82,6 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_NUTRITION)
 public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionRecordInternal> {
     private static final String NUTRITION_RECORD_TABLE_NAME = "nutrition_record_table";
     private static final String UNSATURATED_FAT_COLUMN_NAME = "unsaturated_fat";
@@ -129,6 +128,10 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
     private static final String VITAMIN_A_COLUMN_NAME = "vitamin_a";
     private static final String FOLIC_ACID_COLUMN_NAME = "folic_acid";
     private static final String SUGAR_COLUMN_NAME = "sugar";
+
+    public NutritionRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_NUTRITION);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

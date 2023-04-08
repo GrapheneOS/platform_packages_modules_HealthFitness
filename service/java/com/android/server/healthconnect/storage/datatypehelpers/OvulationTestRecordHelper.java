@@ -33,11 +33,14 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST)
 public final class OvulationTestRecordHelper
         extends InstantRecordHelper<OvulationTestRecordInternal> {
     private static final String OVULATION_TEST_RECORD_TABLE_NAME = "ovulation_test_record_table";
     private static final String RESULT_COLUMN_NAME = "result";
+
+    public OvulationTestRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST);
+    }
 
     @Override
     @NonNull
