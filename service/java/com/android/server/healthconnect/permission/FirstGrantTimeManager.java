@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.permission;
 
+import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_CURRENT;
+import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_STAGED;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
@@ -42,7 +45,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @hide
  */
 public class FirstGrantTimeManager implements PackageManager.OnPermissionsChangedListener {
-    private static final String TAG = "HealthConnectFirstGrantTimeManager";
+    private static final String TAG = "HealthFirstGrantTimeMan";
     private static final int CURRENT_VERSION = 1;
 
     private final PackageManager mPackageManager;
@@ -57,6 +60,9 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
     private final UidToGrantTimeCache mUidToGrantTimeCache;
 
     @GuardedBy("mGrantTimeLock")
+    private final Map<UserHandle, UserGrantTimeState> mUserToGrantTimeStagedState;
+
+    @GuardedBy("mGrantTimeLock")
     private final Set<Integer> mRestoredAndValidatedUsers = new ArraySet<>();
 
     private final PackageInfoUtils mPackageInfoHelper;
@@ -69,6 +75,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         mDatastore = datastore;
         mPackageManager = context.getPackageManager();
         mUidToGrantTimeCache = new UidToGrantTimeCache();
+        mUserToGrantTimeStagedState = new ArrayMap<>();
         mPackageInfoHelper = new PackageInfoUtils(context);
         mPackageManager.addOnPermissionsChangeListener(this);
     }
@@ -115,9 +122,13 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                             + " not found.");
         }
 
-        synchronized (mGrantTimeLock) {
+        mGrantTimeLock.writeLock().lock();
+        try {
             mUidToGrantTimeCache.put(uid, time);
-            mDatastore.writeForUser(mUidToGrantTimeCache.extractUserGrantTimeState(user), user);
+            mDatastore.writeForUser(
+                    mUidToGrantTimeCache.extractUserGrantTimeState(user), user, DATA_TYPE_CURRENT);
+        } finally {
+            mGrantTimeLock.writeLock().unlock();
         }
     }
 
@@ -137,35 +148,65 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
             return;
         }
 
-        boolean anyHealthPermissionGranted =
-                mPackageInfoHelper.hasGrantedHealthPermissions(packageNames, user);
+        mGrantTimeLock.writeLock().lock();
+        try {
+            boolean anyHealthPermissionGranted =
+                    mPackageInfoHelper.hasGrantedHealthPermissions(packageNames, user);
 
-        boolean grantTimeRecorded = (getGrantTimeReadLocked(uid) != null);
-        if (grantTimeRecorded != anyHealthPermissionGranted) {
-            mGrantTimeLock.writeLock().lock();
-            try {
+            boolean grantTimeRecorded = (getGrantTimeReadLocked(uid) != null);
+            if (grantTimeRecorded != anyHealthPermissionGranted) {
                 if (grantTimeRecorded) {
                     // An app doesn't have health permissions anymore, reset its grant time.
                     mUidToGrantTimeCache.remove(uid);
                 } else {
                     // An app got new health permission, set current time as it's first grant
-                    // time.
-                    mUidToGrantTimeCache.put(uid, Instant.now());
+                    // time if we can't update state from the staged data.
+                    if (!tryUpdateGrantTimeFromStagedDataLocked(user, uid)) {
+                        mUidToGrantTimeCache.put(uid, Instant.now());
+                    }
                 }
 
                 UserGrantTimeState updatedState =
                         mUidToGrantTimeCache.extractUserGrantTimeState(user);
                 logIfInDebugMode("State after onPermissionsChanged :", updatedState);
-                mDatastore.writeForUser(updatedState, user);
-            } finally {
-                mGrantTimeLock.writeLock().unlock();
+                mDatastore.writeForUser(updatedState, user, DATA_TYPE_CURRENT);
             }
+        } finally {
+            mGrantTimeLock.writeLock().unlock();
         }
     }
 
-    /** Returns the name of the file used for storing the data. */
-    public File getFile(@NonNull UserHandle user) {
-        return mDatastore.getFile(user);
+    // TODO(b/277063776): move two methods below to b&r classes.
+    /** Returns the state which should be backed up. */
+    public UserGrantTimeState createBackupState(UserHandle user) {
+        initAndValidateUserStateIfNeedLocked(user);
+        return mUidToGrantTimeCache.extractUserBackupGrantTimeState(user);
+    }
+
+    /**
+     * Callback which should be called when backup grant time data is available. Triggers merge of
+     * current and backup grant time data. All grant times from backup state which are not merged
+     * with the current state (e.g. because an app is not installed) will be staged until app gets
+     * health permission.
+     *
+     * @param userId user for which the data is available.
+     * @param state backup state to apply.
+     */
+    public void applyAndStageBackupDataForUser(UserHandle userId, UserGrantTimeState state) {
+        initAndValidateUserStateIfNeedLocked(userId);
+
+        mGrantTimeLock.writeLock().lock();
+        try {
+            mUserToGrantTimeStagedState.put(userId, state);
+            updateGrantTimesWithStagedDataLocked(userId);
+        } finally {
+            mGrantTimeLock.writeLock().unlock();
+        }
+    }
+
+    /** Returns file with grant times data. */
+    public File getFile(UserHandle userHandle) {
+        return mDatastore.getFile(userHandle, DATA_TYPE_CURRENT);
     }
 
     void onPackageRemoved(
@@ -187,13 +228,14 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                 UserGrantTimeState updatedState =
                         mUidToGrantTimeCache.extractUserGrantTimeState(userHandle);
                 logIfInDebugMode("State after package " + packageName + " removed: ", updatedState);
-                mDatastore.writeForUser(updatedState, userHandle);
+                mDatastore.writeForUser(updatedState, userHandle, DATA_TYPE_CURRENT);
             } finally {
                 mGrantTimeLock.writeLock().unlock();
             }
         }
     }
 
+    @GuardedBy("mGrantTimeLock")
     private Instant getGrantTimeReadLocked(Integer uid) {
         mGrantTimeLock.readLock().lock();
         try {
@@ -201,6 +243,63 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         } finally {
             mGrantTimeLock.readLock().unlock();
         }
+    }
+
+    @GuardedBy("mGrantTimeLock")
+    private void updateGrantTimesWithStagedDataLocked(UserHandle user) {
+        boolean stateChanged = false;
+        for (Integer uid : mUidToGrantTimeCache.mUidToGrantTime.keySet()) {
+            if (!UserHandle.getUserHandleForUid(uid).equals(user)) {
+                continue;
+            }
+
+            stateChanged |= tryUpdateGrantTimeFromStagedDataLocked(user, uid);
+        }
+
+        if (stateChanged) {
+            mDatastore.writeForUser(
+                    mUidToGrantTimeCache.extractUserGrantTimeState(user), user, DATA_TYPE_CURRENT);
+        }
+
+        if (mUserToGrantTimeStagedState.containsKey(user)) {
+            mDatastore.writeForUser(mUserToGrantTimeStagedState.get(user), user, DATA_TYPE_STAGED);
+        }
+    }
+
+    @GuardedBy("mGrantTimeLock")
+    private boolean tryUpdateGrantTimeFromStagedDataLocked(UserHandle user, Integer uid) {
+        UserGrantTimeState backupState = mDatastore.readForUser(user, DATA_TYPE_STAGED);
+        if (backupState == null) {
+            return false;
+        }
+
+        Instant stagedTime = null;
+        for (String packageName : mPackageInfoHelper.getPackageNamesForUid(uid)) {
+            if (stagedTime == null) {
+                stagedTime = backupState.getPackageGrantTimes().get(packageName);
+            }
+        }
+
+        if (stagedTime == null) {
+            return false;
+        }
+        if (mUidToGrantTimeCache.containsKey(uid)
+                && mUidToGrantTimeCache.get(uid).isBefore(stagedTime)) {
+            Log.w(
+                    TAG,
+                    "Backup grant time is later than currently stored grant time, "
+                            + "skip restoring grant time for"
+                            + " uid "
+                            + uid);
+            return false;
+        }
+
+        mUidToGrantTimeCache.put(uid, stagedTime);
+        for (String packageName : mPackageInfoHelper.getPackageNamesForUid(uid)) {
+            backupState.getPackageGrantTimes().remove(packageName);
+        }
+        mDatastore.writeForUser(backupState, user, DATA_TYPE_STAGED);
+        return true;
     }
 
     /** Initialize first grant time state for given user. */
@@ -217,14 +316,13 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                     "State for user: "
                             + user.getIdentifier()
                             + " has not been restored and validated.");
-            UserGrantTimeState restoredState = restoreUserStateLocked(user);
+            UserGrantTimeState restoredState = restoreCurrentUserStateLocked(user);
 
             List<PackageInfo> validHealthApps =
                     mPackageInfoHelper.getPackagesHoldingHealthPermissions(user);
             logIfInDebugMode(
                     "Packages holding health perms of user " + user + " :", validHealthApps);
 
-            // TODO(b/260585595): validate in B&R scenario.
             validateAndCorrectRecordedStateForUser(restoredState, validHealthApps, user);
 
             // TODO(b/260691599): consider removing mapping when getUidForSharedUser is
@@ -253,9 +351,10 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
     }
 
     @GuardedBy("mGrantTimeLock")
-    private UserGrantTimeState restoreUserStateLocked(UserHandle userHandle) {
+    private UserGrantTimeState restoreCurrentUserStateLocked(UserHandle userHandle) {
         try {
-            UserGrantTimeState restoredState = mDatastore.readForUser(userHandle);
+            UserGrantTimeState restoredState =
+                    mDatastore.readForUser(userHandle, DATA_TYPE_CURRENT);
             if (restoredState == null) {
                 restoredState = new UserGrantTimeState(CURRENT_VERSION);
             }
@@ -316,7 +415,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
 
         if (stateChanged) {
             logIfInDebugMode("Changed state after validation for " + user + ": ", recordedState);
-            mDatastore.writeForUser(recordedState, user);
+            mDatastore.writeForUser(recordedState, user, DATA_TYPE_CURRENT);
         }
     }
 
@@ -475,10 +574,36 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                     packageNameToGrantTime, sharedUserToGrantTime, CURRENT_VERSION);
         }
 
+        @NonNull
+        UserGrantTimeState extractUserBackupGrantTimeState(@NonNull UserHandle user) {
+            Map<String, Instant> sharedUserToGrantTime = new ArrayMap<>();
+            Map<String, Instant> packageNameToGrantTime = new ArrayMap<>();
+
+            for (Map.Entry<Integer, Instant> entry : mUidToGrantTime.entrySet()) {
+                Integer uid = entry.getKey();
+                Instant time = entry.getValue();
+
+                if (!UserHandle.getUserHandleForUid(uid).equals(user)) {
+                    continue;
+                }
+
+                for (String packageName : mPackageInfoHelper.getPackageNamesForUid(uid)) {
+                    packageNameToGrantTime.put(packageName, time);
+                }
+            }
+
+            return new UserGrantTimeState(
+                    packageNameToGrantTime, sharedUserToGrantTime, CURRENT_VERSION);
+        }
+
         void populateFromUserGrantTimeState(
-                @NonNull UserGrantTimeState grantTimeState,
+                @Nullable UserGrantTimeState grantTimeState,
                 @NonNull Map<String, Set<Integer>> sharedUserNameToUids,
                 @NonNull UserHandle user) {
+            if (grantTimeState == null) {
+                return;
+            }
+
             for (Map.Entry<String, Instant> entry :
                     grantTimeState.getSharedUserGrantTimes().entrySet()) {
                 String sharedUserName = entry.getKey();

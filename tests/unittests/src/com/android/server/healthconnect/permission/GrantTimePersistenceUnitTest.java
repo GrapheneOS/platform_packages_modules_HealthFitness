@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.permission;
 
+import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_CURRENT;
+import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_STAGED;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.when;
@@ -106,60 +109,96 @@ public class GrantTimePersistenceUnitTest {
     @Test
     public void testWriteReadData_packageAndSharedUserState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
-        datastore.writeForUser(DEFAULT_STATE, mUser);
-        UserGrantTimeState restoredState = datastore.readForUser(mUser);
+        datastore.writeForUser(DEFAULT_STATE, mUser, DATA_TYPE_CURRENT);
+        UserGrantTimeState restoredState = datastore.readForUser(mUser, DATA_TYPE_CURRENT);
         assertRestoredStateIsCorrect(restoredState, DEFAULT_STATE);
     }
 
     @Test
     public void testWriteReadData_multipleSharedUserState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
-        datastore.writeForUser(SHARED_USERS_STATE, mUser);
-        UserGrantTimeState restoredState = datastore.readForUser(mUser);
+        datastore.writeForUser(SHARED_USERS_STATE, mUser, DATA_TYPE_CURRENT);
+        UserGrantTimeState restoredState = datastore.readForUser(mUser, DATA_TYPE_CURRENT);
         assertRestoredStateIsCorrect(restoredState, SHARED_USERS_STATE);
     }
 
     @Test
     public void testWriteReadData_multiplePackagesState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
-        datastore.writeForUser(PACKAGES_STATE, mUser);
-        UserGrantTimeState restoredState = datastore.readForUser(mUser);
+        datastore.writeForUser(PACKAGES_STATE, mUser, DATA_TYPE_CURRENT);
+        UserGrantTimeState restoredState = datastore.readForUser(mUser, DATA_TYPE_CURRENT);
         assertRestoredStateIsCorrect(restoredState, PACKAGES_STATE);
     }
 
     @Test
     public void testWriteReadData_emptyState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
-        datastore.writeForUser(EMPTY_STATE, mUser);
-        UserGrantTimeState restoredState = datastore.readForUser(mUser);
+        datastore.writeForUser(EMPTY_STATE, mUser, DATA_TYPE_CURRENT);
+        UserGrantTimeState restoredState = datastore.readForUser(mUser, DATA_TYPE_CURRENT);
         assertRestoredStateIsCorrect(restoredState, EMPTY_STATE);
     }
 
     @Test
     public void testWriteReadData_overwroteState_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
-        datastore.writeForUser(PACKAGES_STATE, mUser);
-        datastore.writeForUser(DEFAULT_STATE, mUser);
-        UserGrantTimeState restoredState = datastore.readForUser(mUser);
+        datastore.writeForUser(PACKAGES_STATE, mUser, DATA_TYPE_CURRENT);
+        datastore.writeForUser(DEFAULT_STATE, mUser, DATA_TYPE_CURRENT);
+        UserGrantTimeState restoredState = datastore.readForUser(mUser, DATA_TYPE_CURRENT);
         assertRestoredStateIsCorrect(restoredState, DEFAULT_STATE);
+    }
+
+    @Test
+    public void testWriteReadData_writeAllStateTypes_restoredCorrectly() {
+        FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
+        datastore.writeForUser(PACKAGES_STATE, mUser, DATA_TYPE_CURRENT);
+        datastore.writeForUser(EMPTY_STATE, mUser, DATA_TYPE_STAGED);
+        assertRestoredStateIsCorrect(
+                datastore.readForUser(mUser, DATA_TYPE_CURRENT), PACKAGES_STATE);
+        assertRestoredStateIsCorrect(datastore.readForUser(mUser, DATA_TYPE_STAGED), EMPTY_STATE);
     }
 
     @Test
     public void testWriteReadData_statesForTwoUsersWritten_restoredCorrectly() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
-        datastore.writeForUser(PACKAGES_STATE, mUser);
-        datastore.writeForUser(SHARED_USERS_STATE, UserHandle.of(10));
-        UserGrantTimeState restoredState = datastore.readForUser(mUser);
+        datastore.writeForUser(PACKAGES_STATE, mUser, DATA_TYPE_CURRENT);
+        datastore.writeForUser(SHARED_USERS_STATE, UserHandle.of(10), DATA_TYPE_CURRENT);
+        UserGrantTimeState restoredState = datastore.readForUser(mUser, DATA_TYPE_CURRENT);
         assertRestoredStateIsCorrect(restoredState, PACKAGES_STATE);
-        UserGrantTimeState restoredState2 = datastore.readForUser(UserHandle.of(10));
+        UserGrantTimeState restoredState2 =
+                datastore.readForUser(UserHandle.of(10), DATA_TYPE_CURRENT);
         assertRestoredStateIsCorrect(restoredState2, SHARED_USERS_STATE);
     }
 
     @Test
     public void testReadData_stateIsNotWritten_nullIsReturned() {
         FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
-        UserGrantTimeState state = datastore.readForUser(mUser);
+        UserGrantTimeState state = datastore.readForUser(mUser, DATA_TYPE_CURRENT);
         assertThat(state).isNull();
+    }
+
+    @Test
+    public void testParseData_stateIsNotWritten_nullIsReturned() {
+        UserGrantTimeState state =
+                GrantTimeXmlHelper.parseGrantTime(new File(mMockDataDirectory, "test_file.xml"));
+        assertThat(state).isNull();
+    }
+
+    @Test
+    public void testWriteData_writeAndReadState_restoredEqualToWritten() {
+        File testFile = new File(mMockDataDirectory, "test_file.xml");
+        GrantTimeXmlHelper.serializeGrantTimes(testFile, DEFAULT_STATE);
+        UserGrantTimeState state = GrantTimeXmlHelper.parseGrantTime(testFile);
+        assertRestoredStateIsCorrect(state, DEFAULT_STATE);
+    }
+
+    @Test
+    public void testGetFile_getAllTypes_allFilesNonNullAndDifferent() {
+        FirstGrantTimeDatastore datastore = FirstGrantTimeDatastore.createInstance();
+        File current = datastore.getFile(mUser, DATA_TYPE_CURRENT);
+        File staged = datastore.getFile(mUser, DATA_TYPE_STAGED);
+        assertThat(current).isNotNull();
+        assertThat(staged).isNotNull();
+        assertThat(current).isNotEqualTo(staged);
     }
 
     private static void deleteFile(File file) {
