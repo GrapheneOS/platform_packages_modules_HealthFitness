@@ -36,6 +36,7 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -46,18 +47,19 @@ import java.util.UUID;
 public final class DeleteTransactionRequest {
     private static final String TAG = "HealthConnectDelete";
     private final List<DeleteTableRequest> mDeleteTableRequests;
-    private final ChangeLogsHelper.ChangeLogs mChangeLogs;
     private final long mRequestingPackageNameId;
+    private ChangeLogsHelper.ChangeLogs mChangeLogs;
     private boolean mHasHealthDataManagementPermission;
 
     public DeleteTransactionRequest(String packageName, DeleteUsingFiltersRequestParcel request) {
         Objects.requireNonNull(packageName);
         mDeleteTableRequests = new ArrayList<>(request.getRecordTypeFilters().size());
-        mChangeLogs =
-                new ChangeLogsHelper.ChangeLogs(DELETE, packageName, Instant.now().toEpochMilli());
         mRequestingPackageNameId = AppInfoHelper.getInstance().getAppInfoId(packageName);
-        if (request.getRecordIdFiltersParcel().getRecordIdFilters() != null
-                && !request.getRecordIdFiltersParcel().getRecordIdFilters().isEmpty()) {
+        if (request.usesIdFilters()) {
+            // We don't keep change logs for bulk deletes
+            mChangeLogs =
+                    new ChangeLogsHelper.ChangeLogs(
+                            DELETE, packageName, Instant.now().toEpochMilli());
             List<RecordIdFilter> recordIds =
                     request.getRecordIdFiltersParcel().getRecordIdFilters();
             Set<UUID> uuidSet = new ArraySet<>();
@@ -125,11 +127,18 @@ public final class DeleteTransactionRequest {
      */
     public void onRecordFetched(
             @RecordTypeIdentifier.RecordType int recordType, long appId, UUID uuid) {
+        if (mChangeLogs == null) {
+            return;
+        }
         mChangeLogs.addUUID(recordType, appId, uuid);
     }
 
     @NonNull
     public List<UpsertTableRequest> getChangeLogUpsertRequests() {
+        if (mChangeLogs == null) {
+            return Collections.emptyList();
+        }
+
         return mChangeLogs.getUpsertTableRequests();
     }
 
