@@ -40,10 +40,13 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_WEIGHT)
 public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordInternal> {
     private static final String WEIGHT_RECORD_TABLE_NAME = "weight_record_table";
     private static final String WEIGHT_COLUMN_NAME = "weight";
+
+    public WeightRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_WEIGHT);
+    }
 
     @Override
     public AggregateResult<?> getAggregateResult(

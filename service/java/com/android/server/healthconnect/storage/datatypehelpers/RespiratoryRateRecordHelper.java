@@ -33,12 +33,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE)
 public final class RespiratoryRateRecordHelper
         extends InstantRecordHelper<RespiratoryRateRecordInternal> {
     private static final String RESPIRATORY_RATE_RECORD_TABLE_NAME =
             "respiratory_rate_record_table";
     private static final String RATE_COLUMN_NAME = "rate";
+
+    public RespiratoryRateRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE);
+    }
 
     @Override
     @NonNull

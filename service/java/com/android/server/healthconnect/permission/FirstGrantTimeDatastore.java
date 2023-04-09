@@ -16,10 +16,13 @@
 
 package com.android.server.healthconnect.permission;
 
+import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.os.UserHandle;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Class for managing health permissions first grant time datastore.
@@ -27,27 +30,41 @@ import java.io.File;
  * @hide
  */
 public interface FirstGrantTimeDatastore {
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({DATA_TYPE_CURRENT, DATA_TYPE_STAGED})
+    public @interface DataType {}
+
+    /* Type used for storing general grant time */
+    int DATA_TYPE_CURRENT = 0;
+
+    /* Type used for applying backup data when it's needed. */
+    int DATA_TYPE_STAGED = 1;
+
     /**
      * Read {@link UserGrantTimeState for given user}.
      *
      * @hide
      */
     @NonNull
-    UserGrantTimeState readForUser(@NonNull UserHandle user);
+    UserGrantTimeState readForUser(@NonNull UserHandle user, @DataType int dataType);
 
     /**
      * Write {@link UserGrantTimeState for given user}.
      *
      * @hide
      */
-    void writeForUser(@NonNull UserGrantTimeState grantTimesState, @NonNull UserHandle user);
+    void writeForUser(
+            @NonNull UserGrantTimeState grantTimesState,
+            @NonNull UserHandle user,
+            @DataType int dataType);
 
     /**
      * Returns the name of the files used by the store for the given user.
      *
      * @hide
      */
-    File getFile(@NonNull UserHandle user);
+    File getFile(@NonNull UserHandle user, @DataType int dataType);
 
     /**
      * Create instance of the datastore class.

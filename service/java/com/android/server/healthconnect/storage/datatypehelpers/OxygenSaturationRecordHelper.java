@@ -33,12 +33,15 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION)
 public final class OxygenSaturationRecordHelper
         extends InstantRecordHelper<OxygenSaturationRecordInternal> {
     private static final String OXYGEN_SATURATION_RECORD_TABLE_NAME =
             "oxygen_saturation_record_table";
     private static final String PERCENTAGE_COLUMN_NAME = "percentage";
+
+    public OxygenSaturationRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION);
+    }
 
     @Override
     @NonNull

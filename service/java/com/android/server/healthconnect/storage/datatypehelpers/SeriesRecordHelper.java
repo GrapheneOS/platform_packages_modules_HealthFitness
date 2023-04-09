@@ -23,6 +23,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SeriesRecordInternal;
 import android.util.Pair;
 
@@ -39,6 +40,10 @@ abstract class SeriesRecordHelper<
                 T extends SeriesRecordInternal<?, ?>, U extends SeriesRecordInternal.Sample>
         extends IntervalRecordHelper<T> {
     protected static final String PARENT_KEY_COLUMN_NAME = PARENT_KEY;
+
+    SeriesRecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
+        super(recordIdentifier);
+    }
 
     @Override
     final List<CreateTableRequest> getChildTableCreateRequests() {

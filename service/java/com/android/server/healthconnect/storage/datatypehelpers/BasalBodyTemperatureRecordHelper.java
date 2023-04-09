@@ -35,13 +35,16 @@ import java.util.List;
  *
  * @hide
  */
-@HelperFor(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE)
 public final class BasalBodyTemperatureRecordHelper
         extends InstantRecordHelper<BasalBodyTemperatureRecordInternal> {
     private static final String BASAL_BODY_TEMPERATURE_RECORD_TABLE_NAME =
             "basal_body_temperature_record_table";
     private static final String MEASUREMENT_LOCATION_COLUMN_NAME = "measurement_location";
     private static final String TEMPERATURE_COLUMN_NAME = "temperature";
+
+    public BasalBodyTemperatureRecordHelper() {
+        super(RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE);
+    }
 
     @Override
     @NonNull
