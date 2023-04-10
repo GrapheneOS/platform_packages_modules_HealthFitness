@@ -37,6 +37,7 @@ import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK
 import static com.android.server.healthconnect.migration.MigrationTestUtils.PERMISSIONS_TO_CHECK;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -66,6 +67,8 @@ import androidx.test.runner.AndroidJUnit4;
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
+
+import libcore.util.HexEncoding;
 
 import org.junit.After;
 import org.junit.Before;
@@ -99,6 +102,7 @@ public class MigrationStateManagerTest {
                 ExtendedMockito.mockitoSession()
                         .mockStatic(PreferenceHelper.class)
                         .mockStatic(MigrationStateChangeJob.class)
+                        .mockStatic(HexEncoding.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
@@ -803,6 +807,8 @@ public class MigrationStateManagerTest {
         when(mSigningInfo.getApkContentsSigners())
                 .thenReturn(
                         new Signature[] {new Signature(getCorrectKnownSignerCertificates()[0])});
+        ExtendedMockito.doReturn(getCorrectKnownSignerCertificates()[0])
+                .when(() -> HexEncoding.encodeToString(any(), anyBoolean()));
         when(mPackageManager.getInstalledPackages(PackageManager.GET_SIGNING_CERTIFICATES))
                 .thenReturn(createPackageInfoArray(MOCK_CONFIGURED_PACKAGE));
     }
