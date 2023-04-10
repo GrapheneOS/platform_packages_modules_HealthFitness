@@ -43,7 +43,6 @@ import android.annotation.UserIdInt;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectDataState;
@@ -615,7 +614,8 @@ public final class MigrationStateManager {
 
     private static List<String> getPackageSignatures(PackageInfo packageInfo) {
         return Arrays.stream(packageInfo.signingInfo.getApkContentsSigners())
-                .map(Signature::toCharsString)
+                .map(signature -> MigrationUtils.computeSha256DigestBytes(signature.toByteArray()))
+                .filter(signature -> signature != null)
                 .toList();
     }
 
