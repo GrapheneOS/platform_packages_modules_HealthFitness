@@ -27,6 +27,10 @@ import android.health.connect.Constants;
 import android.health.connect.HealthConnectManager;
 import android.util.Slog;
 
+import libcore.util.HexEncoding;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,5 +108,18 @@ public class MigrationUtils {
             Slog.d(TAG, "filteredPackages : " + filteredPackages);
         }
         return filteredPackages;
+    }
+
+    /** Computes the SHA256 digest of the input data. */
+    public static String computeSha256DigestBytes(@NonNull byte[] data) {
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA256");
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+        messageDigest.update(data);
+
+        return HexEncoding.encodeToString(messageDigest.digest(), /* uppercase= */ true);
     }
 }
