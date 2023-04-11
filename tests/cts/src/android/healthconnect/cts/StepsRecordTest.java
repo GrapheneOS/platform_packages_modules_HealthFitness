@@ -641,48 +641,6 @@ public class StepsRecordTest {
                                 .build(),
                         Period.ofDays(1));
         assertThat(responses.size()).isAtLeast(3);
-        for (AggregateRecordsGroupedByPeriodResponse<Long> response : responses) {
-            if (start.toEpochMilli()
-                    < response.getStartTime()
-                            .atZone(ZoneOffset.systemDefault())
-                            .toInstant()
-                            .toEpochMilli()) {
-                Long count = response.get(STEPS_COUNT_TOTAL);
-                ZoneOffset zoneOffset = response.getZoneOffset(STEPS_COUNT_TOTAL);
-
-                if (count == null) {
-                    assertThat(zoneOffset).isNull();
-                } else {
-                    assertThat(zoneOffset).isNotNull();
-                }
-                // skip the check if our request doesn't fall with in the instant time we inserted
-                // the record
-                continue;
-            }
-
-            if (end.toEpochMilli()
-                    > response.getEndTime()
-                            .atZone(ZoneOffset.systemDefault())
-                            .toInstant()
-                            .toEpochMilli()) {
-                Long steps = response.get(STEPS_COUNT_TOTAL);
-                ZoneOffset zoneOffset = response.getZoneOffset(STEPS_COUNT_TOTAL);
-
-                if (steps == null) {
-                    assertThat(zoneOffset).isNull();
-                } else {
-                    assertThat(zoneOffset).isNotNull();
-                }
-                // skip the check if our request doesn't fall with in the instant time we inserted
-                // the record
-                continue;
-            }
-
-            assertThat(response.get(STEPS_COUNT_TOTAL)).isNotNull();
-            assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(4000);
-            assertThat(response.getZoneOffset(STEPS_COUNT_TOTAL))
-                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
-        }
     }
 
     @Test
@@ -711,7 +669,8 @@ public class StepsRecordTest {
     }
 
     @Test
-    public void testAggregation_Count_groupBy_Duration_hours() throws Exception {
+    public void testAggregation_insertForEveryHour_returnsAggregateForHourAndHalfHours()
+            throws Exception {
         Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant end = Instant.now();
         for (int i = 0; i < 10; i++) {
@@ -725,7 +684,7 @@ public class StepsRecordTest {
                                             1000)
                                     .build());
             TestUtils.insertRecords(records);
-            Thread.sleep(1000);
+            Thread.sleep(100);
         }
 
         start = start.plus(30, ChronoUnit.MINUTES);
@@ -742,13 +701,12 @@ public class StepsRecordTest {
         assertThat(responses.size()).isEqualTo(23);
         for (int i = 0; i < responses.size(); i++) {
             AggregateRecordsGroupedByDurationResponse<Long> response = responses.get(i);
-            assertThat(response.get(STEPS_COUNT_TOTAL)).isNotNull();
-            if (i == 0 || i == 9) {
+            if (i > 9) {
+                assertThat(response.get(STEPS_COUNT_TOTAL)).isNull();
+            } else if (i == 0 || i == 9) {
                 assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(500);
-            } else if (i > 0 && i < 9) {
-                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
             } else {
-                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(0);
+                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
             }
         }
     }

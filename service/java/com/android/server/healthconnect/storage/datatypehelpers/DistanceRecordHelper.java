@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.DistanceRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +45,6 @@ import java.util.List;
 public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRecordInternal> {
     private static final String DISTANCE_RECORD_TABLE_NAME = "distance_record_table";
     private static final String DISTANCE_COLUMN_NAME = "distance";
-
     public DistanceRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_DISTANCE);
     }
