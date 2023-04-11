@@ -154,7 +154,7 @@
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginBottom">2dp</item>
         <item name="android:background">@drawable/grant_permissions_buttons_top</item>
-        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColor">@android:color/system_neutral1_900</item>
         <item name="android:textAppearance">?attr/textAppearanceLabel</item>
     </style>
 
@@ -165,7 +165,7 @@
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginBottom">2dp</item>
         <item name="android:textAppearance">?attr/textAppearanceLabel</item>
-        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColor">@android:color/system_neutral1_900</item>
         <item name="android:background">@drawable/grant_permissions_buttons_bottom</item>
     </style>
 
