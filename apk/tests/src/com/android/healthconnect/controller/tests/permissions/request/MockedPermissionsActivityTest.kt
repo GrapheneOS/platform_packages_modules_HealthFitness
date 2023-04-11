@@ -47,23 +47,18 @@ import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_DISTANCE
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.widget.Button
-import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.isNotEnabled
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.ONBOARDING_SHOWN_PREF_KEY
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.permissions.data.PermissionState
@@ -77,15 +72,12 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.instanceOf
-import org.hamcrest.Matchers.`is`
+import java.time.Duration
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.anyString
-import java.time.Duration
 
 @HiltAndroidTest
 class MockedPermissionsActivityTest {
@@ -119,12 +111,14 @@ class MockedPermissionsActivityTest {
                     TEST_APP_NAME,
                     context.getDrawable(R.drawable.health_connect_logo)))
         }
-        whenever(migrationViewModel.migrationTimeout).then {MutableLiveData(Duration.ZERO)}
-        whenever(migrationViewModel.migrationState).then { MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)}
+        whenever(migrationViewModel.migrationTimeout).then { MutableLiveData(Duration.ZERO) }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)
+        }
         val sharedPreference =
-            context.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+            context.getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
-        editor.putBoolean("Previously Opened", true)
+        editor.putBoolean(ONBOARDING_SHOWN_PREF_KEY, true)
         editor.apply()
     }
 
