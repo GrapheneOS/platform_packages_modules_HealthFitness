@@ -49,8 +49,7 @@ class DataAccessFragmentTest : HealthConnectBaseTest() {
     @Test
     fun dataAccess_deleteCategoryData_showsDeleteDataRanges() {
         insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(Duration.ofDays(20)))))
-        context.launchMainActivity {
-            clickOnText("Data and access")
+        context.launchDataActivity {
             clickOnText("Activity")
             clickOnText("Steps")
 
@@ -69,7 +68,6 @@ class DataAccessFragmentTest : HealthConnectBaseTest() {
                 .setStartTime(Instant.EPOCH)
                 .setEndTime(Instant.now())
                 .build())
-        navigateBackToHomeScreen()
     }
 
     companion object {
