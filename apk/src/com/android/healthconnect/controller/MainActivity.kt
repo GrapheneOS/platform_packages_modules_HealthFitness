@@ -25,7 +25,7 @@ import com.android.healthconnect.controller.migration.DataMigrationState
 import com.android.healthconnect.controller.migration.MigrationActivity
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
-import com.android.healthconnect.controller.onboarding.OnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
@@ -48,23 +48,14 @@ class MainActivity : Hilt_MainActivity() {
             return
         }
 
-        /** Displaying onboarding screen if user is opening Health Connect app for the first time */
-        val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
-        val previouslyOpened =
-            sharedPreference.getBoolean(getString(R.string.previously_opened), false)
-        if (!previouslyOpened) {
-            val onboardingIntent = Intent(this, OnboardingActivity::class.java)
-            onboardingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            val intentAfterOnboarding = Intent(this, MainActivity::class.java)
-            onboardingIntent.putExtra(Intent.EXTRA_INTENT, intentAfterOnboarding)
-            startActivity(onboardingIntent)
-            finish()
+        if (maybeRedirectToOnboardingActivity(this, intent)) {
+            return
         }
 
         //         TODO (b/271377785) uncomment for migration flows
-//        migrationViewModel.migrationState.observe(this) { migrationState ->
-//            maybeNavigateToMigration(migrationState)
-//        }
+        //        migrationViewModel.migrationState.observe(this) { migrationState ->
+        //            maybeNavigateToMigration(migrationState)
+        //        }
     }
 
     override fun onStart() {

@@ -46,6 +46,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.ONBOARDING_SHOWN_PREF_KEY
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.request.PermissionsActivity
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
@@ -95,9 +97,9 @@ class PermissionsActivityTest {
             MutableLiveData(HealthConnectDataState.MIGRATION_STATE_IDLE)
         }
         val sharedPreference =
-            context.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+            context.getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
-        editor.putBoolean("Previously Opened", true)
+        editor.putBoolean(ONBOARDING_SHOWN_PREF_KEY, true)
         editor.apply()
     }
 
