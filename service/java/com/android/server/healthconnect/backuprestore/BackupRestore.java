@@ -104,19 +104,35 @@ public final class BackupRestore {
     public static final int INTERNAL_RESTORE_STATE_STAGING_DONE = 3;
     public static final int INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS = 4;
     public static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 5;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+            INTERNAL_RESTORE_STATE_UNKNOWN,
+            INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
+            INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
+            INTERNAL_RESTORE_STATE_STAGING_DONE,
+            INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS,
+            INTERNAL_RESTORE_STATE_MERGING_DONE
+    })
+    public @interface InternalRestoreState {}
+
     // Key for storing the current data restore state on disk.
     public static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
     // Key for storing the error restoring HC data.
     public static final String DATA_RESTORE_ERROR_KEY = "data_restore_error_key";
+
     private static final String TAG = "HealthConnectBackupRestore";
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
     private final FirstGrantTimeManager mFirstGrantTimeManager;
+
     private final Context mStagedDbContext;
     private final Context mContext;
     private final Map<Long, String> mStagedPackageNamesByAppIds = new ArrayMap<>();
     private final Object mMergingLock = new Object();
+
     @GuardedBy("mMergingLock")
     private HealthConnectDatabase mStagedDatabase;
+
     private boolean mActivelyStagingRemoteData = false;
 
     public BackupRestore(FirstGrantTimeManager firstGrantTimeManager, @NonNull Context context) {
@@ -469,6 +485,15 @@ public final class BackupRestore {
                         DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
     }
 
+    /**
+     * Get the dir for the user with all the staged data - either from the cloud restore or from the
+     * d2d process.
+     */
+    private static File getStagedRemoteDataDirectoryForUser(int userId) {
+        File hcDirectoryForUser = FilesUtil.getDataSystemCeHCDirectoryForUser(userId);
+        return new File(hcDirectoryForUser, "remote_staged");
+    }
+
     private void merge(int userId) {
         if (getInternalRestoreState(userId) >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
             return;
@@ -637,26 +662,6 @@ public final class BackupRestore {
             }
             return mStagedDatabase;
         }
-    }
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-        INTERNAL_RESTORE_STATE_UNKNOWN,
-        INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
-        INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
-        INTERNAL_RESTORE_STATE_STAGING_DONE,
-        INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS,
-        INTERNAL_RESTORE_STATE_MERGING_DONE
-    })
-    public @interface InternalRestoreState {}
-
-    /**
-     * Get the dir for the user with all the staged data - either from the cloud restore or from the
-     * d2d process.
-     */
-    private static File getStagedRemoteDataDirectoryForUser(int userId) {
-        File hcDirectoryForUser = FilesUtil.getDataSystemCeHCDirectoryForUser(userId);
-        return new File(hcDirectoryForUser, "remote_staged");
     }
 
     /**
