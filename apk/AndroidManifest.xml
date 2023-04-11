@@ -104,7 +104,7 @@
 
         <activity
             android:name=".onboarding.OnboardingActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.HealthConnect" />
 
         <provider
