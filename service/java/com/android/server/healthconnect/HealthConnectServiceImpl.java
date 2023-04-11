@@ -217,7 +217,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mMigrationStateManager = migrationStateManager;
         mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
-        mBackupRestore = new BackupRestore(mFirstGrantTimeManager, mContext);
+        mBackupRestore =
+                new BackupRestore(mFirstGrantTimeManager, mMigrationStateManager, mContext);
 
         migrationCleaner.attachTo(migrationStateManager);
     }
