@@ -44,7 +44,6 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
-import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.permissions.shared.DisconnectDialogFragment
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromHealthPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
@@ -85,7 +84,6 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private lateinit var packageName: String
-    private lateinit var appName: String
     private val viewModel: AppPermissionViewModel by viewModels()
     private val permissionMap: MutableMap<HealthPermission, SwitchPreference> = mutableMapOf()
 
@@ -125,10 +123,6 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
             requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
-        if (requireArguments().containsKey(EXTRA_APP_NAME) &&
-            requireArguments().getString(EXTRA_APP_NAME) != null) {
-            appName = requireArguments().getString(EXTRA_APP_NAME)!!
-        }
 
         viewModel.loadAppInfo(packageName)
         viewModel.loadForPackage(packageName)
@@ -151,15 +145,16 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                 }
             }
         }
-        setupAllowAllPreference()
+
         setupHeader()
-        setupFooter()
+
     }
 
     private fun setupHeader() {
         viewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
-            appName = appMetadata.appName
             packageName = appMetadata.packageName
+            setupAllowAllPreference(appMetadata.appName)
+            setupFooter(appMetadata.appName)
             header?.apply {
                 setIcon(appMetadata.icon)
                 setTitle(appMetadata.appName)
@@ -167,19 +162,19 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         }
     }
 
-    private fun setupFooter() {
+    private fun setupFooter(appName: String) {
         viewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) { isAtLeastOneGranted ->
-            updateFooter(isAtLeastOneGranted)
+            updateFooter(isAtLeastOneGranted, appName)
         }
     }
 
-    private fun setupAllowAllPreference() {
+    private fun setupAllowAllPreference(appName: String) {
         allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
             if (preference.isPressed) {
                 if (grantAll) {
                     viewModel.grantAllPermissions(packageName)
                 } else {
-                    showRevokeAllPermissions()
+                    showRevokeAllPermissions(appName)
                 }
             }
         }
@@ -188,7 +183,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         }
     }
 
-    private fun showRevokeAllPermissions() {
+    private fun showRevokeAllPermissions(appName: String) {
         childFragmentManager.setFragmentResultListener(
             DisconnectDialogFragment.DISCONNECT_CANCELED_EVENT, this) { _, _ ->
                 allowAllPreference?.isChecked = true
@@ -255,7 +250,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
             }
     }
 
-    private fun updateFooter(isAtLeastOneGranted: Boolean) {
+    private fun updateFooter(isAtLeastOneGranted: Boolean, appName: String) {
         var title = getString(R.string.manage_permissions_rationale, appName)
 
         if (isAtLeastOneGranted) {
