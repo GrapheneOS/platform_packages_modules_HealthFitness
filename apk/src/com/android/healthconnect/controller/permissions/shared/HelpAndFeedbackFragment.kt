@@ -38,10 +38,11 @@ import androidx.preference.Preference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
-import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Can't see all your apps fragment for Health Connect. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -55,6 +56,8 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
     init {
         this.setPageName(PageName.HELP_AND_FEEDBACK_PAGE)
     }
+
+    @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
     private val mCheckForUpdates: HealthPreference? by lazy {
         preferenceScreen.findPreference(CHECK_FOR_UPDATES)
@@ -89,5 +92,9 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
             activity?.startActivityForResult(intent, 0)
             true
         }
+
+        mSendFeedback?.isVisible = deviceInfoUtils.isSendFeedbackAvailable(requireContext())
+        mCheckForUpdates?.isVisible = deviceInfoUtils.isPlayStoreAvailable(requireContext())
+        mSeeAllCompatibleApps?.isVisible = deviceInfoUtils.isPlayStoreAvailable(requireContext())
     }
 }
