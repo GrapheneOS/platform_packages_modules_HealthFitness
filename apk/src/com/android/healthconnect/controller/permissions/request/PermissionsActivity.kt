@@ -34,20 +34,18 @@
 package com.android.healthconnect.controller.permissions.request
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
-import android.health.connect.HealthConnectManager.ACTION_REQUEST_HEALTH_PERMISSIONS
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.onboarding.OnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -71,21 +69,6 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /** Displaying onboarding screen if user is opening Health Connect app for the first time */
-        val sharedPreference = getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
-        val previouslyOpened =
-            sharedPreference.getBoolean(getString(R.string.previously_opened), false)
-        if (!previouslyOpened) {
-            val onboardingIntent = Intent(this, OnboardingActivity::class.java)
-            onboardingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            val intentAfterOnboarding: Intent =
-                Intent(ACTION_REQUEST_HEALTH_PERMISSIONS)
-                    .putExtra(EXTRA_PACKAGE_NAME, getPackageNameExtra())
-                    .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, getPermissionStrings())
-            onboardingIntent.putExtra(Intent.EXTRA_INTENT, intentAfterOnboarding)
-            startActivity(onboardingIntent)
-            finish()
-        }
 
         setContentView(R.layout.activity_permissions)
 
@@ -95,6 +78,10 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         }
 
         if (maybeRedirectIntoTwoPaneSettings(this)) {
+            return
+        }
+
+        if (maybeRedirectToOnboardingActivity(this, intent)) {
             return
         }
 
