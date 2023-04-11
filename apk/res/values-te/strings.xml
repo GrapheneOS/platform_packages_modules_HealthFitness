@@ -253,7 +253,8 @@
     <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"మునుపటి రోజు"</string>
     <string name="default_error" msgid="7966868260616403475">"ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ట్రై చేయండి."</string>
-    <string name="health_permission_header_description" msgid="715159548992861374">"ఈ అనుమతి ఉన్న యాప్‌లు మీ ఆరోగ్య డేటాను చదవగలవు, రాయగలవు."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connectలో స్టోర్ చేయబడిన డేటాను ఏ యాప్‌లు యాక్సెస్ చేయవచ్చో కంట్రోల్ చేయండి. ఒక యాప్ చదవగలిగే లేదా రాయగల డేటాను రివ్యూ చేయడానికి సదరు యాప్‌ను ట్యాప్ చేయండి."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"యాక్సెస్ అనుమతించబడింది"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"యాక్సెస్ అనుమతించబడలేదు"</string>
@@ -264,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"ఏ యాప్‌నకు అనుమతి లేదు"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"యాప్‌లు ఏవీ తిరస్కరించబడలేదు"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"అన్ని యాప్‌లకు యాక్సెస్‌ను తీసివేయాలా?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7031529588341182402">"మీ యాప్‌లు ఏవీ Health Connectకు సంబంధించిన కొత్త డేటాను యాక్సెస్ చేయలేవు లేదా జోడించలేవు. ఇప్పటికే ఉన్న ఏ డేటానూ ఇది తొలగించదు.\n\nఈ యాప్​కి ఉన్న లొకేషన్, కెమెరా లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"అన్నీ తీసివేయండి"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"యాప్‌ను మేనేజ్ చేయండి"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"యాప్ డేటాను తొలగించండి"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"ఇన్‌యాక్టివ్ యాప్‌లు"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ఈ యాప్‌లకు ఇకపై యాక్సెస్ లేదు, కానీ Health Connect‌లో ఇప్పటికీ డేటా స్టోర్ అయ్యి ఉంటుంది"</string>
-    <string name="manage_permissions_time_frame" msgid="1092609621784987611">"<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> తర్వాత జోడించబడిన డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> యాక్సెస్ చేయగలదు"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"ఈ యాప్ యాక్సెస్ చేయగల ఇతర Android అనుమతులను మేనేజ్ చేయడానికి, సెట్టింగ్‌లు &gt; యాప్‌లకు వెళ్లండి"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"మీరు <xliff:g id="APP_NAME">%1$s</xliff:g>తో షేర్ చేసే డేటా వారి గోప్యతా పాలసీ పరిధిలోకి వస్తుంది"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"ఈ యాప్ యాక్సెస్ చేయగల ఇతర Android అనుమతులను మేనేజ్ చేయడానికి, సెట్టింగ్‌లకు వెళ్లి, తర్వాత యాప్‌లు ఆప్షన్‌ను ట్యాప్ చేయండి"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"గోప్యతా పాలసీని చదవండి"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"గత 24 గంటల్లో యాక్సెస్ చేయబడింది"</string>
     <string name="app_access_title" msgid="7137018424885371763">"యాప్ యాక్సెస్"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="2595037914540550683">"మీకు ప్రస్తుతం అనుకూల యాప్‌లు ఏవీ ఇన్‌స్టాల్ చేయబడలేదు"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"యాప్ అనుమతులు తీసివేయబడ్డాయి"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect <xliff:g id="APP_DATA">%s</xliff:g>‌కు అనుమతులను తీసివేసింది"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>‌కు అనుమతులను తీసివేసింది"</string>
@@ -326,6 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g> ద్వారా జోడించబడిన మొత్తం <xliff:g id="DATA_TYPE">%1$s</xliff:g> డేటాను శాశ్వతంగా తొలగించాలా?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"ఈ ఎంట్రీని శాశ్వతంగా తొలగించాలా?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"కనెక్ట్ చేయబడిన యాప్‌లు ఇకపై Health Connect నుండి ఈ డేటాను యాక్సెస్ చేయలేవు"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"తొలగించండి"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"వెనుకకు వెళ్లండి"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"పూర్తయింది"</string>
@@ -672,14 +678,16 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"ఫారెన్‌హీట్"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"కెల్విన్"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"సహాయం &amp; ఫీడ్‌బ్యాక్"</string>
-    <string name="cant_see_all_your_apps_description" msgid="3961611343621846795">"మీరు ఇన్‌స్టాల్ చేసిన యాప్ కనపడకపోతే, అది ఇంకా Health Connect యాప్‌నకు అనుకూలంగా ఉండకపోవచ్చు"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"ట్రై చేయాల్సిన అంశాలు"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"అప్‌డేట్‌ల కోసం చెక్ చేయండి"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"ఇన్‌స్టాల్ చేసిన యాప్‌లు అప్‌డేట్ అయ్యి ఉన్నాయని నిర్ధారించుకోండి"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"అన్ని అనుకూల యాప్‌లను చూడండి"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Playలో యాప్‌లను కనుగొనండి"</string>
     <string name="send_feedback" msgid="7756927746070096780">"ఫీడ్‌బ్యాక్‌ను పంపండి"</string>
-    <string name="send_feedback_description" msgid="1353916733836472498">"ఏ ఆరోగ్యం &amp; ఫిట్‌నెస్ యాప్‌లు Health Connectతో పని చేయాలని మీరు అనుకుంటున్నారో మాకు తెలియజేయండి"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"ఆటోమేటిక్ తొలగింపు"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ఆటోమేటిక్ తొలగింపు"</string>
@@ -733,7 +741,7 @@
     <skip />
     <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
     <skip />
-    <!-- no translation found for migration_in_progress_screen_integration_dont_close (9175622854569375370) -->
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
     <skip />
     <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
     <skip />
@@ -751,7 +759,7 @@
     <skip />
     <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
     <skip />
-    <!-- no translation found for migration_module_update_needed_restart (5195683570815523946) -->
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
     <skip />
     <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
     <skip />
@@ -807,17 +815,17 @@
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
-    <!-- no translation found for migration_in_progress_permissions_dialog_content (6150412818710483467) -->
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_title (1215384228192150345) -->
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_content (331340306988875119) -->
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
     <skip />
     <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
     <skip />
-    <!-- no translation found for migration_not_complete_notification_title (4882693412343350489) -->
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
     <skip />
     <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
     <skip />
@@ -825,7 +833,7 @@
     <skip />
     <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
     <skip />
-    <!-- no translation found for migration_whats_new_dialog_title (5063564438674582321) -->
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
     <skip />
     <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
     <skip />

@@ -253,7 +253,8 @@
     <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Папярэдні дзень"</string>
     <string name="default_error" msgid="7966868260616403475">"Нешта пайшло не так. Паўтарыце спробу."</string>
-    <string name="health_permission_header_description" msgid="715159548992861374">"Праграмы з такім дазволам могуць счытваць і запісваць даныя, датычныя здароўя."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Кантралюйце доступ праграм да даных, захаваных у праграме \"Здароўе і спорт\". Націсніце на праграму, каб праглядзець даныя, якія яна можа счытваць ці запісваць."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Дазволены доступ"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Не дазволены доступ"</string>
@@ -264,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Няма дазволеных праграм"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Няма забароненых праграм"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Выдаліць доступ для ўсіх праграм?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7031529588341182402">"Ні адна з вашых праграм не зможа атрымліваць доступ да даных у праграме \"Здароўе і спорт\" ці дадаваць іх. Ужо існуючыя даныя застануцца.\n\nГэта не паўплывае на іншыя дазволы, якія можа мець гэта праграма, напрыклад на доступ да геаданых, камеры ці мікрафона."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Выдаліць усе"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Кіраванне праграмай"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Выдаліць даныя праграмы"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Неактыўныя праграмы"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"У гэтых праграм больш няма доступу да праграмы \"Здароўе і спорт\", аднак іх даныя па-ранейшаму там захоўваюцца"</string>
-    <string name="manage_permissions_time_frame" msgid="1092609621784987611">"<xliff:g id="APP_NAME">%1$s</xliff:g> можа мець доступ да даных, дададзеных пасля <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"Каб кіраваць іншымі дазволамі Android, якія можа мець гэта праграма, адкрыйце \"Налады &gt; Праграмы\""</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Даныя, якія вы абагульваеце з праграмай \"<xliff:g id="APP_NAME">%1$s</xliff:g>\", падпадаюць пад дзеянне палітыкі прыватнасці"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Каб кіраваць іншымі дазволамі гэтай праграмы ў Android, адкрыйце \"Налады\" і выберыце \"Праграмы\""</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Азнаёміцца з палітыкай прыватнасці"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Апошні доступ у папярэднія 24 гадзіны"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Доступы праграмы"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="2595037914540550683">"У вас не ўсталяваны сумяшчальныя праграмы"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Выдаленыя дазволы праграм"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Дазволы на доступ да даных праграмы \"Здароўе і спорт\" выдалены для праграмы \"<xliff:g id="APP_DATA">%s</xliff:g>\""</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Дазволы на доступ да даных праграмы \"Здароўе і спорт\" выдалены для праграм \"<xliff:g id="APP_DATA_0">%1$s</xliff:g>\" і \"<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>\""</string>
@@ -326,6 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Выдаліць усе даныя \"<xliff:g id="DATA_TYPE">%1$s</xliff:g>\", дададзеныя праграмай \"<xliff:g id="APP_DATA">%2$s</xliff:g>\"?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Выдаліць гэты запіс?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Падключаныя праграмы страцяць доступ да гэтых даных у праграме \"Здароўе і спорт\""</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Выдаліць"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Назад"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Гатова"</string>
@@ -672,14 +678,16 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Градусы Фарэнгейта"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Кельвіны"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Даведка і водгукі"</string>
-    <string name="cant_see_all_your_apps_description" msgid="3961611343621846795">"Калі тут не паказваецца ўсталяваная праграма, магчыма, яна пакуль несумяшчальная з праграмай \"Здароўе і спорт\""</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"Рэкамендацыі"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Праверыць наяўнасць абнаўленняў"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Упэўніцеся, што ўсталяваныя праграмы актуальныя"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Праглядзець усе сумяшчальныя праграмы"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Знайсці праграмы ў Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Адправіць водгук"</string>
-    <string name="send_feedback_description" msgid="1353916733836472498">"Паведаміце нам, якія праграмы, звязаныя са здароўем і фітнесам, павінны працаваць сумесна з праграмай \"Здароўе і спорт\""</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Крама Play"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Наладжванне аўтавыдалення"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Наладжванне аўтавыдалення"</string>
@@ -733,7 +741,7 @@
     <skip />
     <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
     <skip />
-    <!-- no translation found for migration_in_progress_screen_integration_dont_close (9175622854569375370) -->
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
     <skip />
     <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
     <skip />
@@ -751,7 +759,7 @@
     <skip />
     <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
     <skip />
-    <!-- no translation found for migration_module_update_needed_restart (5195683570815523946) -->
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
     <skip />
     <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
     <skip />
@@ -807,17 +815,17 @@
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
-    <!-- no translation found for migration_in_progress_permissions_dialog_content (6150412818710483467) -->
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_title (1215384228192150345) -->
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_content (331340306988875119) -->
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
     <skip />
     <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
     <skip />
-    <!-- no translation found for migration_not_complete_notification_title (4882693412343350489) -->
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
     <skip />
     <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
     <skip />
@@ -825,7 +833,7 @@
     <skip />
     <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
     <skip />
-    <!-- no translation found for migration_whats_new_dialog_title (5063564438674582321) -->
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
     <skip />
     <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
     <skip />
