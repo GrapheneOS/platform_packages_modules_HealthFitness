@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.dataentries
 
+import android.content.Context
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
@@ -22,6 +23,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.DataEntriesFragment
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel
@@ -34,6 +36,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.withIndex
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -42,6 +45,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 
 @HiltAndroidTest
 class DataEntriesFragmentTest {
@@ -52,9 +58,14 @@ class DataEntriesFragmentTest {
     val viewModel: DataEntriesFragmentViewModel =
         Mockito.mock(DataEntriesFragmentViewModel::class.java)
 
+    private lateinit var context: Context
+
     @Before
     fun setup() {
         hiltRule.inject()
+        context = InstrumentationRegistry.getInstrumentation().context
+        context.setLocale(Locale.UK)
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         Mockito.`when`(viewModel.currentSelectedDate).thenReturn(MutableLiveData())
     }
@@ -102,9 +113,9 @@ class DataEntriesFragmentTest {
 
         launchFragment<DataEntriesFragment>(bundleOf(PERMISSION_TYPE_KEY to STEPS))
 
-        onView(withText("7:06 AM - 7:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
+        onView(withText("7:06 - 7:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("12 steps")).check(matches(isDisplayed()))
-        onView(withText("8:06 AM - 8:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
+        onView(withText("8:06 - 8:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("15 steps")).check(matches(isDisplayed()))
     }
 
@@ -123,15 +134,15 @@ private val FORMATTED_STEPS_LIST =
     listOf(
         FormattedDataEntry(
             uuid = "test_id",
-            header = "7:06 AM - 7:06 AM • TEST_APP_NAME",
-            headerA11y = "from 7:06 AM to 7:06 AM • TEST_APP_NAME",
+            header = "7:06 - 7:06 • TEST_APP_NAME",
+            headerA11y = "from 7:06 to 7:06 • TEST_APP_NAME",
             title = "12 steps",
             titleA11y = "12 steps",
             dataType = DataType.STEPS),
         FormattedDataEntry(
             uuid = "test_id",
-            header = "8:06 AM - 8:06 AM • TEST_APP_NAME",
-            headerA11y = "from 8:06 AM to 8:06 AM • TEST_APP_NAME",
+            header = "8:06 - 8:06 • TEST_APP_NAME",
+            headerA11y = "from 8:06 to 8:06 • TES   T_APP_NAME",
             title = "15 steps",
             titleA11y = "15 steps",
             dataType = DataType.STEPS))
