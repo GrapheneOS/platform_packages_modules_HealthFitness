@@ -96,7 +96,7 @@ android_test {
     srcs: [
         ":healthfitness-cts-testapp-srcs",
         ":healthfitness-cts-testapp2-srcs",
-        "src/android/healthconnect/cts/ui/*.kt",
+        "src/android/healthconnect/cts/ui/**/*.kt",
         "src/android/healthconnect/cts/TestUtils.java",
     ],
     // Tag this module as a cts test artifact
