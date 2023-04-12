@@ -27,7 +27,10 @@ android_test_helper_app {
     ],
     sdk_version: "test_current",
     min_sdk_version: "UpsideDownCake",
-    srcs: ["HealthConnectTestHelper/src/**/*.java"],
+    srcs: [
+        "HealthConnectTestHelper/src/**/*.java",
+        "HealthConnectTestHelper/src/**/*.kt",
+        ],
     libs: ["junit"],
 }
 
@@ -81,7 +84,10 @@ android_test {
     manifest: "device/AndroidManifest.xml",
     test_config: "device/AndroidTest.xml",
     defaults: ["cts_defaults"],
-    srcs: ["device/**/*.java"],
+    srcs: [
+        "device/**/*.java",
+        "device/**/*.kt"
+        ],
     static_libs: [
         "cts-healthconnect-lib",
         "modules-utils-build_system",
@@ -119,6 +125,7 @@ java_test_host {
     defaults: ["cts_defaults"],
     srcs: [
         "host/**/*.java",
+        "host/**/*.kt"
     ],
     test_suites: [
         "cts",
