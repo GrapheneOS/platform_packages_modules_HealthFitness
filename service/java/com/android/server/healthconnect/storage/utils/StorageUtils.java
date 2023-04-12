@@ -28,11 +28,8 @@ import static com.android.server.healthconnect.storage.datatypehelpers.RecordHel
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.annotation.StringDef;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.HealthDataCategory;
@@ -43,11 +40,11 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
 import android.text.TextUtils;
+import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
-import java.lang.annotation.Retention;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
@@ -89,19 +86,26 @@ public final class StorageUtils {
     public static final int BOOLEAN_FALSE_VALUE = 0;
     public static final int BOOLEAN_TRUE_VALUE = 1;
     public static final int UUID_BYTE_SIZE = 16;
+    private static final String TAG = "HealthConnectUtils";
 
-    @Retention(SOURCE)
-    @StringDef({
-        TEXT_NOT_NULL,
-        TEXT_NOT_NULL_UNIQUE,
-        TEXT_NULL,
-        INTEGER,
-        PRIMARY_AUTOINCREMENT,
-        PRIMARY,
-        BLOB,
-        BLOB_UNIQUE_NON_NULL
-    })
-    public @interface SQLiteType {}
+    // Returns null if fetching any of the fields resulted in an error
+    @Nullable
+    public static String getConflictErrorMessageForRecord(
+            Cursor cursor, ContentValues contentValues) {
+        try {
+            return "Updating record with uuid: "
+                    + convertBytesToUUID(contentValues.getAsByteArray(UUID_COLUMN_NAME))
+                    + " and client record id: "
+                    + contentValues.getAsString(CLIENT_RECORD_ID_COLUMN_NAME)
+                    + " conflicts with an existing record with uuid: "
+                    + getCursorUUID(cursor, UUID_COLUMN_NAME)
+                    + "  and client record id: "
+                    + getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME);
+        } catch (Exception exception) {
+            Slog.e(TAG, "", exception);
+            return null;
+        }
+    }
 
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
         byte[] clientIDBlob;

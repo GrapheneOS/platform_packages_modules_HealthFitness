@@ -1873,7 +1873,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1886,7 +1886,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1899,7 +1899,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1912,7 +1912,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1925,7 +1925,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1964,7 +1964,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1990,7 +1990,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
