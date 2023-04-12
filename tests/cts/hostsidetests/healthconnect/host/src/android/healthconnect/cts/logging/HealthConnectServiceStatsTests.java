@@ -262,7 +262,7 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
             throws Exception {
         ConfigUtils.uploadConfigForPushedAtoms(
                 getDevice(),
-                DeviceUtils.STATSD_ATOM_TEST_PKG,
+                TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_API_CALLED_FIELD_NUMBER});
 
         DeviceUtils.runDeviceTests(

@@ -68,7 +68,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
     public void testConnectedApps() throws Exception {
         ConfigUtils.uploadConfigForPushedAtoms(
                 getDevice(),
-                DeviceUtils.STATSD_ATOM_TEST_PKG,
+                TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
 
         List<StatsLog.EventMetricData> data = getEventMetricDataList(null, NUMBER_OF_RETRIES);
@@ -87,7 +87,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", "deleteAllRecordsAddedForTest");
         ConfigUtils.uploadConfigForPushedAtoms(
                 getDevice(),
-                DeviceUtils.STATSD_ATOM_TEST_PKG,
+                TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_STORAGE_STATS_FIELD_NUMBER});
         List<StatsLog.EventMetricData> data =
                 getEventMetricDataList("testHealthConnectDatabaseStats", NUMBER_OF_RETRIES);
