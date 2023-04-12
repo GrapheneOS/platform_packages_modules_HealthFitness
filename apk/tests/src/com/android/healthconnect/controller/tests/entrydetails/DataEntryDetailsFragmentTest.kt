@@ -31,6 +31,7 @@
  */
 package com.android.healthconnect.controller.tests.entrydetails
 
+import android.content.Context
 import android.health.connect.datatypes.ExerciseRoute
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
@@ -38,6 +39,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
@@ -54,9 +56,13 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.TestData.WARSAW_ROUTE
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.setLocale
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
@@ -70,10 +76,14 @@ class DataEntryDetailsFragmentTest {
 
     @BindValue
     val viewModel: DataEntryDetailsViewModel = mock(DataEntryDetailsViewModel::class.java)
+    private lateinit var context: Context
 
     @Before
     fun setup() {
         hiltRule.inject()
+        context = InstrumentationRegistry.getInstrumentation().context
+        context.setLocale(Locale.UK)
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
     }
 
     @Test
@@ -115,8 +125,8 @@ class DataEntryDetailsFragmentTest {
                         listOf(
                             SleepSessionEntry(
                                 uuid = "1",
-                                header = "7:06 AM • TEST_APP_NAME",
-                                headerA11y = "7:06 AM • TEST_APP_NAME",
+                                header = "07:06 • TEST_APP_NAME",
+                                headerA11y = "07:06 • TEST_APP_NAME",
                                 title = "12 hour sleeping",
                                 titleA11y = "12 hour sleeping",
                                 dataType = DataType.SLEEP,
@@ -125,7 +135,7 @@ class DataEntryDetailsFragmentTest {
         launchFragment<DataEntryDetailsFragment>(
             DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
 
-        onView(withText("7:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
+        onView(withText("07:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
         onView(withText("notes")).check(matches(isDisplayed()))
     }
@@ -154,7 +164,7 @@ class DataEntryDetailsFragmentTest {
         launchFragment<DataEntryDetailsFragment>(
             DataEntryDetailsFragment.createBundle(permissionType = HEART_RATE, entryId = "1"))
 
-        onView(withText("7:06 AM - 8:06 AM • TEST_APP_NAME")).check(matches(isDisplayed()))
+        onView(withText("07:06 - 8:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("100 beats per minute")).check(matches(isDisplayed()))
     }
 
@@ -185,15 +195,15 @@ class DataEntryDetailsFragmentTest {
             FormattedEntry.SessionHeader(header = "Stages"),
             FormattedEntry.FormattedSessionDetail(
                 uuid = "1",
-                header = "7:06 AM • TEST_APP_NAME",
-                headerA11y = "7:06 AM • TEST_APP_NAME",
+                header = "07:06 • TEST_APP_NAME",
+                headerA11y = "07:06 • TEST_APP_NAME",
                 title = "6 hour light sleeping",
                 titleA11y = "6 hour light sleeping",
             ),
             FormattedEntry.FormattedSessionDetail(
                 uuid = "1",
-                header = "7:06 AM • TEST_APP_NAME",
-                headerA11y = "7:06 AM • TEST_APP_NAME",
+                header = "07:06 • TEST_APP_NAME",
+                headerA11y = "07:06 • TEST_APP_NAME",
                 title = "6 hour deep sleeping",
                 titleA11y = "6 hour deep sleeping",
             ))
@@ -202,8 +212,8 @@ class DataEntryDetailsFragmentTest {
     private fun getFormattedSleepSession(): SleepSessionEntry {
         return SleepSessionEntry(
             uuid = "1",
-            header = "7:06 AM • TEST_APP_NAME",
-            headerA11y = "7:06 AM • TEST_APP_NAME",
+            header = "07:06 • TEST_APP_NAME",
+            headerA11y = "07:06 • TEST_APP_NAME",
             title = "12 hour sleeping",
             titleA11y = "12 hour sleeping",
             dataType = DataType.SLEEP,
@@ -213,8 +223,8 @@ class DataEntryDetailsFragmentTest {
     private fun getFormattedExerciseSession(showSession: Boolean): ExerciseSessionEntry {
         return ExerciseSessionEntry(
             uuid = "1",
-            header = "7:06 AM • TEST_APP_NAME",
-            headerA11y = "7:06 AM • TEST_APP_NAME",
+            header = "07:06 • TEST_APP_NAME",
+            headerA11y = "07:06 • TEST_APP_NAME",
             title = "12 hour running",
             titleA11y = "12 hour running",
             dataType = DataType.EXERCISE,
@@ -230,8 +240,8 @@ class DataEntryDetailsFragmentTest {
     private fun getFormattedHeartRate(): HeartRateEntry {
         return HeartRateEntry(
             uuid = "1",
-            header = "7:06 AM - 8:06 AM • TEST_APP_NAME",
-            headerA11y = "7:06 AM - 8:06 AM • TEST_APP_NAME",
+            header = "07:06 - 8:06 • TEST_APP_NAME",
+            headerA11y = "07:06 - 8:06 • TEST_APP_NAME",
             title = "100 beats per minute",
             titleA11y = "100 beats per minute",
             dataType = DataType.HEART_RATE)
