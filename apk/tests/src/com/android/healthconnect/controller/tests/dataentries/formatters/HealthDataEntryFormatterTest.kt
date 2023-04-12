@@ -49,7 +49,7 @@ class HealthDataEntryFormatterTest {
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        context.setLocale(Locale.US)
+        context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         hiltRule.inject()
@@ -63,8 +63,8 @@ class HealthDataEntryFormatterTest {
                 .isEqualTo(
                     HeartRateEntry(
                         uuid = "test_id",
-                        header = "7:06 AM - 7:06 AM • Health Connect test app",
-                        headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
+                        header = "07:06 - 07:06 • Health Connect test app",
+                        headerA11y = "from 07:06 to 07:06 • Health Connect test app",
                         title = "80 bpm - 100 bpm",
                         titleA11y = "from 80 beats per minute to 100 beats per minute",
                         dataType = DataType.HEART_RATE))
@@ -79,8 +79,8 @@ class HealthDataEntryFormatterTest {
                 .isEqualTo(
                     FormattedDataEntry(
                         uuid = "test_id",
-                        header = "7:06 AM - 7:06 AM • Health Connect test app",
-                        headerA11y = "from 7:06 AM to 7:06 AM • Health Connect test app",
+                        header = "07:06 - 07:06 • Health Connect test app",
+                        headerA11y = "from 07:06 to 07:06 • Health Connect test app",
                         title = "12 steps",
                         titleA11y = "12 steps",
                         dataType = DataType.STEPS))
@@ -95,9 +95,9 @@ class HealthDataEntryFormatterTest {
             .isEqualTo(
                 FormattedDataEntry(
                     uuid = "test_id",
-                    header = "7:06 AM • Health Connect test app",
-                    headerA11y = "7:06 AM • Health Connect test app",
-                    title = "1,548 Cal",
+                    header = "07:06 • Health Connect test app",
+                    headerA11y = "07:06 • Health Connect test app",
+                    title = "1,548 cal",
                     titleA11y = "1,548 calories",
                     dataType = DataType.BASAL_METABOLIC_RATE))
     }
