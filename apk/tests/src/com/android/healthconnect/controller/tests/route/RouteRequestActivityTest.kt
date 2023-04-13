@@ -27,7 +27,6 @@ import android.health.connect.datatypes.ExerciseSessionType
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.lifecycle.MutableLiveData
-import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -46,6 +45,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.tests.utils.whenever
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -57,8 +57,8 @@ import java.util.TimeZone
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Matchers.any
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 
 @HiltAndroidTest
 class RouteRequestActivityTest {
@@ -118,13 +118,13 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_noSessionId() {
+    fun intentLaunchesRouteRequestActivity_noSessionId() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
         }
 
@@ -136,14 +136,14 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_nullSessionId() {
+    fun intentLaunchesRouteRequestActivity_nullSessionId() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .putExtra(EXTRA_SESSION_ID, null as String?)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
         }
 
@@ -155,15 +155,10 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_noRoute() {
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
-                .putExtra(EXTRA_SESSION_ID, "sessionID")
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+    fun intentLaunchesRouteRequestActivity_noRoute() {
+        val startActivityIntent = getRouteActivityIntent()
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(
                 SessionWithAttribution(
                     ExerciseSessionRecord.Builder(
@@ -185,15 +180,10 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_emptyRoute() {
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
-                .putExtra(EXTRA_SESSION_ID, "sessionID")
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+    fun intentLaunchesRouteRequestActivity_emptyRoute() {
+        val startActivityIntent = getRouteActivityIntent()
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(
                 SessionWithAttribution(
                     ExerciseSessionRecord.Builder(
@@ -215,7 +205,7 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity() {
+    fun intentLaunchesRouteRequestActivity() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .putExtra(EXTRA_SESSION_ID, "sessionID")
@@ -223,7 +213,7 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
         }
 
@@ -231,9 +221,7 @@ class RouteRequestActivityTest {
 
         onView(withText("Don\'t allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow Health Connect to access this exercise route in Health Connect?"))
+        onView(withText("Allow Health Connect to access this exercise route in Health Connect?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(withText("This app will be able to read your past location in the route"))
@@ -247,14 +235,14 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_sessionWithNoTitle() {
+    fun intentLaunchesRouteRequestActivity_sessionWithNoTitle() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .putExtra(EXTRA_SESSION_ID, "sessionID")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(
                 SessionWithAttribution(
                     ExerciseSessionRecord.Builder(
@@ -279,9 +267,7 @@ class RouteRequestActivityTest {
 
         onView(withText("Don\'t allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow Health Connect to access this exercise route in Health Connect?"))
+        onView(withText("Allow Health Connect to access this exercise route in Health Connect?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(withText("This app will be able to read your past location in the route"))
@@ -295,7 +281,7 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_infoDialog() {
+    fun intentLaunchesRouteRequestActivity_infoDialog() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .putExtra(EXTRA_SESSION_ID, "sessionID")
@@ -303,7 +289,7 @@ class RouteRequestActivityTest {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
         }
 
@@ -329,15 +315,10 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_dontAllow() {
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
-                .putExtra(EXTRA_SESSION_ID, "sessionID")
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+    fun intentLaunchesRouteRequestActivity_dontAllow() {
+        val startActivityIntent = getRouteActivityIntent()
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
         }
 
@@ -353,15 +334,10 @@ class RouteRequestActivityTest {
     }
 
     @Test
-    fun intentLaunchesPermissionsActivity_allow() {
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
-                .putExtra(EXTRA_SESSION_ID, "sessionID")
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+    fun intentLaunchesRouteRequestActivity_allow() {
+        val startActivityIntent = getRouteActivityIntent()
 
-        `when`(viewModel.exerciseSession).then {
+        whenever(viewModel.exerciseSession).then {
             MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
         }
 
@@ -376,5 +352,15 @@ class RouteRequestActivityTest {
         assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isTrue()
         assertThat(returnedIntent.getParcelableExtra<ExerciseRoute>(EXTRA_EXERCISE_ROUTE))
             .isEqualTo(TEST_SESSION.route)
+    }
+
+    private fun getRouteActivityIntent(): Intent {
+        val startActivityIntent =
+            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+                .putExtra(EXTRA_SESSION_ID, "sessionID")
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        return startActivityIntent
     }
 }
