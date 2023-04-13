@@ -34,11 +34,20 @@
 
 
     <application android:label="CtsHealthConnectTestApp">
+        <uses-library android:name="android.test.runner"/>
+
         <activity android:name="android.healthconnect.cts.testhelper.HealthConnectTestHelper"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.FRAMEWORK_INSTRUMENTATION_TEST"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="any.action"/>
             </intent-filter>
         </activity>
     </application>

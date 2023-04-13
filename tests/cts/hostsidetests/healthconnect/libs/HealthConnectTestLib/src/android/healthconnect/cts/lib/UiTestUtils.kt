@@ -15,6 +15,8 @@
  */
 package android.healthconnect.cts.lib
 
+import android.Manifest
+import android.content.Context
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.DistanceRecord
@@ -28,6 +30,7 @@ import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.StaleObjectException
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
+import com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity
 import com.android.compatibility.common.util.UiAutomatorUtils2.getUiDevice
 import com.android.compatibility.common.util.UiAutomatorUtils2.waitFindObject
 import com.android.compatibility.common.util.UiAutomatorUtils2.waitFindObjectOrNull
@@ -53,9 +56,11 @@ object UiTestUtils {
 
     private val PACKAGE_NAME = "android.healthconnect.cts.ui"
 
-    private val TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.app"
+    const val TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.app"
 
     private val TEST_APP_2_PACKAGE_NAME = "android.healthconnect.cts.app2"
+
+    const val TEST_APP_NAME = "Health Connect cts test app"
 
     /**
      * Waits for the given [selector] to be displayed and performs the given [uiObjectAction] on it.
@@ -272,5 +277,20 @@ object UiTestUtils {
                 Instant.now(),
                 Length.fromMeters(500.0))
             .build()
+    }
+
+    fun grantPermissionViaPackageManager(context: Context, packageName: String, permName: String) {
+        runWithShellPermissionIdentity(
+            { context.packageManager.grantRuntimePermission(packageName, permName, context.user) },
+            Manifest.permission.GRANT_RUNTIME_PERMISSIONS)
+    }
+
+    fun revokePermissionViaPackageManager(context: Context, packageName: String, permName: String) {
+        runWithShellPermissionIdentity(
+            {
+                context.packageManager.revokeRuntimePermission(
+                    packageName, permName, context.user, /* reason= */ "")
+            },
+            Manifest.permission.REVOKE_RUNTIME_PERMISSIONS)
     }
 }
