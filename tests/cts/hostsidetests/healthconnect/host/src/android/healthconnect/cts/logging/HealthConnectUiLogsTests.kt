@@ -35,6 +35,8 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     companion object {
         private const val TAG = "HomeFragmentHostTest"
         private const val TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper"
+        private const val READ_HEART_RATE_PERMISSION = "android.permission.health.READ_HEART_RATE"
+        private const val WRITE_HEART_RATE_PERMISSION = "android.permission.health.WRITE_HEART_RATE"
     }
 
     private lateinit var mCtsBuild: IBuildInfo
@@ -103,7 +105,8 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         val recentAccessDataImpression = filterLogs(data, pageId, ElementId.RECENT_ACCESS_ENTRY)
         assertThat(recentAccessDataImpression.size).isAtLeast(1)
 
-        val seeAllRecentAccessImpression = filterLogs(data, pageId, ElementId.SEE_ALL_RECENT_ACCESS_BUTTON)
+        val seeAllRecentAccessImpression =
+            filterLogs(data, pageId, ElementId.SEE_ALL_RECENT_ACCESS_BUTTON)
         assertThat(seeAllRecentAccessImpression.size).isEqualTo(1)
 
         val toolbarImpression = filterLogs(data, pageId, ElementId.TOOLBAR_SETTINGS_BUTTON)
@@ -132,7 +135,8 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         val recentAppImpression = filterLogs(data, pageId, ElementId.RECENT_ACCESS_ENTRY)
         assertThat(recentAppImpression.size).isAtLeast(1)
 
-        val managePermissionsButtonImpression = filterLogs(data, pageId, ElementId.MANAGE_PERMISSIONS_FLOATING_BUTTON)
+        val managePermissionsButtonImpression =
+            filterLogs(data, pageId, ElementId.MANAGE_PERMISSIONS_FLOATING_BUTTON)
         assertThat(managePermissionsButtonImpression.size).isEqualTo(1)
 
         val toolbarImpression = filterLogs(data, pageId, ElementId.TOOLBAR_SETTINGS_BUTTON)
@@ -152,16 +156,17 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
         // Page impression
         val pageImpression =
-                data.filter {
-                    it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
-                            !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
-                }
+            data.filter {
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
+                    !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
+            }
         assertThat(pageImpression.size).isEqualTo(1)
 
         val categoryImpression = filterLogs(data, pageId, ElementId.CATEGORY_BUTTON)
         assertThat(categoryImpression.size).isEqualTo(2)
 
-        val seeAllCategoriesImpression = filterLogs(data, pageId, ElementId.SEE_ALL_CATEGORIES_BUTTON)
+        val seeAllCategoriesImpression =
+            filterLogs(data, pageId, ElementId.SEE_ALL_CATEGORIES_BUTTON)
         assertThat(seeAllCategoriesImpression.size).isEqualTo(1)
 
         val autoDeleteImpression = filterLogs(data, pageId, ElementId.AUTO_DELETE_BUTTON)
@@ -170,7 +175,6 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         val deleteAllDataImpression = filterLogs(data, pageId, ElementId.DELETE_ALL_DATA_BUTTON)
         assertThat(deleteAllDataImpression.size).isEqualTo(1)
 
-
         val toolbarImpression = filterLogs(data, pageId, ElementId.TOOLBAR_SETTINGS_BUTTON)
         assertThat(toolbarImpression.size).isEqualTo(1)
     }
@@ -178,7 +182,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     fun testAllCategoriesImpressions() {
         val pageId = PageId.ALL_CATEGORIES_PAGE
         DeviceUtils.runDeviceTests(
-                device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openAllCategories")
+            device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openAllCategories")
         Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
         val registry = ExtensionRegistry.newInstance()
         UiExtensionAtoms.registerAllExtensions(registry)
@@ -188,10 +192,10 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
         // Page impression
         val pageImpression =
-                data.filter {
-                    it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
-                            !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
-                }
+            data.filter {
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
+                    !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
+            }
         assertThat(pageImpression.size).isEqualTo(1)
 
         val categoryImpression = filterLogs(data, pageId, ElementId.CATEGORY_BUTTON)
@@ -204,7 +208,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     fun testPermissionTypesImpressions() {
         val pageId = PageId.PERMISSION_TYPES_PAGE
         DeviceUtils.runDeviceTests(
-                device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openPermissionTypes")
+            device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openPermissionTypes")
         Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
         val registry = ExtensionRegistry.newInstance()
         UiExtensionAtoms.registerAllExtensions(registry)
@@ -214,16 +218,17 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
         // Page impression
         val pageImpression =
-                data.filter {
-                    it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
-                            !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
-                }
+            data.filter {
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
+                    !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
+            }
         assertThat(pageImpression.size).isEqualTo(1)
 
         val permissionTypeImpression = filterLogs(data, pageId, ElementId.PERMISSION_TYPE_BUTTON)
         assertThat(permissionTypeImpression.size).isEqualTo(1)
 
-        val deleteCategoryDataImpression = filterLogs(data, pageId, ElementId.DELETE_CATEGORY_DATA_BUTTON)
+        val deleteCategoryDataImpression =
+            filterLogs(data, pageId, ElementId.DELETE_CATEGORY_DATA_BUTTON)
         assertThat(deleteCategoryDataImpression.size).isEqualTo(1)
 
         val toolbarImpression = filterLogs(data, pageId, ElementId.TOOLBAR_SETTINGS_BUTTON)
@@ -233,7 +238,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     fun testDataAccessImpressions() {
         val pageId = PageId.DATA_ACCESS_PAGE
         DeviceUtils.runDeviceTests(
-                device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openDataAccess")
+            device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openDataAccess")
         Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
         val registry = ExtensionRegistry.newInstance()
         UiExtensionAtoms.registerAllExtensions(registry)
@@ -243,10 +248,10 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
         // Page impression
         val pageImpression =
-                data.filter {
-                    it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
-                            !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
-                }
+            data.filter {
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
+                    !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
+            }
         assertThat(pageImpression.size).isEqualTo(1)
 
         val seeAllEntriesImpression = filterLogs(data, pageId, ElementId.SEE_ALL_ENTRIES_BUTTON)
@@ -262,7 +267,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     fun testDataEntriesImpressions() {
         val pageId = PageId.DATA_ENTRIES_PAGE
         DeviceUtils.runDeviceTests(
-                device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openDataEntries")
+            device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openDataEntries")
         Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
         val registry = ExtensionRegistry.newInstance()
         UiExtensionAtoms.registerAllExtensions(registry)
@@ -272,10 +277,10 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
         // Page impression
         val pageImpression =
-                data.filter {
-                    it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
-                            !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
-                }
+            data.filter {
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
+                    !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
+            }
         assertThat(pageImpression.size).isEqualTo(1)
 
         val dataEntryImpression = filterLogs(data, pageId, ElementId.DATA_ENTRY_VIEW)
@@ -291,7 +296,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     fun testAppPermissionsImpressions() {
         val pageId = PageId.APP_PERMISSIONS_PAGE
         DeviceUtils.runDeviceTests(
-                device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openAppPermissions")
+            device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openAppPermissions")
         Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
         val registry = ExtensionRegistry.newInstance()
         UiExtensionAtoms.registerAllExtensions(registry)
@@ -301,28 +306,65 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
         // Page impression
         val pageImpression =
-                data.filter {
-                    it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
-                            !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
-                }
+            data.filter {
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
+                    !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
+            }
         assertThat(pageImpression.size).isEqualTo(1)
 
         val searchButtonImpression = filterLogs(data, pageId, ElementId.SEARCH_BUTTON)
         assertThat(searchButtonImpression.size).isEqualTo(1)
 
-        val removeAllPermissionsImpression = filterLogs(data, pageId, ElementId.REMOVE_ALL_APPS_PERMISSIONS_BUTTON)
+        val removeAllPermissionsImpression =
+            filterLogs(data, pageId, ElementId.REMOVE_ALL_APPS_PERMISSIONS_BUTTON)
         assertThat(removeAllPermissionsImpression.size).isEqualTo(1)
 
         val helpAndFeedbackImpression = filterLogs(data, pageId, ElementId.HELP_AND_FEEDBACK_BUTTON)
         assertThat(helpAndFeedbackImpression.size).isEqualTo(1)
     }
 
-    private fun filterLogs(data: List<StatsLog.EventMetricData>,
-                           pageId: PageId, elementId: ElementId): List<StatsLog.EventMetricData> {
+    fun testRequestPermissionsImpressions() {
+        val pageId = PageId.REQUEST_PERMISSIONS_PAGE
+        device.executeShellCommand("pm revoke $TEST_APP_PKG_NAME $READ_HEART_RATE_PERMISSION")
+        device.executeShellCommand("pm revoke $TEST_APP_PKG_NAME $WRITE_HEART_RATE_PERMISSION")
+        DeviceUtils.runDeviceTests(
+            device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openRequestPermissions")
+        Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
+        val registry = ExtensionRegistry.newInstance()
+        UiExtensionAtoms.registerAllExtensions(registry)
+        val data = ReportUtils.getEventMetricDataList(device, registry)
+
+        assertThat(data.size).isAtLeast(1)
+
+        // Page impression
+        val pageImpression =
+            data.filter {
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
+                    !it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).hasElement()
+            }
+        assertThat(pageImpression.size).isEqualTo(1)
+
+        val permissionSwitchImpression = filterLogs(data, pageId, ElementId.PERMISSION_SWITCH)
+        assertThat(permissionSwitchImpression.size).isEqualTo(2)
+
+        val cancelPermissionsImpression =
+            filterLogs(data, pageId, ElementId.CANCEL_PERMISSIONS_BUTTON)
+        assertThat(cancelPermissionsImpression.size).isEqualTo(1)
+
+        val allowPermissionsImpression =
+            filterLogs(data, pageId, ElementId.ALLOW_PERMISSIONS_BUTTON)
+        assertThat(allowPermissionsImpression.size).isEqualTo(1)
+    }
+
+    private fun filterLogs(
+        data: List<StatsLog.EventMetricData>,
+        pageId: PageId,
+        elementId: ElementId
+    ): List<StatsLog.EventMetricData> {
         return data.filter {
             it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).page == pageId &&
-                    it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).element == elementId
+                it.atom.getExtension(UiExtensionAtoms.healthConnectUiImpression).element ==
+                    elementId
         }
-
     }
 }
