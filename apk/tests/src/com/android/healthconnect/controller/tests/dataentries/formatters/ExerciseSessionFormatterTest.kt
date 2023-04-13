@@ -29,7 +29,6 @@ import android.health.connect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -50,7 +49,6 @@ class ExerciseSessionFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @Inject lateinit var formatter: ExerciseSessionFormatter
-    @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
 
     @Before
@@ -66,7 +64,7 @@ class ExerciseSessionFormatterTest {
     fun formatValue() = runBlocking {
         assertThat(
                 formatter.formatValue(
-                    getRecord(type = EXERCISE_SESSION_TYPE_BIKING), unitPreferences = preferences))
+                    getRecord(type = EXERCISE_SESSION_TYPE_BIKING)))
             .isEqualTo("16 m, Cycling")
     }
 
@@ -74,7 +72,7 @@ class ExerciseSessionFormatterTest {
     fun formatA11yValue() = runBlocking {
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(type = EXERCISE_SESSION_TYPE_BIKING), unitPreferences = preferences))
+                    getRecord(type = EXERCISE_SESSION_TYPE_BIKING)))
             .isEqualTo("16 minutes, Cycling")
     }
 
