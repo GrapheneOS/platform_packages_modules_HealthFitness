@@ -64,7 +64,7 @@ public class AutoDeleteService {
             deleteStaleChangeLogEntries();
             deleteStaleAccessLogEntries();
             // Update the recordTypesUsed by packages if required after the deletion of records.
-            AppInfoHelper.getInstance().updateAppInfoRecordTypesUsedOnDelete(null);
+            AppInfoHelper.getInstance().syncAppInfoRecordTypesUsed();
             // Re-sync activity dates table
             ActivityDateHelper.getInstance().reSyncForAllRecords();
         } catch (Exception e) {
