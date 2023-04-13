@@ -20,7 +20,7 @@
   <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
   <uses-permission android:name="android.permission.health.WRITE_HEIGHT"/>
 
-  <application>
+  <application android:label="Health Connect cts test app 2">
     <uses-library android:name="android.test.runner"/>
 
     <activity android:name=".MainActivity"
