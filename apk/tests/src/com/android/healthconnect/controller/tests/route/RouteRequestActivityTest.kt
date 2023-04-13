@@ -27,6 +27,7 @@ import android.health.connect.datatypes.ExerciseSessionType
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -62,8 +63,8 @@ import org.mockito.Mockito.`when`
 @HiltAndroidTest
 class RouteRequestActivityTest {
 
-    val START = Instant.ofEpochMilli(1234567891011)
-    val TEST_SESSION =
+    private val START = Instant.ofEpochMilli(1234567891011)
+    private val TEST_SESSION =
         ExerciseSessionRecord.Builder(
                 getMetaData(),
                 START,
@@ -114,19 +115,12 @@ class RouteRequestActivityTest {
         context = getInstrumentation().context
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-
-        val sharedPreference =
-            context.getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
-        val editor = sharedPreference.edit()
-        editor.putBoolean(ONBOARDING_SHOWN_PREF_KEY, true)
-        editor.apply()
     }
 
     @Test
     fun intentLaunchesPermissionsActivity_noSessionId() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
@@ -145,47 +139,7 @@ class RouteRequestActivityTest {
     fun intentLaunchesPermissionsActivity_nullSessionId() {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
                 .putExtra(EXTRA_SESSION_ID, null as String?)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-
-        `when`(viewModel.exerciseSession).then {
-            MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
-        }
-
-        val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
-
-        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
-        val returnedIntent = scenario.getResult().getResultData()
-        assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isFalse()
-    }
-
-    @Test
-    fun intentLaunchesPermissionsActivity_noSender() {
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(EXTRA_SESSION_ID, "sessionID")
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-
-        `when`(viewModel.exerciseSession).then {
-            MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
-        }
-
-        val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
-
-        assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
-        val returnedIntent = scenario.getResult().getResultData()
-        assertThat(returnedIntent.hasExtra(EXTRA_EXERCISE_ROUTE)).isFalse()
-    }
-
-    @Test
-    fun intentLaunchesPermissionsActivity_nullSender() {
-        val startActivityIntent =
-            Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, null as String?)
-                .putExtra(EXTRA_SESSION_ID, "sessionID")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
@@ -279,7 +233,7 @@ class RouteRequestActivityTest {
         onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Allow Health Connect test app 2 to access this exercise route in Health Connect?"))
+                    "Allow Health Connect to access this exercise route in Health Connect?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(withText("This app will be able to read your past location in the route"))
@@ -297,7 +251,6 @@ class RouteRequestActivityTest {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, RouteRequestActivity::class.java))
                 .putExtra(EXTRA_SESSION_ID, "sessionID")
-                .putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
@@ -328,7 +281,7 @@ class RouteRequestActivityTest {
         onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Allow Health Connect test app 2 to access this exercise route in Health Connect?"))
+                    "Allow Health Connect to access this exercise route in Health Connect?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(withText("This app will be able to read your past location in the route"))

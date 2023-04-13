@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.route
 
 import android.app.Activity
 import android.content.Intent
-import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.health.connect.HealthConnectManager.EXTRA_EXERCISE_ROUTE
 import android.health.connect.HealthConnectManager.EXTRA_SESSION_ID
 import android.os.Bundle
@@ -71,15 +70,10 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
         if (!intent.hasExtra(EXTRA_SESSION_ID) ||
             intent.getStringExtra(EXTRA_SESSION_ID) == null ||
-            !intent.hasExtra(EXTRA_PACKAGE_NAME) ||
-            intent.getStringExtra(EXTRA_PACKAGE_NAME) == null) {
+            callingPackage == null) {
             Log.e(TAG, "Invalid Intent Extras, finishing.")
             setResult(Activity.RESULT_CANCELED, Intent())
             finish()
-            return
-        }
-
-        if (maybeRedirectToOnboardingActivity(this, intent)) {
             return
         }
 
@@ -116,8 +110,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         val title: String
 
         runBlocking {
-            val requester =
-                appInfoReader.getAppMetadata(intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
+            val requester = appInfoReader.getAppMetadata(callingPackage!!)
             title =
                 applicationContext.getString(R.string.request_route_header_title, requester.appName)
         }
