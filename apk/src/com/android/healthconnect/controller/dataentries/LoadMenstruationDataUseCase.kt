@@ -54,10 +54,10 @@ constructor(
         private val SEARCH_RANGE = ofDays(30)
     }
 
-    override suspend fun execute(selectedDate: Instant): List<FormattedEntry> {
+    override suspend fun execute(input: Instant): List<FormattedEntry> {
         val data = buildList {
-            addAll(getMenstruationPeriodRecords(selectedDate))
-            addAll(getMenstruationFlowRecords(selectedDate))
+            addAll(getMenstruationPeriodRecords(input))
+            addAll(getMenstruationFlowRecords(input))
         }
         return data
     }
