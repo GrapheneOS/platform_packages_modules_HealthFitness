@@ -263,9 +263,9 @@ public final class BackupRestore {
         Map<String, ParcelFileDescriptor> pfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
 
+        var backupFilesByFileNames = getBackupFilesByFileNames(userHandle, false);
         pfdsByFileName.forEach(
                 (fileName, pfd) -> {
-                    var backupFilesByFileNames = getBackupFilesByFileNames(userHandle, false);
                     Path sourceFilePath = backupFilesByFileNames.get(fileName).toPath();
                     try (FileOutputStream outputStream =
                             new FileOutputStream(pfd.getFileDescriptor())) {
