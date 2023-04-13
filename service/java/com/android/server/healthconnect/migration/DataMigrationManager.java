@@ -34,10 +34,8 @@ import android.health.connect.migration.PermissionMigrationPayload;
 import android.health.connect.migration.PriorityMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
 import android.os.UserHandle;
-import android.util.ArraySet;
 
 import com.android.internal.annotations.GuardedBy;
-import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.AutoDeleteService;
@@ -157,12 +155,6 @@ public final class DataMigrationManager {
         final RecordInternal<?> record = payload.getRecordInternal();
         StorageUtils.addNameBasedUUIDTo(record);
         mAppInfoHelper.populateAppInfoId(record, mUserContext, false);
-        HealthConnectThreadScheduler.scheduleInternalTask(
-                () -> {
-                    mAppInfoHelper.updateAppInfoRecordTypesUsedOnInsert(
-                            new ArraySet<>(List.of(record.getRecordType())),
-                            record.getPackageName());
-                });
         mDeviceInfoHelper.populateDeviceInfoId(record);
 
         return mRecordHelperProvider
