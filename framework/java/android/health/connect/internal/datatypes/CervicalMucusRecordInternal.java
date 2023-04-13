@@ -62,7 +62,7 @@ public final class CervicalMucusRecordInternal extends InstantRecordInternal<Cer
         return new CervicalMucusRecord.Builder(
                         buildMetaData(), getTime(), getSensation(), getAppearance())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

@@ -49,6 +49,7 @@ public final class BloodGlucoseRecord extends InstantRecord {
      * @param level Level of this activity
      * @param relationToMeal RelationToMeal of this activity
      * @param mealType MealType of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private BloodGlucoseRecord(
             @NonNull Metadata metadata,
@@ -57,13 +58,16 @@ public final class BloodGlucoseRecord extends InstantRecord {
             @SpecimenSource.SpecimenSourceType int specimenSource,
             @NonNull BloodGlucose level,
             @RelationToMealType.RelationToMealTypes int relationToMeal,
-            @MealType.MealTypes int mealType) {
-        super(metadata, time, zoneOffset);
+            @MealType.MealTypes int mealType,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(level);
-        ValidationUtils.requireInRange(level.getInMillimolesPerLiter(), 0.0, 50.0, "level");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(level.getInMillimolesPerLiter(), 0.0, 50.0, "level");
+        }
         validateIntDefValue(
                 specimenSource, SpecimenSource.VALID_TYPES, SpecimenSource.class.getSimpleName());
         validateIntDefValue(
@@ -287,6 +291,22 @@ public final class BloodGlucoseRecord extends InstantRecord {
             mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
+        /**
+         * @return Object of {@link BloodGlucoseRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public BloodGlucoseRecord buildWithoutValidation() {
+            return new BloodGlucoseRecord(
+                    mMetadata,
+                    mTime,
+                    mZoneOffset,
+                    mSpecimenSource,
+                    mLevel,
+                    mRelationToMeal,
+                    mMealType,
+                    true);
+        }
 
         /**
          * @return Object of {@link BloodGlucoseRecord}
@@ -300,7 +320,8 @@ public final class BloodGlucoseRecord extends InstantRecord {
                     mSpecimenSource,
                     mLevel,
                     mRelationToMeal,
-                    mMealType);
+                    mMealType,
+                    false);
         }
     }
 

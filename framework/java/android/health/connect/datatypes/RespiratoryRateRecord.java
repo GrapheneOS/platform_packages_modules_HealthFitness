@@ -37,17 +37,21 @@ public final class RespiratoryRateRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param rate Rate of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private RespiratoryRateRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull double rate) {
-        super(metadata, time, zoneOffset);
+            @NonNull double rate,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
-        ValidationUtils.requireInRange(rate, 0.0, 1000.0, "rate");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(rate, 0.0, 1000.0, "rate");
+        }
         mRate = rate;
     }
 
@@ -118,11 +122,20 @@ public final class RespiratoryRateRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link RespiratoryRateRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public RespiratoryRateRecord buildWithoutValidation() {
+            return new RespiratoryRateRecord(mMetadata, mTime, mZoneOffset, mRate, true);
+        }
+
+        /**
          * @return Object of {@link RespiratoryRateRecord}
          */
         @NonNull
         public RespiratoryRateRecord build() {
-            return new RespiratoryRateRecord(mMetadata, mTime, mZoneOffset, mRate);
+            return new RespiratoryRateRecord(mMetadata, mTime, mZoneOffset, mRate, false);
         }
     }
 

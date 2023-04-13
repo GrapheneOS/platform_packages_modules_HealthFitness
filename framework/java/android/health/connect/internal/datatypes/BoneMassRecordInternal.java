@@ -46,7 +46,7 @@ public final class BoneMassRecordInternal extends InstantRecordInternal<BoneMass
     public BoneMassRecord toExternalRecord() {
         return new BoneMassRecord.Builder(buildMetaData(), getTime(), Mass.fromGrams(getMass()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

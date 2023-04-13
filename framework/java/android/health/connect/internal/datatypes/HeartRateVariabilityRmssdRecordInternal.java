@@ -52,6 +52,6 @@ public final class HeartRateVariabilityRmssdRecordInternal
         return new HeartRateVariabilityRmssdRecord.Builder(
                         buildMetaData(), getTime(), getHeartRateVariabilityMillis())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 }

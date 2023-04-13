@@ -42,6 +42,7 @@ public final class PowerRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param powerRecordSamples Samples of recorded PowerRecord
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private PowerRecord(
             @NonNull Metadata metadata,
@@ -49,13 +50,18 @@ public final class PowerRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<PowerRecordSample> powerRecordSamples) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull List<PowerRecordSample> powerRecordSamples,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(powerRecordSamples);
-        ValidationUtils.validateSampleStartAndEndTime(
-                startTime,
-                endTime,
-                powerRecordSamples.stream().map(PowerRecord.PowerRecordSample::getTime).toList());
+        if (!skipValidation) {
+            ValidationUtils.validateSampleStartAndEndTime(
+                    startTime,
+                    endTime,
+                    powerRecordSamples.stream()
+                            .map(PowerRecord.PowerRecordSample::getTime)
+                            .toList());
+        }
         mPowerRecordSamples = powerRecordSamples;
     }
 
@@ -82,9 +88,24 @@ public final class PowerRecord extends IntervalRecord {
          * @param time The point in time when the measurement was taken.
          */
         public PowerRecordSample(@NonNull Power power, @NonNull Instant time) {
+            this(power, time, false);
+        }
+
+        /**
+         * PowerRecord sample for entries of {@link PowerRecord}
+         *
+         * @param power Power generated, in {@link Power} unit.
+         * @param time The point in time when the measurement was taken.
+         * @param skipValidation Boolean flag to skip validation of record values.
+         * @hide
+         */
+        public PowerRecordSample(
+                @NonNull Power power, @NonNull Instant time, boolean skipValidation) {
             Objects.requireNonNull(time);
             Objects.requireNonNull(power);
-            ValidationUtils.requireInRange(power.getInWatts(), 0.0, 100000.0, "power");
+            if (!skipValidation) {
+                ValidationUtils.requireInRange(power.getInWatts(), 0.0, 100000.0, "power");
+            }
             mTime = time;
             mPower = power;
         }
@@ -194,6 +215,22 @@ public final class PowerRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link PowerRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public PowerRecord buildWithoutValidation() {
+            return new PowerRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mPowerRecordSamples,
+                    true);
+        }
+
+        /**
          * @return Object of {@link PowerRecord}
          */
         @NonNull
@@ -204,7 +241,8 @@ public final class PowerRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mPowerRecordSamples);
+                    mPowerRecordSamples,
+                    false);
         }
     }
 

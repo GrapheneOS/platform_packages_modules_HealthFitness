@@ -97,12 +97,34 @@ public final class StepsRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link StepsRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public StepsRecord buildWithoutValidation() {
+            return new StepsRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mCount,
+                    true);
+        }
+
+        /**
          * @return Object of {@link StepsRecord}
          */
         @NonNull
         public StepsRecord build() {
             return new StepsRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mCount);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mCount,
+                    false);
         }
     }
 
@@ -126,9 +148,12 @@ public final class StepsRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            long count) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        ValidationUtils.requireInRange(count, 0, 1000000, "stepsCount");
+            long count,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(count, 0, 1000000, "stepsCount");
+        }
         mCount = count;
     }
 

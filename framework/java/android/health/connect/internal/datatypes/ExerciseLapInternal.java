@@ -97,7 +97,7 @@ public class ExerciseLapInternal {
         if (getLength() != 0) {
             builder.setLength(Length.fromMeters(getLength()));
         }
-        return builder.build();
+        return builder.buildWithoutValidation();
     }
 
     /** Returns lap length in meters. */

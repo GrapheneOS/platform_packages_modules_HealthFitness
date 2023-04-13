@@ -39,6 +39,7 @@ public final class SpeedRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param speedRecordSamples Samples of recorded SpeedRecord
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private SpeedRecord(
             @NonNull Metadata metadata,
@@ -46,13 +47,18 @@ public final class SpeedRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<SpeedRecordSample> speedRecordSamples) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull List<SpeedRecordSample> speedRecordSamples,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(speedRecordSamples);
-        ValidationUtils.validateSampleStartAndEndTime(
-                startTime,
-                endTime,
-                speedRecordSamples.stream().map(SpeedRecord.SpeedRecordSample::getTime).toList());
+        if (!skipValidation) {
+            ValidationUtils.validateSampleStartAndEndTime(
+                    startTime,
+                    endTime,
+                    speedRecordSamples.stream()
+                            .map(SpeedRecord.SpeedRecordSample::getTime)
+                            .toList());
+        }
         mSpeedRecordSamples = speedRecordSamples;
     }
 
@@ -76,9 +82,24 @@ public final class SpeedRecord extends IntervalRecord {
          * @param time The point in time when the measurement was taken.
          */
         public SpeedRecordSample(@NonNull Velocity speed, @NonNull Instant time) {
+            this(speed, time, false);
+        }
+
+        /**
+         * SpeedRecord sample for entries of {@link SpeedRecord}
+         *
+         * @param speed Speed in {@link Velocity} unit.
+         * @param time The point in time when the measurement was taken.
+         * @param skipValidation Boolean flag to skip validation of record values.
+         * @hide
+         */
+        public SpeedRecordSample(
+                @NonNull Velocity speed, @NonNull Instant time, boolean skipValidation) {
             Objects.requireNonNull(time);
             Objects.requireNonNull(speed);
-            ValidationUtils.requireInRange(speed.getInMetersPerSecond(), 0.0, 1000000, "speed");
+            if (!skipValidation) {
+                ValidationUtils.requireInRange(speed.getInMetersPerSecond(), 0.0, 1000000, "speed");
+            }
             mTime = time;
             mSpeed = speed;
         }
@@ -189,6 +210,22 @@ public final class SpeedRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link SpeedRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public SpeedRecord buildWithoutValidation() {
+            return new SpeedRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mSpeedRecordSamples,
+                    true);
+        }
+
+        /**
          * @return Object of {@link SpeedRecord}
          */
         @NonNull
@@ -199,7 +236,8 @@ public final class SpeedRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mSpeedRecordSamples);
+                    mSpeedRecordSamples,
+                    false);
         }
     }
 

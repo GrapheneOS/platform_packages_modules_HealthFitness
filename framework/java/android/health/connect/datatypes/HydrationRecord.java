@@ -51,6 +51,7 @@ public final class HydrationRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param volume Volume of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private HydrationRecord(
             @NonNull Metadata metadata,
@@ -58,10 +59,13 @@ public final class HydrationRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull Volume volume) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull Volume volume,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(volume);
-        ValidationUtils.requireInRange(volume.getInLiters(), 0.0, 100.0, "volume");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(volume.getInLiters(), 0.0, 100.0, "volume");
+        }
         mVolume = volume;
     }
 
@@ -161,12 +165,34 @@ public final class HydrationRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link HydrationRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public HydrationRecord buildWithoutValidation() {
+            return new HydrationRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mVolume,
+                    true);
+        }
+
+        /**
          * @return Object of {@link HydrationRecord}
          */
         @NonNull
         public HydrationRecord build() {
             return new HydrationRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mVolume);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mVolume,
+                    false);
         }
     }
 

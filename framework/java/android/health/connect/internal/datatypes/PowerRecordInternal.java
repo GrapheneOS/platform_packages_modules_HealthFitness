@@ -69,7 +69,7 @@ public class PowerRecordInternal
                         buildMetaData(), getStartTime(), getEndTime(), getExternalSamples())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override
@@ -88,7 +88,8 @@ public class PowerRecordInternal
             powerRecords.add(
                     new PowerRecord.PowerRecordSample(
                             Power.fromWatts(powerRecordSample.getPower()),
-                            Instant.ofEpochMilli(powerRecordSample.getEpochMillis())));
+                            Instant.ofEpochMilli(powerRecordSample.getEpochMillis()),
+                            true));
         }
         return powerRecords;
     }

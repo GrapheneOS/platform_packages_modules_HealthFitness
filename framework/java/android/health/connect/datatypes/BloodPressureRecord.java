@@ -49,6 +49,7 @@ public final class BloodPressureRecord extends InstantRecord {
      * @param systolic Systolic of this activity
      * @param diastolic Diastolic of this activity
      * @param bodyPosition BodyPosition of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private BloodPressureRecord(
             @NonNull Metadata metadata,
@@ -58,8 +59,9 @@ public final class BloodPressureRecord extends InstantRecord {
                     int measurementLocation,
             @NonNull Pressure systolic,
             @NonNull Pressure diastolic,
-            @BodyPosition.BodyPositionType int bodyPosition) {
-        super(metadata, time, zoneOffset);
+            @BodyPosition.BodyPositionType int bodyPosition,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
@@ -69,10 +71,12 @@ public final class BloodPressureRecord extends InstantRecord {
                 measurementLocation,
                 BloodPressureMeasurementLocation.VALID_TYPES,
                 BloodPressureMeasurementLocation.class.getSimpleName());
-        ValidationUtils.requireInRange(
-                systolic.getInMillimetersOfMercury(), 20.0, 200.0, "systolic");
-        ValidationUtils.requireInRange(
-                diastolic.getInMillimetersOfMercury(), 10.0, 180.0, "diastolic");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(
+                    systolic.getInMillimetersOfMercury(), 20.0, 200.0, "systolic");
+            ValidationUtils.requireInRange(
+                    diastolic.getInMillimetersOfMercury(), 10.0, 180.0, "diastolic");
+        }
         validateIntDefValue(
                 bodyPosition, BodyPosition.VALID_TYPES, BodyPosition.class.getSimpleName());
         mMeasurementLocation = measurementLocation;
@@ -287,6 +291,23 @@ public final class BloodPressureRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link BloodPressureRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public BloodPressureRecord buildWithoutValidation() {
+            return new BloodPressureRecord(
+                    mMetadata,
+                    mTime,
+                    mZoneOffset,
+                    mMeasurementLocation,
+                    mSystolic,
+                    mDiastolic,
+                    mBodyPosition,
+                    true);
+        }
+
+        /**
          * @return Object of {@link BloodPressureRecord}
          */
         @NonNull
@@ -298,7 +319,8 @@ public final class BloodPressureRecord extends InstantRecord {
                     mMeasurementLocation,
                     mSystolic,
                     mDiastolic,
-                    mBodyPosition);
+                    mBodyPosition,
+                    false);
         }
     }
 

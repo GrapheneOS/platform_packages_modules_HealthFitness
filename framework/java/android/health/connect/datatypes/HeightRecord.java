@@ -71,18 +71,22 @@ public final class HeightRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param height Height of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private HeightRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Length height) {
-        super(metadata, time, zoneOffset);
+            @NonNull Length height,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(height);
-        ValidationUtils.requireInRange(height.getInMeters(), 0.0, 3.0, "height");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(height.getInMeters(), 0.0, 3.0, "height");
+        }
         mHeight = height;
     }
     /**
@@ -151,11 +155,20 @@ public final class HeightRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link HeightRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public HeightRecord buildWithoutValidation() {
+            return new HeightRecord(mMetadata, mTime, mZoneOffset, mHeight, true);
+        }
+
+        /**
          * @return Object of {@link HeightRecord}
          */
         @NonNull
         public HeightRecord build() {
-            return new HeightRecord(mMetadata, mTime, mZoneOffset, mHeight);
+            return new HeightRecord(mMetadata, mTime, mZoneOffset, mHeight, false);
         }
     }
 

@@ -27,25 +27,28 @@ public abstract class IntervalRecord extends Record {
     private final ZoneOffset mStartZoneOffset;
     private final Instant mEndTime;
     private final ZoneOffset mEndZoneOffset;
+
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}
      * @param startTime Start time of this activity
      * @param startZoneOffset Zone offset of the user when the activity started
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     IntervalRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
-            @NonNull ZoneOffset endZoneOffset) {
+            @NonNull ZoneOffset endZoneOffset,
+            boolean skipValidation) {
         super(metadata);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(startZoneOffset);
         Objects.requireNonNull(endTime);
         Objects.requireNonNull(endZoneOffset);
-        if (startTime.isAfter(Instant.now())) {
+        if (!skipValidation && startTime.isAfter(Instant.now())) {
             throw new IllegalArgumentException(
                     "Record start time must not be in the future, start time: "
                             + startTime

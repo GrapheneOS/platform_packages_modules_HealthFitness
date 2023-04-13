@@ -77,17 +77,21 @@ public final class RestingHeartRateRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param beatsPerMinute BeatsPerMinute of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private RestingHeartRateRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull long beatsPerMinute) {
-        super(metadata, time, zoneOffset);
+            @NonNull long beatsPerMinute,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
-        ValidationUtils.requireInRange(beatsPerMinute, 1, (long) 300, "beatsPerMinute");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(beatsPerMinute, 1, (long) 300, "beatsPerMinute");
+        }
         mBeatsPerMinute = beatsPerMinute;
     }
     /**
@@ -157,11 +161,21 @@ public final class RestingHeartRateRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link RestingHeartRateRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public RestingHeartRateRecord buildWithoutValidation() {
+            return new RestingHeartRateRecord(mMetadata, mTime, mZoneOffset, mBeatsPerMinute, true);
+        }
+
+        /**
          * @return Object of {@link RestingHeartRateRecord}
          */
         @NonNull
         public RestingHeartRateRecord build() {
-            return new RestingHeartRateRecord(mMetadata, mTime, mZoneOffset, mBeatsPerMinute);
+            return new RestingHeartRateRecord(
+                    mMetadata, mTime, mZoneOffset, mBeatsPerMinute, false);
         }
     }
 
