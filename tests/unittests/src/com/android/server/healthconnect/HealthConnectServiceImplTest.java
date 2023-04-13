@@ -185,7 +185,7 @@ public class HealthConnectServiceImplTest {
 
     @Test
     public void testUpdateDataDownloadState_settingValidState_setsState() {
-        mHealthConnectService.updateDataDownloadState(DATA_DOWNLOAD_STARTED, mUserHandle);
+        mHealthConnectService.updateDataDownloadState(DATA_DOWNLOAD_STARTED);
         verify(mPreferenceHelper, times(1))
                 .insertOrReplacePreference(
                         eq(DATA_DOWNLOAD_STATE_KEY), eq(String.valueOf(DATA_DOWNLOAD_STARTED)));
