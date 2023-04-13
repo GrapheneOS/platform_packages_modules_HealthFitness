@@ -94,14 +94,15 @@ constructor(
             width * PADDING, height * PADDING, width * (1 - PADDING), height * (1 - PADDING))
     }
 
-    override fun onDraw(canvas: Canvas?) {
+
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawRoute(canvas)
         setBackgroundColor(context.getColor(R.color.settingslib_colorSurfaceVariant))
     }
 
-    private fun drawRoute(canvas: Canvas?) {
-        if (route.isEmpty() || canvas == null) {
+    private fun drawRoute(canvas: Canvas) {
+        if (route.isEmpty()) {
             return
         }
         val average = average()
@@ -148,7 +149,7 @@ constructor(
         return Pair(mapX.toFloat(), mapY.toFloat())
     }
 
-    fun average(): Pair<Double, Double> {
+    private fun average(): Pair<Double, Double> {
         var x = 0.0
         var y = 0.0
         var z = 0.0

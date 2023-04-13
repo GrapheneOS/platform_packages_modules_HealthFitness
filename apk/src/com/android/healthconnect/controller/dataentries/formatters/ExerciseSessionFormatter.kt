@@ -185,18 +185,18 @@ constructor(@ApplicationContext private val context: Context) :
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
-            title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences),
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
             dataType = getDataType(record),
             notes = getNotes(record),
             route = record.route)
     }
 
-    fun formatValue(record: ExerciseSessionRecord, unitPreferences: UnitPreferences): String {
+    fun formatValue(record: ExerciseSessionRecord): String {
         return formatSession(record) { duration -> formatDurationShort(context, duration) }
     }
 
-    fun formatA11yValue(record: ExerciseSessionRecord, unitPreferences: UnitPreferences): String {
+    fun formatA11yValue(record: ExerciseSessionRecord): String {
         return formatSession(record) { duration -> formatDurationLong(context, duration) }
     }
 
