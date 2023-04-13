@@ -350,10 +350,20 @@ public final class AppInfoHelper {
      * @param recordTypes The record types that needs to be inserted.
      * @param packageName The package for which the records need to be inserted.
      */
+    @SuppressLint("LongLogTag")
     public synchronized void updateAppInfoRecordTypesUsedOnInsert(
             Set<Integer> recordTypes, String packageName) {
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
-        Objects.requireNonNull(appInfo);
+        if (appInfo == null) {
+            Log.e(
+                    TAG,
+                    "AppInfo for the current package: "
+                            + packageName
+                            + " does not exist. "
+                            + "Hence recordTypesUsed is not getting updated.");
+
+            return;
+        }
 
         if (recordTypes == null || recordTypes.isEmpty()) {
             return;
@@ -484,12 +494,22 @@ public final class AppInfoHelper {
      * Checks and deletes record types in app info table for which the package is no longer
      * contributing data. This is done after delete records operation has been performed.
      */
+    @SuppressLint("LongLogTag")
     private synchronized void deleteRecordTypesForPackagesIfRequiredInternal(
             Set<Integer> recordTypesToBeDeleted,
             HashMap<Integer, HashSet<String>> currentRecordTypePackageMap,
             String packageName) {
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
-        Objects.requireNonNull(appInfo);
+        if (appInfo == null) {
+            Log.e(
+                    TAG,
+                    "AppInfo for the current package: "
+                            + packageName
+                            + " does not exist. "
+                            + "Hence recordTypesUsed is not getting updated.");
+
+            return;
+        }
         if (appInfo.getRecordTypesUsed() == null || appInfo.getRecordTypesUsed().isEmpty()) {
             // return since this package is not contributing to any recordType and hence there
             // is nothing to delete.
