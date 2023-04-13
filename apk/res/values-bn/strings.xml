@@ -253,7 +253,8 @@
     <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"আগের দিন"</string>
     <string name="default_error" msgid="7966868260616403475">"কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।"</string>
-    <string name="health_permission_header_description" msgid="715159548992861374">"এই অনুমতি থাকা অ্যাপ আপনার স্বাস্থ্য সংক্রান্ত ডেটা দেখতে ও এডিট করতে পারবে।"</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect-এ সেভ করা ডেটা কোন কোন অ্যাপ অ্যাক্সেস করতে পারবে তা নিয়ন্ত্রণ করুন। কোন কোন ডেটা অ্যাপ দেখতে ও এডিট করতে পারবে তা পর্যালোচনা করতে এটির উপরে ট্যাপ করুন।"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"অ্যাক্সেসের অনুমতি আছে"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"অ্যাক্সেসের অনুমতি নেই"</string>
@@ -264,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"কোনও অ্যাপের অনুমতি নেই"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"সব অ্যাপকে অনুমতি দেওয়া হয়েছে"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"সব অ্যাপের জন্য অ্যাক্সেস সরাবেন?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7031529588341182402">"আপনার কোনও অ্যাপ আর Health Connect-এর ডেটা অ্যাক্সেস বা এতে নতুন ডেটা যোগ করতে পারবে না। এটি আগে থাকা কোনও ডেটা মুছে ফেলে না।\n\nএই অ্যাপটি কাছে থাকতে পারে এমন অন্যান্য অনুমতির উপরে এটি প্রভাব ফেলে না, যেমন লোকেশন, ক্যামেরা বা মাইক্রোফোন।"</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"সবকটি সরান"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"অ্যাপ ম্যানেজ করা"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"অ্যাপ ডেটা মুছে দিন"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"বন্ধ থাকা অ্যাপ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"এইসব অ্যাপের আর অ্যাক্সেস না থাকলেও, এখনও এদের ডেটা Health Connect-এ সেভ করা আছে"</string>
-    <string name="manage_permissions_time_frame" msgid="1092609621784987611">"<xliff:g id="APP_NAME">%1$s</xliff:g>, <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>-এর পরে যোগ করা যেকোনও ডেটা অ্যাক্সেস করতে পারবে"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"এই অ্যাপ অ্যাক্সেস করতে পারে এমন সব Android অনুমতি ম্যানেজ করতে \'সেটিংস &gt; অ্যাপ\' বিকল্পে যান"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"<xliff:g id="APP_NAME">%1$s</xliff:g>-এর সাথে আপনার শেয়ার করা ডেটা তার গোপনীয়তা নীতি অনুযায়ী প্রযোজ্য"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"এই অ্যাপের অ্যাক্সেস থাকা অন্যান্য Android অনুমতি ম্যানেজ করতে, প্রথমে সেটিংসে যান, তারপরে \'অ্যাপ\' বিকল্পে ট্যাপ করুন"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"গোপনীয়তা নীতি পড়ুন"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"গত ২৪ ঘণ্টায় অ্যাক্সেস করা হয়েছে"</string>
     <string name="app_access_title" msgid="7137018424885371763">"অ্যাপের অ্যাক্সেস"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="2595037914540550683">"বর্তমানে কোনও মানানসই অ্যাপ ইনস্টল করা নেই"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"অ্যাপকে দেওয়া অনুমতি সরানো হয়েছে"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect <xliff:g id="APP_DATA">%s</xliff:g>-এর জন্য অনুমতি সরিয়ে দিয়েছে"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect <xliff:g id="APP_DATA_0">%1$s</xliff:g> ও <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>-এর জন্য অনুমতি সরিয়ে দিয়েছে"</string>
@@ -326,6 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g>-এর যোগ করা <xliff:g id="DATA_TYPE">%1$s</xliff:g> সংক্রান্ত সব ডেটা স্থায়ীভাবে মুছে দিতে চান?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"এই এন্ট্রি স্থায়ীভাবে মুছে দিতে চান?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"কানেক্ট করা অ্যাপ Health Connect থেকে এই ডেটা আর অ্যাক্সেস করতে পারবে না"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"মুছে দিন"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"ফিরে যান"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"হয়ে গেছে"</string>
@@ -672,14 +678,16 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"ফারেনহাইট"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"কেলভিন"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"সহায়তা ও মতামত"</string>
-    <string name="cant_see_all_your_apps_description" msgid="3961611343621846795">"ইনস্টল করা কোনও অ্যাপ দেখতে না পেলে, সেটি হয়ত Health Connect-এর সাথে এখনও মানানসই নয়"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"যেসব বিকল্প ব্যবহার করে দেখতে পারেন"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"কোনও আপডেট আছে কিনা তা চেক করুন"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"ইনস্টল করা অ্যাপ আপ-টু-ডেট আছে কিনা তা দেখে নিন"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"সবকটি মানানসই অ্যাপ দেখুন"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play-তে অ্যাপ দেখুন"</string>
     <string name="send_feedback" msgid="7756927746070096780">"মতামত জানান"</string>
-    <string name="send_feedback_description" msgid="1353916733836472498">"Health Connect-এর সাথে কোন কোন স্বাস্থ্য ও ফিটনেস অ্যাপ আপনি ব্যবহার করতে চান তা আমাদের জানান"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"অটোমেটিক মুছে দিন"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"অটোমেটিক মুছে দিন"</string>
@@ -733,7 +741,7 @@
     <skip />
     <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
     <skip />
-    <!-- no translation found for migration_in_progress_screen_integration_dont_close (9175622854569375370) -->
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
     <skip />
     <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
     <skip />
@@ -751,7 +759,7 @@
     <skip />
     <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
     <skip />
-    <!-- no translation found for migration_module_update_needed_restart (5195683570815523946) -->
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
     <skip />
     <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
     <skip />
@@ -807,17 +815,17 @@
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
-    <!-- no translation found for migration_in_progress_permissions_dialog_content (6150412818710483467) -->
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_title (1215384228192150345) -->
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_content (331340306988875119) -->
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
     <skip />
     <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
     <skip />
-    <!-- no translation found for migration_not_complete_notification_title (4882693412343350489) -->
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
     <skip />
     <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
     <skip />
@@ -825,7 +833,7 @@
     <skip />
     <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
     <skip />
-    <!-- no translation found for migration_whats_new_dialog_title (5063564438674582321) -->
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
     <skip />
     <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
     <skip />

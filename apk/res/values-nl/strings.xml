@@ -253,7 +253,8 @@
     <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Vorige dag"</string>
     <string name="default_error" msgid="7966868260616403475">"Er is iets misgegaan. Probeer het opnieuw."</string>
-    <string name="health_permission_header_description" msgid="715159548992861374">"Apps met dit recht kunnen je gezondheidsgegevens lezen en schrijven."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Bepaal welke apps toegang hebben tot gegevens die zijn opgeslagen in Health Connect. Tik op een app om de gegevens te bekijken die de app kan lezen of schrijven."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Toegang toegestaan"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Toegang niet toegestaan"</string>
@@ -264,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Geen apps toegestaan"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Geen apps geweigerd"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Toegang verwijderen voor alle apps?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7031529588341182402">"Geen van je apps heeft toegang tot gegevens van Health Connect of kan nieuwe gegevens toevoegen. Bestaande gegevens worden niet verwijderd.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor locatie, de camera of de microfoon."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Alles verwijderen"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"App beheren"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"App-gegevens verwijderen"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inactieve apps"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Deze apps hebben geen toegang meer, maar hebben nog wel opgeslagen gegevens in Health Connect"</string>
-    <string name="manage_permissions_time_frame" msgid="1092609621784987611">"<xliff:g id="APP_NAME">%1$s</xliff:g> heeft toegang tot gegevens die zijn toegevoegd na <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>."</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"Ga naar Instellingen &gt; Apps als je andere Android-rechten voor deze app wilt beheren."</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Gegevens die je met <xliff:g id="APP_NAME">%1$s</xliff:g> deelt, vallen onder het privacybeleid van die app"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Ga naar Instellingen en tik op Apps als je andere Android-rechten voor deze app wilt beheren."</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Privacybeleid lezen"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Geopend in de afgelopen 24 uur"</string>
     <string name="app_access_title" msgid="7137018424885371763">"App-toegang"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="2595037914540550683">"Je hebt momenteel geen compatibele apps geïnstalleerd"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"App-rechten verwijderd"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect heeft rechten verwijderd voor <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect heeft rechten verwijderd voor <xliff:g id="APP_DATA_0">%1$s</xliff:g> en <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -326,6 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Alle gegevens voor <xliff:g id="DATA_TYPE">%1$s</xliff:g> die zijn toegevoegd door <xliff:g id="APP_DATA">%2$s</xliff:g> definitief verwijderen?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Deze invoer definitief verwijderen?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Gekoppelde apps hebben geen toegang meer tot deze gegevens via Health Connect"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Verwijderen"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Terug"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Klaar"</string>
@@ -672,14 +678,16 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Hulp en feedback"</string>
-    <string name="cant_see_all_your_apps_description" msgid="3961611343621846795">"Als je een geïnstalleerde app niet ziet, is die misschien nog niet compatibel met Health Connect"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"Stappen die je kunt proberen"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Checken op updates"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Zorg dat geïnstalleerde apps up-to-date zijn"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Alle compatibele apps bekijken"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Apps vinden op Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Feedback sturen"</string>
-    <string name="send_feedback_description" msgid="1353916733836472498">"Vertel ons welke gezondheids- en fitness-apps met Health Connect moeten samenwerken"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatisch verwijderen"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Automatisch verwijderen"</string>
@@ -733,7 +741,7 @@
     <skip />
     <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
     <skip />
-    <!-- no translation found for migration_in_progress_screen_integration_dont_close (9175622854569375370) -->
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
     <skip />
     <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
     <skip />
@@ -751,7 +759,7 @@
     <skip />
     <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
     <skip />
-    <!-- no translation found for migration_module_update_needed_restart (5195683570815523946) -->
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
     <skip />
     <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
     <skip />
@@ -807,17 +815,17 @@
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
-    <!-- no translation found for migration_in_progress_permissions_dialog_content (6150412818710483467) -->
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_title (1215384228192150345) -->
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_content (331340306988875119) -->
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
     <skip />
     <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
     <skip />
-    <!-- no translation found for migration_not_complete_notification_title (4882693412343350489) -->
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
     <skip />
     <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
     <skip />
@@ -825,7 +833,7 @@
     <skip />
     <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
     <skip />
-    <!-- no translation found for migration_whats_new_dialog_title (5063564438674582321) -->
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
     <skip />
     <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
     <skip />
