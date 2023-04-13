@@ -19,14 +19,13 @@ package com.android.healthconnect.controller.tests
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.migration.MigrationActivity
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
-import com.google.common.truth.Truth
+import com.android.healthconnect.controller.route.RouteRequestActivity
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-class ActivityTest {
+class ManifestTest {
 
     private val context = InstrumentationRegistry.getInstrumentation().context
 
@@ -40,6 +39,21 @@ class ActivityTest {
     @Test
     fun migrationActivity_shouldBeExported() {
         val intent = Intent(context, MigrationActivity::class.java)
+        val info = intent.resolveActivityInfo(context.packageManager, PackageManager.MATCH_ALL)
+        assertThat(info.exported).isTrue()
+    }
+
+    @Test
+    fun routeActivity_shouldBeProtectedByPermissionReadExercise() {
+        val intent = Intent(context, RouteRequestActivity::class.java)
+        val info = intent.resolveActivityInfo(context.packageManager, PackageManager.MATCH_ALL)
+        assertThat(info.permission).isEqualTo("android.permission.health.READ_EXERCISE")
+    }
+
+
+    @Test
+    fun routeRequestActivity_shouldBeExported() {
+        val intent = Intent(context, RouteRequestActivity::class.java)
         val info = intent.resolveActivityInfo(context.packageManager, PackageManager.MATCH_ALL)
         assertThat(info.exported).isTrue()
     }
