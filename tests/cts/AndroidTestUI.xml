@@ -25,6 +25,8 @@
         <option name="test-file-name" value="CtsHealthConnectControllerTestCases.apk" />
         <option name="test-file-name" value="HealthFitnessCtsTestApp.apk"/>
         <option name="test-file-name" value="HealthFitnessCtsTestApp2.apk"/>
+        <option name="test-file-name" value="CtsHealthConnectTestAppAWithNormalReadWritePermission.apk"/>
+        <option name="test-file-name" value="CtsHealthConnectTestAppBWithNormalReadWritePermission.apk"/>
     </target_preparer>
 
     <option

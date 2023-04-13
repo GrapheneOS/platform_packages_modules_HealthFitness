@@ -28,7 +28,7 @@ import android.healthconnect.cts.lib.UiTestUtils.stepsRecordFromTestApp
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import androidx.test.uiautomator.By
 import java.time.Instant
-import org.junit.After
+import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -39,28 +39,29 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
 
         private const val THREE_MONTHS = 3 * 30
 
-        @BeforeClass
         @JvmStatic
+        @BeforeClass
         fun setup() {
             val records: List<Record> = listOf(stepsRecordFromTestApp(), stepsRecordFromTestApp())
             insertRecords(records)
         }
-    }
 
-    @After
-    fun teardown() {
-        verifyDeleteRecords(
-            StepsRecord::class.java,
-            TimeInstantRangeFilter.Builder()
-                .setStartTime(Instant.EPOCH)
-                .setEndTime(Instant.now())
-                .build())
-        verifyDeleteRecords(
-            DistanceRecord::class.java,
-            TimeInstantRangeFilter.Builder()
-                .setStartTime(Instant.EPOCH)
-                .setEndTime(Instant.now())
-                .build())
+        @JvmStatic
+        @AfterClass
+        fun teardown() {
+            verifyDeleteRecords(
+                StepsRecord::class.java,
+                TimeInstantRangeFilter.Builder()
+                    .setStartTime(Instant.EPOCH)
+                    .setEndTime(Instant.now())
+                    .build())
+            verifyDeleteRecords(
+                DistanceRecord::class.java,
+                TimeInstantRangeFilter.Builder()
+                    .setStartTime(Instant.EPOCH)
+                    .setEndTime(Instant.now())
+                    .build())
+        }
     }
 
     @Test
