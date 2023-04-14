@@ -38,7 +38,6 @@ import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewM
 import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.END_TIME
@@ -117,8 +116,8 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
             onDeleteEntryClicked = onDeleteEntryListener,
             onItemClickedListener = onClickEntryListener)
     }
-    private val heartRateItemViewBinder by lazy {
-        HeartRateItemViewBinder(
+    private val seriesDataItemViewBinder by lazy {
+        SeriesDataItemViewBinder(
             onDeleteEntryClicked = onDeleteEntryListener,
             onItemClickedListener = onClickEntryListener)
     }
@@ -158,7 +157,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 .setViewBinder(FormattedDataEntry::class.java, entryViewBinder)
                 .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
                 .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
-                .setViewBinder(HeartRateEntry::class.java, heartRateItemViewBinder)
+                .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
                 .setViewBinder(FormattedAggregation::class.java, aggregationViewBinder)
                 .build()
         entriesRecyclerView =
