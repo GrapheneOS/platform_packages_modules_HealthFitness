@@ -594,19 +594,29 @@ public final class TransactionManager {
     private void updateRecord(SQLiteDatabase db, UpsertTableRequest request) {
         // Perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.
-        long numberOfRowsUpdated =
-                db.update(
-                        request.getTable(),
-                        request.getContentValues(),
-                        request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
-                        /* WHERE args */ null);
+        try {
+            long numberOfRowsUpdated =
+                    db.update(
+                            request.getTable(),
+                            request.getContentValues(),
+                            request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
+                            /* WHERE args */ null);
 
-        // throw an exception if the no row was updated, i.e. the uuid with corresponding
-        // app_id_info for this request is not found in the table.
-        if (numberOfRowsUpdated == 0) {
-            throw new IllegalArgumentException(
-                    "No record found for the following input : "
-                            + new StorageUtils.RecordIdentifierData(request.getContentValues()));
+            // throw an exception if the no row was updated, i.e. the uuid with corresponding
+            // app_id_info for this request is not found in the table.
+            if (numberOfRowsUpdated == 0) {
+                throw new IllegalArgumentException(
+                        "No record found for the following input : "
+                                + new StorageUtils.RecordIdentifierData(
+                                        request.getContentValues()));
+            }
+        } catch (SQLiteConstraintException e) {
+            try (Cursor cursor = db.rawQuery(request.getReadRequest().getReadCommand(), null)) {
+                cursor.moveToFirst();
+                throw new IllegalArgumentException(
+                        StorageUtils.getConflictErrorMessageForRecord(
+                                cursor, request.getContentValues()));
+            }
         }
 
         if (request.getChildTableRequests().isEmpty()) {
