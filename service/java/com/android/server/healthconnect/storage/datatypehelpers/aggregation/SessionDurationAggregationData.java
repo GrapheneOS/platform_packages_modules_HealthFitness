@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_ZONE_OFFSET_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
 
@@ -25,9 +24,7 @@ import android.health.connect.Constants;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.utils.StorageUtils;
 
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -80,23 +77,11 @@ public class SessionDurationAggregationData extends AggregationRecordData {
         }
     }
 
-    @Override
-    ZoneOffset readZoneOffset(Cursor cursor) {
-        ZoneOffset zoneOffset = null;
-        if (cursor.getColumnIndex(START_ZONE_OFFSET_COLUMN_NAME) != -1) {
-            zoneOffset =
-                    ZoneOffset.ofTotalSeconds(
-                            StorageUtils.getCursorInt(cursor, START_ZONE_OFFSET_COLUMN_NAME));
-        }
-
-        return zoneOffset;
-    }
-
     @VisibleForTesting
     SessionDurationAggregationData setExcludeIntervals(
-            List<Long> excludeStarts, List<Long> exceludeEnds) {
+            List<Long> excludeStarts, List<Long> excludeEnds) {
         mExcludeStarts = excludeStarts;
-        mExcludeEnds = exceludeEnds;
+        mExcludeEnds = excludeEnds;
         return this;
     }
 

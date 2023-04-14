@@ -17,9 +17,9 @@
 package com.android.server.healthconnect.storage.utils;
 
 import static android.health.connect.HealthDataCategory.ACTIVITY;
+import static android.health.connect.HealthDataCategory.SLEEP;
 import static android.health.connect.datatypes.AggregationType.SUM;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
@@ -52,6 +52,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -267,6 +268,20 @@ public final class StorageUtils {
         return Math.max(duration.toMillis(), 1); // to millis
     }
 
+    /**
+     * Reads ZoneOffset using given cursor. Returns null of column name is not present in the table.
+     */
+    public static ZoneOffset getZoneOffset(Cursor cursor, String startZoneOffsetColumnName) {
+        ZoneOffset zoneOffset = null;
+        if (cursor.getColumnIndex(startZoneOffsetColumnName) != -1) {
+            zoneOffset =
+                    ZoneOffset.ofTotalSeconds(
+                            StorageUtils.getCursorInt(cursor, startZoneOffsetColumnName));
+        }
+
+        return zoneOffset;
+    }
+
     /** Encodes record properties participating in deduplication into a byte array. */
     @Nullable
     public static byte[] getDedupeByteBuffer(@NonNull RecordInternal<?> record) {
@@ -325,13 +340,14 @@ public final class StorageUtils {
      * record type. Priority to be considered only for sleep and Activity categories.
      */
     public static boolean supportsPriority(int recordType, int operationType) {
-        if (recordType != RECORD_TYPE_EXERCISE_SESSION) {
-            @HealthDataCategory.Type
-            int recordCategory =
-                    RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType);
-            return recordCategory == ACTIVITY && operationType == SUM;
+        if (operationType != SUM) {
+            return false;
         }
-        return false;
+
+        @HealthDataCategory.Type
+        int recordCategory =
+                RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType);
+        return recordCategory == ACTIVITY || recordCategory == SLEEP;
     }
 
     /** Returns list of app Ids of contributing apps for the record type in the priority order */
