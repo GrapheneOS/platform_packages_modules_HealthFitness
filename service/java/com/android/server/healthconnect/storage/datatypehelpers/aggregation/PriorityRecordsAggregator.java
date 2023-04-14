@@ -105,7 +105,6 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
                 mCurrentGroup += 1;
             } else if (scanPoint.getType() == AggregationTimestamp.INTERVAL_START) {
                 mOpenIntervals.add(scanPoint.getParentData());
-                recordFirstInGroupZoneOffset(scanPoint.getParentData().getStartTimeZoneOffset());
             } else if (scanPoint.getType() == AggregationTimestamp.INTERVAL_END) {
                 mOpenIntervals.remove(scanPoint.getParentData());
             } else {
@@ -204,16 +203,6 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         }
     }
 
-    private void recordFirstInGroupZoneOffset(ZoneOffset startTimeZoneOffset) {
-        if (mCurrentGroup == -1) {
-            return;
-        }
-
-        if (!mGroupToFirstZoneOffset.containsKey(mCurrentGroup)) {
-            mGroupToFirstZoneOffset.put(mCurrentGroup, startTimeZoneOffset);
-        }
-    }
-
     private void updateAggregationResult(
             AggregationTimestamp startPoint, AggregationTimestamp endPoint) {
         if (Constants.DEBUG) {
@@ -242,6 +231,22 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
                         + mOpenIntervals
                                 .last()
                                 .getResultOnInterval(startPoint.getTime(), endPoint.getTime()));
+
+        if (mCurrentGroup >= 0
+                && !mGroupToFirstZoneOffset.containsKey(mCurrentGroup)
+                && !mOpenIntervals.isEmpty()) {
+            mGroupToFirstZoneOffset.put(mCurrentGroup, getZoneOffsetOfEarliestOpenInterval());
+        }
+    }
+
+    private ZoneOffset getZoneOffsetOfEarliestOpenInterval() {
+        AggregationRecordData earliestInterval = mOpenIntervals.first();
+        for (AggregationRecordData data : mOpenIntervals) {
+            if (data.getStartTime() < earliestInterval.getStartTime()) {
+                earliestInterval = data;
+            }
+        }
+        return earliestInterval.getStartTimeZoneOffset();
     }
 
     // Compared aggregation data by data source priority, then by last modified time.
