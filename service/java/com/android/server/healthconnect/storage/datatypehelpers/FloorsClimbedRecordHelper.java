@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.FloorsClimbedRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +78,7 @@ public final class FloorsClimbedRecordHelper
                         FLOORS_CLIMBED_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(FLOORS_COLUMN_NAME)),
                         START_TIME_COLUMN_NAME,
-                        Long.class);
+                        Double.class);
             default:
                 return null;
         }
