@@ -140,6 +140,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             params.appendAdditionalColumns(columns);
         }
 
+        params.setExtraTimeColumn(getEndTimeColumnName());
         if (StorageUtils.isDerivedType(mRecordIdentifier)) {
             params.appendAdditionalColumns(Arrays.asList(getStartTimeColumnName()));
         }
@@ -506,6 +507,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public abstract String getPeriodGroupByColumnName();
 
     public abstract String getStartTimeColumnName();
+
+    public String getEndTimeColumnName() {
+        return null;
+    }
 
     /** Populate internalRecords with extra data. */
     void readExtraData(List<T> internalRecords, Cursor cursorExtraData, String tableName) {}

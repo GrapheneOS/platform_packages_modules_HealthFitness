@@ -31,12 +31,17 @@ import java.util.List;
  */
 public class AggregateParams {
     private final String mTableName;
+
+    // Column used for time filtering. Start time for interval records.
     private final String mTimeColumnName;
     private final List<String> mColumnsToFetch;
     private SqlJoin mJoin;
-    private Class<?> mPriorityColumnDataType;
 
-    PriorityAggregationExtraParams mPriorityAggregationExtraParams;
+    // Additional column used for time filtering. End time for interval records,
+    // null for other records.
+    private String mExtraTimeColumnName = null;
+
+    private PriorityAggregationExtraParams mPriorityAggregationExtraParams;
 
     public AggregateParams(String tableName, List<String> columnsToFetch, String timeColumnName) {
         this(tableName, columnsToFetch, timeColumnName, null);
@@ -50,9 +55,6 @@ public class AggregateParams {
         mTableName = tableName;
         mColumnsToFetch = columnsToFetch;
         mTimeColumnName = timeColumnName;
-
-        // TODO(b/277776749): move to setter/getter
-        mPriorityColumnDataType = priorityColumnDataType;
 
         // TODO(b/277776749): remove dependency on columns orders
         mPriorityAggregationExtraParams =
@@ -69,6 +71,10 @@ public class AggregateParams {
 
     public String getTimeColumnName() {
         return mTimeColumnName;
+    }
+
+    public String getExtraTimeColumnName() {
+        return mExtraTimeColumnName;
     }
 
     public List<String> getColumnsToFetch() {
@@ -97,6 +103,12 @@ public class AggregateParams {
     /** Returns params for priority aggregation. */
     public PriorityAggregationExtraParams getPriorityAggregationExtraParams() {
         return mPriorityAggregationExtraParams;
+    }
+
+    /** Sets params for priority aggregation. */
+    public AggregateParams setExtraTimeColumn(String extraTimeColumn) {
+        mExtraTimeColumnName = extraTimeColumn;
+        return this;
     }
 
     /** Collections of parameters of priority AggregationRequest. */
