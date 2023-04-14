@@ -47,6 +47,9 @@
     },
     {
       "name": "CtsHealthConnectHostTestCases"
+    },
+    {
+      "name": "CtsHealthConnectHostSideDeviceTestCases"
     }
   ]
 }
