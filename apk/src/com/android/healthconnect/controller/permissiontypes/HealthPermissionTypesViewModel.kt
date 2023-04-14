@@ -144,8 +144,8 @@ constructor(
             if (permissionTypes.isNotEmpty()) {
                 _permissionTypesData.postValue(PermissionTypesState.WithData(permissionTypes))
             } else {
-                val permissionTypes = loadPermissionTypesUseCase.invoke(category)
-                _permissionTypesData.postValue(PermissionTypesState.WithData(permissionTypes))
+                val allPermissionTypes = loadPermissionTypesUseCase.invoke(category)
+                _permissionTypesData.postValue(PermissionTypesState.WithData(allPermissionTypes))
             }
         }
     }

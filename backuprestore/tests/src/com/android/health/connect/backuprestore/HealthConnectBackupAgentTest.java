@@ -19,10 +19,14 @@ package com.android.health.connect.backuprestore;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import android.app.backup.BackupDataInput;
+import android.app.backup.BackupDataOutput;
+import android.app.backup.FullBackupDataOutput;
 import android.content.Context;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.restore.StageRemoteDataException;
@@ -44,6 +48,8 @@ import org.mockito.MockitoAnnotations;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,6 +64,11 @@ public class HealthConnectBackupAgentTest {
     @Captor ArgumentCaptor<Map<String, ParcelFileDescriptor>> mPfdsByFileNameCaptor;
     @Captor ArgumentCaptor<OutcomeReceiver<Void, StageRemoteDataException>> mStagingCallbackCaptor;
     @Mock private Context mContext;
+    @Mock private FullBackupDataOutput mFullBackupDataOutput;
+    @Mock private ParcelFileDescriptor mOldState;
+    @Mock private ParcelFileDescriptor mNewState;
+    @Mock private BackupDataInput mBackupDataInput;
+    @Mock private BackupDataOutput mBackupDataOutput;
     private File mBackupDataDirectory;
 
     @Before
@@ -129,6 +140,42 @@ public class HealthConnectBackupAgentTest {
         verify(spyForVerification, times(1)).deleteBackupFiles();
     }
 
+    @Test
+    public void testOnFullBackup_backsUpEverything() throws Exception {
+        createAndGetNonEmptyFile(mBackupDataDirectory, "testFile1");
+        createAndGetNonEmptyFile(mBackupDataDirectory, "testFile2");
+
+        mHealthConnectBackupAgent.onFullBackup(mFullBackupDataOutput);
+
+        assertThat(mHealthConnectBackupAgent.mBackedUpFiles).hasSize(2);
+    }
+
+    @Test
+    public void testOnBackup_doesNotBackUpAnything() throws Exception {
+        createAndGetNonEmptyFile(mBackupDataDirectory, "testFile1");
+        createAndGetNonEmptyFile(mBackupDataDirectory, "testFile2");
+
+        mHealthConnectBackupAgent.onBackup(mOldState, mBackupDataOutput, mNewState);
+
+        assertThat(mHealthConnectBackupAgent.mBackedUpFiles).hasSize(0);
+    }
+
+    @Test
+    public void testOnRestore_doesNotStageAnything() throws IOException {
+        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile1");
+        createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile2");
+        Set<String> expectedStagedFileNames =
+                Stream.of(mHealthConnectBackupAgent.getBackupDataDir().listFiles())
+                        .filter(file -> !file.isDirectory())
+                        .map(File::getName)
+                        .collect(Collectors.toSet());
+        assertThat(expectedStagedFileNames.size()).isEqualTo(2);
+
+        mHealthConnectBackupAgent.onRestore(mBackupDataInput, 1, mNewState);
+        verify(mHealthConnectManager, never())
+                .stageAllHealthConnectRemoteData(mPfdsByFileNameCaptor.capture(), any(), any());
+    }
+
     private static void createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
         File file = new File(dir, fileName);
         FileWriter fileWriter = new FileWriter(file);
@@ -138,6 +185,8 @@ public class HealthConnectBackupAgentTest {
 
     /** A testable {@link HealthConnectBackupAgent} */
     public class TestableHealthConnectBackupAgent extends HealthConnectBackupAgent {
+        List<File> mBackedUpFiles = new ArrayList<>();
+
         @Override
         public Context getBaseContext() {
             return mContext;
@@ -151,6 +200,11 @@ public class HealthConnectBackupAgentTest {
         @Override
         HealthConnectManager getHealthConnectService() {
             return mHealthConnectManager;
+        }
+
+        @Override
+        void backupFile(File file, FullBackupDataOutput data) {
+            mBackedUpFiles.add(file);
         }
     }
 }

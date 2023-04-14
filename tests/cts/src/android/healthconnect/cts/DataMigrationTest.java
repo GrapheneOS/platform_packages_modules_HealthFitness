@@ -22,6 +22,7 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_ALLO
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 import static android.health.connect.HealthPermissions.READ_HEIGHT;
+import static android.health.connect.HealthPermissions.WRITE_BODY_FAT;
 import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
 import static android.health.connect.datatypes.units.Power.fromWatts;
@@ -424,7 +425,7 @@ public class DataMigrationTest {
 
     @Test
     public void migratePermissions_permissionsGranted() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
+        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
 
         final String entityId = "permissions";
 
@@ -441,7 +442,7 @@ public class DataMigrationTest {
 
     @Test
     public void migratePermissions_invalidPermission_throwsMigrationException() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
+        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
 
         final String entityId = "permissions";
 
@@ -481,7 +482,7 @@ public class DataMigrationTest {
     /** Test priority migration where migration payload have additional apps. */
     @Test
     public void migratePriority_additionalAppsInMigrationPayload_prioritySaved() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
+        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
         revokeAppPermissions(APP_PACKAGE_NAME_2, READ_HEIGHT, WRITE_HEIGHT);
 
         String permissionMigrationEntityId1 = "permissionMigration1";
@@ -499,6 +500,7 @@ public class DataMigrationTest {
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
                                 .addPermission(READ_HEIGHT)
                                 .addPermission(WRITE_HEIGHT)
+                                .addPermission(WRITE_BODY_FAT)
                                 .build()),
                 new MigrationEntity(
                         permissionMigrationEntityId2,
