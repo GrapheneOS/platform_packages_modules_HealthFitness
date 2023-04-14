@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.storage.request;
 
-import android.health.connect.Constants;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -52,10 +51,7 @@ public final class AlterTableRequest {
                                 .append(columnInfo.second)
                                 .append(", "));
         builder.setLength(builder.length() - 2); // Remove the last 2 char i.e. ", "
-
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "Alter table: " + builder);
-        }
+        Slog.d(TAG, "Alter table: " + builder);
 
         return builder.toString();
     }
