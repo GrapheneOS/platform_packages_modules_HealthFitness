@@ -1803,7 +1803,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private void throwExceptionIncorrectPermissionState() {
         throw new IllegalStateException(
                 "Incorrect health permission state, likely"
-                        + " because the calling application's manifest does not specify handling"
+                        + " because the calling application's manifest does not specify handling "
                         + Intent.ACTION_VIEW_PERMISSION_USAGE
                         + " with "
                         + HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS);
