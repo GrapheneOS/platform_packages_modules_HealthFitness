@@ -21,7 +21,6 @@ import static android.health.connect.Constants.UPSERT;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
-import android.health.connect.Constants;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.ArraySet;
@@ -114,14 +113,12 @@ public class UpsertTransactionRequest {
                                         packageName, new ArrayList<>(mRecordTypes), UPSERT));
             }
 
-            if (Constants.DEBUG) {
-                Slog.d(
-                        TAG,
-                        "Upserting transaction for "
-                                + packageName
-                                + " with size "
-                                + recordInternals.size());
-            }
+            Slog.d(
+                    TAG,
+                    "Upserting transaction for "
+                            + packageName
+                            + " with size "
+                            + recordInternals.size());
         }
     }
 
