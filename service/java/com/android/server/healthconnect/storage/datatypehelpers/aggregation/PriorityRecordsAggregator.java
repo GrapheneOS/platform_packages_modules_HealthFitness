@@ -16,8 +16,14 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.DISTANCE_RECORD_DISTANCE_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.ELEVATION_RECORD_ELEVATION_GAINED_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL;
 
 import android.database.Cursor;
 import android.health.connect.Constants;
@@ -26,8 +32,7 @@ import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.datatypehelpers.ExerciseSegmentRecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.SleepStageRecordHelper;
+import com.android.server.healthconnect.storage.request.AggregateParams;
 
 import java.time.ZoneOffset;
 import java.util.Comparator;
@@ -50,19 +55,22 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
     private final Map<Integer, ZoneOffset> mGroupToFirstZoneOffset;
     private final int mNumberOfGroups;
     private int mCurrentGroup = -1;
-
     private long mLatestPopulatedStart = -1;
     @AggregationType.AggregationTypeIdentifier private final int mAggregationType;
 
     private final TreeSet<AggregationTimestamp> mTimestampsBuffer;
     private final TreeSet<AggregationRecordData> mOpenIntervals;
 
+    private final AggregateParams.PriorityAggregationExtraParams mExtraParams;
+
     public PriorityRecordsAggregator(
             List<Long> groupSplits,
             List<Long> appIdPriorityList,
-            @AggregationType.AggregationTypeIdentifier int aggregationType) {
+            @AggregationType.AggregationTypeIdentifier int aggregationType,
+            AggregateParams.PriorityAggregationExtraParams extraParams) {
         mGroupSplits = groupSplits;
         mAggregationType = aggregationType;
+        mExtraParams = extraParams;
         mAppIdToPriority = new ArrayMap<>();
         for (int i = 0; i < appIdPriorityList.size(); i++) {
             // Add to the map with -index, so app with higher priority has higher value in the map.
@@ -74,9 +82,6 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         mGroupToFirstZoneOffset = new ArrayMap<>(mNumberOfGroups);
         mOpenIntervals = new TreeSet<>(this);
         mGroupToAggregationResult = new ArrayMap<>(mGroupSplits.size());
-        for (int i = 0; i < mGroupSplits.size() - 1; i++) {
-            mGroupToAggregationResult.put(i, 0.0);
-        }
 
         if (Constants.DEBUG) {
             Slog.d(
@@ -179,14 +184,20 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
 
     private AggregationRecordData createAggregationRecordData() {
         switch (mAggregationType) {
+            case STEPS_RECORD_COUNT_TOTAL:
+            case ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL:
+            case DISTANCE_RECORD_DISTANCE_TOTAL:
+            case ELEVATION_RECORD_ELEVATION_GAINED_TOTAL:
+            case FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL:
+            case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
+                return new ValueColumnAggregationData(
+                        mExtraParams.getColumnToAggregateName(),
+                        mExtraParams.getColumnToAggregateType());
             case SLEEP_SESSION_DURATION_TOTAL:
-                return new SessionDurationAggregationData(
-                        SleepStageRecordHelper.getStartTimeColumnName(),
-                        SleepStageRecordHelper.getEndTimeColumnName());
             case EXERCISE_SESSION_DURATION_TOTAL:
                 return new SessionDurationAggregationData(
-                        ExerciseSegmentRecordHelper.getStartTimeColumnName(),
-                        ExerciseSegmentRecordHelper.getEndTimeColumnName());
+                        mExtraParams.getExcludeIntervalStartColumnName(),
+                        mExtraParams.getExcludeIntervalEndColumnName());
             default:
                 throw new UnsupportedOperationException(
                         "Priority aggregation do not support type: " + mAggregationType);
@@ -219,6 +230,10 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
 
         if (mOpenIntervals.isEmpty() || mCurrentGroup < 0 || mCurrentGroup >= mNumberOfGroups) {
             return;
+        }
+
+        if (!mGroupToAggregationResult.containsKey(mCurrentGroup)) {
+            mGroupToAggregationResult.put(mCurrentGroup, 0.0d);
         }
 
         mGroupToAggregationResult.put(
