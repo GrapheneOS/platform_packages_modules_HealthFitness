@@ -1134,7 +1134,6 @@ public class HealthConnectManager {
         try {
             List<RecordInternal<?>> recordInternals =
                     records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
-
             // Verify if the input record has clientRecordId or UUID.
             for (RecordInternal<?> recordInternal : recordInternals) {
                 if ((recordInternal.getClientRecordId() == null

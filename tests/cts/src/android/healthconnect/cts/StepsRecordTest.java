@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts;
 
+import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 
@@ -84,6 +85,26 @@ public class StepsRecordTest {
     public void testInsertStepsRecord() throws InterruptedException {
         List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
         TestUtils.insertRecords(records);
+    }
+
+    @Test
+    public void testUpdateStepsRecordToDuplicate() throws InterruptedException {
+        List<Record> records = List.of(getBaseStepsRecord(), getBaseStepsRecord());
+        records = TestUtils.insertRecords(records);
+
+        try {
+            TestUtils.updateRecords(
+                    Collections.singletonList(
+                            getStepsRecordDuplicateEntry(
+                                    (StepsRecord) records.get(1), (StepsRecord) records.get(0))));
+            Assert.fail();
+        } catch (HealthConnectException healthConnectException) {
+            assertThat(healthConnectException.getErrorCode()).isEqualTo(ERROR_INVALID_ARGUMENT);
+            assertThat(healthConnectException.getMessage())
+                    .contains(records.get(0).getMetadata().getId());
+            assertThat(healthConnectException.getMessage())
+                    .contains(records.get(1).getMetadata().getId());
+        }
     }
 
     @Test
@@ -857,8 +878,7 @@ public class StepsRecordTest {
             TestUtils.updateRecords(updateRecords);
             Assert.fail("Expected to fail due to invalid records ids.");
         } catch (HealthConnectException exception) {
-            assertThat(exception.getErrorCode())
-                    .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+            assertThat(exception.getErrorCode()).isEqualTo(ERROR_INVALID_ARGUMENT);
         }
 
         // assert the inserted data has not been modified by reading the data.
@@ -976,6 +996,27 @@ public class StepsRecordTest {
                         .build();
         return new StepsRecord.Builder(
                         metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    StepsRecord getStepsRecordDuplicateEntry(
+            StepsRecord recordToUpdate, StepsRecord duplicateRecord) {
+        Metadata metadata = recordToUpdate.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(metadata.getId())
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new StepsRecord.Builder(
+                        metadataWithId,
+                        duplicateRecord.getStartTime(),
+                        duplicateRecord.getEndTime(),
+                        20)
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
