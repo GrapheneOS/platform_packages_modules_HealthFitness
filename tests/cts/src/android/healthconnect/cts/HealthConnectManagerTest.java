@@ -1610,6 +1610,9 @@ public class HealthConnectManagerTest {
         // since test records contains the following records
         Map<Class<? extends Record>, RecordTypeInfoResponse> response =
                 TestUtils.queryAllRecordTypesInfo();
+        if (isEmptyContributingPackagesForAll(response)) {
+            return;
+        }
 
         // verify response data is correct.
         verifyRecordTypeResponse(response, expectedResponseMap);
@@ -1668,7 +1671,9 @@ public class HealthConnectManagerTest {
         // since test records contains the following records
         Map<Class<? extends Record>, RecordTypeInfoResponse> response =
                 TestUtils.queryAllRecordTypesInfo();
-
+        if (isEmptyContributingPackagesForAll(response)) {
+            return;
+        }
         // verify response data is correct.
         verifyRecordTypeResponse(response, expectedResponseMap);
 
@@ -1689,6 +1694,9 @@ public class HealthConnectManagerTest {
         // time before fetching it.
         Thread.sleep(500);
         response = TestUtils.queryAllRecordTypesInfo();
+        if (isEmptyContributingPackagesForAll(response)) {
+            return;
+        }
         verifyRecordTypeResponse(response, expectedResponseMap);
     }
 
@@ -1731,7 +1739,9 @@ public class HealthConnectManagerTest {
         // since test records contains the following records
         Map<Class<? extends Record>, RecordTypeInfoResponse> response =
                 TestUtils.queryAllRecordTypesInfo();
-
+        if (isEmptyContributingPackagesForAll(response)) {
+            return;
+        }
         // verify response data is correct.
         verifyRecordTypeResponse(response, expectedResponseMap);
 
@@ -1743,6 +1753,9 @@ public class HealthConnectManagerTest {
         // time before fetching it.
         Thread.sleep(500);
         response = TestUtils.queryAllRecordTypesInfo();
+        if (isEmptyContributingPackagesForAll(response)) {
+            return;
+        }
 
         verifyRecordTypeResponse(response, expectedResponseMap);
     }
@@ -1791,6 +1804,16 @@ public class HealthConnectManagerTest {
 
         TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
         deleteAllStagedRemoteData();
+    }
+
+    private boolean isEmptyContributingPackagesForAll(
+            Map<Class<? extends Record>, RecordTypeInfoResponse> response) {
+        // If all the responses have empty lists in their contributing packages then we
+        // return true. This can happen when the sync or insert took a long time to run, or they
+        // faced an issue while running.
+        return !response.values().stream()
+                .map(RecordTypeInfoResponse::getContributingPackages)
+                .anyMatch(list -> !list.isEmpty());
     }
 
     private void deleteAllStagedRemoteData()

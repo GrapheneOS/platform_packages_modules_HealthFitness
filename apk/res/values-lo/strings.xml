@@ -253,7 +253,8 @@
     <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"ມື້ກ່ອນໜ້າ"</string>
     <string name="default_error" msgid="7966868260616403475">"ມີບາງຢ່າງຜິດພາດເກີດຂຶ້ນ. ກະລຸນາລອງໃໝ່."</string>
-    <string name="health_permission_header_description" msgid="715159548992861374">"ແອັບທີ່ມີການອະນຸຍາດນີ້ສາມາດອ່ານ ແລະ ຂຽນຂໍ້ມູນສຸຂະພາບຂອງທ່ານໄດ້."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"ຄວບຄຸມວ່າແອັບໃດສາມາດເຂົ້າເຖິງຂໍ້ມູນທີ່ຈັດເກັບໄວ້ໃນ Health Connect. ແຕະແອັບເພື່ອກວດສອບຂໍ້ມູນທີ່ມັນສາມາດອ່ານ ຫຼື ຂຽນໄດ້."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ໄດ້ຮັບອະນຸຍາດສິດເຂົ້າເຖິງ"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"ບໍ່ໄດ້ຮັບອະນຸຍາດສິດເຂົ້າເຖິງ"</string>
@@ -264,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"ບໍ່ມີແອັບໃດໄດ້ຮັບອະນຸຍາດ"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"ບໍ່ມີແອັບໃດຖືກປະຕິເສດ"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"ລຶບສິດເຂົ້າເຖິງສຳລັບແອັບທັງໝົດອອກບໍ?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7031529588341182402">"ຈະບໍ່ມີແອັບໃດຂອງທ່ານທີ່ຈະສາມາດເຂົ້າເຖິງ ຫຼື ເພີ່ມຂໍ້ມູນໃໝ່ໄປໃສ່ Health Connect ໄດ້. ນີ້ຈະບໍ່ລຶບຂໍ້ມູນທີ່ມີຢູ່ກ່ອນແລ້ວໃດໆອອກ.\n\nນີ້ບໍ່ມີຜົນກັບການອະນຸຸຍາດອື່ນທີ່ແອັບນີ້ອາດມີ, ເຊັ່ນ: ສະຖານທີ່, ກ້ອງຖ່າຍຮູບ ຫຼື ໄມໂຄຣໂຟນ."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"ລຶບທັງໝົດອອກ"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ຈັດການແອັບ"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"ລຶບຂໍ້ມູນແອັບ"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"ແອັບທີ່ບໍ່ເຄື່ອນໄຫວ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ແອັບເຫຼົ່ານີ້ບໍ່ມີສິດເຂົ້າເຖິງອີກຕໍ່ໄປແລ້ວ, ແຕ່ຍັງຄົງມີຂໍ້ມູນທີ່ຈັດເກັບໄວ້ໃນ Health Connect ຢູ່"</string>
-    <string name="manage_permissions_time_frame" msgid="1092609621784987611">"<xliff:g id="APP_NAME">%1$s</xliff:g> ສາມາດເຂົ້າເຖິງຂໍ້ມູນທີ່ເພີ່ມໄດ້ຫຼັງຈາກ <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"ເພື່ອຈັດການການອະນຸຍາດ Android ອື່ນທີ່ແອັບນີ້ສາມາດເຂົ້າເຖິງໄດ້, ໃຫ້ເຂົ້າໄປການຕັ້ງຄ່າ &gt; ແອັບ"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"ຂໍ້ມູນທີ່ທ່ານແບ່ງປັນກັບ <xliff:g id="APP_NAME">%1$s</xliff:g> ແມ່ນຢູ່ພາຍໃຕ້ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວຂອງເຂົາເຈົ້າ"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"ເພື່ອຈັດການການອະນຸຍາດອື່ນໆຂອງ Android ທີ່ແອັບນີ້ສາມາດເຂົ້າເຖິງໄດ້, ໃຫ້ເຂົ້າໄປການຕັ້ງຄ່າ, ຈາກນັ້ນແຕະແອັບ"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"ອ່ານນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"ເຂົ້າເຖິງໃນ 24 ຊົ່ວໂມງທີ່ຜ່ານມາ"</string>
     <string name="app_access_title" msgid="7137018424885371763">"ສິດເຂົ້າເຖິງແອັບ"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="2595037914540550683">"ຕອນນີ້ທ່ານບໍ່ມີແອັບໃດທີ່ເຂົ້າກັນໄດ້ຕິດຕັ້ງໄວ້ເລີຍ"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"ລຶບການອະນຸຍາດແອັບອອກແລ້ວ"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect ລຶບການອະນຸຍາດສຳລັບ <xliff:g id="APP_DATA">%s</xliff:g> ອອກແລ້ວ"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect ລຶບການອະນຸຍາດສຳລັບ <xliff:g id="APP_DATA_0">%1$s</xliff:g> ແລະ <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> ອອກແລ້ວ"</string>
@@ -326,6 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"ລຶບຂໍ້ມູນ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ທັງໝົດທີ່ເພີ່ມໂດຍ <xliff:g id="APP_DATA">%2$s</xliff:g> ອອກຢ່າງຖາວອນບໍ?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"ລຶບລາຍການຂໍ້ມູນນີ້ອອກຢ່າງຖາວອນບໍ?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"ແອັບທີ່ເຊື່ອມຕໍ່ໄວ້ຈະບໍ່ສາມາດເຂົ້າເຖິງຂໍ້ມູນນີ້ຈາກ Health Connect ໄດ້ອີກຕໍ່ໄປ"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"ລຶບ"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"ກັບຄືນ"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"ແລ້ວໆ"</string>
@@ -672,14 +678,16 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"ຟາເຣນຮາຍ"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"ເຄລວິນ"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"ຊ່ວຍເຫຼືອ ແລະ ຄຳຕິຊົມ"</string>
-    <string name="cant_see_all_your_apps_description" msgid="3961611343621846795">"ຫາກທ່ານບໍ່ເຫັນແອັບທີ່ຕິດຕັ້ງແລ້ວ, ສະແດງວ່າແອັບນັ້ນອາດຈະເຂົ້າກັນບໍ່ໄດ້ກັບ Health Connect ເທື່ອ"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"ສິ່ງທີ່ຄວນລອງເຮັດ"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"ກວດສອບການອັບເດດ"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"ກະລຸນາກວດສອບວ່າແອັບທີ່ທ່ານຕິດຕັ້ງໄດ້ອັບເດດແລ້ວ"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"ເບິ່ງແອັບທີ່ມີຄວາມເຂົ້າກັນໄດ້ທັງໝົດ"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"ຊອກຫາແອັບຢູ່ Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"ສົ່ງຄຳຕິຊົມ"</string>
-    <string name="send_feedback_description" msgid="1353916733836472498">"ກະລຸນາແຈ້ງໃຫ້ພວກເຮົາວ່າແອັບສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍໃດແດ່ທີ່ທ່ານຕ້ອງການໃຊ້ຮ່ວມກັບ Health Connect"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"ລຶບອັດຕະໂນມັດ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ລຶບອັດຕະໂນມັດ"</string>
@@ -733,7 +741,7 @@
     <skip />
     <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
     <skip />
-    <!-- no translation found for migration_in_progress_screen_integration_dont_close (9175622854569375370) -->
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
     <skip />
     <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
     <skip />
@@ -751,7 +759,7 @@
     <skip />
     <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
     <skip />
-    <!-- no translation found for migration_module_update_needed_restart (5195683570815523946) -->
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
     <skip />
     <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
     <skip />
@@ -807,17 +815,17 @@
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
-    <!-- no translation found for migration_in_progress_permissions_dialog_content (6150412818710483467) -->
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_title (1215384228192150345) -->
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_content (331340306988875119) -->
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
     <skip />
     <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
     <skip />
-    <!-- no translation found for migration_not_complete_notification_title (4882693412343350489) -->
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
     <skip />
     <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
     <skip />
@@ -825,7 +833,7 @@
     <skip />
     <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
     <skip />
-    <!-- no translation found for migration_whats_new_dialog_title (5063564438674582321) -->
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
     <skip />
     <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
     <skip />

@@ -36,6 +36,7 @@ constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseUseCase<String, ExerciseSessionRecord?>(dispatcher) {
 
+    @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") // for readability
     override suspend fun execute(sessionId: String): ExerciseSessionRecord? {
         val request =
             ReadRecordsRequestUsingIds.Builder(ExerciseSessionRecord::class.java)

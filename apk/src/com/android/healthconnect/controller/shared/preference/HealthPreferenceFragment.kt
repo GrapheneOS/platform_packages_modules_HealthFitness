@@ -113,6 +113,7 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
             setViewShown(preferenceContainer, !hasError, canAnimate)
             setViewShown(loadingView, !hasError, canAnimate)
             setViewShown(errorView, hasError, canAnimate)
+            errorView.setText(errorText)
         }
     }
 

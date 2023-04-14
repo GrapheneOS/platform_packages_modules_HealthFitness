@@ -30,21 +30,33 @@ import javax.inject.Inject
 
 /** A Dialog Fragment to get confirmation from user for disconnecting from Health Connect. */
 @AndroidEntryPoint(DialogFragment::class)
-class DisconnectDialogFragment(
-    private val appName: String,
-    private val enableDeleteData: Boolean = true
-) : Hilt_DisconnectDialogFragment() {
+class DisconnectDialogFragment constructor() : Hilt_DisconnectDialogFragment() {
+
+    constructor(appName: String, enableDeleteData: Boolean = true) : this() {
+        this.appName = appName
+        this.enableDeleteData = enableDeleteData
+    }
 
     companion object {
         const val TAG = "DisconnectDialogFragment"
         const val DISCONNECT_CANCELED_EVENT = "DISCONNECT_CANCELED_EVENT"
         const val DISCONNECT_ALL_EVENT = "DISCONNECT_ALL_EVENT"
         const val KEY_DELETE_DATA = "KEY_DELETE_DATA"
+        const val KEY_APP_NAME = "KEY_APP_NAME"
+        const val KEY_ENABLE_DELETE_DATA = "KEY_ENABLE_DELETE_DATA"
     }
+
+    lateinit var appName: String
+    var enableDeleteData: Boolean = true
 
     @Inject lateinit var logger: HealthConnectLogger
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        if (savedInstanceState != null) {
+            appName = savedInstanceState.getString(KEY_APP_NAME, "")
+            enableDeleteData = savedInstanceState.getBoolean(KEY_ENABLE_DELETE_DATA, true)
+        }
+
         val body = layoutInflater.inflate(R.layout.dialog_message_with_checkbox, null)
         body.findViewById<TextView>(R.id.dialog_message).apply {
             text = getString(R.string.permissions_disconnect_dialog_message, appName)
@@ -82,5 +94,11 @@ class DisconnectDialogFragment(
                 .create()
         dialog.setCanceledOnTouchOutside(false)
         return dialog
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY_APP_NAME, appName)
+        outState.putBoolean(KEY_ENABLE_DELETE_DATA, enableDeleteData)
     }
 }

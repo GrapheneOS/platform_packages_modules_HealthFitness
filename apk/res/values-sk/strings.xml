@@ -253,7 +253,8 @@
     <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Predchádzajúci deň"</string>
     <string name="default_error" msgid="7966868260616403475">"Niečo sa pokazilo. Skúste to znova."</string>
-    <string name="health_permission_header_description" msgid="715159548992861374">"Aplikácie s týmto povolením môžu čítať a zapisovať údaje o zdraví."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Ovládajte, ktoré aplikácie majú mať prístup k údajom uloženým v Dátach o zdraví. Po klepnutí na ľubovoľnú aplikáciu môžete skontrolovať, aké údaje môže čítať a zapisovať."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Povolený prístup"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Nepovolený prístup"</string>
@@ -264,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Žiadne povolené aplikácie"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Žiadne zakázané aplikácie"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Chcete odstrániť prístup všetkých aplikácií?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="7031529588341182402">"Žiadne aplikácie už nebudú mať prístup k novým údajom Dát o zdraví ani ich do nich nebudú môcť pridávať. Žiadne existujúce údaje sa tým neodstránia.\n\nNeovplyvní to ďalšie povolenia, ktoré táto aplikácia môže mať, ako je poloha, kamera alebo mikrofón."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Odstrániť všetky"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Správa aplikácie"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Odstrániť údaje aplikácie"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Neaktívne aplikácie"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Tieto aplikácie už nemajú prístup, ale stále majú údaje uložené v Dátach o zdraví"</string>
-    <string name="manage_permissions_time_frame" msgid="1092609621784987611">"Aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> má prístup k údajom pridaným po <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"Ak chcete spravovať ďalšie povolenia pre Android pre túto aplikáciu, prejdite do sekcie Nastavenia &gt; Aplikácie"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Údaje, ktoré zdieľate s aplikáciou <xliff:g id="APP_NAME">%1$s</xliff:g>, sa riadia vlastnými pravidlami ochrany súkromia"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Ak chcete spravovať ďalšie povolenia pre Android, ku ktorým má táto aplikácia prístup, prejdite do sekcie Nastavenia a potom Aplikácie"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Zobraziť pravidlá ochrany súkromia"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Použité v posledných 24 hodinách"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Prístup k aplikáciám"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="2595037914540550683">"Momentálne nemáte nainštalované žiadne kompatibilné aplikácie"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Odstránené povolenia aplikácií"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Dáta o zdraví odstránili povolenia pre aplikáciu <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Dáta o zdraví odstránili povolenia pre aplikácie <xliff:g id="APP_DATA_0">%1$s</xliff:g> a <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -326,6 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Chcete natrvalo odstrániť údaje typu <xliff:g id="DATA_TYPE">%1$s</xliff:g> pridané aplikáciou <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Chcete tento záznam natrvalo odstrániť?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Pripojené aplikácie už nebudú môcť získať prístup k týmto údajom v Dátach o zdraví"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Odstrániť"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Prejsť späť"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Hotovo"</string>
@@ -672,14 +678,16 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Pomocník a spätná väzba"</string>
-    <string name="cant_see_all_your_apps_description" msgid="3961611343621846795">"Ak nainštalovanú aplikáciu nevidíte, zrejme ešte nie je s Dátami o zdraví kompatibilná"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"Môžete vyskúšať"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Skontrolovať dostupnosť aktualizácií"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Skontrolujte, či sú nainštalované aplikácie aktuálne"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Zobraziť všetky kompatibilné aplikácie"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Vyhľadať aplikácie na Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Odoslať spätnú väzbu"</string>
-    <string name="send_feedback_description" msgid="1353916733836472498">"Povedzte nám, ktoré zdravotné a kondičné aplikácie majú spolupracovať s Dátami o zdraví"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Obchod Play"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatické odstraňovanie"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Automatické odstraňovanie"</string>
@@ -733,7 +741,7 @@
     <skip />
     <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
     <skip />
-    <!-- no translation found for migration_in_progress_screen_integration_dont_close (9175622854569375370) -->
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
     <skip />
     <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
     <skip />
@@ -751,7 +759,7 @@
     <skip />
     <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
     <skip />
-    <!-- no translation found for migration_module_update_needed_restart (5195683570815523946) -->
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
     <skip />
     <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
     <skip />
@@ -807,17 +815,17 @@
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
-    <!-- no translation found for migration_in_progress_permissions_dialog_content (6150412818710483467) -->
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_title (1215384228192150345) -->
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_content (331340306988875119) -->
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
     <skip />
     <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
     <skip />
-    <!-- no translation found for migration_not_complete_notification_title (4882693412343350489) -->
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
     <skip />
     <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
     <skip />
@@ -825,7 +833,7 @@
     <skip />
     <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
     <skip />
-    <!-- no translation found for migration_whats_new_dialog_title (5063564438674582321) -->
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
     <skip />
     <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
     <skip />

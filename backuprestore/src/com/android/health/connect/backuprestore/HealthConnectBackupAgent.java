@@ -82,7 +82,7 @@ public class HealthConnectBackupAgent extends BackupAgent {
 
         File[] backupFiles = backupDataDir.listFiles(file -> !file.isDirectory());
         for (var file : backupFiles) {
-            fullBackupFile(file, data);
+            backupFile(file, data);
         }
 
         deleteBackupFiles();
@@ -169,5 +169,10 @@ public class HealthConnectBackupAgent extends BackupAgent {
         for (var file : filesToTransfer) {
             file.delete();
         }
+    }
+
+    @VisibleForTesting
+    void backupFile(File file, FullBackupDataOutput data) {
+        fullBackupFile(file, data);
     }
 }
