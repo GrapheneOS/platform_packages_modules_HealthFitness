@@ -47,8 +47,19 @@ public class ExerciseDurationAggregationTest {
                     .setEndTime(Instant.now().plusSeconds(1000))
                     .build();
 
+    private final TimeInstantRangeFilter mFilterSmallWindow =
+            new TimeInstantRangeFilter.Builder()
+                    .setStartTime(SESSION_START_TIME)
+                    .setEndTime(SESSION_END_TIME)
+                    .build();
+
     private final AggregateRecordsRequest<Long> mAggregateAllRecordsRequest =
             new AggregateRecordsRequest.Builder<Long>(mFilterAllSession)
+                    .addAggregationType(EXERCISE_DURATION_TOTAL)
+                    .build();
+
+    private final AggregateRecordsRequest<Long> mAggregateInSmallWindow =
+            new AggregateRecordsRequest.Builder<Long>(mFilterSmallWindow)
                     .addAggregationType(EXERCISE_DURATION_TOTAL)
                     .build();
 
@@ -80,6 +91,48 @@ public class ExerciseDurationAggregationTest {
                 .isEqualTo(
                         session.getEndTime().toEpochMilli()
                                 - session.getStartTime().toEpochMilli());
+        assertThat(response.getZoneOffset(EXERCISE_DURATION_TOTAL))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+    }
+
+    @Test
+    public void testSimpleAggregation_oneSessionStartEarlierThanWindow_returnsOverlapDuration()
+            throws InterruptedException {
+        ExerciseSessionRecord session =
+                new ExerciseSessionRecord.Builder(
+                                TestUtils.generateMetadata(),
+                                SESSION_START_TIME.minusSeconds(10),
+                                SESSION_END_TIME,
+                                ExerciseSessionType
+                                        .EXERCISE_SESSION_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING)
+                        .build();
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(mAggregateInSmallWindow, List.of(session));
+
+        assertThat(response.get(EXERCISE_DURATION_TOTAL)).isNotNull();
+        assertThat(response.get(EXERCISE_DURATION_TOTAL))
+                .isEqualTo(SESSION_END_TIME.toEpochMilli() - SESSION_START_TIME.toEpochMilli());
+        assertThat(response.getZoneOffset(EXERCISE_DURATION_TOTAL))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+    }
+
+    @Test
+    public void testSimpleAggregation_oneSessionBiggerThanWindow_returnsOverlapDuration()
+            throws InterruptedException {
+        ExerciseSessionRecord session =
+                new ExerciseSessionRecord.Builder(
+                                TestUtils.generateMetadata(),
+                                SESSION_START_TIME.minusSeconds(100),
+                                SESSION_END_TIME.plusSeconds(100),
+                                ExerciseSessionType
+                                        .EXERCISE_SESSION_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING)
+                        .build();
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(mAggregateInSmallWindow, List.of(session));
+
+        assertThat(response.get(EXERCISE_DURATION_TOTAL)).isNotNull();
+        assertThat(response.get(EXERCISE_DURATION_TOTAL))
+                .isEqualTo(SESSION_END_TIME.toEpochMilli() - SESSION_START_TIME.toEpochMilli());
         assertThat(response.getZoneOffset(EXERCISE_DURATION_TOTAL))
                 .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
     }
