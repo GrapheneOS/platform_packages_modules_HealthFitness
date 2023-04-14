@@ -1375,7 +1375,7 @@ public class HealthConnectManager {
     @RequiresPermission(Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA)
     public void updateDataDownloadState(@DataDownloadState int downloadState) {
         try {
-            mService.updateDataDownloadState(downloadState, mContext.getUser());
+            mService.updateDataDownloadState(downloadState);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1408,7 +1408,6 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.getHealthConnectDataState(
-                    mContext.getUser(),
                     new IGetHealthConnectDataStateCallback.Stub() {
                         @Override
                         public void onResult(HealthConnectDataState healthConnectDataState) {

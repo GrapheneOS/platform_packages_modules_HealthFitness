@@ -280,7 +280,7 @@ interface IHealthConnectService {
      *                      HealthConnectManager#CLOUD_DOWNLOAD_COMPLETE}
      * @hide
      */
-     void updateDataDownloadState(int downloadState, in UserHandle userHandle);
+     void updateDataDownloadState(int downloadState);
 
     /**
      * Asynchronously returns the current state of the Health Connect data as it goes through the Data-Restore and/or the Data-Migration process.
@@ -291,5 +291,5 @@ interface IHealthConnectService {
      *
      * @hide
      */
-    void getHealthConnectDataState(in UserHandle userHandle, in IGetHealthConnectDataStateCallback callback);
+    void getHealthConnectDataState(in IGetHealthConnectDataStateCallback callback);
 }
