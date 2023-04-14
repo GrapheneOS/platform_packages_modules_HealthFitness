@@ -29,6 +29,7 @@ import android.healthconnect.cts.ui.HealthConnectBaseTest
 import androidx.test.uiautomator.By
 import com.google.common.truth.Truth
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Test
 
 class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
@@ -43,16 +44,17 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
     }
 
     @Test
+    @Ignore("TODO(b/265789268): Fix flaky \"Help & feedback\" not found")
     fun showsHelpAndFeedback() {
         context.launchMainActivity {
             navigateToManagePermissions()
 
-            // TODO(b/265789268): Fix flaky "Help & feedback" not found.
-            // waitDisplayed(By.text("Help & feedback"))
+            waitDisplayed(By.text("Help & feedback"))
         }
     }
 
     @Test
+    @Ignore("TODO(b/265789268):Fix flaky \"Remove access for all apps\" not found")
     fun revokeAllPermissions_revokeAllConnectedAppsPermission() {
         grantPermissionViaPackageManager(
             context, TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
@@ -60,13 +62,11 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
         context.launchMainActivity {
             navigateToManagePermissions()
 
-            // TODO(b/265789268): Fix flaky "Remove access for all apps" not found.
-            //            clickOnText("Remove access for all apps")
-            //            clickOnText("Remove all")
-            //
-            //            waitDisplayed(By.text("Not allowed access"))
-            //            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME,
-            // HealthPermissions.READ_HEIGHT)
+            clickOnText("Remove access for all apps")
+            clickOnText("Remove all")
+
+            waitDisplayed(By.text("Not allowed access"))
+            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
         }
     }
 
