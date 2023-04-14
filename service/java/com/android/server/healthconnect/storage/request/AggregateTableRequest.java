@@ -68,6 +68,9 @@ public class AggregateTableRequest {
     private final RecordHelper<?> mRecordHelper;
     private final Map<Integer, AggregateResult> mAggregateResults = new ArrayMap<>();
     private final String mTimeColumnName;
+    // Additional column used for time filtering. End time for interval records,
+    // null for other records.
+    private String mEndTimeColumnName;
     private final SqlJoin mSqlJoin;
     private List<Long> mPackageFilters;
     private long mStartTime = DEFAULT_TIME;
@@ -79,7 +82,6 @@ public class AggregateTableRequest {
     private long mGroupByEnd;
     private int mGroupBySize = 1;
     private List<String> mAdditionalColumnsToFetch;
-
     private final AggregateParams.PriorityAggregationExtraParams mPriorityParams;
 
     public AggregateTableRequest(
@@ -91,6 +93,7 @@ public class AggregateTableRequest {
         mRecordHelper = recordHelper;
         mSqlJoin = params.getJoin();
         mPriorityParams = params.getPriorityAggregationExtraParams();
+        mEndTimeColumnName = params.getExtraTimeColumnName();
     }
 
     /**
@@ -315,10 +318,7 @@ public class AggregateTableRequest {
             builder.append(mSqlJoin.getJoinCommand());
         }
 
-        WhereClauses whereClauses = new WhereClauses();
-        whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
-        whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
-        builder.append(whereClauses.get(true));
+        builder.append(buildAggregationWhereCondition());
 
         if (useGroupBy) {
             builder.append(" GROUP BY " + GROUP_BY_COLUMN_NAME);
@@ -333,6 +333,22 @@ public class AggregateTableRequest {
         }
 
         return builder.toString();
+    }
+
+    private String buildAggregationWhereCondition() {
+        WhereClauses whereClauses = new WhereClauses();
+        whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
+
+        if (mEndTimeColumnName != null) {
+            // Filter all records which overlap with time filter interval:
+            // recordStartTime < filterEndTime and recordEndTime > filterStartTime
+            whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
+            whereClauses.addWhereGreaterThanClause(mEndTimeColumnName, mStartTime);
+        } else {
+            whereClauses.addWhereBetweenClause(mTimeColumnName, mStartTime, mEndTime);
+        }
+
+        return whereClauses.get(/* withWhereKeyword= */ true);
     }
 
     private void updateResultWithDataOriginPackageNames(Cursor metaDataCursor) {

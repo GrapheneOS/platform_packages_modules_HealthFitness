@@ -63,7 +63,6 @@ public final class WhereClauses {
 
         return this;
     }
-
     public WhereClauses addWhereInClauseWithoutQuotes(String columnName, List<String> values) {
         if (values == null || values.isEmpty()) return this;
 
@@ -87,6 +86,13 @@ public final class WhereClauses {
         return this;
     }
 
+    /** Add clause columnName > value */
+    public WhereClauses addWhereGreaterThanClause(String columnName, long value) {
+        mClauses.add(columnName + " > " + value);
+
+        return this;
+    }
+
     public WhereClauses addWhereGreaterThanOrEqualClause(String columnName, long value) {
         mClauses.add(columnName + " >= " + value);
 
@@ -95,6 +101,13 @@ public final class WhereClauses {
 
     public WhereClauses addWhereLessThanOrEqualClause(String columnName, long value) {
         mClauses.add(columnName + " <= " + value);
+
+        return this;
+    }
+
+    /** Add clause columnName < value */
+    public WhereClauses addWhereLessThanClause(String columnName, long value) {
+        mClauses.add(columnName + " < " + value);
 
         return this;
     }

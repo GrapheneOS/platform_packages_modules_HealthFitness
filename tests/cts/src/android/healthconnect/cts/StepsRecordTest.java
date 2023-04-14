@@ -641,6 +641,33 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testAggregation_recordStartsBeforeAggWindow_returnsRescaledStepsCountInResult()
+            throws Exception {
+        Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
+        List<Record> record =
+                Arrays.asList(
+                        new StepsRecord.Builder(
+                                        new Metadata.Builder().build(),
+                                        start,
+                                        start.plus(1, ChronoUnit.HOURS),
+                                        600)
+                                .build());
+        AggregateRecordsRequest<Long> request =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(start.plus(10, ChronoUnit.MINUTES))
+                                        .setEndTime(start.plus(1, ChronoUnit.DAYS))
+                                        .build())
+                        .addAggregationType(STEPS_COUNT_TOTAL)
+                        .build();
+
+        AggregateRecordsResponse<Long> response = TestUtils.getAggregateResponse(request, record);
+        assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(500);
+        assertThat(response.getZoneOffset(STEPS_COUNT_TOTAL))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+    }
+
+    @Test
     public void testStepsCountAggregation_groupBy_Period() throws Exception {
         Instant start = Instant.now().minus(10, ChronoUnit.DAYS);
         Instant end = start.plus(10, ChronoUnit.DAYS);
@@ -724,7 +751,7 @@ public class StepsRecordTest {
             AggregateRecordsGroupedByDurationResponse<Long> response = responses.get(i);
             if (i > 9) {
                 assertThat(response.get(STEPS_COUNT_TOTAL)).isNull();
-            } else if (i == 0 || i == 9) {
+            } else if (i == 9) {
                 assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(500);
             } else {
                 assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
