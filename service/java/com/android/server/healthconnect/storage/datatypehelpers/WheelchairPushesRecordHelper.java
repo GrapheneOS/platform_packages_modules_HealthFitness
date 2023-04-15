@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.WheelchairPushesRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +73,6 @@ public final class WheelchairPushesRecordHelper
 
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
-        List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
                 return new AggregateParams(

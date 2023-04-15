@@ -31,6 +31,7 @@ import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordIntern
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.storage.request.AggregateParams;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.com.android.server.healthconnect.storage.datatypehelpers.DeriveTotalCaloriesBurnedHelper;

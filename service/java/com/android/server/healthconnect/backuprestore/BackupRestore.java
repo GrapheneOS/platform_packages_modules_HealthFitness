@@ -153,11 +153,11 @@ public final class BackupRestore {
      * @return true if the preparation was successful. false either if staging already in progress
      *     or done.
      */
-    public boolean prepForStagingIfNotAlreadyDone(int userId) {
+    public boolean prepForStagingIfNotAlreadyDone() {
         mStatesLock.writeLock().lock();
         try {
-            setDataDownloadState(DATA_DOWNLOAD_COMPLETE, userId, false /* force */);
-            @InternalRestoreState int curDataRestoreState = getInternalRestoreState(userId);
+            setDataDownloadState(DATA_DOWNLOAD_COMPLETE, false /* force */);
+            @InternalRestoreState int curDataRestoreState = getInternalRestoreState();
             if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
                 if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_DONE) {
                     Slog.w(TAG, "Staging is already done. Cur state " + curDataRestoreState);
@@ -168,8 +168,7 @@ public final class BackupRestore {
                 return false;
             }
             mActivelyStagingRemoteData = true;
-            setInternalRestoreState(
-                    INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS, userId, false /* force */);
+            setInternalRestoreState(INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS, false /* force */);
             return true;
         } finally {
             mStatesLock.writeLock().unlock();
@@ -230,7 +229,7 @@ public final class BackupRestore {
             // We are done staging all the remote data, update the data restore state.
             // Even if we encountered any exception we still say that we are "done" as
             // we don't expect the caller to retry and see different results.
-            setInternalRestoreState(INTERNAL_RESTORE_STATE_STAGING_DONE, userId, false);
+            setInternalRestoreState(INTERNAL_RESTORE_STATE_STAGING_DONE, false);
             mActivelyStagingRemoteData = false;
 
             // Share the result / exception with the caller.
@@ -238,7 +237,7 @@ public final class BackupRestore {
                 if (exceptionsByFileName.isEmpty()) {
                     callback.onResult();
                 } else {
-                    setDataRestoreError(RESTORE_ERROR_FETCHING_DATA, userId);
+                    setDataRestoreError(RESTORE_ERROR_FETCHING_DATA);
                     callback.onError(new StageRemoteDataException(exceptionsByFileName));
                 }
             } catch (RemoteException e) {
@@ -251,7 +250,7 @@ public final class BackupRestore {
             } finally {
                 // Now that the callback for the stageAllHealthConnectRemoteData API has been called
                 // we can start the merging process.
-                merge(userId);
+                merge();
             }
         }
     }
@@ -302,21 +301,14 @@ public final class BackupRestore {
     }
 
     /** Updates the download state of the remote data. */
-    public void updateDataDownloadState(
-            @DataDownloadState int downloadState, @NonNull UserHandle userHandle) {
-        setDataDownloadState(downloadState, userHandle.getIdentifier(), false /* force */);
+    public void updateDataDownloadState(@DataDownloadState int downloadState) {
+        setDataDownloadState(downloadState, false /* force */);
 
         if (downloadState == DATA_DOWNLOAD_COMPLETE) {
-            setInternalRestoreState(
-                    INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING,
-                    userHandle.getIdentifier(),
-                    false /* force */);
+            setInternalRestoreState(INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING, false /* force */);
         } else if (downloadState == DATA_DOWNLOAD_FAILED) {
-            setInternalRestoreState(
-                    INTERNAL_RESTORE_STATE_MERGING_DONE,
-                    userHandle.getIdentifier(),
-                    false /* force */);
-            setDataRestoreError(RESTORE_ERROR_FETCHING_DATA, userHandle.getIdentifier());
+            setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, false /* force */);
+            setDataRestoreError(RESTORE_ERROR_FETCHING_DATA);
         }
     }
 
@@ -328,18 +320,16 @@ public final class BackupRestore {
             mStagedDatabase = null;
             FilesUtil.deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
         }
-        setDataDownloadState(
-                DATA_DOWNLOAD_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
-        setInternalRestoreState(
-                INTERNAL_RESTORE_STATE_UNKNOWN, userHandle.getIdentifier(), true /* force */);
-        setDataRestoreError(RESTORE_ERROR_NONE, userHandle.getIdentifier());
+        setDataDownloadState(DATA_DOWNLOAD_STATE_UNKNOWN, true /* force */);
+        setInternalRestoreState(INTERNAL_RESTORE_STATE_UNKNOWN, true /* force */);
+        setDataRestoreError(RESTORE_ERROR_NONE);
     }
 
     /** Shares the {@link HealthConnectDataState} in the provided callback. */
-    public @HealthConnectDataState.DataRestoreState int getDataRestoreState(int userId) {
+    public @HealthConnectDataState.DataRestoreState int getDataRestoreState() {
         @HealthConnectDataState.DataRestoreState int dataRestoreState = RESTORE_STATE_IDLE;
 
-        @InternalRestoreState int currentRestoreState = getInternalRestoreState(userId);
+        @InternalRestoreState int currentRestoreState = getInternalRestoreState();
 
         if (currentRestoreState == INTERNAL_RESTORE_STATE_MERGING_DONE) {
             // already with correct values.
@@ -349,7 +339,7 @@ public final class BackupRestore {
             dataRestoreState = RESTORE_STATE_PENDING;
         }
 
-        @DataDownloadState int currentDownloadState = getDataDownloadState(userId);
+        @DataDownloadState int currentDownloadState = getDataDownloadState();
         if (currentDownloadState == DATA_DOWNLOAD_FAILED) {
             // already with correct values.
         } else if (currentDownloadState != DATA_DOWNLOAD_STATE_UNKNOWN) {
@@ -360,8 +350,7 @@ public final class BackupRestore {
     }
 
     /** Get the current data restore error. */
-    public @HealthConnectDataState.DataRestoreError int getDataRestoreError(int userId) {
-        // TODO(b/264070899) Get on a per user basis when we have per user db
+    public @HealthConnectDataState.DataRestoreError int getDataRestoreError() {
         @HealthConnectDataState.DataRestoreError int dataRestoreError = RESTORE_ERROR_NONE;
         String restoreErrorOnDisk =
                 PreferenceHelper.getInstance().getPreference(DATA_RESTORE_ERROR_KEY);
@@ -383,13 +372,12 @@ public final class BackupRestore {
     }
 
     /** Returns true if restore merging is in progress. API calls are blocked when this is true. */
-    public boolean isRestoreMergingInProgress(int userId) {
-        return getInternalRestoreState(userId) == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS;
+    public boolean isRestoreMergingInProgress() {
+        return getInternalRestoreState() == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS;
     }
 
-    void setInternalRestoreState(
-            @InternalRestoreState int dataRestoreState, int userID, boolean force) {
-        @InternalRestoreState int currentRestoreState = getInternalRestoreState(userID);
+    void setInternalRestoreState(@InternalRestoreState int dataRestoreState, boolean force) {
+        @InternalRestoreState int currentRestoreState = getInternalRestoreState();
         mStatesLock.writeLock().lock();
         try {
             if (!force && currentRestoreState >= dataRestoreState) {
@@ -401,7 +389,6 @@ public final class BackupRestore {
                                 + dataRestoreState);
                 return;
             }
-            // TODO(b/264070899) Store on a per user basis when we have per user db
             PreferenceHelper.getInstance()
                     .insertOrReplacePreference(
                             DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
@@ -410,11 +397,9 @@ public final class BackupRestore {
         }
     }
 
-    @InternalRestoreState
-    int getInternalRestoreState(int userId) {
+    @InternalRestoreState int getInternalRestoreState() {
         mStatesLock.readLock().lock();
         try {
-            // TODO(b/264070899) Get on a per user basis when we have per user db
             String restoreStateOnDisk =
                     PreferenceHelper.getInstance().getPreference(DATA_RESTORE_STATE_KEY);
             @InternalRestoreState int currentRestoreState = INTERNAL_RESTORE_STATE_UNKNOWN;
@@ -439,11 +424,9 @@ public final class BackupRestore {
         }
     }
 
-    @DataDownloadState
-    private int getDataDownloadState(int userId) {
+    @DataDownloadState private int getDataDownloadState() {
         mStatesLock.readLock().lock();
         try {
-            // TODO(b/264070899) Get on a per user basis when we have per user db
             String downloadStateOnDisk =
                     PreferenceHelper.getInstance().getPreference(DATA_DOWNLOAD_STATE_KEY);
             @DataDownloadState int currentDownloadState = DATA_DOWNLOAD_STATE_UNKNOWN;
@@ -461,18 +444,16 @@ public final class BackupRestore {
         }
     }
 
-    private void setDataDownloadState(
-            @DataDownloadState int downloadState, int userId, boolean force) {
+    private void setDataDownloadState(@DataDownloadState int downloadState, boolean force) {
         mStatesLock.writeLock().lock();
         try {
-            @DataDownloadState int currentDownloadState = getDataDownloadState(userId);
+            @DataDownloadState int currentDownloadState = getDataDownloadState();
             if (!force
                     && (currentDownloadState == DATA_DOWNLOAD_FAILED
                             || currentDownloadState == DATA_DOWNLOAD_COMPLETE)) {
                 Slog.w(TAG, "HC data download already in terminal state.");
                 return;
             }
-            // TODO(b/264070899) Store on a per user basis when we have per user db
             PreferenceHelper.getInstance()
                     .insertOrReplacePreference(
                             DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
@@ -484,8 +465,7 @@ public final class BackupRestore {
     // Creating a separate single line method to keep this code close to the rest of the code that
     // uses PreferenceHelper to keep data on the disk.
     private void setDataRestoreError(
-            @HealthConnectDataState.DataRestoreError int dataRestoreError, int userId) {
-        // TODO(b/264070899) Store on a per user basis when we have per user db
+            @HealthConnectDataState.DataRestoreError int dataRestoreError) {
         PreferenceHelper.getInstance()
                 .insertOrReplacePreference(
                         DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
@@ -500,8 +480,8 @@ public final class BackupRestore {
         return new File(hcDirectoryForUser, "remote_staged");
     }
 
-    private void merge(int userId) {
-        if (getInternalRestoreState(userId) >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+    private void merge() {
+        if (getInternalRestoreState() >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
             return;
         }
 
@@ -510,12 +490,12 @@ public final class BackupRestore {
             return;
         }
 
-        setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS, userId, false);
-        mergeDatabase(userId);
-        setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, userId, false);
+        setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS, false);
+        mergeDatabase();
+        setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, false);
     }
 
-    private void mergeDatabase(int userId) {
+    private void mergeDatabase() {
         synchronized (mMergingLock) {
             if (!mStagedDbContext.getDatabasePath(HealthConnectDatabase.getName()).exists()) {
                 // no db was staged
@@ -525,7 +505,7 @@ public final class BackupRestore {
             int currentDbVersion = TransactionManager.getInitialisedInstance().getDatabaseVersion();
             int stagedDbVersion = getStagedDatabase().getReadableDatabase().getVersion();
             if (currentDbVersion < stagedDbVersion) {
-                setDataRestoreError(RESTORE_ERROR_VERSION_DIFF, userId);
+                setDataRestoreError(RESTORE_ERROR_VERSION_DIFF);
                 return;
             }
 
