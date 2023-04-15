@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_ZONE_OFFSET_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
@@ -71,7 +72,7 @@ public abstract class AggregationRecordData {
         mRecordEndTime = StorageUtils.getCursorLong(cursor, END_TIME_COLUMN_NAME);
         mAppId = StorageUtils.getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
         mLastModifiedTime = StorageUtils.getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME);
-        mStartTimeZoneOffset = readZoneOffset(cursor);
+        mStartTimeZoneOffset = StorageUtils.getZoneOffset(cursor, START_ZONE_OFFSET_COLUMN_NAME);
         populateSpecificAggregationData(cursor);
     }
 
@@ -102,8 +103,6 @@ public abstract class AggregationRecordData {
     abstract double getResultOnInterval(long startTime, long endTime);
 
     abstract void populateSpecificAggregationData(Cursor cursor);
-
-    abstract ZoneOffset readZoneOffset(Cursor cursor);
 
     @Override
     public String toString() {

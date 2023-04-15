@@ -30,6 +30,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

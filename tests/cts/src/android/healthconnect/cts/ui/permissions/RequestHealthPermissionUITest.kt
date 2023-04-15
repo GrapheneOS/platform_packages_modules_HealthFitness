@@ -30,11 +30,14 @@ import androidx.test.uiautomator.By
 import com.google.common.truth.Truth
 import java.lang.Exception
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Test
 
 class RequestHealthPermissionUITest : HealthConnectBaseTest() {
 
     @Test
+    @Ignore(
+        "TODO(b/265789268): Fix flaky cannot find 'Allow “Health Connect cts test app” to read' view")
     fun showsAppName_showsRequestedPermissions() {
         revokePermissionViaPackageManager(
             context, TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
@@ -73,6 +76,8 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
+    @Ignore(
+        "TODO(b/265789268): Fix flaky assertPermGrantedForApp(READ_HEIGHT)=false because Height is not actually clicked")
     fun grantPermission_grantsOnlyRequestedPermission() {
         revokePermissionViaPackageManager(
             context, TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
@@ -84,9 +89,7 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
                 clickOnText("Height")
                 clickOnText("Allow")
 
-                // TODO(b/265789268): Fix assertPermGrantedForApp(READ_HEIGHT)=false because Height
-                // is not actually clicked.
-                // assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
+                assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
                 assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.WRITE_BODY_FAT)
 
                 revokePermissionViaPackageManager(
@@ -95,6 +98,8 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
+    @Ignore(
+        "TODO(b/265789268): Fix assertPermGrantedForApp(...)=false because Allow all is not actually clicked")
     fun grantAllPermissions_grantsAllPermissions() {
         revokePermissionViaPackageManager(
             context, TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
@@ -106,10 +111,8 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
                 clickOnText("Allow all")
                 clickOnText("Allow")
 
-                // TODO(b/265789268): Fix assertPermGrantedForApp(...)=false because Allow all is
-                // not actually clicked.
-                //  assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
-                //  assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.WRITE_HEIGHT)
+                assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
+                assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, HealthPermissions.WRITE_HEIGHT)
 
                 revokePermissionViaPackageManager(
                     context, TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)

@@ -23,6 +23,8 @@ import static org.mockito.Mockito.when;
 
 import android.database.Cursor;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -37,17 +39,21 @@ public class PriorityAggregationTest {
 
     PriorityRecordsAggregator mOneGroupAggregator;
     PriorityRecordsAggregator mMultiGroupAggregator;
+    AggregateParams.PriorityAggregationExtraParams mParams =
+            new AggregateParams.PriorityAggregationExtraParams("start", "end");
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mOneGroupAggregator =
-                Mockito.spy(new PriorityRecordsAggregator(List.of(10L, 20L), List.of(1L, 2L), 0));
+                Mockito.spy(
+                        new PriorityRecordsAggregator(
+                                List.of(10L, 20L), List.of(1L, 2L), 0, mParams));
 
         mMultiGroupAggregator =
                 Mockito.spy(
                         new PriorityRecordsAggregator(
-                                List.of(10L, 20L, 30L, 40L), List.of(1L, 2L, 3L), 0));
+                                List.of(10L, 20L, 30L, 40L), List.of(1L, 2L, 3L), 0, mParams));
     }
 
     @Test

@@ -75,9 +75,7 @@ public class MigrationBroadcast {
      * handle {@link android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
      */
     public void sendInvocationBroadcast() throws Exception {
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "Calling sendInvocationBroadcast()");
-        }
+        Slog.i(TAG, "Calling sendInvocationBroadcast()");
 
         String hcMigratorPackage =
                 mContext.getResources()

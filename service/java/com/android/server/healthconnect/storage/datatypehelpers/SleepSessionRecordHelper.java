@@ -33,6 +33,7 @@ import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
 import android.util.Pair;
 
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
+import com.android.server.healthconnect.storage.request.AggregateParams;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -79,7 +80,11 @@ public final class SleepSessionRecordHelper
                             SLEEP_SESSION_RECORD_TABLE_NAME, sessionColumns, START_TIME_COLUMN_NAME)
                     .setJoin(
                             SleepStageRecordHelper.getJoinForDurationAggregation(
-                                    getMainTableName()));
+                                    getMainTableName()))
+                    .setPriorityAggregationExtraParams(
+                            new AggregateParams.PriorityAggregationExtraParams(
+                                    SleepStageRecordHelper.getStartTimeColumnName(),
+                                    SleepStageRecordHelper.getEndTimeColumnName()));
         }
         return null;
     }

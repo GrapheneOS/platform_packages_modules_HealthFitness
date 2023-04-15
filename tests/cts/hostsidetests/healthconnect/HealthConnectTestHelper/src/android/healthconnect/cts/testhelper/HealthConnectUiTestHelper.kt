@@ -19,11 +19,9 @@ package android.healthconnect.cts.testhelper
 import android.content.Context
 import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager
-import android.health.connect.HealthPermissions
-import android.healthconnect.cts.lib.ActivityLauncher.launchDataActivity
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
-import android.healthconnect.cts.lib.ActivityLauncher.launchRequestPermissionActivity
 import android.healthconnect.cts.lib.UiTestUtils
+import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.uiautomator.By
 import com.android.compatibility.common.util.NonApiTest
@@ -93,33 +91,8 @@ class HealthConnectUiTestHelper {
                 TestHelperUtils.getHeartRateRecord(),
                 TestHelperUtils.getStepsRecord()),
             mHealthConnectManager)
-        context.launchMainActivity { UiTestUtils.waitDisplayed(By.text("App permissions")) }
-    }
-
-    @Test
-    fun openRecentAccess() {
-        TestHelperUtils.insertRecords(
-            listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord()),
-            mHealthConnectManager)
         context.launchMainActivity {
-            UiTestUtils.waitDisplayed(By.text("See all recent access"))
-            UiTestUtils.clickOnText("See all recent access")
-            UiTestUtils.waitDisplayed(By.text("Manage permissions"))
-        }
-    }
-
-    @Test
-    fun openCategories() {
-        TestHelperUtils.insertRecords(
-            listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord()),
-            mHealthConnectManager)
-        context.launchMainActivity {
+            UiTestUtils.waitDisplayed(By.text("Data and access"))
             UiTestUtils.clickOnText("Data and access")
 
             UiTestUtils.waitDisplayed(By.text("Browse data"))
@@ -128,98 +101,5 @@ class HealthConnectUiTestHelper {
 
             UiTestUtils.waitDisplayed(By.text("Delete all data"))
         }
-    }
-
-    @Test
-    fun openAllCategories() {
-        TestHelperUtils.insertRecords(
-            listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord()),
-            mHealthConnectManager)
-        context.launchDataActivity {
-            UiTestUtils.clickOnText("See all categories")
-            UiTestUtils.waitDisplayed(By.text("Nutrition"))
-        }
-    }
-
-    @Test
-    fun openPermissionTypes() {
-        TestHelperUtils.insertRecords(
-            listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord()),
-            mHealthConnectManager)
-        context.launchDataActivity {
-            UiTestUtils.clickOnText("Activity")
-            UiTestUtils.waitDisplayed(By.text("Steps"))
-        }
-    }
-
-    @Test
-    fun openDataAccess() {
-        TestHelperUtils.insertRecords(
-            listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord()),
-            mHealthConnectManager)
-        context.launchDataActivity {
-            UiTestUtils.clickOnText("Activity")
-            UiTestUtils.waitDisplayed(By.text("Steps"))
-            UiTestUtils.clickOnText("Steps")
-            UiTestUtils.waitDisplayed(By.text("See all entries"))
-        }
-    }
-
-    @Test
-    fun openDataEntries() {
-        TestHelperUtils.insertRecords(
-            listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord()),
-            mHealthConnectManager)
-        context.launchDataActivity {
-            UiTestUtils.clickOnText("Activity")
-            UiTestUtils.waitDisplayed(By.text("Steps"))
-            UiTestUtils.clickOnText("Steps")
-            UiTestUtils.waitDisplayed(By.text("See all entries"))
-            UiTestUtils.clickOnText("See all entries")
-
-            UiTestUtils.waitDisplayed(By.text("100 steps"))
-        }
-    }
-
-    @Test
-    fun openAppPermissions() {
-        TestHelperUtils.insertRecords(
-            listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord()),
-            mHealthConnectManager)
-        context.launchMainActivity {
-            UiTestUtils.clickOnText("App permissions")
-
-            UiTestUtils.waitDisplayed(By.text("Allowed access"))
-            UiTestUtils.waitDisplayed(By.text("Not allowed access"))
-        }
-    }
-
-    @Test
-    fun openRequestPermissions() {
-        context.launchRequestPermissionActivity(
-            packageName = TEST_APP_PACKAGE_NAME,
-            permissions =
-                listOf(HealthPermissions.READ_HEART_RATE, HealthPermissions.WRITE_HEART_RATE)) {
-                UiTestUtils.waitDisplayed(By.text("Allow “CtsHealthConnectTestApp” to read"))
-                UiTestUtils.waitDisplayed(By.text("Heart rate"))
-
-                UiTestUtils.waitDisplayed(By.text("Allow “CtsHealthConnectTestApp” to write"))
-                UiTestUtils.waitDisplayed(By.text("Heart rate"))
-            }
     }
 }

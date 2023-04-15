@@ -1320,8 +1320,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
-                        if (mBackupRestore.isRestoreMergingInProgress(
-                                mContext.getUser().getIdentifier())) {
+                        if (mBackupRestore.isRestoreMergingInProgress()) {
                             throw new MigrationException(
                                     "Cannot start data migration. Backup and restore in"
                                             + " progress.",
@@ -1449,7 +1448,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA,
                 HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION);
 
-        if (!mBackupRestore.prepForStagingIfNotAlreadyDone(userHandle.getIdentifier())) {
+        if (!mBackupRestore.prepForStagingIfNotAlreadyDone()) {
             HealthConnectThreadScheduler.scheduleInternalTask(
                     () -> {
                         try {
@@ -1529,19 +1528,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @see HealthConnectManager#updateDataDownloadState
      */
     @Override
-    public void updateDataDownloadState(
-            @DataDownloadState int downloadState, @NonNull UserHandle userHandle) {
+    public void updateDataDownloadState(@DataDownloadState int downloadState) {
         mContext.enforceCallingPermission(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
-        mBackupRestore.updateDataDownloadState(downloadState, userHandle);
+        mBackupRestore.updateDataDownloadState(downloadState);
     }
 
     /**
      * @see HealthConnectManager#getHealthConnectDataState
      */
     @Override
-    public void getHealthConnectDataState(
-            @NonNull UserHandle userHandle, @NonNull IGetHealthConnectDataStateCallback callback) {
+    public void getHealthConnectDataState(@NonNull IGetHealthConnectDataStateCallback callback) {
         mDataPermissionEnforcer.enforceAnyOfPermissions(
                 MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
         HealthConnectThreadScheduler.scheduleInternalTask(
@@ -1549,11 +1546,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         enforceIsForegroundUser(getCallingUserHandle());
                         @HealthConnectDataState.DataRestoreError
-                        int dataRestoreError =
-                                mBackupRestore.getDataRestoreError(userHandle.getIdentifier());
+                        int dataRestoreError = mBackupRestore.getDataRestoreError();
                         @HealthConnectDataState.DataRestoreState
-                        int dataRestoreState =
-                                mBackupRestore.getDataRestoreState(userHandle.getIdentifier());
+                        int dataRestoreState = mBackupRestore.getDataRestoreState();
 
                         try {
                             callback.onResult(
@@ -1612,7 +1607,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private boolean isDataSyncInProgress() {
         return mMigrationStateManager.isMigrationInProgress()
-                || mBackupRestore.isRestoreMergingInProgress(mContext.getUser().getIdentifier());
+                || mBackupRestore.isRestoreMergingInProgress();
     }
 
     @VisibleForTesting
@@ -1808,7 +1803,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private void throwExceptionIncorrectPermissionState() {
         throw new IllegalStateException(
                 "Incorrect health permission state, likely"
-                        + " because the calling application's manifest does not specify handling"
+                        + " because the calling application's manifest does not specify handling "
                         + Intent.ACTION_VIEW_PERMISSION_USAGE
                         + " with "
                         + HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS);
@@ -1874,7 +1869,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1887,7 +1882,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1900,7 +1895,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1913,7 +1908,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1926,7 +1921,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1965,7 +1960,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }
@@ -1991,7 +1986,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         try {
             callback.onError(
                     new HealthConnectExceptionParcel(
-                            new HealthConnectException(errorCode, exception.getMessage())));
+                            new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
             Log.e(TAG, "Unable to send result to the callback", e);
         }

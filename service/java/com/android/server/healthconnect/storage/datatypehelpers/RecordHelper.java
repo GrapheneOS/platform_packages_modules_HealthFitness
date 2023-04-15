@@ -47,6 +47,7 @@ import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.os.Trace;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
@@ -56,7 +57,6 @@ import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
-
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
@@ -140,21 +140,16 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             params.appendAdditionalColumns(columns);
         }
 
+        params.setExtraTimeColumn(getEndTimeColumnName());
         if (StorageUtils.isDerivedType(mRecordIdentifier)) {
             params.appendAdditionalColumns(Arrays.asList(getStartTimeColumnName()));
         }
 
-        return new AggregateTableRequest(
-                        params.mTableName,
-                        params.mColumnNames,
-                        aggregationType,
-                        this,
-                        params.mAggregateDataType)
+        return new AggregateTableRequest(params, aggregationType, this)
                 .setPackageFilter(
                         AppInfoHelper.getInstance().getAppInfoIds(packageFilter),
                         APP_INFO_ID_COLUMN_NAME)
-                .setTimeFilter(startTime, endTime, params.mTimeColumnName)
-                .setSqlJoin(params.mJoin)
+                .setTimeFilter(startTime, endTime)
                 .setAdditionalColumnsToFetch(Collections.singletonList(getZoneOffsetColumnName()));
     }
 
@@ -513,6 +508,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     public abstract String getStartTimeColumnName();
 
+    public String getEndTimeColumnName() {
+        return null;
+    }
+
     /** Populate internalRecords with extra data. */
     void readExtraData(List<T> internalRecords, Cursor cursorExtraData, String tableName) {}
 
@@ -702,36 +701,4 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Collections.emptyList();
     }
 
-    static class AggregateParams {
-        private final String mTableName;
-        private final String mTimeColumnName;
-        private List<String> mColumnNames;
-        private SqlJoin mJoin;
-        private Class<?> mAggregateDataType;
-
-        public AggregateParams(String tableName, List<String> columnNames, String timeColumnName) {
-            this(tableName, columnNames, timeColumnName, null);
-        }
-
-        AggregateParams(
-                String tableName,
-                List<String> columnNames,
-                String timeColumnName,
-                Class<?> aggregateDataType) {
-            mTableName = tableName;
-            mColumnNames = columnNames;
-            mTimeColumnName = timeColumnName;
-            mAggregateDataType = aggregateDataType;
-        }
-
-        public AggregateParams setJoin(SqlJoin join) {
-            mJoin = join;
-            return this;
-        }
-
-        public AggregateParams appendAdditionalColumns(List<String> additionColumns) {
-            mColumnNames.addAll(additionColumns);
-            return this;
-        }
-    }
 }
