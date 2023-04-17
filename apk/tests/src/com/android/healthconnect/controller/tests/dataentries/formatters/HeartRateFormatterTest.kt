@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.HeartRateRecord
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
@@ -46,7 +47,7 @@ class HeartRateFormatterTest {
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        context.setLocale(Locale.US)
+        context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         hiltRule.inject()
@@ -82,5 +83,21 @@ class HeartRateFormatterTest {
             assertThat(formatter.formatA11yValue(record, preferences))
                 .isEqualTo("1 beat per minute")
         }
+    }
+
+    @Test
+    fun formatRecordDetails_withData_returnsFormattedEntries() = runBlocking {
+        val record: HeartRateRecord = getHeartRateRecord(listOf(80, 90))
+
+        val result = formatter.formatRecordDetails(record)
+        assertThat(result.size).isEqualTo(2)
+        assertThat(result[0])
+            .isEqualTo(
+                FormattedEntry.FormattedSessionDetail(
+                    uuid = "test_id",
+                    header = "07:06",
+                    headerA11y = "07:06",
+                    titleA11y = "80 beats per minute",
+                    title = "80 bpm"))
     }
 }

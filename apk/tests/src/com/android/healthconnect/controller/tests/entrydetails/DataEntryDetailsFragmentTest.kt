@@ -43,7 +43,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel
@@ -158,14 +158,14 @@ class DataEntryDetailsFragmentTest {
 
     @Test
     fun dataEntriesDetailsInit_withHeartRate_showsItem_showsDetails() {
-        val list = buildList { add(getFormattedHeartRate()) }
+        val list = buildList { add(getFormattedSeriesData()) }
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
             DataEntryDetailsFragment.createBundle(permissionType = HEART_RATE, entryId = "1"))
 
         onView(withText("07:06 - 8:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
-        onView(withText("100 beats per minute")).check(matches(isDisplayed()))
+        onView(withText("100 bpm")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -237,12 +237,12 @@ class DataEntryDetailsFragmentTest {
                 })
     }
 
-    private fun getFormattedHeartRate(): HeartRateEntry {
-        return HeartRateEntry(
+    private fun getFormattedSeriesData(): SeriesDataEntry {
+        return SeriesDataEntry(
             uuid = "1",
             header = "07:06 - 8:06 • TEST_APP_NAME",
             headerA11y = "07:06 - 8:06 • TEST_APP_NAME",
-            title = "100 beats per minute",
+            title = "100 bpm",
             titleA11y = "100 beats per minute",
             dataType = DataType.HEART_RATE)
     }

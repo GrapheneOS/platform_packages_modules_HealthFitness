@@ -35,6 +35,21 @@ class StepsCadenceFormatter @Inject constructor(@ApplicationContext private val 
 
     private val timeFormatter = LocalDateTimeFormatter(context)
 
+    override suspend fun formatRecord(
+        record: StepsCadenceRecord,
+        header: String,
+        headerA11y: String,
+        unitPreferences: UnitPreferences
+    ): FormattedEntry {
+        return FormattedEntry.SeriesDataEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record))
+    }
+
     /** Returns localized average StepsCadence from multiple data points. */
     override suspend fun formatValue(
         record: StepsCadenceRecord,

@@ -37,6 +37,21 @@ constructor(@ApplicationContext private val context: Context) :
 
     private val timeFormatter = LocalDateTimeFormatter(context)
 
+    override suspend fun formatRecord(
+        record: CyclingPedalingCadenceRecord,
+        header: String,
+        headerA11y: String,
+        unitPreferences: UnitPreferences
+    ): FormattedEntry {
+        return FormattedEntry.SeriesDataEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record))
+    }
+
     override suspend fun formatValue(
         record: CyclingPedalingCadenceRecord,
         unitPreferences: UnitPreferences
