@@ -176,23 +176,22 @@ public class HealthConnectDeviceTest {
         assertThat(bundle.getInt(READ_RECORDS_SIZE)).isNotEqualTo(0);
     }
 
-    //    @Test
-    //    public void testAppWithWritePermsOnlyCantReadAnotherAppEntry() throws Exception {
-    //        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
-    //        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
-    //
-    //        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
-    //                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
-    //
-    //        ArrayList<String> recordClassesToRead = new ArrayList<>();
-    //        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds :
-    //                listOfRecordIdsAndClass) {
-    //            recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
-    //        }
-    //
-    //        bundle = readRecordsAs(APP_WITH_WRITE_PERMS_ONLY, recordClassesToRead);
-    //        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isEqualTo(0);
-    //    }
+    @Test
+    public void testAppWithWritePermsOnlyCantReadAnotherAppEntry() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        ArrayList<String> recordClassesToRead = new ArrayList<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
+        }
+
+        bundle = readRecordsAs(APP_WITH_WRITE_PERMS_ONLY, recordClassesToRead);
+        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isEqualTo(0);
+    }
 
     @Test
     public void testAppWithManageHealthDataPermsOnlyCantInsertRecords() throws Exception {
