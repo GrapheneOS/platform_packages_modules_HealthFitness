@@ -1132,20 +1132,6 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-
-            // verify that the package requesting the change is same as the packageName in the
-            // records.
-            String contextPackageName = mContext.getPackageName();
-            for (Record record : records) {
-                if (!Objects.equals(
-                        contextPackageName,
-                        record.getMetadata().getDataOrigin().getPackageName())) {
-                    throw new IllegalArgumentException(
-                            "The package requesting the change does not match "
-                                    + "the packageName in input records");
-                }
-            }
-
             List<RecordInternal<?>> recordInternals =
                     records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
             // Verify if the input record has clientRecordId or UUID.
