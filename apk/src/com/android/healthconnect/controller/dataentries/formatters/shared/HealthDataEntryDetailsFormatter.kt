@@ -22,10 +22,12 @@ import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
+import android.health.connect.datatypes.SpeedRecord
 import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter
 import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter
+import com.android.healthconnect.controller.dataentries.formatters.SpeedFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,13 +37,15 @@ class HealthDataEntryDetailsFormatter
 constructor(
     private val sleepSessionFormatter: SleepSessionFormatter,
     private val exerciseSessionFormatter: ExerciseSessionFormatter,
-    private val heartRateFormatter: HeartRateFormatter
+    private val heartRateFormatter: HeartRateFormatter,
+    private val speedRecordFormatter: SpeedFormatter
 ) {
     suspend fun formatDetails(record: Record): List<FormattedEntry> {
         return when (record) {
             is SleepSessionRecord -> sleepSessionFormatter.formatRecordDetails(record)
             is ExerciseSessionRecord -> exerciseSessionFormatter.formatRecordDetails(record)
             is HeartRateRecord -> heartRateFormatter.formatRecordDetails(record)
+            is SpeedRecord -> speedRecordFormatter.formatRecordDetails(record)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }
