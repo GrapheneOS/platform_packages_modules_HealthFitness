@@ -751,6 +751,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         enforceIsForegroundUser(getCallingUserHandle());
                         verifyPackageNameFromUid(uid, attributionSource);
+                        tryAcquireApiCallQuota(
+                                uid,
+                                QuotaCategory.QUOTA_CATEGORY_READ,
+                                mAppOpsManagerLocal.isUidInForeground(uid),
+                                builder);
                         throwExceptionIfDataSyncInProgress();
                         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                                 request.getRecordTypesList(), attributionSource);
