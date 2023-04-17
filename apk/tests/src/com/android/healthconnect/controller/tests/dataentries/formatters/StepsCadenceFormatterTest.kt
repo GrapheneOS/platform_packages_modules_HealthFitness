@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.StepsCadenceRecord
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.StepsCadenceFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -31,6 +32,7 @@ import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,7 +48,7 @@ class StepsCadenceFormatterTest {
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        context.setLocale(Locale.US)
+        context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         hiltRule.inject()
@@ -56,6 +58,12 @@ class StepsCadenceFormatterTest {
     fun formatValue_noEntries_returnsNoData() = runBlocking {
         val record = getStepsCadence(listOf())
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("No data")
+    }
+
+    @Test
+    fun formatA11yValue_noEntries_returnsNoData() = runBlocking {
+        val record = getStepsCadence(listOf())
+        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("No data")
     }
 
     @Test
@@ -81,6 +89,28 @@ class StepsCadenceFormatterTest {
         val record = getStepsCadence(listOf(10.3, 20.1))
         assertThat(formatter.formatA11yValue(record, preferences))
             .isEqualTo("15.2 steps per minute")
+    }
+
+    @Test
+    fun formatRecordDetails_emptyList_returnsEmptyList() = runTest {
+        val record = getStepsCadence(listOf())
+        assertThat(formatter.formatRecordDetails(record)).isEmpty()
+    }
+
+    @Test
+    fun formatRecordDetails_returnsFormattedList() = runTest {
+        val record = getStepsCadence(listOf(10.3, 20.1))
+
+        val result = formatter.formatRecordDetails(record)
+        assertThat(result.size).isEqualTo(2)
+        assertThat(result[0])
+            .isEqualTo(
+                FormattedEntry.FormattedSessionDetail(
+                    uuid = "test_id",
+                    header = "07:06",
+                    headerA11y = "07:06",
+                    titleA11y = "10.3 steps per minute",
+                    title = "10.3 steps/min"))
     }
 
     private fun getStepsCadence(samples: List<Double>): StepsCadenceRecord {
