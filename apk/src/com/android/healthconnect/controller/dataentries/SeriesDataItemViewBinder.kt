@@ -22,19 +22,19 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.DataEntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-/** ViewBinder for HeartRateEntry. */
-class HeartRateItemViewBinder(
+/** ViewBinder for SeriesDataEntry. */
+class SeriesDataItemViewBinder(
     private val showSecondAction: Boolean = true,
     private val onItemClickedListener: OnClickEntryListener?,
     private val onDeleteEntryClicked: OnDeleteEntryListener?,
-) : ViewBinder<HeartRateEntry, View> {
+) : ViewBinder<SeriesDataEntry, View> {
 
     private lateinit var logger: HealthConnectLogger
 
@@ -48,7 +48,7 @@ class HeartRateItemViewBinder(
             .inflate(R.layout.item_heart_rate_entry, parent, false)
     }
 
-    override fun bind(view: View, data: HeartRateEntry, index: Int) {
+    override fun bind(view: View, data: SeriesDataEntry, index: Int) {
         val container = view.findViewById<RelativeLayout>(R.id.item_data_entry_container)
         val divider = view.findViewById<LinearLayout>(R.id.item_data_entry_divider)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)

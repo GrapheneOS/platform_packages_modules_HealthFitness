@@ -28,11 +28,11 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.ExerciseSessionItemViewBinder
 import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
-import com.android.healthconnect.controller.dataentries.FormattedEntry.HeartRateEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.dataentries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
-import com.android.healthconnect.controller.dataentries.HeartRateItemViewBinder
 import com.android.healthconnect.controller.dataentries.OnDeleteEntryListener
+import com.android.healthconnect.controller.dataentries.SeriesDataItemViewBinder
 import com.android.healthconnect.controller.dataentries.SleepSessionItemViewBinder
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.END_TIME
@@ -101,7 +101,7 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             onDeleteEntryClicked = onDeleteEntryListener)
     }
     private val heartRateItemViewBinder by lazy {
-        HeartRateItemViewBinder(
+        SeriesDataItemViewBinder(
             showSecondAction = false,
             onItemClickedListener = null,
             onDeleteEntryClicked = onDeleteEntryListener)
@@ -143,7 +143,7 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             RecyclerViewAdapter.Builder()
                 .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
                 .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
-                .setViewBinder(HeartRateEntry::class.java, heartRateItemViewBinder)
+                .setViewBinder(SeriesDataEntry::class.java, heartRateItemViewBinder)
                 .setViewBinder(FormattedSessionDetail::class.java, sessionDetailViewBinder)
                 .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
                 .build()

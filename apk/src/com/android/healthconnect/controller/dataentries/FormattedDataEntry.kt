@@ -52,7 +52,7 @@ sealed class FormattedEntry(open val uuid: String) {
         val route: ExerciseRoute? = null
     ) : FormattedEntry(uuid)
 
-    data class HeartRateEntry(
+    data class SeriesDataEntry(
         override val uuid: String,
         val header: String,
         val headerA11y: String,
