@@ -127,8 +127,8 @@ public class HealthConnectDeviceTest {
         try {
             updateRecordsAs(APP_B_WITH_READ_WRITE_PERMS, listOfRecordIdsAndClass);
             Assert.fail("Should have thrown an Invalid Argument Exception!");
-        } catch (Exception e) {
-            assertThat(e.getClass().equals(IllegalArgumentException.class)).isTrue();
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         }
     }
 
