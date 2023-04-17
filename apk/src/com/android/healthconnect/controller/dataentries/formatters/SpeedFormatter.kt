@@ -22,6 +22,7 @@ import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
@@ -64,8 +65,8 @@ class SpeedFormatter @Inject constructor(@ApplicationContext private val context
         id: String,
         sample: SpeedRecordSample,
         unitPreferences: UnitPreferences
-    ): FormattedEntry.FormattedSessionDetail {
-        return FormattedEntry.FormattedSessionDetail(
+    ): FormattedSessionDetail {
+        return FormattedSessionDetail(
             uuid = id,
             header = timeFormatter.formatTime(sample.time),
             headerA11y = timeFormatter.formatTime(sample.time),
