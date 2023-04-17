@@ -32,7 +32,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aппад хандах эрхтэй байна"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> апп хандах эрхтэй байна"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Байхгүй"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Оруулгын дэлгэрэнгүй"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Орсон мэдээллийн дэлгэрэнгүй"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Саяхны хандалт"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Сүүлийн үед ямар ч апп Health Connect-д хандаагүй байна"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Саяхны бүх хандалтыг харах"</string>
@@ -177,12 +177,12 @@
     <string name="ovulation_test_lowercase_label" msgid="93260039417722840">"өндгөн эсийн тест"</string>
     <string name="ovulation_test_read_content_description" msgid="8008351738285775840">"Өндгөн эсийн тестийг унших"</string>
     <string name="ovulation_test_write_content_description" msgid="7061493310852203463">"Өндгөн эсийн тестийг бичих"</string>
-    <string name="sexual_activity_uppercase_label" msgid="1093238473810194127">"Бэлгийн үйл ажиллагаа"</string>
-    <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"бэлгийн үйл ажиллагаа"</string>
+    <string name="sexual_activity_uppercase_label" msgid="1093238473810194127">"Бэлгийн харилцаа"</string>
+    <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"бэлгийн харилцаа"</string>
     <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"Бэлгийн үйл ажиллагааг унших"</string>
     <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"Бэлгийн үйл ажиллагааг бичих"</string>
-    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Бага хэмжээний цус гаралт"</string>
-    <string name="spotting_lowercase_label" msgid="4361141146039580583">"бага хэмжээний цус гаралт"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Бага хэмжээний цус гарах"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"бага хэмжээний цус гарах"</string>
     <string name="spotting_read_content_description" msgid="5422420770022357631">"Бага хэмжээний цус гаралтыг унших"</string>
     <string name="spotting_write_content_description" msgid="9049462631184362964">"Бага хэмжээний цус гаралтыг бичих"</string>
     <string name="hydration_uppercase_label" msgid="1196083392597480565">"Шингэн"</string>

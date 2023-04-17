@@ -62,7 +62,7 @@
     <string name="no_categories" msgid="2636778482437506241">"Je hebt geen gegevens in Health Connect"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Je gegevens"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"App-prioriteit"</string>
-    <string name="delete_category_data_button" msgid="2324773398768267043">"Gegevens van het type <xliff:g id="CATEGORY">%s</xliff:g> verwijderen"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Gegevens van <xliff:g id="CATEGORY">%s</xliff:g> verwijderen"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Alle apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Mag gegevens van het type <xliff:g id="PERMISSION_TYPE">%s</xliff:g> lezen"</string>
     <string name="can_write" msgid="5082414937218423823">"Mag gegevens van het type <xliff:g id="PERMISSION_TYPE">%s</xliff:g> schrijven"</string>
@@ -81,8 +81,8 @@
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"verbrande actieve calorieën"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Gegevens over verbrande actieve calorieën lezen"</string>
     <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"Gegevens over verbrande actieve calorieën schrijven"</string>
-    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Beweging"</string>
-    <string name="exercise_lowercase_label" msgid="7210988327804427943">"beweging"</string>
+    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Oefening"</string>
+    <string name="exercise_lowercase_label" msgid="7210988327804427943">"oefening"</string>
     <string name="exercise_read_content_description" msgid="2079728018078185556">"Gegevens over beweging lezen"</string>
     <string name="exercise_write_content_description" msgid="3267630937895011886">"Gegevens over beweging schrijven"</string>
     <string name="exercise_route_uppercase_label" msgid="6678863538041931754">"Trainingsroute"</string>
@@ -386,7 +386,7 @@
     <string name="milliseconds_long" msgid="93246373745977286">"{count,plural, =1{1 milliseconde}other{# milliseconden}}"</string>
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 herh.}other{# herh.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 herhaling}other{# herhalingen}}"</string>
-    <string name="exercise_segments_header" msgid="2992953017179406012">"Trainingssegmenten"</string>
+    <string name="exercise_segments_header" msgid="2992953017179406012">"Oefeningssegmenten"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Baantjes"</string>
     <string name="back_extension" msgid="426518933137440577">"Back extension"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>

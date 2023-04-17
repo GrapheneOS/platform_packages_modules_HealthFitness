@@ -117,8 +117,8 @@
     <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"celkový počet spálených kalórií"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Čítanie údajov o celkovom počte spálených kalórií"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Zapisovanie údajov o celkovom počte spálených kalórií"</string>
-    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"VO2 max"</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"VO2 max"</string>
+    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Maximálne využitie kyslíka"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Maximálne využitie kyslíka"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Čítanie údajov VO2 max"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Zapisovanie údajov VO2 max"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Potlačenia invalidného vozíka"</string>
@@ -659,7 +659,7 @@
     <!-- no translation found for units_cancel (5947097690625771995) -->
     <skip />
     <string name="units_title" msgid="6504086463237869339">"Jednotky"</string>
-    <string name="set_units_label" msgid="6566059089772896105">"Nastavenie jednotiek údajov"</string>
+    <string name="set_units_label" msgid="6566059089772896105">"Nastaviť jednotky údajov"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"Vzdialenosť"</string>
     <string name="height_unit_title" msgid="5461594609577078049">"Výška"</string>
     <string name="weight_unit_title" msgid="7405186541678939987">"Hmotnosť"</string>
