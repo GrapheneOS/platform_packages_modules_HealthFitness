@@ -291,7 +291,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Por qué Salud conectada quita los permisos de las aplicaciones"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una aplicación se suspende o se elimina de Google Play, Salud conectada quita automáticamente sus permisos.\n\nPor lo tanto, la aplicación ya no podrá acceder a tus datos almacenados en Salud conectada. Si la aplicación ya había escrito datos, aparecerá en la lista de aplicaciones inactivas."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Empezar a usar Salud conectada"</string>
+    <string name="onboarding_title" msgid="7930941018430608076">"Empieza a usar Salud conectada"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Salud conectada almacena tus datos de salud y actividad física, y te ofrece una forma sencilla de sincronizar las diferentes aplicaciones de tu teléfono"</string>
     <string name="share_data" msgid="3481932156368883946">"Comparte datos con tus aplicaciones"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Elige los datos que cada aplicación puede leer o escribir en Salud conectada"</string>
@@ -334,7 +334,7 @@
     <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Eliminar"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Atrás"</string>
-    <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Listo"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Hecho"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Cerrar"</string>
     <string name="delete_dialog_success_title" msgid="5009733262743173477">"Datos eliminados"</string>
     <string name="delete_dialog_success_message" msgid="2451953113522118128">"Estos datos ya no están almacenados en Salud conectada."</string>
@@ -705,7 +705,7 @@
     <string name="deletion_started_title" msgid="1177766097121885025">"Los datos almacenados se eliminarán"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Salud conectada eliminará todos los datos de hace más de # meses. Los cambios pueden tardar un día en aparecer en tus aplicaciones conectadas.}other{Salud conectada eliminará todos los datos de hace más de # meses. Los cambios pueden tardar un día en aparecer en tus aplicaciones conectadas.}}"</string>
     <string name="deletion_started_category_list_section" msgid="3052940611815658991">"Se eliminarán los datos de estas categorías"</string>
-    <string name="deletion_started_done_button" msgid="1232018689825054257">"Listo"</string>
+    <string name="deletion_started_done_button" msgid="1232018689825054257">"Hecho"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Establecer prioridad de aplicaciones"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Si más de una aplicación añade datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, Salud conectada priorizará la aplicación que esté más arriba en esta lista. Arrastra las aplicaciones para reordenarlas."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Guardar"</string>

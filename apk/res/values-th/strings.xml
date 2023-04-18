@@ -101,7 +101,7 @@
     <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"จำนวนชั้นที่เดินขึ้น"</string>
     <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"อ่านข้อมูลจำนวนชั้นที่เดินขึ้น"</string>
     <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"เขียนข้อมูลจำนวนชั้นที่เดินขึ้น"</string>
-    <string name="power_uppercase_label" msgid="8027219480901448660">"พาวเวอร์"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"กำลัง"</string>
     <string name="power_lowercase_label" msgid="3893286148577044369">"พาวเวอร์"</string>
     <string name="power_read_content_description" msgid="6821797135406643841">"อ่านข้อมูลพาวเวอร์"</string>
     <string name="power_write_content_description" msgid="8091584558688087392">"เขียนข้อมูลพาวเวอร์"</string>
@@ -253,8 +253,7 @@
     <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"วันก่อน"</string>
     <string name="default_error" msgid="7966868260616403475">"เกิดข้อผิดพลาด โปรดลองอีกครั้ง"</string>
-    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
-    <skip />
+    <string name="health_permission_header_description" msgid="7497601695462373927">"แอปที่มีสิทธิ์นี้จะอ่านและเขียนข้อมูลสุขภาพและการออกกำลังกายของคุณได้"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"ควบคุมว่าแอปใดบ้างสามารถเข้าถึงข้อมูลที่จัดเก็บไว้ใน Health Connect แตะแอปเพื่อตรวจสอบข้อมูลที่จะสามารถอ่านหรือเขียนได้"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"มีสิทธิ์เข้าถึง"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"ไม่มีสิทธิ์เข้าถึง"</string>
@@ -272,8 +271,7 @@
     <string name="delete_app_data" msgid="6890357774873859952">"ลบข้อมูลแอป"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"แอปที่ไม่ได้ใช้งาน"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"แอปเหล่านี้ไม่มีสิทธิ์เข้าถึงอีกต่อไป แต่จะยังคงมีข้อมูลจัดเก็บอยู่ใน Health Connect"</string>
-    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
-    <skip />
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> สามารถอ่านข้อมูลที่เพิ่มหลังวันที่ <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"หากต้องการจัดการสิทธิ์อื่นๆ ใน Android ที่แอปนี้เข้าถึงได้ ให้ไปที่การตั้งค่า &gt; แอป"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"ข้อมูลที่แชร์กับ <xliff:g id="APP_NAME">%1$s</xliff:g> จะอยู่ภายใต้นโยบายความเป็นส่วนตัวของแอปดังกล่าว"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"หากต้องการจัดการสิทธิ์ของ Android อื่นๆ ที่แอปนี้เข้าถึงได้ ให้ไปที่การตั้งค่าแล้วแตะที่แอป"</string>
@@ -721,7 +719,7 @@
     <string name="search_connected_apps" msgid="8180770761876928851">"ค้นหาแอป"</string>
     <string name="no_results" msgid="4007426147286897998">"ไม่พบผลลัพธ์"</string>
     <string name="help" msgid="6028777453152686162">"ความช่วยเหลือ"</string>
-    <string name="request_route_header_title" msgid="6599707039845646714">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงเส้นทางออกกำลังกายใน Health Connect ใช่ไหม"</string>
+    <string name="request_route_header_title" msgid="6599707039845646714">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงเส้นทางออกกำลังกายนี้ใน Health Connect ใช่ไหม"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"แอปนี้จะอ่านตำแหน่งที่ผ่านมาบนเส้นทางของคุณได้"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
     <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
