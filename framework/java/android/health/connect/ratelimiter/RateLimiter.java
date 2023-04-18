@@ -19,6 +19,8 @@ package android.health.connect.ratelimiter;
 import android.annotation.IntDef;
 import android.health.connect.HealthConnectException;
 
+import com.android.internal.annotations.GuardedBy;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.time.Duration;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 /**
@@ -49,9 +52,21 @@ public final class RateLimiter {
             new HashMap<>();
     private static final Map<String, Integer> QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP =
             new HashMap<>();
+    private static final ReentrantReadWriteLock sLock = new ReentrantReadWriteLock();
+
+    @GuardedBy("sLock")
+    private static boolean sRateLimiterEnabled;
 
     public static void tryAcquireApiCallQuota(
             int uid, @QuotaCategory.Type int quotaCategory, boolean isInForeground) {
+        sLock.readLock().lock();
+        try {
+            if (!sRateLimiterEnabled) {
+                return;
+            }
+        } finally {
+            sLock.readLock().unlock();
+        }
         if (quotaCategory == QuotaCategory.QUOTA_CATEGORY_UNDEFINED) {
             throw new IllegalArgumentException("Quota category not defined.");
         }
@@ -69,6 +84,14 @@ public final class RateLimiter {
     }
 
     public static void checkMaxChunkMemoryUsage(long memoryCost) {
+        sLock.readLock().lock();
+        try {
+            if (!sRateLimiterEnabled) {
+                return;
+            }
+        } finally {
+            sLock.readLock().unlock();
+        }
         long memoryLimit = getConfiguredMaxApiMemoryQuota(CHUNK_SIZE_LIMIT_IN_BYTES);
         if (memoryCost > memoryLimit) {
             throw new HealthConnectException(
@@ -81,6 +104,14 @@ public final class RateLimiter {
     }
 
     public static void checkMaxRecordMemoryUsage(long memoryCost) {
+        sLock.readLock().lock();
+        try {
+            if (!sRateLimiterEnabled) {
+                return;
+            }
+        } finally {
+            sLock.readLock().unlock();
+        }
         long memoryLimit = getConfiguredMaxApiMemoryQuota(RECORD_SIZE_LIMIT_IN_BYTES);
         if (memoryCost > memoryLimit) {
             throw new HealthConnectException(
@@ -108,6 +139,15 @@ public final class RateLimiter {
     public static void updateMemoryQuotaMap(Map<String, Integer> quotaBucketToMaxMemoryQuotaMap) {
         for (String key : quotaBucketToMaxMemoryQuotaMap.keySet()) {
             QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP.put(key, quotaBucketToMaxMemoryQuotaMap.get(key));
+        }
+    }
+
+    public static void updateEnableRateLimiterFlag(boolean enableRateLimiter) {
+        sLock.writeLock().lock();
+        try {
+            sRateLimiterEnabled = enableRateLimiter;
+        } finally {
+            sLock.writeLock().unlock();
         }
     }
 
