@@ -33,14 +33,14 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>টি অ্যাপের অ্যাক্সেস আছে"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"কোনওটিই নয়"</string>
     <string name="entry_details_title" msgid="590184849040247850">"এন্ট্রি সংক্রান্ত বিবরণ"</string>
-    <string name="recent_access_header" msgid="7623497371790225888">"সম্প্রতি অ্যাক্সেস করা অ্যাপ"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"সাম্প্রতিক অ্যাক্সেস"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"সম্প্রতি কোনও অ্যাপ Health Connect অ্যাক্সেস করেনি"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"সাম্প্রতিক সব অ্যাক্সেস দেখুন"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"বিগত ২৪ ঘণ্টায় কোন কোন অ্যাপ আপনার ডেটা অ্যাক্সেস করেছে তা দেখুন"</string>
     <string name="today_header" msgid="1006837293203834373">"আজ"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"গতকাল"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"পড়ুন: %s"</string>
-    <string name="write_data_access_label" msgid="7955988316773000250">"লিখুন: %s"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"লেখা: %s"</string>
     <string name="data_type_separator" msgid="1299848322898210658">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"অনুমতি ম্যানেজ করুন"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"অ্যাক্টিভিটি"</string>

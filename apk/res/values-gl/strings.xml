@@ -367,7 +367,7 @@
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 andar}other{# andares}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 min}other{# min}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metro}other{# metros}}"</string>
-    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
+    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 r/min}other{# r/min}}"</string>
     <string name="cycling_rpm_long" msgid="4914848042733587007">"{count,plural, =1{1 revolución por minuto}other{# revolucións por minuto}}"</string>
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"de <xliff:g id="MIN">%1$s</xliff:g> a <xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"Con protección"</string>

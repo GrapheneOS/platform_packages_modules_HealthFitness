@@ -667,7 +667,7 @@
     <string name="temperature_unit_title" msgid="1973985121774654017">"Temperatura"</string>
     <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"Kilometro"</string>
     <string name="distance_unit_miles_label" msgid="848850214987608211">"Milya"</string>
-    <string name="height_unit_centimeters_label" msgid="4096031670561995574">"Mga Centimeter"</string>
+    <string name="height_unit_centimeters_label" msgid="4096031670561995574">"Mga Sentimetro"</string>
     <string name="height_unit_feet_label" msgid="3311723678628261399">"Mga Talampakan at Pulgada"</string>
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"Mga Pound"</string>
     <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"Mga Kilogram"</string>
