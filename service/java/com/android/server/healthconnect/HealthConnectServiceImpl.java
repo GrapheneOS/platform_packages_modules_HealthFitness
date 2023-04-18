@@ -1564,6 +1564,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             HealthConnectThreadScheduler.scheduleInternalTask(
                     () -> {
                         try {
+                            enforceIsForegroundUser(getCallingUserHandle());
                             callback.onResult();
                         } catch (RemoteException e) {
                             Log.e(TAG, "Restore response could not be sent to the caller.", e);
@@ -1643,6 +1644,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void updateDataDownloadState(@DataDownloadState int downloadState) {
         mContext.enforceCallingPermission(
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
+        enforceIsForegroundUser(getCallingUserHandle());
         mBackupRestore.updateDataDownloadState(downloadState);
     }
 
@@ -1717,7 +1719,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private void enforceIsForegroundUser(UserHandle callingUserHandle) {
         if (!callingUserHandle.equals(mCurrentForegroundUser)) {
             throw new IllegalStateException(
-                    "Calling user is not the current foreground user. HC request must be called"
+                    "Calling user: "
+                            + callingUserHandle.getIdentifier()
+                            + "is not the current foreground user: "
+                            + mCurrentForegroundUser.getIdentifier()
+                            + ". HC request must be called"
                             + " from the current foreground user.");
         }
     }
