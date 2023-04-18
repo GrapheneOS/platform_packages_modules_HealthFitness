@@ -22,7 +22,6 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_ALLO
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 import static android.health.connect.HealthPermissions.READ_HEIGHT;
-import static android.health.connect.HealthPermissions.WRITE_BODY_FAT;
 import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
 import static android.health.connect.datatypes.units.Power.fromWatts;
@@ -108,6 +107,7 @@ public class DataMigrationTest {
     private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
     private static final String INVALID_PERMISSION_1 = "invalid.permission.1";
     private static final String INVALID_PERMISSION_2 = "invalid.permission.2";
+    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
 
@@ -426,7 +426,7 @@ public class DataMigrationTest {
 
     @Test
     public void migratePermissions_hasValidPermissions_validPermissionsGranted() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
+        revokeHealthPermissions(APP_PACKAGE_NAME);
 
         final String entityId = "permissions";
 
@@ -447,7 +447,7 @@ public class DataMigrationTest {
 
     @Test
     public void migratePermissions_allInvalidPermissions_throwsMigrationException() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
+        revokeHealthPermissions(APP_PACKAGE_NAME);
 
         final String entityId = "permissions";
 
@@ -490,8 +490,8 @@ public class DataMigrationTest {
     /** Test priority migration where migration payload have additional apps. */
     @Test
     public void migratePriority_additionalAppsInMigrationPayload_prioritySaved() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
-        revokeAppPermissions(APP_PACKAGE_NAME_2, READ_HEIGHT, WRITE_HEIGHT);
+        revokeHealthPermissions(APP_PACKAGE_NAME);
+        revokeHealthPermissions(APP_PACKAGE_NAME_2);
 
         String permissionMigrationEntityId1 = "permissionMigration1";
         String permissionMigrationEntityId2 = "permissionMigration2";
@@ -508,7 +508,6 @@ public class DataMigrationTest {
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
                                 .addPermission(READ_HEIGHT)
                                 .addPermission(WRITE_HEIGHT)
-                                .addPermission(WRITE_BODY_FAT)
                                 .build()),
                 new MigrationEntity(
                         permissionMigrationEntityId2,
@@ -777,16 +776,30 @@ public class DataMigrationTest {
                 "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
     }
 
-    private void revokeAppPermissions(String packageName, String... permissions) {
-        final PackageManager pm = mTargetContext.getPackageManager();
+    private void revokeHealthPermissions(String packageName) {
+        runWithShellPermissionIdentity(() -> revokeHealthPermissionsPrivileged(packageName));
+    }
+
+    private void revokeHealthPermissionsPrivileged(String packageName)
+            throws PackageManager.NameNotFoundException {
+        final PackageManager packageManager = mTargetContext.getPackageManager();
         final UserHandle user = mTargetContext.getUser();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    for (String permission : permissions) {
-                        pm.revokeRuntimePermission(packageName, permission, user);
-                    }
-                });
+        final PackageInfo packageInfo =
+                packageManager.getPackageInfo(
+                        packageName,
+                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
+
+        final String[] permissions = packageInfo.requestedPermissions;
+        if (permissions == null) {
+            return;
+        }
+
+        for (String permission : permissions) {
+            if (permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
+                packageManager.revokeRuntimePermission(packageName, permission, user);
+            }
+        }
     }
 
     private List<String> getGrantedAppPermissions() {
