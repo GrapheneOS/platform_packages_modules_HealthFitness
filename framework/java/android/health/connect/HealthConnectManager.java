@@ -706,7 +706,7 @@ public class HealthConnectManager {
         }
 
         try {
-            mService.deleteUsingFilters(
+            mService.deleteUsingFiltersForSelf(
                     mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(
                             new RecordIdFiltersParcel(recordIds), mContext.getPackageName()),
@@ -747,7 +747,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
 
         try {
-            mService.deleteUsingFilters(
+            mService.deleteUsingFiltersForSelf(
                     mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(
                             new DeleteUsingFiltersRequest.Builder()

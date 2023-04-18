@@ -49,7 +49,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TestHelperUtils {
-
     public static final String MY_PACKAGE_NAME =
             InstrumentationRegistry.getContext().getPackageName();
 
@@ -142,23 +141,34 @@ public class TestHelperUtils {
             throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(healthConnectManager).isNotNull();
-        healthConnectManager.deleteRecords(
-                deleteUsingFiltersRequest,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
 
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        latch.countDown();
-                    }
+        for (Class<? extends Record> recordType : deleteUsingFiltersRequest.getRecordTypes()) {
+            TimeRangeFilter timeRangeFilter = deleteUsingFiltersRequest.getTimeRangeFilter();
+            if (timeRangeFilter == null) {
+                timeRangeFilter =
+                        new TimeInstantRangeFilter.Builder()
+                                .setStartTime(Instant.EPOCH)
+                                .setEndTime(Instant.now().plus(1200, ChronoUnit.SECONDS))
+                                .build();
+            }
+            healthConnectManager.deleteRecords(
+                    recordType,
+                    timeRangeFilter,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
 
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-                });
+                        @Override
+                        public void onError(HealthConnectException exception) {
+                            latch.countDown();
+                        }
 
-        assertThat(latch.await(1, TimeUnit.SECONDS)).isTrue();
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+                    });
+            assertThat(latch.await(1, TimeUnit.SECONDS)).isTrue();
+        }
     }
 
     /** Deletes the records added by the test app. */
