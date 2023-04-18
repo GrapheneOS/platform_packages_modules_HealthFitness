@@ -31,7 +31,6 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import android.Manifest;
@@ -107,6 +106,8 @@ public class DataMigrationTest {
     private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
     private static final String APP_PACKAGE_NAME_2 = "android.healthconnect.cts.app2";
     private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
+    private static final String INVALID_PERMISSION_1 = "invalid.permission.1";
+    private static final String INVALID_PERMISSION_2 = "invalid.permission.2";
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
 
@@ -424,7 +425,7 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migratePermissions_permissionsGranted() {
+    public void migratePermissions_hasValidPermissions_validPermissionsGranted() {
         revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
 
         final String entityId = "permissions";
@@ -433,15 +434,19 @@ public class DataMigrationTest {
                 new MigrationEntity(
                         entityId,
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
+                                .addPermission(INVALID_PERMISSION_1)
                                 .addPermission(READ_HEIGHT)
+                                .addPermission(INVALID_PERMISSION_2)
                                 .addPermission(WRITE_HEIGHT)
                                 .build()));
         finishMigration();
-        assertThat(getGrantedAppPermissions()).containsAtLeast(READ_HEIGHT, WRITE_HEIGHT);
+        final List<String> grantedPermissions = getGrantedAppPermissions();
+        mExpect.that(grantedPermissions).containsAtLeast(READ_HEIGHT, WRITE_HEIGHT);
+        mExpect.that(grantedPermissions).containsNoneOf(INVALID_PERMISSION_1, INVALID_PERMISSION_2);
     }
 
     @Test
-    public void migratePermissions_invalidPermission_throwsMigrationException() {
+    public void migratePermissions_allInvalidPermissions_throwsMigrationException() {
         revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT, WRITE_BODY_FAT);
 
         final String entityId = "permissions";
@@ -450,14 +455,17 @@ public class DataMigrationTest {
                 new MigrationEntity(
                         entityId,
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
-                                .addPermission("invalid.permission")
+                                .addPermission(INVALID_PERMISSION_1)
+                                .addPermission(INVALID_PERMISSION_2)
                                 .build());
         try {
             migrate(entity);
             fail("Expected to fail with MigrationException but didn't");
         } catch (MigrationException e) {
-            assertEquals(MigrationException.ERROR_MIGRATE_ENTITY, e.getErrorCode());
-            assertEquals(entityId, e.getFailedEntityId());
+            mExpect.that(e.getErrorCode()).isEqualTo(MigrationException.ERROR_MIGRATE_ENTITY);
+            mExpect.that(e.getFailedEntityId()).isEqualTo(entityId);
+            mExpect.that(getGrantedAppPermissions())
+                    .containsNoneOf(INVALID_PERMISSION_1, INVALID_PERMISSION_2);
             finishMigration();
         }
     }
