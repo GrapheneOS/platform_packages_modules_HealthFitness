@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.home
 
 import android.content.Context
 import android.content.Intent
-import android.health.HealthFitnessStatsLog.*
 import android.health.connect.HealthConnectDataState
 import android.os.Bundle
 import android.view.View
@@ -27,6 +26,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
+import com.android.healthconnect.controller.HealthFitnessUiStatsLog.*
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter
 import com.android.healthconnect.controller.migration.DataMigrationState
