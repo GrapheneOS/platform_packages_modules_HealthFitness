@@ -105,12 +105,12 @@ public class GetApplicationInfoTest {
 
     @Test
     public void testGetApplicationInfo() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        CountDownLatch latch = new CountDownLatch(1);
+        TestUtils.insertRecords(TestUtils.getTestRecords());
         sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
 
         try {
-            Context context = ApplicationProvider.getApplicationContext();
-            CountDownLatch latch = new CountDownLatch(1);
-            TestUtils.insertRecords(TestUtils.getTestRecords());
             // Wait for some time, as app info table will be  updated in the background so might
             // take some additional time.
             latch.await(1, TimeUnit.SECONDS);
