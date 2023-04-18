@@ -302,6 +302,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         enforceIsForegroundUser(getCallingUserHandle());
                         verifyPackageNameFromUid(uid, attributionSource);
+                        enforceMemoryRateLimit(
+                                recordsParcel.getRecordsSize(),
+                                recordsParcel.getRecordsChunkSize());
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                         builder.setNumberOfRecords(recordInternals.size());
                         throwExceptionIfDataSyncInProgress();
@@ -657,6 +660,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         enforceIsForegroundUser(getCallingUserHandle());
                         verifyPackageNameFromUid(uid, attributionSource);
+                        enforceMemoryRateLimit(
+                                recordsParcel.getRecordsSize(),
+                                recordsParcel.getRecordsChunkSize());
                         final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                         builder.setNumberOfRecords(recordInternals.size());
                         throwExceptionIfDataSyncInProgress();
@@ -1689,6 +1695,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             throw new HealthConnectException(
                     rateLimiterException.getErrorCode(), rateLimiterException.getMessage());
         }
+    }
+
+    private void enforceMemoryRateLimit(List<Long> recordsSize, long recordsChunkSize) {
+        recordsSize.forEach(RateLimiter::checkMaxRecordMemoryUsage);
+        RateLimiter.checkMaxChunkMemoryUsage(recordsChunkSize);
     }
 
     private void enforceIsForegroundUser(UserHandle callingUserHandle) {
