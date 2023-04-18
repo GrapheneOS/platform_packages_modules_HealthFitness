@@ -292,6 +292,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull RecordsParcel recordsParcel,
             @NonNull IInsertRecordsResponseCallback callback) {
         final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, INSERT_DATA)
                         .setPackageName(attributionSource.getPackageName());
@@ -302,6 +303,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         enforceIsForegroundUser(getCallingUserHandle());
                         verifyPackageNameFromUid(uid, attributionSource);
+                        if (hasDataManagementPermission(uid, pid)) {
+                            throw new SecurityException(
+                                    "Apps with android.permission.MANAGE_HEALTH_DATA permission are"
+                                            + " not allowed to insert records");
+                        }
                         enforceMemoryRateLimit(
                                 recordsParcel.getRecordsSize(),
                                 recordsParcel.getRecordsChunkSize());
@@ -651,6 +657,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull RecordsParcel recordsParcel,
             @NonNull IEmptyResponseCallback callback) {
         final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
         final HealthConnectServiceLogger.Builder builder =
                 new HealthConnectServiceLogger.Builder(false, UPDATE_DATA)
                         .setPackageName(attributionSource.getPackageName());
@@ -660,6 +667,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     try {
                         enforceIsForegroundUser(getCallingUserHandle());
                         verifyPackageNameFromUid(uid, attributionSource);
+                        if (hasDataManagementPermission(uid, pid)) {
+                            throw new SecurityException(
+                                    "Apps with android.permission.MANAGE_HEALTH_DATA permission are"
+                                            + " not allowed to insert records");
+                        }
                         enforceMemoryRateLimit(
                                 recordsParcel.getRecordsSize(),
                                 recordsParcel.getRecordsChunkSize());
