@@ -53,6 +53,38 @@ java_library {
     apex_available: ["com.android.healthfitness"],
 }
 
+// To generate HealthFitnessUiStatsLog for logging.
+// DO NOT CHANGE
+genrule {
+    name: "statslog-healthfitness-ui-java-gen",
+    tools: ["stats-log-api-gen"],
+    cmd: "$(location stats-log-api-gen) --java $(out) --module healthfitness" +
+         " --javaPackage com.android.healthconnect.controller" +
+         " --javaClass HealthFitnessUiStatsLog --minApiLevel 34",
+    out: ["com/android/healthconnect/controller/HealthFitnessUiStatsLog.java"],
+}
+
+// To disable NewApi checks on the generated HealthFitnessUiStatsLog.
+// DO NOT CHANGE
+java_library {
+    name: "healthfitness-ui-statsd",
+    sdk_version: "module_current",
+    min_sdk_version: "UpsideDownCake",
+    srcs: [
+        ":statslog-healthfitness-ui-java-gen",
+    ],
+    libs: [
+        // needed for restricted atoms
+        "androidx.annotation_annotation",
+        // To add StatsLog as a dependency of the generated file.
+        "framework-statsd.stubs.module_lib",
+    ],
+        apex_available: [
+            "com.android.healthfitness",
+        ],
+}
+
+
 android_app_certificate {
     name: "com.android.healthconnect.controller.certificate",
     certificate: "com.android.healthconnect.controller",
@@ -91,7 +123,7 @@ android_library {
         "androidx.core_core",
         "guava",
         "hilt_android",
-        "healthfitness-statsd"
+        "healthfitness-ui-statsd",
     ],
     kotlincflags: ["-Xjvm-default=all"],
     apex_available: ["com.android.healthfitness"],
