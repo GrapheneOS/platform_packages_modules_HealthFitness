@@ -103,6 +103,7 @@ public class HealthConnectServiceImplTest {
         when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
                 .thenReturn(mAppOpsManagerLocal);
         when(mServiceContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mServiceContext.getUser()).thenReturn(mUserHandle);
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
