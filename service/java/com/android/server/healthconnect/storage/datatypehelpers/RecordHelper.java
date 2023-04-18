@@ -584,7 +584,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                             .distinct()
                             .collect(Collectors.toList());
             if (enforceSelfRead) {
-                appIds = AppInfoHelper.getInstance().getAppInfoIds(request.getPackageFilters());
+                appIds =
+                        AppInfoHelper.getInstance()
+                                .getAppInfoIds(Collections.singletonList(packageName));
             }
             if (appIds.size() == 1 && appIds.get(0) == DEFAULT_INT) {
                 throw new TypeNotPresentException(TYPE_NOT_PRESENT_PACKAGE_NAME, new Throwable());
