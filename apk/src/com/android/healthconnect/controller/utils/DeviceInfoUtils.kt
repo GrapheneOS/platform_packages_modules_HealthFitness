@@ -28,7 +28,7 @@ interface DeviceInfoUtils {
 
 class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
 
-    companion object{
+    companion object {
         private val TAG = "DeviceInfoUtils"
         private val FEEDBACK_REPORTER = "com.google.android.gms"
     }
@@ -95,6 +95,9 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
 
     override fun openSendFeedbackActivity(activity: FragmentActivity) {
         val intent = Intent(Intent.ACTION_BUG_REPORT)
+        intent.putExtra(
+            "category_tag",
+            "com.google.android.healthconnect.controller.USER_INITIATED_FEEDBACK_REPORT")
         activity.startActivityForResult(intent, 0)
     }
 }
