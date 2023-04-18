@@ -20,8 +20,11 @@ import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.icu.text.MessageFormat.*
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -29,7 +32,25 @@ import javax.inject.Inject
 class CyclingPedalingCadenceFormatter
 @Inject
 constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<CyclingPedalingCadenceRecord>(context) {
+    EntryFormatter<CyclingPedalingCadenceRecord>(context),
+    SessionDetailsFormatter<CyclingPedalingCadenceRecord> {
+
+    private val timeFormatter = LocalDateTimeFormatter(context)
+
+    override suspend fun formatRecord(
+        record: CyclingPedalingCadenceRecord,
+        header: String,
+        headerA11y: String,
+        unitPreferences: UnitPreferences
+    ): FormattedEntry {
+        return FormattedEntry.SeriesDataEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record))
+    }
 
     override suspend fun formatValue(
         record: CyclingPedalingCadenceRecord,
@@ -47,6 +68,27 @@ constructor(@ApplicationContext private val context: Context) :
         return formatCadence(R.string.cycling_cadence_series_range_long, record) { rpm ->
             format(context.getString(R.string.cycling_rpm_long), mapOf("count" to rpm))
         }
+    }
+
+    override suspend fun formatRecordDetails(
+        record: CyclingPedalingCadenceRecord
+    ): List<FormattedEntry> {
+        return record.samples
+            .sortedBy { it.time }
+            .map { sample ->
+                FormattedEntry.FormattedSessionDetail(
+                    uuid = record.metadata.id,
+                    header = timeFormatter.formatTime(sample.time),
+                    headerA11y = timeFormatter.formatTime(sample.time),
+                    title =
+                        format(
+                            context.getString(R.string.cycling_rpm),
+                            mapOf("count" to sample.revolutionsPerMinute)),
+                    titleA11y =
+                        format(
+                            context.getString(R.string.cycling_rpm_long),
+                            mapOf("count" to sample.revolutionsPerMinute)))
+            }
     }
 
     private fun formatCadence(
