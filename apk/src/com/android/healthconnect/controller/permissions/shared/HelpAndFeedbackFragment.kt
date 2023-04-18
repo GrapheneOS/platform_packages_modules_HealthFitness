@@ -89,6 +89,9 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
         mSendFeedback?.setOnPreferenceClickListener {
             val intent = Intent(Intent.ACTION_BUG_REPORT)
+            intent.putExtra(
+                "category_tag",
+                "com.google.android.healthconnect.controller.APP_INTEGRATION_REQUEST")
             activity?.startActivityForResult(intent, 0)
             true
         }
