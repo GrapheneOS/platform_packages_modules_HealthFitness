@@ -142,7 +142,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
         params.setExtraTimeColumn(getEndTimeColumnName());
         if (StorageUtils.isDerivedType(mRecordIdentifier)) {
-            params.appendAdditionalColumns(Arrays.asList(getStartTimeColumnName()));
+            params.appendAdditionalColumns(Collections.singletonList(getStartTimeColumnName()));
         }
 
         return new AggregateTableRequest(params, aggregationType, this)
@@ -158,7 +158,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      *
      * @return {@link AggregateResult} for {@link AggregationType}
      */
-    public AggregateResult getAggregateResult(Cursor cursor, AggregationType<?> aggregationType) {
+    public AggregateResult<?> getAggregateResult(
+            Cursor cursor, AggregationType<?> aggregationType) {
         return null;
     }
 
@@ -168,7 +169,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      *
      * @return {@link AggregateResult} for {@link AggregationType}
      */
-    public AggregateResult getAggregateResult(
+    public AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double total) {
         return null;
     }

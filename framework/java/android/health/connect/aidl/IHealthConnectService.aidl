@@ -126,6 +126,16 @@ interface IHealthConnectService {
         in IEmptyResponseCallback callback);
 
     /**
+     * @param attributionSource attribution source for the data.
+     * @param request Delete request using the mentioned filters
+     * @param callback Callback to receive result of performing this operation
+     */
+    void deleteUsingFiltersForSelf(
+        in AttributionSource attributionSource,
+        in DeleteUsingFiltersRequestParcel request,
+        in IEmptyResponseCallback callback);
+
+    /**
      * @param packageName Calling package's name
      * @param permissionCategory PermissionCategory corresponding to which priority is requested
      * @param callback Callback to receive result of performing this operation
