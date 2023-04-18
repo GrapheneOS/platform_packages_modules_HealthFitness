@@ -1959,11 +1959,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private void throwExceptionIfDataSyncInProgress() {
         if (isDataSyncInProgress()) {
-            // TODO(b/274494950): Uncomment this when this bug is fixed as it's blocking the
-            // Presubmits. This is a temporary solution to unblock others until this bug if fixed.
-            //            throw new HealthConnectException(
-            //                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
-            //                    "Storage data sync in progress. API calls are blocked");
+            throw new HealthConnectException(
+                    HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
+                    "Storage data sync in progress. API calls are blocked");
         }
     }
 
