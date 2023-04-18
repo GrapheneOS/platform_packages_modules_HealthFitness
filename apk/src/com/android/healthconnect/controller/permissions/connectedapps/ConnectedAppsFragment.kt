@@ -45,7 +45,7 @@ import com.android.healthconnect.controller.shared.preference.BannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
-import com.android.healthconnect.controller.utils.ExternalActivityLauncher.openSendFeedbackActivity
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.DisconnectAllAppsDialogElement
@@ -78,6 +78,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
 
+    @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
     private val viewModel: ConnectedAppsViewModel by viewModels()
     private lateinit var searchMenuItem: MenuItem
 
@@ -198,7 +199,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                             true
                         }
                     })
-                mSettingsAndHelpCategory?.addPreference(getHelpAndFeedbackPreference())
+
+                if (deviceInfoUtils.isPlayStoreAvailable(requireContext()) ||
+                    deviceInfoUtils.isSendFeedbackAvailable(requireContext())) {
+                    mSettingsAndHelpCategory?.addPreference(getHelpAndFeedbackPreference())
+                }
 
                 updateAllowedApps(allowedApps)
                 updateDeniedApps(notAllowedApps)
@@ -340,7 +345,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.sendFeedbackIcon)
             it.summary = resources.getString(R.string.send_feedback_description)
             it.setOnPreferenceClickListener {
-                openSendFeedbackActivity(requireActivity())
+                deviceInfoUtils.openSendFeedbackActivity(requireActivity())
                 true
             }
         }

@@ -43,17 +43,22 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
+import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.whenever
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
+import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 
+@UninstallModules(DeviceInfoUtilsModule::class)
 @HiltAndroidTest
 class ConnectedAppsFragmentTest {
 
@@ -63,6 +68,8 @@ class ConnectedAppsFragmentTest {
 
     @BindValue
     val viewModel: ConnectedAppsViewModel = Mockito.mock(ConnectedAppsViewModel::class.java)
+
+    @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
 
     @Before
     fun setup() {
@@ -208,5 +215,37 @@ class ConnectedAppsFragmentTest {
         onView(withText("Send feedback")).check(matches(isDisplayed()))
         onView(withText("See all compatible apps")).check(matches(isDisplayed()))
         onView(withText("Check for updates")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_eitherFeedbackOrPlayStoreAvailable_helpAndFeedbackPreferenceShouldBeDisplayed() {
+        val connectApp =
+            listOf(
+                ConnectedAppMetadata(TEST_APP, status = DENIED),
+                ConnectedAppMetadata(TEST_APP_2, status = ALLOWED))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(false)
+        deviceInfoUtils.setPlayStoreAvailability(true)
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText("Help & feedback")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_bothFeedbackAndPlayStoreNotAvailable_helpAndFeedbackPreferenceShouldNotBeDisplayed() {
+        val connectApp =
+            listOf(
+                ConnectedAppMetadata(TEST_APP, status = DENIED),
+                ConnectedAppMetadata(TEST_APP_2, status = ALLOWED))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(false)
+        deviceInfoUtils.setPlayStoreAvailability(false)
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText("Help & feedback")).check(doesNotExist())
     }
 }

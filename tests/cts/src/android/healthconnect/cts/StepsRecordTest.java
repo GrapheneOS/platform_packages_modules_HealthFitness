@@ -546,7 +546,7 @@ public class StepsRecordTest {
         assertThat(result).containsExactlyElementsIn(insertedRecord);
     }
 
-    private void readStepsRecordUsingIds(List<Record> recordList) throws InterruptedException {
+    static void readStepsRecordUsingIds(List<Record> recordList) throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
         for (Record record : recordList) {
@@ -968,7 +968,7 @@ public class StepsRecordTest {
                 .build();
     }
 
-    StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
+    static StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
         Metadata metadata = record.getMetadata();
         Metadata metadataWithId =
                 new Metadata.Builder()

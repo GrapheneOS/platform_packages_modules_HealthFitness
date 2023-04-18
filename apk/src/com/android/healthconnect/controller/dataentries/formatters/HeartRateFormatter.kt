@@ -42,7 +42,7 @@ class HeartRateFormatter @Inject constructor(@ApplicationContext private val con
         headerA11y: String,
         unitPreferences: UnitPreferences
     ): FormattedEntry {
-        return FormattedEntry.HeartRateEntry(
+        return FormattedEntry.SeriesDataEntry(
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
@@ -98,7 +98,7 @@ class HeartRateFormatter @Inject constructor(@ApplicationContext private val con
             uuid = id,
             header = timeFormatter.formatTime(sample.time),
             headerA11y = timeFormatter.formatTime(sample.time),
-            title = formatSampleValue(R.string.heart_rate_long_value, sample.beatsPerMinute),
+            title = formatSampleValue(R.string.heart_rate_value, sample.beatsPerMinute),
             titleA11y = formatSampleValue(R.string.heart_rate_long_value, sample.beatsPerMinute),
         )
     }

@@ -19,6 +19,7 @@ import android.content.Context
 import android.health.connect.datatypes.PowerRecord
 import android.health.connect.datatypes.units.Power
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.PowerFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -48,10 +49,17 @@ class PowerFormatterTest {
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        context.setLocale(Locale.US)
+        context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         hiltRule.inject()
+    }
+
+    @Test
+    fun formatValue_noEntries_returnsNoData() = runBlocking {
+        val record = getPowerRecord(listOf())
+        assertThat(formatter.formatValue(record, preferences)).isEqualTo("No data")
+        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("No data")
     }
 
     @Test
@@ -73,6 +81,29 @@ class PowerFormatterTest {
         val record = getPowerRecord(listOf(1.0))
         runBlocking {
             assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1 watt")
+        }
+    }
+
+    @Test
+    fun formatRecordDetails_emptyValues_returnsEmptyList() {
+        val record = getPowerRecord(listOf())
+        runBlocking { assertThat(formatter.formatRecordDetails(record)).isEmpty() }
+    }
+
+    @Test
+    fun formatRecordDetails_multipleValues_returnsFormattedValues() {
+        val record = getPowerRecord(listOf(2.0))
+        runBlocking {
+            val result = formatter.formatRecordDetails(record)
+            assertThat(result.size).isEqualTo(1)
+            assertThat(result[0])
+                .isEqualTo(
+                    FormattedEntry.FormattedSessionDetail(
+                        uuid = "test_id",
+                        header = "07:06",
+                        headerA11y = "07:06",
+                        title = "2 W",
+                        titleA11y = "2 watts"))
         }
     }
 

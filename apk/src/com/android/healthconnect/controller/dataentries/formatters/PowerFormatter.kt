@@ -21,8 +21,12 @@ import android.health.connect.datatypes.PowerRecord.PowerRecordSample
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,7 +34,24 @@ import javax.inject.Singleton
 /** Formatter for printing Power series data. */
 @Singleton
 class PowerFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<PowerRecord>(context) {
+    EntryFormatter<PowerRecord>(context), SessionDetailsFormatter<PowerRecord> {
+
+    private val timeFormatter = LocalDateTimeFormatter(context)
+
+    override suspend fun formatRecord(
+        record: PowerRecord,
+        header: String,
+        headerA11y: String,
+        unitPreferences: UnitPreferences
+    ): FormattedEntry {
+        return FormattedEntry.SeriesDataEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record))
+    }
 
     override suspend fun formatValue(
         record: PowerRecord,
@@ -46,8 +67,33 @@ class PowerFormatter @Inject constructor(@ApplicationContext private val context
         return format(R.string.watt_format_long, record.samples)
     }
 
+    override suspend fun formatRecordDetails(record: PowerRecord): List<FormattedEntry> {
+        return record.samples
+            .sortedBy { it.time }
+            .map { sample -> formatSample(record.metadata.id, sample) }
+    }
+
     private fun format(@StringRes res: Int, samples: List<PowerRecordSample>): String {
+        if (samples.isEmpty()) {
+            return context.getString(R.string.no_data)
+        }
         val avrPower = samples.sumOf { it.power.inWatts } / samples.size
         return MessageFormat.format(context.getString(res), mapOf("value" to avrPower))
+    }
+
+    private fun formatSample(id: String, sample: PowerRecordSample): FormattedSessionDetail {
+        return FormattedSessionDetail(
+            uuid = id,
+            header = timeFormatter.formatTime(sample.time),
+            headerA11y = timeFormatter.formatTime(sample.time),
+            title =
+                MessageFormat.format(
+                    context.getString(R.string.watt_format),
+                    mapOf("value" to sample.power.inWatts)),
+            titleA11y =
+                MessageFormat.format(
+                    context.getString(R.string.watt_format_long),
+                    mapOf("value" to sample.power.inWatts)),
+        )
     }
 }
