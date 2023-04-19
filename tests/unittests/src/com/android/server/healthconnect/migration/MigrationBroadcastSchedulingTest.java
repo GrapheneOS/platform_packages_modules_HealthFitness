@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.migration.MigrationConstants.COUN
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_CHANGE_NAMESPACE;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.times;
