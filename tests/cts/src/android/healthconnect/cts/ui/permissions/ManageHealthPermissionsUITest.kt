@@ -18,50 +18,35 @@ package android.healthconnect.cts.ui.permissions
 
 import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions
-import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
+import android.healthconnect.cts.lib.ActivityLauncher.launchManagePermissionActivity
 import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_PACKAGE_NAME
 import android.healthconnect.cts.lib.UiTestUtils.clickOnContentDescription
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.grantPermissionViaPackageManager
 import android.healthconnect.cts.lib.UiTestUtils.revokePermissionViaPackageManager
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
+import android.healthconnect.cts.lib.UiTestUtils.writeText
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import androidx.test.uiautomator.By
 import com.google.common.truth.Truth
 import org.junit.After
-import org.junit.Ignore
 import org.junit.Test
 
 class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
 
     @Test
     fun showsListOfHealthConnectApps() {
-        context.launchMainActivity {
-            navigateToManagePermissions()
-
+        context.launchManagePermissionActivity {
             waitDisplayed(By.text("Health Connect cts test app"))
         }
     }
 
     @Test
-    @Ignore("TODO(b/265789268): Fix flaky \"Help & feedback\" not found")
-    fun showsHelpAndFeedback() {
-        context.launchMainActivity {
-            navigateToManagePermissions()
-
-            waitDisplayed(By.text("Help & feedback"))
-        }
-    }
-
-    @Test
-    @Ignore("TODO(b/265789268):Fix flaky \"Remove access for all apps\" not found")
     fun revokeAllPermissions_revokeAllConnectedAppsPermission() {
         grantPermissionViaPackageManager(
             context, TEST_APP_PACKAGE_NAME, HealthPermissions.READ_HEIGHT)
 
-        context.launchMainActivity {
-            navigateToManagePermissions()
-
+        context.launchManagePermissionActivity {
             clickOnText("Remove access for all apps")
             clickOnText("Remove all")
 
@@ -72,12 +57,11 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
 
     @Test
     fun showSearchOption() {
-        context.launchMainActivity {
-            navigateToManagePermissions()
-
+        context.launchManagePermissionActivity {
             clickOnContentDescription("Search apps")
 
             waitDisplayed(By.text("Search apps"))
+            writeText(By.text("Search apps"), "Health Connect cts")
             waitDisplayed(By.text("Health Connect cts test app"))
         }
     }
@@ -90,11 +74,6 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
             context, TEST_APP_PACKAGE_NAME, HealthPermissions.WRITE_HEIGHT)
         revokePermissionViaPackageManager(
             context, TEST_APP_PACKAGE_NAME, HealthPermissions.WRITE_BODY_FAT)
-    }
-
-    private fun navigateToManagePermissions() {
-        clickOnText("App permissions")
-        waitDisplayed(By.text("Allowed access"))
     }
 
     private fun assertPermNotGrantedForApp(packageName: String, permName: String) {
