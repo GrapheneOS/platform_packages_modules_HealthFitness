@@ -142,7 +142,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
         params.setExtraTimeColumn(getEndTimeColumnName());
         if (StorageUtils.isDerivedType(mRecordIdentifier)) {
-            params.appendAdditionalColumns(Arrays.asList(getStartTimeColumnName()));
+            params.appendAdditionalColumns(Collections.singletonList(getStartTimeColumnName()));
         }
 
         return new AggregateTableRequest(params, aggregationType, this)
@@ -158,7 +158,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      *
      * @return {@link AggregateResult} for {@link AggregationType}
      */
-    public AggregateResult getAggregateResult(Cursor cursor, AggregationType<?> aggregationType) {
+    public AggregateResult<?> getAggregateResult(
+            Cursor cursor, AggregationType<?> aggregationType) {
         return null;
     }
 
@@ -168,7 +169,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      *
      * @return {@link AggregateResult} for {@link AggregationType}
      */
-    public AggregateResult getAggregateResult(
+    public AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double total) {
         return null;
     }
@@ -584,7 +585,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                             .distinct()
                             .collect(Collectors.toList());
             if (enforceSelfRead) {
-                appIds = AppInfoHelper.getInstance().getAppInfoIds(request.getPackageFilters());
+                appIds =
+                        AppInfoHelper.getInstance()
+                                .getAppInfoIds(Collections.singletonList(packageName));
             }
             if (appIds.size() == 1 && appIds.get(0) == DEFAULT_INT) {
                 throw new TypeNotPresentException(TYPE_NOT_PRESENT_PACKAGE_NAME, new Throwable());

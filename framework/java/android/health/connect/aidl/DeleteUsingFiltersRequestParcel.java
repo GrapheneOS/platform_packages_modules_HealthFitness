@@ -29,6 +29,7 @@ import android.os.Parcelable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -48,10 +49,10 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
                     return new DeleteUsingFiltersRequestParcel[size];
                 }
             };
-    private final List<String> mPackageNameFilters;
-    private final int[] mRecordTypeFilters;
-    private final long mStartTime;
-    private final long mEndTime;
+    private List<String> mPackageNameFilters;
+    private int[] mRecordTypeFilters;
+    private long mStartTime;
+    private long mEndTime;
     private final RecordIdFiltersParcel mRecordIdFiltersParcel;
 
     protected DeleteUsingFiltersRequestParcel(Parcel in) {
@@ -104,6 +105,11 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
         return mPackageNameFilters;
     }
 
+    public void setPackageNameFilters(@NonNull List<String> packages) {
+        Objects.requireNonNull(packages);
+        mPackageNameFilters = packages;
+    }
+
     public List<Integer> getRecordTypeFilters() {
         if (mRecordIdFiltersParcel != null
                 && !mRecordIdFiltersParcel.getRecordIdFilters().isEmpty()) {
@@ -146,5 +152,18 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
         dest.writeLong(mStartTime);
         dest.writeLong(mEndTime);
         dest.writeParcelable(mRecordIdFiltersParcel, 0);
+    }
+
+    public void resetNonIdFields() {
+        // Not required with ids
+        mRecordTypeFilters = new int[0];
+        mStartTime = DEFAULT_LONG;
+        mEndTime = DEFAULT_LONG;
+    }
+
+    public boolean usesNonIdFilters() {
+        return mRecordTypeFilters.length != 0
+                || mStartTime != DEFAULT_LONG
+                || mEndTime != DEFAULT_LONG;
     }
 }
