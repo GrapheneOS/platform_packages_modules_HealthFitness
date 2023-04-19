@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts;
+package android.healthconnect.cts.ratelimiter;
 
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
+
 
 import static org.hamcrest.CoreMatchers.containsString;
 
@@ -34,6 +35,7 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.cts.TestUtils;
 import android.platform.test.annotations.AppModeFull;
 import android.provider.DeviceConfig;
 
@@ -54,6 +56,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -92,7 +95,8 @@ public class RateLimiterTest {
 
     @Test
     public void testTryAcquireApiCallQuota_readCallsInLimit() throws InterruptedException {
-        List<Record> testRecord = List.of(StepsRecordTest.getCompleteStepsRecord());
+        List<Record> testRecord = List.of(TestUtils.getCompleteStepsRecord());
+
         tryAcquireCallQuotaNTimesForRead(testRecord, TestUtils.insertRecords(testRecord));
     }
 
@@ -126,20 +130,47 @@ public class RateLimiterTest {
         exceedReadQuota();
     }
 
+    @Test
+    public void testChunkSizeLimitExceeded() throws InterruptedException {
+        exception.expect(HealthConnectException.class);
+        exception.expectMessage(containsString("Records chunk size exceeded the max chunk limit"));
+        exceedChunkMemoryQuota();
+    }
+
+    @Test
+    public void testRecordSizeLimitExceeded() throws InterruptedException {
+        exception.expect(HealthConnectException.class);
+        exception.expectMessage(
+                containsString("Record size exceeded the single record size limit"));
+        exceedRecordMemoryQuota();
+    }
+
+    private void exceedChunkMemoryQuota() throws InterruptedException {
+        List<Record> testRecord = Collections.nCopies(30000, TestUtils.getCompleteStepsRecord());
+
+        TestUtils.insertRecords(testRecord);
+    }
+
+    private void exceedRecordMemoryQuota() throws InterruptedException {
+        TestUtils.insertRecords(List.of(TestUtils.getHugeHeartRateRecord()));
+    }
+
     private void exceedWriteQuota() throws InterruptedException {
         Instant startTime = Instant.now();
         tryAcquireCallQuotaNTimesForWrite(MAX_FOREGROUND_CALL_15M);
         Instant endTime = Instant.now();
         float quotaAcquired =
                 getQuotaAcquired(startTime, endTime, WINDOW_15M, MAX_FOREGROUND_CALL_15M);
-        List<Record> testRecord = List.of(StepsRecordTest.getCompleteStepsRecord());
+        List<Record> testRecord = List.of(TestUtils.getCompleteStepsRecord());
+
         while (quotaAcquired > 1) {
             TestUtils.insertRecords(testRecord);
             quotaAcquired--;
         }
         int tryWriteWithBuffer = 20;
         while (tryWriteWithBuffer > 0) {
-            TestUtils.insertRecords(List.of(StepsRecordTest.getCompleteStepsRecord()));
+            TestUtils.insertRecords(List.of(TestUtils.getCompleteStepsRecord()));
+
             tryWriteWithBuffer--;
         }
     }
@@ -150,7 +181,8 @@ public class RateLimiterTest {
                         .setAscending(true)
                         .build();
         Instant startTime = Instant.now();
-        List<Record> testRecord = Arrays.asList(StepsRecordTest.getCompleteStepsRecord());
+        List<Record> testRecord = Arrays.asList(TestUtils.getCompleteStepsRecord());
+
         List<Record> insertedRecords = TestUtils.insertRecords(testRecord);
         tryAcquireCallQuotaNTimesForRead(testRecord, insertedRecords);
         Instant endTime = Instant.now();
@@ -228,18 +260,19 @@ public class RateLimiterTest {
      * used by TestUtils.verifyDeleteRecords.
      */
     private void tryAcquireCallQuotaNTimesForWrite(int nTimes) throws InterruptedException {
-        List<Record> testRecord = Arrays.asList(StepsRecordTest.getCompleteStepsRecord());
+        List<Record> testRecord = Arrays.asList(TestUtils.getCompleteStepsRecord());
+
         List<Record> insertedRecords = List.of();
         for (int i = 0; i < nTimes; i++) {
             if (i % 3 == 0) {
                 insertedRecords = TestUtils.insertRecords(testRecord);
             } else if (i % 3 == 1) {
-                List<Record> updateRecords =
-                        Arrays.asList(StepsRecordTest.getCompleteStepsRecord());
+                List<Record> updateRecords = Arrays.asList(TestUtils.getCompleteStepsRecord());
+
                 for (int itr = 0; itr < updateRecords.size(); itr++) {
                     updateRecords.set(
                             itr,
-                            StepsRecordTest.getStepsRecord_update(
+                            TestUtils.getStepsRecord_update(
                                     updateRecords.get(itr),
                                     insertedRecords.get(itr).getMetadata().getId(),
                                     insertedRecords.get(itr).getMetadata().getClientRecordId()));
