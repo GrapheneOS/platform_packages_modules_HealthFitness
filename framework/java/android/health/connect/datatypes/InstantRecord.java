@@ -31,13 +31,17 @@ public abstract class InstantRecord extends Record {
      * @param metadata Metadata to be associated with the record. See {@link Metadata}
      * @param time Time of this activity
      * @param zoneOffset Zone offset of the user when the activity happened
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     InstantRecord(
-            @NonNull Metadata metadata, @NonNull Instant time, @NonNull ZoneOffset zoneOffset) {
+            @NonNull Metadata metadata,
+            @NonNull Instant time,
+            @NonNull ZoneOffset zoneOffset,
+            boolean skipValidation) {
         super(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
-        if (time.isAfter(Instant.now())) {
+        if (!skipValidation && time.isAfter(Instant.now())) {
             throw new IllegalArgumentException(
                     "Record time must not be in the future, record time: "
                             + time

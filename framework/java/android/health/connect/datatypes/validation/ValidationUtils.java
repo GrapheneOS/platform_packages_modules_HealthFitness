@@ -44,6 +44,13 @@ public final class ValidationUtils {
         }
     }
 
+    /** Requires double value to be non negative. */
+    public static void requireNonNegative(double value, String name) {
+        if (value < 0.0) {
+            throw new IllegalArgumentException(name + "must be non-negative, currently " + value);
+        }
+    }
+
     /** Requires double value to be within the range. */
     public static void requireInRange(
             double value, double lowerBound, double upperBound, String name) {

@@ -73,6 +73,7 @@ public final class SleepSessionRecord extends IntervalRecord {
      * @param stages list of {@link Stage} of the sleep sessions.
      * @param notes Additional notes for the session. Optional field.
      * @param title Title of the session. Optional field.
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     @SuppressWarnings("unchecked")
     private SleepSessionRecord(
@@ -83,8 +84,9 @@ public final class SleepSessionRecord extends IntervalRecord {
             @NonNull ZoneOffset endZoneOffset,
             @NonNull List<Stage> stages,
             @Nullable CharSequence notes,
-            @Nullable CharSequence title) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @Nullable CharSequence title,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(stages);
         mStages =
                 Collections.unmodifiableList(
@@ -369,6 +371,24 @@ public final class SleepSessionRecord extends IntervalRecord {
             return this;
         }
 
+        /**
+         * @return Object of {@link SleepSessionRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public SleepSessionRecord buildWithoutValidation() {
+            return new SleepSessionRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mStages,
+                    mNotes,
+                    mTitle,
+                    true);
+        }
+
         /** Returns {@link SleepSessionRecord} */
         @NonNull
         public SleepSessionRecord build() {
@@ -380,7 +400,8 @@ public final class SleepSessionRecord extends IntervalRecord {
                     mEndZoneOffset,
                     mStages,
                     mNotes,
-                    mTitle);
+                    mTitle,
+                    false);
         }
     }
 

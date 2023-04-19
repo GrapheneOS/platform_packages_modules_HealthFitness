@@ -48,7 +48,7 @@ public final class MenstruationFlowRecordInternal
     public MenstruationFlowRecord toExternalRecord() {
         return new MenstruationFlowRecord.Builder(buildMetaData(), getTime(), getFlow())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

@@ -42,13 +42,15 @@ public final class MenstruationFlowRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param flow Flow of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private MenstruationFlowRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @MenstruationFlowType.MenstruationFlowTypes int flow) {
-        super(metadata, time, zoneOffset);
+            @MenstruationFlowType.MenstruationFlowTypes int flow,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
@@ -149,11 +151,20 @@ public final class MenstruationFlowRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link MenstruationFlowRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public MenstruationFlowRecord buildWithoutValidation() {
+            return new MenstruationFlowRecord(mMetadata, mTime, mZoneOffset, mFlow, true);
+        }
+
+        /**
          * @return Object of {@link MenstruationFlowRecord}
          */
         @NonNull
         public MenstruationFlowRecord build() {
-            return new MenstruationFlowRecord(mMetadata, mTime, mZoneOffset, mFlow);
+            return new MenstruationFlowRecord(mMetadata, mTime, mZoneOffset, mFlow, false);
         }
     }
 

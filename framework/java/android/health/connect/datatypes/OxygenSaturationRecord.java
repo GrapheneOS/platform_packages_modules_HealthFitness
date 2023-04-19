@@ -39,18 +39,22 @@ public final class OxygenSaturationRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param percentage Percentage of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private OxygenSaturationRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Percentage percentage) {
-        super(metadata, time, zoneOffset);
+            @NonNull Percentage percentage,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(percentage);
-        ValidationUtils.requireInRange(percentage.getValue(), 0.0, 100.0, "percentage");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(percentage.getValue(), 0.0, 100.0, "percentage");
+        }
         mPercentage = percentage;
     }
     /**
@@ -121,11 +125,20 @@ public final class OxygenSaturationRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link OxygenSaturationRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public OxygenSaturationRecord buildWithoutValidation() {
+            return new OxygenSaturationRecord(mMetadata, mTime, mZoneOffset, mPercentage, true);
+        }
+
+        /**
          * @return Object of {@link OxygenSaturationRecord}
          */
         @NonNull
         public OxygenSaturationRecord build() {
-            return new OxygenSaturationRecord(mMetadata, mTime, mZoneOffset, mPercentage);
+            return new OxygenSaturationRecord(mMetadata, mTime, mZoneOffset, mPercentage, false);
         }
     }
 
