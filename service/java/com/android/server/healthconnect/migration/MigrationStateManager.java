@@ -373,12 +373,16 @@ public final class MigrationStateManager {
         PreferenceHelper.getInstance().insertOrReplacePreferencesTransaction(preferences);
 
         if (mMigrationBroadcastScheduler != null) {
+            //noinspection Convert2Lambda
             HealthConnectThreadScheduler.scheduleInternalTask(
-                    () -> {
-                        try {
-                            mMigrationBroadcastScheduler.scheduleNewJobs(context);
-                        } catch (Exception e) {
-                            Slog.e(TAG, "Migration broadcast schedule failed", e);
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                mMigrationBroadcastScheduler.scheduleNewJobs(context);
+                            } catch (Exception e) {
+                                Slog.e(TAG, "Migration broadcast schedule failed", e);
+                            }
                         }
                     });
         } else if (Constants.DEBUG) {
