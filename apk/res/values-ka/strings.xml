@@ -294,7 +294,7 @@
     <string name="onboarding_title" msgid="7930941018430608076">"დაიწყეთ Health Connect-ით"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ინახავს თქვენს ჯანმრთელობასა და ფიტნესთან დაკავშირებულ მონაცემებს და გაძლევთ საშუალებას, მარტივად დაასინქრონოთ სხვადასხვა აპი თქვენს ტელფონში"</string>
     <string name="share_data" msgid="3481932156368883946">"გააზიარეთ ინფორმაცია თქვენს აპებთან"</string>
-    <string name="share_data_description" msgid="2919871301634375092">"აირჩიეთ მონაცემები, რომლებსაც თითოეულ აპს შეუძლია წაიკითხოს ან ჩაწეროს Health Connect-Ში"</string>
+    <string name="share_data_description" msgid="2919871301634375092">"აირჩიეთ მონაცემები, რომლებიც თითოეულ აპს შეუძლია წაიკითხოს ან ჩაწეროს Health Connect-Ში"</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"მართეთ თქვენი პარამეტრები და კონფიდენციალურობა"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"შეცვალეთ აპის ნებართვები და მართეთ თქვენი მონაცემები ნებისმიერ დროს"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"უკან დაბრუნება"</string>

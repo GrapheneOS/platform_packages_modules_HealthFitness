@@ -62,7 +62,7 @@
     <string name="no_categories" msgid="2636778482437506241">"Health Connect मा तपाईंको कुनै पनि डेटा छैन"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"तपाईंको डेटा"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"एपको प्राथमिकता"</string>
-    <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g> सम्बन्धी डेटा मेटाउनुहोस्"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g>सम्बन्धी डेटा मेट्नुहोस्"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"सबै एपहरू"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> रिड गर्न सक्छ"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> राइट गर्न सक्छ"</string>
@@ -278,7 +278,7 @@
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"तपाईंले <xliff:g id="APP_NAME">%1$s</xliff:g> सँग सेयर गर्नुभएको डेटा उक्त एपको गोपनीयता नीतिबमोजिम प्रयोग गरिन्छ"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"तपाईं यो एपले प्रयोग गर्न सक्ने Android का अन्य अनुमति व्यवस्थापन गर्न चाहनुहुन्छ भने सेटिङमा गई \"एपहरू\" मा ट्याप गर्नुहोस्"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"गोपनीयता नीति पढ्नुहोस्"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"पछिल्ला २४ घण्टामा प्रयोग गरिएको"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"पछिल्लो २४ घण्टामा प्रयोग गरिएको"</string>
     <string name="app_access_title" msgid="7137018424885371763">"एपलाई दिइएका अनुमति"</string>
     <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
     <skip />

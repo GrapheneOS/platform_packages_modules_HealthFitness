@@ -255,7 +255,7 @@
     <string name="default_error" msgid="7966868260616403475">"कोई गड़बड़ी हुई. कृपया फिर से कोशिश करें."</string>
     <!-- no translation found for health_permission_header_description (7497601695462373927) -->
     <skip />
-    <string name="connected_apps_text" msgid="1177626440966855831">"कंट्रोल करें कि कौनसे ऐप्लिकेशन, Health Connect में सेव किए गए डेटा को ऐक्सेस कर सकते हैं. कोई ऐप्लिकेशन कौनसा डेटा पढ़ या सेव कर सकता है, यह देखने के लिए उस टैप करें."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"कंट्रोल करें कि कौनसे ऐप्लिकेशन, Health Connect में सेव किए गए डेटा को ऐक्सेस कर सकते हैं. कोई ऐप्लिकेशन कौनसा डेटा पढ़ सकता है या बदलाव कर सकता है, यह देखने के लिए उस टैप करें."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ऐक्सेस करने की अनुमति है"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"ऐक्सेस की अनुमति नहीं है"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"सेटिंग और सहायता"</string>

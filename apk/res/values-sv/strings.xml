@@ -45,8 +45,8 @@
     <string name="manage_permissions" msgid="8394221950712608160">"Hantera behörigheter"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"Aktivitet"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"aktivitet"</string>
-    <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Kroppsdata"</string>
-    <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"kroppsdata"</string>
+    <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Kroppsmått"</string>
+    <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"kroppsmått"</string>
     <string name="sleep_category_uppercase" msgid="3422452674899706786">"Sömn"</string>
     <string name="sleep_category_lowercase" msgid="842609634386839011">"sömn"</string>
     <string name="vitals_category_uppercase" msgid="8982333138032938623">"Vitalparametrar"</string>
@@ -715,7 +715,7 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Flytta längst ned"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"träning, hälsa"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"behörigheter"</string>
-    <string name="search_keywords_data" msgid="5359602744325490523">"health connect, hälsodata, hälsokategorier, dataåtkomst, aktivitet, kroppsdata, registrering av menscykeln, näring, sömn, vitalparametrar"</string>
+    <string name="search_keywords_data" msgid="5359602744325490523">"health connect, hälsodata, hälsokategorier, dataåtkomst, aktivitet, kroppsmått, registrering av menscykeln, näring, sömn, vitalparametrar"</string>
     <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Health Connect &gt; Appbehörigheter"</string>
     <string name="search_breadcrumbs_data" msgid="6635428480372024040">"Health Connect &gt; Data och åtkomst"</string>
     <string name="search_connected_apps" msgid="8180770761876928851">"Sök efter appar"</string>
