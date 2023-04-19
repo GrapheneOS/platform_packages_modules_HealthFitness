@@ -16,14 +16,9 @@
 
 package com.android.server.healthconnect.migration;
 
-import static android.os.UserHandle.getUserHandleForUid;
-
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.PackageInfoFlags;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.migration.AppInfoMigrationPayload;
@@ -48,6 +43,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -165,16 +161,40 @@ public final class DataMigrationManager {
     @GuardedBy("sLock")
     private void migratePermissions(@NonNull PermissionMigrationPayload payload) {
         final String packageName = payload.getHoldingPackageName();
-        final UserHandle appUserHandle = getUserHandle(packageName);
-        if ((appUserHandle != null)
-                && !mPermissionHelper.hasGrantedHealthPermissions(packageName, appUserHandle)) {
-            for (String permissionName : payload.getPermissions()) {
-                mPermissionHelper.grantHealthPermission(packageName, permissionName, appUserHandle);
-            }
+        final List<String> permissions = payload.getPermissions();
+        final UserHandle userHandle = mUserContext.getUser();
 
-            mFirstGrantTimeManager.setFirstGrantTime(
-                    packageName, payload.getFirstGrantTime(), mUserContext.getUser());
+        if (permissions.isEmpty()
+                || mPermissionHelper.hasGrantedHealthPermissions(packageName, userHandle)) {
+            return;
         }
+
+        final List<Exception> errors = new ArrayList<>();
+
+        for (String permissionName : permissions) {
+            try {
+                mPermissionHelper.grantHealthPermission(packageName, permissionName, userHandle);
+            } catch (Exception e) {
+                errors.add(e);
+            }
+        }
+
+        // Throw if no permissions were migrated
+        if (errors.size() == permissions.size()) {
+            final RuntimeException error =
+                    new RuntimeException(
+                            "Error migrating permissions for "
+                                    + packageName
+                                    + ": "
+                                    + String.join(", ", payload.getPermissions()));
+            for (Exception e : errors) {
+                error.addSuppressed(e);
+            }
+            throw error;
+        }
+
+        mFirstGrantTimeManager.setFirstGrantTime(
+                packageName, payload.getFirstGrantTime(), userHandle);
     }
 
     @GuardedBy("sLock")
@@ -185,25 +205,6 @@ public final class DataMigrationManager {
                 payload.getAppName(),
                 payload.getAppIcon(),
                 true /* onlyReplace */);
-    }
-
-    @Nullable
-    private UserHandle getUserHandle(@NonNull String packageName) {
-        final ApplicationInfo ai = getApplicationInfo(packageName);
-
-        return ai != null ? getUserHandleForUid(ai.uid) : null;
-    }
-
-    @Nullable
-    private ApplicationInfo getApplicationInfo(@NonNull String packageName) {
-        try {
-            return mUserContext
-                    .getPackageManager()
-                    .getPackageInfo(packageName, PackageInfoFlags.of(0L))
-                    .applicationInfo;
-        } catch (PackageManager.NameNotFoundException e) {
-            return null;
-        }
     }
 
     /**
