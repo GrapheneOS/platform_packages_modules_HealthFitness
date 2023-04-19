@@ -51,6 +51,8 @@ class HealthConnectUiTestHelper {
         SystemUtil.runShellCommandOrThrow("cmd statusbar collapse")
 
         unlockDevice()
+
+        UiTestUtils.skipOnboarding(context)
     }
 
     @Before
