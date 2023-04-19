@@ -57,6 +57,7 @@ public final class WheelchairPushesRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param count Count of pushes
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private WheelchairPushesRecord(
             @NonNull Metadata metadata,
@@ -64,14 +65,17 @@ public final class WheelchairPushesRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            long count) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            long count,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(startZoneOffset);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(endZoneOffset);
-        ValidationUtils.requireInRange(count, 0, 1000000, "count");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(count, 0, 1000000, "count");
+        }
         mCount = count;
     }
 
@@ -168,12 +172,34 @@ public final class WheelchairPushesRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link WheelchairPushesRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public WheelchairPushesRecord buildWithoutValidation() {
+            return new WheelchairPushesRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mCount,
+                    true);
+        }
+
+        /**
          * @return Object of {@link WheelchairPushesRecord}
          */
         @NonNull
         public WheelchairPushesRecord build() {
             return new WheelchairPushesRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mCount);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mCount,
+                    false);
         }
     }
 

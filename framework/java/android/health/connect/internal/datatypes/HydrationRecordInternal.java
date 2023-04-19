@@ -51,7 +51,7 @@ public final class HydrationRecordInternal extends IntervalRecordInternal<Hydrat
                         Volume.fromLiters(getVolume()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

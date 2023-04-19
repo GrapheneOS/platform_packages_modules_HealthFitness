@@ -124,6 +124,6 @@ public final class SleepSessionRecordInternal extends IntervalRecordInternal<Sle
         if (getSleepStages() != null) {
             builder.setStages(SleepStageInternal.getExternalStages(mStages));
         }
-        return builder.build();
+        return builder.buildWithoutValidation();
     }
 }

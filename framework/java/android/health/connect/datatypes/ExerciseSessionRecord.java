@@ -77,6 +77,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
      * @param exerciseType Type of exercise (e.g. walking, swimming). Required field. Allowed
      *     values: {@link ExerciseSessionType.ExerciseSessionTypes }
      * @param title Title of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     @SuppressWarnings("unchecked")
     private ExerciseSessionRecord(
@@ -91,8 +92,9 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             @Nullable ExerciseRoute route,
             boolean hasRoute,
             @NonNull List<ExerciseSegment> segments,
-            @NonNull List<ExerciseLap> laps) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull List<ExerciseLap> laps,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         mNotes = notes;
         mExerciseType = exerciseType;
         mTitle = title;
@@ -100,13 +102,18 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             throw new IllegalArgumentException("HasRoute must be true if the route is not null");
         }
         mRoute = route;
-        ExerciseSessionTypesValidation.validateExerciseRouteTimestamps(startTime, endTime, route);
+        if (!skipValidation) {
+            ExerciseSessionTypesValidation.validateExerciseRouteTimestamps(
+                    startTime, endTime, route);
+        }
         mHasRoute = hasRoute;
         mSegments =
                 Collections.unmodifiableList(
                         (List<ExerciseSegment>)
                                 sortAndValidateTimeIntervalHolders(startTime, endTime, segments));
-        ExerciseSessionTypesValidation.validateSessionAndSegmentsTypes(exerciseType, mSegments);
+        if (!skipValidation) {
+            ExerciseSessionTypesValidation.validateSessionAndSegmentsTypes(exerciseType, mSegments);
+        }
         mLaps =
                 Collections.unmodifiableList(
                         (List<ExerciseLap>)
@@ -331,6 +338,28 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             return this;
         }
 
+        /**
+         * @return Object of {@link ExerciseSessionRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public ExerciseSessionRecord buildWithoutValidation() {
+            return new ExerciseSessionRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mNotes,
+                    mExerciseType,
+                    mTitle,
+                    mRoute,
+                    mHasRoute,
+                    mSegments,
+                    mLaps,
+                    true);
+        }
+
         /** Returns {@link ExerciseSessionRecord} */
         @NonNull
         public ExerciseSessionRecord build() {
@@ -346,7 +375,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                     mRoute,
                     mHasRoute,
                     mSegments,
-                    mLaps);
+                    mLaps,
+                    false);
         }
     }
 

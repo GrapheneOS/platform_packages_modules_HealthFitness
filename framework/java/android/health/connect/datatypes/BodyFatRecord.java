@@ -38,18 +38,22 @@ public final class BodyFatRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param percentage Percentage of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private BodyFatRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Percentage percentage) {
-        super(metadata, time, zoneOffset);
+            @NonNull Percentage percentage,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(percentage);
-        ValidationUtils.requireInRange(percentage.getValue(), 0.0, 100.0, "bodyFatPercentage");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(percentage.getValue(), 0.0, 100.0, "bodyFatPercentage");
+        }
         mPercentage = percentage;
     }
     /**
@@ -120,11 +124,20 @@ public final class BodyFatRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link BodyFatRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public BodyFatRecord buildWithoutValidation() {
+            return new BodyFatRecord(mMetadata, mTime, mZoneOffset, mPercentage, true);
+        }
+
+        /**
          * @return Object of {@link BodyFatRecord}
          */
         @NonNull
         public BodyFatRecord build() {
-            return new BodyFatRecord(mMetadata, mTime, mZoneOffset, mPercentage);
+            return new BodyFatRecord(mMetadata, mTime, mZoneOffset, mPercentage, false);
         }
     }
 

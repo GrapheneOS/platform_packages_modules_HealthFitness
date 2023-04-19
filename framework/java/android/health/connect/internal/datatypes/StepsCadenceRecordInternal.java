@@ -60,7 +60,7 @@ public class StepsCadenceRecordInternal
                         buildMetaData(), getStartTime(), getEndTime(), getExternalSamples())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override
@@ -80,7 +80,8 @@ public class StepsCadenceRecordInternal
             stepsCadenceRecords.add(
                     new StepsCadenceRecord.StepsCadenceRecordSample(
                             stepsCadenceRecordSample.getRate(),
-                            Instant.ofEpochMilli(stepsCadenceRecordSample.getEpochMillis())));
+                            Instant.ofEpochMilli(stepsCadenceRecordSample.getEpochMillis()),
+                            true));
         }
         return stepsCadenceRecords;
     }

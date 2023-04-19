@@ -613,7 +613,7 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
                 .setSugar(Mass.fromGrams(getSugar()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

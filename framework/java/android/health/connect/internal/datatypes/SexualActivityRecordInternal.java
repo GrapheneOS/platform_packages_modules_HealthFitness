@@ -48,7 +48,7 @@ public final class SexualActivityRecordInternal
     public SexualActivityRecord toExternalRecord() {
         return new SexualActivityRecord.Builder(buildMetaData(), getTime(), getProtectionUsed())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

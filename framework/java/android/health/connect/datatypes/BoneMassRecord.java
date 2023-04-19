@@ -35,18 +35,22 @@ public final class BoneMassRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param mass Mass of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private BoneMassRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Mass mass) {
-        super(metadata, time, zoneOffset);
+            @NonNull Mass mass,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(mass);
-        ValidationUtils.requireInRange(mass.getInGrams(), 0.0, 1000000.0, "mass");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(mass.getInGrams(), 0.0, 1000000.0, "mass");
+        }
         mMass = mass;
     }
     /**
@@ -115,11 +119,20 @@ public final class BoneMassRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link BoneMassRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public BoneMassRecord buildWithoutValidation() {
+            return new BoneMassRecord(mMetadata, mTime, mZoneOffset, mMass, true);
+        }
+
+        /**
          * @return Object of {@link BoneMassRecord}
          */
         @NonNull
         public BoneMassRecord build() {
-            return new BoneMassRecord(mMetadata, mTime, mZoneOffset, mMass);
+            return new BoneMassRecord(mMetadata, mTime, mZoneOffset, mMass, false);
         }
     }
 

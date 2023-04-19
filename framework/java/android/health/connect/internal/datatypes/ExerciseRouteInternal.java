@@ -251,7 +251,7 @@ public class ExerciseRouteInternal {
             if (getAltitude() != Constants.DEFAULT_DOUBLE) {
                 builder.setAltitude(Length.fromMeters(getAltitude()));
             }
-            return builder.build();
+            return builder.buildWithoutValidation();
         }
 
         @Override

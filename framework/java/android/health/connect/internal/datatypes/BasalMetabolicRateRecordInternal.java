@@ -49,7 +49,7 @@ public final class BasalMetabolicRateRecordInternal
         return new BasalMetabolicRateRecord.Builder(
                         buildMetaData(), getTime(), Power.fromWatts(getBasalMetabolicRate()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override
