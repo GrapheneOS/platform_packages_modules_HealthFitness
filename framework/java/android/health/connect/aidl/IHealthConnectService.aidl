@@ -13,6 +13,7 @@ import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
+import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.IMigrationCallback;
@@ -302,4 +303,15 @@ interface IHealthConnectService {
      * @hide
      */
     void getHealthConnectDataState(in IGetHealthConnectDataStateCallback callback);
+
+    /**
+     * Asynchronously returns the current UI state of Health Connect as it goes through the Data-Migration process.
+     *
+     * <p>See also {@link HealthConnectMigrationUiState} object describing the HealthConnect UI state.
+     *
+     * @param callback The callback which will receive the current {@link HealthConnectMigrationUiState}.
+     *
+     * @hide
+     */
+    void getHealthConnectMigrationUiState(in IGetHealthConnectMigrationUiStateCallback callback);
 }
