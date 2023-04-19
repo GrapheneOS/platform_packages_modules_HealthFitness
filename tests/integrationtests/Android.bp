@@ -17,7 +17,7 @@ package {
 }
 
 android_test {
-    name: "HealthFitnessWithoutManagePermissionsIntegrationTests",
+    name: "HealthFitnessIntegrationTests",
     test_suites: [
         "device-tests",
         "general-tests",
@@ -38,7 +38,5 @@ android_test {
         "src/**/*.java",
     ],
     sdk_version: "module_current",
-    data: [
-        ":HealthFitnessPermsTestApp",
-    ]
+    certificate: "platform",
 }

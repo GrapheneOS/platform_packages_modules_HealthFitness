@@ -16,24 +16,37 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.tests.withoutmanagepermissions">
+          package="android.healthconnect.integrationtests">
 
-    <!-- The absence of the permission below is vital to this test. -->
-    <!--uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" -->
+    <!-- The permissions below would be needed if tests were not using "adopt shell permissions" to
+           obtain the necessary permissions. -->
+    <!-- uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" -->
+    <!-- uses-permission android:name="android.permission.GRANT_RUNTIME_PERMISSIONS" -->
+    <!-- uses-permission android:name="android.permission.REVOKE_RUNTIME_PERMISSIONS" -->
 
     <eat-comment/>
 
     <queries>
         <package android:name="android.healthconnect.test.app"/>
+        <package android:name="android.healthconnect.test.app2"/>
+        <package android:name="android.healthconnect.test.app3"/>
     </queries>
 
     <application android:debuggable="true">
         <uses-library android:name="android.test.runner"/>
+        <activity android:name=".EmptyActivity"
+            android:label="EmptyActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_MIGRATION_INFO"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
-                     android:targetPackage="android.healthconnect.tests.withoutmanagepermissions"
-                     android:label="Integration tests for android.healthconnect permissions with the calling app having android.permission.MANAGE_HEALTH_PERMISSIONS">
+                     android:targetPackage="android.healthconnect.integrationtests"
+                     android:label="Integration tests for android.healthconnect.">
     </instrumentation>
 
 </manifest>
