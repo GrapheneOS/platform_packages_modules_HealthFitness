@@ -38,5 +38,9 @@ android_test {
         "src/**/*.java",
     ],
     sdk_version: "module_current",
-    certificate: "platform",
+    data: [
+        ":HealthFitnessPermsTestApp",
+        ":HCPermsTestAppNoUsageIntent",
+        ":HCSharedUserPermsTestApp",
+    ]
 }
